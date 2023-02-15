@@ -1,6 +1,6 @@
 # path: ./Dockerfile.prod
 
-FROM node:16-alpine as build
+FROM node:18-alpine as build
 
 RUN apk update && apk add --no-cache curl
 # Installing libvips-dev for sharp Compatibility
@@ -23,7 +23,7 @@ RUN pnpm install --offline --prod --shamefully-hoist --config.auto-install-peers
 RUN pnpm build
 
 
-FROM node:16-alpine
+FROM node:18-alpine
 RUN apk update && apk add --no-cache curl
 # Install pnpm
 RUN curl -f https://get.pnpm.io/v6.16.js | npm install -g pnpm

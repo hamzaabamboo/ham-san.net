@@ -15,9 +15,8 @@ services:
       - ./.env:/opt/app/.env
       - ./public/uploads:/opt/app/public/uploads
       - ./data:/opt/app/data
-    ports:
-      - '1337:1337'
+      - ./api/config:/opt/app/config
+      - ./api/src:/opt/app/src
     ports:
       - 1337:1337
     command: ["yarn", "start"]
-
