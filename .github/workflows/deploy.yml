@@ -20,5 +20,5 @@ jobs:
             eval "$(ssh-agent -s)"
             ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
             cd ./ham-san-net
-            git pull origin master
+            git pull origin main
             ./deploy.sh
