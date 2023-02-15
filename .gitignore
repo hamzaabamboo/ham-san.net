@@ -115,11 +115,11 @@ build
 .strapi-updater.json
 
 node_modules
-/build
-/.svelte-kit
-/package
-.env
-.env.*
+client/build
+client/.svelte-kit
+client/package
+client/.env
+client/.env.*
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
