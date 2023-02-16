@@ -4,6 +4,13 @@ query getProjectBySlug($slug: String) {
 			id
 			attributes {
 				...project
+				banner {
+					data {
+						attributes {
+							...media
+						}
+					}
+				}
 			}
 		}
 	}

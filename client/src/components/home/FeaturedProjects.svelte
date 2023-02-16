@@ -2,6 +2,7 @@
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import { t } from '@i18n';
+	import { getMediaUrl } from '@utils/media';
 	import { fetchProjects } from '../../graphql/generated/client';
 
 	let projects = fetchProjects({});
@@ -22,8 +23,9 @@
 							{#if project.attributes?.media?.data[0]?.attributes?.url}
 								<div
 									class="bg-cover bg-no-repeat h-64 "
-									style:background-image="url('{'http://localhost:1337' +
-										project.attributes?.media?.data[0]?.attributes?.url}')"
+									style:background-image="url('{getMediaUrl(
+										project.attributes?.media?.data[0]?.attributes?.url
+									)}')"
 								/>
 							{/if}
 							<div class="bg-white shadow-md w-full h-full flex-1 p-2 ">

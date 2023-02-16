@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let variant: TypographyVariant = 'body';
-	type TypographyVariant = 'title' | 'h1' | 'h2' | 'h4' | 'subtitle' | 'body' | 'body 2';
+	type TypographyVariant = 'title' | 'h1' | 'h2' | 'h4' | 'h6' | 'subtitle' | 'body' | 'body 2';
 
 	let _class = '';
 	export { _class as class };
@@ -22,8 +22,12 @@
 	<h4 {...$$restProps} class="text-xl mb-2 {_class || ''}">
 		<slot />
 	</h4>
+	{:else if variant === 'h6'}
+	<h4 {...$$restProps} class="text-lg mb-1 {_class || ''}">
+		<slot />
+	</h4>
 {:else if variant === 'subtitle'}
-	<p {...$$restProps} class="text-gray-200 {_class || ''}">
+	<p {...$$restProps} class="text-gray-500 {_class || ''}">
 		<slot />
 	</p>
 {:else}
