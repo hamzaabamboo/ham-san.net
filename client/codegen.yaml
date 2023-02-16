@@ -5,10 +5,15 @@ documents:
   - src/graphql/**/*.gql
 
 generates:
-  src/graphql/generated.ts:
+  src/graphql/generated/client.ts:
     config:
-      clientPath: './client'
+      clientPath: '../client'
     plugins:
       - 'typescript'
       - 'typescript-operations'
       - 'graphql-codegen-svelte-apollo'
+  src/graphql/generated/server.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-graphql-request'

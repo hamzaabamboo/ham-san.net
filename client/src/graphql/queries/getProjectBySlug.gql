@@ -1,0 +1,10 @@
+query getProjectBySlug($slug: String) {
+	projects(filters: { slug: { eq: $slug } }) {
+		data {
+			id
+			attributes {
+				...project
+			}
+		}
+	}
+}

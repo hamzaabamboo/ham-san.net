@@ -5,7 +5,7 @@
 	import { t } from '@i18n';
 </script>
 
-<Container fluid class="bg-primary bg-opacity-10 ">
+<Container fluid class="bg-primary bg-opacity-10">
 	<Container>
 		<div
 			class="hero sm:min-h-screen lg:min-h-16 flex sm:items-end lg:items-center sm:justify-center lg:justify-start lg:pl-4 w-full"

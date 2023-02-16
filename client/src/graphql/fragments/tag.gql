@@ -1,0 +1,4 @@
+fragment tag on Tag {
+	title
+	slug
+}

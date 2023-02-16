@@ -11,4 +11,23 @@ module.exports = {
       },
     },
   },
+  slugify: {
+    enabled: true,
+    config: {
+      contentTypes: {
+        projects: {
+          field: "slug",
+          references: "title",
+        },
+        tags: {
+          field: "slug",
+          references: "title",
+        },
+        blogs: {
+          field: "slug",
+          references: "title",
+        },
+      },
+    },
+  },
 };

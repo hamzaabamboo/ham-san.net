@@ -2,6 +2,7 @@ fragment project on Project {
 	title
 	description
 	content
+	slug
 	media {
 		data {
 			id
@@ -15,7 +16,7 @@ fragment project on Project {
 		data {
 			id
 			attributes {
-				title
+				...tag
 			}
 		}
 	}

@@ -7,6 +7,7 @@ specifiers:
   '@strapi/strapi': 4.6.1
   '@strapi/typescript-utils': ^4.6.1
   better-sqlite3: 8.0.1
+  strapi-plugin-slugify: ^2.3.2
 
 dependencies:
   '@strapi/plugin-graphql': 4.6.1_@strapi+strapi@4.6.1
@@ -15,6 +16,7 @@ dependencies:
   '@strapi/strapi': 4.6.1_better-sqlite3@8.0.1
   '@strapi/typescript-utils': 4.6.1
   better-sqlite3: 8.0.1
+  strapi-plugin-slugify: 2.3.2_@strapi+strapi@4.6.1
 
 packages:
 
@@ -10735,6 +10737,19 @@ packages:
 
   /std-env/3.3.2:
     resolution: {integrity: sha512-uUZI65yrV2Qva5gqE0+A7uVAvO40iPo6jGhs7s8keRfHCmtg+uB2X6EiLGCI9IgL1J17xGhvoOqSz79lzICPTA==}
+    dev: false
+
+  /strapi-plugin-slugify/2.3.2_@strapi+strapi@4.6.1:
+    resolution: {integrity: sha512-gZbZ+jdZYmSjjCdNR5WEhAcF7cokAX3wGlz7+vVgGpsp/ayvZACyWQzyqgfHbbqzjVtPFOi40Clp0OeRtfCHGg==}
+    engines: {node: '>=14.19.1 <=18.x.x', npm: '>=6.0.0'}
+    peerDependencies:
+      '@strapi/strapi': ^4.0.7
+      '@strapi/utils': ^4.0.7
+      lodash: ^4.17.21
+      yup: ^0.32.9
+    dependencies:
+      '@sindresorhus/slugify': 1.1.0
+      '@strapi/strapi': 4.6.1_better-sqlite3@8.0.1
     dev: false
 
   /stream-browserify/3.0.0:
