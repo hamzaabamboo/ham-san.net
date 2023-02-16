@@ -5,8 +5,12 @@
 	import Typography from '@components/core/Typography.svelte';
 	import Pill from '@components/core/Pill.svelte';
 	import { getMediaUrl } from '@utils/media';
-	import Carousel from 'svelte-carousel';
-	import { t } from '@i18n';
+	// import Carousel from 'svelte-carousel';
+	import { t, locale } from '@i18n';
+	import Fa from 'svelte-fa';
+	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+	import { parse, format } from 'date-fns';
+	import { ja, enUS } from 'date-fns/locale';
 
 	/** @type {import('./$types').PageData} */
 	export let data: GetProjectBySlugQuery;
@@ -18,6 +22,12 @@
 	const tags = project?.tags?.data;
 	const links = project?.links;
 	const media = project?.media?.data;
+
+	$: formattedDate = project?.date
+		? format(parse(project?.date, 'yyyy-MM-dd', new Date()), 'MMMM yyyy', {
+				locale: $locale === 'ja' ? ja : enUS
+		  })
+		: null;
 </script>
 
 {#if banner}
@@ -29,9 +39,16 @@
 <Container class="py-8 flex-1 w-full">
 	<div class="mb-8">
 		<div class="mb-2">
+			<Typography class="font-sm font-gray-300"
+				><a href="/projects"
+					><Fa icon={faArrowLeft} class="inline mr-2" />{$t('common.back-to-projects')}
+				</a></Typography
+			>
+		</div>
+		<div class="mb-2">
 			<Typography variant="title">{title}</Typography>
-			{#if project?.date}
-				<Typography variant="subtitle">{project?.date}</Typography>
+			{#if formattedDate}
+				<Typography variant="subtitle">{formattedDate}</Typography>
 			{/if}
 		</div>
 		{#if links && links?.length > 0}
@@ -58,7 +75,7 @@
 		{/if}
 	</div>
 	<div class="my-8"><MarkdownRenderer {content} /></div>
-	{#if media && media.length > 0}
+	<!-- {#if media && media.length > 0}
 		<div>
 			<Typography variant="h2" class="mb-4">{$t('common.screenshots')}</Typography>
 			<Carousel>
@@ -73,7 +90,7 @@
 				{/each}
 			</Carousel>
 		</div>
-	{/if}
+	{/if} -->
 </Container>
 
 <Container fluid class="bg-primary bg-opacity-10 h-64" />
