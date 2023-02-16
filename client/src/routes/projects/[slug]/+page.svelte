@@ -5,6 +5,7 @@
 	import Typography from '@components/core/Typography.svelte';
 	import Pill from '@components/core/Pill.svelte';
 	import { getMediaUrl } from '@utils/media';
+	import Carousel from 'svelte-carousel';
 	import { t } from '@i18n';
 
 	/** @type {import('./$types').PageData} */
@@ -16,6 +17,7 @@
 	const banner = project?.banner?.data?.attributes?.url;
 	const tags = project?.tags?.data;
 	const links = project?.links;
+	const media = project?.media?.data;
 </script>
 
 {#if banner}
@@ -38,7 +40,9 @@
 					<div>
 						<Typography>
 							{link?.title}:
-							<a target="_blank" class="text-blue-400 underline" href={link?.url}>{link?.url}</a>
+							<a target="_blank" rel="noreferrer" class="text-blue-400 underline" href={link?.url}
+								>{link?.url}</a
+							>
 						</Typography>
 					</div>
 				{/each}
@@ -46,13 +50,30 @@
 		{/if}
 		{#if tags && tags?.length > 0}
 			<div class="flex items-center">
-				<Typography variant="subtitle" class="mr-2">{$t('tags')}:</Typography>
+				<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
 				{#each tags as tag}
 					<Pill class="bg-red-100">{tag.attributes?.title}</Pill>
 				{/each}
 			</div>
 		{/if}
 	</div>
-	<MarkdownRenderer {content} />
+	<div class="my-8"><MarkdownRenderer {content} /></div>
+	{#if media && media.length > 0}
+		<div>
+			<Typography variant="h2" class="mb-4">{$t('common.screenshots')}</Typography>
+			<Carousel>
+				{#each media as image}
+					<div class="w-1/3">
+						<img
+							src={getMediaUrl(image?.attributes?.url)}
+							alt={image?.attributes?.name}
+							class="max-h-64 mx-auto"
+						/>
+					</div>
+				{/each}
+			</Carousel>
+		</div>
+	{/if}
 </Container>
+
 <Container fluid class="bg-primary bg-opacity-10 h-64" />

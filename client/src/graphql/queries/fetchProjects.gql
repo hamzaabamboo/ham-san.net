@@ -1,5 +1,5 @@
-query fetchProjects {
-	projects {
+query fetchProjects($limit: Int) {
+	projects(pagination: { pageSize: $limit }) {
 		data {
 			id
 			attributes {

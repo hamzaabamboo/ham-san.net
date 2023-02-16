@@ -14,7 +14,7 @@
 	];
 </script>
 
-<div class="w-screen h-12 flex items-center justify-between px-2 sticky top-0 bg-primary shadow-sm">
+<div class="w-full h-12 flex items-center justify-between px-2 sticky top-0 bg-primary shadow-sm">
 	<a href="/">{$t('common.name')}</a>
 	<div class="flex items-center">
 		<div>

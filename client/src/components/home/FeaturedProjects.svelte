@@ -5,7 +5,7 @@
 	import { getMediaUrl } from '@utils/media';
 	import { fetchProjects } from '../../graphql/generated/client';
 
-	let projects = fetchProjects({});
+	let projects = fetchProjects({ limit: 3 });
 </script>
 
 <Container class="my-8">
@@ -16,9 +16,9 @@
 		{:else if $projects.error}
 			Error: {$projects.error.message}
 		{:else if $projects.data.projects?.data && $projects.data.projects.data.length > 0}
-			<div class="flex flex-row ">
+			<div class="flex flex-col sm:flex-row flex-wrap">
 				{#each $projects.data?.projects.data as project}
-					<a class="w-full md:w-1/2 lg:w-1/3 p-2 block" href="/projects/{project.attributes?.slug}">
+					<a class="sm:w-1/2 lg:w-1/3 p-2 " href="/projects/{project.attributes?.slug}">
 						<div class="rounded-md flex flex-col h-full">
 							{#if project.attributes?.media?.data[0]?.attributes?.url}
 								<div
