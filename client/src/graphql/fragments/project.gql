@@ -1,0 +1,22 @@
+fragment project on Project {
+	title
+	description
+	content
+	media {
+		data {
+			id
+			attributes {
+				...media
+			}
+		}
+	}
+	date
+	tags {
+		data {
+			id
+			attributes {
+				title
+			}
+		}
+	}
+}

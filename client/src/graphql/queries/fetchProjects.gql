@@ -1,0 +1,10 @@
+query fetchProjects {
+	projects {
+		data {
+			id
+			attributes {
+				...project
+			}
+		}
+	}
+}

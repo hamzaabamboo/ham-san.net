@@ -1,0 +1,14 @@
+schema:
+  - 'http://127.0.0.1:1337/graphql'
+
+documents:
+  - src/graphql/**/*.gql
+
+generates:
+  src/graphql/generated.ts:
+    config:
+      clientPath: './client'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'graphql-codegen-svelte-apollo'

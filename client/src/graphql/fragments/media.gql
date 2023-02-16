@@ -1,0 +1,4 @@
+fragment media on UploadFile {
+	name
+	url
+}

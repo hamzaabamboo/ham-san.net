@@ -80,8 +80,8 @@ $RECYCLE.BIN/
 ssl
 .idea
 nbproject
-public/uploads/*
-!public/uploads/.gitkeep
+**/public/uploads/*
+!**/public/uploads/.gitkeep
 
 ############################
 # Node.js
@@ -125,3 +125,4 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 data/
+client/src/graphql/generated.ts
