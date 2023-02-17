@@ -1,6 +1,6 @@
 # path: ./Dockerfile.prod
 
-FROM node:18-alpine as build
+FROM node:19-alpine as build
 
 RUN apk update && apk add --no-cache curl
 # Installing libvips-dev for sharp Compatibility

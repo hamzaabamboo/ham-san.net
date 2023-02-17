@@ -13,7 +13,7 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"prepare": "svelte-kit sync",
-		"start": "node -r dotenv/config build",
+		"start": "node --experimental-loader ./scripts/loader.js -r dotenv/config build",
 		"codegen": "graphql-codegen",
 		"codegen:prod": "graphql-codegen -c codegen.prod.yml",
 		"build:prod": "pnpm codegen:prod && pnpm build"

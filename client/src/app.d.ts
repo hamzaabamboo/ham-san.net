@@ -14,4 +14,5 @@ declare module '@fortawesome/pro-solid-svg-icons/index.es' {
 }
 
 declare module 'svelte-carousel';
+
 export {};
