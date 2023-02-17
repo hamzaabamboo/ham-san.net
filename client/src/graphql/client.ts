@@ -1,5 +1,5 @@
 // client.ts
-import { InMemoryCache } from '@apollo/client';
+import { InMemoryCache } from '@apollo/client/core';
 import { API_URL } from '@utils/domain';
 import { SvelteApolloClient } from 'svelte-apollo-client';
 
