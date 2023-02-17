@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:1337';
+import { API_URL } from './domain';
 
 export const getMediaUrl = (path?: string) => {
 	if (path?.startsWith('http://')) return path;

@@ -1,9 +1,10 @@
 // client.ts
-import { InMemoryCache } from '@apollo/client/core';
+import { InMemoryCache } from '@apollo/client';
+import { API_URL } from '@utils/domain';
 import { SvelteApolloClient } from 'svelte-apollo-client';
 
 const client = SvelteApolloClient({
-	uri: 'http://localhost:1337/graphql',
+	uri: API_URL + '/graphql',
 	cache: new InMemoryCache()
 });
 
