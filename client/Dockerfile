@@ -20,6 +20,7 @@ RUN pnpm install --offline --shamefully-hoist --config.auto-install-peers=true -
 
 RUN pnpm build:prod
 
+ARG PUBLIC_API_URL=${PUBLIC_API_URL}
 ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 
 # Remove additional layer since we're on vm
