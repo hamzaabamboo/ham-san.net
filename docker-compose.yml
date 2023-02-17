@@ -19,4 +19,14 @@ services:
       - ./api/src:/opt/app/src
     ports:
       - 1337:1337
-    command: ["yarn", "start"]
+    command: ["pnpm", "start"]
+  client:
+    container_name: sveltekit
+    env_file: .env
+    build:
+      context: client
+    environment:
+      PUBLIC_API_URL: ${PUBLIC_API_URL}
+    ports:
+      - 3000:4125
+    command: ["pnpm", "start"]
