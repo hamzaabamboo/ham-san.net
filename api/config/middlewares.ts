@@ -10,7 +10,7 @@ export default [
       origin: [
         "http://localhost:5173",
         "http://localhost:1337",
-        "http://api.ham-san.net/",
+        "https://api.ham-san.net/",
       ],
     },
   },
