@@ -9,7 +9,7 @@
 </script>
 
 <Container class="my-8">
-	<Typography variant="h2" class="mb-4">{$t('home.featured-projects')}</Typography>
+	<Typography variant="h2" class="mb-4">{$t('project.projects')}</Typography>
 	{#if projects}
 		{#if $projects.loading}
 			Loading...

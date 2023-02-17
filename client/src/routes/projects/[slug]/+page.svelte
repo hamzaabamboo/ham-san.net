@@ -41,7 +41,7 @@
 		<div class="mb-2">
 			<Typography class="font-sm font-gray-300"
 				><a href="/projects"
-					><Fa icon={faArrowLeft} class="inline mr-2" />{$t('common.back-to-projects')}
+					><Fa icon={faArrowLeft} class="inline mr-2" />{$t('project.back-to-projects')}
 				</a></Typography
 			>
 		</div>
@@ -67,7 +67,7 @@
 		{/if}
 		{#if tags && tags?.length > 0}
 			<div class="flex items-center">
-				<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
+				<Typography variant="subtitle" class="mr-2">{$t('project.tags')}:</Typography>
 				{#each tags as tag}
 					<Pill class="bg-red-100">{tag.attributes?.title}</Pill>
 				{/each}
@@ -77,7 +77,7 @@
 	<div class="my-8"><MarkdownRenderer {content} /></div>
 	<!-- {#if media && media.length > 0}
 		<div>
-			<Typography variant="h2" class="mb-4">{$t('common.screenshots')}</Typography>
+			<Typography variant="h2" class="mb-4">{$t('project.screenshots')}</Typography>
 			<Carousel>
 				{#each media as image}
 					<div class="w-1/3">
