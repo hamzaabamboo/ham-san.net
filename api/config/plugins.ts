@@ -8,12 +8,12 @@ module.exports = {
       amountLimit: 100,
       apolloServer: {
         tracing: false,
-        introspection: true
+        introspection: true,
       },
     },
   },
   slugify: {
-    enabled: true,
+    enabled: false,
     config: {
       contentTypes: {
         projects: {
