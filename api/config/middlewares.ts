@@ -11,6 +11,8 @@ export default [
         "http://localhost:5173",
         "http://localhost:1337",
         "https://api.ham-san.net",
+        "https://v3.ham-san.net",
+        "https://ham-san.net"
       ],
     },
   },
