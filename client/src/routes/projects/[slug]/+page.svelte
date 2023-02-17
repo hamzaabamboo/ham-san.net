@@ -67,7 +67,7 @@
 		{/if}
 		{#if tags && tags?.length > 0}
 			<div class="flex items-center">
-				<Typography variant="subtitle" class="mr-2">{$t('project.tags')}:</Typography>
+				<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
 				{#each tags as tag}
 					<Pill class="bg-red-100">{tag.attributes?.title}</Pill>
 				{/each}

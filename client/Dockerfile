@@ -20,6 +20,8 @@ RUN pnpm install --offline --shamefully-hoist --config.auto-install-peers=true -
 
 RUN pnpm build:prod
 
+ENV PUBLIC_API_=${NODE_ENV}
+
 # Remove additional layer since we're on vm
 # FROM node:18-alpine
 # RUN apk update && apk add --no-cache curl
