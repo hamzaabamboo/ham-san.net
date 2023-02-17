@@ -28,5 +28,5 @@ services:
     environment:
       PUBLIC_API_URL: ${PUBLIC_API_URL}
     ports:
-      - 3000:4125
+      - 4125:3000
     command: ["pnpm", "start"]
