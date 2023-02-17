@@ -12,7 +12,8 @@ export default [
         "http://localhost:1337",
         "https://api.ham-san.net",
         "https://v3.ham-san.net",
-        "https://ham-san.net"
+        "https://ham-san.net",
+        "https://hamzaabamboo.github.io",
       ],
     },
   },
