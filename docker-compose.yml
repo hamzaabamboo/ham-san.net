@@ -27,6 +27,7 @@ services:
       context: client
     environment:
       PUBLIC_API_URL: ${PUBLIC_API_URL}
+      PORT: 4125
     ports:
       - 4125:3000
     command: ["pnpm", "start"]
