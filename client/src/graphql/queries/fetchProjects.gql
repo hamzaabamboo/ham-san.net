@@ -1,5 +1,5 @@
-query fetchProjects($limit: Int) {
-	projects(pagination: { pageSize: $limit }) {
+query fetchProjects($limit: Int, $isFeatured: Boolean) {
+	projects(pagination: { pageSize: $limit }, filters: { isFeatured: { eq: $isFeatured } }) {
 		data {
 			id
 			attributes {

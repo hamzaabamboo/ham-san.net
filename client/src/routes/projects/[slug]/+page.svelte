@@ -66,15 +66,17 @@
 			</div>
 		{/if}
 		{#if tags && tags?.length > 0}
-			<div class="flex items-center">
+			<div class="flex items-center flex-wrap">
 				<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
 				{#each tags as tag}
-					<Pill class="bg-red-100">{tag.attributes?.title}</Pill>
+					<Pill class="bg-red-100 mr-2">{tag.attributes?.title}</Pill>
 				{/each}
 			</div>
 		{/if}
 	</div>
-	<div class="my-8"><MarkdownRenderer {content} /></div>
+	{#if content}
+		<div class="my-8"><MarkdownRenderer {content} /></div>
+	{/if}
 	<!-- {#if media && media.length > 0}
 		<div>
 			<Typography variant="h2" class="mb-4">{$t('project.screenshots')}</Typography>
