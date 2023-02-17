@@ -20,7 +20,7 @@ RUN pnpm install --offline --shamefully-hoist --config.auto-install-peers=true -
 
 RUN pnpm build:prod
 
-ENV PUBLIC_API_=${NODE_ENV}
+ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 
 # Remove additional layer since we're on vm
 # FROM node:18-alpine
