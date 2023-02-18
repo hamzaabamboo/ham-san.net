@@ -1,16 +1,9 @@
-query getProjectBySlug($slug: String) {
-	projects(filters: { slug: { eq: $slug } }) {
+query getProjectBySlug($slug: String, $locale: I18NLocaleCode = "all") {
+	projects(filters: { slug: { eq: $slug } }, locale: $locale) {
 		data {
 			id
 			attributes {
 				...project
-				banner {
-					data {
-						attributes {
-							...media
-						}
-					}
-				}
 			}
 		}
 	}

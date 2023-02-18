@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
-	import { t } from '@i18n';
+	import { t, locale } from '@i18n';
 	import { getMediaUrl } from '@utils/media';
 	import { fetchProjects } from '../../graphql/generated/client';
 
-	let projects = fetchProjects({});
+	$: projects = fetchProjects({ variables: { locale: $locale } });
 </script>
 
 <Container class="my-8">

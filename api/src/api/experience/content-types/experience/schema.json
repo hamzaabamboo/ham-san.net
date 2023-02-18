@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "tags",
+  "collectionName": "experiences",
   "info": {
-    "singularName": "tag",
-    "pluralName": "tags",
-    "displayName": "Tags",
-    "description": ""
+    "singularName": "experience",
+    "pluralName": "experiences",
+    "displayName": "Experiences"
   },
   "options": {
     "draftAndPublish": true
@@ -30,13 +29,23 @@
           "localized": true
         }
       },
-      "type": "richtext"
+      "type": "text"
     },
-    "projects": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::project.project",
-      "mappedBy": "tags"
+    "start": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "date"
+    },
+    "end": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "date"
     },
     "slug": {
       "pluginOptions": {
@@ -47,11 +56,19 @@
       "type": "uid",
       "targetField": "title"
     },
-    "experiences": {
+    "tags": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::experience.experience",
-      "mappedBy": "tags"
+      "target": "api::tag.tag",
+      "inversedBy": "experiences"
+    },
+    "content": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "richtext"
     }
   }
 }

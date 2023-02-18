@@ -25,4 +25,11 @@ fragment project on Project {
 		url
 		type
 	}
+	banner {
+		data {
+			attributes {
+				...media
+			}
+		}
+	}
 }
