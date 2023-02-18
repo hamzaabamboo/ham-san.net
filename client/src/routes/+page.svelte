@@ -6,6 +6,6 @@
 </script>
 
 <Hero />
-<FeaturedProjects />
 <AboutMe />
+<FeaturedProjects />
 <BeforeFooter />

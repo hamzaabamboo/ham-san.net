@@ -4,6 +4,6 @@
 	import Typography from '@components/core/Typography.svelte';
 </script>
 
-<Container>
+<Container class="pt-8 flex justify-center">
 	<Typography variant="h1">{$t('common.under-construction')}</Typography>
 </Container>
