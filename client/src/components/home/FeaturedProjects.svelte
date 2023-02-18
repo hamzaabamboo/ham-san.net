@@ -5,7 +5,7 @@
 	import { getMediaUrl } from '@utils/media';
 	import { fetchProjects } from '../../graphql/generated/client';
 
-	let projects = fetchProjects({ limit: 3, isFeatured: true });
+	let projects = fetchProjects({ variables: {limit: 3, isFeatured: true }});
 </script>
 
 <Container class="my-8">
