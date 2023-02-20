@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { locale, t } from '@i18n';
+	import { localizationUrls } from '@stores/localizationUrls';
 	import { LANGUAGES } from '@utils/localization';
 
 	const handleChangeLanguage = (language: (typeof LANGUAGES)[number]) => {
 		locale.set(language);
-		localStorage.set('locale', language);
+		// localStorage.set('locale', language);
 	};
 
 	$: links = [
@@ -27,9 +29,18 @@
 		<div class="px-2">|</div>
 		<div>
 			{#each LANGUAGES as language}
-				<button class="px-1" on:click={() => handleChangeLanguage(language)}
-					>{language.toUpperCase()}</button
-				>
+				{#if $localizationUrls[language]}
+					<a
+						class="px-1"
+						href={$localizationUrls[language]}
+						on:click={() => handleChangeLanguage(language)}
+						>{language.toUpperCase()}
+					</a>
+				{:else}
+					<button class="px-1" on:click={() => handleChangeLanguage(language)}>
+						{language.toUpperCase()}</button
+					>
+				{/if}
 			{/each}
 		</div>
 	</div>

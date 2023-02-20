@@ -1,25 +1,24 @@
 <script lang="ts">
-	import type { GetProjectBySlugQuery } from '../../../graphql/generated/client';
-	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
-	import Container from '@components/core/Container.svelte';
-	import Typography from '@components/core/Typography.svelte';
-	import Pill from '@components/core/Pill.svelte';
-	import { getMediaUrl } from '@utils/media';
-	import Carousel from 'svelte-carousel';
 	import { browser } from '$app/environment';
-	import { t, locale } from '@i18n';
-	import Fa from 'svelte-fa';
-	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-	import { parse, format } from 'date-fns';
-	import { ja, enUS } from 'date-fns/locale';
 	import { goto } from '$app/navigation';
+	import Container from '@components/core/Container.svelte';
+	import Pill from '@components/core/Pill.svelte';
+	import Typography from '@components/core/Typography.svelte';
+	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
+	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+	import { locale, t } from '@i18n';
+	import { localizationUrls } from '@stores/localizationUrls';
+	import { getMediaUrl } from '@utils/media';
+	import { format, parse } from 'date-fns';
+	import { enUS, ja } from 'date-fns/locale';
+	import { onDestroy } from 'svelte';
+	import Carousel from 'svelte-carousel';
+	import Fa from 'svelte-fa';
+	import type { PageData } from './$types';
 
-	/** @type {import('./$types').PageData} */
-	export let data: GetProjectBySlugQuery;
+	export let data: PageData;
 
-	let currentLocale = $locale;
-
-	$: project = data.projects?.data[0].attributes;
+	$: project = data.data.projects?.data[0].attributes;
 	$: title = project?.title;
 	$: content = project?.content;
 	$: banner = project?.banner?.data?.attributes?.url;
@@ -34,15 +33,18 @@
 		: null;
 
 	$: {
-		if ($locale !== currentLocale) {
-			const newSlug = project?.localizations?.data.find((d) => d.attributes?.locale === $locale)
-				?.attributes?.slug;
-			if (newSlug) {
-				goto(newSlug, { invalidateAll: true });
-			}
-		}
-		currentLocale = $locale;
+		const localizationObj = Object.fromEntries(
+			project?.localizations?.data.map(({ attributes }) => [
+				attributes?.locale,
+				attributes?.slug
+			]) ?? []
+		);
+		localizationUrls.set(localizationObj);
 	}
+
+	onDestroy(() => {
+		localizationUrls.set({});
+	});
 </script>
 
 {#if banner}

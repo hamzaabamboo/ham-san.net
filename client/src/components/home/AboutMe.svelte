@@ -1,6 +1,8 @@
 <script>
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
+	import Fa from 'svelte-fa';
+	import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 	import { t } from '@i18n';
 
 	$: paragraphs = $t('home.about-me-content').split('\n');
@@ -13,6 +15,12 @@
 			{#each paragraphs as paragraph}
 				<Typography class="mb-2">{paragraph}</Typography>
 			{/each}
+			<Typography class="font-sm mt-2 font-gray-300"
+				><a href="/about-me"
+					>{$t('home.find-out-more')}
+					<Fa icon={faArrowRight} class="inline ml-2 transition relative hover:right-2" />
+				</a></Typography
+			>
 		</div>
 		<div class="w-full lg:w-1/2">
 			<img
