@@ -1,3 +1,5 @@
+export const LANGUAGES = ['en', 'ja'];
+
 export const getLocalizedItems = <
 	T extends { locale?: string | null },
 	A extends { data?: I[] },

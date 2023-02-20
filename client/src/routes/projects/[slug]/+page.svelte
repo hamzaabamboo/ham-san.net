@@ -5,29 +5,44 @@
 	import Typography from '@components/core/Typography.svelte';
 	import Pill from '@components/core/Pill.svelte';
 	import { getMediaUrl } from '@utils/media';
-	// import Carousel from 'svelte-carousel';
+	import Carousel from 'svelte-carousel';
+	import { browser } from '$app/environment';
 	import { t, locale } from '@i18n';
 	import Fa from 'svelte-fa';
 	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 	import { parse, format } from 'date-fns';
 	import { ja, enUS } from 'date-fns/locale';
+	import { goto } from '$app/navigation';
 
 	/** @type {import('./$types').PageData} */
 	export let data: GetProjectBySlugQuery;
 
-	const project = data.projects?.data[0].attributes;
-	const title = project?.title;
-	const content = project?.content;
-	const banner = project?.banner?.data?.attributes?.url;
-	const tags = project?.tags?.data;
-	const links = project?.links;
-	const media = project?.media?.data;
+	let currentLocale = $locale;
+
+	$: project = data.projects?.data[0].attributes;
+	$: title = project?.title;
+	$: content = project?.content;
+	$: banner = project?.banner?.data?.attributes?.url;
+	$: tags = project?.tags?.data;
+	$: links = project?.links;
+	$: media = project?.media?.data;
 
 	$: formattedDate = project?.date
 		? format(parse(project?.date, 'yyyy-MM-dd', new Date()), 'MMMM yyyy', {
 				locale: $locale === 'ja' ? ja : enUS
 		  })
 		: null;
+
+	$: {
+		if ($locale !== currentLocale) {
+			const newSlug = project?.localizations?.data.find((d) => d.attributes?.locale === $locale)
+				?.attributes?.slug;
+			if (newSlug) {
+				goto(newSlug, { invalidateAll: true });
+			}
+		}
+		currentLocale = $locale;
+	}
 </script>
 
 {#if banner}
@@ -77,7 +92,7 @@
 	{#if content}
 		<div class="my-8"><MarkdownRenderer {content} /></div>
 	{/if}
-	<!-- {#if media && media.length > 0}
+	{#if browser && media && media.length > 0}
 		<div>
 			<Typography variant="h2" class="mb-4">{$t('project.screenshots')}</Typography>
 			<Carousel>
@@ -92,7 +107,7 @@
 				{/each}
 			</Carousel>
 		</div>
-	{/if} -->
+	{/if}
 </Container>
 
 <Container fluid class="bg-primary bg-opacity-10 h-64" />

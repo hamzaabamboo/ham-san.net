@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { locale, t } from '@i18n';
+	import { LANGUAGES } from '@utils/localization';
 
-	const languages = ['en', 'ja'];
-
-	const handleChangeLanguage = (language: (typeof languages)[number]) => {
+	const handleChangeLanguage = (language: (typeof LANGUAGES)[number]) => {
 		locale.set(language);
+		localStorage.set('locale', language);
 	};
 
 	$: links = [
@@ -26,7 +26,7 @@
 		</div>
 		<div class="px-2">|</div>
 		<div>
-			{#each languages as language}
+			{#each LANGUAGES as language}
 				<button class="px-1" on:click={() => handleChangeLanguage(language)}
 					>{language.toUpperCase()}</button
 				>
