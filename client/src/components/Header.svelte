@@ -6,6 +6,13 @@
 
 	const handleChangeLanguage = (language: (typeof LANGUAGES)[number]) => {
 		locale.set(language);
+		fetch('/?/set-language', {
+			method: 'POST',
+			body: `language=${language}`,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}
+		});
 		// localStorage.set('locale', language);
 	};
 
