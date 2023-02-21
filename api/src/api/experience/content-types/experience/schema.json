@@ -4,7 +4,8 @@
   "info": {
     "singularName": "experience",
     "pluralName": "experiences",
-    "displayName": "Experiences"
+    "displayName": "Experiences",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -69,6 +70,14 @@
         }
       },
       "type": "richtext"
+    },
+    "position": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     }
   }
 }

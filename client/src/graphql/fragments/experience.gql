@@ -12,4 +12,5 @@ fragment experience on Experience {
 		}
 	}
 	content
+	position
 }
