@@ -1,0 +1,7 @@
+fragment education on Education {
+	title
+	start
+	end
+	content
+	description
+}

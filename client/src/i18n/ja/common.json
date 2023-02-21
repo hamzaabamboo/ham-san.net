@@ -6,6 +6,8 @@
 	"hobbies": "趣味",
 	"contact": "お問い合わせ",
 	"tags": "タグ",
-	"under-construction": "準備中です！",
+	"under-construction": "準備中",
+	"page-not-found": "ページが見つからないようです",
+	"something-went-wrong": "問題があったみたいです",
 	"copyright": "© 2023 ハムP"
 }

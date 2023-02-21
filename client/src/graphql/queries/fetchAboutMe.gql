@@ -1,0 +1,23 @@
+query fetchAboutMe($locale: I18NLocaleCode) {
+	experiences(locale: $locale) {
+		data {
+			attributes {
+				...experience
+			}
+		}
+	}
+	educations(locale: $locale) {
+		data {
+			attributes {
+				...education
+			}
+		}
+	}
+	aboutMe(locale: $locale) {
+		data {
+			attributes {
+				introduction
+			}
+		}
+	}
+}

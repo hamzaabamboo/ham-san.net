@@ -1,0 +1,15 @@
+fragment experience on Experience {
+	title
+	description
+	start
+	end
+	slug
+	tags {
+		data {
+			attributes {
+				...tag
+			}
+		}
+	}
+	content
+}
