@@ -13,7 +13,6 @@
 				'Content-Type': 'application/x-www-form-urlencoded'
 			}
 		});
-		// localStorage.set('locale', language);
 	};
 
 	$: links = [

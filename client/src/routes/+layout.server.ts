@@ -9,11 +9,10 @@ export const load = async ({ request, cookies }: LayoutServerLoadEvent) => {
 			.get('accept-language')
 			?.split(',')
 			.map((l) => l.split(';')[0]);
+	const defaultLanguage =
+		preferredLanguages?.find((lang) => !!lang && LANGUAGES.includes(lang)) || 'en';
 	if (!cookies.get('language')) {
-		cookies.set(
-			'language',
-			preferredLanguages?.find((lang) => !!lang && LANGUAGES.includes(lang)) || 'en'
-		);
+		cookies.set('language', defaultLanguage);
 	}
 	return {
 		preferredLanguages,
