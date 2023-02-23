@@ -28,7 +28,7 @@
 	];
 </script>
 
-<nav class="w-full h-12 flex items-center justify-between px-4 sticky top-0 bg-primary shadow-sm">
+<nav class="w-full h-12 flex items-center justify-between px-4 sticky top-0 bg-primary shadow-sm relative z-20">
 	<!-- Logo Section -->
 	<div class="w-full md:w-auto relative z-20">
 		<a href="/">{$t('common.name')}</a>

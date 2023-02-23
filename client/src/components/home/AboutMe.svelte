@@ -8,7 +8,9 @@
 	$: paragraphs = $t('home.about-me-content').split('\n');
 </script>
 
-<Container class="px-2 py-8">
+<Container fluid class="bg-white px-2 py-8 relative z-20">
+
+<Container >
 	<div class="flex flex-col lg:flex-row">
 		<div class="w-full lg:w-1/2">
 			<Typography variant="h2" class="mb-4">{$t('home.about-me')}</Typography>
@@ -30,4 +32,5 @@
 			/>
 		</div>
 	</div>
+</Container>
 </Container>

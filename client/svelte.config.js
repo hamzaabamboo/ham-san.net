@@ -22,7 +22,8 @@ const config = {
 			'@i18n': 'src/i18n',
 			'@graphql': 'src/graphql',
 			'@utils': 'src/utils',
-			'@stores': 'src/stores'
+			'@stores': 'src/stores',
+			'@assets': 'src/assets'
 		}
 	}
 };
