@@ -1,3 +1,5 @@
+import kebabCase from 'lodash/kebabCase';
+
 export const LANGUAGES = ['en', 'ja'];
 
 export const getLocalizedItems = <
@@ -13,3 +15,5 @@ export const getLocalizedItems = <
 	const items = data?.localizations?.data;
 	return items?.find((d) => d?.attributes?.locale === locale)?.attributes ?? items?.[0]?.attributes;
 };
+
+export const toKebabCase = kebabCase;

@@ -29,7 +29,7 @@
 </script>
 
 <nav
-	class="w-full h-12 flex items-center justify-between px-4 sticky top-0 bg-primary shadow-sm relative z-20"
+	class="w-full h-12 flex items-center justify-between px-4 sticky top-0 bg-primary shadow-sm z-20"
 >
 	<!-- Logo Section -->
 	<div class="w-full md:w-auto relative z-20">
@@ -75,6 +75,7 @@
 			{#each links as link}
 				<a href={link.href} class="p-2" on:click={() => (menuOpen = false)}>{link.label}</a>
 			{/each}
+			<hr />
 			<div class="pt-4">
 				{#each LANGUAGES as language}
 					{#if $localizationUrls[language]}

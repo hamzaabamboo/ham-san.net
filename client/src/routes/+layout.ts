@@ -10,8 +10,8 @@ export const load = async ({ url, data }: LayoutLoadEvent) => {
 	const defaultLocale =
 		preferredLanguages.find((lang) => !!lang && LANGUAGES.includes(lang)) || 'en'; // get from cookie, user session, ...
 	const serverLanguage = currentLanguage || defaultLocale;
-	const initLocale = browser ? locale.get() ?? serverLanguage : serverLanguage; // set default if no locale already set
-
+	locale.set(serverLanguage);
+	const initLocale = browser ? locale.get() ?? serverLanguage : serverLanguage;
 	await loadTranslations(initLocale, pathname); // keep this just before the `return`
 
 	return {};

@@ -9,5 +9,11 @@
 	"under-construction": "Under Construction",
 	"page-not-found": "Page not found",
 	"something-went-wrong": "Something went wrong",
-	"copyright": "© 2023 HamP"
+	"copyright": "© 2023 HamP",
+	"programming-language": "Programming Languages",
+	"frontend": "Frontend",
+	"backend": "Backend",
+	"database": "Database",
+	"dev-ops": "DevOps",
+	"others": "Others"
 }

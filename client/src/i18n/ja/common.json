@@ -9,5 +9,11 @@
 	"under-construction": "準備中",
 	"page-not-found": "ページが見つからないようです",
 	"something-went-wrong": "問題があったみたいです",
-	"copyright": "© 2023 ハムP"
+	"copyright": "© 2023 ハムP",
+	"programming-language": "プログラミング言語",
+	"frontend": "フロントエンド",
+	"backend": "バックエンド",
+	"database": "データベース",
+	"dev-ops": "DevOps",
+	"others": "その他"
 }

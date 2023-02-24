@@ -11,7 +11,7 @@
 	<div
 		class="bg-cover bg-center h-full w-full absolute z-0"
 		style:transform="translateZ(-1px) scale(1.3)"
-		style:background-image="url('{heroBg}')"
+		style:background-image="url('{heroBg.fallback.src}')"
 		style:filter="blur(2px)"
 	/>
 	<div style:transform="translateZ(1px) scale(0.875)">
