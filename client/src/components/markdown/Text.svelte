@@ -1,8 +1,8 @@
-<script lang="ts">
-	import Typography from '@components/core/Typography.svelte';
-
-	export let text: string;
-	export let raw: string;
+<script>
+	export let text;
+	text;
+	export let raw;
+	raw;
 </script>
 
-<Typography variant="body"><slot /></Typography>
+<slot />

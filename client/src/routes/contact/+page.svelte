@@ -4,6 +4,10 @@
 	import Container from '@components/core/Container.svelte';
 </script>
 
+<svelte:head>
+	<title>{$t('common.name')} | {$t('common.contact')}</title>
+</svelte:head>
+
 <Container class="pt-8">
 	<Typography variant="h1">{$t('common.contact')}</Typography>
 	<Typography>{$t('contact.email')}: hamzaabamboo@gmail.com</Typography>

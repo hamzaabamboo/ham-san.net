@@ -52,6 +52,32 @@
       "relation": "manyToMany",
       "target": "api::experience.experience",
       "mappedBy": "tags"
+    },
+    "type": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Programming Language",
+        "Frontend",
+        "Backend",
+        "DevOps",
+        "Database",
+        "Others",
+        "Non Dev"
+      ],
+      "default": "Others"
+    },
+    "order": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
     }
   }
 }

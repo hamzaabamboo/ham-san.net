@@ -23,6 +23,7 @@ specifiers:
   graphql-codegen-svelte-apollo: ^1.1.0
   graphql-request: ^5.1.0
   graphql-tag: ^2.12.6
+  lodash: ^4.17.21
   postcss: ^8.4.21
   prettier: ^2.8.0
   prettier-plugin-svelte: ^2.8.1
@@ -50,6 +51,7 @@ dependencies:
   graphql: 16.6.0
   graphql-request: 5.1.0_graphql@16.6.0
   graphql-tag: 2.12.6_graphql@16.6.0
+  lodash: 4.17.21
   svelte-apollo-client: 0.1.4_2wctdkhkk6gcpaf6qpgrjercwa
   svelte-fa: 3.0.3
   svelte-markdown: 0.2.3_svelte@3.55.1
@@ -3894,7 +3896,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-symbols/4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -5589,7 +5590,7 @@ packages:
     resolution: {integrity: sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==}
 
   github.com/vadimkorr/simply-reactive/8d1ae831b2fbba1cf4446543f954b4efe28013e0:
-    resolution: {tarball: https://codeload.github.com/vadimkorr/simply-reactive/tar.gz/8d1ae831b2fbba1cf4446543f954b4efe28013e0}
+    resolution: {commit: 8d1ae831b2fbba1cf4446543f954b4efe28013e0, repo: git+ssh://git@github.com/vadimkorr/simply-reactive.git, type: git}
     name: simply-reactive
     version: 1.0.0
     dependencies:

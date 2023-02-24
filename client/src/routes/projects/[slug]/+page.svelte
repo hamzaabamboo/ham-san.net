@@ -47,69 +47,76 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{$t('common.name')} | {title}</title>
+</svelte:head>
+
 {#if banner}
 	<div
-		class="h-64 bg-fixed bg-cover bg-center"
+		class="bg-cover bg-center"
+		style:height="400px"
 		style:background-image="url('{getMediaUrl(banner)}')"
+		style:transform="translateZ(-2px) scale(1.8)"
 	/>
 {/if}
-<Container class="py-8 flex-1 w-full">
-	<div class="mb-8">
-		<div class="mb-2">
-			<Typography class="font-sm font-gray-300"
-				><a href="/projects"
-					><Fa icon={faArrowLeft} class="inline mr-2" />{$t('project.back-to-projects')}
-				</a></Typography
-			>
-		</div>
-		<div class="mb-2">
-			<Typography variant="title">{title}</Typography>
-			{#if formattedDate}
-				<Typography variant="subtitle">{formattedDate}</Typography>
+<Container fluid class="bg-white flex-1 w-full">
+	<Container class="py-8">
+		<div class="mb-8">
+			<div class="mb-2">
+				<Typography class="font-sm font-gray-300"
+					><a href="/projects"
+						><Fa icon={faArrowLeft} class="inline mr-2" />{$t('project.back-to-projects')}
+					</a></Typography
+				>
+			</div>
+			<div class="mb-2">
+				<Typography variant="title">{title}</Typography>
+				{#if formattedDate}
+					<Typography variant="subtitle">{formattedDate}</Typography>
+				{/if}
+			</div>
+			{#if links && links?.length > 0}
+				<div class="flex flex-col">
+					{#each links as link}
+						<div>
+							<Typography>
+								{link?.title}:
+								<a target="_blank" rel="noreferrer" class="text-blue-400 underline" href={link?.url}
+									>{link?.url}</a
+								>
+							</Typography>
+						</div>
+					{/each}
+				</div>
+			{/if}
+			{#if tags && tags?.length > 0}
+				<div class="flex items-center flex-wrap">
+					<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
+					{#each tags as tag}
+						<Pill class="bg-red-100 mr-2">{tag.attributes?.title}</Pill>
+					{/each}
+				</div>
 			{/if}
 		</div>
-		{#if links && links?.length > 0}
-			<div class="flex flex-col">
-				{#each links as link}
-					<div>
-						<Typography>
-							{link?.title}:
-							<a target="_blank" rel="noreferrer" class="text-blue-400 underline" href={link?.url}
-								>{link?.url}</a
-							>
-						</Typography>
-					</div>
-				{/each}
+		{#if content}
+			<div class="my-8"><MarkdownRenderer {content} /></div>
+		{/if}
+		{#if browser && media && media.length > 0}
+			<div>
+				<Typography variant="h2" class="mb-4">{$t('project.screenshots')}</Typography>
+				<Carousel>
+					{#each media as image}
+						<div class="w-1/3">
+							<img
+								src={getMediaUrl(image?.attributes?.url)}
+								alt={image?.attributes?.name}
+								class="max-h-64 mx-auto"
+							/>
+						</div>
+					{/each}
+				</Carousel>
 			</div>
 		{/if}
-		{#if tags && tags?.length > 0}
-			<div class="flex items-center flex-wrap">
-				<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
-				{#each tags as tag}
-					<Pill class="bg-red-100 mr-2">{tag.attributes?.title}</Pill>
-				{/each}
-			</div>
-		{/if}
-	</div>
-	{#if content}
-		<div class="my-8"><MarkdownRenderer {content} /></div>
-	{/if}
-	{#if browser && media && media.length > 0}
-		<div>
-			<Typography variant="h2" class="mb-4">{$t('project.screenshots')}</Typography>
-			<Carousel>
-				{#each media as image}
-					<div class="w-1/3">
-						<img
-							src={getMediaUrl(image?.attributes?.url)}
-							alt={image?.attributes?.name}
-							class="max-h-64 mx-auto"
-						/>
-					</div>
-				{/each}
-			</Carousel>
-		</div>
-	{/if}
+	</Container>
 </Container>
-
 <Container fluid class="bg-primary bg-opacity-10 h-64" />

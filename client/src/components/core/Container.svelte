@@ -6,7 +6,7 @@
 </script>
 
 <div
-	class="w-full {!fluid ? 'lg:w-4/5 px-2' : ''} mx-auto {_class || ''}"
+	class="w-full {!fluid ? 'lg:w-4/5 px-4' : ''} mx-auto {_class || ''}"
 	style:transform-style="preserve-3d"
 >
 	<slot />

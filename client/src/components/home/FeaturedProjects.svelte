@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
+	import ProjectCard from '@components/projects/ProjectCard.svelte';
 	import { t } from '@i18n';
-	import { getMediaUrl } from '@utils/media';
-	import { fetchProjects } from '../../graphql/generated/client';
+	import { fetchProjects } from '@graphql/generated/client';
 
-	let projects = fetchProjects({ variables: {limit: 3, isFeatured: true }});
+	let projects = fetchProjects({ variables: { limit: 3, isFeatured: true } });
 </script>
 
 <Container class="my-8">
@@ -18,24 +18,9 @@
 		{:else if $projects.data.projects?.data && $projects.data.projects.data.length > 0}
 			<div class="flex flex-col sm:flex-row flex-wrap">
 				{#each $projects.data?.projects.data as project}
-					<a class="sm:w-1/2 lg:w-1/3 p-2 " href="/projects/{project.attributes?.slug}">
-						<div class="rounded-md flex flex-col h-full">
-							{#if project.attributes?.media?.data[0]?.attributes?.url}
-								<div
-									class="bg-cover bg-no-repeat h-64 "
-									style:background-image="url('{getMediaUrl(
-										project.attributes?.media?.data[0]?.attributes?.url
-									)}')"
-								/>
-							{/if}
-							<div class="bg-white shadow-md w-full h-full flex-1 p-2 ">
-								<Typography variant="h4">{project.attributes?.title}</Typography>
-								{#if project.attributes?.description}
-									<p>{project.attributes?.description}</p>
-								{/if}
-							</div>
-						</div>
-					</a>
+					{#if !!project.attributes}
+						<ProjectCard project={project.attributes} />
+					{/if}
 				{/each}
 			</div>
 		{:else}

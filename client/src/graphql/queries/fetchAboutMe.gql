@@ -20,4 +20,12 @@ query fetchAboutMe($locale: I18NLocaleCode) {
 			}
 		}
 	}
+	tags(locale: $locale) {
+		data {
+			attributes {
+				...tag
+				type
+			}
+		}
+	}
 }

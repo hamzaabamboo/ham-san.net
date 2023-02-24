@@ -22,7 +22,7 @@
 	<h4 {...$$restProps} class="text-xl mb-2 {_class || ''}">
 		<slot />
 	</h4>
-	{:else if variant === 'h6'}
+{:else if variant === 'h6'}
 	<h4 {...$$restProps} class="text-lg mb-1 {_class || ''}">
 		<slot />
 	</h4>

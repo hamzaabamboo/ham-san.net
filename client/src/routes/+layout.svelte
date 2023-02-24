@@ -2,7 +2,12 @@
 	import '../app.css';
 	import Header from '@components/Header.svelte';
 	import Footer from '@components/Footer.svelte';
+	import { t } from '@i18n';
 </script>
+
+<svelte:head>
+	<title>{$t('common.name')}</title>
+</svelte:head>
 
 <div class="h-screen flex flex-col">
 	<Header />

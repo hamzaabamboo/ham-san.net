@@ -1,6 +1,5 @@
 <script>
-	import { getMediaUrl } from "@utils/media";
-
+	import { getMediaUrl } from '@utils/media';
 
 	export let href = '';
 	export let title = undefined;
