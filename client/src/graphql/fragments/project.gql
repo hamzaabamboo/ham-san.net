@@ -3,6 +3,7 @@ fragment project on Project {
 	description
 	content
 	slug
+	isActive
 	media {
 		data {
 			id
@@ -12,6 +13,7 @@ fragment project on Project {
 		}
 	}
 	date
+	finishedDate
 	tags {
 		data {
 			id

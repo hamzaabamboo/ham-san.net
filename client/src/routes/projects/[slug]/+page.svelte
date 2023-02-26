@@ -2,7 +2,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import Container from '@components/core/Container.svelte';
-	import Pill from '@components/core/Pill.svelte';
+	import LinkItem from '@components/core/LinkItem.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
 	import TagItem from '@components/tags/TagItem.svelte';
@@ -68,20 +68,15 @@
 			<div class="mb-2">
 				<Typography variant="title">{title}</Typography>
 				{#if formattedDate}
-					<Typography variant="subtitle">{formattedDate}</Typography>
+					<Typography variant="subtitle"
+						>{formattedDate}{#if project?.isActive} - {$t('common.present')}{/if}</Typography
+					>
 				{/if}
 			</div>
 			{#if links && links?.length > 0}
 				<div class="flex flex-col">
 					{#each links as link}
-						<div>
-							<Typography>
-								{link?.title}:
-								<a target="_blank" rel="noreferrer" class="text-blue-400 underline" href={link?.url}
-									>{link?.url}</a
-								>
-							</Typography>
-						</div>
+						<LinkItem {link} />
 					{/each}
 				</div>
 			{/if}

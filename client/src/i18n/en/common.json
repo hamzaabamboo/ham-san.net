@@ -15,5 +15,6 @@
 	"backend": "Backend",
 	"database": "Database",
 	"dev-ops": "DevOps",
-	"others": "Others"
+	"others": "Others",
+	"present": "Present"
 }

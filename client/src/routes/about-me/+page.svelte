@@ -50,7 +50,7 @@
 									experience.attributes?.position,
 									experience.attributes?.description,
 									`${formatDate(experience.attributes?.start)} - ${
-										formatDate(experience.attributes?.end) ?? $t('about-me.present')
+										formatDate(experience.attributes?.end) ?? $t('common.present')
 									}`
 								]
 									.filter((i) => !!i)
@@ -74,7 +74,7 @@
 								>{[
 									education.attributes?.description,
 									`${formatDate(education.attributes?.start)} - ${
-										formatDate(education.attributes?.end) ?? $t('about-me.present')
+										formatDate(education.attributes?.end) ?? $t('common.present')
 									}`
 								]
 									.filter((i) => !!i)
