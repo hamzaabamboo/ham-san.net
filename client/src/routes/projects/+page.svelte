@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
+	import ProjectCard from '@components/projects/ProjectCard.svelte';
 	import { t, locale } from '@i18n';
 	import { getMediaUrl } from '@utils/media';
 	import { fetchProjects } from '../../graphql/generated/client';
@@ -18,27 +19,10 @@
 		{:else if $projects.data.projects?.data && $projects.data.projects.data.length > 0}
 			<div class="flex flex-row flex-wrap">
 				{#each $projects.data?.projects.data as project}
-					<a
-						class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2 block card"
-						href="/projects/{project.attributes?.slug}"
-					>
-						<div class="rounded-md flex flex-col h-full">
-							{#if project.attributes?.media?.data[0]?.attributes?.url}
-								<div
-									class="bg-cover bg-no-repeat h-64 "
-									style:background-image="url('{getMediaUrl(
-										project.attributes?.media?.data[0]?.attributes?.url
-									)}')"
-								/>
-							{/if}
-							<div class="bg-white shadow-md w-full h-full flex-1 p-2 ">
-								<Typography variant="h4">{project.attributes?.title}</Typography>
-								{#if project.attributes?.description}
-									<p>{project.attributes?.description}</p>
-								{/if}
-							</div>
-						</div>
-					</a>
+					<ProjectCard
+						project={project.attributes}
+						class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2 block"
+					/>
 				{/each}
 			</div>
 		{:else}
@@ -46,9 +30,3 @@
 		{/if}
 	{/if}
 </Container>
-
-<style lang="scss">
-	.card {
-		min-height: 256px;
-	}
-</style>

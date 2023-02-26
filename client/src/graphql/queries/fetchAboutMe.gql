@@ -1,18 +1,4 @@
 query fetchAboutMe($locale: I18NLocaleCode) {
-	experiences(locale: $locale) {
-		data {
-			attributes {
-				...experience
-			}
-		}
-	}
-	educations(locale: $locale) {
-		data {
-			attributes {
-				...education
-			}
-		}
-	}
 	aboutMe(locale: $locale) {
 		data {
 			attributes {
@@ -20,11 +6,24 @@ query fetchAboutMe($locale: I18NLocaleCode) {
 			}
 		}
 	}
-	tags(locale: $locale) {
+	experiences(locale: $locale, sort: ["start:desc"]) {
+		data {
+			attributes {
+				...experience
+			}
+		}
+	}
+	educations(locale: $locale, sort: ["start:desc"]) {
+		data {
+			attributes {
+				...education
+			}
+		}
+	}
+	tags(locale: $locale, sort: ["order:asc"], pagination: { limit: 100 }) {
 		data {
 			attributes {
 				...tag
-				type
 			}
 		}
 	}

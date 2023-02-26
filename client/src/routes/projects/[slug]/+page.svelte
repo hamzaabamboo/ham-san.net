@@ -5,12 +5,12 @@
 	import Pill from '@components/core/Pill.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
+	import TagItem from '@components/tags/TagItem.svelte';
 	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 	import { locale, t } from '@i18n';
 	import { localizationUrls } from '@stores/localizationUrls';
+	import { formatMonthYear } from '@utils/date';
 	import { getMediaUrl } from '@utils/media';
-	import { format, parse } from 'date-fns';
-	import { enUS, ja } from 'date-fns/locale';
 	import { onDestroy } from 'svelte';
 	import Carousel from 'svelte-carousel';
 	import Fa from 'svelte-fa';
@@ -26,11 +26,7 @@
 	$: links = project?.links;
 	$: media = project?.media?.data;
 
-	$: formattedDate = project?.date
-		? format(parse(project?.date, 'yyyy-MM-dd', new Date()), 'MMMM yyyy', {
-				locale: $locale === 'ja' ? ja : enUS
-		  })
-		: null;
+	$: formattedDate = project?.date ? formatMonthYear(project?.date, $locale) : null;
 
 	$: {
 		const localizationObj = Object.fromEntries(
@@ -93,7 +89,7 @@
 				<div class="flex items-center flex-wrap">
 					<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
 					{#each tags as tag}
-						<Pill class="bg-red-100 mr-2">{tag.attributes?.title}</Pill>
+						{#if tag.attributes} <TagItem tag={tag?.attributes} class="mr-2" /> {/if}
 					{/each}
 				</div>
 			{/if}

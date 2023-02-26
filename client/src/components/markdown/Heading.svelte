@@ -14,11 +14,11 @@
 </script>
 
 {#if depth === 1}
-	<Typography variant="h1"><slot /></Typography>
+	<Typography variant="h1" class="mb-2"><slot /></Typography>
 {:else if depth === 2}
-	<Typography variant="h2"><slot /></Typography>
+	<Typography variant="h2" class="mb-2"><slot /></Typography>
 {:else if depth === 3}
-	<Typography><slot /></Typography>
+	<Typography class="mb-2"><slot /></Typography>
 {:else if depth === 4}
 	<Typography variant="h4"><slot /></Typography>
 {:else if depth === 5}

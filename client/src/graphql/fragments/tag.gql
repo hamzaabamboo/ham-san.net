@@ -1,4 +1,5 @@
 fragment tag on Tag {
 	title
 	slug
+	type
 }

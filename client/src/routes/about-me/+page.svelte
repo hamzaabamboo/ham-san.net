@@ -10,6 +10,8 @@
 	import groupBy from 'lodash/groupBy';
 
 	import aboutMeBanner from '@assets/about-me-banner.jpg';
+	import { formatMonthYear } from '@utils/date';
+	import TagItem from '@components/tags/TagItem.svelte';
 
 	$: query = fetchAboutMe({ variables: { locale: $locale } });
 
@@ -20,6 +22,8 @@
 		$query.data.tags?.data?.filter((tag) => tag.attributes?.type !== Enum_Tag_Type.NonDev),
 		(tag) => tag.attributes?.type
 	);
+
+	$: formatDate = (date?: string) => (date ? formatMonthYear(date, $locale) : null);
 </script>
 
 <svelte:head>
@@ -29,9 +33,11 @@
 {#if $query.loading}
 	<Container class="text-center pt-8">Loading</Container>
 {:else}
-	<Container class="pt-8 flex flex-row  flex-wrap">
-		<div class="px-2 flex flex-col w-full md:w-1/2">
-			<Typography variant="h1">{$t('about-me.title')}</Typography>
+	<Container class="pt-12 flex flex-row  flex-wrap">
+		<div class="px-4 flex flex-col w-full md:w-3/5">
+			<div class="mb-2">
+				<Typography variant="h1">{$t('about-me.title')}</Typography>
+			</div>
 			{#if !!aboutMetadata}<MarkdownRenderer content={aboutMetadata.introduction} />{/if}
 			<Typography variant="h2">{$t('about-me.experiences')}</Typography>
 			{#if experiences && experiences?.length > 0}
@@ -40,14 +46,16 @@
 						<Typography variant="h4" class="mb-1">{experience.attributes?.title}</Typography>
 						<div class="flex flex-row mb-2">
 							<Typography variant="subtitle" class="mr-2"
-								>{experience.attributes?.description}</Typography
+								>{[
+									experience.attributes?.position,
+									experience.attributes?.description,
+									`${formatDate(experience.attributes?.start)} - ${
+										formatDate(experience.attributes?.end) ?? $t('about-me.present')
+									}`
+								]
+									.filter((i) => !!i)
+									.join(' | ')}</Typography
 							>
-							{#if experience.attributes?.start}
-								<Typography variant="subtitle">
-									| {experience.attributes?.start} - {experience.attributes?.end ??
-										$t('about-me.present')}
-								</Typography>
-							{/if}
 						</div>
 						{#if experience.attributes?.content}
 							<MarkdownRenderer content={experience.attributes?.content} />
@@ -63,14 +71,15 @@
 						<Typography variant="h4" class="mb-1">{education.attributes?.title}</Typography>
 						<div class="flex flex-row mb-2">
 							<Typography variant="subtitle" class="mr-2"
-								>{education.attributes?.description}</Typography
+								>{[
+									education.attributes?.description,
+									`${formatDate(education.attributes?.start)} - ${
+										formatDate(education.attributes?.end) ?? $t('about-me.present')
+									}`
+								]
+									.filter((i) => !!i)
+									.join(' | ')}</Typography
 							>
-							{#if education.attributes?.start}
-								<Typography variant="subtitle">
-									| {education.attributes?.start} - {education.attributes?.end ??
-										$t('about-me.present')}
-								</Typography>
-							{/if}
 						</div>
 						{#if education.attributes?.content}
 							<MarkdownRenderer content={education.attributes?.content} />
@@ -87,7 +96,7 @@
 							>{$t(`common.${toKebabCase(category)}`)} :</Typography
 						>
 						{#each skills[category] as tag}
-							<Pill class="mr-2">{tag.attributes?.title}</Pill>
+							{#if tag.attributes} <TagItem tag={tag?.attributes} class="mr-2" /> {/if}
 						{/each}
 					</div>
 				{/each}
@@ -95,7 +104,7 @@
 			<hr />
 		</div>
 		<div
-			class="bg-cover bg-left w-full md:w-1/2"
+			class="bg-cover bg-left w-full md:w-2/5"
 			style:height="400px"
 			style:background-image="url('{aboutMeBanner.fallback.src}')"
 		/>

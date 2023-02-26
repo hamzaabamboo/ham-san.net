@@ -10,14 +10,16 @@
 	export let content: string | null | undefined;
 </script>
 
-<SvelteMarkdown
-	source={content}
-	renderers={{
-		text: Text,
-		heading: Heading,
-		image: Image,
-		paragraph: Paragraph,
-		list: List,
-		listitem: ListItem
-	}}
-/>
+<div class="text-justify">
+	<SvelteMarkdown
+		source={content}
+		renderers={{
+			text: Text,
+			heading: Heading,
+			image: Image,
+			paragraph: Paragraph,
+			list: List,
+			listitem: ListItem
+		}}
+	/>
+</div>
