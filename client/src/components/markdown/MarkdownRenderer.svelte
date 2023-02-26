@@ -1,15 +1,17 @@
 <script lang="ts">
 	import SvelteMarkdown from 'svelte-markdown';
-	import Heading from '@components/markdown/Heading.svelte';
-	import Text from '@components/markdown/Text.svelte';
-	import Image from '@components/markdown/Image.svelte';
-	import Paragraph from '@components/markdown/Paragraph.svelte';
-	import List from '@components/markdown/List.svelte';
-	import ListItem from '@components/markdown/ListItem.svelte';
+	import Heading from './Heading.svelte';
+	import Text from './Text.svelte';
+	import Image from './Image.svelte';
+	import Paragraph from './Paragraph.svelte';
+	import List from './List.svelte';
+	import ListItem from './ListItem.svelte';
+	import Link from './Link.svelte';
 
 	export let content: string | null | undefined;
 </script>
 
+<!-- https://github.com/pablo-abc/svelte-markdown/tree/main/src/renderers -->
 <div class="text-justify">
 	<SvelteMarkdown
 		source={content}
@@ -19,7 +21,8 @@
 			image: Image,
 			paragraph: Paragraph,
 			list: List,
-			listitem: ListItem
+			listitem: ListItem,
+			link: Link
 		}}
 	/>
 </div>
