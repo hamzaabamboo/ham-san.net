@@ -1,23 +1,18 @@
-# path: ./Dockerfile.prod
-
 FROM node:19-alpine as build
 
-RUN apk update && apk add --no-cache curl
 # Installing libvips-dev for sharp Compatibility
-RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
+RUN apk update && apk add --no-cache curl build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
 
 # Install pnpm
 RUN curl -f https://get.pnpm.io/v6.16.js | npm install -g pnpm
 
-WORKDIR /opt/
+WORKDIR /opt/app
 COPY pnpm-lock.yaml ./
 ENV PATH /node_modules/.bin:$PATH
 RUN pnpm fetch 
 
-WORKDIR /opt/app
 COPY ./ .
 RUN pnpm install --offline --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
-
 RUN pnpm build:prod
 
 ARG PUBLIC_API_URL=${PUBLIC_API_URL}
