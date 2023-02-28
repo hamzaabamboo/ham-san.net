@@ -44,7 +44,7 @@
 </script>
 
 <svelte:head>
-	<title>{$t('common.name')} | {title}</title>
+	<title>{title} | {$t('common.name')}</title>
 </svelte:head>
 
 {#if banner}
@@ -101,7 +101,8 @@
 							<img
 								src={getMediaUrl(image?.attributes?.url)}
 								alt={image?.attributes?.name}
-								class="max-h-64 mx-auto"
+								class=" mx-auto"
+								style:max-height="400px"
 							/>
 						</div>
 					{/each}

@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>{$t('common.name')} | {$t('common.contact')}</title>
+	<title>{$t('common.contact')} | {$t('common.name')}</title>
 </svelte:head>
 
 <Container class="pt-8">

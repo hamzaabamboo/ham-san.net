@@ -27,7 +27,7 @@
 </script>
 
 <svelte:head>
-	<title>{$t('common.name')} | {$t('common.about-me')}</title>
+	<title>{$t('common.about-me')} | {$t('common.name')}</title>
 </svelte:head>
 
 {#if $query.loading}

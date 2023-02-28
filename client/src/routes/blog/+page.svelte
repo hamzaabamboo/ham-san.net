@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>{$t('common.name')} | {$t('common.blog')}</title>
+	<title>{$t('common.blog')} | {$t('common.name')}</title>
 </svelte:head>
 
 <Container class="pt-8 flex justify-center">

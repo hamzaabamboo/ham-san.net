@@ -9,6 +9,10 @@
 	$: projects = fetchProjects({ variables: { locale: $locale } });
 </script>
 
+<svelte:head>
+	<title>{$t('project.projects')} | {$t('common.name')}</title>
+</svelte:head>
+
 <Container class="my-8">
 	<Typography variant="h2" class="mb-4">{$t('project.projects')}</Typography>
 	{#if projects}

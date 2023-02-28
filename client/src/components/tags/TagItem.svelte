@@ -10,7 +10,7 @@
 	$: getColor = () => {
 		switch (tag.type) {
 			case 'Frontend':
-				return 'bg-blue-200';
+				return 'bg-blue-300';
 			case 'Backend':
 				return 'bg-red-200';
 			case 'Database':
