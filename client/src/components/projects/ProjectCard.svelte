@@ -2,10 +2,15 @@
 	import type { Project } from '@graphql/generated/client';
 	import { getMediaUrl } from '@utils/media';
 	import Typography from '@components/core/Typography.svelte';
+	import { formatMonthYear } from '@utils/date';
+	import { locale, t } from '@i18n';
+	import TagItem from '@components/tags/TagItem.svelte';
+	import { sortTags } from '@utils/tags';
 
-	export let project: Pick<Project, 'title' | 'media' | 'description' | 'slug'>;
+	export let project: Pick<Project, 'title' | 'media' | 'description' | 'slug' | 'date' | 'tags'>;
 
 	let _class = '';
+	$: formattedDate = project?.date ? formatMonthYear(project?.date, $locale) : null;
 	export { _class as class };
 </script>
 
@@ -20,7 +25,16 @@
 			/>
 		{/if}
 		<div class="w-full h-full flex-1 p-2 ">
-			<Typography variant="h4">{project.title}</Typography>
+			<Typography variant="h5" class="mb-1 text-bold">{project.title}</Typography>
+			{#if formattedDate}<Typography variant="subtitle">{formattedDate}</Typography>{/if}
+			{#if project.tags?.data && project.tags?.data?.length > 0}
+				<div class="flex items-center flex-wrap">
+					<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
+					{#each sortTags(project?.tags?.data) as tag}
+						{#if tag.attributes} <TagItem tag={tag?.attributes} class="mr-1 mb-1" /> {/if}
+					{/each}
+				</div>
+			{/if}
 			{#if project.description}
 				<p>{project.description}</p>
 			{/if}

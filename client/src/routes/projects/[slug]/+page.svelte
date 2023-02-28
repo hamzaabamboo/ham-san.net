@@ -69,7 +69,8 @@
 				<Typography variant="title">{title}</Typography>
 				{#if formattedDate}
 					<Typography variant="subtitle"
-						>{formattedDate}{#if project?.isActive} - {$t('common.present')}{/if}</Typography
+						>{formattedDate}
+						{#if project?.isActive}- {$t('common.present')}{/if}</Typography
 					>
 				{/if}
 			</div>

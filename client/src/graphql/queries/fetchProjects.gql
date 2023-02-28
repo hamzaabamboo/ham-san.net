@@ -8,7 +8,32 @@ query fetchProjects($limit: Int = 100, $isFeatured: Boolean, $locale: I18NLocale
 		data {
 			id
 			attributes {
-				...project
+				title
+				description
+				slug
+				isActive
+				media {
+					data {
+						id
+						attributes {
+							...media
+						}
+					}
+				}
+				date
+				tags {
+					data {
+						id
+						attributes {
+							...tag
+						}
+					}
+				}
+				links {
+					title
+					url
+					type
+				}
 			}
 		}
 	}
