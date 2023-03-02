@@ -24,6 +24,11 @@ query fetchAboutMe($locale: I18NLocaleCode) {
 		data {
 			attributes {
 				...tag
+				projects {
+					data {
+						id
+					}
+				}
 			}
 		}
 	}
