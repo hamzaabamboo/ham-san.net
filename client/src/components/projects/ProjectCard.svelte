@@ -7,10 +7,18 @@
 	import TagItem from '@components/tags/TagItem.svelte';
 	import { sortTags } from '@utils/tags';
 
-	export let project: Pick<Project, 'title' | 'media' | 'description' | 'slug' | 'date' | 'tags'>;
+	export let project: Pick<
+		Project,
+		'title' | 'media' | 'description' | 'slug' | 'date' | 'tags' | 'category'
+	>;
 
 	let _class = '';
-	$: formattedDate = project?.date ? formatMonthYear(project?.date, $locale) : null;
+	$: subtitle = [
+		project?.date ? formatMonthYear(project?.date, $locale) : null,
+		project?.category?.data?.attributes?.name
+	]
+		.filter((f) => !!f)
+		.join(' | ');
 	export { _class as class };
 </script>
 
@@ -26,7 +34,7 @@
 		{/if}
 		<div class="w-full h-full flex-1 p-2 ">
 			<Typography variant="h5" class="mb-1 text-bold">{project.title}</Typography>
-			{#if formattedDate}<Typography variant="subtitle">{formattedDate}</Typography>{/if}
+			{#if subtitle}<Typography variant="subtitle" class="mb-2">{subtitle}</Typography>{/if}
 			{#if project.tags?.data && project.tags?.data?.length > 0}
 				<div class="flex items-center flex-wrap">
 					<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>

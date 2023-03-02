@@ -25,7 +25,7 @@
 	$: tags = project?.tags?.data;
 	$: links = project?.links;
 	$: media = project?.media?.data;
-
+	$: category = project?.category?.data?.attributes?.name;
 	$: formattedDate = project?.date ? formatMonthYear(project?.date, $locale) : null;
 
 	$: {
@@ -67,6 +67,7 @@
 			</div>
 			<div class="mb-2">
 				<Typography variant="title">{title}</Typography>
+				{#if category}<Typography variant="subtitle" class="mb-2">{category}</Typography>{/if}
 				{#if formattedDate}
 					<Typography variant="subtitle"
 						>{formattedDate}

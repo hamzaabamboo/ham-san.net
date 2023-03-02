@@ -4,6 +4,14 @@ fragment project on Project {
 	content
 	slug
 	isActive
+	category {
+		data {
+			id
+			attributes {
+				name
+			}
+		}
+	}
 	media {
 		data {
 			id

@@ -12,6 +12,14 @@ query fetchProjects($limit: Int = 100, $isFeatured: Boolean, $locale: I18NLocale
 				description
 				slug
 				isActive
+				category {
+					data {
+						id
+						attributes {
+							name
+						}
+					}
+				}
 				media(pagination: { pageSize: 1 }) {
 					data {
 						id

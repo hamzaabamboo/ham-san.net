@@ -4,9 +4,13 @@
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
 	import { t, locale } from '@i18n';
 	import { getMediaUrl } from '@utils/media';
+	import { groupBy } from 'lodash';
 	import { fetchProjects } from '../../graphql/generated/client';
 
 	$: projects = fetchProjects({ variables: { locale: $locale } });
+	$: projectGroups = groupBy($projects.data.projects?.data, (project) =>
+		project.attributes?.isActive ? $t('project.active') : $t('project.inactive')
+	);
 </script>
 
 <svelte:head>
@@ -15,22 +19,28 @@
 
 <Container class="my-8">
 	<Typography variant="h2" class="mb-4">{$t('project.projects')}</Typography>
-	{#if projects}
-		{#if $projects.loading}
-			Loading...
-		{:else if $projects.error}
-			Error: {$projects.error.message}
-		{:else if $projects.data.projects?.data && $projects.data.projects.data.length > 0}
-			<div class="flex flex-row flex-wrap">
-				{#each $projects.data?.projects.data as project}
-					<ProjectCard
-						project={project.attributes}
-						class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2 block"
-					/>
+	<div class="flex flex-col">
+		{#if projects}
+			{#if $projects.loading}
+				Loading...
+			{:else if $projects.error}
+				Error: {$projects.error.message}
+			{:else if $projects.data.projects?.data && $projects.data.projects.data.length > 0}
+				{#each Object.keys(projectGroups) as group}
+					<Typography variant="h4" class="mb-2">{group}</Typography>
+					<div class="flex flex-row flex-wrap mb-2">
+						{#each projectGroups[group] as project}
+							<ProjectCard
+								project={project.attributes}
+								class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2 block"
+							/>
+						{/each}
+					</div>
+					<hr />
 				{/each}
-			</div>
-		{:else}
-			Projects not found
+			{:else}
+				Projects not found
+			{/if}
 		{/if}
-	{/if}
+	</div>
 </Container>
