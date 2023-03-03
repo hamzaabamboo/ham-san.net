@@ -11,7 +11,7 @@ COPY pnpm-lock.yaml ./
 ENV PATH /node_modules/.bin:$PATH
 RUN pnpm fetch 
 
-COPY package.json .
+COPY package.json svelte.config.js .
 RUN pnpm install --offline --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 
 COPY ./ .
