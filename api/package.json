@@ -18,6 +18,7 @@
     "better-sqlite3": "8.0.1",
     "domain-browser": "^4.22.0",
     "strapi-plugin-config-sync": "^1.1.1",
+    "strapi-plugin-local-image-sharp": "^1.6.0",
     "strapi-plugin-slugify": "^2.3.2"
   },
   "author": {
