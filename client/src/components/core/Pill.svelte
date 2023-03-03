@@ -1,8 +1,12 @@
 <script lang="ts">
 	let _class = '';
+	$: hasColor = /bg-.*?-\d{3}/.test(_class);
 	export { _class as class };
 </script>
 
-<div {...$$restProps} class="py-1 px-2 text-sm rounded-lg bg-gray-100 {_class || ''}">
+<div
+	{...$$restProps}
+	class="py-1 px-2 text-sm rounded-lg {!hasColor && 'bg-gray-100'} {_class || ''}"
+>
 	<slot />
 </div>

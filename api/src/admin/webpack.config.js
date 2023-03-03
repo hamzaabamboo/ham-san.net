@@ -6,6 +6,6 @@ module.exports = (config, webpack) => {
   // Perform customizations to webpack config
   // Important: return the modified config
   return {
-    ...config, resolve: { ...config.resolve, fallback: { ...config.resolve.fallback, domain: require.resolve("domain-browser") } }
+    ...config, resolve: { ...config.resolve, symlinks: true, fallback: { ...config.resolve.fallback, domain: require.resolve("domain-browser") } }
   }
 }

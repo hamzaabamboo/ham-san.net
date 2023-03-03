@@ -28,8 +28,10 @@
 	>
 		{#if project.media?.data[0]?.attributes?.url}
 			<div
-				class="bg-cover bg-center bg-no-repeat h-64 "
-				style:background-image="url('{getMediaUrl(project.media?.data[0]?.attributes?.url)}')"
+				class="bg-cover bg-center bg-no-repeat h-64"
+				style:background-image="url('{getMediaUrl(project.media?.data[0]?.attributes?.url, {
+					height: 300
+				})}')"
 			/>
 		{/if}
 		<div class="w-full h-full flex-1 p-2 ">
