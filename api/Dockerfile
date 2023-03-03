@@ -13,8 +13,10 @@ COPY pnpm-lock.yaml ./
 ENV PATH /node_modules/.bin:$PATH
 RUN pnpm fetch --prod
 
-COPY ./ .
+COPY package.json .
 RUN pnpm install --offline --prod --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
+
+COPY ./ .
 RUN pnpm build
 
 # Remove this step since we're on vm

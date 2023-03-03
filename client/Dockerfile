@@ -11,8 +11,10 @@ COPY pnpm-lock.yaml ./
 ENV PATH /node_modules/.bin:$PATH
 RUN pnpm fetch 
 
-COPY ./ .
+COPY package.json .
 RUN pnpm install --offline --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
+
+COPY ./ .
 RUN pnpm build:prod
 
 ARG PUBLIC_API_URL=${PUBLIC_API_URL}
