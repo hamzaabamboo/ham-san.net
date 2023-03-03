@@ -3,7 +3,7 @@
 	import Typography from '@components/core/Typography.svelte';
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
 	import { t } from '@i18n';
-	import { groupBy } from 'lodash';
+	import groupBy from 'lodash/groupBy';
 	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;
