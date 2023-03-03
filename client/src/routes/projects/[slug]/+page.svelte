@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import Container from '@components/core/Container.svelte';
+	import ImageGallery from '@components/core/ImageGallery.svelte';
 	import LinkItem from '@components/core/LinkItem.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
@@ -12,7 +13,6 @@
 	import { formatMonthYear } from '@utils/date';
 	import { getMediaUrl } from '@utils/media';
 	import { onDestroy } from 'svelte';
-	import Carousel from 'svelte-carousel';
 	import Fa from 'svelte-fa';
 	import type { PageData } from './$types';
 
@@ -97,18 +97,7 @@
 		{#if browser && media && media.length > 0}
 			<div>
 				<Typography variant="h2" class="mb-4">{$t('project.screenshots')}</Typography>
-				<Carousel>
-					{#each media as image}
-						<div class="w-1/3">
-							<img
-								src={getMediaUrl(image?.attributes?.url)}
-								alt={image?.attributes?.name}
-								class=" mx-auto"
-								style:max-height="400px"
-							/>
-						</div>
-					{/each}
-				</Carousel>
+				<ImageGallery {media} />
 			</div>
 		{/if}
 	</Container>

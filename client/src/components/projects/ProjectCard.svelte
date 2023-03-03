@@ -30,13 +30,13 @@
 			<div
 				class="bg-cover bg-center bg-no-repeat h-64"
 				style:background-image="url('{getMediaUrl(project.media?.data[0]?.attributes?.url, {
-					height: 300
+					height: 400
 				})}')"
 			/>
 		{/if}
 		<div class="w-full h-full flex-1 p-2 ">
 			<Typography variant="h5" class="mb-1 text-bold">{project.title}</Typography>
-			{#if subtitle}<Typography variant="subtitle" class="mb-2">{subtitle}</Typography>{/if}
+			{#if subtitle}<Typography variant="subtitle" class="mb-1">{subtitle}</Typography>{/if}
 			{#if project.tags?.data && project.tags?.data?.length > 0}
 				<div class="flex items-center flex-wrap">
 					<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>

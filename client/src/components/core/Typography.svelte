@@ -44,8 +44,12 @@
 	<p {...$$restProps} class="text-gray-500 {_class || ''}">
 		<slot />
 	</p>
-{:else}
+{:else if variant === 'body'}
 	<p {...$$restProps} class="{!hasMargin && 'mb-2'} {_class || ''} text-justify">
+		<slot />
+	</p>
+{:else}
+	<p {...$$restProps} class="{!hasMargin && 'mb-2'} {_class || ''}">
 		<slot />
 	</p>
 {/if}

@@ -2,13 +2,14 @@
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
-	import { t, locale } from '@i18n';
-	import { getMediaUrl } from '@utils/media';
+	import { t } from '@i18n';
 	import { groupBy } from 'lodash';
-	import { fetchProjects } from '../../graphql/generated/client';
+	import type { PageServerData } from './$types';
 
-	$: projects = fetchProjects({ variables: { locale: $locale } });
-	$: projectGroups = groupBy($projects.data.projects?.data, (project) =>
+	export let data: PageServerData;
+
+	$: projects = data.data;
+	$: projectGroups = groupBy(projects.projects?.data, (project) =>
 		project.attributes?.isActive ? $t('project.active') : $t('project.inactive')
 	);
 </script>
@@ -21,11 +22,7 @@
 	<Typography variant="h2" class="mb-4">{$t('project.projects')}</Typography>
 	<div class="flex flex-col">
 		{#if projects}
-			{#if $projects.loading}
-				Loading...
-			{:else if $projects.error}
-				Error: {$projects.error.message}
-			{:else if $projects.data.projects?.data && $projects.data.projects.data.length > 0}
+			{#if projects.projects?.data && projects.projects.data.length > 0}
 				{#each Object.keys(projectGroups) as group}
 					<Typography variant="h4" class="mb-2">{group}</Typography>
 					<div class="flex flex-row flex-wrap mb-2">

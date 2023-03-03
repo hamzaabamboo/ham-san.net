@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { locale, t } from '@i18n';
 	import { localizationUrls } from '@stores/localizationUrls';
 	import { LANGUAGES } from '@utils/localization';
@@ -16,7 +16,7 @@
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			}
-		});
+		}).then(() => invalidateAll());
 	};
 
 	$: links = [

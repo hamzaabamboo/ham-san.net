@@ -14,7 +14,7 @@
 			<div class="w-full lg:w-1/2">
 				<Typography variant="h2" class="mb-4">{$t('home.about-me')}</Typography>
 				{#each paragraphs as paragraph}
-					<Typography class="mb-2">{paragraph}</Typography>
+					<Typography variant="body" class="mb-2">{paragraph}</Typography>
 				{/each}
 				<Typography class="font-sm mt-2 font-gray-300"
 					><a href="/about-me"
