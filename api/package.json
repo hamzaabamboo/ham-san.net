@@ -15,6 +15,7 @@
     "@strapi/plugin-users-permissions": "4.7.0",
     "@strapi/strapi": "4.7.0",
     "@strapi/typescript-utils": "4.7.0",
+    "apollo-server-plugin-response-cache": "^3.8.2",
     "better-sqlite3": "8.0.1",
     "domain-browser": "^4.22.0",
     "strapi-plugin-config-sync": "^1.1.1",

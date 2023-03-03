@@ -1,4 +1,4 @@
 import { graphQLClient } from '@graphql';
-import { getSdk } from './generated/server';
+import { getApolloSdk } from './getApolloSdk';
 
-export const graphQLSdk = getSdk(graphQLClient);
+export const graphQLSdk = getApolloSdk(graphQLClient);

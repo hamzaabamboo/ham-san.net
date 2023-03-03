@@ -1,3 +1,8 @@
+import responseCachePlugin from "apollo-server-plugin-response-cache";
+
+// set this to whatever you believe should be the max age for your cache control
+const MAX_AGE = 60;
+
 module.exports = {
   graphql: {
     config: {
@@ -9,6 +14,9 @@ module.exports = {
       apolloServer: {
         tracing: false,
         introspection: true,
+        persistedQueries: { ttl: 10 * MAX_AGE }, // we set this to be a factor of 10, somewhat arbitrary
+        cacheControl: { defaultMaxAge: MAX_AGE },
+        plugins: [responseCachePlugin()],
       },
     },
   },
