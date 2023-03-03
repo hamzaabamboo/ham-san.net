@@ -47,3 +47,8 @@ declare module 'svelte-carousel' {
 		goToNext: (options?: { animated?: boolean }) => void;
 	}
 }
+
+declare module '*.jpg?format=webp&w=1980' {
+	const image: Record<string, any>;
+	export default image;
+}

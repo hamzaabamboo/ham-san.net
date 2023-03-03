@@ -2,8 +2,10 @@
 	import Button from '@components/core/Button.svelte';
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
-	import heroBg from '@assets/hero-bg.jpg';
+	import heroBg from '@assets/hero-bg.jpg?format=webp&w=1980';
 	import { t } from '@i18n';
+
+	$: console.log(heroBg);
 </script>
 
 <Container fluid class="bg-primary bg-opacity-10 relative">
@@ -11,7 +13,7 @@
 	<div
 		class="bg-cover bg-center h-full w-full absolute z-0"
 		style:transform="translateZ(-1px) scale(1.3)"
-		style:background-image="url('{heroBg.fallback.src}')"
+		style:background-image="url('{heroBg}')"
 		style:filter="blur(2px)"
 	/>
 	<div style:transform="translateZ(1px) scale(0.875)">

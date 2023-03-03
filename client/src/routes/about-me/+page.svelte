@@ -3,13 +3,13 @@
 	import Pill from '@components/core/Pill.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
-	import { fetchAboutMe, Enum_Tag_Type } from '@graphql/generated/client';
+	import { Enum_Tag_Type } from '@graphql/generated/client';
 
 	import { locale, t } from '@i18n';
 	import { toKebabCase } from '@utils/localization';
 	import groupBy from 'lodash/groupBy';
 
-	import aboutMeBanner from '@assets/about-me-banner.jpg';
+	import aboutMeBanner from '@assets/about-me-banner.jpg?format=webp&w=1980';
 	import { formatMonthYear } from '@utils/date';
 	import TagItem from '@components/tags/TagItem.svelte';
 	import type { PageServerData } from './$types';
@@ -106,6 +106,6 @@
 	<div
 		class="bg-cover bg-left w-full md:w-2/5"
 		style:height="400px"
-		style:background-image="url('{aboutMeBanner.fallback.src}')"
+		style:background-image="url('{aboutMeBanner}')"
 	/>
 </Container>
