@@ -39,7 +39,7 @@
 			<Typography variant="h1">{$t('about-me.title')}</Typography>
 		</div>
 		{#if !!aboutMetadata}<MarkdownRenderer content={aboutMetadata.introduction} />{/if}
-		<Typography variant="h2">{$t('about-me.experiences')}</Typography>
+		<Typography variant="h2">{$t('common.experiences')}</Typography>
 		{#if experiences && experiences?.length > 0}
 			{#each experiences as experience}
 				<div class="flex flex-col mb-2">
@@ -64,7 +64,7 @@
 			{/each}
 		{/if}
 		<hr class="mb-2" />
-		<Typography variant="h2">{$t('about-me.education')}</Typography>
+		<Typography variant="h2">{$t('common.education')}</Typography>
 		{#if educations && educations?.length > 0}
 			{#each educations as education}
 				<div class="mb-2 flex flex-col">

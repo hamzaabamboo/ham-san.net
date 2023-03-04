@@ -29,4 +29,6 @@
 	$: color = getColor();
 </script>
 
-<Pill class="{color} {_class || ''}">{tag?.title}</Pill>
+<a href="/tags/{tag?.slug}" class="block"
+	><Pill class="{color} {_class || ''}">{tag?.title}</Pill></a
+>
