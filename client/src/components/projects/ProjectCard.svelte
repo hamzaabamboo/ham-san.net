@@ -22,7 +22,7 @@
 	export { _class as class };
 </script>
 
-<a class="p-2 block {_class || ''}" href="/projects/{project.slug}" style:min-height="250px">
+<a href="/projects/{project.slug}" class="block {_class || ''}" style:min-height="250px">
 	<div
 		class=" bg-white shadow-md rounded-md flex flex-col h-full transtion-shadow transition-transform hover:shadow-lg hover:scale-105"
 	>

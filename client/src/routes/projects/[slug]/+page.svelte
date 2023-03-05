@@ -86,7 +86,9 @@
 				<div class="flex items-center flex-wrap">
 					<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
 					{#each tags as tag}
-						{#if tag.attributes} <TagItem tag={tag?.attributes} class="mr-2" /> {/if}
+						{#if tag.attributes}<a href="/tags/{tag?.attributes.slug}" class="block"
+								><TagItem tag={tag?.attributes} class="mr-2" /></a
+							>{/if}
 					{/each}
 				</div>
 			{/if}

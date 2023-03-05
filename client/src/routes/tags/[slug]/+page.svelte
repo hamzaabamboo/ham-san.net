@@ -46,15 +46,12 @@
 			</div>
 		{/each}
 	{/if}
-	<hr class="mb-2" />
+	<hr class="mb-4" />
 	<Typography variant="h4">{$t('common.projects')}</Typography>
 	<div class="flex flex-row flex-wrap mb-2">
 		{#if projects?.length && projects.length > 0}
 			{#each projects as project}
-				<ProjectCard
-					project={project.attributes}
-					class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2 block"
-				/>
+				<ProjectCard project={project.attributes} class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2" />
 			{/each}
 		{:else}
 			Projects not found

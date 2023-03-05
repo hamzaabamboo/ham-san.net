@@ -96,7 +96,11 @@
 						>{$t(`common.${toKebabCase(category)}`)} :</Typography
 					>
 					{#each skills[category] as tag}
-						{#if tag.attributes} <TagItem tag={tag?.attributes} class="mr-2 mb-2" /> {/if}
+						{#if tag.attributes}
+							<a href="/tags/{tag?.attributes.slug}" class="block"
+								><TagItem tag={tag?.attributes} class="mr-2 mb-2" /></a
+							>
+						{/if}
 					{/each}
 				</div>
 			{/each}
