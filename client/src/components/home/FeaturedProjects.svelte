@@ -19,7 +19,7 @@
 			<div class="flex flex-col sm:flex-row flex-wrap">
 				{#each $projects.data?.projects.data as project}
 					{#if project.attributes}
-						<ProjectCard class="sm:w-1/2 lg:w-1/3" project={project.attributes} />
+						<ProjectCard class="sm:w-1/2 lg:w-1/3 px-2" project={project.attributes} />
 					{/if}
 				{/each}
 			</div>
