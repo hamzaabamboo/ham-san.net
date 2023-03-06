@@ -8,6 +8,16 @@
 
 	let menuOpen = false;
 
+	import { afterNavigate } from '$app/navigation';
+
+	let navbar: HTMLElement;
+
+	afterNavigate(() => {
+		if (navbar) {
+			navbar.scrollIntoView();
+		}
+	});
+
 	const handleChangeLanguage = (language: (typeof LANGUAGES)[number]) => {
 		locale.set(language);
 		fetch('/?/set-language', {
@@ -29,6 +39,7 @@
 </script>
 
 <nav
+	bind:this={navbar}
 	class="w-full h-12 flex items-center justify-between px-4 sticky top-0 bg-primary shadow-sm z-20"
 >
 	<!-- Logo Section -->

@@ -32,8 +32,7 @@
 				<img
 					src={getMediaUrl(image?.attributes?.url, { width: 100, height: 100 })}
 					alt={image?.attributes?.name}
-					class="max-w-full max-h-full my-auto"
-					style:max-height="400px"
+					class="max-w-full max-h-full my-auto mx-auto"
 				/>
 			</div>
 		{/each}
