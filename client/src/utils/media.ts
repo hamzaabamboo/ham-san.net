@@ -9,7 +9,7 @@ type MediaOptions = {
 export const getMediaUrl = (path?: string, options: MediaOptions = {}) => {
 	const { format = 'webp', width, height } = options;
 	if (path?.startsWith('http://')) return path;
-	let query = `?format=${format}`;
+	let query = `?format=${format}&q=75`;
 	if (width) query += `&w=${width}`;
 	if (height) query += `&h=${height}`;
 	if (path?.includes('.gif')) query += '&animated=True';

@@ -50,7 +50,7 @@
 	<div
 		class="bg-cover bg-center"
 		style:height="400px"
-		style:background-image="url('{getMediaUrl(banner)}')"
+		style:background-image="url('{getMediaUrl(banner, { width: 1920 })}')"
 		style:transform="translateZ(-2px) scale(1.8)"
 	/>
 {/if}
