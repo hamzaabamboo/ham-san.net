@@ -41,7 +41,7 @@
 				<div class="flex items-center flex-wrap">
 					<Typography variant="subtitle" class="mr-2">{$t('common.tags')}:</Typography>
 					{#each sortTags(project?.tags?.data) as tag}
-						{#if tag.attributes} <TagItem tag={tag?.attributes} class="mr-1 mb-1" /> {/if}
+						{#if tag.attributes} <TagItem tag={tag?.attributes} class="mr-1 my-1" /> {/if}
 					{/each}
 				</div>
 			{/if}

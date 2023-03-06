@@ -3,6 +3,7 @@
 	import type { Tag } from '@graphql/generated/client';
 
 	export let tag: Tag;
+	export let showProjectCount: boolean;
 
 	let _class = '';
 	export { _class as class };
@@ -30,5 +31,9 @@
 </script>
 
 <!-- <a href="/tags/{tag?.slug}" class="block"> -->
-<Pill class="{color} {_class || ''}">{tag?.title}</Pill>
+<Pill class="{color} {_class || ''}"
+	>{tag?.title}
+	{#if showProjectCount && tag.projects?.data.length && tag.projects?.data.length > 0}({tag.projects
+			?.data.length}){/if}</Pill
+>
 <!-- </a> -->

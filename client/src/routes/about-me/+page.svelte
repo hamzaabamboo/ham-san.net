@@ -12,6 +12,7 @@
 	import aboutMeBanner from '@assets/about-me-banner.jpg?format=webp&w=1980';
 	import { formatMonthYear } from '@utils/date';
 	import TagItem from '@components/tags/TagItem.svelte';
+	import ExperienceItem from '@components/experience/ExperienceItem.svelte';
 	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;
@@ -42,25 +43,7 @@
 		<Typography variant="h2">{$t('common.experiences')}</Typography>
 		{#if experiences && experiences?.length > 0}
 			{#each experiences as experience}
-				<div class="flex flex-col mb-2">
-					<Typography variant="h4" class="mb-1">{experience.attributes?.title}</Typography>
-					<div class="flex flex-row mb-2">
-						<Typography variant="subtitle" class="mr-2"
-							>{[
-								experience.attributes?.position,
-								experience.attributes?.description,
-								`${formatDate(experience.attributes?.start)} - ${
-									formatDate(experience.attributes?.end) ?? $t('common.present')
-								}`
-							]
-								.filter((i) => !!i)
-								.join(' | ')}</Typography
-						>
-					</div>
-					{#if experience.attributes?.content}
-						<MarkdownRenderer content={experience.attributes?.content} />
-					{/if}
-				</div>
+				<ExperienceItem experience={experience.attributes} />
 			{/each}
 		{/if}
 		<hr class="mb-2" />
@@ -98,7 +81,7 @@
 					{#each skills[category] as tag}
 						{#if tag.attributes}
 							<a href="/tags/{tag?.attributes.slug}" class="block"
-								><TagItem tag={tag?.attributes} class="mr-2 mb-2" /></a
+								><TagItem tag={tag?.attributes} class="mr-2 mb-2" showProjectCount /></a
 							>
 						{/if}
 					{/each}
