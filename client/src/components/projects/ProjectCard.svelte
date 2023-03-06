@@ -2,7 +2,7 @@
 	import type { Project } from '@graphql/generated/client';
 	import { getMediaUrl } from '@utils/media';
 	import Typography from '@components/core/Typography.svelte';
-	import { formatMonthYear } from '@utils/date';
+	import { formatMonthYear, parseDate } from '@utils/date';
 	import { locale, t } from '@i18n';
 	import TagItem from '@components/tags/TagItem.svelte';
 	import { sortTags } from '@utils/tags';
@@ -14,7 +14,7 @@
 
 	let _class = '';
 	$: subtitle = [
-		project?.date ? formatMonthYear(project?.date, $locale) : null,
+		project?.date ? formatMonthYear(parseDate(project?.date), $locale) : null,
 		project?.category?.data?.attributes?.name
 	]
 		.filter((f) => !!f)

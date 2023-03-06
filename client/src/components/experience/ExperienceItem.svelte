@@ -4,12 +4,12 @@
 	import TagItem from '@components/tags/TagItem.svelte';
 	import type { Experience } from '@graphql/generated/client';
 	import { locale, t } from '@i18n';
-	import { formatMonthYear } from '@utils/date';
+	import { formatMonthYear, parseDate } from '@utils/date';
 	import { sortTags } from '@utils/tags';
 
 	export let experience: Experience;
 
-	$: formatDate = (date?: string) => (date ? formatMonthYear(date, $locale) : null);
+	$: formatDate = (date?: string) => (date ? formatMonthYear(parseDate(date), $locale) : null);
 </script>
 
 <div class="flex flex-col mb-2">

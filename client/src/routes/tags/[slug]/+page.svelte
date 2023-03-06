@@ -4,7 +4,8 @@
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
 	import { t, locale } from '@i18n';
-	import { formatMonthYear } from '@utils/date';
+	import { formatDistanceToNow, formatMonthYear, parseDate } from '@utils/date';
+	import min from 'date-fns/min';
 	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;
@@ -13,7 +14,14 @@
 	$: experiences = tag?.experiences?.data;
 	$: projects = tag?.projects?.data;
 
-	$: formatDate = (date?: string) => (date ? formatMonthYear(date, $locale) : null);
+	$: usedSince = min(
+		[
+			...(experiences?.map((e) => e.attributes?.start) ?? []),
+			...(projects?.map((p) => p.attributes?.date) ?? [])
+		].map((d) => parseDate(d))
+	);
+
+	$: formatDate = (date?: string) => (date ? formatMonthYear(parseDate(date), $locale) : null);
 </script>
 
 <svelte:head>
@@ -22,8 +30,14 @@
 
 <Container class="pt-12">
 	<Typography variant="title">{tag?.title}</Typography>
-	<Typography variant="h4">{$t('common.experiences')}</Typography>
+	<Typography variant="subtitle"
+		>Used since {formatMonthYear(usedSince, $locale)} ({formatDistanceToNow(
+			usedSince,
+			$locale
+		)})</Typography
+	>
 	{#if experiences && experiences?.length > 0}
+		<Typography variant="h4" class="mb-2">{$t('common.experiences')}</Typography>
 		{#each experiences as experience}
 			<div class="flex flex-col mb-2">
 				<Typography variant="h4" class="mb-1">{experience.attributes?.title}</Typography>

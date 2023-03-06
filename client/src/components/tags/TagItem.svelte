@@ -3,7 +3,7 @@
 	import type { Tag } from '@graphql/generated/client';
 
 	export let tag: Tag;
-	export let showProjectCount: boolean | undefined;
+	export let showProjectCount = false;
 
 	let _class = '';
 	export { _class as class };

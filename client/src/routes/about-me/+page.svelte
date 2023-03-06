@@ -10,7 +10,7 @@
 	import groupBy from 'lodash/groupBy';
 
 	import aboutMeBanner from '@assets/about-me-banner.jpg?format=webp&w=1980';
-	import { formatMonthYear } from '@utils/date';
+	import { formatMonthYear, parseDate } from '@utils/date';
 	import TagItem from '@components/tags/TagItem.svelte';
 	import ExperienceItem from '@components/experience/ExperienceItem.svelte';
 	import type { PageServerData } from './$types';
@@ -27,7 +27,7 @@
 		(tag) => tag.attributes?.type
 	);
 
-	$: formatDate = (date?: string) => (date ? formatMonthYear(date, $locale) : null);
+	$: formatDate = (date?: string) => (date ? formatMonthYear(parseDate(date), $locale) : null);
 </script>
 
 <svelte:head>

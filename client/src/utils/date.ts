@@ -1,8 +1,18 @@
-import { format, parse } from 'date-fns';
+import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+import _formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { enUS, ja } from 'date-fns/locale';
 
-export const formatMonthYear = (date: string, locale = 'en') => {
-	return format(parse(date, 'yyyy-MM-dd', new Date()), 'MMMM yyyy', {
+export const parseDate = (date: string) => parse(date, 'yyyy-MM-dd', new Date());
+
+export const formatMonthYear = (date: Date, locale = 'en') => {
+	return format(date, 'MMMM yyyy', {
+		locale: locale === 'ja' ? ja : enUS
+	});
+};
+
+export const formatDistanceToNow = (date: Date, locale = 'en') => {
+	return _formatDistanceToNow(date, {
 		locale: locale === 'ja' ? ja : enUS
 	});
 };

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
 	import Container from '@components/core/Container.svelte';
 	import ImageGallery from '@components/core/ImageGallery.svelte';
 	import LinkItem from '@components/core/LinkItem.svelte';
@@ -10,7 +9,7 @@
 	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 	import { locale, t } from '@i18n';
 	import { localizationUrls } from '@stores/localizationUrls';
-	import { formatMonthYear } from '@utils/date';
+	import { formatMonthYear, parseDate } from '@utils/date';
 	import { getMediaUrl } from '@utils/media';
 	import { onDestroy } from 'svelte';
 	import Fa from 'svelte-fa';
@@ -26,7 +25,7 @@
 	$: links = project?.links;
 	$: media = project?.media?.data;
 	$: category = project?.category?.data?.attributes?.name;
-	$: formattedDate = project?.date ? formatMonthYear(project?.date, $locale) : null;
+	$: formattedDate = project?.date ? formatMonthYear(parseDate(project?.date), $locale) : null;
 
 	$: {
 		const localizationObj = Object.fromEntries(
