@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Project } from '@graphql/generated/client';
+	import type { ProjectPreviewFragment } from '@graphql/generated/client';
 	import { getMediaUrl } from '@utils/media';
 	import Typography from '@components/core/Typography.svelte';
 	import { formatMonthYear, parseDate } from '@utils/date';
@@ -8,7 +8,7 @@
 	import { sortTags } from '@utils/tags';
 
 	export let project: Pick<
-		Project,
+		ProjectPreviewFragment,
 		'title' | 'media' | 'description' | 'slug' | 'date' | 'tags' | 'category'
 	>;
 

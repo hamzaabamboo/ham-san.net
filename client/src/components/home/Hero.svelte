@@ -1,11 +1,14 @@
-<script>
+<script lang='ts'>
 	import Button from '@components/core/Button.svelte';
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import heroBg from '@assets/hero-bg.jpg?format=webp&w=1980';
 	import { t } from '@i18n';
 
-	$: console.log(heroBg);
+	export let hero = $t('home.hero-text');
+	export let subtitle = $t('home.hero-subtitle');
+	export let bg = heroBg
+
 </script>
 
 <Container fluid class="bg-primary bg-opacity-10 relative">
@@ -13,7 +16,7 @@
 	<div
 		class="bg-cover bg-center h-full w-full absolute z-0"
 		style:transform="translateZ(-1px) scale(1.3)"
-		style:background-image="url('{heroBg}')"
+		style:background-image="url('{bg}')"
 		style:filter="blur(2px)"
 	/>
 	<div style:transform="translateZ(1px) scale(0.875)">
@@ -22,8 +25,8 @@
 				class="hero sm:min-h-screen lg:min-h-16 flex items-center sm:justify-center lg:justify-start lg:pl-4 w-full"
 			>
 				<div class="px-4 py-4 bg-opacity-90 bg-secondary">
-					<Typography variant="title">{$t('home.hero-text')}</Typography>
-					<Typography variant="subtitle" class="mb-4">{$t('home.hero-subtitle')}</Typography>
+					<Typography variant="title">{hero}</Typography>
+					<Typography variant="subtitle" class="mb-4">{subtitle}</Typography>
 					<!-- <Button>{$t('home.hero-cta')}</Button> -->
 				</div>
 			</div>
