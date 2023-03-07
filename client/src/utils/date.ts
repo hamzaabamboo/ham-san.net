@@ -6,7 +6,7 @@ import { enUS, ja } from 'date-fns/locale';
 export const parseDate = (date: string) => parse(date, 'yyyy-MM-dd', new Date());
 
 export const formatMonthYear = (date: Date, locale = 'en') => {
-	return format(date, 'MMMM yyyy', {
+	return format(date, locale === 'ja' ? 'yyyy年 MMMM' : 'MMMM yyyy', {
 		locale: locale === 'ja' ? ja : enUS
 	});
 };

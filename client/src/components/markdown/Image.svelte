@@ -7,5 +7,5 @@
 </script>
 
 <div class="w-full flex object-fit-contain justify-center my-4">
-	<img class="max-h-64" src={getMediaUrl(href)} {title} alt={text} />
+	<img class="max-h-64" src={getMediaUrl(href, { height: 300 })} {title} alt={text} />
 </div>

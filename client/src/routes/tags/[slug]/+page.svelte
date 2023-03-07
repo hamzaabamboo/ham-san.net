@@ -30,8 +30,8 @@
 
 <Container class="pt-12">
 	<Typography variant="title">{tag?.title}</Typography>
-	<Typography variant="subtitle"
-		>Used since {formatMonthYear(usedSince, $locale)} ({formatDistanceToNow(
+	<Typography variant="subtitle">
+		 {$t("common.used-since", { usedSince: formatMonthYear(usedSince, $locale)})} ({formatDistanceToNow(
 			usedSince,
 			$locale
 		)})</Typography

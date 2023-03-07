@@ -18,5 +18,6 @@
 	"database": "データベース",
 	"dev-ops": "DevOps",
 	"others": "その他",
-	"present": "現在"
+	"present": "現在",
+	"used-since": "{{usedSince}}から使ってました"
 }

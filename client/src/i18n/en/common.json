@@ -18,5 +18,6 @@
 	"database": "Database",
 	"dev-ops": "DevOps",
 	"others": "Others",
-	"present": "Present"
+	"present": "Present",
+	"used-since": "Used Since {{usedSince}}"
 }
