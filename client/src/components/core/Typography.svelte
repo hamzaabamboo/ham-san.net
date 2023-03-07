@@ -12,7 +12,8 @@
 		| 'body 2';
 
 	let _class = '';
-	$: hasMargin = /m.*-\d{1}/.test(_class);
+	$: hasMargin = /m.*-\d{,3}/.test(_class);
+	$: hasColor = /text.*-.*?-\d{3}/.test(_class);
 	export { _class as class };
 </script>
 
@@ -41,7 +42,7 @@
 		<slot />
 	</h4>
 {:else if variant === 'subtitle'}
-	<p {...$$restProps} class="text-gray-500 {_class || ''}">
+	<p {...$$restProps} class="{!hasColor && 'text-gray-500'} {_class || ''}">
 		<slot />
 	</p>
 {:else if variant === 'body'}

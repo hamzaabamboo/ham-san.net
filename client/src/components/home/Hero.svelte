@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import Button from '@components/core/Button.svelte';
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
@@ -7,8 +7,7 @@
 
 	export let hero = $t('home.hero-text');
 	export let subtitle = $t('home.hero-subtitle');
-	export let bg = heroBg
-
+	export let bg = heroBg;
 </script>
 
 <Container fluid class="bg-primary bg-opacity-10 relative">
@@ -26,7 +25,7 @@
 			>
 				<div class="px-4 py-4 bg-opacity-90 bg-secondary">
 					<Typography variant="title">{hero}</Typography>
-					<Typography variant="subtitle" class="mb-4">{subtitle}</Typography>
+					<Typography variant="subtitle" class="text-black mb-4">{subtitle}</Typography>
 					<!-- <Button>{$t('home.hero-cta')}</Button> -->
 				</div>
 			</div>
