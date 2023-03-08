@@ -15,13 +15,12 @@ COPY package.json svelte.config.js ./
 RUN pnpm install --offline --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 
 COPY ./ .
+RUN pnpm build:prod
 
 ARG PUBLIC_API_URL=${PUBLIC_API_URL}
 ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 ARG PUBLIC_URL=${PUBLIC_URL}
 ENV PUBLIC_URL=${PUBLIC_URL}
-
-RUN pnpm build:prod
 
 # Remove additional layer since we're on vm
 # FROM node:18-alpine

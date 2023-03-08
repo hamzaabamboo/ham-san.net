@@ -15,7 +15,9 @@ const config = {
 		preprocess()
 	],
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			precompress: true
+		}),
 		alias: {
 			'@components': 'src/components',
 			'@i18n': 'src/i18n',
