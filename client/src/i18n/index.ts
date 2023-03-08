@@ -52,13 +52,13 @@ const config = {
 		{
 			locale: 'en',
 			key: 'about-me',
-			pathname: 'about-me',
+			pathname: '/about',
 			loader: async () => (await import('./en/about-me.json')).default
 		},
 		{
 			locale: 'ja',
 			key: 'about-me',
-			pathname: '/about-me',
+			pathname: '/about',
 			loader: async () => (await import('./ja/about-me.json')).default
 		}
 	]

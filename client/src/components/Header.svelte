@@ -28,7 +28,7 @@
 	};
 
 	$: links = [
-		{ label: $t('common.about-me'), href: '/about-me' },
+		{ label: $t('common.about-me'), href: '/about' },
 		{ label: $t('common.projects'), href: '/projects' },
 		// { label: $t('common.hobbies'), href: '/hobbies' },
 		// { label: $t('common.blog'), href: '/blog' },

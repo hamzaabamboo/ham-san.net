@@ -46,6 +46,7 @@
 <MetaTags
 	title="{title} | {$t('common.name')}"
 	description={project?.description ?? undefined}
+	image={getMediaUrl(banner, { width: 1200 })}
 	path="projects/{project?.slug}"
 />
 

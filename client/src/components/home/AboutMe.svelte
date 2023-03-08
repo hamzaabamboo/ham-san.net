@@ -16,7 +16,7 @@
 				<Typography variant="h2" class="mb-4">{$t('home.about-me')}</Typography>
 				{#if content}<MarkdownRenderer {content} />{/if}
 				<Typography class="font-sm mt-2 font-gray-300"
-					><a href="/about-me"
+					><a href="/about"
 						>{$t('home.find-out-more')}
 						<Fa icon={faArrowRight} class="inline ml-2 transition relative hover:right-2" />
 					</a></Typography

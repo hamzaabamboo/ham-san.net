@@ -14,7 +14,11 @@
 	$: homepageData = data?.data?.homepage?.data?.attributes;
 </script>
 
-<MetaTags title={$t('common.name')} path="" />
+<MetaTags
+	title={$t('common.name')}
+	path=""
+	image={getMediaUrl(homepageData?.heroImage?.data?.attributes?.url, { width: 1200 })}
+/>
 
 <Hero
 	hero={homepageData?.hero}
