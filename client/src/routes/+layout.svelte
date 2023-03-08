@@ -3,6 +3,7 @@
 	import Header from '@components/Header.svelte';
 	import Footer from '@components/Footer.svelte';
 	import { t } from '@i18n';
+	import MetaTags from '@components/core/MetaTags.svelte';
 </script>
 
 <svelte:head>

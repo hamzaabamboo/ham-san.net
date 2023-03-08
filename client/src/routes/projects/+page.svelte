@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Container from '@components/core/Container.svelte';
+	import MetaTags from '@components/core/MetaTags.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
 	import { t } from '@i18n';
@@ -14,9 +15,7 @@
 	);
 </script>
 
-<svelte:head>
-	<title>{$t('project.projects')} | {$t('common.name')}</title>
-</svelte:head>
+<MetaTags title="{$t('project.projects')} | {$t('common.name')}" path="projects" />
 
 <Container class="my-8">
 	<Typography variant="h2" class="mb-4">{$t('project.projects')}</Typography>

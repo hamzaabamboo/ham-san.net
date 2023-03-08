@@ -14,6 +14,7 @@
 	import TagItem from '@components/tags/TagItem.svelte';
 	import ExperienceItem from '@components/experience/ExperienceItem.svelte';
 	import type { PageServerData } from './$types';
+	import MetaTags from '@components/core/MetaTags.svelte';
 
 	export let data: PageServerData;
 
@@ -30,9 +31,7 @@
 	$: formatDate = (date?: string) => (date ? formatMonthYear(parseDate(date), $locale) : null);
 </script>
 
-<svelte:head>
-	<title>{$t('common.about-me')} | {$t('common.name')}</title>
-</svelte:head>
+<MetaTags title="{$t('common.about-me')} | {$t('common.name')}" path="about-me" />
 
 <Container class="pt-12 flex flex-row  flex-wrap">
 	<div class="px-4 flex flex-col w-full md:w-3/5">

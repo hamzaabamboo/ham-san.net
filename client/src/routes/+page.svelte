@@ -1,4 +1,5 @@
 <script lang="ts">
+	import MetaTags from '@components/core/MetaTags.svelte';
 	import AboutMe from '@components/home/AboutMe.svelte';
 	import BeforeFooter from '@components/home/BeforeFooter.svelte';
 	import FeaturedProjects from '@components/home/FeaturedProjects.svelte';
@@ -13,9 +14,7 @@
 	$: homepageData = data?.data?.homepage?.data?.attributes;
 </script>
 
-<svelte:head>
-	<title>{$t('common.name')}</title>
-</svelte:head>
+<MetaTags title={$t('common.name')} path="" />
 
 <Hero
 	hero={homepageData?.hero}

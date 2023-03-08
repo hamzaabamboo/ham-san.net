@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Container from '@components/core/Container.svelte';
+	import MetaTags from '@components/core/MetaTags.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
@@ -24,9 +25,7 @@
 	$: formatDate = (date?: string) => (date ? formatMonthYear(parseDate(date), $locale) : null);
 </script>
 
-<svelte:head>
-	<title>{tag?.title} | {$t('common.name')}</title>
-</svelte:head>
+<MetaTags title="{tag?.title}| {$t('common.name')}" path="tags/{tag?.slug}" />
 
 <Container class="pt-12">
 	<Typography variant="title">{tag?.title}</Typography>

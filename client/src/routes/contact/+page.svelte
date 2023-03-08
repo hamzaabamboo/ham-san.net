@@ -5,6 +5,7 @@
 	import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 	import { faGithub, faFacebook, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 	import Fa from 'svelte-fa';
+	import MetaTags from '@components/core/MetaTags.svelte';
 
 	$: items = [
 		{
@@ -46,9 +47,7 @@
 	];
 </script>
 
-<svelte:head>
-	<title>{$t('common.contact')} | {$t('common.name')}</title>
-</svelte:head>
+<MetaTags title="{$t('common.contact')} | {$t('common.name')}" path="contact" />
 
 <Container class="pt-8">
 	<Typography variant="h1" class="mb-2">{$t('common.contact')}</Typography>
