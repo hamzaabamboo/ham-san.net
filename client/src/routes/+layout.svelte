@@ -7,6 +7,10 @@
 
 <svelte:head>
 	<title>{$t('common.name')}</title>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;400;700;900&display=swap"
+		rel="stylesheet"
+	/>
 </svelte:head>
 
 <div class="h-screen flex flex-col">

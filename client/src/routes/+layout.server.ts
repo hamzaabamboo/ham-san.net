@@ -1,8 +1,7 @@
 import { LANGUAGES } from '@utils/localization';
-import type { LayoutServerLoadEvent } from './$types';
+import type { LayoutServerLoad } from './$types';
 
-/** @type {import('./$types').LayoutServerLoad} */
-export const load = async ({ request, cookies }: LayoutServerLoadEvent) => {
+export const load: LayoutServerLoad = async ({ request, cookies }) => {
 	const preferredLanguages =
 		(request.headers.get('content-language') && [request.headers.get('content-language')]) ||
 		request.headers

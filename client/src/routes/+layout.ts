@@ -1,10 +1,9 @@
 import { locale, loadTranslations } from '@i18n';
-import type { LayoutLoadEvent } from './$types';
+import type { LayoutLoad } from './$types';
 import { LANGUAGES } from '@utils/localization';
 import { browser } from '$app/environment';
 
-/** @type {import('./$types').LayoutLoad} */
-export const load = async ({ url, data }: LayoutLoadEvent) => {
+export const load: LayoutLoad = async ({ url, data }) => {
 	const { pathname } = url;
 	const { preferredLanguages = [], currentLanguage } = data;
 	const defaultLocale =
