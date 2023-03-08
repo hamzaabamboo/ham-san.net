@@ -3,9 +3,10 @@
 	import Typography from './Typography.svelte';
 
 	import Fa from 'svelte-fa';
-	import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+	import { faGlobe, type IconDefinition } from '@fortawesome/free-solid-svg-icons';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	export let link: ComponentUtilsLink;
+	export let icon: IconDefinition;
 
 	const processUrl = (link: ComponentUtilsLink) => {
 		switch (link.type) {
@@ -17,6 +18,7 @@
 	};
 
 	const linkIcon = (link: ComponentUtilsLink) => {
+		if (icon) return icon;
 		switch (link.type) {
 			case 'github':
 				return faGithub;

@@ -19,5 +19,6 @@
 	"dev-ops": "DevOps",
 	"others": "その他",
 	"present": "現在",
-	"used-since": "{{usedSince}}から使ってました"
+	"used-since": "{{usedSince}}から使ってました",
+	"view-source": "ソースコード"
 }

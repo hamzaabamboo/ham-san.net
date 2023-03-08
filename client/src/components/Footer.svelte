@@ -4,5 +4,13 @@
 </script>
 
 <div class="w-full py-2 flex justify-center items-center bg-primary shadow-md">
-	<Typography class="mb-0">{$t('common.copyright')}</Typography>
+	<Typography class="mb-0"
+		><span class="mr-2">{$t('common.copyright')}</span> |
+		<a
+			target="_blank"
+			rel="noreferrer"
+			href="https://github.com/hamzaabamboo/ham-san.net"
+			class="ml-2">{$t('common.view-source')}</a
+		></Typography
+	>
 </div>
