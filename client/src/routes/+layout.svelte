@@ -55,10 +55,11 @@
 <style>
 	/* https://meowni.ca/font-style-matcher/ */
 	.unstyled {
-		line-height: 1.6;
+		line-height: 1.5;
 		font-family: sans-serif;
-		letter-spacing: 0.35px;
-		word-spacing: 0.15px;
+		word-spacing: -0.25px;
+		letter-spacing: 0.5px;
+		font-weight: 400;
 		/* font-weight: 400; */
 	}
 
