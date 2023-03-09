@@ -12,10 +12,6 @@
 
 	// let navbar: HTMLElement;
 
-	afterNavigate(() => {
-		window?.scrollTo(0, 0);
-	});
-
 	const handleChangeLanguage = (language: (typeof LANGUAGES)[number]) => {
 		locale.set(language);
 		fetch('/?/set-language', {

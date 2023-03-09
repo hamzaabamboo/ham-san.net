@@ -6,11 +6,13 @@
 	import { onMount } from 'svelte';
 	import GoogleTagManager from '@components/core/GoogleTagManager.svelte';
 	import { preparePageTransition } from '@utils/preparePageTransition';
+	import { disableScrollHandling } from '$app/navigation';
 
 	let isReady = false;
 
 	onMount(() => {
 		document.fonts.load('16px Noto Sans JP').then(() => (isReady = true));
+		disableScrollHandling();
 	});
 
 	preparePageTransition();
