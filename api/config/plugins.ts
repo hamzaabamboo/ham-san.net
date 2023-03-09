@@ -36,4 +36,7 @@ module.exports = {
       cacheDir: ".image-cache",
     },
   },
+  "strapi-chatgpt": {
+    enabled: true,
+  },
 };

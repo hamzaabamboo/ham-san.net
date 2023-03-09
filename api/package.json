@@ -17,6 +17,7 @@
     "@strapi/typescript-utils": "4.7.0",
     "better-sqlite3": "8.0.1",
     "domain-browser": "^4.22.0",
+    "strapi-chatgpt": "^1.0.2",
     "strapi-plugin-config-sync": "^1.1.1",
     "strapi-plugin-local-image-sharp": "^1.6.0",
     "strapi-plugin-slugify": "^2.3.2"
