@@ -10,8 +10,6 @@
 
 	export let data: PageServerData;
 
-	let bannerWidth: number;
-
 	$: projects = data?.data?.projects?.data.map((p) => p.attributes).filter((p) => !!p);
 	$: homepageData = data?.data?.homepage?.data?.attributes;
 </script>
@@ -23,13 +21,10 @@
 />
 
 <Hero
-	bind:maxBannerWidth={bannerWidth}
 	hero={homepageData?.hero}
 	subtitle={homepageData?.heroSubtitle}
 	bg={getMediaUrl(homepageData?.heroImage?.data?.attributes?.url, {
-		height: 500,
-		width: bannerWidth,
-		fit: 'outside'
+		height: 500
 	})}
 />
 <AboutMe

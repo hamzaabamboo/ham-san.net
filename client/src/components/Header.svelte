@@ -25,9 +25,11 @@
 				'Content-Type': 'application/x-www-form-urlencoded'
 			}
 		}).then(() => invalidateAll());
+		if (menuOpen) menuOpen = false;
 	};
 
 	$: links = [
+		{ label: $t('common.home'), href: '/' },
 		{ label: $t('common.about-me'), href: '/about' },
 		{ label: $t('common.projects'), href: '/projects' },
 		// { label: $t('common.hobbies'), href: '/hobbies' },

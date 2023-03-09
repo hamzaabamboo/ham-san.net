@@ -1,27 +1,16 @@
 <script lang="ts">
-	import Button from '@components/core/Button.svelte';
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import { t } from '@i18n';
-	import debounce from 'lodash/debounce';
 
 	export let hero = $t('home.hero-text');
 	export let subtitle = $t('home.hero-subtitle');
 	export let bg: string;
-
-	let bannerWidth: number;
-	export let maxBannerWidth: number = 0;
-
-	$: updateWidth = debounce((newWidth) => {
-		maxBannerWidth = newWidth > maxBannerWidth ? newWidth : maxBannerWidth;
-	}, 500);
-	$: updateWidth(bannerWidth);
 </script>
 
 <Container fluid class="bg-primary bg-opacity-10 relative">
 	<!-- https://medium.com/@dailyfire/pure-css-parallax-simple-tricks-da102d0ffdb9 -->
 	<div
-		bind:clientWidth={bannerWidth}
 		class="bg-cover bg-center h-full w-full absolute z-0"
 		style:transform="translateZ(-1px) scale(1.3)"
 		style:background-image="url('{bg}')"
