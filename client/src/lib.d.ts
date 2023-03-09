@@ -49,6 +49,6 @@ declare module 'svelte-carousel' {
 }
 
 declare module '*.jpg?format=webp&w=1980' {
-	const image: Record<string, any>;
+	const image: Record<string, unknown>;
 	export default image;
 }

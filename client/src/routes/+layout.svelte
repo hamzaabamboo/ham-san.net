@@ -14,7 +14,7 @@
 
 <svelte:head>
 	<title>{$t('common.name')}</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true"/>
+	<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true" />
 	<link
 		rel="preload"
 		as="style"
