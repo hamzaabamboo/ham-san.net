@@ -5,12 +5,15 @@
 	import { t } from '@i18n';
 	import { onMount } from 'svelte';
 	import GoogleTagManager from '@components/core/GoogleTagManager.svelte';
+	import { preparePageTransition } from '@utils/preparePageTransition';
 
 	let isReady = false;
 
 	onMount(() => {
 		document.fonts.load('16px Noto Sans JP').then(() => (isReady = true));
 	});
+
+	preparePageTransition();
 </script>
 
 <svelte:head>
@@ -55,5 +58,23 @@
 		letter-spacing: 0.35px;
 		word-spacing: 0.15px;
 		/* font-weight: 400; */
+	}
+
+	/* https://geoffrich.net/posts/page-transitions-1/ */
+	html::view-transition-old() {
+		animation-name: -ua-view-transition-fade-out;
+		animation-duration: inherit;
+		animation-fill-mode: inherit;
+	}
+
+	html::view-transition-new() {
+		animation-name: -ua-view-transition-fade-in;
+		animation-duration: inherit;
+		animation-fill-mode: inherit;
+	}
+
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation-duration: 5s;
 	}
 </style>

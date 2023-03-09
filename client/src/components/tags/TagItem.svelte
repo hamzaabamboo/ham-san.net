@@ -6,7 +6,9 @@
 	export let showProjectCount = false;
 
 	let _class = '';
-	export { _class as class };
+
+	let _id: string | undefined = undefined;
+	export { _class as class, _id as id };
 
 	$: getColor = () => {
 		switch (tag.type) {
@@ -31,7 +33,7 @@
 </script>
 
 <!-- <a href="/tags/{tag?.slug}" class="block"> -->
-<Pill class="{color} {_class || ''}"
+<Pill class="{color} {_class || ''}" style={_id ? `view-transition-name: ${_id};` : ''}
 	>{tag?.title}
 	{#if showProjectCount && tag.projects?.data.length && tag.projects?.data.length > 0}({tag.projects
 			?.data.length}){/if}</Pill
