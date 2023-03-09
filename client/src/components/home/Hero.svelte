@@ -2,12 +2,11 @@
 	import Button from '@components/core/Button.svelte';
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
-	import heroBg from '@assets/hero-bg.jpg?format=webp&w=1980';
 	import { t } from '@i18n';
 
 	export let hero = $t('home.hero-text');
 	export let subtitle = $t('home.hero-subtitle');
-	export let bg = heroBg;
+	export let bg: string;
 </script>
 
 <Container fluid class="bg-primary bg-opacity-10 relative">

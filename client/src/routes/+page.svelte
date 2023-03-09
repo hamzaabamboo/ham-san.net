@@ -25,6 +25,9 @@
 	subtitle={homepageData?.heroSubtitle}
 	bg={getMediaUrl(homepageData?.heroImage?.data?.attributes?.url, { width: 1920 })}
 />
-<AboutMe content={homepageData?.introduction} />
+<AboutMe
+	content={homepageData?.introduction}
+	image={getMediaUrl(homepageData?.introductionImage?.data?.attributes?.url, { height: 400 })}
+/>
 <FeaturedProjects {projects} />
 <BeforeFooter />

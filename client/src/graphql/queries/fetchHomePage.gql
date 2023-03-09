@@ -16,6 +16,14 @@ query fetchHomePage($locale: I18NLocaleCode) {
 		data {
 			attributes {
 				introduction
+				introductionImage {
+					data {
+						id
+						attributes {
+							...media
+						}
+					}
+				}
 				hero
 				heroSubtitle
 				heroImage {

@@ -4,6 +4,7 @@
 	import Footer from '@components/Footer.svelte';
 	import { t } from '@i18n';
 	import { onMount } from 'svelte';
+	import GoogleTagManager from '@components/core/GoogleTagManager.svelte';
 
 	let isReady = false;
 
@@ -29,6 +30,8 @@
 		rel="stylesheet"
 	/> -->
 </svelte:head>
+
+<GoogleTagManager gtmId='G-2FPKQLHT9H' />
 
 <div class="h-screen flex flex-col" class:unstyled={!isReady}>
 	<Header />

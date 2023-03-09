@@ -6,7 +6,8 @@
 	import { t } from '@i18n';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
 
-	export let content: string;
+	export let content: string | null | undefined;
+	export let image: string;
 </script>
 
 <Container fluid class="bg-white px-2 py-8 relative z-20">
@@ -25,7 +26,8 @@
 			<div class="w-full lg:w-1/2">
 				<img
 					class="mx-auto"
-					src="https://1.bp.blogspot.com/-uvEg1u2GbOA/Xbo6RFkasGI/AAAAAAABVv0/VmZEUI9EqGojzfBajCmBifQjlWGJO_GeACNcBGAsYHQ/s400/yaruki_aru_suit_man.png"
+					src={image ??
+						'https://1.bp.blogspot.com/-uvEg1u2GbOA/Xbo6RFkasGI/AAAAAAABVv0/VmZEUI9EqGojzfBajCmBifQjlWGJO_GeACNcBGAsYHQ/s400/yaruki_aru_suit_man.png'}
 					alt="Enthusiastic Developer"
 				/>
 			</div>
