@@ -22,13 +22,13 @@
 	export { _class as class };
 </script>
 
-<a href="/projects/{project.slug}" class="block {_class || ''}" style:min-height="250px">
+<a href="/projects/{project.slug}" class="block md:min-h-[250px] {_class || ''}">
 	<div
 		class=" bg-white shadow-md rounded-md flex flex-col h-full transtion-shadow transition-transform hover:shadow-lg hover:scale-105"
 	>
 		{#if project.media?.data[0]?.attributes?.url}
 			<div
-				class="bg-cover bg-center bg-no-repeat h-64"
+				class="rounded-t-md bg-cover bg-center bg-no-repeat h-64"
 				style:background-image="url('{getMediaUrl(project.media?.data[0]?.attributes?.url, {
 					height: 400
 				})}')"

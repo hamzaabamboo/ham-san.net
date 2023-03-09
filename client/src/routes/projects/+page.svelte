@@ -28,7 +28,7 @@
 						{#each projectGroups[group] as project}
 							<ProjectCard
 								project={project.attributes}
-								class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2 "
+								class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
 							/>
 						{/each}
 					</div>

@@ -14,7 +14,7 @@
 		<div class="flex flex-col sm:flex-row flex-wrap">
 			{#each projects as project}
 				{#if project}
-					<ProjectCard class="sm:w-1/2 lg:w-1/3 px-2" {project} />
+					<ProjectCard class="w-full md:w-1/2 lg:w-1/3 p-2 " {project} />
 				{/if}
 			{/each}
 		</div>

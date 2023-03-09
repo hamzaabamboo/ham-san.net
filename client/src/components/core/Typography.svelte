@@ -12,8 +12,8 @@
 		| 'body 2';
 
 	let _class = '';
-	$: hasMargin = /m.*-\d{,3}/.test(_class);
-	$: hasColor = /text.*-.*?-\d{3}/.test(_class);
+	$: hasMargin = /m.*-\d{0,3}/.test(_class);
+	$: hasColor = /text-.*?-\d{3}/.test(_class);
 	export { _class as class };
 </script>
 
