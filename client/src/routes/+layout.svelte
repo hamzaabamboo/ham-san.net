@@ -31,7 +31,7 @@
 	/> -->
 </svelte:head>
 
-<GoogleTagManager gtmId='G-2FPKQLHT9H' />
+<GoogleTagManager gtmId="G-2FPKQLHT9H" timeout={500} />
 
 <div class="h-screen flex flex-col" class:unstyled={!isReady}>
 	<Header />
