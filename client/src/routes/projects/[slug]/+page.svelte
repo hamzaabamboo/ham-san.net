@@ -12,6 +12,7 @@
 	import { localizationUrls } from '@stores/localizationUrls';
 	import { formatMonthYear, parseDate } from '@utils/date';
 	import { getMediaUrl } from '@utils/media';
+	import debounce from 'lodash/debounce';
 	import { onDestroy } from 'svelte';
 	import Fa from 'svelte-fa';
 	import type { PageData } from './$types';
@@ -38,6 +39,14 @@
 		localizationUrls.set(localizationObj);
 	}
 
+	let bannerWidth: number;
+	let maxBannerWidth: number = 0;
+
+	$: updateWidth = debounce((newWidth) => {
+		maxBannerWidth = newWidth > maxBannerWidth ? newWidth : maxBannerWidth;
+	}, 500);
+	$: updateWidth(bannerWidth);
+
 	onDestroy(() => {
 		localizationUrls.set({});
 	});
@@ -53,8 +62,13 @@
 {#if banner}
 	<div
 		class="bg-cover bg-center"
+		bind:clientWidth={bannerWidth}
 		style:height="400px"
-		style:background-image="url('{getMediaUrl(banner, { width: 1920 })}')"
+		style:background-image="url('{getMediaUrl(banner, {
+			height: 400,
+			width: maxBannerWidth,
+			fit: 'outside'
+		})}')"
 		style:transform="translateZ(-2px) scale(1.8)"
 	/>
 {/if}
