@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Container from '@components/core/Container.svelte';
-	import Pill from '@components/core/Pill.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
 	import { Enum_Tag_Type } from '@graphql/generated/client';

@@ -1,5 +1,4 @@
-import { Enum_Tag_Type, type Tag } from '@graphql/generated/client';
-import type { TagEntity } from '@graphql/generated/server';
+import { Enum_Tag_Type, type TagEntity } from '@graphql/generated/client';
 
 const SORT_ORDER = [
 	Enum_Tag_Type.Frontend,
