@@ -93,7 +93,7 @@
 {:else}
 	<p
 		{...$$restProps}
-		class="{!hasMargin && 'mb-2'} {_class || ''}"
+		class="{!hasMargin && 'mb-1'} {_class || ''}"
 		id={_id}
 		style={_id ? `view-transition-name: ${_id};` : ''}
 	>
