@@ -1,10 +1,10 @@
 FROM node:19-alpine as build
 
 # Installing libvips-dev for sharp Compatibility
-RUN apk update && apk add --no-cache curl build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
+RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
 
 # Install pnpm
-RUN curl -f https://get.pnpm.io/v6.16.js | npm install -g pnpm
+RUN npm i -g pnpm
 
 WORKDIR /opt/app
 COPY pnpm-lock.yaml ./

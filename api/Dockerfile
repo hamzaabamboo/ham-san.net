@@ -4,7 +4,7 @@ FROM node:18-alpine
 RUN apk update && apk add --no-cache curl build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev
 
 # Install pnpm
-RUN curl -f https://get.pnpm.io/v6.16.js | npm install -g pnpm
+RUN npm i -g pnpm
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
