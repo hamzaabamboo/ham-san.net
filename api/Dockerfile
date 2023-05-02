@@ -10,11 +10,11 @@ ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/app
 COPY pnpm-lock.yaml ./
-ENV PATH /node_modules/.bin:$PATH
+ENV PATH /opt/app/node_modules/.bin:$PATH
 RUN pnpm fetch --prod
 
 COPY package.json .
-RUN pnpm install --offline --prod --config.auto-install-peers=true --strict-peer-dependencies
+RUN pnpm install --offline --prod --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 
 COPY ./ .
 RUN pnpm build

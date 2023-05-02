@@ -8,14 +8,13 @@ RUN npm i -g pnpm
 
 WORKDIR /opt/app
 COPY pnpm-lock.yaml ./
-ENV PATH /node_modules/.bin:$PATH
+ENV PATH /opt/app/node_modules/.bin:$PATH
 RUN pnpm fetch 
 
 COPY package.json svelte.config.js ./
 RUN pnpm install --offline --config.auto-install-peers=true --strict-peer-dependencies
 
 COPY ./ .
-RUN ls -a
 RUN pnpm build:prod
 
 ARG PUBLIC_API_URL=${PUBLIC_API_URL}
