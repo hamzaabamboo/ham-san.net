@@ -12,9 +12,10 @@ ENV PATH /node_modules/.bin:$PATH
 RUN pnpm fetch 
 
 COPY package.json svelte.config.js ./
-RUN pnpm install --offline --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
+RUN pnpm install --offline --config.auto-install-peers=true --strict-peer-dependencies
 
 COPY ./ .
+RUN ls -a
 RUN pnpm build:prod
 
 ARG PUBLIC_API_URL=${PUBLIC_API_URL}

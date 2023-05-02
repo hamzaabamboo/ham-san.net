@@ -15,7 +15,7 @@
 		"prepare": "svelte-kit sync",
 		"start": "node --experimental-loader ./scripts/loader.js -r dotenv/config build",
 		"codegen": "graphql-codegen",
-		"codegen:prod": "graphql-codegen -c codegen.prod.yml",
+		"codegen:prod": "pnpm graphql-codegen -c codegen.prod.yml",
 		"build:prod": "pnpm codegen:prod && pnpm build"
 	},
 	"devDependencies": {
@@ -58,7 +58,7 @@
 		"date-fns": "^2.30.0",
 		"dotenv": "^16.0.3",
 		"graphql": "^16.6.0",
-		"graphql-request": "5.1.0",
+		"graphql-request": "^5.1.0",
 		"graphql-tag": "^2.12.6",
 		"lodash": "^4.17.21",
 		"svelte-apollo-client": "^0.1.4",
