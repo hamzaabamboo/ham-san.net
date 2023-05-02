@@ -1,0 +1,46 @@
+fragment blog on Blog {
+	title
+	description
+	content
+	slug
+	category {
+		data {
+			id
+			attributes {
+				name
+			}
+		}
+	}
+	thumbnail {
+		data {
+			id
+			attributes {
+				...media
+			}
+		}
+	}
+	tags {
+		data {
+			id
+			attributes {
+				...tag
+			}
+		}
+	}
+	banner {
+		data {
+			attributes {
+				...media
+			}
+		}
+	}
+	localizations {
+		data {
+			attributes {
+				locale
+				slug
+			}
+		}
+	}
+	createdAt
+}

@@ -28,6 +28,12 @@
       "relation": "oneToMany",
       "target": "api::project.project",
       "mappedBy": "category"
+    },
+    "blogs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::blog.blog",
+      "mappedBy": "category"
     }
   }
 }

@@ -60,6 +60,18 @@ const config = {
 			key: 'about-me',
 			pathname: '/about',
 			loader: async () => (await import('./ja/about-me.json')).default
+		},
+		{
+			locale: 'en',
+			key: 'blog',
+			pathname: '/blog',
+			loader: async () => (await import('./en/blog.json')).default
+		},
+		{
+			locale: 'ja',
+			key: 'blog',
+			pathname: '/blog',
+			loader: async () => (await import('./ja/blog.json')).default
 		}
 	]
 };

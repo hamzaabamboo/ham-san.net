@@ -9,6 +9,7 @@
 	let menuOpen = false;
 
 	import { afterNavigate } from '$app/navigation';
+	import Logo from './core/Logo.svelte';
 
 	// let navbar: HTMLElement;
 
@@ -29,7 +30,7 @@
 		{ label: $t('common.about-me'), href: '/about' },
 		{ label: $t('common.projects'), href: '/projects' },
 		// { label: $t('common.hobbies'), href: '/hobbies' },
-		// { label: $t('common.blog'), href: '/blog' },
+		{ label: $t('common.blog'), href: '/blog' },
 		{ label: $t('common.contact'), href: '/contact' }
 	];
 </script>
@@ -40,6 +41,7 @@
 >
 	<!-- Logo Section -->
 	<div class="w-full md:w-auto relative z-20">
+		<!-- <Logo /> -->
 		<a href="/">{$t('common.name')}</a>
 	</div>
 
@@ -74,7 +76,7 @@
 		<Fa icon={faBars} size="md" />
 	</div>
 	<div
-		class="fixed w-full h-full z-10 transition-all bg-white top-0 pt-16 md:hidden "
+		class="fixed w-full h-full z-10 transition-all bg-white top-0 pt-16 md:hidden"
 		class:-right-full={!menuOpen}
 		class:right-0={menuOpen}
 	>

@@ -78,6 +78,12 @@
         }
       },
       "type": "integer"
+    },
+    "blogs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::blog.blog",
+      "mappedBy": "tags"
     }
   }
 }
