@@ -15,7 +15,7 @@
 		"prepare": "svelte-kit sync",
 		"start": "node --experimental-loader ./scripts/loader.js -r dotenv/config build",
 		"codegen": "graphql-codegen",
-		"codegen:prod": "pnpm graphql-codegen -c codegen.prod.yml",
+		"codegen:prod": "graphql-codegen -c codegen.prod.yml",
 		"build:prod": "pnpm codegen:prod && pnpm build"
 	},
 	"devDependencies": {
