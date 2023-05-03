@@ -16,7 +16,7 @@
 		"start": "node --experimental-loader ./scripts/loader.js -r dotenv/config build",
 		"codegen": "graphql-codegen",
 		"codegen:prod": "graphql-codegen -c codegen.prod.yml",
-		"build:prod": "codegen:prod && pnpm build"
+		"build:prod": "pnpm codegen:prod && pnpm build"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "^3.3.1",

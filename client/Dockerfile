@@ -4,15 +4,14 @@ FROM node:19-alpine as build
 RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
 
 # Install pnpm
-RUN npm i -g pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /opt/app
 COPY pnpm-lock.yaml ./
-ENV PATH /opt/app/node_modules/.bin:$PATH
 RUN pnpm fetch 
 
 COPY package.json svelte.config.js ./
-RUN pnpm install --offline --config.auto-install-peers=true --strict-peer-dependencies
+RUN echo "Y" | pnpm install --offline --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 
 COPY ./ .
 RUN pnpm build:prod

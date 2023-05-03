@@ -4,17 +4,17 @@ FROM node:18-alpine
 RUN apk update && apk add --no-cache curl build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev
 
 # Install pnpm
-RUN npm i -g pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/app
-COPY pnpm-lock.yaml ./
 ENV PATH /opt/app/node_modules/.bin:$PATH
+COPY pnpm-lock.yaml ./
 RUN pnpm fetch --prod
 
 COPY package.json .
-RUN pnpm install --offline --prod --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
+RUN echo "Y" | pnpm install -r --offline --prod --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 
 COPY ./ .
 RUN pnpm build
