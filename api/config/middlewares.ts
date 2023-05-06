@@ -1,6 +1,19 @@
 export default [
   "strapi::errors",
-  "strapi::security",
+  {
+    name: "strapi::security",
+    config: {
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          "connect-src": ["'self'", "https:"],
+          "img-src": ["'self'", "data:", "blob:", "s3.ham-san.net"],
+          "media-src": ["'self'", "data:", "blob:", "s3.ham-san.net"],
+          upgradeInsecureRequests: null,
+        },
+      },
+    },
+  },
   "strapi::poweredBy",
   {
     name: "strapi::cors",
