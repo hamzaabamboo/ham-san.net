@@ -3,7 +3,10 @@
 	import Typography from './core/Typography.svelte';
 </script>
 
-<div class="w-full py-2 flex justify-center items-center bg-primary shadow-md">
+<div
+	class="w-full py-2 flex justify-center items-center bg-primary shadow-md"
+	style="view-transition-name: footer"
+>
 	<Typography class="mb-0"
 		><span class="mr-2">{$t('common.copyright')}</span> |
 		<a

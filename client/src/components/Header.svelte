@@ -38,6 +38,7 @@
 <!-- bind:this={navbar} -->
 <nav
 	class="w-full h-12 flex items-center justify-between px-4 sticky top-0 bg-primary shadow-sm z-20"
+	style="view-transition-name: header"
 >
 	<!-- Logo Section -->
 	<div class="w-full md:w-auto relative z-20">

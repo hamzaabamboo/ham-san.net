@@ -64,7 +64,8 @@
 	}
 
 	/* https://geoffrich.net/posts/page-transitions-1/ */
-	html::view-transition-old() {
+	/* https://developer.chrome.com/docs/web-platform/view-transitions/#transitioning-elements-dont-need-to-be-the-same-dom-element */
+	/* html::view-transition-old() {
 		animation-name: -ua-view-transition-fade-out;
 		animation-duration: inherit;
 		animation-fill-mode: inherit;
@@ -74,10 +75,10 @@
 		animation-name: -ua-view-transition-fade-in;
 		animation-duration: inherit;
 		animation-fill-mode: inherit;
-	}
+	} */ 
 
-	::view-transition-old(root),
+	/* ::view-transition-old(root),
 	::view-transition-new(root) {
-		animation-duration: 5s;
-	}
+	  animation-duration: 5s; 
+	} */
 </style>

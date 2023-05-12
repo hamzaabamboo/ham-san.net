@@ -6,7 +6,7 @@
 	import { faGlobe, type IconDefinition } from '@fortawesome/free-solid-svg-icons';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	export let link: ComponentUtilsLink;
-	export let icon: IconDefinition;
+	export let icon: IconDefinition | undefined;
 
 	const processUrl = (link: ComponentUtilsLink) => {
 		switch (link.type) {

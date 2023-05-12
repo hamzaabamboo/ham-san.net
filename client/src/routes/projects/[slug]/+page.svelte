@@ -13,7 +13,7 @@
 	import { formatMonthYear, parseDate } from '@utils/date';
 	import { getMediaUrl } from '@utils/media';
 	import debounce from 'lodash/debounce';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import Fa from 'svelte-fa';
 	import type { PageData } from './$types';
 
@@ -47,6 +47,10 @@
 	}, 500);
 	$: updateWidth(bannerWidth);
 
+	onMount(() => {
+		maxBannerWidth = bannerWidth;
+	});
+
 	onDestroy(() => {
 		localizationUrls.set({});
 	});
@@ -64,11 +68,13 @@
 		class="bg-cover bg-center"
 		bind:clientWidth={bannerWidth}
 		style:height="400px"
-		style:background-image="url('{getMediaUrl(banner, {
-			height: 400,
-			width: maxBannerWidth,
-			fit: 'outside'
-		})}')"
+		style:background-image={maxBannerWidth > 0
+			? `url('${getMediaUrl(banner, {
+					height: 400,
+					width: maxBannerWidth,
+					fit: 'outside'
+			  })}')`
+			: null}
 		style:transform="translateZ(-2px) scale(1.8)"
 	/>
 {/if}
