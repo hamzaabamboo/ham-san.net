@@ -1,20 +1,23 @@
 FROM node:18-alpine as build
 
-# Installing libvips-dev for sharp Compatibility
-RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
-
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-WORKDIR /opt/app
-COPY pnpm-lock.yaml ./
-RUN pnpm fetch 
+# Installing libvips-dev for sharp Compatibility
+RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
 
-COPY package.json svelte.config.js ./
-RUN echo "Y" | pnpm install --offline --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
+WORKDIR /opt/app
+
+COPY pnpm-lock.yaml package.json ./
+RUN echo "Y" | pnpm install --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
+
+COPY svelte.config.js ./
+RUN pnpm sync
 
 COPY ./ .
 RUN pnpm build:prod
+
+RUN pnpm prune --prod
 
 ARG PUBLIC_API_URL=${PUBLIC_API_URL}
 ENV PUBLIC_API_URL=${PUBLIC_API_URL}

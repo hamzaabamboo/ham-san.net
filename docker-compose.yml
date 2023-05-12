@@ -23,6 +23,7 @@ services:
   client:
     container_name: sveltekit
     env_file: .env
+    restart: unless-stopped
     build:
       context: client
     environment:
