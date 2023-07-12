@@ -10,17 +10,17 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi/plugin-graphql": "^4.10.1",
-    "@strapi/plugin-i18n": "^4.10.1",
-    "@strapi/plugin-users-permissions": "^4.10.1",
-    "@strapi/strapi": "^4.10.1",
-    "@strapi/typescript-utils": "^4.10.1",
+    "@strapi/plugin-graphql": "^4.11.5",
+    "@strapi/plugin-i18n": "^4.11.5",
+    "@strapi/plugin-users-permissions": "^4.11.5",
+    "@strapi/strapi": "^4.11.5",
+    "@strapi/typescript-utils": "^4.11.5",
     "better-sqlite3": "8.0.1",
     "domain-browser": "^4.22.0",
     "strapi-chatgpt": "^1.0.2",
     "strapi-plugin-config-sync": "^1.1.2",
     "strapi-plugin-local-image-sharp": "^1.6.0",
-    "strapi-plugin-slugify": "^2.3.2"
+    "strapi-plugin-slugify": "^2.3.3"
   },
   "author": {
     "name": "A Strapi developer"
