@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { ProjectPreviewFragment } from '@graphql/generated/client';
-	import { getMediaUrl } from '@utils/media';
 	import Typography from '@components/core/Typography.svelte';
-	import { formatMonthYear, parseDate } from '@utils/date';
-	import { locale, t } from '@i18n';
 	import TagItem from '@components/tags/TagItem.svelte';
+	import type { ProjectPreviewFragment } from '@graphql/generated/client';
+	import { locale, t } from '@i18n';
+	import { formatMonthYear, parseDate } from '@utils/date';
+	import { getMediaUrl } from '@utils/media';
 	import { sortTags } from '@utils/tags';
 
 	export let project: Pick<
@@ -19,6 +19,7 @@
 	]
 		.filter((f) => !!f)
 		.join(' | ');
+
 	export { _class as class };
 </script>
 

@@ -3,7 +3,7 @@
 	import MetaTags from '@components/core/MetaTags.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
-	import { t } from '@i18n';
+	import { locale, t } from '@i18n';
 	import groupBy from 'lodash/groupBy';
 	import type { PageServerData } from './$types';
 
@@ -27,7 +27,7 @@
 					<div class="flex flex-row flex-wrap mb-2">
 						{#each projectGroups[group] as project}
 							<ProjectCard
-								project={project.attributes}
+								project={$locale === project.attributes?.locale ? project.attributes : project.attributes?.localizations?.data.find(p => p.attributes?.locale === $locale)?.attributes ??  project.attributes}
 								class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
 							/>
 						{/each}

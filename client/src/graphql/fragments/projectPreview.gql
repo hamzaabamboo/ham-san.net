@@ -3,6 +3,7 @@ fragment projectPreview on Project {
 	description
 	slug
 	isActive
+	locale
 	category {
 		data {
 			id

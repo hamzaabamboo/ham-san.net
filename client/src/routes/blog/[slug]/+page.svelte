@@ -1,16 +1,12 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import Container from '@components/core/Container.svelte';
-	import ImageGallery from '@components/core/ImageGallery.svelte';
-	import LinkItem from '@components/core/LinkItem.svelte';
 	import MetaTags from '@components/core/MetaTags.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
 	import TagItem from '@components/tags/TagItem.svelte';
 	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-	import { locale, t } from '@i18n';
+	import { t } from '@i18n';
 	import { localizationUrls } from '@stores/localizationUrls';
-	import { formatMonthYear, parseDate } from '@utils/date';
 	import { getMediaUrl } from '@utils/media';
 	import debounce from 'lodash/debounce';
 	import { onDestroy } from 'svelte';

@@ -4,6 +4,7 @@ fragment project on Project {
 	content
 	slug
 	isActive
+	locale
 	category {
 		data {
 			id
