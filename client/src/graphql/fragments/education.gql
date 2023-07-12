@@ -1,4 +1,5 @@
 fragment education on Education {
+	locale
 	title
 	start
 	end

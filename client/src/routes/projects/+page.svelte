@@ -4,6 +4,7 @@
 	import Typography from '@components/core/Typography.svelte';
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
 	import { locale, t } from '@i18n';
+	import { fallbackLocale } from '@utils/fallbackLocale';
 	import groupBy from 'lodash/groupBy';
 	import type { PageServerData } from './$types';
 
@@ -26,10 +27,12 @@
 					<Typography variant="h4" class="mb-2">{group}</Typography>
 					<div class="flex flex-row flex-wrap mb-2">
 						{#each projectGroups[group] as project}
-							<ProjectCard
-								project={$locale === project.attributes?.locale ? project.attributes : project.attributes?.localizations?.data.find(p => p.attributes?.locale === $locale)?.attributes ??  project.attributes}
-								class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
-							/>
+							{#if project.attributes}
+								<ProjectCard
+									project={fallbackLocale(project, $locale)}
+									class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
+								/>
+							{/if}
 						{/each}
 					</div>
 					<hr class="mb-2" />

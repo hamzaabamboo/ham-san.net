@@ -1,4 +1,5 @@
 fragment experience on Experience {
+	locale
 	title
 	description
 	start

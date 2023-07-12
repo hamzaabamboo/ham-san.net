@@ -9,18 +9,19 @@
 	import groupBy from 'lodash/groupBy';
 
 	import aboutMeBanner from '@assets/about-me-banner.jpg?format=webp&w=1980';
-	import { formatMonthYear, parseDate } from '@utils/date';
-	import TagItem from '@components/tags/TagItem.svelte';
-	import ExperienceItem from '@components/experience/ExperienceItem.svelte';
-	import type { PageServerData } from './$types';
 	import MetaTags from '@components/core/MetaTags.svelte';
+	import ExperienceItem from '@components/experience/ExperienceItem.svelte';
+	import TagItem from '@components/tags/TagItem.svelte';
+	import { formatMonthYear, parseDate } from '@utils/date';
+	import { fallbackLocale } from "@utils/fallbackLocale";
+	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;
 
 	$: query = data.data;
 
-	$: experiences = query.experiences?.data;
-	$: educations = query.educations?.data;
+	$: experiences = query.experiences?.data.map(data => fallbackLocale(data, $locale))
+	$: educations = query.educations?.data.map(data => fallbackLocale(data, $locale))
 	$: aboutMetadata = query.aboutMe?.data?.attributes;
 	$: skills = groupBy(
 		query.tags?.data?.filter((tag) => tag.attributes?.type !== Enum_Tag_Type.NonDev),
@@ -41,7 +42,9 @@
 		<Typography variant="h2">{$t('common.experiences')}</Typography>
 		{#if experiences && experiences?.length > 0}
 			{#each experiences as experience}
-				<ExperienceItem experience={experience.attributes} />
+				{#if !!experience}
+					<ExperienceItem experience={experience} />
+				{/if}
 			{/each}
 		{/if}
 		<hr class="mb-2" />
@@ -49,21 +52,21 @@
 		{#if educations && educations?.length > 0}
 			{#each educations as education}
 				<div class="mb-2 flex flex-col">
-					<Typography variant="h4" class="mb-1">{education.attributes?.title}</Typography>
+					<Typography variant="h4" class="mb-1">{education?.title}</Typography>
 					<div class="flex flex-row mb-2">
 						<Typography variant="subtitle" class="mr-2"
 							>{[
-								education.attributes?.description,
-								`${formatDate(education.attributes?.start)} - ${
-									formatDate(education.attributes?.end) ?? $t('common.present')
+								education?.description,
+								`${formatDate(education?.start)} - ${
+									formatDate(education?.end) ?? $t('common.present')
 								}`
 							]
 								.filter((i) => !!i)
 								.join(' | ')}</Typography
 						>
 					</div>
-					{#if education.attributes?.content}
-						<MarkdownRenderer content={education.attributes?.content} />
+					{#if education?.content}
+						<MarkdownRenderer content={education?.content} />
 					{/if}
 				</div>
 			{/each}

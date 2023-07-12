@@ -1,10 +1,10 @@
+import { graphQLSdk } from '@graphql/sdk';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { graphQLSdk } from '@graphql/sdk';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const data = await graphQLSdk.fetchAboutMe({
-		locale: cookies.get('language') ?? 'all'
+		locale: 'en'
 	});
 
 	if (data) {
