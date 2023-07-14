@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { goto, invalidateAll } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
+	import { faBars } from '@fortawesome/free-solid-svg-icons';
 	import { locale, t } from '@i18n';
 	import { localizationUrls } from '@stores/localizationUrls';
 	import { LANGUAGES } from '@utils/localization';
 	import Fa from 'svelte-fa';
-	import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 	let menuOpen = false;
 
-	import { afterNavigate } from '$app/navigation';
-	import Logo from './core/Logo.svelte';
-
+	
 	// let navbar: HTMLElement;
 
 	const handleChangeLanguage = (language: (typeof LANGUAGES)[number]) => {
@@ -38,7 +36,6 @@
 <!-- bind:this={navbar} -->
 <nav
 	class="w-full h-12 flex items-center justify-between px-4 sticky top-0 bg-primary shadow-sm z-20"
-	style="view-transition-name: header"
 >
 	<!-- Logo Section -->
 	<div class="w-full md:w-auto relative z-20">
@@ -47,7 +44,7 @@
 	</div>
 
 	<!-- Desktop Menu-->
-	<div class="items-center hidden md:flex">
+	<div class="items-center hidden md:flex" style="view-transition-name: header">
 		<div>
 			{#each links as link}
 				<a href={link.href} class="p-2">{link.label}</a>
@@ -73,7 +70,7 @@
 	</div>
 
 	<!-- Mobile Menu-->
-	<div class="items-center flex relative z-20 md:hidden" on:click={() => (menuOpen = !menuOpen)}>
+	<div class="items-center flex relative z-20 md:hidden" on:click={() => (menuOpen = !menuOpen)} 	style="view-transition-name: header">
 		<Fa icon={faBars} size="md" />
 	</div>
 	<div

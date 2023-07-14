@@ -3,12 +3,18 @@ query fetchHomePage($locale: I18NLocaleCode) {
 		pagination: { pageSize: 3 }
 		filters: { isFeatured: { eq: true } }
 		sort: ["isFeatured:desc", "date:desc"]
-		locale: $locale
 	) {
 		data {
 			id
 			attributes {
 				...projectPreview
+				localizations {
+					data {
+						attributes {
+							...projectPreview
+						}
+					}
+				}
 			}
 		}
 	}
