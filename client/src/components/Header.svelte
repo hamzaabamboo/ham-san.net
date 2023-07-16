@@ -27,8 +27,9 @@
 		{ label: $t('common.home'), href: '/' },
 		{ label: $t('common.about-me'), href: '/about' },
 		{ label: $t('common.projects'), href: '/projects' },
+		{ label: $t('common.note'), href: '/notes' },
 		// { label: $t('common.hobbies'), href: '/hobbies' },
-		{ label: $t('common.blog'), href: '/blog' },
+		// { label: $t('common.blog'), href: '/blog' },
 		{ label: $t('common.contact'), href: '/contact' }
 	];
 </script>

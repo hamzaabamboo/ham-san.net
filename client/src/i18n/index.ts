@@ -72,6 +72,18 @@ const config = {
 			key: 'blog',
 			pathname: '/blog',
 			loader: async () => (await import('./ja/blog.json')).default
+		},
+		{
+			locale: 'en',
+			key: 'note',
+			pathname: '/note',
+			loader: async () => (await import('./en/note.json')).default
+		},
+		{
+			locale: 'ja',
+			key: 'note',
+			pathname: '/note',
+			loader: async () => (await import('./ja/note.json')).default
 		}
 	]
 };
