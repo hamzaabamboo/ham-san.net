@@ -1,19 +1,23 @@
 import { PRIVATE_OUTLINE_API_TOKEN, PRIVATE_OUTLINE_SERVER } from '$env/static/private';
-import { createClient, type NormalizeOAS } from 'fets';
-import type openAPIDoc from './outline-spec.json';
+import { createClient, type ClientPlugin, type NormalizeOAS } from 'fets';
+import type openAPIDoc from './outline-spec';
 
 export const isOutlineEnabled = !!PRIVATE_OUTLINE_SERVER  && !!PRIVATE_OUTLINE_API_TOKEN
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const outlineClient = createClient<NormalizeOAS<typeof openAPIDoc>>({
-  endpoint: PRIVATE_OUTLINE_SERVER  ?? '',
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  fetchFn: (input, init) => fetch(input, {...init, headers: { ...outlineHeader, ...init}})
-})
 
-export const outlineHeader = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${PRIVATE_OUTLINE_API_TOKEN}`
+export function useAuth(token: string): ClientPlugin {
+  return {
+    onRequestInit({ requestInit }) {
+      requestInit.headers = {
+        ...requestInit.headers,
+        Authorization: `Bearer ${token}`
+      }
+    }
+  }
 }
+
+export type OutlineAPI = NormalizeOAS<typeof openAPIDoc>
+
+export const outlineClient = createClient<OutlineAPI>({
+  endpoint: (PRIVATE_OUTLINE_SERVER ?? '') as any,
+  plugins: [useAuth(PRIVATE_OUTLINE_API_TOKEN)]
+})

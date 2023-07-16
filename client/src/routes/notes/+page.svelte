@@ -7,14 +7,14 @@
 
     export let data: PageData
 
-    // $: console.log(data);
+	$: articles = data.data ?? [];
 </script>
 
 <MetaTags title="{$t('note.notes')} | {$t('common.name')}" path="notes" />
 
 <Container class="pt-8">
 	<Typography variant="h1" class="mb-2">{$t('note.notes')}</Typography>
-	{#each data.data as item}
+	{#each articles as item}
 		<Typography>
 			{#if item.url}
 				<a target="_blank" rel="noreferrer" class="text-blue-400 underline" href={item.url}
