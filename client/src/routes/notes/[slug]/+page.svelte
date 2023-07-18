@@ -5,9 +5,10 @@
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
 	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-	import { t } from '@i18n';
+	import { locale, t } from '@i18n';
 	import { localizationUrls } from '@stores/localizationUrls';
-	import { getMediaUrl } from '@utils/media';
+	import { formatMonthYear } from '@utils/date';
+	import { parseISO } from 'date-fns';
 	import debounce from 'lodash/debounce';
 	import { onDestroy } from 'svelte';
 	import Fa from 'svelte-fa';
@@ -20,14 +21,14 @@
 	$: title = note?.title;
 	$: content = note?.text?.replaceAll('\\\n', '')?.replaceAll("\\n", "\n\n");
 	$: banner = note?.banner ?? undefined;
-	$: description = note?.text?.substring(100);
+	$: description = note?.text?.substring(0,100) + '...';
 
 	const { params } = $page
 	
 	// $: console.log(content, note?.text)
 	// $: tags = note.tags?.data;
 	// $: category = note.category?.data?.attributes?.name;
-	// $: formattedDate = note.date ? formatMonthYear(parseDate(note.date), $locale) : null;
+	$: formattedDate = note?.createdAt ? formatMonthYear(parseISO(note.createdAt), $locale) : null;
  
 	let bannerWidth: number;
 	let maxBannerWidth: number = 0;
@@ -42,11 +43,12 @@
 	});
 </script>
 
+<!-- image={getMediaUrl(banner, { width: 1200 })} -->
+
 <MetaTags
 	title="{title} | {$t('common.name')}"
 	description={description ?? undefined}
-	image={getMediaUrl(banner, { width: 1200 })}
-	path="notes/{note?.urlId}"
+	path="notes/{params.slug}"
 />
 
 <!-- {#if banner}
@@ -75,13 +77,13 @@
 			<div class="mb-2">
 				<Typography variant="title">{title}</Typography>
 				<!-- {#if category}<Typography variant="subtitle" class="mb-2">{category}</Typography>{/if} -->
-				<!-- {#if formattedDate}
+				{#if formattedDate}
 					<Typography variant="subtitle"
-						>{formattedDate}
-						{#if note.isActive}- {$t('common.present')}{/if}</Typography
+						>{formattedDate}</Typography
 					>
-				{/if} -->
+				{/if}
 			</div>
+			{#if note?.url}<a href="{note.url}">{$t('note.read-in-outline')}</a>{/if}
 		</div>
 		{#if content}
 			<div class="my-8"><MarkdownRenderer {content} mediaRoot="" relativeUrlRoot='/notes/{params.slug}'/></div>

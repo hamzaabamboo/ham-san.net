@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw error(404, 'Article not found');
 	}
 
-	const childDocumentsRes = await outlineClient['/documents.list'].post({ json: { parentDocumentId: params.slug }})
+	const childDocumentsRes = await outlineClient['/documents.list'].post({ json: { parentDocumentId: data.data.parentDocumentId }})
 
 	const childDocuments = childDocumentsRes.ok ? await childDocumentsRes.json() : undefined;
 

@@ -9,4 +9,4 @@
 	const urlRoot = getRelativeUrlRoot();
 </script>
 
-<a href={href.includes("http") ? href: urlRoot ? urlRoot + href : href } {title} target="_blank" rel="noreferrer" class="text-blue-400"><slot /></a>
+<a href={href.includes("http") ? href: urlRoot ? urlRoot + href : href } {title} target={href.includes("http") ? "_blank" : undefined} rel={href.includes("http") ?"noreferrer" : undefined } class="text-blue-400"><slot /></a>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import SvelteMarkdown from 'svelte-markdown';
-	import Divider from './Divider.svelte';
+	import Divider from '../core/Divider.svelte';
 	import Heading from './Heading.svelte';
 	import Image from './Image.svelte';
 	import Link from './Link.svelte';

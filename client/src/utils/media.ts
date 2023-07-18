@@ -8,6 +8,7 @@ type MediaOptions = {
 };
 
 export const getMediaUrl = (path?: string, options: MediaOptions = {}) => {
+	if (!path) return undefined;
 	const { format = 'webp', width, height, fit = 'inside' } = options;
 	if (path?.startsWith('http://')) return path;
 	let query = `?format=${format}&q=75`;

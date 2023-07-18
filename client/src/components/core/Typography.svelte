@@ -22,7 +22,7 @@
 {#if variant === 'title'}
 	<h1
 		{...$$restProps}
-		class="text-5xl {!hasMargin && 'mb-2'} {_class || ''}"
+		class="text-5xl {!hasMargin && 'mb-4'} {_class || ''}"
 		id={_id}
 		style={_id ? `view-transition-name: ${_id};` : ''}
 	>
@@ -31,7 +31,7 @@
 {:else if variant === 'h1'}
 	<h1
 		{...$$restProps}
-		class="text-4xl {!hasMargin && 'mb-2'}  {_class || ''}"
+		class="text-4xl {!hasMargin && 'mb-3'}  {_class || ''}"
 		id={_id}
 		style={_id ? `view-transition-name: ${_id};` : ''}
 	>
