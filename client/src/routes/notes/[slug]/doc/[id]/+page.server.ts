@@ -1,9 +1,9 @@
 import { PRIVATE_OUTLINE_SERVER } from '$env/static/private';
 import { error } from '@sveltejs/kit';
+import { cleanArticleContent, getArticleBanner, getArticleDescription } from '@utils/article';
 import { outlineClient } from '@utils/outline-api';
 import sortBy from 'lodash/sortBy';
 import type { PageServerLoad } from './$types';
-import { cleanArticleContent, getArticleBanner, getArticleDescription } from '@utils/article';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const res = await outlineClient['/documents.info'].post({ json: { shareId: params.slug, id: params.id } })
@@ -27,10 +27,10 @@ export const load: PageServerLoad = async ({ params }) => {
 	
 	return {
 		data: data, 
-		mediaRoot: PRIVATE_OUTLINE_SERVER.replace("/api", ""),
 		childDocuments: sortBy(childDocuments?.data ?? [], "url"),
 		collection: collectionInfo?.data?.name,
 		banner: getArticleBanner(content),
-		description: getArticleDescription(content)
+		description: getArticleDescription(content),
+		outlineUrl: `${PRIVATE_OUTLINE_SERVER.replace('/api', '')}/s/${params.slug}/doc/${params.id}`
 	};
 };

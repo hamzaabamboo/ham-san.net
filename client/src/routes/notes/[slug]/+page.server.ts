@@ -26,10 +26,10 @@ export const load: PageServerLoad = async ({ params }) => {
 	const content = cleanArticleContent(data.data.text);
 	return {
 		data: data, 
-		mediaRoot: PRIVATE_OUTLINE_SERVER.replace("/api", ""),
 		childDocuments: sortBy(childDocuments?.data ?? [], "url"),
 		collection: collectionInfo?.data?.name,
 		banner: getArticleBanner(content),
-		description: getArticleDescription(content)
+		description: getArticleDescription(content),
+		outlineUrl: `${PRIVATE_OUTLINE_SERVER.replace('/api', '')}/s/${params.slug}`
 	};
 };

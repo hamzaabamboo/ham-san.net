@@ -19,7 +19,7 @@
 
 	export let data: PageData;
 
-	const { data: articleData, childDocuments, collection, banner, description} = data
+	const { data: articleData, childDocuments, collection, banner, description, outlineUrl} = data
 	$: note = articleData?.data;
 	$: title = note?.title;
 	$: content = cleanArticleContent(note?.text)
@@ -81,7 +81,7 @@
 			</div>
 			<div class="mb-2">
 				<Typography variant="title">{title}</Typography>
-				{#if subtitle || note?.url}<Typography variant="subtitle" as="span" class="mb-2">{subtitle}{#if note?.url}<a href="{note.url}" class="ml-1">{$t('note.read-in-outline')}</a>{/if}</Typography>{/if}
+				{#if subtitle || outlineUrl}<Typography variant="subtitle" as="span" class="mb-2">{subtitle}{#if note?.url}<a href="{outlineUrl}" target="__blank" ref="noreferer" class="ml-1">{$t('note.read-in-outline')}</a>{/if}</Typography>{/if}
 			</div>
 		</div>
 		{#if content}
