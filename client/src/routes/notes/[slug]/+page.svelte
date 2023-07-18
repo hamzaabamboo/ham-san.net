@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Container from '@components/core/Container.svelte';
+	import Divider from '@components/core/Divider.svelte';
 	import MetaTags from '@components/core/MetaTags.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
@@ -16,7 +17,7 @@
 
 	export let data: PageData;
 
-	const { data: articleData, childDocuments } = data
+	const { data: articleData, childDocuments, collection } = data
 	$: note = articleData?.data;
 	$: title = note?.title;
 	$: content = note?.text?.replaceAll('\\\n', '')?.replaceAll("\\n", "\n\n");
@@ -28,7 +29,12 @@
 	// $: console.log(content, note?.text)
 	// $: tags = note.tags?.data;
 	// $: category = note.category?.data?.attributes?.name;
-	$: formattedDate = note?.createdAt ? formatMonthYear(parseISO(note.createdAt), $locale) : null;
+	$: subtitle = [
+		collection,
+		note?.createdAt ? formatMonthYear(parseISO(note.createdAt), $locale) : null
+	]
+		.filter((f) => !!f)
+		.join(' | ');
  
 	let bannerWidth: number;
 	let maxBannerWidth: number = 0;
@@ -76,12 +82,7 @@
 			</div>
 			<div class="mb-2">
 				<Typography variant="title">{title}</Typography>
-				<!-- {#if category}<Typography variant="subtitle" class="mb-2">{category}</Typography>{/if} -->
-				{#if formattedDate}
-					<Typography variant="subtitle"
-						>{formattedDate}</Typography
-					>
-				{/if}
+				{#if subtitle}<Typography variant="subtitle" class="mb-2">{subtitle}</Typography>{/if}
 			</div>
 			{#if note?.url}<a href="{note.url}">{$t('note.read-in-outline')}</a>{/if}
 		</div>
@@ -89,6 +90,7 @@
 			<div class="my-8"><MarkdownRenderer {content} mediaRoot="" relativeUrlRoot='/notes/{params.slug}'/></div>
 		{/if}
 	</Container>
+	<Divider />
 	<Container>
 		<ul>
 			{#each childDocuments as document}

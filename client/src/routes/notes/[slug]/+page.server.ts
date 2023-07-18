@@ -17,12 +17,15 @@ export const load: PageServerLoad = async ({ params }) => {
 	}
 
 	const childDocumentsRes = await outlineClient['/documents.list'].post({ json: { parentDocumentId: data.data.id }})
-
 	const childDocuments = childDocumentsRes.ok ? await childDocumentsRes.json() : undefined;
+
+	const collectionInfoRes = data.data.collectionId ? await outlineClient['/collections.info'].post({ json: { id: data.data.collectionId }}) : undefined
+	const collectionInfo = collectionInfoRes?.ok ? await collectionInfoRes.json() : undefined;
 
 	return {
 		data: data, 
 		mediaRoot: PRIVATE_OUTLINE_SERVER.replace("/api", ""),
-		childDocuments: sortBy(childDocuments?.data ?? [], "url")
+		childDocuments: sortBy(childDocuments?.data ?? [], "url"),
+		collection: collectionInfo?.data?.name
 	};
 };

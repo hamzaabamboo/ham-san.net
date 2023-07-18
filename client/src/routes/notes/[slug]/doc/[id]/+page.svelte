@@ -8,16 +8,16 @@
 	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 	import { locale, t } from '@i18n';
 	import { localizationUrls } from '@stores/localizationUrls';
+	import { formatMonthYear } from '@utils/date';
+	import { parseISO } from 'date-fns';
 	import debounce from 'lodash/debounce';
 	import { onDestroy } from 'svelte';
 	import Fa from 'svelte-fa';
 	import type { PageData } from '../../$types';
-	import { formatMonthYear } from '@utils/date';
-	import { parseISO } from 'date-fns';
 
 	export let data: PageData;
 
-	const { data: articleData, childDocuments } = data
+	const { data: articleData, childDocuments, collection } = data
 	$: note = articleData?.data;
 	$: title = note?.title;
 	$: content = note?.text?.replaceAll('\\\n', '')?.replaceAll("\\n", "\n\n");
@@ -28,8 +28,14 @@
 
 	// $: tags = note.tags?.data;
 	// $: category = note.category?.data?.attributes?.name;
-	$: formattedDate = note?.createdAt ? formatMonthYear(parseISO(note.createdAt), $locale) : null;
- 
+
+	$: subtitle = [
+		collection,
+		note?.createdAt ? formatMonthYear(parseISO(note.createdAt), $locale) : null
+	]
+		.filter((f) => !!f)
+		.join(' | ');
+
 	let bannerWidth: number;
 	let maxBannerWidth: number = 0;
 
@@ -75,12 +81,7 @@
 			</div>
 			<div class="mb-2">
 				<Typography variant="title">{title}</Typography>
-				<!-- {#if category}<Typography variant="subtitle" class="mb-2">{category}</Typography>{/if} -->
-				{#if formattedDate}
-					<Typography variant="subtitle"
-						>{formattedDate}</Typography
-					>
-				{/if}
+				{#if subtitle}<Typography variant="subtitle" class="mb-2">{subtitle}</Typography>{/if}
 			</div>
 			<div>
 				{#if note?.url}<a href="/notes/{params.slug}">{$t('note.read-in-outline')}</a>{/if}
