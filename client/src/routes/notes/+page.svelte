@@ -8,6 +8,7 @@
     export let data: PageData
 
 	$: articles = data.data ?? [];
+	// $: console.log(data.data); 
 </script>
 
 <MetaTags title="{$t('note.notes')} | {$t('common.name')}" path="notes" />
@@ -17,7 +18,7 @@
 	{#each articles as item}
 		<Typography>
 			{#if item.url}
-				<a target="_blank" rel="noreferrer" class="text-blue-400 underline" href={item.url}
+				<a class="text-blue-400 underline" href="/notes/{item.urlId}"
 					>{item.documentTitle}</a
 				>
 			{:else}{item.value}{/if}

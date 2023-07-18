@@ -37,6 +37,7 @@
 <!-- bind:this={navbar} -->
 <nav
 	class="w-full h-12 flex items-center justify-between px-4 sticky top-0 bg-primary shadow-sm z-20"
+	style="view-transition-name: header"
 >
 	<!-- Logo Section -->
 	<div class="w-full md:w-auto relative z-20">
@@ -45,7 +46,7 @@
 	</div>
 
 	<!-- Desktop Menu-->
-	<div class="items-center hidden md:flex" style="view-transition-name: header">
+	<div class="items-center hidden md:flex" >
 		<div>
 			{#each links as link}
 				<a href={link.href} class="p-2">{link.label}</a>
