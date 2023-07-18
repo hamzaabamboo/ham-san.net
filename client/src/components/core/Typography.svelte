@@ -4,6 +4,7 @@
 		| 'title'
 		| 'h1'
 		| 'h2'
+		| 'h3'
 		| 'h4'
 		| 'h5'
 		| 'h6'
@@ -40,6 +41,15 @@
 	<h2
 		{...$$restProps}
 		class="text-3xl {!hasMargin && 'mb-2'}  {_class || ''}"
+		id={_id}
+		style={_id ? `view-transition-name: ${_id};` : ''}
+	>
+		<slot />
+	</h2>
+{:else if variant === 'h3'}
+	<h2
+		{...$$restProps}
+		class="text-2xl {!hasMargin && 'mb-2'}  {_class || ''}"
 		id={_id}
 		style={_id ? `view-transition-name: ${_id};` : ''}
 	>

@@ -14,13 +14,15 @@
 
 	export let data: PageData;
 
-	const { data: articleData, mediaRoot } = data
+	const { data: articleData } = data
 	$: note = articleData?.data;
 	$: title = note?.title;
-	$: content = note?.text;
+	$: content = note?.text?.replaceAll('\\\n', '')?.replaceAll("\\n", "\n\n");
 	$: banner = note?.banner ?? undefined;
 	$: description = note?.text?.substring(100);
-	// $: console.log(content, note)
+
+	// $: console.log(content, note?.text)
+
 	// $: tags = note.tags?.data;
 	// $: category = note.category?.data?.attributes?.name;
 	// $: formattedDate = note.date ? formatMonthYear(parseDate(note.date), $locale) : null;
