@@ -26,13 +26,13 @@
 	<Typography variant="h1" class="mb-2">{$t('note.notes')}</Typography>
 	<Typography class="mb-4">{$t('note.description')}</Typography>
 	{#each articles as item}
-		<div class="block w-full p-2mb-4" >
+		<div class="block w-full py-1" >
 			<a href="/notes/{item.urlId}"
 				>
-				<Typography variant="h5" class="font-bold">
+				<Typography variant="h5" class="mb-1 font-bold">
 					{item.title}
 				</Typography>
-				<Typography variant="subtitle">{getSubtitle(item)}</Typography>
+				<Typography variant="subtitle" class="mb-2">{getSubtitle(item)}</Typography>
 				<Typography variant="body">{item.description}</Typography>
 			</a>
 			<Divider />
