@@ -5,7 +5,7 @@ import { sortBy } from 'lodash';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const res = await outlineClient['/documents.info'].post({ json: { shareId: params.slug } })
+	const res = await outlineClient['/documents.info'].post({ json: { shareId: params.slug, id: params.id } })
 
 	if (!res.ok) {
 		console.log(params.slug, await res.json());
@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw error(404, 'Article not found');
 	}
 
-	const childDocumentsRes = await outlineClient['/documents.list'].post({ json: { parentDocumentId: data.data.id }})
+	const childDocumentsRes = await outlineClient['/documents.list'].post({ json: { parentDocumentId: params.slug }})
 
 	const childDocuments = childDocumentsRes.ok ? await childDocumentsRes.json() : undefined;
 

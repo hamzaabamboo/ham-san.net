@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import SvelteMarkdown from 'svelte-markdown';
+	import Divider from './Divider.svelte';
 	import Heading from './Heading.svelte';
 	import Image from './Image.svelte';
 	import Link from './Link.svelte';
@@ -12,9 +13,11 @@
 
 	export let content: string | null | undefined;
 	export let mediaRoot: string | undefined;
+	export let relativeUrlRoot: string | undefined;
 
 	$: setContext(markdownContextKey, {
-		getMediaRoot: () => mediaRoot
+		getMediaRoot: () => mediaRoot,
+		getRelativeUrlRoot: () => relativeUrlRoot
 	})
 
 </script>
@@ -30,7 +33,8 @@
 			paragraph: Paragraph,
 			list: List,
 			listitem: ListItem,
-			link: Link
+			link: Link,
+			hr: Divider
 		}}
 	/>
 </div>

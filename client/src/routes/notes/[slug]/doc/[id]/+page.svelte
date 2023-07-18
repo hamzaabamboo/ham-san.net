@@ -11,7 +11,7 @@
 	import debounce from 'lodash/debounce';
 	import { onDestroy } from 'svelte';
 	import Fa from 'svelte-fa';
-	import type { PageData } from './$types';
+	import type { PageData } from '../../$types';
 
 	export let data: PageData;
 
@@ -25,6 +25,7 @@
 	const { params } = $page
 	
 	// $: console.log(content, note?.text)
+
 	// $: tags = note.tags?.data;
 	// $: category = note.category?.data?.attributes?.name;
 	// $: formattedDate = note.date ? formatMonthYear(parseDate(note.date), $locale) : null;
@@ -67,8 +68,8 @@
 		<div class="mb-8">
 			<div class="mb-2">
 				<Typography class="font-sm font-gray-300"
-					><a href="/notes"
-						><Fa icon={faArrowLeft} class="inline mr-2" />{$t('note.back-to-posts')}
+					><a href="/notes/{params.slug}"
+						><Fa icon={faArrowLeft} class="inline mr-2" />{$t('note.back')}
 					</a></Typography
 				>
 			</div>
@@ -84,7 +85,7 @@
 			</div>
 		</div>
 		{#if content}
-			<div class="my-8"><MarkdownRenderer {content} mediaRoot="" relativeUrlRoot='/notes/{params.slug}'/></div>
+			<div class="my-8"><MarkdownRenderer {content} mediaRoot="" relativeUrlRoot='/notes/{params.slug}' /></div>
 		{/if}
 	</Container>
 	<Container>
