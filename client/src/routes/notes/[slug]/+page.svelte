@@ -21,7 +21,7 @@
 	$: note = articleData?.data;
 	$: title = note?.title;
 	$: content = note?.text?.replaceAll('\\\n', '')?.replaceAll("\\n", "\n\n");
-	$: banner = note?.banner ?? undefined;
+	// $: banner = note?.banner ?? undefined;
 	$: description = note?.text?.substring(0,100) + '...';
 
 	const { params } = $page

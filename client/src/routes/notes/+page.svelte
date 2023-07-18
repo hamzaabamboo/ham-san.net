@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Container from "@components/core/Container.svelte";
+	import Divider from "@components/core/Divider.svelte";
 	import MetaTags from "@components/core/MetaTags.svelte";
 	import Typography from "@components/core/Typography.svelte";
 	import { t } from "@i18n";
@@ -15,13 +16,16 @@
 
 <Container class="pt-8">
 	<Typography variant="h1" class="mb-2">{$t('note.notes')}</Typography>
+	<Typography class="mb-4">{$t('note.description')}</Typography>
 	{#each articles as item}
-		<Typography>
-			{#if item.url}
-				<a class="text-blue-400 underline" href="/notes/{item.urlId}"
-					>{item.documentTitle}</a
+		<div class="block w-full p-2mb-4" >
+			<a href="/notes/{item.urlId}"
 				>
-			{:else}{item.value}{/if}
-		</Typography>
+				<Typography variant="h5" class="font-bold">
+					{item.documentTitle}
+				</Typography>
+			</a>
+			<Divider />
+		</div>
 	{/each}
 </Container>
