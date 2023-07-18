@@ -8,7 +8,9 @@
 	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 	import { locale, t } from '@i18n';
 	import { localizationUrls } from '@stores/localizationUrls';
+	import { cleanArticleContent } from '@utils/article';
 	import { formatMonthYear } from '@utils/date';
+	import { getMediaUrl } from '@utils/media';
 	import { parseISO } from 'date-fns';
 	import debounce from 'lodash/debounce';
 	import { onDestroy } from 'svelte';
@@ -17,12 +19,10 @@
 
 	export let data: PageData;
 
-	const { data: articleData, childDocuments, collection } = data
+	const { data: articleData, childDocuments, collection, banner, description} = data
 	$: note = articleData?.data;
 	$: title = note?.title;
-	$: content = note?.text?.replaceAll('\\\n', '')?.replaceAll("\\n", "\n\n");
-	// $: banner = note?.banner ?? undefined;
-	$: description = note?.text?.substring(0,100) + '...';
+	$: content = cleanArticleContent(note?.text)
 
 	const { params } = $page
 
@@ -49,10 +49,10 @@
 	});
 </script>
 
-<!-- image={getMediaUrl(banner, { width: 1200 })} -->
 <MetaTags
 	title="{title} | {$t('common.name')}"
 	description={description ?? undefined}
+	image={banner?.includes("http") ? banner : getMediaUrl(banner, { width: 1200 })}
 	path="notes/{params.slug}/doc/{params.id}"
 />
 
@@ -81,10 +81,7 @@
 			</div>
 			<div class="mb-2">
 				<Typography variant="title">{title}</Typography>
-				{#if subtitle}<Typography variant="subtitle" class="mb-2">{subtitle}</Typography>{/if}
-			</div>
-			<div>
-				{#if note?.url}<a href="/notes/{params.slug}">{$t('note.read-in-outline')}</a>{/if}
+				{#if subtitle || note?.url}<Typography variant="subtitle" as="span" class="mb-2">{subtitle}{#if note?.url}<a href="{note.url}" class="ml-1">{$t('note.read-in-outline')}</a>{/if}</Typography>{/if}
 			</div>
 		</div>
 		{#if content}
