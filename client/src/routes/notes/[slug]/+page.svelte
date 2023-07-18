@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { PUBLIC_URL } from '$env/static/public';
 	import Container from '@components/core/Container.svelte';
 	import Divider from '@components/core/Divider.svelte';
 	import MetaTags from '@components/core/MetaTags.svelte';
@@ -10,7 +11,6 @@
 	import { localizationUrls } from '@stores/localizationUrls';
 	import { cleanArticleContent } from '@utils/article';
 	import { formatMonthYear } from '@utils/date';
-	import { getMediaUrl } from '@utils/media';
 	import { parseISO } from 'date-fns';
 	import debounce from 'lodash/debounce';
 	import { onDestroy } from 'svelte';
@@ -54,7 +54,7 @@
 <MetaTags
 	title="{title} | {$t('common.name')}"
 	description={description ?? undefined}
-	image={banner?.includes("http") ? banner : getMediaUrl(banner, { width: 1200 })}
+	image={banner?.includes("http") ? banner : PUBLIC_URL + banner}
 	path="notes/{params.slug}"
 />
 

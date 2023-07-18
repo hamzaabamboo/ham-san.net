@@ -12,7 +12,7 @@
 </script>
 
 <div class="w-full flex flex-col items-center object-fit-contain justify-center my-4">
-	<img class="max-h-[96]" src={href.includes("http") ? href : mediaRoot !== undefined ? mediaRoot + href : getMediaUrl(href, { height: 300 })} {title} alt={text} />
+	<img class="max-h-[600px]" src={href.includes("http") ? href : mediaRoot !== undefined ? mediaRoot + href : getMediaUrl(href, { height: 300 })} {title} alt={text} />
 	{#if text}
 		<span class="text-sm">{text}</span>
 	{/if}

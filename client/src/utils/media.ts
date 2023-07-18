@@ -7,7 +7,7 @@ type MediaOptions = {
 	fit?: 'cover' | 'contain' | 'fill' | 'inside' | 'outside';
 };
 
-export const getMediaUrl = (path?: string, options: MediaOptions = {}) => {
+export const getMediaUrl = (path?: string, options: MediaOptions = {}, server = API_URL) => {
 	if (!path) return undefined;
 	const { format = 'webp', width, height, fit = 'inside' } = options;
 	if (path?.startsWith('http://')) return path;
@@ -20,5 +20,5 @@ export const getMediaUrl = (path?: string, options: MediaOptions = {}) => {
 	}
 
 	if (path?.includes('.gif')) query += '&animated=True';
-	return API_URL + path + query;
+	return server + path + query;
 };
