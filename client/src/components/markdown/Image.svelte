@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 	import { getMediaUrl } from '@utils/media';
 	import { getContext } from 'svelte';
 	import { markdownContextKey } from './MarkdownContext';
 
 	export let href = '';
-	export let title = undefined;
+	export let title: string | undefined = undefined;
 	export let text = '';
 
 	const { getMediaRoot } = getContext(markdownContextKey);
@@ -21,6 +21,7 @@
 			: getMediaUrl(href, { height: 300 })}
 		{title}
 		alt={text}
+		loading="lazy"
 	/>
 	{#if text}
 		<span class="text-sm">{text}</span>

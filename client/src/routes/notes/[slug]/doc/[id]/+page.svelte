@@ -24,7 +24,8 @@
 	$: note = articleData?.data;
 	$: title = note?.title;
 	$: content = cleanArticleContent(note?.text);
-
+	
+	let oldId = note?.id;
 	const { params } = $page;
 
 	// $: tags = note.tags?.data;
@@ -45,9 +46,13 @@
 	}, 500);
 	$: updateWidth(bannerWidth);
 
+	// Watch for page changes
 	afterNavigate(() => {
-		document.getElementById('title')?.scrollIntoView();
-	});
+		if (!!oldId && oldId != note?.id) {
+			document?.getElementById('title')?.scrollIntoView();
+		}
+		oldId = note?.id;
+	})
 
 	onDestroy(() => {
 		localizationUrls.set({});
