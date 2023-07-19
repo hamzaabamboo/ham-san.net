@@ -33,6 +33,7 @@
 				style:background-image="url('{getMediaUrl(project.media?.data[0]?.attributes?.url, {
 					height: 400
 				})}')"
+				loading="lazy"
 			/>
 		{/if}
 		<div class="w-full h-full flex-1 p-2">
