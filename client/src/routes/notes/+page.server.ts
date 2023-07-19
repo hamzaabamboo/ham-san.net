@@ -4,11 +4,13 @@ import { outlineClient } from '@utils/outline-api';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const res = await outlineClient['/shares.list'].post({ json: {
-		sort: "createdAt",
-		direction: "DESC"
-	} })
-	
+	const res = await outlineClient['/shares.list'].post({
+		json: {
+			sort: 'createdAt',
+			direction: 'DESC'
+		}
+	});
+
 	if (!res.ok) {
 		console.log(await res.json());
 		throw error(500, 'Something went wrong');
@@ -18,13 +20,13 @@ export const load: PageServerLoad = async () => {
 		throw error(404, 'No articles found');
 	}
 
-	const collectionInfoRes = await outlineClient['/collections.list'].post()
+	const collectionInfoRes = await outlineClient['/collections.list'].post();
 	const collectionInfo = collectionInfoRes?.ok ? (await collectionInfoRes.json())?.data : undefined;
 
-	const promises = data.data?.map(async article => {
-		const r = await outlineClient['/documents.info'].post({ json: {shareId: article.id}})
+	const promises = data.data?.map(async (article) => {
+		const r = await outlineClient['/documents.info'].post({ json: { shareId: article.id } });
 		const d = r.ok ? (await r.json())?.data : undefined;
-		const content = cleanArticleContent(d?.text)
+		const content = cleanArticleContent(d?.text);
 		const banner = getArticleBanner(content);
 		const description = getArticleDescription(content);
 
@@ -32,13 +34,13 @@ export const load: PageServerLoad = async () => {
 			title: d?.title,
 			urlId: article?.urlId,
 			collection: d?.collectionId,
-			collectionName: collectionInfo?.find(c => c?.id === d?.collectionId)?.name,
-			banner, 
+			collectionName: collectionInfo?.find((c) => c?.id === d?.collectionId)?.name,
+			banner,
 			description,
 			createdAt: d?.createdAt
-		}
-	})
-	const postPreviews = await Promise.all(promises ?? [])
+		};
+	});
+	const postPreviews = await Promise.all(promises ?? []);
 
 	return {
 		data: postPreviews

@@ -20,12 +20,12 @@
 
 	export let data: PageData;
 
-	$: ({ data: articleData, childDocuments, collection, banner, description, outlineUrl} = data)
+	$: ({ data: articleData, childDocuments, collection, banner, description, outlineUrl } = data);
 	$: note = articleData?.data;
 	$: title = note?.title;
-	$: content = cleanArticleContent(note?.text)
+	$: content = cleanArticleContent(note?.text);
 
-	const { params } = $page
+	const { params } = $page;
 
 	// $: tags = note.tags?.data;
 	// $: category = note.category?.data?.attributes?.name;
@@ -46,8 +46,8 @@
 	$: updateWidth(bannerWidth);
 
 	afterNavigate(() => {
-		document.getElementById("title")?.scrollIntoView()
-	})
+		document.getElementById('title')?.scrollIntoView();
+	});
 
 	onDestroy(() => {
 		localizationUrls.set({});
@@ -57,7 +57,7 @@
 <MetaTags
 	title="{title} | {$t('common.name')}"
 	description={description ?? undefined}
-	image={banner?.includes("http") ? banner : PUBLIC_URL + banner}
+	image={banner?.includes('http') ? banner : PUBLIC_URL + banner}
 	path="notes/{params.slug}/doc/{params.id}"
 />
 
@@ -86,11 +86,20 @@
 			</div>
 			<div class="mb-2">
 				<Typography id="title" variant="title">{title}</Typography>
-				{#if subtitle || outlineUrl}<Typography variant="subtitle" as="span" class="mb-2">{subtitle}{#if note?.url}<a href="{outlineUrl}" target="__blank" ref="noreferer" class="ml-1">{$t('note.read-in-outline')}</a>{/if}</Typography>{/if}
+				{#if subtitle || outlineUrl}<Typography variant="subtitle" as="span" class="mb-2"
+						>{subtitle}{#if note?.url}<a
+								href={outlineUrl}
+								target="__blank"
+								ref="noreferer"
+								class="ml-1">{$t('note.read-in-outline')}</a
+							>{/if}</Typography
+					>{/if}
 			</div>
 		</div>
 		{#if content}
-			<div class="my-8"><MarkdownRenderer {content} mediaRoot="" relativeUrlRoot='/notes/{params.slug}' /></div>
+			<div class="my-8">
+				<MarkdownRenderer {content} mediaRoot="" relativeUrlRoot="/notes/{params.slug}" />
+			</div>
 		{/if}
 	</Container>
 	<Divider />

@@ -9,11 +9,11 @@ query fetchProjects($limit: Int = 100, $isFeatured: Boolean, $locale: I18NLocale
 			id
 			attributes {
 				...projectPreview
-				localizations { 
+				localizations {
 					data {
 						attributes {
 							...projectPreview
-						}	
+						}
 					}
 				}
 			}

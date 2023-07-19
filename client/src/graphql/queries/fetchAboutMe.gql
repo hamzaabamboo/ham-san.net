@@ -13,7 +13,7 @@ query fetchAboutMe($locale: I18NLocaleCode) {
 				localizations {
 					data {
 						attributes {
-						...experience
+							...experience
 						}
 					}
 				}
@@ -27,7 +27,7 @@ query fetchAboutMe($locale: I18NLocaleCode) {
 				localizations {
 					data {
 						attributes {
-						...education
+							...education
 						}
 					}
 				}

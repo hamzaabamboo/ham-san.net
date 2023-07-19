@@ -8,7 +8,6 @@
 
 	let menuOpen = false;
 
-	
 	// let navbar: HTMLElement;
 
 	const handleChangeLanguage = (language: (typeof LANGUAGES)[number]) => {
@@ -46,7 +45,7 @@
 	</div>
 
 	<!-- Desktop Menu-->
-	<div class="items-center hidden md:flex" >
+	<div class="items-center hidden md:flex">
 		<div>
 			{#each links as link}
 				<a href={link.href} class="p-2">{link.label}</a>
@@ -72,7 +71,11 @@
 	</div>
 
 	<!-- Mobile Menu-->
-	<div class="items-center flex relative z-20 md:hidden" on:click={() => (menuOpen = !menuOpen)} 	style="view-transition-name: header">
+	<div
+		class="items-center flex relative z-20 md:hidden"
+		on:click={() => (menuOpen = !menuOpen)}
+		style="view-transition-name: header"
+	>
 		<Fa icon={faBars} size="md" />
 	</div>
 	<div

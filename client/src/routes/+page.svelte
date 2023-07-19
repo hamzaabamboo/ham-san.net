@@ -11,7 +11,9 @@
 
 	export let data: PageServerData;
 
-	$: projects = data?.data?.projects?.data.map((p) =>fallbackLocale(p, $locale)).filter((p) => !!p)
+	$: projects = data?.data?.projects?.data
+		.map((p) => fallbackLocale(p, $locale))
+		.filter((p) => !!p);
 	$: homepageData = data?.data?.homepage?.data?.attributes;
 </script>
 

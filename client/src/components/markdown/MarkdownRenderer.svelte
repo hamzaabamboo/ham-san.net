@@ -18,8 +18,7 @@
 	$: setContext(markdownContextKey, {
 		getMediaRoot: () => mediaRoot,
 		getRelativeUrlRoot: () => relativeUrlRoot
-	})
-
+	});
 </script>
 
 <!-- https://github.com/pablo-abc/svelte-markdown/tree/main/src/renderers -->

@@ -3,7 +3,7 @@
 
 	let _class = '';
 	let _id: string | undefined = undefined;
-	
+
 	export { _class as class, _id as id };
 </script>
 

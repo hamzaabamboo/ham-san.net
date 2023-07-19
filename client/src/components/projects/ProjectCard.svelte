@@ -35,7 +35,7 @@
 				})}')"
 			/>
 		{/if}
-		<div class="w-full h-full flex-1 p-2 ">
+		<div class="w-full h-full flex-1 p-2">
 			<Typography variant="h5" class="mb-1 text-bold">{project.title}</Typography>
 			{#if subtitle}<Typography variant="subtitle" class="mb-1">{subtitle}</Typography>{/if}
 			{#if project.tags?.data && project.tags?.data?.length > 0}

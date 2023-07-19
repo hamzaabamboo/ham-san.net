@@ -75,7 +75,7 @@
 		animation-name: -ua-view-transition-fade-in;
 		animation-duration: inherit;
 		animation-fill-mode: inherit;
-	} */ 
+	} */
 
 	/* ::view-transition-old(root),
 	::view-transition-new(root) {

@@ -6,7 +6,9 @@ import sortBy from 'lodash/sortBy';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const res = await outlineClient['/documents.info'].post({ json: { shareId: params.slug, id: params.id } })
+	const res = await outlineClient['/documents.info'].post({
+		json: { shareId: params.slug, id: params.id }
+	});
 
 	if (!res.ok) {
 		console.log(params.slug, await res.json());
@@ -17,17 +19,21 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw error(404, 'Article not found');
 	}
 
-	const childDocumentsRes = await outlineClient['/documents.list'].post({ json: { parentDocumentId: data.data.parentDocumentId }})
+	const childDocumentsRes = await outlineClient['/documents.list'].post({
+		json: { parentDocumentId: data.data.parentDocumentId }
+	});
 	const childDocuments = childDocumentsRes.ok ? await childDocumentsRes.json() : undefined;
 
-	const collectionInfoRes = data.data.collectionId ? await outlineClient['/collections.info'].post({ json: { id: data.data.collectionId }}) : undefined
+	const collectionInfoRes = data.data.collectionId
+		? await outlineClient['/collections.info'].post({ json: { id: data.data.collectionId } })
+		: undefined;
 	const collectionInfo = collectionInfoRes?.ok ? await collectionInfoRes.json() : undefined;
 
 	const content = cleanArticleContent(data.data.text);
-	
+
 	return {
-		data: data, 
-		childDocuments: sortBy(childDocuments?.data ?? [], "url"),
+		data: data,
+		childDocuments: sortBy(childDocuments?.data ?? [], 'url'),
 		collection: collectionInfo?.data?.name,
 		banner: getArticleBanner(content),
 		description: getArticleDescription(content),

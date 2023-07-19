@@ -13,15 +13,15 @@
 	import ExperienceItem from '@components/experience/ExperienceItem.svelte';
 	import TagItem from '@components/tags/TagItem.svelte';
 	import { formatMonthYear, parseDate } from '@utils/date';
-	import { fallbackLocale } from "@utils/fallbackLocale";
+	import { fallbackLocale } from '@utils/fallbackLocale';
 	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;
 
 	$: query = data.data;
 
-	$: experiences = query.experiences?.data.map(data => fallbackLocale(data, $locale))
-	$: educations = query.educations?.data.map(data => fallbackLocale(data, $locale))
+	$: experiences = query.experiences?.data.map((data) => fallbackLocale(data, $locale));
+	$: educations = query.educations?.data.map((data) => fallbackLocale(data, $locale));
 	$: aboutMetadata = query.aboutMe?.data?.attributes;
 	$: skills = groupBy(
 		query.tags?.data?.filter((tag) => tag.attributes?.type !== Enum_Tag_Type.NonDev),
@@ -43,7 +43,7 @@
 		{#if experiences && experiences?.length > 0}
 			{#each experiences as experience}
 				{#if !!experience}
-					<ExperienceItem experience={experience} />
+					<ExperienceItem {experience} />
 				{/if}
 			{/each}
 		{/if}
