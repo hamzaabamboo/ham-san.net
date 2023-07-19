@@ -12,8 +12,8 @@
 	import Text from './Text.svelte';
 
 	export let content: string | null | undefined;
-	export let mediaRoot: string | undefined;
-	export let relativeUrlRoot: string | undefined;
+	export let mediaRoot: string | undefined = undefined;
+	export let relativeUrlRoot: string | undefined = undefined;
 
 	$: setContext(markdownContextKey, {
 		getMediaRoot: () => mediaRoot,
