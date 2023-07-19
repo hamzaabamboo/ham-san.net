@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { PUBLIC_URL } from '$env/static/public';
 	import Container from '@components/core/Container.svelte';
@@ -19,7 +20,7 @@
 
 	export let data: PageData;
 
-	const { data: articleData, childDocuments, collection, banner, description, outlineUrl} = data
+	$: ({ data: articleData, childDocuments, collection, banner, description, outlineUrl} = data)
 	$: note = articleData?.data;
 	$: title = note?.title;
 	$: content = cleanArticleContent(note?.text)
@@ -43,6 +44,10 @@
 		maxBannerWidth = newWidth > maxBannerWidth ? newWidth : maxBannerWidth;
 	}, 500);
 	$: updateWidth(bannerWidth);
+
+	afterNavigate(() => {
+		document.getElementById("title")?.scrollIntoView()
+	})
 
 	onDestroy(() => {
 		localizationUrls.set({});
@@ -80,7 +85,7 @@
 				>
 			</div>
 			<div class="mb-2">
-				<Typography variant="title">{title}</Typography>
+				<Typography id="title" variant="title">{title}</Typography>
 				{#if subtitle || outlineUrl}<Typography variant="subtitle" as="span" class="mb-2">{subtitle}{#if note?.url}<a href="{outlineUrl}" target="__blank" ref="noreferer" class="ml-1">{$t('note.read-in-outline')}</a>{/if}</Typography>{/if}
 			</div>
 		</div>

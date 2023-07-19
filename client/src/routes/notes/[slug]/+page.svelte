@@ -19,7 +19,7 @@
 
 	export let data: PageData;
 
-	const { data: articleData, childDocuments, collection, banner, description, outlineUrl} = data
+	$: ({ data: articleData, childDocuments, collection, banner, description, outlineUrl} = data)
 	$: note = articleData?.data;
 	$: title = note?.title;
 	$: content = cleanArticleContent(note?.text)
