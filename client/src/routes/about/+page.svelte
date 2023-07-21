@@ -2,7 +2,6 @@
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
-	import { Enum_Tag_Type } from '@graphql/generated/client';
 
 	import aboutMeBanner from '@assets/about-me-banner.jpg?format=webp&w=1980';
 	import { locale, t } from '@i18n';
@@ -24,7 +23,7 @@
 	$: educations = query.educations?.data.map((data) => fallbackLocale(data, $locale));
 	$: aboutMetadata = query.aboutMe?.data?.attributes;
 	$: skills = groupBy(
-		query.tags?.data?.filter((tag) => tag.attributes?.type !== Enum_Tag_Type.NonDev),
+		query.tags?.data?.filter((tag) => tag.attributes?.type !== "Non_Dev"),
 		(tag) => tag.attributes?.type
 	);
 
