@@ -1,0 +1,29 @@
+diff --git a/config/oauth.json b/config/oauth.json
+index da4e41b5fff283281e9249f9f81c5578ba407268..ab87f43e351ad74f6e99b7e8e543fa844ef8df2d 100644
+--- a/config/oauth.json
++++ b/config/oauth.json
+@@ -1180,5 +1180,11 @@
+     "access_url": "https://zoom.us/oauth/token",
+     "oauth": 2,
+     "scope_delimiter": " "
++  },
++  "hamAuth": {
++    "authorize_url": "https://auth.ham-san.net/realms/ham-auth/protocol/openid-connect/auth",
++    "access_url": "https://auth.ham-san.net/realms/ham-auth/protocol/openid-connect/token",
++    "oauth": 2,
++    "scope_delimiter": " "
+   }
+ }
+diff --git a/config/profile.json b/config/profile.json
+index 365ba911716d3c967ed0434d4844d1ac4b6a918a..a447c8f2629731484efc0ea8e211c8022f1cc194 100644
+--- a/config/profile.json
++++ b/config/profile.json
+@@ -634,5 +634,8 @@
+   },
+   "zoom": {
+     "profile_url": "https://api.zoom.us/v2/users/me"
++  },
++  "hamAuth": {
++    "profile_url": "https://auth.ham-san.net/realms/ham-auth/protocol/openid-connect/userinfo"
+   }
+ }

@@ -1,0 +1,23 @@
+diff --git a/config/providers.json b/config/providers.json
+index 8dd1dae8f3533a8f96f57b0738727bd497464e62..d5dd55c0b3fee49d833c42f100b5e68db67bf6d8 100644
+--- a/config/providers.json
++++ b/config/providers.json
+@@ -2784,5 +2784,18 @@
+         "authorization": "Bearer {auth}"
+       }
+     }
++  },
++  "hamAuth": {
++    "default": {
++      "origin": "https://auth.ham-san.net",
++      "path": "realms/ham-auth/protocol/openid-connect/{path}",
++      "headers": {
++        "authorization": "Bearer {auth}"
++      }
++    },
++    "oauth": {
++      "origin": "https://auth.ham-san.net",
++      "path": "oauth/{path}"
++    }
+   }
+ }

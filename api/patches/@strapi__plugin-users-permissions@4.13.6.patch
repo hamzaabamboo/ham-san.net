@@ -1,0 +1,40 @@
+diff --git a/server/bootstrap/grant-config.js b/server/bootstrap/grant-config.js
+index 31c612cce63a156255e3d63a3c26b3f31ab7e9d7..a4be25e4e8460bafa6ec15670c2f95c703a0f9a6 100644
+--- a/server/bootstrap/grant-config.js
++++ b/server/bootstrap/grant-config.js
+@@ -128,4 +128,14 @@ module.exports = (baseURL) => ({
+     callback: `${baseURL}/patreon/callback`,
+     scope: ['identity', 'identity[email]'],
+   },
++  hamAuth: {
++    enabled: true,
++    icon: 'hamAuth',
++    key: '',
++    secret: '',
++    basicHeader: '',
++    openPlanetSecret: '',
++    callback: `${baseURL}/hamAuth/callback`,
++    scope: []
++  }
+ });
+diff --git a/server/services/providers-registry.js b/server/services/providers-registry.js
+index 875b4e987fe11825b9c5ee8a7f0deb0eab1b8f47..cedc78f73ad1ad85990914234289cb534b7f2e52 100644
+--- a/server/services/providers-registry.js
++++ b/server/services/providers-registry.js
+@@ -331,6 +331,16 @@ const getInitialProviders = ({ purest }) => ({
+         };
+       });
+   },
++  async hamAuth({ accessToken }) {
++    const hamAuth = purest({ provider: 'hamAuth' });
++    const { body: userBody } = await hamAuth.get('user').auth(accessToken).request();
++
++    // The userBody may differ from provider to provider, refer to the provider documentation for details
++    return {
++      username: userBody.displayName,
++      email: userBody.email
++    };
++  }
+ });
+ 
+ module.exports = () => {
