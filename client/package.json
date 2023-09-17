@@ -16,7 +16,8 @@
 		"start": "node --experimental-loader ./scripts/loader.js -r dotenv/config build",
 		"codegen": "graphql-codegen",
 		"codegen:prod": "graphql-codegen -c codegen.prod.yml",
-		"build:prod": "pnpm codegen:prod && pnpm build"
+		"build:prod": "pnpm codegen:prod && pnpm build",
+		"prepare": "husky install"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "^5.0.0",
@@ -48,7 +49,8 @@
 		"typescript": "^5.2.2",
 		"vite": "^4.4.9",
 		"vite-imagetools": "^5.0.8",
-		"vitest": "^0.34.4"
+		"vitest": "^0.34.4",
+		"husky": "^8.0.0"
 	},
 	"type": "module",
 	"dependencies": {
