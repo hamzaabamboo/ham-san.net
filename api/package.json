@@ -15,7 +15,7 @@
     "@strapi/plugin-users-permissions": "^4.13.6",
     "@strapi/strapi": "^4.13.6",
     "@strapi/typescript-utils": "^4.13.6",
-    "@strapi/utils": "^4.13.6",
+    "@strapi/utils": "^4.13.7",
     "better-sqlite3": "8.6.0",
     "domain-browser": "^4.22.0",
     "pg": "^8.11.3",
