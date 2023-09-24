@@ -15,6 +15,7 @@ COPY patches ./patches
 RUN echo "Y" | pnpm install -r --prod --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 
 COPY ./ .
+ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 RUN pnpm build
 
 RUN pnpm prune --prod
