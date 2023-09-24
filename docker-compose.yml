@@ -38,6 +38,8 @@ services:
     ports:
       - 4125:4125
     command: ["pnpm", "start"]
+    networks:
+      - internal-services
 
 networks:
   internal-services:
