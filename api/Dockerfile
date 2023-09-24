@@ -10,7 +10,7 @@ ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/app
 ENV PATH /opt/app/node_modules/.bin:$PATH
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 COPY patches ./patches
 RUN echo "Y" | pnpm install -r --prod --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 
