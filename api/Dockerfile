@@ -10,7 +10,8 @@ ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/app
 ENV PATH /opt/app/node_modules/.bin:$PATH
-COPY package.json yarn-lock.yaml .npmrc ./
+# COPY package.json pnpm-lock.yaml .npmrc ./
+COPY package.json yarn.lock .npmrc ./
 COPY patches ./patches
 # RUN echo "Y" | pnpm install --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 RUN yarn build
