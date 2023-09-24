@@ -9,7 +9,8 @@ RUN apk update && apk add --no-cache curl build-base gcc autoconf automake zlib-
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/app
-ENV PATH /opt/app/node_modules/.bin:$PATH
+
+RUN export PATH="$(yarn global bin):$PATH
 # COPY package.json pnpm-lock.yaml .npmrc ./
 COPY package.json yarn.lock .npmrc ./
 COPY patches ./patches
