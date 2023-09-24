@@ -1,4 +1,4 @@
-query fetchProjects($limit: Int = 100, $isFeatured: Boolean, $locale: I18NLocaleCode) {
+query fetchProjects($limit: Int = 100, $isFeatured: Boolean = false, $locale: I18NLocaleCode) {
 	projects(
 		pagination: { pageSize: $limit }
 		filters: { isFeatured: { eq: $isFeatured } }
