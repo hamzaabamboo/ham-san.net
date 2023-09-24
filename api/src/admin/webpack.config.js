@@ -5,6 +5,8 @@ module.exports = (config, webpack) => {
   // Note: we provide webpack above so you should not `require` it
   // Perform customizations to webpack config
   // Important: return the modified config
+  config.resolve.mainFields = ["browser", "module", "jsnext:main", "main"];
+
   return {
     ...config, resolve: { ...config.resolve, symlinks: true, fallback: { ...config.resolve.fallback, domain: require.resolve("domain-browser") } }
   }

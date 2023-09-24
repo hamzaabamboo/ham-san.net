@@ -10,11 +10,12 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi/plugin-graphql": "^4.13.6",
-    "@strapi/plugin-i18n": "^4.13.6",
-    "@strapi/plugin-users-permissions": "^4.13.6",
-    "@strapi/strapi": "^4.13.6",
-    "@strapi/typescript-utils": "^4.13.6",
+    "@strapi/plugin-graphql": "^4.13.7",
+    "@strapi/plugin-i18n": "^4.13.7",
+    "@strapi/plugin-users-permissions": "^4.13.7",
+    "@strapi/strapi": "^4.13.7",
+    "@strapi/typescript-utils": "^4.13.7",
+    "@strapi/utils": "^4.13.7",
     "better-sqlite3": "8.6.0",
     "domain-browser": "^4.22.0",
     "strapi-chatgpt": "^1.0.2",
@@ -37,7 +38,7 @@
     "patchedDependencies": {
       "grant@5.4.21": "patches/grant@5.4.21.patch",
       "purest@4.0.2": "patches/purest@4.0.2.patch",
-      "@strapi/plugin-users-permissions@4.13.6": "patches/@strapi__plugin-users-permissions@4.13.6.patch"
+      "@strapi/plugin-users-permissions@4.13.7": "patches/@strapi__plugin-users-permissions@4.13.6.patch"
     }
   }
 }
