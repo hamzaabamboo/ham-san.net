@@ -21,7 +21,26 @@ jobs:
             ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
             cd ./ham-san-net
             git pull origin main
-            ./deploy.sh
+            ./pre-deploy.sh
+      - name: Deploy Backend
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            eval "$(ssh-agent -s)"
+            ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
+            cd ./ham-san-net
+            git pull origin main
+            ./deploy-backend.sh
+      - name: Deploy Frontend
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: ./deploy-frontend.sh
       - name: Running Page Speed Insights
         uses: jakepartusch/psi-action@v1.3
         id: psi
