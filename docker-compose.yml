@@ -7,7 +7,7 @@ services:
     build:
       context: api
       args:
-        PUBLIC_URL: ${PUBLIC_API_URL}
+        PUBLIC_API_URL: ${PUBLIC_API_URL}
     environment:
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
