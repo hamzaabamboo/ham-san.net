@@ -10,18 +10,22 @@ ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/app
 
+
 RUN export PATH="$(yarn global bin):$PATH"
+
+RUN yarn global add node-gyp
 # COPY package.json pnpm-lock.yaml .npmrc ./
-COPY package.json yarn.lock .npmrc ./
-COPY patches ./patches
+COPY package.json yarn.lock ./
+# COPY patches ./patches
 # RUN echo "Y" | pnpm install --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
-RUN yarn
+RUN yarn install
 
 COPY ./ .
 ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 RUN yarn build
 
-RUN yarn prune --prod
+# RUN pnpm prune --prod
+RUN yarn install --prod
 
 # Remove this step since we're on vm
 # FROM node:18-alpine
