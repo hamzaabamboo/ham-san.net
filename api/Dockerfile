@@ -12,7 +12,7 @@ WORKDIR /opt/app
 ENV PATH /opt/app/node_modules/.bin:$PATH
 COPY package.json pnpm-lock.yaml .npmrc ./
 COPY patches ./patches
-RUN echo "Y" | pnpm install -r --prod --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
+RUN echo "Y" | pnpm install --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 
 COPY ./ .
 ENV PUBLIC_API_URL=${PUBLIC_API_URL}
