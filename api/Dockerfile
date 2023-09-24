@@ -10,7 +10,7 @@ ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/app
 
-RUN export PATH="$(yarn global bin):$PATH
+RUN export PATH="$(yarn global bin):$PATH"
 # COPY package.json pnpm-lock.yaml .npmrc ./
 COPY package.json yarn.lock .npmrc ./
 COPY patches ./patches
