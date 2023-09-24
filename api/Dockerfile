@@ -25,7 +25,6 @@ ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 RUN yarn build
 
 # RUN pnpm prune --prod
-RUN yarn install --prod
 
 # Remove this step since we're on vm
 # FROM node:18-alpine
