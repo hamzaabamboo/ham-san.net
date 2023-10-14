@@ -17,5 +17,5 @@ ENV PRIVATE_OUTLINE_SERVER=${PRIVATE_OUTLINE_SERVER}
 ENV PRIVATE_OUTLINE_API_TOKEN=${PRIVATE_OUTLINE_API_TOKEN}
 
 EXPOSE 1337
-CMD ["node --experimental-loader ./scripts/loader.js -r dotenv/config build"]
+CMD ["node --experimental-loader ./scripts/loader.js -r dotenv/config ."]
  

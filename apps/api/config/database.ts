@@ -13,6 +13,6 @@ export default ({ env }) => ({
     useNullAsDefault: true,
   },
   settings: {
-    forceMigrations: false,
+    forceMigrations: true,
   },
 });
