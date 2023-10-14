@@ -1,5 +1,9 @@
 name: Deploy
 
+env:
+  PRIVATE_OUTLINE_SERVER: ${{ secrets.PRIVATE_OUTLINE_SERVER }}
+  PRIVATE_OUTLINE_API_TOKEN: ${{ secrets.PRIVATE_OUTLINE_API_TOKEN }}
+  
 on:
   push:
     branches:
