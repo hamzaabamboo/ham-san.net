@@ -1,9 +1,7 @@
 node_modules
-dist
 .cache
 .image-cache
 
 .svelte-kit
-build
 node_modules
 Dockerfile

@@ -3,41 +3,25 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "test", "build:prod"]
+        "cacheableOperations": ["build", "test", "lint"]
       }
     }
   },
   "affected": {
     "defaultBase": "main"
   },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "packages"
+  },
   "targetDefaults": {
     "build": {
-      "outputs": ["{projectRoot}//build"]
+      "outputs": ["{projectRoot}/build", "{projectRoot}/dist"],
+      "generateLockfile": true
     },
     "build:prod": {
-      "outputs": ["{projectRoot}//build"]
-    }
-  },
-  "targets": {
-    "container": {
-      "executor": "@nx-tools/nx-container:build",
-      "dependsOn": ["build"],
-      "defaultConfiguration": "local",
-      "options": {
-        "engine": "docker",
-        "context": "dist/apps/my-app",
-        "file": "apps/my-app/Dockerfile"
-      },
-      "configurations": {
-        "local": {
-          "tags": ["my-app:latest"],
-          "push": false
-        },
-        "production": {
-          "tags": ["my.image-registry.com/my-app:latest"],
-          "push": true
-        }
-      }
+      "outputs": ["{projectRoot}/build", "{projectRoot}/dist"],
+      "generateLockfile": true
     }
   }
 }

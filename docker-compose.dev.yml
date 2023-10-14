@@ -4,6 +4,7 @@ services:
     container_name: strapi
     restart: unless-stopped
     env_file: .env
+    image: registry.ham-san.net/ham-san-net-api
     build:
       dockerfile: ./api.Dockerfile
       context: .
@@ -25,24 +26,20 @@ services:
     command: ["yarn", "start"]
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    networks:
-      - internal-services
   client:
     container_name: sveltekit
     env_file: .env
     restart: unless-stopped
-    build:
-      context: .
-      dockerfile: .
+    image: registry.ham-san.net/ham-san-net-client
     environment:
       PRIVATE_BACKEND_API_URL: http://backend:1337
       PORT: 4125
     ports:
       - 4125:4125
     command: ["pnpm", "start"]
-    networks:
-      - internal-services
-
-networks:
-  internal-services:
-    external: true
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment: 
+      - POSTGRES_PASSWORD=0000
