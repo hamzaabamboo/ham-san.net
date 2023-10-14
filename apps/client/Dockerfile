@@ -10,12 +10,14 @@ WORKDIR /opt/app
 
 COPY ./dist/apps/client .
 COPY ./apps/client/scripts .
+COPY ./apps/client/package.json .
 
+RUN pnpm install --prod
 ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 ENV PUBLIC_URL=${PUBLIC_URL}
 ENV PRIVATE_OUTLINE_SERVER=${PRIVATE_OUTLINE_SERVER}
 ENV PRIVATE_OUTLINE_API_TOKEN=${PRIVATE_OUTLINE_API_TOKEN}
 
 EXPOSE 1337
-CMD ["node --experimental-loader ./scripts/loader.js -r dotenv/config ."]
+CMD ["node --experimental-loader ./scripts/loader.js -r dotenv/config index.js"]
  
