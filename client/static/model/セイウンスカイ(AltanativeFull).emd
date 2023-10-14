@@ -1,0 +1,27 @@
+[Info]
+Version = 3
+
+[Effect]
+Obj = none
+Obj[1] = textures\SkyAF_TEX1.fx
+Obj[2] = textures\SkyAF_TEX1.fx
+Obj[3] = textures\SkyAF_TEX2.fx
+Obj[5] = textures\SkyAF_TEX2.fx
+Obj[6] = textures\SkyAF_TEX2.fx
+Obj[7] = textures\SkyAF_TEX3.fx
+Obj[8] = textures\Sky_Face.fx
+Obj[9] = textures\SkyAF_TEX2.fx
+Obj[11] = textures\SkyAF_TEX2.fx
+Obj[12] = textures\SkyAF_TEX2.fx
+Obj[13] = textures\SkyAF_TEX3.fx
+Obj[14] = textures\SkyAF_TEX3.fx
+Obj[15] = textures\SkyAF_TEX1.fx
+Obj[16] = textures\SkyAF_TEX3.fx
+Obj[17] = textures\SkyAF_TEX1.fx
+Obj[18] = textures\SkyAF_TEX1.fx
+Obj[19] = textures\SkyAF_TEX1.fx
+Obj[20] = textures\SkyAF_TEX2.fx
+Obj[22] = textures\SkyAF_TEX2.fx
+Obj[23] = textures\SkyAF_TEX2.fx
+Obj[24] = textures\SkyAF_TEX2.fx
+

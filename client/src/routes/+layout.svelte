@@ -1,4 +1,5 @@
 <script>
+	import { disableScrollHandling } from '$app/navigation';
 	import Footer from '@components/Footer.svelte';
 	import Header from '@components/Header.svelte';
 	import GoogleTagManager from '@components/core/GoogleTagManager.svelte';
@@ -6,7 +7,6 @@
 	import { preparePageTransition } from '@utils/preparePageTransition';
 	import { onMount } from 'svelte';
 	import '../app.css';
-	import { disableScrollHandling } from '$app/navigation';
 
 	let isReady = false;
 
