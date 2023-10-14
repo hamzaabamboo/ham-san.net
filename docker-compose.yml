@@ -4,7 +4,7 @@ services:
     container_name: strapi
     restart: unless-stopped
     env_file: .env
-    image: registry/ham-san-net-api
+    image: localhost:5000/ham-san-net-api
     environment:
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
@@ -27,7 +27,7 @@ services:
     container_name: sveltekit
     env_file: .env
     restart: unless-stopped
-    image: registry/ham-san-net-client
+    image: localhost:5000/ham-san-net-client
     environment:
       PRIVATE_BACKEND_API_URL: http://backend:1337
       PORT: 4125
