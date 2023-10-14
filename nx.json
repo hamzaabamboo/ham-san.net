@@ -1,0 +1,27 @@
+{
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "test", "lint"]
+      }
+    }
+  },
+  "affected": {
+    "defaultBase": "main"
+  },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "packages"
+  },
+  "targetDefaults": {
+    "build": {
+      "outputs": ["{projectRoot}/build", "{projectRoot}/dist"],
+      "generateLockfile": true
+    },
+    "build:prod": {
+      "outputs": ["{projectRoot}/build", "{projectRoot}/dist"],
+      "generateLockfile": true
+    }
+  }
+}

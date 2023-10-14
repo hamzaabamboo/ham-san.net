@@ -1,0 +1,29 @@
+{
+	"name": "client",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"sourceRoot": "apps/client/src",
+	"targets": {
+		"container": {
+			"executor": "@nx-tools/nx-container:build",
+			"dependsOn": ["build"],
+			"defaultConfiguration": "local",
+			"options": {
+				"engine": "docker",
+				"context": "{workspaceRoot}",
+				"file": "{projectRoot}/Dockerfile"
+			},
+			"configurations": {
+				"local": {
+					"tags": ["ham-san-net-client:latest"],
+					"push": false
+				},
+				"production": {
+					"tags": ["registry.ham-san.net/ham-san-net-client:latest"],
+					"push": true
+				}
+			}
+		}
+	},
+	"tags": []
+}

@@ -1,0 +1,46 @@
+{
+  "name": "api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/api/src",
+  "targets": {
+    "serve": {
+      "executor": "@nx-extend/strapi:serve",
+      "options": {}
+    },
+    "build": {
+      "executor": "@nx-extend/strapi:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/api"
+      },
+      "configurations": {
+        "production": {
+          "production": true,
+          "generateLockfile": true
+        }
+      }
+    },
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": ["build"],
+      "defaultConfiguration": "local",
+      "options": {
+        "engine": "docker",
+        "context": "dist/apps/api",
+        "file": "{projectRoot}/Dockerfile"
+      },
+      "configurations": {
+        "local": {
+          "tags": ["ham-san-net-api:latest"],
+          "push": false
+        },
+        "production": {
+          "tags": ["registry.ham-san.net/ham-san-net-api:latest"],
+          "push": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,7 @@
+node_modules
+.cache
+.image-cache
+
+.svelte-kit
+node_modules
+Dockerfile

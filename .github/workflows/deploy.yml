@@ -1,13 +1,89 @@
 name: Deploy
 
+env:
+  PRIVATE_OUTLINE_SERVER: ${{ secrets.PRIVATE_OUTLINE_SERVER }}
+  PRIVATE_OUTLINE_API_TOKEN: ${{ secrets.PRIVATE_OUTLINE_API_TOKEN }}
+  PUBLIC_API_URL: ${{ vars.PUBLIC_API_URL }}
+  PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+
 on:
   push:
     branches:
       - main
+      - feat/three-js
 
 jobs:
-  build:
-    name: Run remote ssh command
+  build-and-push:
+    name: Build and Push to Registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8.8
+          run_install: false
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build Backend
+        run: pnpm nx build api
+      - name: Build Frontend
+        run: pnpm nx build client
+      - name: Login to Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.ham-san.net
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Build and push backend
+        uses: docker/build-push-action@v5
+        with:
+          file: ./apps/api/Dockerfile
+          context: ./dist/apps/api
+          push: true
+          tags: registry.ham-san.net/ham-san-net-api:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+      - name: Login to Registry (Apparently)
+        uses: docker/login-action@v3
+        with:
+          registry: registry.ham-san.net
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          file: ./apps/client/Dockerfile
+          context: .
+          push: true
+          tags: registry.ham-san.net/ham-san-net-client:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+  Deploy:
+    name: Deploy to VM
+    needs: build-and-push
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to VM via SSH
