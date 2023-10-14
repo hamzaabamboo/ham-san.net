@@ -1,2 +1,2 @@
-docker-compose pull backend
-docker-compose restart backend
+docker-compose pull api
+docker-compose restart api
