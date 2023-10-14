@@ -33,7 +33,6 @@ services:
       PORT: 4125
     ports:
       - 4125:4125
-    command: ["pnpm", "start"]
     networks:
       - internal-services
 
