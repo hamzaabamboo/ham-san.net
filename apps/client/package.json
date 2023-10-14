@@ -14,6 +14,7 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"sync": "svelte-kit sync",
 		"start": "node --experimental-loader ./scripts/loader.js -r dotenv/config build",
+		"start:prod": "node --experimental-loader ./scripts/loader.js -r dotenv/config index.js",
 		"codegen": "graphql-codegen",
 		"codegen:prod": "graphql-codegen -c codegen.prod.yml",
 		"build:prod": "pnpm codegen:prod && pnpm build"

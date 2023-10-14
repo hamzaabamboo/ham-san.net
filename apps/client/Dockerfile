@@ -9,7 +9,7 @@ RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev l
 WORKDIR /opt/app
 
 COPY ./dist/apps/client .
-COPY ./apps/client/scripts .
+COPY ./apps/client/scripts ./scripts
 COPY ./apps/client/package.json .
 
 RUN pnpm install --prod
@@ -19,5 +19,5 @@ ENV PRIVATE_OUTLINE_SERVER=${PRIVATE_OUTLINE_SERVER}
 ENV PRIVATE_OUTLINE_API_TOKEN=${PRIVATE_OUTLINE_API_TOKEN}
 
 EXPOSE 1337
-CMD ["node --experimental-loader ./loader.js -r dotenv/config ./index.js"]
+CMD ["pnpm", "start:prod"]
  

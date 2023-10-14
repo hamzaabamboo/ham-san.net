@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     env_file: .env
     build:
-      dockerfile: ./apps/api/Dockerfile
+      dockerfile: ../../../apps/api/Dockerfile
       context: ./dist/apps/api
       args:
         PUBLIC_API_URL: ${PUBLIC_API_URL}
@@ -18,11 +18,11 @@ services:
       - ./.env:/opt/app/.env
       - ./public/uploads:/opt/app/public/uploads
       - ./data:/opt/app/data
-      - ./api/config:/opt/app/config
-      - ./api/src:/opt/app/src
+      # - ./api/config:/opt/app/config
+      # - ./api/src:/opt/app/src
     ports:
       - 1337:1337
-    command: ["yarn", "start"]
+    command: ["pnpm", "start"]
     extra_hosts:
       - "host.docker.internal:host-gateway"
   client:
@@ -37,7 +37,6 @@ services:
       PORT: 4125
     ports:
       - 4125:4125
-    command: ["pnpm", "start"]
   db:
     image: postgres
     ports:
