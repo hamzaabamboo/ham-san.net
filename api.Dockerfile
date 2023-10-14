@@ -15,7 +15,7 @@ RUN export PATH="$(yarn global bin):$PATH"
 
 RUN yarn global add node-gyp
 # COPY package.json pnpm-lock.yaml .npmrc ./
-COPY package.json yarn.lock ./
+COPY packages/api/package.json yarn.lock ./
 # COPY patches ./patches
 # RUN echo "Y" | pnpm install --shamefully-hoist --config.auto-install-peers=true --strict-peer-dependencies
 RUN yarn install

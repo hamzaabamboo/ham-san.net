@@ -1,11 +1,12 @@
 version: "3.3"
 services:
-  backend:
+  api:
     container_name: strapi
     restart: unless-stopped
     env_file: .env
     build:
-      context: api
+      dockerfile: ./api.Dockerfile
+      context: .
       args:
         PUBLIC_API_URL: ${PUBLIC_API_URL}
     environment:
@@ -31,7 +32,8 @@ services:
     env_file: .env
     restart: unless-stopped
     build:
-      context: client
+      context: .
+      dockerfile: .
     environment:
       PRIVATE_BACKEND_API_URL: http://backend:1337
       PORT: 4125

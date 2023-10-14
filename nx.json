@@ -1,0 +1,43 @@
+{
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "test", "build:prod"]
+      }
+    }
+  },
+  "affected": {
+    "defaultBase": "main"
+  },
+  "targetDefaults": {
+    "build": {
+      "outputs": ["{projectRoot}//build"]
+    },
+    "build:prod": {
+      "outputs": ["{projectRoot}//build"]
+    }
+  },
+  "targets": {
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": ["build"],
+      "defaultConfiguration": "local",
+      "options": {
+        "engine": "docker",
+        "context": "dist/apps/my-app",
+        "file": "apps/my-app/Dockerfile"
+      },
+      "configurations": {
+        "local": {
+          "tags": ["my-app:latest"],
+          "push": false
+        },
+        "production": {
+          "tags": ["my.image-registry.com/my-app:latest"],
+          "push": true
+        }
+      }
+    }
+  }
+}

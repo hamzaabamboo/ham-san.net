@@ -1,15 +1,16 @@
 {
-  "name": "ham-san-net-api",
+  "name": "api",
   "private": true,
   "version": "0.1.0",
   "description": "A Strapi application",
   "scripts": {
-    "develop": "strapi develop",
+    "dev": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi"
   },
   "dependencies": {
+    "@codemirror/theme-one-dark": "^6.1.2",
     "@strapi/plugin-graphql": "^4.13.6",
     "@strapi/plugin-i18n": "^4.13.6",
     "@strapi/plugin-users-permissions": "^4.13.6",
@@ -41,5 +42,11 @@
       "purest@4.0.2": "patches/purest@4.0.2.patch",
       "@strapi/plugin-users-permissions@4.13.7": "patches/@strapi__plugin-users-permissions@4.13.7.patch"
     }
+  },
+  "devDependencies": {
+    "@codemirror/autocomplete": "^6.10.2",
+    "@codemirror/lint": "^6.4.2",
+    "@codemirror/search": "^6.5.4",
+    "@uiw/codemirror-extensions-basic-setup": "^4.21.20"
   }
 }
