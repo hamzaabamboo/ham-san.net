@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
     image: localhost:5000/ham-san-net-client
     environment:
-      PRIVATE_BACKEND_API_URL: http://backend:1337
+      PRIVATE_BACKEND_API_URL: http://api:1337
       PORT: 4125
     ports:
       - 4125:4125
