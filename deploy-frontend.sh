@@ -1,2 +1,2 @@
-docker-compose up --no-deps -d --build client
+docker-compose pull client
 docker-compose restart client

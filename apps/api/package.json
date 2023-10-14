@@ -36,13 +36,6 @@
     "npm": ">=6.0.0"
   },
   "license": "MIT",
-  "pnpm": {
-    "patchedDependencies": {
-      "grant@5.4.21": "patches/grant@5.4.21.patch",
-      "purest@4.0.2": "patches/purest@4.0.2.patch",
-      "@strapi/plugin-users-permissions@4.13.7": "patches/@strapi__plugin-users-permissions@4.13.7.patch"
-    }
-  },
   "devDependencies": {
     "@codemirror/autocomplete": "^6.10.2",
     "@codemirror/lint": "^6.4.2",

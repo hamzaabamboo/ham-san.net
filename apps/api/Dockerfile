@@ -9,7 +9,7 @@ RUN apk update && apk add --no-cache curl build-base gcc autoconf automake zlib-
 
 COPY package.json ./
 # COPY patches ./patches
-RUN pnpm install -r --prod
+RUN pnpm install --prod
 
 COPY ./ .
 

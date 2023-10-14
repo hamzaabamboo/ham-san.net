@@ -16,7 +16,8 @@ const config = {
 	],
 	kit: {
 		adapter: adapter({
-			precompress: true
+			precompress: true,
+			out: '../../dist/apps/client',
 		}),
 		alias: {
 			'@components': 'src/components',
@@ -25,7 +26,7 @@ const config = {
 			'@utils': 'src/utils',
 			'@stores': 'src/stores',
 			'@assets': 'src/assets'
-		}
+		},
 	}
 };
 
