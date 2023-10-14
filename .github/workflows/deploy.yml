@@ -54,10 +54,26 @@ jobs:
         run: pnpm nx build api
       - name: Build Frontend
         run: pnpm nx build client
-      - name: Containerize & Push Backend
-        run: pnpm nx container api -c production
-      - name: Containerize & Push Frontend
-        run: pnpm nx container client -c production
+      - name: Build and push backend
+        uses: docker/build-push-action@v5
+        with:
+          dockerfile: ./apps/api/Dockerfile
+          context: ./dist/apps/api
+          push: true
+          tags: "registry.ham-san.net/ham-san-net-api:latest"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          dockerfile: ./apps/client/Dockerfile
+          context: .
+          push: true
+          tags: "registry.ham-san.net/ham-san-net-api:latest"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
   Deploy:
     name: Deploy to VM
     needs: build-and-push
