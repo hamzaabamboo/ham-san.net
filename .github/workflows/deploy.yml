@@ -57,7 +57,7 @@ jobs:
       - name: Build and push backend
         uses: docker/build-push-action@v5
         with:
-          dockerfile: ./apps/api/Dockerfile
+          file: ./apps/api/Dockerfile
           context: ./dist/apps/api
           push: true
           tags: "registry.ham-san.net/ham-san-net-api:latest"
@@ -67,7 +67,7 @@ jobs:
       - name: Build and push frontend
         uses: docker/build-push-action@v5
         with:
-          dockerfile: ./apps/client/Dockerfile
+          file: ./apps/client/Dockerfile
           context: .
           push: true
           tags: "registry.ham-san.net/ham-san-net-api:latest"
