@@ -1,2 +1,3 @@
 docker-compose pull client
-docker-compose restart client
+docker-compose down client
+docker-compose up -d client
