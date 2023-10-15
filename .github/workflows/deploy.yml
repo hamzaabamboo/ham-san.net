@@ -15,6 +15,8 @@ jobs:
   build-and-push:
     name: Build and Push to Registry
     runs-on: ubuntu-latest
+    environment: 
+      name: prod
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -79,7 +81,7 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     environment: 
-      name: production
+      name: prod
       url: "https://ham-san.net"
     steps:
       - name: Deploy to VM via SSH
