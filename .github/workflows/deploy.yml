@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: production
-      url: ${{ secrets.PUBLIC_URL }}
+      url: "https://ham-san.net"
     steps:
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@master
