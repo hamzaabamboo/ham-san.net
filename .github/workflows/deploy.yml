@@ -43,14 +43,12 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - name: check variables
-        run: echo $PUBLIC_URL && echo $PUBLIC_API_URL
       - name: Install dependencies
         run: pnpm install
       - name: Build Backend
         run: pnpm nx build api
       - name: Build Frontend
-        run: pnpm nx build client
+        run: echo $PUBLIC_URL && echo $PUBLIC_API_URL && pnpm nx build client
       - name: Login to Registry
         uses: docker/login-action@v3
         with:
