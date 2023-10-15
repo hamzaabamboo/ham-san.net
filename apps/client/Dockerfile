@@ -13,10 +13,6 @@ COPY ./apps/client/scripts ./scripts
 COPY ./apps/client/package.json .
 
 RUN pnpm install --prod
-ENV PUBLIC_API_URL=${PUBLIC_API_URL}
-ENV PUBLIC_URL=${PUBLIC_URL}
-ENV PRIVATE_OUTLINE_SERVER=${PRIVATE_OUTLINE_SERVER}
-ENV PRIVATE_OUTLINE_API_TOKEN=${PRIVATE_OUTLINE_API_TOKEN}
 
 EXPOSE 1337
 CMD ["pnpm", "start:prod"]
