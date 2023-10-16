@@ -29,13 +29,14 @@ export async function resolve(specifier, context, next) {
 
   let url;
   try {
-    const resolution = await resolveAsync(specifier, {
+    const resolution = await resolveAsync(specifier.replace("three/addons", "three/examples/jsm"), {
       basedir: dirname(parentPath),
       // For whatever reason, --experimental-specifier-resolution=node doesn't search for .mjs extensions
       // but it does search for index.mjs files within directories
       extensions: ['.js', '.json', '.node', '.mjs'],
     });
-    url = pathToFileURL(resolution).href;
+    url = pathToFileURL(resolution).href.replace("build/three.js", "build/three.module.js");
+    console.log(url)
   } catch (error) {
     if (error.code === 'MODULE_NOT_FOUND') {
       // Match Node's error code

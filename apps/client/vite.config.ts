@@ -20,6 +20,11 @@ const config: UserConfig = {
 	],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
+	},
+	resolve: {
+		alias: {
+			// 'three/addons': join(__dirname, '../../node_modules/three/examples/jsm/')
+		}
 	}
 };
 
