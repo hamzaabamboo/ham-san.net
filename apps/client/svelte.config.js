@@ -27,7 +27,6 @@ const config = {
 			'@utils': 'src/utils',
 			'@stores': 'src/stores',
 			'@assets': 'src/assets',
-			"three/addons": "../../node_modules/three/examples/jsm/", 
 		},
 	}
 };

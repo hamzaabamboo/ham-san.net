@@ -13,7 +13,7 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"sync": "svelte-kit sync",
-		"start": "node --experimental-loader ./scripts/loader.js -r dotenv/config build",
+		"start": "node --experimental-loader ./scripts/loader.js -r dotenv/config ../../dist/apps/client/index.js",
 		"start:prod": "node --experimental-loader ./scripts/loader.js -r dotenv/config index.js",
 		"codegen": "graphql-codegen",
 		"codegen:prod": "graphql-codegen -c codegen.prod.yml",
@@ -54,7 +54,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@apollo/client": "^3.8.5",
+		"@apollo/client": "^3.8.6",
 		"@fortawesome/free-brands-svg-icons": "^6.4.2",
 		"@fortawesome/free-solid-svg-icons": "^6.4.2",
 		"@types/remove-markdown": "^0.3.2",
