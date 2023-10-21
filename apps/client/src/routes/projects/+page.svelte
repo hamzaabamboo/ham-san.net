@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Container from '@components/core/Container.svelte';
-	import MetaTags from '@components/core/MetaTags.svelte';
+	import MetaTags from '@components/utils/MetaTags.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
 	import { locale, t } from '@i18n';

@@ -5,10 +5,10 @@
 
 	export let hero = $t('home.hero-text');
 	export let subtitle = $t('home.hero-subtitle');
-	export let bg: string;
+	export let bg: string | undefined;
 </script>
 
-<Container fluid class="bg-primary bg-opacity-10 relative">
+<Container fluid>
 	<!-- https://medium.com/@dailyfire/pure-css-parallax-simple-tricks-da102d0ffdb9 -->
 	<div
 		class="bg-cover bg-center h-full w-full absolute z-0"
@@ -17,7 +17,7 @@
 		style:filter="blur(2px)"
 	/>
 	<div style:transform="translateZ(1px) scale(0.875)">
-		<Container class="relative z-10">
+		<Container styles={{ position: 'relative', zIndex: '10' }}>
 			<div
 				class="hero sm:min-h-screen lg:min-h-16 flex items-center sm:justify-center lg:justify-start lg:pl-4 w-full"
 			>

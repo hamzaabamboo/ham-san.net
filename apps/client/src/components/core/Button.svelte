@@ -1,11 +1,8 @@
-<script>
-	let _class = '';
-	export { _class as class };
+<script lang="ts">
+	import { button, type ButtonVariantProps } from 'styled-system/recipes';
+	export let styles: ButtonVariantProps;
 </script>
 
-<button
-	{...$$restProps}
-	class="px-4 py-2 mx-auto bg-primary rounded-md transition-shadow shadow-sm hover:shadow-md　{_class}"
->
+<button class={button({ ...styles })} {...$$restProps}>
 	<slot />
 </button>

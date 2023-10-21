@@ -5,7 +5,7 @@
 	import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 	import { faGithub, faFacebook, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 	import Fa from 'svelte-fa';
-	import MetaTags from '@components/core/MetaTags.svelte';
+	import MetaTags from '@components/utils/MetaTags.svelte';
 
 	$: items = [
 		{

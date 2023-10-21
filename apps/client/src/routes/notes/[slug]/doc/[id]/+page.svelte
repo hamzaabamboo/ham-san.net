@@ -4,7 +4,7 @@
 	import { PUBLIC_URL } from '$env/static/public';
 	import Container from '@components/core/Container.svelte';
 	import Divider from '@components/core/Divider.svelte';
-	import MetaTags from '@components/core/MetaTags.svelte';
+	import MetaTags from '@components/utils/MetaTags.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
 	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -24,7 +24,7 @@
 	$: note = articleData?.data;
 	$: title = note?.title;
 	$: content = cleanArticleContent(note?.text);
-	
+
 	let oldId = note?.id;
 	const { params } = $page;
 
@@ -52,7 +52,7 @@
 			document?.getElementById('title')?.scrollIntoView();
 		}
 		oldId = note?.id;
-	})
+	});
 
 	onDestroy(() => {
 		localizationUrls.set({});

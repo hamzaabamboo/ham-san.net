@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MetaTags from '@components/core/MetaTags.svelte';
+	import MetaTags from '@components/utils/MetaTags.svelte';
 	import AboutMe from '@components/home/AboutMe.svelte';
 	import BeforeFooter from '@components/home/BeforeFooter.svelte';
 	import FeaturedProjects from '@components/home/FeaturedProjects.svelte';

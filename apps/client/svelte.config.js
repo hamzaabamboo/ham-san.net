@@ -27,6 +27,7 @@ const config = {
 			'@utils': 'src/utils',
 			'@stores': 'src/stores',
 			'@assets': 'src/assets',
+			"styled-system": "./styled-system/*"
 		},
 	}
 };

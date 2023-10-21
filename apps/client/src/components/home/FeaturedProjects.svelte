@@ -2,10 +2,10 @@
 	import Container from '@components/core/Container.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import ProjectCard from '@components/projects/ProjectCard.svelte';
-	import { t } from '@i18n';
 	import type { ProjectPreviewFragment } from '@graphql/generated/server';
+	import { t } from '@i18n';
 
-	export let projects: ProjectPreviewFragment[] = [];
+	export let projects: (ProjectPreviewFragment | null | undefined)[] = [];
 </script>
 
 <Container class="my-8">

@@ -2,11 +2,13 @@
 	import { disableScrollHandling } from '$app/navigation';
 	import Footer from '@components/Footer.svelte';
 	import Header from '@components/Header.svelte';
-	import GoogleTagManager from '@components/core/GoogleTagManager.svelte';
+	import Flex from '@components/core/Flex.svelte';
+	import Stack from '@components/core/Stack.svelte';
+	import GoogleTagManager from '@components/utils/GoogleTagManager.svelte';
 	import { t } from '@i18n';
 	import { preparePageTransition } from '@utils/preparePageTransition';
 	import { onMount } from 'svelte';
-	import '../app.css';
+	import '../index.css';
 
 	let isReady = false;
 
@@ -38,19 +40,25 @@
 
 <GoogleTagManager gtmId="G-2FPKQLHT9H" timeout={1000} />
 
-<div class="h-screen flex flex-col" class:unstyled={!isReady}>
+<Flex
+	styles={{
+		height: 'screen',
+		flexDir: 'column'
+	}}
+>
 	<Header />
-	<div
-		class="flex-1 h-full flex flex-col overflow-x-hidden overflow-y-auto"
-		style:perspective="8px"
-		style:perspective-origin="center"
+	<Stack
+		styles={{
+			overflowX: 'hidden',
+			overflowY: 'auto',
+			perspective: '8px',
+			perspectiveOrigin: 'center'
+		}}
 	>
-		<div class="flex-1 flex flex-col" style:transform-style="preserve-3d">
-			<slot />
-		</div>
+		<Stack styles={{ flex: 1, transformStyle: 'preserve-3d' }}><slot /></Stack>
 		<Footer />
-	</div>
-</div>
+	</Stack>
+</Flex>
 
 <style>
 	/* https://meowni.ca/font-style-matcher/ */

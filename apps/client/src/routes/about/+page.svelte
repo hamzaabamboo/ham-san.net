@@ -8,7 +8,7 @@
 	import { toKebabCase } from '@utils/localization';
 	import groupBy from 'lodash/groupBy';
 
-	import MetaTags from '@components/core/MetaTags.svelte';
+	import MetaTags from '@components/utils/MetaTags.svelte';
 	import ExperienceItem from '@components/experience/ExperienceItem.svelte';
 	import TagItem from '@components/tags/TagItem.svelte';
 	import { formatMonthYear, parseDate } from '@utils/date';
@@ -23,7 +23,7 @@
 	$: educations = query.educations?.data.map((data) => fallbackLocale(data, $locale));
 	$: aboutMetadata = query.aboutMe?.data?.attributes;
 	$: skills = groupBy(
-		query.tags?.data?.filter((tag) => tag.attributes?.type !== "Non_Dev"),
+		query.tags?.data?.filter((tag) => tag.attributes?.type !== 'Non_Dev'),
 		(tag) => tag.attributes?.type
 	);
 
@@ -97,5 +97,5 @@
 			</div>
 			<hr />
 		</div>
-	</Container>	
+	</Container>
 </Container>
