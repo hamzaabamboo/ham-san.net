@@ -4,6 +4,7 @@
 	import { locale, t } from '@i18n';
 	import { localizationUrls } from '@stores/localizationUrls';
 	import { LANGUAGES } from '@utils/localization';
+	import { css } from 'styled-system/css';
 	import { hstack } from 'styled-system/patterns';
 	import Fa from 'svelte-fa';
 	import Box from './core/Box.svelte';
@@ -59,7 +60,8 @@
 			justifyContent: 'space-between',
 			px: '4',
 			zIndex: '20',
-			viewTransitionName: 'header'
+			viewTransitionName: 'header',
+			w: 'full'
 		}}
 	>
 		<!-- Logo Section -->
@@ -70,11 +72,11 @@
 
 		<!-- Desktop Menu-->
 		<HStack styles={{ hideBelow: 'md' }}>
-			<Box>
+			<HStack styles={{ w: 'full' }}>
 				{#each links as link}
-					<a href={link.href} class="p-2">{link.label}</a>
+					<a href={link.href} class={css({ whiteSpace: 'nowrap' })}>{link.label}</a>
 				{/each}
-			</Box>
+			</HStack>
 			<Box class="px-2">|</Box>
 			<Box>
 				{#each LANGUAGES as language}
@@ -121,7 +123,7 @@
 			hideFrom: 'md'
 		}}
 	>
-		<Stack style={{ px: '2', textAlign: 'center' }}>
+		<Stack style={{ px: '2', textAlign: 'center', w: 'full' }}>
 			{#each links as link}
 				<a href={link.href} class="p-2" on:click={() => (menuOpen = false)}>{link.label}</a>
 			{/each}

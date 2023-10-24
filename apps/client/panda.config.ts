@@ -9,13 +9,47 @@ export default defineConfig({
 	presets: [
 		'@pandacss/preset-base',
 		createPreset({
-			accentColor: 'neutral',
+			accentColor: 'orange',
 			grayColor: 'neutral',
 			borderRadius: 'sm'
 		})
 	],
 
 	include: ['./src/**/*.{js,jsx,ts,svelte}'],
+
+	staticCss: {
+		recipes: {
+			avatar: [{ size: ['*'] }],
+			badge: [{ variant: ['*'], size: ['*'] }],
+			button: [{ variant: ['*'], size: ['*'] }],
+			checkbox: [{ size: ['*'] }],
+			code: [{ variant: ['*'], size: ['*'] }],
+			drawer: [{ placement: ['*'] }],
+			icon: [{ size: ['*'] }],
+			input: [{ size: ['*'] }],
+			menu: [{ size: ['*'] }],
+			numberInput: [{ size: ['*'] }],
+			radioGroup: [{ size: ['*'] }],
+			radioButtonGroup: [{ size: ['*'], variant: ['*'] }],
+			ratingGroup: [{ size: ['*'] }],
+			segmentGroup: [{ size: ['*'] }],
+			select: [{ size: ['*'], variant: ['*'] }],
+			switchRecipe: [{ size: ['*'] }],
+			table: [{ size: ['*'], variant: ['*'] }],
+			tabs: [{ size: ['*'], variant: ['*'] }],
+			toggleGroup: [{ size: ['*'], variant: ['*'] }]
+		},
+		css: [
+			{
+				properties: {
+					fontWeight: ['*'],
+					textStyle: ['*'],
+					hideFrom: ['*'],
+					hideBelow: ['*']
+				}
+			}
+		]
+	},
 
 	// Files to exclude
 	exclude: [],

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Stack from '@components/core/Stack.svelte';
 	import Typography from '@components/core/Typography.svelte';
 	import TagItem from '@components/tags/TagItem.svelte';
 	import type { ProjectPreviewFragment } from '@graphql/generated/client';
@@ -6,6 +7,7 @@
 	import { formatMonthYear, parseDate } from '@utils/date';
 	import { getMediaUrl } from '@utils/media';
 	import { sortTags } from '@utils/tags';
+	import { css } from 'styled-system/css';
 
 	export let project: Pick<
 		ProjectPreviewFragment,
@@ -23,8 +25,19 @@
 	export { _class as class };
 </script>
 
-<a href="/projects/{project.slug}" class="block md:min-h-[250px] {_class || ''}">
-	<div
+<a href="/projects/{project.slug}" class={css({ display: 'block', minH: '250px' })}>
+	<Stack
+		styles={{
+			bgColor: 'white',
+			shadow: 'md',
+			rounded: 'md',
+			h: 'full',
+			transition: 'shadow, transform',
+			_hover: {
+				shadow: 'lg',
+				scale: '1.05'
+			}
+		}}
 		class=" bg-white shadow-md rounded-md flex flex-col h-full transtion-shadow transition-transform hover:shadow-lg hover:scale-105"
 	>
 		{#if project.media?.data[0]?.attributes?.url}
@@ -52,5 +65,5 @@
 				<p>{project.description}</p>
 			{/if}
 		</div>
-	</div>
+	</Stack>
 </a>
