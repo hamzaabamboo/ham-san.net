@@ -6,6 +6,7 @@
     "formulahendry.auto-complete-tag",
     "formulahendry.auto-close-tag",
     "usernamehw.errorlens",
-    "formulahendry.auto-rename-tag"
+    "formulahendry.auto-rename-tag",
+    "astro-build.astro-vscode"
   ]
 }
