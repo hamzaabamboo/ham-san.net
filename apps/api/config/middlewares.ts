@@ -1,25 +1,25 @@
 export default [
-  "strapi::errors",
-  "strapi::security",
-  "strapi::poweredBy",
+  'strapi::errors',
+  'strapi::security',
+  'strapi::poweredBy',
   {
-    name: "strapi::cors",
+    name: 'strapi::cors',
     config: {
-      headers: "*",
+      headers: '*',
       origin: [
-        "http://localhost:5173",
-        "http://localhost:1337",
-        "https://api.ham-san.net",
-        "https://v3.ham-san.net",
-        "https://ham-san.net",
-        "https://hamzaabamboo.github.io",
-      ],
-    },
+        'http://localhost:5173',
+        'http://localhost:1337',
+        'https://api.ham-san.net',
+        'https://v3.ham-san.net',
+        'https://ham-san.net',
+        'https://hamzaabamboo.github.io'
+      ]
+    }
   },
-  "strapi::logger",
-  "strapi::query",
-  "strapi::body",
-  "strapi::session",
-  "strapi::favicon",
-  "strapi::public",
+  'strapi::logger',
+  'strapi::query',
+  'strapi::body',
+  'strapi::session',
+  'strapi::favicon',
+  'strapi::public'
 ];

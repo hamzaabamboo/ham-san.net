@@ -1,3 +1,3 @@
 export function uiCore(): string {
-	return 'ui-core';
+  return 'ui-core';
 }

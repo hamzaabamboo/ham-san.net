@@ -1,29 +1,50 @@
 {
-	"name": "client",
-	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"projectType": "application",
-	"sourceRoot": "apps/client/src",
-	"targets": {
-		"container": {
-			"executor": "@nx-tools/nx-container:build",
-			"dependsOn": ["build"],
-			"defaultConfiguration": "local",
-			"options": {
-				"engine": "docker",
-				"context": "{workspaceRoot}",
-				"file": "{projectRoot}/Dockerfile"
-			},
-			"configurations": {
-				"local": {
-					"tags": ["ham-san-net-client:latest"],
-					"push": false
-				},
-				"production": {
-					"tags": ["registry.ham-san.net/ham-san-net-client:latest"],
-					"push": true
-				}
-			}
-		}
-	},
-	"tags": []
+  "name": "client",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/client/src",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/client/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/client/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": ["build"],
+      "defaultConfiguration": "local",
+      "options": {
+        "engine": "docker",
+        "context": "{workspaceRoot}",
+        "file": "{projectRoot}/Dockerfile"
+      },
+      "configurations": {
+        "local": {
+          "tags": ["ham-san-net-client:latest"],
+          "push": false
+        },
+        "production": {
+          "tags": ["registry.ham-san.net/ham-san-net-client:latest"],
+          "push": true
+        }
+      }
+    }
+  },
+  "tags": []
 }

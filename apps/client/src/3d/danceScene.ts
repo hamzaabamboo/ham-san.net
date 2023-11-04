@@ -27,7 +27,7 @@ export const danceScene = () => {
 		renderer: Renderer,
 		effect: typeof OutlineEffect,
 		controls: typeof OrbitControls,
-		physics: any;
+		physics: { update: (a: unknown) => unknown };
 	let helper: typeof MMDAnimationHelper;
 
 	const clock = new Clock();

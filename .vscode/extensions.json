@@ -1,15 +1,15 @@
 {
-	"recommendations": [
-		"streetsidesoftware.code-spell-checker",
-		"dbaeumer.vscode-eslint",
-		"eamodio.gitlens",
-		"formulahendry.auto-complete-tag",
-		"formulahendry.auto-close-tag",
-		"usernamehw.errorlens",
-		"formulahendry.auto-rename-tag",
-		"astro-build.astro-vscode",
-		"nrwl.angular-console",
-		"esbenp.prettier-vscode",
-		"firsttris.vscode-jest-runner"
-	]
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "formulahendry.auto-complete-tag",
+    "formulahendry.auto-close-tag",
+    "usernamehw.errorlens",
+    "formulahendry.auto-rename-tag",
+    "astro-build.astro-vscode",
+    "nrwl.angular-console",
+    "esbenp.prettier-vscode",
+    "firsttris.vscode-jest-runner"
+  ]
 }

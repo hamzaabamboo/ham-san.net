@@ -9,7 +9,7 @@ jobs:
   build-and-push:
     name: Build and Push to Registry
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: prod
     env:
       PRIVATE_OUTLINE_SERVER: ${{ secrets.PRIVATE_OUTLINE_SERVER }}
@@ -85,7 +85,7 @@ jobs:
     name: Deploy to VM
     needs: build-and-push
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: prod
       url: https://ham-san.net
     steps:
