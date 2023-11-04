@@ -32,7 +32,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install dependencies
         run: pnpm install
-      - name: Run Format
+      - name: Run Format Check
         run: pnpm nx format:check -all
-      - name: Build Lint All
+      - name: Run Lint All
         run: pnpm nx run-many -t lint -all
