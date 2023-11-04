@@ -1,7 +1,7 @@
 {
-	"projects": "Projects",
-	"screenshots": "Screenshots",
-	"back-to-projects": "Back to projects",
-	"active": "Active Projects",
-	"inactive": "Other Projects"
+  "projects": "Projects",
+  "screenshots": "Screenshots",
+  "back-to-projects": "Back to projects",
+  "active": "Active Projects",
+  "inactive": "Other Projects"
 }

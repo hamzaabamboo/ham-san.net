@@ -1,10 +1,10 @@
 query getProjectBySlug($slug: String, $locale: I18NLocaleCode = "all") {
-	projects(filters: { slug: { eq: $slug } }, locale: $locale) {
-		data {
-			id
-			attributes {
-				...project
-			}
-		}
-	}
+  projects(filters: { slug: { eq: $slug } }, locale: $locale) {
+    data {
+      id
+      attributes {
+        ...project
+      }
+    }
+  }
 }

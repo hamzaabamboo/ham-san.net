@@ -11,6 +11,7 @@ node_modules
 dist
 
 styled-system
+generated
 
 .svelte-kit
 

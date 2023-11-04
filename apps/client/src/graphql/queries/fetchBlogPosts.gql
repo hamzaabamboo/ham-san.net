@@ -1,19 +1,19 @@
 query fetchBlogPosts(
-	$limit: Int = 100
-	# $isFeatured: Boolean,
-	$locale: I18NLocaleCode
+  $limit: Int = 100
+  # $isFeatured: Boolean,
+  $locale: I18NLocaleCode
 ) {
-	blogs(
-		pagination: { pageSize: $limit }
-		# filters: { isFeatured: { eq: $isFeatured } }
-		sort: ["isFeatured:desc", "date:desc"]
-		locale: $locale
-	) {
-		data {
-			id
-			attributes {
-				...blog
-			}
-		}
-	}
+  blogs(
+    pagination: { pageSize: $limit }
+    # filters: { isFeatured: { eq: $isFeatured } }
+    sort: ["isFeatured:desc", "date:desc"]
+    locale: $locale
+  ) {
+    data {
+      id
+      attributes {
+        ...blog
+      }
+    }
+  }
 }

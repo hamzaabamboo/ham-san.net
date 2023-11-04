@@ -1,24 +1,24 @@
 query getTagBySlug($slug: String, $locale: I18NLocaleCode = "all") {
-	tags(filters: { slug: { eq: $slug } }, locale: $locale) {
-		data {
-			id
-			attributes {
-				...tag
-				projects(sort: ["isFeatured:desc", "date:desc"]) {
-					data {
-						attributes {
-							...projectPreview
-						}
-					}
-				}
-				experiences {
-					data {
-						attributes {
-							...experience
-						}
-					}
-				}
-			}
-		}
-	}
+  tags(filters: { slug: { eq: $slug } }, locale: $locale) {
+    data {
+      id
+      attributes {
+        ...tag
+        projects(sort: ["isFeatured:desc", "date:desc"]) {
+          data {
+            attributes {
+              ...projectPreview
+            }
+          }
+        }
+        experiences {
+          data {
+            attributes {
+              ...experience
+            }
+          }
+        }
+      }
+    }
+  }
 }

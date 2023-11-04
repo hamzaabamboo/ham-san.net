@@ -1,54 +1,54 @@
 fragment project on Project {
-	title
-	description
-	content
-	slug
-	isActive
-	locale
-	category {
-		data {
-			id
-			attributes {
-				name
-			}
-		}
-	}
-	media {
-		data {
-			id
-			attributes {
-				...media
-			}
-		}
-	}
-	date
-	finishedDate
-	tags {
-		data {
-			id
-			attributes {
-				...tag
-			}
-		}
-	}
-	links {
-		title
-		url
-		type
-	}
-	banner {
-		data {
-			attributes {
-				...media
-			}
-		}
-	}
-	localizations {
-		data {
-			attributes {
-				locale
-				slug
-			}
-		}
-	}
+  title
+  description
+  content
+  slug
+  isActive
+  locale
+  category {
+    data {
+      id
+      attributes {
+        name
+      }
+    }
+  }
+  media {
+    data {
+      id
+      attributes {
+        ...media
+      }
+    }
+  }
+  date
+  finishedDate
+  tags {
+    data {
+      id
+      attributes {
+        ...tag
+      }
+    }
+  }
+  links {
+    title
+    url
+    type
+  }
+  banner {
+    data {
+      attributes {
+        ...media
+      }
+    }
+  }
+  localizations {
+    data {
+      attributes {
+        locale
+        slug
+      }
+    }
+  }
 }

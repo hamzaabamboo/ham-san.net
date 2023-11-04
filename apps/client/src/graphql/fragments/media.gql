@@ -1,4 +1,4 @@
 fragment media on UploadFile {
-	name
-	url
+  name
+  url
 }

@@ -1,8 +1,8 @@
 fragment education on Education {
-	locale
-	title
-	start
-	end
-	content
-	description
+  locale
+  title
+  start
+  end
+  content
+  description
 }

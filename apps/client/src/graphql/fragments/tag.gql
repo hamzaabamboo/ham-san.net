@@ -1,5 +1,5 @@
 fragment tag on Tag {
-	title
-	slug
-	type
+  title
+  slug
+  type
 }

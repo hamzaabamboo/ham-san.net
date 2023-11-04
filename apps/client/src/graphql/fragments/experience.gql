@@ -1,17 +1,17 @@
 fragment experience on Experience {
-	locale
-	title
-	description
-	start
-	end
-	slug
-	tags {
-		data {
-			attributes {
-				...tag
-			}
-		}
-	}
-	content
-	position
+  locale
+  title
+  description
+  start
+  end
+  slug
+  tags {
+    data {
+      attributes {
+        ...tag
+      }
+    }
+  }
+  content
+  position
 }

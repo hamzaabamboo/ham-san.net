@@ -35,4 +35,4 @@ jobs:
       - name: Run Format
         run: pnpm nx format:check -all
       - name: Build Lint All
-        run: pnpm nx run-many -t lint --all
+        run: pnpm nx run-many -t lint -all

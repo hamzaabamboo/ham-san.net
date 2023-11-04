@@ -1,37 +1,37 @@
 fragment projectPreview on Project {
-	title
-	description
-	slug
-	isActive
-	locale
-	category {
-		data {
-			id
-			attributes {
-				name
-			}
-		}
-	}
-	media(pagination: { pageSize: 1 }) {
-		data {
-			id
-			attributes {
-				...media
-			}
-		}
-	}
-	date
-	links {
-		title
-		url
-		type
-	}
-	tags {
-		data {
-			id
-			attributes {
-				...tag
-			}
-		}
-	}
+  title
+  description
+  slug
+  isActive
+  locale
+  category {
+    data {
+      id
+      attributes {
+        name
+      }
+    }
+  }
+  media(pagination: { pageSize: 1 }) {
+    data {
+      id
+      attributes {
+        ...media
+      }
+    }
+  }
+  date
+  links {
+    title
+    url
+    type
+  }
+  tags {
+    data {
+      id
+      attributes {
+        ...tag
+      }
+    }
+  }
 }
