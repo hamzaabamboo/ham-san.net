@@ -23,8 +23,8 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Install
-        uses: ./.github/composite-actions/install
+      - name: Setup Dependencies
+        uses: ./.github/composite-actions/setup
       - name: Build Backend
         run: pnpm nx build api
       - name: Build Frontend

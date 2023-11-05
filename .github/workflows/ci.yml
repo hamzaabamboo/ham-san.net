@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install
-        uses: ./.github/composite-actions/install
+      - name: Setup Dependencies
+        uses: ./.github/composite-actions/setup
       - name: Run Lint All
         run: pnpm nx run-many -t lint -all
   format:
@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install
-        uses: ./.github/composite-actions/install
+      - name: Setup Dependencies
+        uses: ./.github/composite-actions/setup
       - name: Run Format Check
         run: pnpm nx format:check -all
