@@ -65,13 +65,13 @@ jobs:
           registry: registry.ham-san.net
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-      - name: Build and Push frontend image
+      - name: Build and push backend image
         uses: docker/build-push-action@v5
         with:
-          file: ./apps/client/Dockerfile
-          context: .
+          file: ./apps/api/Dockerfile
+          context: ./dist/apps/api
           push: true
-          tags: registry.ham-san.net/ham-san-net-client:latest
+          tags: registry.ham-san.net/ham-san-net-api:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
