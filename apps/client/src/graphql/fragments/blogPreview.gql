@@ -1,30 +1,30 @@
 fragment blogPreview on Blog {
-	title
-	description
-	slug
-	category {
-		data {
-			id
-			attributes {
-				name
-			}
-		}
-	}
-	thumbnail {
-		data {
-			id
-			attributes {
-				...media
-			}
-		}
-	}
-	createdAt
-	tags {
-		data {
-			id
-			attributes {
-				...tag
-			}
-		}
-	}
+  title
+  description
+  slug
+  category {
+    data {
+      id
+      attributes {
+        name
+      }
+    }
+  }
+  thumbnail {
+    data {
+      id
+      attributes {
+        ...media
+      }
+    }
+  }
+  createdAt
+  tags {
+    data {
+      id
+      attributes {
+        ...tag
+      }
+    }
+  }
 }

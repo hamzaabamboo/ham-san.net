@@ -14,11 +14,7 @@
     },
     "type": {
       "type": "enumeration",
-      "enum": [
-        "web",
-        "github",
-        "others"
-      ]
+      "enum": ["web", "github", "others"]
     }
   }
 }

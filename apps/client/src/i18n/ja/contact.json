@@ -1,9 +1,9 @@
 {
-	"email": "Eメール",
-	"phone": "電話",
-	"github": "GitHub",
-	"twitter": "Twitter",
-	"discord": "Discord",
-	"linkedin": "LinkedIn",
-	"facebook": "Facebook"
+  "email": "Eメール",
+  "phone": "電話",
+  "github": "GitHub",
+  "twitter": "Twitter",
+  "discord": "Discord",
+  "linkedin": "LinkedIn",
+  "facebook": "Facebook"
 }

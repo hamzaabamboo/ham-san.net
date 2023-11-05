@@ -1,4 +1,4 @@
-version: "3.3"
+version: '3.3'
 services:
   api:
     container_name: strapi
@@ -22,9 +22,9 @@ services:
       # - ./api/src:/opt/app/src
     ports:
       - 1337:1337
-    command: ["pnpm", "start"]
+    command: ['pnpm', 'start']
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - 'host.docker.internal:host-gateway'
   client:
     container_name: sveltekit
     env_file: .env
@@ -41,5 +41,5 @@ services:
     image: postgres
     ports:
       - 5432:5432
-    environment: 
+    environment:
       - POSTGRES_PASSWORD=0000

@@ -1,7 +1,7 @@
 {
-	"projects": "プロジェクト一覧",
-	"screenshots": "スクリーンショット",
-	"back-to-projects": "プロジェクト一覧へ",
-	"active": "活動中プロジェクト",
-	"inactive": "他のプロジェクト"
+  "projects": "プロジェクト一覧",
+  "screenshots": "スクリーンショット",
+  "back-to-projects": "プロジェクト一覧へ",
+  "active": "活動中プロジェクト",
+  "inactive": "他のプロジェクト"
 }

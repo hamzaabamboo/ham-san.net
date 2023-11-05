@@ -1,42 +1,42 @@
 module.exports = {
   graphql: {
     config: {
-      endpoint: "/graphql",
+      endpoint: '/graphql',
       shadowCRUD: true,
       playgroundAlways: false,
       depthLimit: 10,
       amountLimit: 100,
       apolloServer: {
         tracing: false,
-        introspection: true,
-      },
-    },
+        introspection: true
+      }
+    }
   },
   slugify: {
     enabled: false,
     config: {
       contentTypes: {
         projects: {
-          field: "slug",
-          references: "title",
+          field: 'slug',
+          references: 'title'
         },
         tags: {
-          field: "slug",
-          references: "title",
+          field: 'slug',
+          references: 'title'
         },
         blogs: {
-          field: "slug",
-          references: "title",
-        },
-      },
-    },
+          field: 'slug',
+          references: 'title'
+        }
+      }
+    }
   },
-  "local-image-sharp": {
+  'local-image-sharp': {
     config: {
-      cacheDir: ".image-cache",
-    },
+      cacheDir: '.image-cache'
+    }
   },
-  "strapi-chatgpt": {
-    enabled: true,
-  },
+  'strapi-chatgpt': {
+    enabled: true
+  }
 };

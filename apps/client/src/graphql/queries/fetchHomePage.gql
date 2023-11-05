@@ -1,46 +1,46 @@
 query fetchHomePage($locale: I18NLocaleCode) {
-	projects(
-		pagination: { pageSize: 3 }
-		filters: { isFeatured: { eq: true } }
-		sort: ["isFeatured:desc", "date:desc"]
-	) {
-		data {
-			id
-			attributes {
-				...projectPreview
-				localizations {
-					data {
-						attributes {
-							...projectPreview
-						}
-					}
-				}
-			}
-		}
-	}
-	homepage(locale: $locale) {
-		data {
-			attributes {
-				introduction
-				introductionImage {
-					data {
-						id
-						attributes {
-							...media
-						}
-					}
-				}
-				hero
-				heroSubtitle
-				heroImage {
-					data {
-						id
-						attributes {
-							...media
-						}
-					}
-				}
-			}
-		}
-	}
+  projects(
+    pagination: { pageSize: 3 }
+    filters: { isFeatured: { eq: true } }
+    sort: ["isFeatured:desc", "date:desc"]
+  ) {
+    data {
+      id
+      attributes {
+        ...projectPreview
+        localizations {
+          data {
+            attributes {
+              ...projectPreview
+            }
+          }
+        }
+      }
+    }
+  }
+  homepage(locale: $locale) {
+    data {
+      attributes {
+        introduction
+        introductionImage {
+          data {
+            id
+            attributes {
+              ...media
+            }
+          }
+        }
+        hero
+        heroSubtitle
+        heroImage {
+          data {
+            id
+            attributes {
+              ...media
+            }
+          }
+        }
+      }
+    }
+  }
 }

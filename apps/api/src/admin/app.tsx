@@ -10,7 +10,7 @@ export default {
       // 'he',
       // 'id',
       // 'it',
-      "ja",
+      'ja'
       // 'ko',
       // 'ms',
       // 'nl',
@@ -27,9 +27,9 @@ export default {
       // 'vi',
       // 'zh-Hans',
       // 'zh',
-    ],
+    ]
   },
   bootstrap(app) {
-    console.log("Admin Initialized");
-  },
+    console.log('Admin Initialized');
+  }
 };

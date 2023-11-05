@@ -1,9 +1,9 @@
 {
-	"email": "E-mail",
-	"phone": "Phone",
-	"github": "GitHub",
-	"twitter": "Twitter",
-	"discord": "Discord",
-	"linkedin": "LinkedIn",
-	"facebook": "Facebook"
+  "email": "E-mail",
+  "phone": "Phone",
+  "github": "GitHub",
+  "twitter": "Twitter",
+  "discord": "Discord",
+  "linkedin": "LinkedIn",
+  "facebook": "Facebook"
 }
