@@ -1,5 +1,5 @@
-name: "Install"
-description: "Sets up Node.js and runs install"
+name: 'Install'
+description: 'Sets up Node.js and runs install'
 
 runs:
   using: composite
@@ -33,4 +33,5 @@ runs:
           ${{ runner.os }}-pnpm-store-
 
     - name: Install dependencies
+      shell: bash
       run: pnpm install
