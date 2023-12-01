@@ -15,7 +15,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/api",
-        "command": "strapi build && mkdir -p ../../dist/apps/ rm -rf ../../dist/apps/api && mv ./dist ../../dist/apps/api && cp ./package.json ../../dist/apps/api"
+        "command": "strapi build && mkdir -p ../../dist/apps/ && rm -rf ../../dist/apps/api && mv ./dist ../../dist/apps/api && cp ./package.json ../../dist/apps/api"
       }
     },
     "container": {
