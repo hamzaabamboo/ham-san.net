@@ -111,6 +111,9 @@ importers:
       '@codemirror/theme-one-dark':
         specifier: ^6.1.2
         version: 6.1.2
+      '@reduxjs/toolkit':
+        specifier: ^1.9.7
+        version: 1.9.7(react@18.2.0)
       '@strapi/plugin-content-type-builder':
         specifier: ^4.15.0
         version: 4.15.0(@babel/runtime@7.23.5)(@codemirror/autocomplete@6.10.2)(@codemirror/language@6.9.3)(@codemirror/lint@6.4.2)(@codemirror/search@6.5.4)(@codemirror/state@6.3.2)(@codemirror/theme-one-dark@6.1.2)(@codemirror/view@6.22.1)(codemirror@6.0.1)(react-dom@18.2.0)(react-router-dom@5.3.4)(react@18.2.0)(redux@4.2.1)(styled-components@5.3.3)(typescript@5.2.2)
@@ -6929,6 +6932,24 @@ packages:
 
   /@react-dnd/shallowequal@3.0.1:
     resolution: {integrity: sha512-XjDVbs3ZU16CO1h5Q3Ew2RPJqmZBDE/EVf1LYp6ePEffs3V/MX9ZbL5bJr8qiK5SbGmUMuDoaFgyKacYz8prRA==}
+    dev: false
+
+  /@reduxjs/toolkit@1.9.7(react@18.2.0):
+    resolution: {integrity: sha512-t7v8ZPxhhKgOKtU+uyJT13lu4vL7az5aFi4IdoDs/eS548edn2M8Ik9h8fxgvMjGoAUVFSt6ZC1P5cWmQ014QQ==}
+    peerDependencies:
+      react: ^16.9.0 || ^17.0.0 || ^18
+      react-redux: ^7.2.1 || ^8.0.2
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-redux:
+        optional: true
+    dependencies:
+      immer: 9.0.21
+      react: 18.2.0
+      redux: 4.2.1
+      redux-thunk: 2.4.2(redux@4.2.1)
+      reselect: 4.1.8
     dev: false
 
   /@repeaterjs/repeater@3.0.4:
@@ -21914,6 +21935,10 @@ packages:
 
   /reselect@4.1.7:
     resolution: {integrity: sha512-Zu1xbUt3/OPwsXL46hvOOoQrap2azE7ZQbokq61BQfiXvhewsKDwhMeZjTX9sX0nvw1t/U5Audyn1I9P/m9z0A==}
+    dev: false
+
+  /reselect@4.1.8:
+    resolution: {integrity: sha512-ab9EmR80F/zQTMNeneUr4cv+jSwPJgIlvEmVwLerwrWVbpLlBuls9XHzIeTFy4cegU2NHBp3va0LKOzU5qFEYQ==}
     dev: false
 
   /resolve-alpn@1.2.1:
