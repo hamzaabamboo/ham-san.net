@@ -5,20 +5,17 @@
   "sourceRoot": "apps/api/src",
   "targets": {
     "serve": {
-      "executor": "@nx-extend/strapi:serve",
-      "options": {}
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "command": "strapi start"
+      }
     },
     "build": {
-      "executor": "@nx-extend/strapi:build",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "outputPath": "dist/apps/api"
-      },
-      "configurations": {
-        "production": {
-          "production": true,
-          "generateLockfile": true
-        }
+        "cwd": "apps/api",
+        "command": "strapi build && rm -rf ../../dist/apps/api && mv ./dist ../../dist/apps/api && cp ./package.json ../../dist/apps/api"
       }
     },
     "container": {

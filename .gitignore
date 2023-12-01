@@ -131,3 +131,5 @@ client/src/graphql/generated/**
 
 styled-system
 .nx
+
+.strapi
