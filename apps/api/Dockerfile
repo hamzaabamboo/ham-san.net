@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:18-alpine3.18
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
