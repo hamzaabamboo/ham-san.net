@@ -1,0 +1,33 @@
+---
+import { Box, Center, HStack, Stack, styled } from "styled-system/jsx";
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+export async function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'ja' } }];
+}
+---
+
+<BaseLayout>
+<Center h="100dvh" bgColor="gray.5" >
+    <HStack width="91mm" height="55mm" gap="4" bgColor="white" border={{_print: "1px solid"}} printColorAdjust="exact">
+        <Box width="5mm" h="full" bgColor="purple"/>
+        <Stack flex="1" gap="2"justifyContent="space-around" h='full' py="4">
+            <Stack gap="0" fontSize="sm">
+                <styled.p>Smiley Light Village</styled.p>
+                <styled.p>鬼頭明里の里民</styled.p>
+            </Stack>
+            <styled.hr borderColor="purple" />
+            <Stack gap="0">
+                <styled.h1 fontWeight="semibold" lineHeight="1.2" fontSize="5xl">ハムP</styled.h1>
+            <styled.p>HamP</styled.p>
+            </Stack>
+            <Stack gap="0">
+                <styled.p fontSize="xs">タイ🇹🇭から来ました! </styled.p>
+                <styled.p fontSize="xs">X: @HamP_punipuni</styled.p>
+            </Stack>
+        </Stack>
+        <Stack justifyContent="flex-end" py="4" pr="4" h="full">
+            <styled.img maxW="50px" src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent("https://ham-san.net/contact")}`}></styled.img>
+        </Stack>
+    </HStack>
+</Center>
+</BaseLayout>
