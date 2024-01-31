@@ -1,33 +1,77 @@
 ---
-import { Box, Center, HStack, Stack, styled } from "styled-system/jsx";
+import { Box, Center, Grid, HStack, Stack, styled } from 'styled-system/jsx';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 export async function getStaticPaths() {
   return [{ params: { lang: 'en' } }, { params: { lang: 'ja' } }];
 }
+
+/* <styled.img
+          maxW="50px"
+          src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('https://ham-san.net/contact')}`}
+        /> */
 ---
 
 <BaseLayout>
-<Center h="100dvh" bgColor="gray.5" >
-    <HStack width="91mm" height="55mm" gap="4" bgColor="white" border={{_print: "1px solid"}} printColorAdjust="exact">
-        <Box width="5mm" h="full" bgColor="purple"/>
-        <Stack flex="1" gap="2"justifyContent="space-around" h='full' py="4">
-            <Stack gap="0" fontSize="sm">
-                <styled.p>Smiley Light Village</styled.p>
-                <styled.p>鬼頭明里の里民</styled.p>
-            </Stack>
-            <styled.hr borderColor="purple" />
-            <Stack gap="0">
-                <styled.h1 fontWeight="semibold" lineHeight="1.2" fontSize="5xl">ハムP</styled.h1>
-            <styled.p>HamP</styled.p>
-            </Stack>
-            <Stack gap="0">
-                <styled.p fontSize="xs">タイ🇹🇭から来ました! </styled.p>
-                <styled.p fontSize="xs">X: @HamP_punipuni</styled.p>
-            </Stack>
-        </Stack>
-        <Stack justifyContent="flex-end" py="4" pr="4" h="full">
-            <styled.img maxW="50px" src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent("https://ham-san.net/contact")}`}></styled.img>
-        </Stack>
-    </HStack>
-</Center>
+  <Center
+    h="100dvh"
+    w="full"
+    bgColor={{ base: 'gray.5', _print: 'none' }}
+    style={{ ['--main-color' as 'color']: '#1F1F5A' }}
+  >
+    <Grid
+      printColorAdjust="exact"
+      gridTemplateColumns="repeat(auto-fit, minmax(91mm, 1fr))"
+      justifyItems="center"
+      w="full"
+    >
+      {
+        Array(8)
+          .fill(undefined)
+          .map(() => {
+            return (
+              <HStack
+                width="91mm"
+                height="55mm"
+                gap="4"
+                bgColor="white"
+                border={{ _print: '1px solid' }}
+                printColorAdjust={{ _print: 'exact' }}
+                style={{
+                  WebkitPrintColorAdjust: 'exact'
+                }}
+              >
+                <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
+                <Stack flex="1" gap="2" justifyContent="space-around" h="full" py="4">
+                  <Stack gap="0" fontSize="sm">
+                    <styled.p>Smiley Light Village</styled.p>
+                    <styled.p>タイ支部🇹🇭</styled.p>
+                  </Stack>
+                  <styled.hr borderColor="var(--main-color)" />
+                  <Stack gap="0">
+                    <styled.h1 fontWeight="semibold" lineHeight="1.2" fontSize="5xl">
+                      ハムP
+                    </styled.h1>
+                    <styled.p fontSize="sm">Pいらないからハムをよんで！</styled.p>
+                  </Stack>
+                  <Stack gap="0" fontSize="xs">
+                    <styled.p>สวัสดีครับ!（サワディーカー）</styled.p>
+                    <styled.p>X: @HamP_punipuni</styled.p>
+                  </Stack>
+                </Stack>
+                <Stack justifyContent="space-between" py="4" pr="4" h="full" alignItems="flex-end">
+                  <styled.img
+                    maxW="50px"
+                    src="https://500ddaf7f3cefcd23a892c355a3d13d0.cdnext.stream.ne.jp/images/common/sns_of.png"
+                  />
+                  <styled.img
+                    maxW="64px"
+                    src="https://500ddaf7f3cefcd23a892c355a3d13d0.cdnext.stream.ne.jp/images/common/logo.svg"
+                  />
+                </Stack>
+              </HStack>
+            );
+          })
+      }
+    </Grid>
+  </Center>
 </BaseLayout>
