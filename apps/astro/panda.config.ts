@@ -31,5 +31,5 @@ export default defineConfig({
   outdir: 'styled-system',
 
   emitPackage: true,
-  lightningCss: true
+  lightningcss: true
 });
