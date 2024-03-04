@@ -13,11 +13,11 @@ export const load: PageServerLoad = async () => {
 
   if (!res.ok) {
     console.log(await res.json());
-    throw error(500, 'Something went wrong');
+    error(500, 'Something went wrong');
   }
   const data = await res.json();
   if (data?.data?.length === 0) {
-    throw error(404, 'No articles found');
+    error(404, 'No articles found');
   }
 
   const collectionInfoRes = await outlineClient['/collections.list'].post();

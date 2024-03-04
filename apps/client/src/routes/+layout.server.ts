@@ -11,7 +11,7 @@ export const load: LayoutServerLoad = async ({ request, cookies }) => {
   const defaultLanguage =
     preferredLanguages?.find((lang) => !!lang && LANGUAGES.includes(lang)) || 'en';
   if (!cookies.get('language')) {
-    cookies.set('language', defaultLanguage);
+    cookies.set('language', defaultLanguage, { path: '/' });
   }
   return {
     preferredLanguages,

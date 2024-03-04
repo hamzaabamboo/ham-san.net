@@ -13,5 +13,5 @@ export const load: PageServerLoad = async ({ cookies }) => {
     };
   }
 
-  throw error(404, 'Blog Posts Not found');
+  error(404, 'Blog Posts Not found');
 };

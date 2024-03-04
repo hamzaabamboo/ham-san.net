@@ -10,11 +10,11 @@ export const load: PageServerLoad = async ({ params }) => {
 
   if (!res.ok) {
     console.log(params.slug, await res.json());
-    throw error(500, 'Something went wrong');
+    error(500, 'Something went wrong');
   }
   const data = await res.json();
   if (!data?.data) {
-    throw error(404, 'Article not found');
+    error(404, 'Article not found');
   }
 
   const childDocumentsRes = await outlineClient['/documents.list'].post({

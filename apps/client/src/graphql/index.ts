@@ -1,5 +1,5 @@
-import { PUBLIC_API_URL } from '$env/static/public';
 import { env } from '$env/dynamic/private';
+import { PUBLIC_API_URL } from '$env/static/public';
 import { GraphQLClient } from 'graphql-request';
 
 export const graphQLClient = new GraphQLClient(

@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
   if (data) {
     const locale = data.projects?.data?.[0]?.attributes?.locale;
     if (locale) {
-      cookies.set('language', locale);
+      /* @migration task: add path argument */ cookies.set('language', locale, { path: '/' });
     }
     return {
       data,
@@ -18,5 +18,5 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
     };
   }
 
-  throw error(404, 'Project Not found');
+  error(404, 'Project Not found');
 };

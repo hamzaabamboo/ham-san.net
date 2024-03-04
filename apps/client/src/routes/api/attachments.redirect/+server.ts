@@ -5,7 +5,7 @@ export async function GET({ url }) {
   const query = url.searchParams;
   const id = query.get('id');
 
-  if (!id) throw error(400, 'No query id supplied');
+  if (!id) error(400, 'No query id supplied');
 
   const res = await outlineClient['/attachments.redirect'].post(
     { json: { id } },
@@ -13,8 +13,8 @@ export async function GET({ url }) {
   );
   const redirectLocation = res.headers.get('location');
   if (redirectLocation) {
-    throw redirect(302, redirectLocation);
+    redirect(302, redirectLocation);
   }
 
-  throw error(500, 'Something went wrong');
+  error(500, 'Something went wrong');
 }
