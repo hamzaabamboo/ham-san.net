@@ -122,9 +122,9 @@
       </div>
     </div>
   </Container>
-  <div class="w-full overflow-hidden flex-1 min-h-[400px] relative">
+  <div class="w-full overflow-hidden flex-1 min-h-[360px] relative">
     <div class="animate-pyon bottom-0 right-0 absolute">
-      <img class="w-[400px] translate-x-[20%] translate-y-[60%]" src={kaho1} alt="日野下花帆" />
+      <img class="w-[400px] translate-x-[15%] translate-y-[60%]" src={kaho1} alt="日野下花帆" />
     </div>
     <img
       class="absolute bottom-0 left-0 animate-kanatapeek scale-x-[-100%]"
