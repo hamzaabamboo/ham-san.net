@@ -37,15 +37,15 @@
       icon: faGithub
     },
     {
-      label: $t('name-card.home'),
-      url: '/',
-      icon: faHouse
-    },
-    {
       label: $t('name-card.tierlist'),
       url: 'https://tiermaker.com/list/actors-actresses/love-live-seiyuu-2023-15476088/3747761',
       icon: faList,
       value: $t('name-card.tierlist-description')
+    },
+    {
+      label: $t('name-card.home'),
+      url: '/',
+      icon: faHouse
     }
   ];
 
@@ -73,14 +73,11 @@
   ></div>
   <Container>
     <div class="p-4 rounded-md bg-white/50 flex flex-col w-full h-full gap-4 items-stretch">
-      <div class="flex relative">
-        <Typography variant="h1" class="w-full text-center font-bold"
-          >{$t('name-card.name')}</Typography
-        >
-        <div class="absolute right-0 flex flex-row justify-center gap-2">
+      <div class="flex flex-col w-full gap-1">
+        <div class="w-full flex flex-row justify-end gap-2">
           {#each LANGUAGES as language}
             <button
-              class="p-1 text-sm bg-name-card-100 transition-colors hover:bg-name-card-200 rounded-md data-[selected]:bg-name-card-300"
+              class="p-1 text-sm bg-name-card-100 transition-colors hover:bg-name-card-200 rounded-md data-[selected]:bg-name-card-300 data-[selected]:font-semibold"
               data-selected={language === $locale ? 'true' : undefined}
               on:click={() => handleChangeLanguage(language)}
             >
@@ -88,7 +85,11 @@
             >
           {/each}
         </div>
+        <Typography variant="h1" class="w-full text-center font-bold"
+          >{$t('name-card.name')}</Typography
+        >
       </div>
+
       <Typography variant="subtitle" class="text-sm text-center whitespace-pre-wrap"
         >{$t('name-card.subtitle')}</Typography
       >
