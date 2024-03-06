@@ -84,6 +84,18 @@ const config = {
       key: 'note',
       pathname: '/note',
       loader: async () => (await import('./ja/note.json')).default
+    },
+    {
+      locale: 'en',
+      key: 'name-card',
+      pathname: '/namecard',
+      loader: async () => (await import('./en/name-card.json')).default
+    },
+    {
+      locale: 'ja',
+      key: 'name-card',
+      pathname: '/namecard',
+      loader: async () => (await import('./ja/name-card.json')).default
     }
   ]
 };

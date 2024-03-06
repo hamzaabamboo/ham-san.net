@@ -3,7 +3,7 @@
   import MetaTags from '@components/core/MetaTags.svelte';
   import Typography from '@components/core/Typography.svelte';
   import { faFacebook, faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
-  import { faEnvelope, faLink, faPhone } from '@fortawesome/free-solid-svg-icons';
+  import { faEnvelope, faLink } from '@fortawesome/free-solid-svg-icons';
   import { t } from '@i18n';
   import Fa from 'svelte-fa';
 
@@ -14,12 +14,12 @@
       url: 'mailto:hamzaabamboo@gmail.com',
       icon: faEnvelope
     },
-    {
-      label: $t('contact.phone'),
-      value: '(+66) 066-112-4125',
-      url: 'tel:+66661124125',
-      icon: faPhone
-    },
+    // {
+    //   label: $t('contact.phone'),
+    //   value: '(+66) 066-112-4125',
+    //   url: 'tel:+66661124125',
+    //   icon: faPhone
+    // },
     {
       label: $t('contact.twitter'),
       value: '@HamP_punipuni',
@@ -42,6 +42,12 @@
       label: $t('contact.facebook'),
       value: 'hamPpunipuni',
       url: 'https://www.facebook.com/hamPpunipuni',
+      icon: faFacebook
+    },
+    {
+      label: 'Discord',
+      value: 'hamp',
+      url: 'https://discordapp.com/users/260776161032798208',
       icon: faFacebook
     },
     {
