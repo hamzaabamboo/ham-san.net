@@ -5,7 +5,13 @@
   import Container from '@components/core/Container.svelte';
   import MetaTags from '@components/core/MetaTags.svelte';
   import Typography from '@components/core/Typography.svelte';
-  import { faDiscord, faGithub, faLastfm, faSpotify, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+  import {
+    faDiscord,
+    faGithub,
+    faLastfm,
+    faSpotify,
+    faXTwitter
+  } from '@fortawesome/free-brands-svg-icons';
   import { faHouse, faLink, faList } from '@fortawesome/free-solid-svg-icons';
   import { locale, t } from '@i18n';
   import { LANGUAGES } from '@utils/localization';
@@ -133,7 +139,7 @@
       </div>
     </div>
   </Container>
-  <div class="w-full overflow-hidden flex-1 min-h-[360px] relative">
+  <div class="w-full overflow-hidden flex-1 min-h-[240px] relative">
     <div class="animate-pyon top-0 right-0 absolute">
       <img class="w-[400px] translate-x-[15%]" src={kaho1} alt="日野下花帆" />
     </div>
