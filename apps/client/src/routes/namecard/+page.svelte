@@ -5,7 +5,7 @@
   import Container from '@components/core/Container.svelte';
   import MetaTags from '@components/core/MetaTags.svelte';
   import Typography from '@components/core/Typography.svelte';
-  import { faDiscord, faGithub, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+  import { faDiscord, faGithub, faLastfm, faSpotify, faXTwitter } from '@fortawesome/free-brands-svg-icons';
   import { faHouse, faLink, faList } from '@fortawesome/free-solid-svg-icons';
   import { locale, t } from '@i18n';
   import { LANGUAGES } from '@utils/localization';
@@ -46,7 +46,18 @@
       label: $t('name-card.home'),
       url: '/',
       icon: faHouse
+    },
+    {
+      label: 'Spotify',
+      url: 'https://open.spotify.com/user/dick8a92koqqd6ti4sqtz40co?si=3c9b1b72a71a47be',
+      icon: faSpotify
+    },
+    {
+      label: 'last.fm',
+      url: 'https://www.last.fm/user/Betcrg',
+      icon: faLastfm
     }
+    // Link Like Lovelive, SIF2, Starlight, Deresute, ID...
   ];
 
   const handleChangeLanguage = (language: (typeof LANGUAGES)[number]) => {
@@ -123,13 +134,11 @@
     </div>
   </Container>
   <div class="w-full overflow-hidden flex-1 min-h-[360px] relative">
-    <div class="animate-pyon bottom-0 right-0 absolute">
-      <img class="w-[400px] translate-x-[15%] translate-y-[60%]" src={kaho1} alt="日野下花帆" />
+    <div class="animate-pyon top-0 right-0 absolute">
+      <img class="w-[400px] translate-x-[15%]" src={kaho1} alt="日野下花帆" />
     </div>
-    <img
-      class="absolute bottom-0 left-0 animate-kanatapeek scale-x-[-100%]"
-      src={kanataPeek}
-      alt="日野下花帆"
-    />
+    <div class="fixed bottom-0 left-0 overflow-hidden">
+      <img class="animate-kanatapeek scale-x-[-100%]" src={kanataPeek} alt="彼方このえ" />
+    </div>
   </div>
 </div>
