@@ -140,7 +140,9 @@ export async function getStaticPaths() {
 </style>
 
 <style is:global>
-  astro-dev-toolbar {
-    display: none !important;
+  @media print {
+    astro-dev-toolbar {
+      display: none !important;
+    }
   }
 </style>
