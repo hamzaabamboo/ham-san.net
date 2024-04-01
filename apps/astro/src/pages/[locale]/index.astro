@@ -1,10 +1,11 @@
 ---
 import { css } from 'styled-system/css';
+import { localePaths } from '~/i18n/paths';
 
 import MainLayout from '~/layouts/MainLayout.astro';
 
 export async function getStaticPaths() {
-  return [{ params: { locale: 'en' } }, { params: { locale: 'ja' } }];
+  return localePaths;
 }
 
 const param = Astro.params;

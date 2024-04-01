@@ -7,7 +7,7 @@
     "paths": {
       "~/*": ["./*"],
       "i18n/*": ["../../../libs/i18n/*"],
-      "styled-system/*": ["./styled-system/*"]
+      "styled-system/*": ["../styled-system/*"]
     }
   },
   "include": ["src", "styled-system"]

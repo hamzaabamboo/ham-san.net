@@ -2,9 +2,10 @@
 import { Box, Center, Grid, HStack, Stack, styled } from 'styled-system/jsx';
 import { NAMECARDS } from '../../../constants/namecard';
 
+import { localePaths } from '~/i18n/paths';
 import MainLayout from '~/layouts/MainLayout.astro';
 export async function getStaticPaths() {
-  return [{ params: { locale: 'en' } }, { params: { locale: 'ja' } }];
+  return localePaths
 }
 // <styled.p fontSize="xs" textAlign="center" fontStyle="italic">
 //   Pと書いてあるけどプロデューサーじゃないからね。

@@ -1,3 +1,8 @@
 ---
+import { localePaths } from '~/i18n/paths';
+
 //TODO:
+export async function getStaticPaths() {
+  return localePaths;
+}
 ---
