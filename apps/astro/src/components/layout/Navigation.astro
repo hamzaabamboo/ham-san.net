@@ -1,0 +1,46 @@
+---
+import { languages } from '~/i18n/ui';
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
+import { HStack } from '../../../styled-system/jsx';
+import { Link } from '../ui/link';
+import { Text } from '../ui/text';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const getURLWithLanguage = (value: string) => {
+  return `/${lang}${value}`;
+};
+
+const getCurrentURLWithLanguage = (language: string) => {
+  const [, , currentPath] = Astro.url.pathname.split('/');
+  return `/${language}/${currentPath}`;
+};
+
+const NAVIGATION_LINKS = [
+  { label: t('common.home'), value: '/' },
+  { label: t('common.about-me'), value: '/about' },
+  { label: t('common.projects'), value: '/projects' },
+  { label: t('common.note'), value: '/notes' },
+  { label: t('common.contact'), value: '/contact' }
+];
+---
+
+<HStack _print={{ display: 'none' }} p={2} justifyContent="space-between">
+  <HStack>
+    <Link href={getURLWithLanguage('/')}>{t('common.ham')}</Link>
+  </HStack>
+  <HStack gap="2">
+    {
+      NAVIGATION_LINKS.map(({ label, value }) => {
+        return <Link href={getURLWithLanguage(value)}>{label}</Link>;
+      })
+    }
+    <Text> | </Text>
+    {
+      Object.entries(languages).map((t) => {
+        return <Link href={getCurrentURLWithLanguage(t[0])}>{t[1]}</Link>;
+      })
+    }
+  </HStack>
+</HStack>

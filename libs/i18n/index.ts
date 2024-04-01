@@ -4,4 +4,4 @@ import ja from './ja';
 export default {
   en,
   ja
-};
+} as const;

@@ -1,0 +1,13 @@
+---
+import { Stack } from 'styled-system/jsx';
+import Navigation from '~/components/layout/Navigation.astro';
+import '../index.css';
+import BaseLayout from './BaseLayout.astro';
+---
+
+<BaseLayout>
+  <Stack gap="0" minH="100dvh">
+    <Navigation />
+    <Stack flex={1}><slot /></Stack>
+  </Stack>
+</BaseLayout>

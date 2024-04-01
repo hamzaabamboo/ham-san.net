@@ -2,7 +2,7 @@
 import { Box, Center, Grid, HStack, Stack, styled } from 'styled-system/jsx';
 import { NAMECARDS } from '../../../constants/namecard';
 
-import BaseLayout from '../../../layouts/BaseLayout.astro';
+import MainLayout from '~/layouts/MainLayout.astro';
 export async function getStaticPaths() {
   return [{ params: { locale: 'en' } }, { params: { locale: 'ja' } }];
 }
@@ -16,10 +16,10 @@ export async function getStaticPaths() {
 // <Box width="64px" height="64px" objectPosition="0 -1350px" backgroundImage="url('https://kitoakari.com/wp/wp-content/themes/kitoakari/assets/images/common/sprite_loading.png')" backgroundPosition="0 -576px" backgroundSize="64px 640px" backgroundRepeat='no-repeat'/>
 ---
 
-<BaseLayout>
+<MainLayout>
   <Center
+    flex={1}
     h={{
-      base: '100dvh',
       _print: 'full'
     }}
     w="full"
@@ -130,7 +130,7 @@ export async function getStaticPaths() {
       }
     </Grid>
   </Center>
-</BaseLayout>
+</MainLayout>
 
 <style>
   @page {

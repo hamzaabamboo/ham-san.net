@@ -6,6 +6,7 @@ import hasuQrCode from '../assets/hasu-qr-code.png';
 
 export const NAMECARDS = [
   {
+    variant: 'default',
     color: '#1F1F5A',
     content: {
       firstRow: 'Smiley Light Village',
@@ -30,6 +31,7 @@ export const NAMECARDS = [
     }
   },
   {
+    variant: 'kaho',
     color: '#f8b500',
     content: {
       firstRow: 'HASUNOSORA JOGAKUIN SCHOOL IDOL CLUB',

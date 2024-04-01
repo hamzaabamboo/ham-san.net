@@ -1,7 +1,7 @@
 ---
 import { css } from 'styled-system/css';
 
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import MainLayout from '~/layouts/MainLayout.astro';
 
 export async function getStaticPaths() {
   return [{ params: { locale: 'en' } }, { params: { locale: 'ja' } }];
@@ -10,6 +10,6 @@ export async function getStaticPaths() {
 const param = Astro.params;
 ---
 
-<BaseLayout>
+<MainLayout>
   <h1 class={css({ fontSize: '3xl', fontWeight: 'bold' })}>Hello {param.locale}</h1>
-</BaseLayout>
+</MainLayout>

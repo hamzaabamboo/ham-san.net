@@ -16,4 +16,4 @@ export default {
   'name-card': nameCard,
   note: note,
   project: project
-};
+} as const;
