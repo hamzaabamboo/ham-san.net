@@ -1,5 +1,6 @@
 import { defineConfig } from '@pandacss/dev';
 import { createPreset } from '@park-ui/panda-preset';
+import { theme } from './src/theme';
 
 export default defineConfig({
   // Whether to use css reset
@@ -22,7 +23,7 @@ export default defineConfig({
 
   // Useful for theme customization
   theme: {
-    extend: {}
+    extend: theme
   },
 
   jsxFramework: 'react',

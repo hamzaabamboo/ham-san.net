@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { SvelteKitPWA } from '@vite-pwa/sveltekit';
+import { join } from 'node:path';
 // import { visualizer } from 'rollup-plugin-visualizer';
 import type { UserConfig } from 'vite';
 import { imagetools } from 'vite-imagetools';
@@ -23,6 +24,7 @@ const config: UserConfig = {
   },
   resolve: {
     alias: {
+      i18n: join(__dirname, '../../libs/i18n/')
       // 'three/addons': join(__dirname, '../../node_modules/three/examples/jsm/')
     }
   }

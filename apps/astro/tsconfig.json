@@ -5,7 +5,8 @@
     "baseUrl": "src",
     "jsxImportSource": "react",
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./*"],
+      "i18n/*": ["../../libs/i18n/*"]
     }
   },
   "include": ["src", "styled-system"]
