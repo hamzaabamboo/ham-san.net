@@ -1,10 +1,10 @@
 ---
 import { Box, Center, Grid, HStack, Stack, styled } from 'styled-system/jsx';
-import akarinLogo from "../../../assets/akarin-logo.png";
-import qrCode from "../../../assets/qr-code.png";
+import { NAMECARDS } from '../../../constants/namecard';
+
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 export async function getStaticPaths() {
-  return [{ params: { lang: 'en' } }, { params: { lang: 'ja' } }];
+  return [{ params: { locale: 'en' } }, { params: { locale: 'ja' } }];
 }
 // <styled.p fontSize="xs" textAlign="center" fontStyle="italic">
 //   Pと書いてあるけどプロデューサーじゃないからね。
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 // </styled.p>
 
 //`https://api.qrserver.com/v1/create-qr-code/?size=500x500&color=${encodeURIComponent('#1F1F5A')}&data=${encodeURIComponent('https://ham-san.net/namecard')}`
-https://qrcode-monkey.p.rapidapi.com/qr/custom?size=500&config=${encodeURIComponent(JSON.stringify({ bodyColor: '#1F1F5A', body: "dot", eye: "frame3", eyeball: "ball3"}))}&data=${encodeURIComponent('https://ham-san.net/namecard')}
+// https://qrcode-monkey.p.rapidapi.com/qr/custom?size=500&config=${encodeURIComponent(JSON.stringify({ bodyColor: '#1F1F5A', body: "dot", eye: "frame3", eyeball: "ball3"}))}&data=${encodeURIComponent('https://ham-san.net/namecard')}
 // <Box width="64px" height="64px" objectPosition="0 -1350px" backgroundImage="url('https://kitoakari.com/wp/wp-content/themes/kitoakari/assets/images/common/sprite_loading.png')" backgroundPosition="0 -576px" backgroundSize="64px 640px" backgroundRepeat='no-repeat'/>
 ---
 
@@ -25,7 +25,6 @@ https://qrcode-monkey.p.rapidapi.com/qr/custom?size=500&config=${encodeURICompon
     w="full"
     fontFamily={`"M PLUS 1p", "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro", "メイリオ", "Meiryo", sans-serif`}
     bgColor={{ base: 'gray.5', _print: 'none' }}
-    style={{ ['--main-color' as 'color']: '#1F1F5A' }}
   >
     <Grid
       printColorAdjust="exact"
@@ -37,107 +36,97 @@ https://qrcode-monkey.p.rapidapi.com/qr/custom?size=500&config=${encodeURICompon
       w="full"
     >
       {
-        Array(1)
-          .fill(undefined)
-          .map(() => {
-            return (
-              <>
-                <HStack
-                  _print={{
-                    pageBreakBefore: 'always',
-                    // border: '1px solid',
-                    printColorAdjust: 'exact'
-                  }}
-                  width="91mm"
-                  height="55mm"
-                  gap="0"
-                  bgColor="white"
-                  style={{
-                    WebkitPrintColorAdjust: 'exact'
-                  }}
-                >
-                  <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
-                  <Stack
-                    flex="1"
-                    gap="2"
-                    pl="4"
-                    pr="2"
-                    justifyContent="space-around"
-                    h="full"
-                    py="4"
-                  >
+        NAMECARDS.map((namecard) => {
+          const { color, content, logoTop, logoBottom, logoMiddle, qrCode, Quote } = namecard;
+          return (
+            <>
+              <HStack
+                _print={{
+                  pageBreakBefore: 'always',
+                  // border: '1px solid',
+                  printColorAdjust: 'exact'
+                }}
+                width="91mm"
+                height="55mm"
+                gap="0"
+                bgColor="white"
+                style={{
+                  WebkitPrintColorAdjust: 'exact',
+                  ['--main-color' as 'color']: color
+                }}
+              >
+                <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
+                <Stack flex="1" gap="2" pl="4" pr="2" justifyContent="space-around" h="full" py="4">
+                  <Stack gap="1" fontSize="xs">
+                    <styled.p lineHeight="1">{content.firstRow}</styled.p>
+                    <styled.p>{content.secondRow}</styled.p>
+                  </Stack>
+                  <styled.hr borderColor="var(--main-color)" />
+                  <Stack gap="0">
+                    <styled.h1 fontWeight="semibold" lineHeight="1.12" fontSize="4xl">
+                      {content.name}
+                    </styled.h1>
+                    <styled.p fontSize="sm">{content.nameSubtitle}</styled.p>
+                  </Stack>
+                  <Stack gap="1">
                     <Stack gap="0" fontSize="xs">
-                      <styled.p >Smiley Light Village</styled.p>
-                      <styled.p >鬼頭明里の里民、タイ支部 🇹🇭</styled.p>
-                      
-                    </Stack>
-                    <styled.hr borderColor="var(--main-color)" />
-                    <Stack gap="0">
-                      <styled.h1 fontWeight="semibold" lineHeight="1.12" fontSize="4xl">
-                        ハムP
-                      </styled.pd.h1>
-                      <styled.p fontSize="sm">はむぴー／HamP</styled.p>
-                    </Stack>
-                    <Stack gap="1">
-                      <Stack gap="0" fontSize="xs">
                       <styled.p>สวัสดีครับ!（サワディーカー）</styled.p>
-                      </Stack>
-                      <Stack gap="0" fontSize="0.5rem" >
-                      <styled.p>X (旧: Twitter): <b>@HamP_punipuni</b></styled.p>
-                      <styled.p>Discord: <b>HamP</b></styled.p>
-                      </Stack>
+                    </Stack>
+                    <Stack gap="0" fontSize="0.5rem">
+                      <styled.p>
+                        X (旧: Twitter): <b>@HamP_punipuni</b>
+                      </styled.p>
+                      <styled.p>
+                        Discord: <b>HamP</b>
+                      </styled.p>
                     </Stack>
                   </Stack>
-                  <Stack
-                    justifyContent="space-between"
-                    py="4"
-                    pr="4"
-                    h="full"
-                    w="84px"
-                    alignItems="flex-end"
-                  >
-                  <styled.img src={akarinLogo.src} /> 
-                    <styled.img src="https://500ddaf7f3cefcd23a892c355a3d13d0.cdnext.stream.ne.jp/images/common/logo.svg" />
-                  </Stack>
-                </HStack>
-                <HStack
-                  width="91mm"
-                  height="55mm"
-                  bgColor="white"
-                  gap="0"
-                  border={{ _print: '1px solid' }}
-                  printColorAdjust={{ _print: 'exact' }}
-                  style={{
-                    WebkitPrintColorAdjust: 'exact'
-                  }}
+                </Stack>
+                <Stack
+                  justifyContent="space-between"
+                  py="4"
+                  pr="4"
+                  h="full"
+                  w="84px"
+                  alignItems="flex-end"
                 >
-                  <Stack
-                    flex="1"
-                    gap="2"
-                    justifyContent="space-evenly"
-                    alignItems="center"
-                    h="full"
-                    p="4"
-                  >
-                    <Center>
-                      <styled.img
-                        maxW="100px"
-                        src={qrCode.src}
-                      />
-                    </Center>
-                    <HStack alignItems="center">
-                      <styled.blockquote fontSize="xs" textAlign="center" fontStyle="italic">
-                        「…推しって<b>“応援する存在”</b>というよりも、
-                        <br />
-                        <b>“自分のモチベーションを高める存在”</b>…」</br>ー 鬼頭明里
-                      </styled.blockquote>
-                    </HStack>
-                  </Stack>
-                  <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
-                </HStack>
-              </>
-            );
-          })
+                  <styled.img src={logoTop} />
+                  {logoMiddle && <styled.img src={logoMiddle} />}
+                  <styled.img src={logoBottom} />
+                </Stack>
+              </HStack>
+              <HStack
+                width="91mm"
+                height="55mm"
+                bgColor="white"
+                gap="0"
+                border={{ _print: '1px solid' }}
+                printColorAdjust={{ _print: 'exact' }}
+                style={{
+                  WebkitPrintColorAdjust: 'exact',
+                  ['--main-color' as 'color']: color
+                }}
+              >
+                <Stack
+                  flex="1"
+                  gap="2"
+                  justifyContent="space-evenly"
+                  alignItems="center"
+                  h="full"
+                  p="4"
+                >
+                  <Center>
+                    <styled.img maxW="100px" src={qrCode} />
+                  </Center>
+                  <HStack alignItems="center">
+                    <Quote />
+                  </HStack>
+                </Stack>
+                <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
+              </HStack>
+            </>
+          );
+        })
       }
     </Grid>
   </Center>
@@ -147,5 +136,11 @@ https://qrcode-monkey.p.rapidapi.com/qr/custom?size=500&config=${encodeURICompon
   @page {
     margin: 0;
     size: 91mm 55mm;
+  }
+</style>
+
+<style is:global>
+  astro-dev-toolbar {
+    display: none !important;
   }
 </style>
