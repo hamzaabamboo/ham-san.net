@@ -1,0 +1,24 @@
+---
+import { Markdown } from '~/components/lib/Markdown';
+import { graphQLSdk } from '~/graphql';
+import { localePaths } from '~/i18n/paths';
+import MainLayout from '~/layouts/MainLayout.astro';
+
+export const prerender = false;
+
+//TODO:
+export async function getStaticPaths() {
+  return localePaths;
+}
+
+const data = await graphQLSdk.getProjectBySlug({
+  slug: Astro.params.locale
+});
+
+const { content } = data?.projects?.data?.[0]?.attributes ?? {};
+---
+
+<MainLayout>
+  {content && <Markdown content={content} />}
+  {JSON.stringify(data)}
+</MainLayout>

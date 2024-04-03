@@ -125,7 +125,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 data/
-client/src/graphql/generated/**
+generated/
 
 .image-cache
 

@@ -21,6 +21,11 @@ export default defineConfig({
   // Files to exclude
   exclude: [],
 
+  staticCss: {
+    recipes: {
+      text: ['*']
+    }
+  },
   // Useful for theme customization
   theme: {
     extend: theme

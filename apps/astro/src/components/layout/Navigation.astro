@@ -13,8 +13,8 @@ const getURLWithLanguage = (value: string) => {
 };
 
 const getCurrentURLWithLanguage = (language: string) => {
-  const [, , currentPath] = Astro.url.pathname.split('/');
-  return `/${language}/${currentPath}`;
+  const [, , ...currentPath] = Astro.url.pathname.split('/');
+  return `/${language}/${currentPath.join('/')}`;
 };
 
 const NAVIGATION_LINKS = [
