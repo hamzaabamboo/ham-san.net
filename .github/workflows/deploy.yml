@@ -26,7 +26,7 @@ jobs:
       - name: Setup Dependencies
         uses: ./.github/composite-actions/setup
       - name: Build Frontend
-        run: echo $PUBLIC_URL && echo $PUBLIC_API_URL && pnpm nx codegen client && pnpm nx build client
+        run: echo $PUBLIC_URL && echo $PUBLIC_API_URL && pnpm nx codegen:prod client && pnpm nx build client
       - name: Login to Registry
         uses: docker/login-action@v3
         with:
