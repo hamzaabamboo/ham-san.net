@@ -24,7 +24,8 @@ const config: UserConfig = {
   },
   resolve: {
     alias: {
-      i18n: join(__dirname, '../../libs/i18n/')
+      i18n: join(__dirname, '../../libs/i18n/'),
+      utils: join(__dirname, '../../libs/utils/')
       // 'three/addons': join(__dirname, '../../node_modules/three/examples/jsm/')
     }
   }

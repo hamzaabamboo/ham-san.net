@@ -5,6 +5,8 @@ export const languages = {
   ja: '日本語'
 };
 
+export type Languages = keyof typeof languages;
+
 export const defaultLang = 'en';
 
 export const routes = {

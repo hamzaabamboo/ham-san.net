@@ -1,10 +1,9 @@
 <script lang="ts">
-	import type { BlogPreviewFragment } from '@graphql/generated/client';
-	import { getMediaUrl } from '@utils/media';
 	import Typography from '@components/core/Typography.svelte';
-	import { formatMonthYear, parseDate } from '@utils/date';
-	import { locale, t } from '@i18n';
 	import TagItem from '@components/tags/TagItem.svelte';
+	import type { BlogPreviewFragment } from '@graphql/generated/client';
+	import { t } from '@i18n';
+	import { getMediaUrl } from '@utils/media';
 	import { sortTags } from '@utils/tags';
 
 	export let blogPost: Pick<

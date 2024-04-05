@@ -30,11 +30,3 @@
 	};
 </script>
 
-<Typography>
-	{#if linkIcon(link)}
-		<Fa size="lg" icon={linkIcon(link)} class="inline mr-1" />
-	{:else}{link?.title}{/if}:
-	<a target="_blank" rel="noreferrer" class="text-blue-400 underline" href={link?.url}
-		>{processUrl(link)}</a
-	>
-</Typography>

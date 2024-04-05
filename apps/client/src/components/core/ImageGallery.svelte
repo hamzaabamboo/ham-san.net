@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Carousel from 'svelte-carousel';
-	import { getMediaUrl } from '@utils/media';
 	import type { UploadFileEntity } from '@graphql/generated/client';
+	import { getMediaUrl } from '@utils/media';
+	import Carousel from 'svelte-carousel';
 
 	export let media: Partial<UploadFileEntity>[];
 

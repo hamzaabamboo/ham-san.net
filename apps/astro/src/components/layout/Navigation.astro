@@ -4,6 +4,7 @@ import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 import { HStack } from '../../../styled-system/jsx';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
+import { Sidebar } from './Sidebar';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -26,11 +27,11 @@ const NAVIGATION_LINKS = [
 ];
 ---
 
-<HStack _print={{ display: 'none' }} p={2} justifyContent="space-between">
+<HStack _print={{ display: 'none' }} p={2} justifyContent="space-between" position="sticky" top="0">
   <HStack>
     <Link href={getURLWithLanguage('/')}>{t('common.ham')}</Link>
   </HStack>
-  <HStack gap="2">
+  <HStack gap="2" hideBelow="sm">
     {
       NAVIGATION_LINKS.map(({ label, value }) => {
         return <Link href={getURLWithLanguage(value)}>{label}</Link>;
@@ -43,4 +44,5 @@ const NAVIGATION_LINKS = [
       })
     }
   </HStack>
+  <Sidebar locale={lang} pathname={Astro.url.pathname} client:visible />
 </HStack>

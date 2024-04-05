@@ -1,8 +1,50 @@
 ---
+import { Grid, GridItem, Stack } from 'styled-system/jsx';
+import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
+import { Text } from '~/components/ui/text';
+import { graphQLSdk } from '~/graphql';
 import { localePaths } from '~/i18n/paths';
+import { useTranslations } from '~/i18n/utils';
+import MainLayout from '~/layouts/MainLayout.astro';
+
+export const prerender = false;
+
+const { locale } = Astro.params;
 
 //TODO:
 export async function getStaticPaths() {
   return localePaths;
 }
+
+const data = await graphQLSdk.fetchProjects({
+  // locale
+});
+
+const projects = data?.projects?.data ?? [];
+
+const t = useTranslations(locale);
 ---
+
+<MainLayout>
+  <Stack width="xl" mx="auto" p="4">
+    <Heading as="h1" size="2xl" fontWeight="bold">{t('project.projects')}</Heading>
+    <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))">
+      {
+        projects.map((p) => {
+          const { title, description, slug } = p.attributes ?? {};
+          return (
+            <GridItem>
+              <Link href={`/${locale}/projects/${slug}`}>
+                <Stack>
+                  <Text fontWeight="bold">{title}</Text>
+                  <Text fontSize="sm">{description}</Text>
+                </Stack>
+              </Link>
+            </GridItem>
+          );
+        })
+      }
+    </Grid>
+  </Stack>
+</MainLayout>
