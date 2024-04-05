@@ -1,5 +1,7 @@
 ---
-import { css } from 'styled-system/css';
+import { Center, Stack } from 'styled-system/jsx';
+import { Heading } from '~/components/ui/heading';
+import { Text } from '~/components/ui/text';
 import { localePaths } from '~/i18n/paths';
 
 import MainLayout from '~/layouts/MainLayout.astro';
@@ -12,5 +14,10 @@ const param = Astro.params;
 ---
 
 <MainLayout>
-  <h1 class={css({ fontSize: '3xl', fontWeight: 'bold' })}>Hello {param.locale}</h1>
+  <Center flex="1">
+    <Stack alignItems="center">
+      <Heading fontSize="3xl">ham-san.net v4</Heading>
+      <Text>Coming Soon...</Text>
+    </Stack>
+  </Center>
 </MainLayout>

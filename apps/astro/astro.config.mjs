@@ -11,7 +11,7 @@ export default defineConfig({
     locales: ['en', 'ja'],
     routing: {
       prefixDefaultLocale: true,
-      redirectToDefaultLocale: true
+      redirectToDefaultLocale: false
     }
   },
   integrations: [pandacss(), react()],

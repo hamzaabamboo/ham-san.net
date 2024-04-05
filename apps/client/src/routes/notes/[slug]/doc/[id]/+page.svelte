@@ -11,11 +11,11 @@
   import { locale, t } from '@i18n';
   import { localizationUrls } from '@stores/localizationUrls';
   import { cleanArticleContent } from '@utils/article';
-  import { formatMonthYear } from '@utils/date';
   import { parseISO } from 'date-fns';
   import debounce from 'lodash/debounce';
   import { onDestroy } from 'svelte';
   import Fa from 'svelte-fa';
+  import { formatMonthYear } from 'utils/date';
   import type { PageData } from '../../$types';
 
   export let data: PageData;

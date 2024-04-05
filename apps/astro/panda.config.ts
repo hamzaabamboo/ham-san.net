@@ -11,7 +11,7 @@ export default defineConfig({
     createPreset({
       accentColor: 'cyan',
       grayColor: 'neutral',
-      borderRadius: 'sm'
+      borderRadius: 'lg'
     })
   ],
 
@@ -23,7 +23,7 @@ export default defineConfig({
 
   staticCss: {
     recipes: {
-      text: ['*']
+      // text: ['*']
     }
   },
   // Useful for theme customization
@@ -36,5 +36,5 @@ export default defineConfig({
   // The output directory for your css system
   outdir: './styled-system',
 
-  // lightningcss: true
+  lightningcss: true
 });

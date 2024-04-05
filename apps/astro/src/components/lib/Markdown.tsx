@@ -8,17 +8,17 @@ import { Link } from '../ui/link';
 import * as Table from '../ui/table';
 import { Text } from '../ui/text';
 // https://github.com/remarkjs/react-markdown
-export const Markdown = ({ content, assetsPrefix }: { content: string; assetsPrefix: string }) => {
+export const Markdown = ({ content, assetsPrefix }: { content: string; assetsPrefix?: string }) => {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkTextr, remarkGfm]}
       components={{
-        h1: ({ node: _, ...props }) => <Heading as="h1" size="4xl" fontWeight="bold" {...props} />,
-        h2: ({ node: _, ...props }) => <Heading as="h2" size="3xl" fontWeight="bold" {...props} />,
-        h3: ({ node: _, ...props }) => <Heading as="h3" size="3xl" {...props} />,
-        h4: ({ node: _, ...props }) => <Heading as="h4" size="2xl" fontWeight="bold" {...props} />,
-        h5: ({ node: _, ...props }) => <Heading as="h5" size="2xl" {...props} />,
-        h6: ({ node: _, ...props }) => <Heading as="h6" size="xl" fontWeight="bold" {...props} />,
+        h1: ({ node: _, ...props }) => <Heading as="h1" size="3xl" fontWeight="bold" {...props} />,
+        h2: ({ node: _, ...props }) => <Heading as="h2" size="3xl" {...props} />,
+        h3: ({ node: _, ...props }) => <Heading as="h3" size="2xl" fontWeight="bold" {...props} />,
+        h4: ({ node: _, ...props }) => <Heading as="h4" size="2xl" {...props} />,
+        h5: ({ node: _, ...props }) => <Heading as="h5" size="xl" fontWeight="bold" {...props} />,
+        h6: ({ node: _, ...props }) => <Heading as="h6" size="xl" {...props} />,
         p: ({ node: _, ...props }) => <Text as="p" {...props} />,
         strong: ({ ref: _, node: __, ...props }) => <Text as="span" fontWeight="bold" {...props} />,
         a: ({ ref: _, node: __, ...props }) => <Link {...props} />,

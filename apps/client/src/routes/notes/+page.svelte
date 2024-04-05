@@ -4,8 +4,8 @@
   import MetaTags from '@components/core/MetaTags.svelte';
   import Typography from '@components/core/Typography.svelte';
   import { locale, t } from '@i18n';
-  import { formatMonthYear } from '@utils/date';
   import { parseISO } from 'date-fns';
+  import { formatMonthYear } from 'utils/date';
   import type { PageData } from './$types';
 
   export let data: PageData;

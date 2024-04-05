@@ -10,11 +10,11 @@
   import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
   import { locale, t } from '@i18n';
   import { localizationUrls } from '@stores/localizationUrls';
-  import { formatMonthYear, parseDate } from '@utils/date';
   import { getMediaUrl } from '@utils/media';
   import debounce from 'lodash/debounce';
   import { onDestroy, onMount } from 'svelte';
   import Fa from 'svelte-fa';
+  import { formatMonthYear, parseDate } from 'utils/date';
   import type { PageData } from './$types';
 
   export let data: PageData;

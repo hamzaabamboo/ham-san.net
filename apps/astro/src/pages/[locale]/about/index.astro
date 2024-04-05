@@ -1,6 +1,12 @@
 ---
-import { Container } from 'styled-system/jsx';
+import { formatDistance } from 'date-fns';
+import { enUS, ja } from 'date-fns/locale';
+import { Container, Divider, HStack, Stack } from 'styled-system/jsx';
+import { formatMonthYear, parseDate } from 'utils/date';
+import { Markdown } from '~/components/lib/Markdown';
 import { Heading } from '~/components/ui/heading';
+import { Text } from '~/components/ui/text';
+import { graphQLSdk } from '~/graphql';
 import { localePaths } from '~/i18n/paths';
 import { useTranslations } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
@@ -12,10 +18,70 @@ export async function getStaticPaths() {
 
 const { locale } = Astro.params;
 const t = useTranslations(locale);
+
+const data = await graphQLSdk.fetchAboutMe({
+  locale
+});
+
+//TODO: Tags
+const { aboutMe, educations, experiences, tags } = data ?? {};
 ---
 
 <MainLayout>
   <Container>
-    <Heading as="h1" size="2xl" fontWeight="bold">{t('note.notes')}</Heading>
+    <Stack p="4" w="full">
+      <Heading as="h1" size="2xl" fontWeight="bold">{t('about-me.title')}</Heading>
+      <Text>{aboutMe?.data?.attributes?.introduction}</Text>
+      <Divider />
+      <Stack>
+        {
+          experiences &&
+            experiences.data?.map((d) => {
+              const { title, start, end, content, position } = d.attributes ?? {};
+              return (
+                <Stack>
+                  <Heading as="h2" size="xl" fontWeight="bold">
+                    {title}
+                  </Heading>
+                  <HStack fontSize="sm">
+                    <Text>{position}</Text> <Text>|</Text>
+                    <Text>
+                      {formatMonthYear(parseDate(start), locale)} -{' '}
+                      {end ? formatMonthYear(parseDate(end), locale) : t('common.present')} ({formatDistance(parseDate(start), end ? parseDate(end) : new Date(), {
+                        locale: locale === 'ja' ? ja : enUS
+                      })})
+                    </Text>
+                  </HStack>
+                  {content && <Markdown content={content} />}
+                </Stack>
+              );
+            })
+        }
+      </Stack>
+      <Divider />
+      <Stack>
+        {
+          educations &&
+            educations.data?.map((d) => {
+              const { title, start, end, description, content } = d.attributes ?? {};
+              return (
+                <Stack>
+                  <Heading as="h2" size="xl" fontWeight="bold">
+                    {title}
+                  </Heading>
+                  <HStack fontSize="sm">
+                    <Text>{description}</Text> <Text>|</Text>
+                    <Text>
+                      {formatMonthYear(parseDate(start), locale)} -{' '}
+                      {end ? formatMonthYear(parseDate(end), locale) : t('common.present')}
+                    </Text>
+                  </HStack>
+                  {content && <Markdown content={content} />}
+                </Stack>
+              );
+            })
+        }
+      </Stack>
+    </Stack>
   </Container>
 </MainLayout>
