@@ -5,7 +5,7 @@
   import MarkdownRenderer from '@components/markdown/MarkdownRenderer.svelte';
   import ProjectCard from '@components/projects/ProjectCard.svelte';
   import { locale, t } from '@i18n';
-  import min from 'date-fns/min';
+  import { min } from 'date-fns';
   import { formatDistanceToNow, formatMonthYear, parseDate } from 'utils/date';
   import type { PageServerData } from './$types';
 
