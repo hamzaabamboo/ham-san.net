@@ -9,13 +9,4 @@ export type Languages = keyof typeof languages;
 
 export const defaultLang = 'en';
 
-export const routes = {
-  en: {
-    services: 'leistungen'
-  },
-  ja: {
-    services: 'prestations-de-service'
-  }
-};
-
 export { ui };
