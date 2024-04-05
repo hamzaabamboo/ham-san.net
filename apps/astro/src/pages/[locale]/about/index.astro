@@ -1,6 +1,7 @@
 ---
 import { formatDistance } from 'date-fns';
-import { enUS, ja } from 'date-fns/locale';
+import enUS from 'date-fns/locale/en';
+import ja from 'date-fns/locale/ja';
 import { Container, Divider, HStack, Stack } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { Markdown } from '~/components/lib/Markdown';
@@ -47,9 +48,11 @@ const { aboutMe, educations, experiences, tags } = data ?? {};
                     <Text>{position}</Text> <Text>|</Text>
                     <Text>
                       {formatMonthYear(parseDate(start), locale)} -{' '}
-                      {end ? formatMonthYear(parseDate(end), locale) : t('common.present')} ({formatDistance(parseDate(start), end ? parseDate(end) : new Date(), {
+                      {end ? formatMonthYear(parseDate(end), locale) : t('common.present')} (
+                      {formatDistance(parseDate(start), end ? parseDate(end) : new Date(), {
                         locale: locale === 'ja' ? ja : enUS
-                      })})
+                      })}
+                      )
                     </Text>
                   </HStack>
                   {content && <Markdown content={content} />}
