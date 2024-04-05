@@ -1,0 +1,74 @@
+---
+import { Center, Grid } from 'styled-system/jsx';
+import { NAMECARDS } from '../../../constants/namecard';
+
+import { localePaths } from '~/i18n/paths';
+
+import { Namecard } from '~/components/namecard/Namecard';
+import MainLayout from '~/layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+  return localePaths;
+}
+const { locale } = Astro.params;
+// <styled.p fontSize="xs" textAlign="center" fontStyle="italic">
+//   Pと書いてあるけどプロデューサーじゃないからね。
+//   <br /> ただただ「ぴー」の響きがいいだけ。
+// </styled.p>
+
+//`https://api.qrserver.com/v1/create-qr-code/?size=500x500&color=${encodeURIComponent('#1F1F5A')}&data=${encodeURIComponent('https://ham-san.net/namecard')}`
+// https://qrcode-monkey.p.rapidapi.com/qr/custom?size=500&config=${encodeURIComponent(JSON.stringify({ bodyColor: '#1F1F5A', body: "dot", eye: "frame3", eyeball: "ball3"}))}&data=${encodeURIComponent('https://ham-san.net/namecard')}
+// <Box width="64px" height="64px" objectPosition="0 -1350px" backgroundImage="url('https://kitoakari.com/wp/wp-content/themes/kitoakari/assets/images/common/sprite_loading.png')" backgroundPosition="0 -576px" backgroundSize="64px 640px" backgroundRepeat='no-repeat'/>
+---
+
+<MainLayout>
+  <Center
+    flex={1}
+    h={{
+      _print: 'full'
+    }}
+    w="full"
+    fontFamily={`"M PLUS 1p", "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro", "メイリオ", "Meiryo", sans-serif`}
+    bgColor={{ base: 'gray.5', _print: 'none' }}
+  >
+    <Grid
+      printColorAdjust="exact"
+      gridTemplateColumns="repeat(auto-fit, minmax(91mm, 1fr))"
+      justifyItems="center"
+      _print={{
+        gap: '0'
+      }}
+      w="full"
+    >
+      {
+        NAMECARDS.map((namecard) => {
+          return (
+            <>
+              <a href={`/${locale}/namecard?variant=${namecard.variant}`}>
+                <Namecard side="front" data={namecard} />
+              </a>
+              <a href={`/${locale}/namecard?variant=${namecard.variant}`}>
+                <Namecard side="back" data={namecard} />
+              </a>
+            </>
+          );
+        })
+      }
+    </Grid>
+  </Center>
+</MainLayout>
+
+<style>
+  @page {
+    margin: 0;
+    size: 91mm 55mm;
+  }
+</style>
+
+<style is:global>
+  @media print {
+    astro-dev-toolbar {
+      display: none !important;
+    }
+  }
+</style>

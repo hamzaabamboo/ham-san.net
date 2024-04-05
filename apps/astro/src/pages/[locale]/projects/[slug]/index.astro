@@ -1,7 +1,7 @@
 ---
 //TODO:
 import { Image } from 'astro:assets';
-import { Box, Stack } from 'styled-system/jsx';
+import { Box, Container, Divider, Stack } from 'styled-system/jsx';
 import { getMediaUrl } from 'utils/media';
 import { LinkItem } from '~/components/common/LinkItem';
 import { Markdown } from '~/components/lib/Markdown';
@@ -22,26 +22,29 @@ const bannerUrl = getMediaUrl(bannerPath, {}, import.meta.env.PUBLIC_API_URL);
 ---
 
 <MainLayout>
-  <Stack maxWidth="xl" mx="auto" px="4" py="4">
-    {
-      bannerUrl && (
-        <Box rounded="l1" overflow="hidden">
-          <Image src={bannerUrl} alt={bannerName ?? title ?? null} inferSize={true} />
-        </Box>
-      )
-    }
-    <Heading as="h1" size="2xl" fontWeight="bold">{title}</Heading>
-    {
-      links && (
-        <Stack>
-          {links
-            .filter((l): l is ComponentUtilsLink => !!l)
-            .map((l) => {
-              return <LinkItem data={l} />;
-            })}
-        </Stack>
-      )
-    }
-    {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
-  </Stack>
+  <Container maxW="breakpoint-xl">
+    <Stack gap="4">
+      {
+        bannerUrl && (
+          <Box rounded="l1" overflow="hidden">
+            <Image src={bannerUrl} alt={bannerName ?? title ?? null} inferSize={true} />
+          </Box>
+        )
+      }
+      <Heading as="h1" size="2xl" fontWeight="bold">{title}</Heading>
+      {
+        links && (
+          <Stack>
+            {links
+              .filter((l): l is ComponentUtilsLink => !!l)
+              .map((l) => {
+                return <LinkItem data={l} />;
+              })}
+          </Stack>
+        )
+      }
+      <Divider />
+      {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
+    </Stack>
+  </Container>
 </MainLayout>

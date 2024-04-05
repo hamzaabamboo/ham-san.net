@@ -1,8 +1,167 @@
 ---
+import {
+  FaDiscord,
+  FaGithub,
+  FaHouseUser,
+  FaLastfm,
+  FaLink,
+  FaList,
+  FaSpotify,
+  FaTwitter
+} from 'react-icons/fa';
+import { Box, Container, Grid, GridItem, HStack, Stack, styled } from 'styled-system/jsx';
+import kaho1 from '~/assets/namecard/kaho-1.png';
+import kanataPeek from '~/assets/namecard/kanata-peek.png';
+import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
+import { Text } from '~/components/ui/text';
+import { NAMECARDS } from '~/constants/namecard';
 import { localePaths } from '~/i18n/paths';
+import { languages } from '~/i18n/ui';
+import { useTranslations } from '~/i18n/utils';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 
-//TODO:
 export async function getStaticPaths() {
   return localePaths;
 }
+
+const { locale } = Astro.params;
+const t = useTranslations(locale);
+
+const links = [
+  {
+    label: t('contact.twitter'),
+    value: '@HamP_punipuni',
+    url: 'https://twitter.com/HamP_punipuni',
+    icon: FaTwitter
+  },
+  {
+    label: 'Discord',
+    value: 'hamp',
+    url: 'https://discordapp.com/users/260776161032798208',
+    icon: FaDiscord
+  },
+  {
+    label: 'Eventernote',
+    value: 'HamP_punipuni',
+    url: 'https://www.eventernote.com/users/HamP_punipuni',
+    icon: FaLink
+  },
+  {
+    label: t('contact.github'),
+    value: 'hamzaabamboo',
+    url: 'https://github.com/hamzaabamboo',
+    icon: FaGithub
+  },
+  {
+    label: t('name-card.tierlist'),
+    url: 'https://tiermaker.com/list/actors-actresses/love-live-seiyuu-2023-15476088/3747761',
+    icon: FaList,
+    value: t('name-card.tierlist-description')
+  },
+  {
+    label: t('name-card.home'),
+    url: '/',
+    icon: FaHouseUser
+  },
+  {
+    label: 'Spotify',
+    url: 'https://open.spotify.com/user/dick8a92koqqd6ti4sqtz40co?si=3c9b1b72a71a47be',
+    icon: FaSpotify
+  },
+  {
+    label: 'last.fm',
+    url: 'https://www.last.fm/user/Betcrg',
+    icon: FaLastfm
+  }
+  // Link Like Lovelive, SIF2, Starlight, Deres
+];
+
+const { color } = NAMECARDS[0];
+
+const Image = styled.img;
 ---
+
+<BaseLayout>
+  <Stack pt="8" minW="screen" minH="screen" alignItems="center">
+    <Box
+      position="fixed"
+      top="0"
+      left="0"
+      w="full"
+      h="full"
+      backgroundImage="url('https://assets.st-note.com/production/uploads/images/121975199/rectangle_large_type_2_64744113d43ef15f0d5c9ad5464e6a8e.jpeg?width=2000&height=2000&fit=bounds&format=jpg&quality=85')"
+      backgroundRepeat="no-repeat"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      blur="8px"
+    />
+    <Container>
+      <Stack p="4" rounded="l1" bgColor="white.a6" alignItems="stretch" textAlign="center">
+        <HStack justifyContent="flex-end" gap="2" w="full">
+          {
+            Object.entries(languages).map((t) => {
+              return <Link href={`/${t[0]}/namecard`}>{t[1]}</Link>;
+            })
+          }
+        </HStack>
+        <Heading as="h1" size="3xl" fontWeight="bold">{t('name-card.name')}</Heading>
+        <Text as="span" size="md" whiteSpace="pre-wrap">{t('name-card.subtitle')}</Text>
+        <Text as="span" size="sm">{t('name-card.message')}</Text>
+
+        <Grid
+          gridGap="2"
+          alignItems="stretch"
+          gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))"
+        >
+          {
+            links.map((item) => {
+              const Icon = item.icon;
+              return (
+                <GridItem h="full" w="full">
+                  <Link h="full" w="full" target="_blank" rel="noreferrer" href={item.url}>
+                    <Stack
+                      gap="1"
+                      p="4"
+                      bgColor="white.a8"
+                      h="full"
+                      flex="1"
+                      rounded="l2"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      {Icon && (
+                        <Text fontSize="2xl">
+                          <Icon />
+                        </Text>
+                      )}
+                      <Stack gap="1" alignItems="center">
+                        <Text fontWeight="bold">{item.label}</Text>
+                        {item.value && <Text>{item.value}</Text>}
+                      </Stack>
+                    </Stack>
+                  </Link>
+                </GridItem>
+              );
+            })
+          }
+        </Grid>
+        <!-- //TODO: localize -->
+        <Link href={`/${locale}/namecard/all`}>View other namecards</Link>
+      </Stack>
+    </Container>
+    <Box w="full" overflow="hidden" flex="1" minH="240px" position="relative">
+      <Box position="absolute" top="0" right="0" animation={'pyon'}>
+        <Image w="400px" translateX="15%" src={kaho1.src} alt="日野下花帆" />
+      </Box>
+      <Box position="fixed" bottom="0" left="0" overflow="hidden">
+        <Image
+          animation="kanatapeek"
+          transform="scaleX(-100%)"
+          src={kanataPeek.src}
+          alt="彼方このえ"
+        />
+      </Box>
+    </Box>
+  </Stack>
+</BaseLayout>

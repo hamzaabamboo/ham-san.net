@@ -1,149 +1,99 @@
 ---
-import { Box, Center, Grid, HStack, Stack, styled } from 'styled-system/jsx';
-import { NAMECARDS } from '../../../constants/namecard';
-
+import {
+FaDiscord,
+FaEnvelope,
+FaFacebook,
+FaGithub,
+FaLink,
+FaLinkedin,
+FaTwitter
+} from 'react-icons/fa';
+import { Container, Stack } from 'styled-system/jsx';
+import { LinkItem } from '~/components/common/LinkItem';
+import { InteractiveNamecard } from '~/components/namecard/InteractiveNamecard';
+import { Heading } from '~/components/ui/heading';
+import { NAMECARDS } from '~/constants/namecard';
 import { localePaths } from '~/i18n/paths';
+import { useTranslations } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
-export async function getStaticPaths() {
-  return localePaths
-}
-// <styled.p fontSize="xs" textAlign="center" fontStyle="italic">
-//   Pと書いてあるけどプロデューサーじゃないからね。
-//   <br /> ただただ「ぴー」の響きがいいだけ。
-// </styled.p>
 
-//`https://api.qrserver.com/v1/create-qr-code/?size=500x500&color=${encodeURIComponent('#1F1F5A')}&data=${encodeURIComponent('https://ham-san.net/namecard')}`
-// https://qrcode-monkey.p.rapidapi.com/qr/custom?size=500&config=${encodeURIComponent(JSON.stringify({ bodyColor: '#1F1F5A', body: "dot", eye: "frame3", eyeball: "ball3"}))}&data=${encodeURIComponent('https://ham-san.net/namecard')}
-// <Box width="64px" height="64px" objectPosition="0 -1350px" backgroundImage="url('https://kitoakari.com/wp/wp-content/themes/kitoakari/assets/images/common/sprite_loading.png')" backgroundPosition="0 -576px" backgroundSize="64px 640px" backgroundRepeat='no-repeat'/>
+//TODO:
+export async function getStaticPaths() {
+  return localePaths;
+}
+
+const { locale } = Astro.params;
+const t = useTranslations(locale);
+
+const items = [
+  {
+    label: t('contact.email'),
+    value: 'hamzaabamboo@gmail.com',
+    url: 'mailto:hamzaabamboo@gmail.com',
+    icon: FaEnvelope
+  },
+  {
+    label: t('contact.twitter'),
+    value: '@HamP_punipuni',
+    url: 'https://twitter.com/HamP_punipuni',
+    icon: FaTwitter
+  },
+  {
+    label: t('contact.github'),
+    value: 'hamzaabamboo',
+    url: 'https://github.com/hamzaabamboo',
+    icon: FaGithub
+  },
+  {
+    label: t('contact.linkedin'),
+    value: 'tvittayapalotai',
+    url: 'https://www.linkedin.com/in/tvittayapalotai/',
+    icon: FaLinkedin
+  },
+  {
+    label: t('contact.facebook'),
+    value: 'hamPpunipuni',
+    url: 'https://www.facebook.com/hamPpunipuni',
+    icon: FaFacebook
+  },
+  {
+    label: 'Discord',
+    value: 'hamp',
+    url: 'https://discordapp.com/users/260776161032798208',
+    icon: FaDiscord
+  },
+  {
+    label: 'Eventernote',
+    value: 'HamP_punipuni',
+    url: 'https://www.eventernote.com/users/HamP_punipuni',
+    icon: FaLink
+  }
+];
 ---
 
 <MainLayout>
-  <Center
-    flex={1}
-    h={{
-      _print: 'full'
-    }}
-    w="full"
-    fontFamily={`"M PLUS 1p", "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro", "メイリオ", "Meiryo", sans-serif`}
-    bgColor={{ base: 'gray.5', _print: 'none' }}
-  >
-    <Grid
-      printColorAdjust="exact"
-      gridTemplateColumns="repeat(auto-fit, minmax(91mm, 1fr))"
-      justifyItems="center"
-      _print={{
-        gap: '0'
-      }}
-      w="full"
-    >
+  <Container>
+   <Stack w="full" gap="4" p="4">
+    <Heading as="h1" size="2xl" fontWeight="bold">{t('common.contact')}</Heading>
+    <Stack>
       {
-        NAMECARDS.map((namecard) => {
-          const { color, content, logoTop, logoBottom, logoMiddle, qrCode, Quote } = namecard;
+        items.map(({ icon, label, value, url }) => {
           return (
-            <>
-              <HStack
-                _print={{
-                  pageBreakBefore: 'always',
-                  // border: '1px solid',
-                  printColorAdjust: 'exact'
-                }}
-                width="91mm"
-                height="55mm"
-                gap="0"
-                bgColor="white"
-                style={{
-                  WebkitPrintColorAdjust: 'exact',
-                  ['--main-color' as 'color']: color
-                }}
-              >
-                <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
-                <Stack flex="1" gap="2" pl="4" pr="2" justifyContent="space-around" h="full" py="4">
-                  <Stack gap="1" fontSize="xs">
-                    <styled.p lineHeight="1">{content.firstRow}</styled.p>
-                    <styled.p>{content.secondRow}</styled.p>
-                  </Stack>
-                  <styled.hr borderColor="var(--main-color)" />
-                  <Stack gap="0">
-                    <styled.h1 fontWeight="semibold" lineHeight="1.12" fontSize="4xl">
-                      {content.name}
-                    </styled.h1>
-                    <styled.p fontSize="sm">{content.nameSubtitle}</styled.p>
-                  </Stack>
-                  <Stack gap="1">
-                    <Stack gap="0" fontSize="xs">
-                      <styled.p>สวัสดีครับ!（サワディーカー）</styled.p>
-                    </Stack>
-                    <Stack gap="0" fontSize="0.5rem">
-                      <styled.p>
-                        X (旧: Twitter): <b>@HamP_punipuni</b>
-                      </styled.p>
-                      <styled.p>
-                        Discord: <b>HamP</b>
-                      </styled.p>
-                    </Stack>
-                  </Stack>
-                </Stack>
-                <Stack
-                  justifyContent="space-between"
-                  py="4"
-                  pr="4"
-                  h="full"
-                  w="84px"
-                  alignItems="flex-end"
-                >
-                  <styled.img src={logoTop} />
-                  {logoMiddle && <styled.img src={logoMiddle} />}
-                  <styled.img src={logoBottom} />
-                </Stack>
-              </HStack>
-              <HStack
-                width="91mm"
-                height="55mm"
-                bgColor="white"
-                gap="0"
-                border={{ _print: '1px solid' }}
-                printColorAdjust={{ _print: 'exact' }}
-                style={{
-                  WebkitPrintColorAdjust: 'exact',
-                  ['--main-color' as 'color']: color
-                }}
-              >
-                <Stack
-                  flex="1"
-                  gap="2"
-                  justifyContent="space-evenly"
-                  alignItems="center"
-                  h="full"
-                  p="4"
-                >
-                  <Center>
-                    <styled.img maxW="100px" src={qrCode} />
-                  </Center>
-                  <HStack alignItems="center">
-                    <Quote />
-                  </HStack>
-                </Stack>
-                <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
-              </HStack>
-            </>
+            <LinkItem
+              data={{
+                title: label,
+                url: url
+              }}
+              Icon={icon},
+              linkText={value}
+            />
           );
         })
       }
-    </Grid>
-  </Center>
+    </Stack>
+    <a href={`/${locale}/namecard`}>
+      <InteractiveNamecard data={NAMECARDS[0]}/>
+      <a>
+   </Stack>
+  </Container>
 </MainLayout>
-
-<style>
-  @page {
-    margin: 0;
-    size: 91mm 55mm;
-  }
-</style>
-
-<style is:global>
-  @media print {
-    astro-dev-toolbar {
-      display: none !important;
-    }
-  }
-</style>

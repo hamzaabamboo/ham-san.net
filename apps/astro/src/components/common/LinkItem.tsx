@@ -4,7 +4,7 @@ import { ComponentUtilsLink } from '~/graphql/generated/client';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
 
-const processUrl = (link: ComponentUtilsLink) => {
+const processUrl = (link: Pick<ComponentUtilsLink, 'url' | 'type'>) => {
   switch (link.type) {
     case 'github':
       return link.url?.split('github.com/').splice(-1)[0];
@@ -13,7 +13,7 @@ const processUrl = (link: ComponentUtilsLink) => {
   }
 };
 
-const linkIcon = (link: ComponentUtilsLink) => {
+const linkIcon = (link: Pick<ComponentUtilsLink, 'type'>) => {
   switch (link.type) {
     case 'github':
       return FaGithub;
@@ -24,18 +24,22 @@ const linkIcon = (link: ComponentUtilsLink) => {
   }
 };
 
-export const LinkItem = ({ data }: { data: ComponentUtilsLink }) => {
-  const Icon = linkIcon(data);
-  const text = processUrl(data);
+export const LinkItem = ({
+  data,
+  Icon: _icon,
+  linkText
+}: {
+  data: Omit<ComponentUtilsLink, 'id'>;
+  Icon?: React.FunctionComponent;
+  linkText?: string;
+}) => {
+  const Icon = _icon ? _icon : linkIcon(data);
+  const text = linkText ? linkText : processUrl(data);
   return (
     <HStack gap="2">
-      {Icon && (
-        <>
-          <Icon />
-          <Text>:</Text>
-        </>
-      )}
-
+      {Icon && <Icon />}
+      {data.title}
+      <Text>:</Text>
       <Link href={data.url ?? ''} target="_blank">
         {text}
       </Link>

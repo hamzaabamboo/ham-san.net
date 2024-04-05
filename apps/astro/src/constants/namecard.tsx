@@ -1,8 +1,8 @@
 import { styled } from 'styled-system/jsx';
-import akarinLogo from '../assets/akarin-logo.png';
-import akarinQrCode from '../assets/akarin-qr-code.png';
-import hasuLogo from '../assets/hasu-logo.jpg';
-import hasuQrCode from '../assets/hasu-qr-code.png';
+import akarinLogo from '../assets/namecard/akarin-logo.png';
+import akarinQrCode from '../assets/namecard/akarin-qr-code.png';
+import hasuLogo from '../assets/namecard/hasu-logo.jpg';
+import hasuQrCode from '../assets/namecard/hasu-qr-code.png';
 
 export const NAMECARDS = [
   {
@@ -54,3 +54,5 @@ export const NAMECARDS = [
     }
   }
 ];
+
+export type NamecardData = (typeof NAMECARDS)[0];

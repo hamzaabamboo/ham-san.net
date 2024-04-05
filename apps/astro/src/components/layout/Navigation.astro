@@ -27,7 +27,17 @@ const NAVIGATION_LINKS = [
 ];
 ---
 
-<HStack _print={{ display: 'none' }} p={2} justifyContent="space-between" position="sticky" top="0">
+<HStack
+  _print={{ display: 'none' }}
+  p={2}
+  bgColor="bg.default"
+  borderBottom="1px solid"
+  borderBottomColor="border.subtle"
+  justifyContent="space-between"
+  position="sticky"
+  top="0"
+  zIndex="banner"
+>
   <HStack>
     <Link href={getURLWithLanguage('/')}>{t('common.ham')}</Link>
   </HStack>

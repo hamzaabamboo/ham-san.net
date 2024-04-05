@@ -1,8 +1,21 @@
 ---
+import { Container } from 'styled-system/jsx';
+import { Heading } from '~/components/ui/heading';
 import { localePaths } from '~/i18n/paths';
+import { useTranslations } from '~/i18n/utils';
+import MainLayout from '~/layouts/MainLayout.astro';
 
 //TODO:
 export async function getStaticPaths() {
   return localePaths;
 }
+
+const { locale } = Astro.params;
+const t = useTranslations(locale);
 ---
+
+<MainLayout>
+  <Container>
+    <Heading as="h1" size="2xl" fontWeight="bold">{t('note.notes')}</Heading>
+  </Container>
+</MainLayout>
