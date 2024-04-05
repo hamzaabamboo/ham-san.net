@@ -16,5 +16,7 @@ export default defineConfig({
   },
   integrations: [pandacss(), react()],
   output: 'hybrid',
-  adapter: netlify({})
+  adapter: netlify({
+    imageCDN: false
+  })
 });
