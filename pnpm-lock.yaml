@@ -217,6 +217,9 @@ importers:
       astro:
         specifier: ^4.5.12
         version: 4.5.12(@types/node@20.12.2)(typescript@5.4.3)
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
       react:
         specifier: ^18.2.0
         version: 18.2.0

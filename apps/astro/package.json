@@ -21,6 +21,7 @@
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
     "astro": "^4.5.12",
+    "date-fns": "^3.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",

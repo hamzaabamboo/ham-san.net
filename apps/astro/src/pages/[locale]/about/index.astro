@@ -1,7 +1,6 @@
 ---
 import { formatDistance } from 'date-fns';
-import enUS from 'date-fns/locale/en-US/index.js';
-import ja from 'date-fns/locale/ja/index.js';
+import { enUS, ja } from 'date-fns/locale';
 import { Container, Divider, HStack, Stack } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { Markdown } from '~/components/lib/Markdown';
@@ -12,6 +11,7 @@ import { localePaths } from '~/i18n/paths';
 import { useTranslations } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
+export const prerender = false;
 //TODO:
 export async function getStaticPaths() {
   return localePaths;

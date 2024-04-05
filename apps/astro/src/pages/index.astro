@@ -1,6 +1,6 @@
 ---
 const locale = Astro.preferredLocale;
-console.log('locale', locale);
+export const prerender = false;
 ---
 
 <meta http-equiv="refresh" content={`0;url=/${locale ?? 'en'}/`} />

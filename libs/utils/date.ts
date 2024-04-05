@@ -1,6 +1,5 @@
 import { formatDistanceToNow as _formatDistanceToNow, format, parse } from 'date-fns';
-import enUS from 'date-fns/locale/en-US/index.js';
-import ja from 'date-fns/locale/ja/index.js';
+import { enUS, ja } from 'date-fns/locale';
 
 export const parseDate = (date: string) => parse(date, 'yyyy-MM-dd', new Date());
 
