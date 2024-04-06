@@ -38,7 +38,7 @@ export const InteractiveNamecard = ({ data }: { data: NamecardData }) => {
         transitionTimingFunction="linear"
         transitionDuration="1s"
         transitionDelay="0.1s"
-        transform={{ base: 'rotateY(180deg)', _groupHover: 'rotateY(0deg)' }}
+        transform={{ base: 'rotateY(180deg)', _groupHover: 'rotateY(360deg)' }}
         shadow="md"
         top="0"
         left="0"
