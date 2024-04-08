@@ -25,13 +25,13 @@
           "codeCoverage": true
         }
       }
-    },
-    "prepare": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "libs/ui-core",
-        "command": "panda codegen"
-      }
     }
+    // "prepare": {
+    //   "executor": "nx:run-commands",
+    //   "options": {
+    //     "cwd": "libs/ui-core",
+    //     "command": "panda codegen"
+    //   }
+    // }
   }
 }
