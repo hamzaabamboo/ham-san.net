@@ -25,7 +25,9 @@ const config = {
       '@graphql': 'src/graphql',
       '@utils': 'src/utils',
       '@stores': 'src/stores',
-      '@assets': 'src/assets'
+      '@assets': 'src/assets',
+      'i18n/*': '../../libs/i18n/*',
+      'utils/*': '../../libs/utils/*'
     }
   }
 };

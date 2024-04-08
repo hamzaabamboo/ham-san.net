@@ -1,10 +1,10 @@
 ---
-import { Container, Grid, GridItem, Stack } from 'styled-system/jsx';
+import { Box, Container, Grid, GridItem, Stack, styled } from 'styled-system/jsx';
+import { getMediaUrl } from 'utils/media';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
-import { localePaths } from '~/i18n/paths';
 import { useTranslations } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
@@ -13,9 +13,6 @@ export const prerender = false;
 const { locale } = Astro.params;
 
 //TODO:
-export async function getStaticPaths() {
-  return localePaths;
-}
 
 const data = await graphQLSdk.fetchProjects({
   // locale
@@ -23,7 +20,7 @@ const data = await graphQLSdk.fetchProjects({
 
 const projects = data?.projects?.data ?? [];
 
-const t = useTranslations(locale);
+const t = useTranslations(locale as 'en');
 ---
 
 <MainLayout>
@@ -33,11 +30,25 @@ const t = useTranslations(locale);
       <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))">
         {
           projects.map((p) => {
-            const { title, description, slug } = p.attributes ?? {};
+            const { title, description, slug, media } = p.attributes ?? {};
+            const image = media?.data?.[0]?.attributes;
+
             return (
               <GridItem>
                 <Link href={`/${locale}/projects/${slug}`}>
                   <Stack>
+                    {image && (
+                      <Box borderRadius="l2" overflow="hidden">
+                        <styled.img
+                          src={getMediaUrl(image.url, {}, import.meta.env.PUBLIC_API_URL) ?? ''}
+                          alt={image.name}
+                          objectFit="cover"
+                          objectPosition="center"
+                          width="full"
+                          aspectRatio="4 / 3"
+                        />
+                      </Box>
+                    )}
                     <Text fontWeight="bold">{title}</Text>
                     <Text fontSize="sm">{description}</Text>
                   </Stack>

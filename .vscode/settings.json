@@ -5,5 +5,7 @@
   },
   "editor.formatOnSave": true,
   "editor.stickyScroll.enabled": true,
-  "eslint.validate": ["typescript"]
+  "eslint.validate": ["typescript", "astro", "svelte"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.workingDirectories": ["apps/client", "apps/astro", "apps/api"]
 }

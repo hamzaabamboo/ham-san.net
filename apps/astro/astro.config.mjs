@@ -14,7 +14,7 @@ export default defineConfig({
       redirectToDefaultLocale: false
     }
   },
-  integrations: [pandacss(), react()],
+  integrations: [react(), pandacss()],
   output: 'hybrid',
   adapter: netlify({
     imageCDN: false

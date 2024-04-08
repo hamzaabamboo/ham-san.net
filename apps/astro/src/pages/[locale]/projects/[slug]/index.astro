@@ -1,7 +1,6 @@
 ---
 //TODO:
-import { Image } from 'astro:assets';
-import { Box, Container, Divider, Stack } from 'styled-system/jsx';
+import { Box, Container, Divider, Stack, styled } from 'styled-system/jsx';
 import { getMediaUrl } from 'utils/media';
 import { LinkItem } from '~/components/common/LinkItem';
 import { Markdown } from '~/components/lib/Markdown';
@@ -22,12 +21,19 @@ const bannerUrl = getMediaUrl(bannerPath, {}, import.meta.env.PUBLIC_API_URL);
 ---
 
 <MainLayout>
-  <Container maxW="breakpoint-xl">
+  <Container maxW="breakpoint-xl" py="4">
     <Stack gap="4">
       {
         bannerUrl && (
           <Box rounded="l1" overflow="hidden">
-            <Image src={bannerUrl} alt={bannerName ?? title ?? null} inferSize={true} />
+            <styled.img
+              src={bannerUrl}
+              alt={bannerName ?? title ?? undefined}
+              objectFit="cover"
+              objectPosition="center"
+              width="full"
+              aspectRatio="16 / 9"
+            />
           </Box>
         )
       }
