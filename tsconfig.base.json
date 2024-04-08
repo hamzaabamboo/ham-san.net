@@ -15,7 +15,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "styled-system/*": ["libs/ui-core/node_modules/styled-system/*"],
       "ui-core": ["libs/ui-core/src/index.ts"]
     }
   },

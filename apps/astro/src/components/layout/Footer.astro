@@ -1,0 +1,24 @@
+---
+import { HStack } from 'styled-system/jsx';
+import { useTranslations } from '~/i18n/utils';
+import { Link } from '../ui/link';
+import { Text } from '../ui/text';
+
+const { locale } = Astro.params;
+const t = useTranslations((locale as 'en') ?? 'en');
+---
+
+<HStack
+  w="full"
+  py="2"
+  px="2"
+  justifyContent="center"
+  borderTop="1px solid"
+  borderTopColor="border.subtle"
+>
+  <Text>{t('common.copyright')}</Text>
+  <Text>|</Text>
+  <Link target="_blank" rel="noreferrer" href="https://github.com/hamzaabamboo/ham-san.net"
+    >{t('common.view-source')}</Link
+  >
+</HStack>

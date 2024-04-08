@@ -1,5 +1,6 @@
 ---
 import { Stack } from 'styled-system/jsx';
+import Footer from '~/components/layout/Footer.astro';
 import Navigation from '~/components/layout/Navigation.astro';
 import '../index.css';
 import BaseLayout from './BaseLayout.astro';
@@ -9,5 +10,6 @@ import BaseLayout from './BaseLayout.astro';
   <Stack gap="0" minH="100dvh">
     <Navigation />
     <Stack flex={1}><slot /></Stack>
+    <Footer />
   </Stack>
 </BaseLayout>

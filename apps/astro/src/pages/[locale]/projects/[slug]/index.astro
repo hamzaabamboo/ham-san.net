@@ -2,11 +2,13 @@
 //TODO:
 import { Box, Container, Divider, Stack, styled } from 'styled-system/jsx';
 import { getMediaUrl } from 'utils/media';
+import { Carousel } from '~/components/common/Carousel';
 import { LinkItem } from '~/components/common/LinkItem';
 import { Markdown } from '~/components/lib/Markdown';
 import { Heading } from '~/components/ui/heading';
 import { graphQLSdk } from '~/graphql';
 import { ComponentUtilsLink } from '~/graphql/generated/client';
+import { useTranslations } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
@@ -15,13 +17,20 @@ const data = await graphQLSdk.getProjectBySlug({
   slug: Astro.params.slug
 });
 
-const { content, title, banner, links } = data?.projects?.data?.[0]?.attributes ?? {};
+const { locale } = Astro.params;
+
+const { content, title, banner, links, media } = data?.projects?.data?.[0]?.attributes ?? {};
 const { url: bannerPath, name: bannerName } = banner?.data?.attributes ?? {};
 const bannerUrl = getMediaUrl(bannerPath, {}, import.meta.env.PUBLIC_API_URL);
+const images =
+  (media?.data
+    .map((d) => getMediaUrl(d.attributes?.url, {}, import.meta.env.PUBLIC_API_URL))
+    .filter((d) => !!d) as string[]) ?? [];
+const t = useTranslations(locale as 'en');
 ---
 
 <MainLayout>
-  <Container maxW="breakpoint-xl" py="4">
+  <Container maxW="breakpoint-xl" py="8">
     <Stack gap="4">
       {
         bannerUrl && (
@@ -51,6 +60,16 @@ const bannerUrl = getMediaUrl(bannerPath, {}, import.meta.env.PUBLIC_API_URL);
       }
       <Divider />
       {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
+      {
+        images.length > 0 && (
+          <Stack>
+            <Heading as="h2" size="xl" fontWeight="bold">
+              {t('project.screenshots')}
+            </Heading>
+            <Carousel client:visible images={images} />
+          </Stack>
+        )
+      }
     </Stack>
   </Container>
 </MainLayout>

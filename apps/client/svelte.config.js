@@ -26,8 +26,8 @@ const config = {
       '@utils': 'src/utils',
       '@stores': 'src/stores',
       '@assets': 'src/assets',
-      'i18n/*': '../../libs/i18n/*',
-      'utils/*': '../../libs/utils/*'
+      'i18n/*': '../../libs/i18n',
+      'utils/*': '../../libs/utils'
     }
   }
 };
