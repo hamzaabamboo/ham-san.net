@@ -7,6 +7,7 @@
   import { t } from '@i18n';
   import Fa from 'svelte-fa';
 
+  const a = 'test';
   $: items = [
     {
       label: $t('contact.email'),

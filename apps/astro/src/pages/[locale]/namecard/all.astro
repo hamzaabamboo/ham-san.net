@@ -7,7 +7,7 @@ import { localePaths } from '~/i18n/paths';
 import { Namecard } from '~/components/namecard/Namecard';
 import MainLayout from '~/layouts/MainLayout.astro';
 
-export async function getStaticPaths() {
+export function getStaticPaths() {
   return localePaths;
 }
 const { locale } = Astro.params;

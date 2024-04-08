@@ -30,7 +30,7 @@ export const Sidebar = ({ locale = 'en', pathname }: { locale: Languages; pathna
     <>
       <Drawer.Root>
         <Drawer.Trigger asChild>
-          <IconButton hideFrom="sm" variant="ghost">
+          <IconButton variant="ghost" hideFrom="sm">
             <FaList />
           </IconButton>
         </Drawer.Trigger>

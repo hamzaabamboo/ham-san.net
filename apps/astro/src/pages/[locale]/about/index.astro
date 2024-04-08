@@ -13,7 +13,7 @@ import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
 //TODO:
-export async function getStaticPaths() {
+export function getStaticPaths() {
   return localePaths;
 }
 
@@ -25,7 +25,7 @@ const data = await graphQLSdk.fetchAboutMe({
 });
 
 //TODO: Tags
-const { aboutMe, educations, experiences, tags } = data ?? {};
+const { aboutMe, educations, experiences, tags: _tags } = data ?? {};
 ---
 
 <MainLayout>
@@ -38,7 +38,10 @@ const { aboutMe, educations, experiences, tags } = data ?? {};
         {
           experiences &&
             experiences.data?.map((d) => {
-              const { title, start, end, content, position } = d.attributes ?? {};
+              if (!d.attributes) return null;
+              const { title, content, position } = d.attributes;
+              const start = d.attributes.start as string;
+              const end = d.attributes.end as string;
               return (
                 <Stack>
                   <Heading as="h2" size="xl" fontWeight="bold">
@@ -66,7 +69,10 @@ const { aboutMe, educations, experiences, tags } = data ?? {};
         {
           educations &&
             educations.data?.map((d) => {
-              const { title, start, end, description, content } = d.attributes ?? {};
+              if (!d.attributes) return null;
+              const { title, description, content } = d.attributes;
+              const start = d.attributes.start as string;
+              const end = d.attributes.end as string;
               return (
                 <Stack>
                   <Heading as="h2" size="xl" fontWeight="bold">

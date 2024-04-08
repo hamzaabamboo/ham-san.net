@@ -1,14 +1,20 @@
+//TODO: Fix type errors
 import { error } from '@sveltejs/kit';
 import { cleanArticleContent, getArticleBanner, getArticleDescription } from '@utils/article';
 import { outlineClient } from '@utils/outline-api';
 import type { PageServerLoad } from './$types';
+
+const headers = {
+  Authorization: undefined as unknown as 'Bearer hoge'
+};
 
 export const load: PageServerLoad = async () => {
   const res = await outlineClient['/shares.list'].post({
     json: {
       sort: 'createdAt',
       direction: 'DESC'
-    }
+    },
+    headers
   });
 
   if (!res.ok) {
@@ -20,11 +26,14 @@ export const load: PageServerLoad = async () => {
     error(404, 'No articles found');
   }
 
-  const collectionInfoRes = await outlineClient['/collections.list'].post();
+  const collectionInfoRes = await outlineClient['/collections.list'].post({ headers });
   const collectionInfo = collectionInfoRes?.ok ? (await collectionInfoRes.json())?.data : undefined;
 
   const promises = data.data?.map(async (article) => {
-    const r = await outlineClient['/documents.info'].post({ json: { shareId: article.id } });
+    const r = await outlineClient['/documents.info'].post({
+      json: { shareId: article.id },
+      headers
+    });
     const d = r.ok ? (await r.json())?.data : undefined;
     const content = cleanArticleContent(d?.text);
     const banner = getArticleBanner(content);
@@ -32,7 +41,7 @@ export const load: PageServerLoad = async () => {
 
     return {
       title: d?.title,
-      urlId: article?.urlId,
+      urlId: (article as { urlId: string })?.urlId,
       collection: d?.collectionId,
       collectionName: collectionInfo?.find((c) => c?.id === d?.collectionId)?.name,
       banner,

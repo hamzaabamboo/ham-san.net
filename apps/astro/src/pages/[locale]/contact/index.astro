@@ -1,12 +1,12 @@
 ---
 import {
-FaDiscord,
-FaEnvelope,
-FaFacebook,
-FaGithub,
-FaLink,
-FaLinkedin,
-FaTwitter
+  FaDiscord,
+  FaEnvelope,
+  FaFacebook,
+  FaGithub,
+  FaLink,
+  FaLinkedin,
+  FaTwitter
 } from 'react-icons/fa';
 import { Container, Stack } from 'styled-system/jsx';
 import { LinkItem } from '~/components/common/LinkItem';
@@ -18,7 +18,7 @@ import { useTranslations } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 //TODO:
-export async function getStaticPaths() {
+export function getStaticPaths() {
   return localePaths;
 }
 
@@ -73,27 +73,27 @@ const items = [
 
 <MainLayout>
   <Container>
-   <Stack w="full" gap="4" p="4">
-    <Heading as="h1" size="2xl" fontWeight="bold">{t('common.contact')}</Heading>
-    <Stack>
-      {
-        items.map(({ icon, label, value, url }) => {
-          return (
-            <LinkItem
-              data={{
-                title: label,
-                url: url
-              }}
-              Icon={icon},
-              linkText={value}
-            />
-          );
-        })
-      }
+    <Stack w="full" gap="4" p="4">
+      <Heading as="h1" size="2xl" fontWeight="bold">{t('common.contact')}</Heading>
+      <Stack>
+        {
+          items.map(({ icon, label, value, url }) => {
+            return (
+              <LinkItem
+                data={{
+                  title: label,
+                  url: url
+                }}
+                Icon={icon}
+                linkText={value}
+              />
+            );
+          })
+        }
+      </Stack>
+      <a href={`/${locale}/namecard`}>
+        <InteractiveNamecard data={NAMECARDS[0]} />
+      </a>
     </Stack>
-    <a href={`/${locale}/namecard`}>
-      <InteractiveNamecard data={NAMECARDS[0]}/>
-      <a>
-   </Stack>
-  </Container>
-</MainLayout>
+  </Container></MainLayout
+>

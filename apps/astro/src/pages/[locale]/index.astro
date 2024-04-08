@@ -6,11 +6,11 @@ import { localePaths } from '~/i18n/paths';
 
 import MainLayout from '~/layouts/MainLayout.astro';
 
-export async function getStaticPaths() {
+export function getStaticPaths() {
   return localePaths;
 }
 
-const param = Astro.params;
+// const param = Astro.params;
 ---
 
 <MainLayout>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { error, redirect } from '@sveltejs/kit';
 import { outlineClient } from '@utils/outline-api';
 
@@ -9,6 +10,7 @@ export async function GET({ url }) {
 
   const res = await outlineClient['/attachments.redirect'].post(
     { json: { id } },
+    //@ts-expect-error TODO: idk why
     { redirect: 'error' }
   );
   const redirectLocation = res.headers.get('location');

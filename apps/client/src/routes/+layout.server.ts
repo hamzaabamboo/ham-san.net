@@ -1,7 +1,7 @@
 import { LANGUAGES } from '@utils/localization';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ request, cookies }) => {
+export const load: LayoutServerLoad = ({ request, cookies }) => {
   const preferredLanguages =
     (request.headers.get('content-language') && [request.headers.get('content-language')]) ||
     request.headers

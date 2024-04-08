@@ -12,22 +12,22 @@ export const Namecard = ({
   if (side === 'front') {
     return (
       <HStack
+        style={{
+          WebkitPrintColorAdjust: 'exact',
+          ['--main-color' as 'color']: color
+        }}
+        gap="0"
+        width="91mm"
+        height="55mm"
+        bgColor="white"
         _print={{
           pageBreakBefore: 'always',
           // border: '1px solid',
           printColorAdjust: 'exact'
         }}
-        width="91mm"
-        height="55mm"
-        gap="0"
-        bgColor="white"
-        style={{
-          WebkitPrintColorAdjust: 'exact',
-          ['--main-color' as 'color']: color
-        }}
       >
         <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
-        <Stack flex="1" gap="2" pl="4" pr="2" justifyContent="space-around" h="full" py="4">
+        <Stack flex="1" gap="2" justifyContent="space-around" h="full" py="4" pl="4" pr="2">
           <Stack gap="1" fontSize="xs">
             <styled.p lineHeight="1">{content.firstRow}</styled.p>
             <styled.p>{content.secondRow}</styled.p>
@@ -53,7 +53,7 @@ export const Namecard = ({
             </Stack>
           </Stack>
         </Stack>
-        <Stack justifyContent="space-between" py="4" pr="4" h="full" w="84px" alignItems="flex-end">
+        <Stack justifyContent="space-between" alignItems="flex-end" w="84px" h="full" py="4" pr="4">
           <styled.img src={logoTop} />
           {logoMiddle && <styled.img src={logoMiddle} />}
           <styled.img src={logoBottom} />
@@ -64,16 +64,16 @@ export const Namecard = ({
   return (
     <>
       <HStack
-        width="91mm"
-        height="55mm"
-        bgColor="white"
-        gap="0"
-        border={{ _print: '1px solid' }}
-        printColorAdjust={{ _print: 'exact' }}
         style={{
           WebkitPrintColorAdjust: 'exact',
           ['--main-color' as 'color']: color
         }}
+        gap="0"
+        border={{ _print: '1px solid' }}
+        width="91mm"
+        height="55mm"
+        bgColor="white"
+        printColorAdjust={{ _print: 'exact' }}
       >
         <Stack flex="1" gap="2" justifyContent="space-evenly" alignItems="center" h="full" p="4">
           <Center>

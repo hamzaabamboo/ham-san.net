@@ -13,14 +13,4 @@ jobs:
       - name: Setup Dependencies
         uses: ./.github/composite-actions/setup
       - name: Run Lint All
-        run: pnpm nx run-many -t lint -all
-  format:
-    name: Format Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Dependencies
-        uses: ./.github/composite-actions/setup
-      - name: Run Format Check
-        run: pnpm nx format:check -all
+        run: pnpm check
