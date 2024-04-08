@@ -22633,7 +22633,6 @@ packages:
 
   /queue-tick@1.0.1:
     resolution: {integrity: sha512-kJt5qhMxoszgU/62PLP1CJytzd2NKetjSRnyuj31fDd3Rlcz3fzlFdFLD1SItunPwyqEOkca6GbV612BWfaBag==}
-    requiresBuild: true
 
   /quick-lru@4.0.1:
     resolution: {integrity: sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==}
@@ -26607,7 +26606,7 @@ packages:
         optional: true
     dependencies:
       '@types/node': 20.12.2
-      esbuild: 0.19.12
+      esbuild: 0.19.11
       postcss: 8.4.38
       rollup: 4.14.1
     optionalDependencies:
