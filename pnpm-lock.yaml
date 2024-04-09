@@ -214,6 +214,9 @@ importers:
       '@astropub/md':
         specifier: ^0.4.0
         version: 0.4.0(@astrojs/markdown-remark@4.3.2)
+      '@pandacss/types':
+        specifier: 0.36.1
+        version: 0.36.1
       '@types/react':
         specifier: ^18.2.74
         version: 18.2.74
@@ -268,7 +271,7 @@ importers:
         version: 0.37.2(@types/node@20.12.2)(@types/react-dom@18.2.24)(@types/react@18.2.74)(typescript@5.4.4)
       '@park-ui/panda-preset':
         specifier: ^0.36.1
-        version: 0.36.1(@internationalized/date@3.5.2)(@pandacss/dev@0.36.1)(@pandacss/types@0.37.2)
+        version: 0.36.1(@internationalized/date@3.5.2)(@pandacss/dev@0.36.1)(@pandacss/types@0.36.1)
       '@typescript-eslint/parser':
         specifier: ^7.4.0
         version: 7.5.0(eslint@8.57.0)(typescript@5.4.4)
@@ -6757,13 +6760,12 @@ packages:
 
   /@pandacss/types@0.36.1:
     resolution: {integrity: sha512-F0mGFtXT2j1hNFi5Z1AXPxEYcHoaedyJyScEbsGga4aa2KlJCEPEX9UDdgltMlrhSilM7nq7RbrDMToZ/cwvOg==}
-    dev: true
 
   /@pandacss/types@0.37.2:
     resolution: {integrity: sha512-1HYXrGSngm6wrRyiiEtF2nHl7sfVD9HDc0BVN+qD1Gpjo7uniz99jz9oYOPAVNAbPoll28ltx828Falh4XgvYg==}
     dev: true
 
-  /@park-ui/panda-preset@0.36.1(@internationalized/date@3.5.2)(@pandacss/dev@0.36.1)(@pandacss/types@0.37.2):
+  /@park-ui/panda-preset@0.36.1(@internationalized/date@3.5.2)(@pandacss/dev@0.36.1)(@pandacss/types@0.36.1):
     resolution: {integrity: sha512-R5qDv9ky78+LLDXVObCSIYt26UNoJLUATTNHVvekkAJwls1YxScyvqa8W8tpWadARPnKk0J77O14qwIa4h1anw==}
     peerDependencies:
       '@pandacss/dev': '>0.22.0'
@@ -6771,7 +6773,7 @@ packages:
     dependencies:
       '@ark-ui/anatomy': 2.3.1(@internationalized/date@3.5.2)
       '@pandacss/dev': 0.36.1(typescript@5.4.4)
-      '@pandacss/types': 0.37.2
+      '@pandacss/types': 0.36.1
       '@radix-ui/colors': 3.0.0
       deepmerge: 4.3.1
       ts-pattern: 5.0.8

@@ -1,7 +1,7 @@
 import { defaultLang, ui } from './ui';
 
 export function validateLocale(locale?: string): locale is keyof typeof ui {
-  return locale in ui;
+  return !!locale && locale in ui;
 }
 
 export function getLangFromUrl(url: URL) {

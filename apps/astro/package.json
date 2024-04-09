@@ -43,6 +43,7 @@
     "@pandacss/dev": "^0.36.1",
     "@pandacss/eslint-plugin": "^0.1.1",
     "@pandacss/studio": "^0.37.2",
+    "@pandacss/types": "0.36.1",
     "@park-ui/panda-preset": "^0.36.1",
     "@typescript-eslint/parser": "^7.4.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
