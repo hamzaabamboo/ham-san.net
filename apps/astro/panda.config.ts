@@ -46,5 +46,12 @@ export default defineConfig({
   // The output directory for your css system
   outdir: './styled-system',
 
+  importMap: {
+    css: 'styled-system/css',
+    recipes: 'styled-system/recipes',
+    patterns: 'styled-system/patterns',
+    jsx: 'styled-system/jsx'
+  },
+
   lightningcss: true
 });

@@ -30,15 +30,14 @@ const config = tseslint.config(
     }
   },
   ...eslintPluginSvelte.configs['flat/recommended'],
-  { files: ['**/*.svelte', '**/*.ts', '**/*.tsx', '**/*.js'] },
-  eslintPluginPrettierRecommended,
   {
-    files: ['**/*.ts'],
+    files: ['**/*.svelte', '**/*.ts', '**/*.tsx', '**/*.js'],
     rules: {
       '@typescript-eslint/no-unsafe-call': 'off',
       "@typescript-eslint/no-unsafe-assignment": "off"
     }
   },
+  eslintPluginPrettierRecommended,
   {
     files: ['**/*.d.ts'],
     rules: {
