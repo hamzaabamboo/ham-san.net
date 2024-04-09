@@ -214,9 +214,6 @@ importers:
       '@astropub/md':
         specifier: ^0.4.0
         version: 0.4.0(@astrojs/markdown-remark@4.3.2)
-      '@pandacss/types':
-        specifier: 0.36.1
-        version: 0.36.1
       '@types/react':
         specifier: ^18.2.74
         version: 18.2.74
@@ -269,6 +266,9 @@ importers:
       '@pandacss/studio':
         specifier: ^0.37.2
         version: 0.37.2(@types/node@20.12.2)(@types/react-dom@18.2.24)(@types/react@18.2.74)(typescript@5.4.4)
+      '@pandacss/types':
+        specifier: 0.36.1
+        version: 0.36.1
       '@park-ui/panda-preset':
         specifier: ^0.36.1
         version: 0.36.1(@internationalized/date@3.5.2)(@pandacss/dev@0.36.1)(@pandacss/types@0.36.1)
@@ -6760,6 +6760,7 @@ packages:
 
   /@pandacss/types@0.36.1:
     resolution: {integrity: sha512-F0mGFtXT2j1hNFi5Z1AXPxEYcHoaedyJyScEbsGga4aa2KlJCEPEX9UDdgltMlrhSilM7nq7RbrDMToZ/cwvOg==}
+    dev: true
 
   /@pandacss/types@0.37.2:
     resolution: {integrity: sha512-1HYXrGSngm6wrRyiiEtF2nHl7sfVD9HDc0BVN+qD1Gpjo7uniz99jz9oYOPAVNAbPoll28ltx828Falh4XgvYg==}
