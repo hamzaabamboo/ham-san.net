@@ -17,7 +17,7 @@ const config = tseslint.config(
       '**/generated/*',
       '**/components/ui/**/*',
       '**/lib/**/*',
-      '*.config.js'
+      '*.config.*'
     ]
   },
   ...tseslint.configs.recommendedTypeChecked.map((c) => ({

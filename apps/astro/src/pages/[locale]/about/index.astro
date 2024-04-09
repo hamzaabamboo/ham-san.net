@@ -7,17 +7,18 @@ import { Markdown } from '~/components/lib/Markdown';
 import { Heading } from '~/components/ui/heading';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
-import { localePaths } from '~/i18n/paths';
-import { useTranslations } from '~/i18n/utils';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
 //TODO:
-export function getStaticPaths() {
-  return localePaths;
-}
 
 const { locale } = Astro.params;
+
+if (!validateLocale(locale)) {
+  return Astro.redirect(404);
+}
+
 const t = useTranslations(locale);
 
 const data = await graphQLSdk.fetchAboutMe({

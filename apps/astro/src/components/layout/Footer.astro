@@ -1,11 +1,11 @@
 ---
 import { HStack } from 'styled-system/jsx';
-import { useTranslations } from '~/i18n/utils';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
 
-const { locale } = Astro.params;
-const t = useTranslations((locale as 'en') ?? 'en');
+const locale = validateLocale(Astro.params.locale) ? Astro.params.locale : 'en';
+const t = useTranslations(locale);
 ---
 
 <HStack

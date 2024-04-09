@@ -1,14 +1,19 @@
 ---
 import { Container } from 'styled-system/jsx';
 import { Heading } from '~/components/ui/heading';
-import { useTranslations } from '~/i18n/utils';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 //TODO:
 export const prerender = false;
 
 const { locale } = Astro.params;
-const t = useTranslations(locale as 'en');
+
+if (!validateLocale(locale)) {
+  return Astro.redirect(404);
+}
+
+const t = useTranslations(locale);
 ---
 
 <MainLayout>

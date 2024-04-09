@@ -8,7 +8,7 @@ import { Markdown } from '~/components/lib/Markdown';
 import { Heading } from '~/components/ui/heading';
 import { graphQLSdk } from '~/graphql';
 import { ComponentUtilsLink } from '~/graphql/generated/client';
-import { useTranslations } from '~/i18n/utils';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
@@ -19,6 +19,10 @@ const data = await graphQLSdk.getProjectBySlug({
 
 const { locale } = Astro.params;
 
+if (!validateLocale(locale)) {
+  return Astro.redirect(404);
+}
+
 const { content, title, banner, links, media } = data?.projects?.data?.[0]?.attributes ?? {};
 const { url: bannerPath, name: bannerName } = banner?.data?.attributes ?? {};
 const bannerUrl = getMediaUrl(bannerPath, {}, import.meta.env.PUBLIC_API_URL);
@@ -26,7 +30,7 @@ const images =
   (media?.data
     .map((d) => getMediaUrl(d.attributes?.url, {}, import.meta.env.PUBLIC_API_URL))
     .filter((d) => !!d) as string[]) ?? [];
-const t = useTranslations(locale as 'en');
+const t = useTranslations(locale);
 ---
 
 <MainLayout>

@@ -1,6 +1,11 @@
 ---
-const locale = Astro.preferredLocale;
+import { validateLocale } from '~/i18n/utils';
+
+const { preferredLocale } = Astro;
+
+const locale = validateLocale(preferredLocale) ? preferredLocale : 'en';
+
 export const prerender = false;
 ---
 
-<meta http-equiv="refresh" content={`0;url=/${locale ?? 'en'}/`} />
+<meta http-equiv="refresh" content={`0;url=/${locale}/`} />

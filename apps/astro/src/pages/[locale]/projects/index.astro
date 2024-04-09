@@ -6,12 +6,16 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
-import { useTranslations } from '~/i18n/utils';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
 
 const { locale } = Astro.params;
+
+if (!validateLocale(locale)) {
+  return Astro.redirect(404);
+}
 
 //TODO:
 
@@ -21,7 +25,7 @@ const data = await graphQLSdk.fetchProjects({
 
 const projects = data?.projects?.data ?? [];
 
-const t = useTranslations(locale as 'en');
+const t = useTranslations(locale);
 
 const projectGroups = groupBy(projects, (project) =>
   project.attributes?.isActive ? t('project.active') : t('project.inactive')
