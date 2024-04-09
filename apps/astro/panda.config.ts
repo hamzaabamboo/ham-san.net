@@ -25,6 +25,7 @@ export default defineConfig({
     recipes: {
       // text: ['*']
     },
+    // TODO: WORKAROUND
     css: [
       {
         properties: {

@@ -26,7 +26,7 @@
     "@astropub/md": "^0.4.0",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.24",
-    "astro": "^4.5.16",
+    "astro": "^4.5.17",
     "date-fns": "^3.6.0",
     "eslint-plugin-astro": "^0.34.0",
     "react": "^18.2.0",
