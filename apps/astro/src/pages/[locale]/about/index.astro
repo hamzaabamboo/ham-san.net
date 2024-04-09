@@ -1,7 +1,7 @@
 ---
 import { formatDistance } from 'date-fns';
 import { enUS, ja } from 'date-fns/locale';
-import { Container, Divider, HStack, Stack } from 'styled-system/jsx';
+import { Container, Divider, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { Markdown } from '~/components/lib/Markdown';
 import { Heading } from '~/components/ui/heading';
@@ -48,7 +48,7 @@ const { aboutMe, educations, experiences, tags: _tags } = data ?? {};
                   <Heading as="h2" size="xl" fontWeight="bold">
                     {title}
                   </Heading>
-                  <HStack fontSize="sm">
+                  <Wrap fontSize="sm">
                     <Text>{position}</Text> <Text>|</Text>
                     <Text>
                       {formatMonthYear(parseDate(start), locale)} -{' '}
@@ -58,7 +58,7 @@ const { aboutMe, educations, experiences, tags: _tags } = data ?? {};
                       })}
                       )
                     </Text>
-                  </HStack>
+                  </Wrap>
                   {content && <Markdown content={content} />}
                 </Stack>
               );
@@ -79,13 +79,13 @@ const { aboutMe, educations, experiences, tags: _tags } = data ?? {};
                   <Heading as="h2" size="xl" fontWeight="bold">
                     {title}
                   </Heading>
-                  <HStack fontSize="sm">
+                  <Wrap fontSize="sm">
                     <Text>{description}</Text> <Text>|</Text>
                     <Text>
                       {formatMonthYear(parseDate(start), locale)} -{' '}
                       {end ? formatMonthYear(parseDate(end), locale) : t('common.present')}
                     </Text>
-                  </HStack>
+                  </Wrap>
                   {content && <Markdown content={content} />}
                 </Stack>
               );

@@ -1,5 +1,4 @@
 import react from '@astrojs/react';
-import pandacss from '@pandacss/astro';
 import { defineConfig } from 'astro/config';
 
 import netlify from '@astrojs/netlify';
@@ -14,7 +13,7 @@ export default defineConfig({
       redirectToDefaultLocale: false
     }
   },
-  integrations: [react(), pandacss()],
+  integrations: [react()],
   output: 'hybrid',
   adapter: netlify({
     imageCDN: false
