@@ -1,5 +1,5 @@
 ---
-import { HStack } from 'styled-system/jsx';
+import { Wrap } from 'styled-system/jsx';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
@@ -8,7 +8,7 @@ const locale = validateLocale(Astro.params.locale) ? Astro.params.locale : 'en';
 const t = useTranslations(locale);
 ---
 
-<HStack
+<Wrap
   w="full"
   py="2"
   px="2"
@@ -21,4 +21,4 @@ const t = useTranslations(locale);
   <Link target="_blank" rel="noreferrer" href="https://github.com/hamzaabamboo/ham-san.net"
     >{t('common.view-source')}</Link
   >
-</HStack>
+</Wrap>

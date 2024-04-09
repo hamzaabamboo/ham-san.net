@@ -24,7 +24,16 @@ export default defineConfig({
   staticCss: {
     recipes: {
       // text: ['*']
-    }
+    },
+    css: [
+      {
+        properties: {
+          listStyleType: ['none', 'disc', 'decimal'],
+          fontWeight: ['bold'],
+          fontSize: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
+        }
+      }
+    ]
   },
   // Useful for theme customization
   theme: {

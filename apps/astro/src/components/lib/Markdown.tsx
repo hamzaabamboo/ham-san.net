@@ -7,6 +7,7 @@ import { Heading } from '../ui/heading';
 import { Link } from '../ui/link';
 import * as Table from '../ui/table';
 import { Text } from '../ui/text';
+
 // https://github.com/remarkjs/react-markdown
 export const Markdown = ({ content, assetsPrefix }: { content: string; assetsPrefix?: string }) => {
   return (

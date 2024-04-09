@@ -1,5 +1,5 @@
 import { FaGithub, FaGlobe } from 'react-icons/fa';
-import { HStack } from 'styled-system/jsx';
+import { Wrap } from 'styled-system/jsx';
 import { ComponentUtilsLink, Enum_Componentutilslink_Type } from '~/graphql/generated/client';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
@@ -36,13 +36,13 @@ export const LinkItem = ({
   const Icon = _icon ? _icon : linkIcon(data);
   const text = linkText ? linkText : processUrl(data);
   return (
-    <HStack gap="2">
+    <Wrap gap="2">
       {Icon && <Icon />}
       {data.title}
       <Text>:</Text>
       <Link href={data.url ?? ''} target="_blank">
         {text}
       </Link>
-    </HStack>
+    </Wrap>
   );
 };
