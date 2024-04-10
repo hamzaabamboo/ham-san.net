@@ -12,8 +12,8 @@ import BaseLayout from './BaseLayout.astro';
     <slot name="head" />
   </Fragment>
   <Stack gap="0" minH="100dvh">
-    <Navigation transition:persist />
+    <Navigation transition:persist="navbar" />
     <Stack flex={1}><slot /></Stack>
-    <Footer transition:persist />
+    <Footer transition:persist="footer" />
   </Stack>
 </BaseLayout>

@@ -46,7 +46,9 @@ const t = useTranslations(locale);
               objectPosition="center"
               width="full"
               aspectRatio="16 / 9"
-              transition:name={`project-image-${slug}`}
+              style={{
+                viewTransitionName: `project-image-${slug}`
+              }}
             />
           </Box>
         )
@@ -55,8 +57,9 @@ const t = useTranslations(locale);
         as="h1"
         size="2xl"
         fontWeight="bold"
-        zIndex="99"
-        transition:name={`project-title-${slug}`}>{title}</Heading
+        style={{
+          viewTransitionName: `project-title-${slug}`
+        }}>{title}</Heading
       >
       {
         links && (

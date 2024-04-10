@@ -50,7 +50,7 @@ const projectGroups = groupBy(projects, (project) =>
 
                   return (
                     <GridItem>
-                      <Link href={`/${locale}/projects/${slug}`}>
+                      <Link href={`/${locale}/projects/${slug}`} data-astro-prefetch="hover">
                         <Stack>
                           {image && (
                             <Box borderRadius="l2" overflow="hidden">
@@ -63,14 +63,17 @@ const projectGroups = groupBy(projects, (project) =>
                                 objectPosition="center"
                                 width="full"
                                 aspectRatio="4 / 3"
-                                transition:name={`project-image-${slug}`}
+                                style={{
+                                  viewTransitionName: `project-image-${slug}`
+                                }}
                               />
                             </Box>
                           )}
                           <Text
                             fontWeight="bold"
-                            zIndex="99"
-                            transition:name={`project-title-${slug}`}
+                            style={{
+                              viewTransitionName: `project-title-${slug}`
+                            }}
                           >
                             {title}
                           </Text>
