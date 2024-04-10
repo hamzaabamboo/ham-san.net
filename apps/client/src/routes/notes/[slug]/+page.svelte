@@ -9,9 +9,9 @@
   import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
   import { locale, t } from '@i18n';
   import { localizationUrls } from '@stores/localizationUrls';
-  import { cleanArticleContent } from '@utils/article';
   import { parseISO } from 'date-fns';
   import debounce from 'lodash/debounce';
+  import { cleanArticleContent } from 'outline/article';
   import { onDestroy } from 'svelte';
   import Fa from 'svelte-fa';
   import { formatMonthYear } from 'utils/date';

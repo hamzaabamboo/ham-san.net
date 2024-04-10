@@ -64,7 +64,7 @@ const contents = (await Promise.all(promises)).flatMap((r) => (r ? [r] : ([] as 
       {
         contents?.map(({ data, shareData }) => {
           if (!data) return null;
-          const { title, collectionId, text, createdAt, urlId } = data;
+          const { title, collectionId, text, createdAt } = data;
 
           const collectionName = collectionInfo?.find((c) => c?.id === collectionId)?.name;
           const content = cleanArticleContent(text);
