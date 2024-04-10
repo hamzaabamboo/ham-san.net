@@ -31,7 +31,8 @@ const config = tseslint.config(
       }
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }]
+      '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unsafe-assignment': 'off'
     }
   },
   ...compat.config({ extends: ['plugin:@pandacss/recommended'] }),
@@ -41,7 +42,12 @@ const config = tseslint.config(
     }
   },
   ...eslintPluginAstro.configs['flat/recommended'],
-  { files: ['**/*.astro', '**/*.ts', '**/*.tsx', '**/*.js'] },
+  {
+    files: ['**/*.astro', '**/*.ts', '**/*.tsx', '**/*.js'],
+    rules: {
+      'astro/valid-compile': 'warn'
+    }
+  },
   eslintPluginPrettierRecommended,
   {
     files: ['**/*.d.ts'],

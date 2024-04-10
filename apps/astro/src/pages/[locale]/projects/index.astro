@@ -34,7 +34,7 @@ const projectGroups = groupBy(projects, (project) =>
 
 <MainLayout>
   <Container maxW="breakpoint-xl">
-    <Stack p="4" gap="4">
+    <Stack py="4" gap="4" w="full">
       <Heading as="h1" size="2xl" fontWeight="bold">{t('project.projects')}</Heading>
       {
         [t('project.active'), t('project.inactive')].map((group: keyof typeof projectGroups) => {
@@ -45,8 +45,8 @@ const projectGroups = groupBy(projects, (project) =>
               </Heading>
               <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))">
                 {projectGroups[group].map((p) => {
-                  const { title, description, slug, media } = p.attributes ?? {};
-                  const image = media?.data?.[0]?.attributes;
+                  const { title, description, slug, banner, media } = p.attributes ?? {};
+                  const image = banner?.data?.attributes ?? media?.data?.[0]?.attributes;
 
                   return (
                     <GridItem>
@@ -59,8 +59,9 @@ const projectGroups = groupBy(projects, (project) =>
                                   getMediaUrl(image.url, {}, import.meta.env.PUBLIC_API_URL) ?? ''
                                 }
                                 alt={image.name}
-                                objectFit="cover"
+                                objectFit="contain"
                                 objectPosition="center"
+                                backgroundColor="bg.muted"
                                 width="full"
                                 aspectRatio="4 / 3"
                                 style={{

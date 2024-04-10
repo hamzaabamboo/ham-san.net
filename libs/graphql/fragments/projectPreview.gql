@@ -20,6 +20,13 @@ fragment projectPreview on Project {
       }
     }
   }
+  banner {
+    data {
+      attributes {
+        ...media
+      }
+    }
+  }
   date
   links {
     title

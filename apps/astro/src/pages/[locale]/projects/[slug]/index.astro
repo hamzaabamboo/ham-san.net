@@ -1,11 +1,15 @@
 ---
 //TODO:
-import { Box, Container, Divider, Stack, styled } from 'styled-system/jsx';
+import { FaArrowLeft } from 'react-icons/fa';
+import { Box, Container, Divider, Stack, Wrap, styled } from 'styled-system/jsx';
+import { formatMonthYear, parseDate } from 'utils/date';
 import { getMediaUrl } from 'utils/media';
 import { Carousel } from '~/components/common/Carousel';
 import { LinkItem } from '~/components/common/LinkItem';
 import { Markdown } from '~/components/lib/Markdown';
 import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
+import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
 import { ComponentUtilsLink } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
@@ -23,7 +27,8 @@ if (!validateLocale(locale)) {
   return Astro.redirect(404);
 }
 
-const { content, title, banner, links, media } = data?.projects?.data?.[0]?.attributes ?? {};
+const { content, title, banner, links, media, category, date, finishedDate } =
+  data?.projects?.data?.[0]?.attributes ?? {};
 const { url: bannerPath, name: bannerName } = banner?.data?.attributes ?? {};
 const bannerUrl = getMediaUrl(bannerPath, {}, import.meta.env.PUBLIC_API_URL);
 const images =
@@ -34,8 +39,14 @@ const t = useTranslations(locale);
 ---
 
 <MainLayout>
-  <Container maxW="breakpoint-xl" py="8">
+  <Container maxW="breakpoint-xl" py="8" w="full">
     <Stack gap="4">
+      <Link href={`/${locale}/projects`}>
+        <Wrap fontSize="sm" alignItems="center">
+          <FaArrowLeft />
+          <Text>{t('project.back-to-projects')}</Text>
+        </Wrap>
+      </Link>
       {
         bannerUrl && (
           <Box rounded="l1" overflow="hidden">
@@ -61,9 +72,21 @@ const t = useTranslations(locale);
           viewTransitionName: `project-title-${slug}`
         }}>{title}</Heading
       >
+      <Wrap fontSize="md" color="fg.subtle">
+        <Text>{category?.data?.attributes?.name}</Text>
+        <Text>|</Text>
+        <Text>
+          {formatMonthYear(parseDate(date as string), locale)} -{' '}
+          {
+            finishedDate
+              ? formatMonthYear(parseDate(finishedDate as string), locale)
+              : t('common.present')
+          }
+        </Text>
+      </Wrap>
       {
         links && (
-          <Stack>
+          <Stack gap="1">
             {links
               .filter((l): l is ComponentUtilsLink => !!l)
               .map((l) => {

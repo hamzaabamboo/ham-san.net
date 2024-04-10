@@ -36,8 +36,10 @@ export const LinkItem = ({
   const Icon = _icon ? _icon : linkIcon(data);
   const text = linkText ? linkText : processUrl(data);
   return (
-    <Wrap gap="2">
-      {Icon && <Icon />}
+    <Wrap gap="1" alignItems="center">
+      <Text as="span" fontSize="lg">
+        {Icon && <Icon />}
+      </Text>
       {data.title}
       <Text>:</Text>
       <Link href={data.url ?? ''} target="_blank">

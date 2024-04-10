@@ -44,7 +44,11 @@ const NAVIGATION_LINKS = [
   <HStack gap="2" hideBelow="sm">
     {
       NAVIGATION_LINKS.map(({ label, value }) => {
-        return <Link href={getURLWithLanguage(value)}>{label}</Link>;
+        return (
+          <Link href={getURLWithLanguage(value)} data-astro-reload>
+            {label}
+          </Link>
+        );
       })
     }
     <Text> | </Text>
