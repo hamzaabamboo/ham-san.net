@@ -63,10 +63,17 @@ const projectGroups = groupBy(projects, (project) =>
                                 objectPosition="center"
                                 width="full"
                                 aspectRatio="4 / 3"
+                                transition:name={`project-image-${slug}`}
                               />
                             </Box>
                           )}
-                          <Text fontWeight="bold">{title}</Text>
+                          <Text
+                            fontWeight="bold"
+                            zIndex="99"
+                            transition:name={`project-title-${slug}`}
+                          >
+                            {title}
+                          </Text>
                           <Text fontSize="sm">{description}</Text>
                         </Stack>
                       </Link>

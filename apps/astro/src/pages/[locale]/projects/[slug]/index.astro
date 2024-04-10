@@ -13,11 +13,11 @@ import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
 
-const data = await graphQLSdk.getProjectBySlug({
-  slug: Astro.params.slug
-});
+const { locale, slug } = Astro.params;
 
-const { locale } = Astro.params;
+const data = await graphQLSdk.getProjectBySlug({
+  slug
+});
 
 if (!validateLocale(locale)) {
   return Astro.redirect(404);
@@ -46,11 +46,18 @@ const t = useTranslations(locale);
               objectPosition="center"
               width="full"
               aspectRatio="16 / 9"
+              transition:name={`project-image-${slug}`}
             />
           </Box>
         )
       }
-      <Heading as="h1" size="2xl" fontWeight="bold">{title}</Heading>
+      <Heading
+        as="h1"
+        size="2xl"
+        fontWeight="bold"
+        zIndex="99"
+        transition:name={`project-title-${slug}`}>{title}</Heading
+      >
       {
         links && (
           <Stack>
