@@ -1,21 +1,98 @@
 ---
-import { Container } from 'styled-system/jsx';
+import { parseISO } from 'date-fns';
+import { cleanArticleContent, getArticleDescription } from 'outline/article';
+import { Container, Divider, Stack, Wrap } from 'styled-system/jsx';
+import { formatMonthYear } from 'utils/date';
 import { Heading } from '~/components/ui/heading';
-import { localePaths } from '~/i18n/paths';
-import { useTranslations } from '~/i18n/utils';
+import { Link } from '~/components/ui/link';
+import { Text } from '~/components/ui/text';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import { outlineClient } from '~/utils/outline-api';
 
-//TODO:
-export function getStaticPaths() {
-  return localePaths;
-}
+export const prerender = false;
 
 const { locale } = Astro.params;
+
+if (!validateLocale(locale)) {
+  return Astro.redirect(404);
+}
+
+const headers = {
+  Authorization: undefined as unknown as 'Bearer hoge'
+};
 const t = useTranslations(locale);
+
+const res = await outlineClient['/shares.list'].post({
+  json: {
+    sort: 'createdAt',
+    direction: 'DESC'
+  },
+  headers
+});
+
+if (!res.ok) {
+  return Astro.redirect(500);
+}
+
+const collectionInfoRes = await outlineClient['/collections.list'].post({ headers });
+const collectionInfo = collectionInfoRes?.ok ? (await collectionInfoRes.json())?.data : undefined;
+
+const sharedArticlesList = await res.json();
+
+const promises =
+  sharedArticlesList.data?.map(async (shareData) => {
+    const res = await outlineClient['/documents.info'].post({
+      json: { shareId: shareData.id },
+      headers
+    });
+    return res.ok
+      ? {
+          data: (await res.json()).data,
+          shareData: shareData
+        }
+      : undefined;
+  }) ?? [];
+const contents = (await Promise.all(promises)).flatMap((r) => (r ? [r] : ([] as const)));
 ---
 
 <MainLayout>
-  <Container>
-    <Heading as="h1" size="2xl" fontWeight="bold">{t('note.notes')}</Heading>
+  <Container maxW="breakpoint-xl" w="full">
+    <Stack py="4" gap="4">
+      <Heading as="h1" size="2xl" fontWeight="bold">{t('note.notes')}</Heading>
+      <Text>{t('note.description')}</Text>
+      {
+        contents?.map(({ data, shareData }) => {
+          if (!data) return null;
+          const { title, collectionId, text, createdAt, urlId } = data;
+
+          const collectionName = collectionInfo?.find((c) => c?.id === collectionId)?.name;
+          const content = cleanArticleContent(text);
+
+          const description = getArticleDescription(content);
+
+          return (
+            <>
+              <Link
+                target="_blank"
+                href={`${import.meta.env.PRIVATE_OUTLINE_SERVER.replace('/api', '')}/s/${shareData.id}`}
+              >
+                <Stack gap={1}>
+                  <Heading as="h4" size="xl" fontWeight="bold">
+                    {title}
+                  </Heading>
+                  <Wrap fontSize="sm">
+                    <Text>{collectionName}</Text> |{' '}
+                    <Text>{createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}</Text>
+                  </Wrap>
+                  <Text>{description}</Text>
+                </Stack>
+              </Link>
+              <Divider />
+            </>
+          );
+        })
+      }
+    </Stack>
   </Container>
 </MainLayout>

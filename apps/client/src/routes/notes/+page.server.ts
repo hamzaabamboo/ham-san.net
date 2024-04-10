@@ -1,7 +1,7 @@
 //TODO: Fix type errors
 import { error } from '@sveltejs/kit';
-import { cleanArticleContent, getArticleBanner, getArticleDescription } from '@utils/article';
 import { outlineClient } from '@utils/outline-api';
+import { cleanArticleContent, getArticleBanner, getArticleDescription } from 'outline/article';
 import type { PageServerLoad } from './$types';
 
 const headers = {
@@ -18,7 +18,6 @@ export const load: PageServerLoad = async () => {
   });
 
   if (!res.ok) {
-    console.log(await res.json());
     error(500, 'Something went wrong');
   }
   const data = await res.json();

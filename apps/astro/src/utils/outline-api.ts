@@ -1,9 +1,8 @@
-import { PRIVATE_OUTLINE_API_TOKEN, PRIVATE_OUTLINE_SERVER } from '$env/static/private';
-// import { fetch } from 'fetch-h2';
 import { createClient, type ClientPlugin, type NormalizeOAS } from 'fets';
 import type openAPIDoc from 'outline/spec';
 
-export const isOutlineEnabled = !!PRIVATE_OUTLINE_SERVER && !!PRIVATE_OUTLINE_API_TOKEN;
+export const isOutlineEnabled =
+  !!import.meta.env.PRIVATE_OUTLINE_SERVER && !!import.meta.env.PRIVATE_OUTLINE_API_TOKEN;
 
 export function useAuth(token: string): ClientPlugin {
   return {
@@ -20,7 +19,6 @@ export function useAuth(token: string): ClientPlugin {
 export type OutlineAPI = NormalizeOAS<typeof openAPIDoc>;
 
 export const outlineClient = createClient<OutlineAPI>({
-  // fetchFn: fetch ,
-  endpoint: (PRIVATE_OUTLINE_SERVER ?? '') as 'https://app.getoutline.com/api',
-  plugins: [useAuth(PRIVATE_OUTLINE_API_TOKEN)]
+  endpoint: (import.meta.env.PRIVATE_OUTLINE_SERVER ?? '') as 'https://app.getoutline.com/api',
+  plugins: [useAuth(import.meta.env.PRIVATE_OUTLINE_API_TOKEN)]
 });

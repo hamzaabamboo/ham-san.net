@@ -6,11 +6,13 @@
     "jsxImportSource": "react",
     "paths": {
       "~/*": ["./*"],
+      "styled-system/*": ["../styled-system/*"],
       "i18n/*": ["../../../libs/i18n/*"],
       "utils/*": ["../../../libs/utils/*"],
-      "styled-system/*": ["../styled-system/*"]
+      "outline/*": ["../../../libs/outline/*"]
     },
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": false,
+    "disableSizeLimit": true
   },
   "include": ["src", "styled-system", "./panda.config.ts"]
 }

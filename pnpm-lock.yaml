@@ -229,6 +229,9 @@ importers:
       eslint-plugin-astro:
         specifier: ^0.34.0
         version: 0.34.0(eslint@8.57.0)(typescript@5.4.4)
+      fets:
+        specifier: ^0.8.0
+        version: 0.8.0
       react:
         specifier: ^18.2.0
         version: 18.2.0

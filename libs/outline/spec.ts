@@ -3,7 +3,7 @@ export default {
   info: {
     title: 'Outline API',
     description:
-      '# Introduction\n\nThe Outline API is structured in an RPC style. It enables you to\nprogramatically interact with all aspects of Outline’s data – in fact, the\nmain application is built on exactly the same API.\n\nThe API structure is available as an \n[openapi specification](https://github.com/outline/openapi) if that’s your \njam – it can be used to generate clients for most programming languages.\n\n# Making requests\n\nOutline’s API follows simple RPC style conventions where each API endpoint is\na method on `https://app.getoutline.com/api/method`. Both `GET` and `POST` \nmethods are supported but it’s recommended that you make all call using POST.\nOnly HTTPS is supported and all response payloads are JSON.\n\nWhen making `POST` requests, request parameters are parsed depending on\nContent-Type header. To make a call using JSON payload, you must pass\nContent-Type: application/json header, here’s an example using CURL:\n\n```\ncurl https://app.getoutline.com/api/documents.info \\\n-X \'POST\' \\\n-H \'authorization: Bearer MY_API_KEY\' \\\n-H \'content-type: application/json\' \\\n-H \'accept: application/json\' \\\n-d \'{"id": "outline-api-NTpezNwhUP"}\'\n```\n\nOr, with JavaScript:\n\n```javascript\nconst response = await fetch("https://app.getoutline.com/api/documents.info", {\n  method: "POST",\n  headers: {\n    Accept: "application/json",\n    "Content-Type": "application/json",\n    Authorization: \'Bearer MY_API_KEY\'\n  }\n})\n\nconst body = await response.json();\nconst document = body.data;\n```\n\n# Authentication\n\nTo access API endpoints, you must provide a valid API key. You can create new\nAPI keys in your [account settings](https://app.getoutline.com/settings). Be\ncareful when handling your keys as they give access to all of your documents,\nyou should treat them like passwords and they should never be committed to\nsource control.\n\nTo authenticate with API, you can supply the API key as a header\n(`Authorization: Bearer YOUR_API_KEY`) or as part of the payload using `token` \nparameter. Header based authentication is highly recommended so that your keys\ndon’t accidentally leak into logs.\n\nSome API endpoints allow unauthenticated requests for public resources and\nthey can be called without an API key.\n\n# Errors\n\nAll successful API requests will be returned with a 200 or 201 status code\nand `ok: true` in the response payload. If there’s an error while making the\nrequest, the appropriate status code is returned with the error message:\n\n```\n{\n  "ok": false,\n  "error: "Not Found"\n}\n```\n\n# Pagination\n\nMost top-level API resources have support for "list" API methods. For instance,\nyou can list users, documents, and collections. These list methods share\ncommon parameters, taking both `limit` and `offset`.\n\nResponses will echo these parameters in the root `pagination` key, and also\ninclude a `nextPath` key which can be used as a handy shortcut to fetch the\nnext page of results. For example:\n\n```\n{\n  ok: true,\n  status: 200,\n  data: […],\n  pagination: {\n    limit: 25,\n    offset: 0,\n    nextPath: "/api/documents.list?limit=25&offset=25"\n  }\n}\n```\n\n# Policies\n\nMany API resources have associated "policies", these objects describe the\ncurrent API keys authorized actions related to an individual resource. It\nshould be noted that the policy "id" is identical to the resource it is\nrelated to, policies themselves do not have unique identifiers.\n\nFor most usecases of the API, policies can be safely ignored. Calling\nunauthorized methods will result in the appropriate response code – these are\nused in the main Outline UI to adjust which elements are visible.\n',
+      '# Introduction\n\nThe Outline API is structured in an RPC style. It enables you to\nprogramatically interact with all aspects of Outline’s data – in fact, the\nmain application is built on exactly the same API.\n\nThe API structure is available as an\n[openapi specification](https://github.com/outline/openapi) if that’s your\njam – it can be used to generate clients for most programming languages.\n\n# Making requests\n\nOutline’s API follows simple RPC style conventions where each API endpoint is\na method on `https://app.getoutline.com/api/method`. Both `GET` and `POST`\nmethods are supported but it’s recommended that you make all call using POST.\nOnly HTTPS is supported and all response payloads are JSON.\n\nWhen making `POST` requests, request parameters are parsed depending on\nContent-Type header. To make a call using JSON payload, you must pass\nContent-Type: application/json header, here’s an example using CURL:\n\n```\ncurl https://app.getoutline.com/api/documents.info \\\n-X \'POST\' \\\n-H \'authorization: Bearer MY_API_KEY\' \\\n-H \'content-type: application/json\' \\\n-H \'accept: application/json\' \\\n-d \'{"id": "outline-api-NTpezNwhUP"}\'\n```\n\nOr, with JavaScript:\n\n```javascript\nconst response = await fetch("https://app.getoutline.com/api/documents.info", {\n  method: "POST",\n  headers: {\n    Accept: "application/json",\n    "Content-Type": "application/json",\n    Authorization: "Bearer MY_API_KEY"\n  }\n})\n\nconst body = await response.json();\nconst document = body.data;\n```\n\n# Authentication\n\nTo access API endpoints, you must provide a valid API key. You can create new\nAPI keys in your [account settings](https://app.getoutline.com/settings). Be\ncareful when handling your keys as they give access to all of your documents,\nyou should treat them like passwords and they should never be committed to\nsource control.\n\nTo authenticate with API, you can supply the API key as a header\n(`Authorization: Bearer YOUR_API_KEY`) or as part of the payload using `token`\nparameter. Header based authentication is highly recommended so that your keys\ndon’t accidentally leak into logs.\n\nSome API endpoints allow unauthenticated requests for public resources and\nthey can be called without an API key.\n\n# Errors\n\nAll successful API requests will be returned with a 200 or 201 status code\nand `ok: true` in the response payload. If there’s an error while making the\nrequest, the appropriate status code is returned with the error message:\n\n```\n{\n  "ok": false,\n  "error": "Not Found"\n}\n```\n\n# Pagination\n\nMost top-level API resources have support for "list" API methods. For instance,\nyou can list users, documents, and collections. These list methods share\ncommon parameters, taking both `limit` and `offset`.\n\nResponses will echo these parameters in the root `pagination` key, and also\ninclude a `nextPath` key which can be used as a handy shortcut to fetch the\nnext page of results. For example:\n\n```\n{\n  ok: true,\n  status: 200,\n  data: […],\n  pagination: {\n    limit: 25,\n    offset: 0,\n    nextPath: "/api/documents.list?limit=25&offset=25"\n  }\n}\n```\n\n# Policies\n\nMany API resources have associated "policies", these objects describe the\ncurrent API keys authorized actions related to an individual resource. It\nshould be noted that the policy "id" is identical to the resource it is\nrelated to, policies themselves do not have unique identifiers.\n\nFor most usecases of the API, policies can be safely ignored. Calling\nunauthorized methods will result in the appropriate response code – these are\nused in the main Outline UI to adjust which elements are visible.\n',
     version: '0.1.0',
     contact: {
       email: 'hello@getoutline.com'
@@ -24,17 +24,22 @@ export default {
     {
       name: 'Attachments',
       description:
-        '`Attachments` represent a file uploaded to cloud storage. They are created \nbefore the upload happens from the client and store all the meta information\nsuch as file type, size, and location.\n'
+        '`Attachments` represent a file uploaded to cloud storage. They are created\nbefore the upload happens from the client and store all the meta information\nsuch as file type, size, and location.\n'
     },
     {
       name: 'Auth',
       description:
-        '`Auth` represents the current API Keys authentication details. It can be \nused to check that a token is still valid and load the IDs for the current\nuser and team.\n'
+        '`Auth` represents the current API Keys authentication details. It can be\nused to check that a token is still valid and load the IDs for the current\nuser and team.\n'
     },
     {
       name: 'Collections',
       description:
-        '`Collections` represent grouping of documents in the knowledge base, they \noffer a way to structure information in a nested hierarchy and a level\nat which read and write permissions can be granted to individual users or\ngroups of users.\n'
+        '`Collections` represent grouping of documents in the knowledge base, they\noffer a way to structure information in a nested hierarchy and a level\nat which read and write permissions can be granted to individual users or\ngroups of users.\n'
+    },
+    {
+      name: 'Comments',
+      description:
+        '`Comments` represent a comment either on a selection of text in a document\nor on the document itself.\n'
     },
     {
       name: 'Documents',
@@ -54,12 +59,12 @@ export default {
     {
       name: 'Groups',
       description:
-        '`Groups` represent a list of users that logically belong together, for \nexample there might be groups for each department in your organization.\nGroups can be granted access to collections with read or write permissions.\n'
+        '`Groups` represent a list of users that logically belong together, for\nexample there might be groups for each department in your organization.\nGroups can be granted access to collections with read or write permissions.\n'
     },
     {
       name: 'Revisions',
       description:
-        '`Revisions` represent a snapshop of a document at a point in time. They \nare used to keep tracking of editing and collaboration history – a document\ncan also be restored to a previous revision if neccessary.\n'
+        '`Revisions` represent a snapshop of a document at a point in time. They\nare used to keep tracking of editing and collaboration history – a document\ncan also be restored to a previous revision if neccessary.\n'
     },
     {
       name: 'Shares',
@@ -74,7 +79,7 @@ export default {
     {
       name: 'Views',
       description:
-        '`Views` represent a compressed record of an individual users views of a\ndocument. Individual views are not recorded but a first, last and total \nis kept per user.\n'
+        '`Views` represent a compressed record of an individual users views of a\ndocument. Individual views are not recorded but a first, last and total\nis kept per user.\n'
     }
   ],
   paths: {
@@ -1193,6 +1198,241 @@ export default {
           },
           '404': {
             $ref: '#/components/responses/NotFound'
+          }
+        }
+      }
+    },
+    '/comments.create': {
+      post: {
+        tags: ['Comments'],
+        summary: 'Create a comment',
+        description: 'Create a comment',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'string',
+                    format: 'uuid'
+                  },
+                  documentId: {
+                    type: 'string',
+                    format: 'uuid'
+                  },
+                  parentCommentId: {
+                    type: 'string',
+                    format: 'uuid'
+                  },
+                  data: {
+                    type: 'object'
+                  }
+                },
+                required: ['documentId', 'data']
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'OK',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    data: {
+                      $ref: '#/components/schemas/Comment'
+                    }
+                  }
+                }
+              }
+            }
+          },
+          '401': {
+            $ref: '#/components/responses/Unauthenticated'
+          },
+          '403': {
+            $ref: '#/components/responses/Unauthorized'
+          },
+          '404': {
+            $ref: '#/components/responses/NotFound'
+          }
+        }
+      }
+    },
+    '/comments.update': {
+      post: {
+        tags: ['Comments'],
+        summary: 'Update a comment',
+        description: 'Update a comment',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'string',
+                    format: 'uuid'
+                  },
+                  data: {
+                    type: 'object'
+                  }
+                },
+                required: ['id', 'data']
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'OK',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    data: {
+                      $ref: '#/components/schemas/Comment'
+                    }
+                  }
+                }
+              }
+            }
+          },
+          '401': {
+            $ref: '#/components/responses/Unauthenticated'
+          },
+          '403': {
+            $ref: '#/components/responses/Unauthorized'
+          },
+          '404': {
+            $ref: '#/components/responses/NotFound'
+          }
+        }
+      }
+    },
+    '/comments.delete': {
+      post: {
+        tags: ['Comments'],
+        summary: 'Delete a comment',
+        description: 'Delete a comment',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'string',
+                    format: 'uuid'
+                  }
+                },
+                required: ['id']
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'OK',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: {
+                      type: 'boolean',
+                      example: true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          '401': {
+            $ref: '#/components/responses/Unauthenticated'
+          },
+          '403': {
+            $ref: '#/components/responses/Unauthorized'
+          },
+          '404': {
+            $ref: '#/components/responses/NotFound'
+          }
+        }
+      }
+    },
+    '/comments.list': {
+      post: {
+        tags: ['Comments'],
+        summary: 'List all comments',
+        description: 'This method will list all comments matching the given properties.',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/Pagination'
+                  },
+                  {
+                    $ref: '#/components/schemas/Sorting'
+                  },
+                  {
+                    type: 'object',
+                    properties: {
+                      documentId: {
+                        type: 'string',
+                        format: 'uuid',
+                        description: 'Filter to a specific document'
+                      },
+                      collectionId: {
+                        type: 'string',
+                        format: 'uuid',
+                        description: 'Filter to a specific collection'
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'OK',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    data: {
+                      type: 'array',
+                      items: {
+                        $ref: '#/components/schemas/Document'
+                      }
+                    },
+                    policies: {
+                      type: 'array',
+                      items: {
+                        $ref: '#/components/schemas/Policy'
+                      }
+                    },
+                    pagination: {
+                      $ref: '#/components/schemas/Pagination'
+                    }
+                  }
+                }
+              }
+            }
+          },
+          '401': {
+            $ref: '#/components/responses/Unauthenticated'
+          },
+          '403': {
+            $ref: '#/components/responses/Unauthorized'
           }
         }
       }
@@ -2880,6 +3120,11 @@ export default {
                   {
                     type: 'object',
                     properties: {
+                      id: {
+                        type: 'string',
+                        description: 'Group id',
+                        example: 'a32c2ee6-fbde-4654-841b-0eabdc71b812'
+                      },
                       query: {
                         type: 'string',
                         description: 'Filter memberships by user names',
@@ -3569,6 +3814,14 @@ export default {
                         type: 'string',
                         example: 'jane'
                       },
+                      emails: {
+                        type: 'array',
+                        items: {
+                          type: 'string',
+                          description: 'Array of emails',
+                          example: ['jane.crandall@mail.com', 'prudence.crandall@mail.com']
+                        }
+                      },
                       filter: {
                         type: 'string',
                         example: 'all',
@@ -4183,6 +4436,49 @@ export default {
           }
         }
       },
+      Comment: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            description: 'Unique identifier for the object.',
+            readOnly: true,
+            format: 'uuid'
+          },
+          data: {
+            type: 'object',
+            description: 'The editor data representing this comment.'
+          },
+          documentId: {
+            type: 'string',
+            description: 'Identifier for the document this is related to.',
+            format: 'uuid'
+          },
+          parentCommentId: {
+            type: 'string',
+            description: 'Identifier for the comment this is a child of, if any.',
+            format: 'uuid'
+          },
+          createdAt: {
+            type: 'string',
+            description: 'The date and time that this object was created',
+            readOnly: true,
+            format: 'date-time'
+          },
+          createdBy: {
+            $ref: '#/components/schemas/User'
+          },
+          updatedAt: {
+            type: 'string',
+            description: 'The date and time that this object was last changed',
+            readOnly: true,
+            format: 'date-time'
+          },
+          updatedBy: {
+            $ref: '#/components/schemas/User'
+          }
+        }
+      },
       Document: {
         type: 'object',
         properties: {
@@ -4214,8 +4510,7 @@ export default {
           emoji: {
             type: 'string',
             description: 'An emoji associated with the document.',
-            example: '🎉',
-            readOnly: true
+            example: '🎉'
           },
           text: {
             type: 'string',
@@ -4677,7 +4972,7 @@ export default {
             description:
               'The last time this user made an API request, this value is updated at most every 5 minutes.',
             readOnly: true,
-            format: 'date'
+            format: 'date-time'
           },
           createdAt: {
             type: 'string',

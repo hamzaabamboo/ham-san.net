@@ -1,6 +1,6 @@
 import { PRIVATE_OUTLINE_SERVER } from '$env/static/private';
 import { error } from '@sveltejs/kit';
-import { cleanArticleContent, getArticleBanner, getArticleDescription } from '@utils/article';
+import { cleanArticleContent, getArticleBanner, getArticleDescription } from 'outline/article';
 import { outlineClient } from '@utils/outline-api';
 import sortBy from 'lodash/sortBy';
 import type { PageServerLoad } from './$types';
