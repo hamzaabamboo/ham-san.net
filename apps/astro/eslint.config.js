@@ -35,6 +35,11 @@ const config = tseslint.config(
     }
   },
   ...compat.config({ extends: ['plugin:@pandacss/recommended'] }),
+  {
+    rules: {
+      '@pandacss/no-unsafe-token-fn-usage': 'off'
+    }
+  },
   ...eslintPluginAstro.configs['flat/recommended'],
   { files: ['**/*.astro', '**/*.ts', '**/*.tsx', '**/*.js'] },
   eslintPluginPrettierRecommended,

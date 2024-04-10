@@ -24,9 +24,9 @@ export const Carousel = (props: _Carousel.RootProps & { images: string[] }) => {
                 <styled.img
                   src={image}
                   alt={`Slide ${index}`}
-                  w="full"
                   aspectRatio="16 / 9"
                   objectFit="contain"
+                  w="full"
                 />
               </_Carousel.Item>
             ))}
@@ -70,9 +70,9 @@ export const Carousel = (props: _Carousel.RootProps & { images: string[] }) => {
               <styled.img
                 src={image}
                 alt={`Slide ${index}`}
-                w="full"
                 aspectRatio="1"
                 objectFit="contain"
+                w="full"
               />
             </GridItem>
           );

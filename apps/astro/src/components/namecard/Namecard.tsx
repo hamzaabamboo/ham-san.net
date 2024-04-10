@@ -34,7 +34,7 @@ export const Namecard = ({
           </Stack>
           <styled.hr borderColor="var(--main-color)" />
           <Stack gap="0">
-            <styled.h1 fontWeight="semibold" lineHeight="1.12" fontSize="4xl">
+            <styled.h1 fontSize="4xl" fontWeight="semibold" lineHeight="1.12">
               {content.name}
             </styled.h1>
             <styled.p fontSize="sm">{content.nameSubtitle}</styled.p>
@@ -77,7 +77,7 @@ export const Namecard = ({
       >
         <Stack flex="1" gap="2" justifyContent="space-evenly" alignItems="center" h="full" p="4">
           <Center>
-            <styled.img maxW="100px" src={qrCode} />
+            <styled.img src={qrCode} maxW="100px" />
           </Center>
           <HStack alignItems="center">
             <Quote />

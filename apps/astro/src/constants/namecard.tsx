@@ -21,7 +21,7 @@ export const NAMECARDS = [
     qrCode: akarinQrCode.src,
     Quote: () => {
       return (
-        <styled.blockquote fontSize="xs" textAlign="center" fontStyle="italic">
+        <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
           「…推しって<b>“応援する存在”</b>というよりも、
           <br />
           <b>“自分のモチベーションを高める存在”</b>…」
@@ -46,7 +46,7 @@ export const NAMECARDS = [
     qrCode: hasuQrCode.src,
     Quote: () => {
       return (
-        <styled.blockquote fontSize="xs" textAlign="center" fontStyle="italic">
+        <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
           「フラワー」
           <br />ー 楡井希実
         </styled.blockquote>

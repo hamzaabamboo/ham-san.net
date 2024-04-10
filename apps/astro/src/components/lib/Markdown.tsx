@@ -27,9 +27,9 @@ export const Markdown = ({ content, assetsPrefix }: { content: string; assetsPre
         blockquote: ({ ref: __, node: _, ...props }) => (
           <styled.blockquote
             borderLeftWidth="4px"
-            borderLeftStyle="solid"
             borderLeftColor="border.default"
             padding={4}
+            borderLeftStyle="solid"
             {...props}
           />
         ),
