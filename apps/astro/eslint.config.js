@@ -42,7 +42,8 @@ const config = tseslint.config(
   ...compat.config({ extends: ['plugin:@pandacss/recommended'] }),
   {
     rules: {
-      '@pandacss/no-unsafe-token-fn-usage': 'off'
+      '@pandacss/no-unsafe-token-fn-usage': 'off',
+      '@pandacss/no-hardcoded-color': 'off'
     }
   },
   ...eslintPluginAstro.configs['flat/recommended'],

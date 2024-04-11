@@ -73,27 +73,32 @@ const items = [
 
 <MainLayout>
   <Container w="full" maxW="breakpoint-xl" pt="8">
-    <Stack w="full" gap="4" p="4" alignItems="center">
-      <Heading as="h1" size="2xl" fontWeight="bold">{t('common.contact')}</Heading>
+    <Stack w="full" gap="8" p="4" alignItems="center">
       <Stack>
-        {
-          items.map(({ icon, label, value, url }) => {
-            return (
-              <LinkItem
-                data={{
-                  title: label,
-                  url: url
-                }}
-                Icon={icon}
-                linkText={value}
-              />
-            );
-          })
-        }
+        <Heading as="h1" size="2xl" fontWeight="bold">{t('common.contact')}</Heading>
+        <Stack>
+          {
+            items.map(({ icon, label, value, url }) => {
+              return (
+                <LinkItem
+                  data={{
+                    title: label,
+                    url: url
+                  }}
+                  Icon={icon}
+                  linkText={value}
+                />
+              );
+            })
+          }
+        </Stack>
       </Stack>
-      <a href={`/${locale}/namecard`}>
-        <InteractiveNamecard data={NAMECARDS[0]} />
-      </a>
+      <Stack>
+        <Heading as="h2" size="xl" fontWeight="bold" mb="8">{t('contact.name-card')}</Heading>
+        <a href={`/${locale}/namecard/default`}>
+          <InteractiveNamecard data={NAMECARDS[0]} />
+        </a>
+      </Stack>
     </Stack>
   </Container>
 </MainLayout>

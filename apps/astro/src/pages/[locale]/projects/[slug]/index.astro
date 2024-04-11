@@ -99,7 +99,7 @@ const t = useTranslations(locale);
       {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
       {
         images.length > 0 && (
-          <Stack>
+          <Stack gap="4">
             <Heading as="h2" size="xl" fontWeight="bold">
               {t('project.screenshots')}
             </Heading>

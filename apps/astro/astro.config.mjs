@@ -18,5 +18,6 @@ export default defineConfig({
   adapter: netlify({
     imageCDN: false
   }),
-  prefetch: true
+  prefetch: true,
+  trailingSlash: 'ignore'
 });

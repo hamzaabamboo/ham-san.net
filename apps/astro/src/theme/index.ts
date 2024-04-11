@@ -25,6 +25,14 @@ export const theme: PartialTheme = {
       '25%, 50%': {
         transform: 'scaleX(-100%) translate(0,0)'
       }
+    },
+    spin: {
+      '0%': {
+        transform: 'rotateY(0deg)'
+      },
+      '100%': {
+        transform: 'rotateY(360deg)'
+      }
     }
   }
 };

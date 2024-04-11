@@ -44,10 +44,13 @@ const { locale } = Astro.params;
         NAMECARDS.map((namecard) => {
           return (
             <>
-              <a href={`/${locale}/namecard?variant=${namecard.variant}`}>
+              <a
+                href={`/${locale}/namecard/${namecard.variant}`}
+                style={{ viewTransitionName: `namecard-${namecard.variant}-front` }}
+              >
                 <Namecard side="front" data={namecard} />
               </a>
-              <a href={`/${locale}/namecard?variant=${namecard.variant}`}>
+              <a href={`/${locale}/namecard/${namecard.variant}`}>
                 <Namecard side="back" data={namecard} />
               </a>
             </>
