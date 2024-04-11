@@ -27,6 +27,8 @@ const data = await graphQLSdk.fetchAboutMe({
 
 //TODO: Tags
 const { aboutMe, educations, experiences, tags: _tags } = data ?? {};
+
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
 ---
 
 <MainLayout>

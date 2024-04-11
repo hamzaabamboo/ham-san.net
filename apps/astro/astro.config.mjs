@@ -17,6 +17,7 @@ export default defineConfig({
   output: 'hybrid',
   adapter: netlify({
     imageCDN: false
+    // cacheOnDemandPages: true
   }),
   prefetch: true,
   trailingSlash: 'ignore'

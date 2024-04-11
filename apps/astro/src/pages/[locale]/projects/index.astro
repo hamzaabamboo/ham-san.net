@@ -30,6 +30,8 @@ const t = useTranslations(locale);
 const projectGroups = groupBy(projects, (project) =>
   project.attributes?.isActive ? t('project.active') : t('project.inactive')
 );
+
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
 
 <MainLayout>
