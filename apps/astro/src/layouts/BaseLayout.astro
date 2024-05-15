@@ -18,3 +18,11 @@ const lang = getLangFromUrl(Astro.url);
     <slot />
   </body>
 </html>
+
+<style is:global>
+  @media print {
+    astro-dev-toolbar {
+      display: none !important;
+    }
+  }
+</style>

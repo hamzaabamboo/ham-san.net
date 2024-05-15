@@ -1,14 +1,19 @@
 ---
 import { formatDistance } from 'date-fns';
 import { enUS, ja } from 'date-fns/locale';
-import { Container, Divider, Stack, Wrap } from 'styled-system/jsx';
+import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
+import { Container, Divider, Grid, GridItem, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
+import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
+import { TagBadge } from '~/components/tags/TagBadge';
 import { Heading } from '~/components/ui/heading';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import { sortTags } from '~/utils/tags';
 
 export const prerender = false;
 //TODO:
@@ -22,11 +27,17 @@ if (!validateLocale(locale)) {
 const t = useTranslations(locale);
 
 const data = await graphQLSdk.fetchAboutMe({
-  locale
+  // TODO: Localize Japanese Text
+  locale: 'en'
 });
 
 //TODO: Tags
 const { aboutMe, educations, experiences, tags: _tags } = data ?? {};
+
+const skills = groupBy(
+  _tags?.data?.filter((tag) => tag.attributes?.type !== 'Non_Dev'),
+  (tag) => tag.attributes?.type
+);
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
 ---
@@ -38,11 +49,44 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
       <Text>{aboutMe?.data?.attributes?.introduction}</Text>
       <Divider />
       <Stack>
+        <Heading as="h2" size="xl" fontWeight="bold">{t('about-me.skills')}</Heading>
+        <Grid gridTemplateColumns={{ base: '1fr', md: 'auto 1fr' }}>
+          {
+            skills &&
+              Object.keys(skills).map((key) => {
+                return (
+                  <>
+                    <GridItem>
+                      <Text fontWeight="bold">{t(`common.${toKebabCase(key) as 'frontend'}`)}</Text>
+                    </GridItem>
+                    <GridItem>
+                      <Wrap>
+                        {sortBy(skills[key], (d) => d.attributes?.projects?.data?.length)
+                          .reverse()
+                          .map(
+                            (s) =>
+                              s.attributes && (
+                                <a href={`/tags/${s.attributes.slug}`}>
+                                  <TagBadge tag={s.attributes} showCount />
+                                </a>
+                              )
+                          )}
+                      </Wrap>
+                    </GridItem>
+                  </>
+                );
+              })
+          }
+        </Grid>
+      </Stack>
+      <Divider />
+      <Stack>
+        <Heading as="h2" size="xl" fontWeight="bold">{t('common.experiences')}</Heading>
         {
           experiences &&
             experiences.data?.map((d) => {
               if (!d.attributes) return null;
-              const { title, content, position } = d.attributes;
+              const { title, content, position, tags } = d.attributes;
               const start = d.attributes.start as string;
               const end = d.attributes.end as string;
               return (
@@ -61,6 +105,19 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                       )
                     </Text>
                   </Wrap>
+                  {tags && (
+                    <Wrap fontSize="sm" gap="1">
+                      <Text>{t('common.tags')}</Text>
+                      {sortTags(tags?.data).map(
+                        (s) =>
+                          s.attributes && (
+                            <a href={`/tags/${s.attributes.slug}`}>
+                              <TagBadge tag={s.attributes} showCount size="sm" />
+                            </a>
+                          )
+                      )}
+                    </Wrap>
+                  )}
                   {content && <Markdown content={content} />}
                 </Stack>
               );
@@ -69,6 +126,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
       </Stack>
       <Divider />
       <Stack>
+        <Heading as="h2" size="xl" fontWeight="bold">{t('common.education')}</Heading>
         {
           educations &&
             educations.data?.map((d) => {
