@@ -1,4 +1,4 @@
-import type { TagEntity } from '~graphql/generated/client';
+import type { TagEntity } from '~/graphql/generated/client';
 
 const SORT_ORDER = [
   'Frontend',
