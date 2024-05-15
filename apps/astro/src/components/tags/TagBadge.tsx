@@ -1,4 +1,4 @@
-import { Tag } from '~/graphql/generated/client';
+import { Enum_Tag_Type, Tag } from '~/graphql/generated/client';
 import { Badge } from '../ui/badge';
 
 export const TagBadge = ({
@@ -16,19 +16,19 @@ export const TagBadge = ({
 
   const colorPalette = (() => {
     switch (type) {
-      case 'Frontend':
+      case Enum_Tag_Type.Frontend:
         return 'blue';
-      case 'Backend':
+      case Enum_Tag_Type.Backend:
         return 'red';
-      case 'Database':
+      case Enum_Tag_Type.Database:
         return 'orange';
-      case 'Programming_Language':
+      case Enum_Tag_Type.ProgrammingLanguage:
         return 'green';
-      case 'DevOps':
+      case Enum_Tag_Type.DevOps:
         return 'purple';
-      case 'Others':
+      case Enum_Tag_Type.Others:
         return 'gray';
-      case 'Non_Dev':
+      case Enum_Tag_Type.NonDev:
         return 'gray';
     }
   })();

@@ -36,7 +36,8 @@ const config = tseslint.config(
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off'
+      '@typescript-eslint/no-unsafe-return': 'off',
+      "@typescript-eslint/no-unsafe-enum-comparison": "off"
     }
   },
   // ...compat.config({ extends: ['plugin:@pandacss/recommended'] }),
