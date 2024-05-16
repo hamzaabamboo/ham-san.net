@@ -20,7 +20,8 @@ if (!validateLocale(locale)) {
 //TODO:
 
 const data = await graphQLSdk.fetchProjects({
-  // locale
+  // locale,
+  limit: 75
 });
 
 const projects = data?.projects?.data ?? [];
