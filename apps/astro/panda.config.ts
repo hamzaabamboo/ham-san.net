@@ -9,9 +9,10 @@ export default defineConfig({
   presets: [
     '@pandacss/preset-base',
     createPreset({
-      accentColor: 'cyan',
+      accentColor: 'amber',
       grayColor: 'neutral',
-      borderRadius: 'lg'
+      borderRadius: 'lg',
+      additionalColors: ["red", "blue", "orange", "green", "purple", "gray"]
     })
   ],
 
@@ -24,6 +25,11 @@ export default defineConfig({
   staticCss: {
     recipes: {
       // text: ['*']
+      badge: [
+        {
+          size: ["*"]
+        }
+      ]
     },
     // TODO: WORKAROUND
     css: [
@@ -31,7 +37,8 @@ export default defineConfig({
         properties: {
           listStyleType: ['none', 'disc', 'decimal'],
           fontWeight: ['bold'],
-          fontSize: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
+          fontSize: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
+          colorPalette: ["*"]
         }
       }
     ]

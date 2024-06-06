@@ -36,16 +36,17 @@ const config = tseslint.config(
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off'
+      '@typescript-eslint/no-unsafe-return': 'off',
+      "@typescript-eslint/no-unsafe-enum-comparison": "off"
     }
   },
-  ...compat.config({ extends: ['plugin:@pandacss/recommended'] }),
-  {
-    rules: {
-      '@pandacss/no-unsafe-token-fn-usage': 'off',
-      '@pandacss/no-hardcoded-color': 'off'
-    }
-  },
+  // ...compat.config({ extends: ['plugin:@pandacss/recommended'] }),
+  // {
+  //   rules: {
+  //     '@pandacss/no-unsafe-token-fn-usage': 'off',
+  //     '@pandacss/no-hardcoded-color': 'off'
+  //   }
+  // },
   ...eslintPluginAstro.configs['flat/recommended'],
   {
     files: ['**/*.astro', '**/*.ts', '**/*.tsx', '**/*.js'],

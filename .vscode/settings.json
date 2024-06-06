@@ -5,7 +5,17 @@
   },
   "editor.formatOnSave": true,
   "editor.stickyScroll.enabled": true,
-  "eslint.validate": ["typescript", "astro", "svelte"],
+  "eslint.validate": [
+    "typescript",
+    "astro",
+    "svelte"
+  ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "eslint.workingDirectories": ["apps/client", "apps/astro", "apps/api"]
+  "eslint.workingDirectories": [
+    "apps/client",
+    "apps/astro",
+    "apps/api"
+  ],
+  "IDX.aI.enableInlineCompletion": true,
+  "IDX.aI.enableCodebaseIndexing": true
 }
