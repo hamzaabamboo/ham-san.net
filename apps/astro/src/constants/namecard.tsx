@@ -1,9 +1,10 @@
-import { styled } from 'styled-system/jsx';
+import { Stack, styled } from 'styled-system/jsx';
 import akarinLogo from '../assets/namecard/akarin-logo.png';
 import akarinQrCode from '../assets/namecard/akarin-qr-code.png';
 import hasuLogo from '../assets/namecard/hasu-logo.jpg';
 import hasuQrCode from '../assets/namecard/hasu-qr-code.png';
 
+// QRCode from https://www.qrcode-monkey.com/
 export const NAMECARDS = [
   {
     variant: 'default',
@@ -46,10 +47,23 @@ export const NAMECARDS = [
     qrCode: hasuQrCode.src,
     Quote: () => {
       return (
-        <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
-          「フラワー」
-          <br />ー 楡井希実
-        </styled.blockquote>
+        <Stack gap={0}>
+          {' '}
+          <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
+            「…光を、雨を、風を、
+            <styled.span fontWeight="bold">待ってるだけじゃない！</styled.span>
+            <br />
+            あたしはあたしの力で、
+            <styled.span fontWeight="bold">咲いててみせる！</styled.span>… 」
+          </styled.blockquote>
+          <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
+            「はい、笑って笑って。
+            <styled.span color="var(--main-color)" fontSize="md" fontWeight="bold">
+              フラワー
+            </styled.span>
+            」<br /> ー 日野下花帆（CV:楡井希実）
+          </styled.blockquote>
+        </Stack>
       );
     }
   }

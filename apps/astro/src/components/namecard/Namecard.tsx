@@ -75,7 +75,15 @@ export const Namecard = ({
         bgColor="white"
         printColorAdjust={{ _print: 'exact' }}
       >
-        <Stack flex="1" gap="2" justifyContent="space-evenly" alignItems="center" h="full" p="4">
+        <Stack
+          flex="1"
+          gap="2"
+          justifyContent="space-evenly"
+          alignItems="center"
+          h="full"
+          py="2"
+          px="4"
+        >
           <Center>
             <styled.img src={qrCode} maxW="100px" />
           </Center>
