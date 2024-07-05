@@ -10,27 +10,27 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi/plugin-content-type-builder": "^4.22.1",
-    "@strapi/plugin-email": "^4.22.1",
-    "@strapi/plugin-graphql": "^4.22.1",
-    "@strapi/plugin-i18n": "^4.22.1",
-    "@strapi/plugin-upload": "^4.22.1",
-    "@strapi/plugin-users-permissions": "^4.22.1",
-    "@strapi/strapi": "^4.22.1",
-    "@strapi/typescript-utils": "^4.22.1",
-    "@strapi/utils": "^4.22.1",
+    "@strapi/plugin-content-type-builder": "^4.25.2",
+    "@strapi/plugin-email": "^4.25.2",
+    "@strapi/plugin-graphql": "^4.25.2",
+    "@strapi/plugin-i18n": "^4.25.2",
+    "@strapi/plugin-upload": "^4.25.2",
+    "@strapi/plugin-users-permissions": "^4.25.2",
+    "@strapi/strapi": "^4.25.2",
+    "@strapi/typescript-utils": "^4.25.2",
+    "@strapi/utils": "^4.25.2",
     "better-sqlite3": "9.4.5",
     "domain-browser": "^5.7.0",
     "dotenv": "^16.4.5",
     "find-config": "^1.0.0",
-    "pg": "^8.11.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "pg": "^8.12.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-router-dom": "^5.2.0",
-    "strapi-plugin-config-sync": "^1.2.3",
+    "strapi-plugin-config-sync": "^1.2.5",
     "strapi-plugin-local-image-sharp": "^1.7.0",
     "strapi-plugin-slugify": "^2.3.8",
-    "styled-components": "^5.2.1"
+    "styled-components": "~5.2.1"
   },
   "author": {
     "name": "A Strapi developer"
@@ -44,11 +44,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@codemirror/autocomplete": "^6.15.0",
-    "@codemirror/lint": "^6.5.0",
+    "@codemirror/autocomplete": "^6.17.0",
+    "@codemirror/lint": "^6.8.1",
     "@codemirror/search": "^6.5.6",
     "@codemirror/theme-one-dark": "^6.1.2",
-    "@reduxjs/toolkit": "^2.2.3",
-    "@uiw/codemirror-extensions-basic-setup": "^4.21.25"
+    "@reduxjs/toolkit": "^2.2.6",
+    "@uiw/codemirror-extensions-basic-setup": "^4.23.0"
   }
 }

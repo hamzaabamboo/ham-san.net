@@ -12,7 +12,7 @@ export default defineConfig({
       accentColor: 'amber',
       grayColor: 'neutral',
       borderRadius: 'lg',
-      additionalColors: ["red", "blue", "orange", "green", "purple", "gray"]
+      additionalColors: ['red', 'blue', 'orange', 'green', 'purple', 'gray']
     })
   ],
 
@@ -27,7 +27,7 @@ export default defineConfig({
       // text: ['*']
       badge: [
         {
-          size: ["*"]
+          size: ['*']
         }
       ]
     },
@@ -38,7 +38,7 @@ export default defineConfig({
           listStyleType: ['none', 'disc', 'decimal'],
           fontWeight: ['bold'],
           fontSize: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
-          colorPalette: ["*"]
+          colorPalette: ['*']
         }
       }
     ]

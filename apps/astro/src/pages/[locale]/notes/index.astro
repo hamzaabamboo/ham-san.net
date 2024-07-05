@@ -23,32 +23,32 @@ const headers = {
 };
 const t = useTranslations(locale);
 
-const res = await outlineClient['/shares.list'].post({
-  json: {
+const shareRequest = await outlineClient.POST('/shares.list', {
+  body: {
     sort: 'createdAt',
     direction: 'DESC'
   },
   headers
 });
 
-if (!res.ok) {
+if (!shareRequest.response.ok) {
   return Astro.redirect(500);
 }
 
-const collectionInfoRes = await outlineClient['/collections.list'].post({ headers });
-const collectionInfo = collectionInfoRes?.ok ? (await collectionInfoRes.json())?.data : undefined;
+const collectionsRequest = await outlineClient.POST('/collections.list', { headers });
+const collectionInfo = collectionsRequest.response.ok ? collectionsRequest.data?.data : undefined;
 
-const sharedArticlesList = await res.json();
+const sharedArticlesList = shareRequest.data;
 
 const promises =
-  sharedArticlesList.data?.map(async (shareData) => {
-    const res = await outlineClient['/documents.info'].post({
-      json: { shareId: shareData.id },
+  sharedArticlesList?.data?.map(async (shareData) => {
+    const res = await outlineClient.POST('/documents.info', {
+      body: { shareId: shareData.id },
       headers
     });
-    return res.ok
+    return res.response.ok
       ? {
-          data: (await res.json()).data,
+          data: res.data?.data,
           shareData: shareData
         }
       : undefined;

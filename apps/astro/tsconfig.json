@@ -9,10 +9,11 @@
       "styled-system/*": ["../styled-system/*"],
       "i18n/*": ["../../../libs/i18n/*"],
       "utils/*": ["../../../libs/utils/*"],
+      "outline": ["../../../libs/outline/index.ts"],
       "outline/*": ["../../../libs/outline/*"]
     },
     "verbatimModuleSyntax": false,
     "disableSizeLimit": true
   },
-  "include": ["src", "styled-system", "./panda.config.ts"]
+  "include": ["src", "styled-system", "./panda.config.ts", "../../libs"]
 }

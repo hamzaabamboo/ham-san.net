@@ -1,24 +1,20 @@
-import { createClient, type ClientPlugin, type NormalizeOAS } from 'fets';
-import type openAPIDoc from 'outline/spec';
+import { Middleware } from 'openapi-fetch';
+import { createOutlineClient } from 'outline';
 
 export const isOutlineEnabled =
   !!import.meta.env.PRIVATE_OUTLINE_SERVER && !!import.meta.env.PRIVATE_OUTLINE_API_TOKEN;
 
-export function useAuth(token: string): ClientPlugin {
+export function authMiddleware(token: string): Middleware {
   return {
-    onRequestInit({ requestInit }) {
-      requestInit.headers = {
-        ...requestInit.headers,
-        Authorization: `Bearer ${token}`
-      };
-      requestInit.redirect = 'manual';
+    onRequest({ request }) {
+      request.headers.append('Authorization', `Bearer ${token}`);
+      return new Request(request, {redirect:"manual"});
     }
   };
 }
 
-export type OutlineAPI = NormalizeOAS<typeof openAPIDoc>;
-
-export const outlineClient = createClient<OutlineAPI>({
-  endpoint: (import.meta.env.PRIVATE_OUTLINE_SERVER ?? '') as 'https://app.getoutline.com/api',
-  plugins: [useAuth(import.meta.env.PRIVATE_OUTLINE_API_TOKEN)]
+export const outlineClient = createOutlineClient({
+  baseUrl: (import.meta.env.PRIVATE_OUTLINE_SERVER ?? '') as 'https://app.getoutline.com/api'
 });
+
+outlineClient.use(authMiddleware(import.meta.env.PRIVATE_OUTLINE_API_TOKEN));

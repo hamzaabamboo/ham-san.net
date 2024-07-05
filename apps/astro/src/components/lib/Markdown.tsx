@@ -1,8 +1,8 @@
+import { Code } from 'astro:components';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkTextr from 'remark-textr';
 import { Divider, styled } from 'styled-system/jsx';
-import { Code } from '../ui/code';
 import { Heading } from '../ui/heading';
 import { Link } from '../ui/link';
 import * as Table from '../ui/table';
@@ -20,7 +20,7 @@ export const Markdown = ({ content, assetsPrefix }: { content: string; assetsPre
         h4: ({ node: _, ...props }) => <Heading as="h4" size="2xl" {...props} />,
         h5: ({ node: _, ...props }) => <Heading as="h5" size="xl" fontWeight="bold" {...props} />,
         h6: ({ node: _, ...props }) => <Heading as="h6" size="xl" {...props} />,
-        p: ({ node: _, ...props }) => <Text as="p" {...props} />,
+        p: ({ ref: _ref, node: _, ...props }) => <Text as="p" {...props} />,
         strong: ({ ref: _, node: __, ...props }) => <Text as="span" fontWeight="bold" {...props} />,
         a: ({ ref: _, node: __, ...props }) => <Link {...props} />,
         hr: ({ ref: _, node: __, ...props }) => <Divider {...props} />,
@@ -40,7 +40,9 @@ export const Markdown = ({ content, assetsPrefix }: { content: string; assetsPre
           <styled.ol pl="4" listStyleType="decimal" {...props} />
         ),
         li: ({ ref: _, node: __, ...props }) => <styled.li {...props} />,
-        code: ({ ref: _, node: __, ...props }) => <Code {...props} />,
+        code: ({ ref: _, node: __, lang, ...props }) => (
+          <Code lang={lang as 'javascript'} code={props.children?.toString() ?? ''} />
+        ),
         table: ({ ref: _, node: __, ...props }) => <Table.Root {...props} />,
         thead: ({ ref: _, node: __, ...props }) => <Table.Head {...props} />,
         th: ({ ref: _, node: __, ...props }) => <Table.Header {...props} />,

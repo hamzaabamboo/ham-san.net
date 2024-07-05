@@ -5,7 +5,7 @@ export type MediaOptions = {
   fit?: 'cover' | 'contain' | 'fill' | 'inside' | 'outside';
 };
 
-export const getMediaUrl = (path?: string, options: MediaOptions = {}, server: string) => {
+export const getMediaUrl = (path?: string, options: MediaOptions = {}, server?: string) => {
   if (!path) return undefined;
   const { format = 'webp', width, height, fit = 'inside' } = options;
   if (path?.startsWith('http://')) return path;
