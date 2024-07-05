@@ -1,0 +1,77 @@
+---
+import { localePaths } from '~/i18n/paths';
+
+import MainLayout from '~/layouts/MainLayout.astro';
+
+import type { Link, Table, Text } from 'mdast';
+import { cleanArticleContent } from 'outline/article';
+import { Container, Stack } from 'styled-system/jsx';
+import { parseMarkdown } from 'utils/markdown';
+import { Markdown } from '~/components/lib/Markdown';
+import { Heading } from '~/components/ui/heading';
+import { useTranslations } from '~/i18n/utils';
+import { outlineClient } from '~/utils/outline-api';
+
+export function getStaticPaths() {
+  return localePaths;
+}
+
+const { locale } = Astro.params;
+const t = useTranslations(locale);
+
+const events = await outlineClient.POST('/documents.info', {
+  body: { id: import.meta.env.PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID }
+});
+
+const settingsContent = cleanArticleContent(events.data?.data?.text);
+
+if (!settingsContent) {
+  return Astro.redirect(404);
+}
+
+const tree = await parseMarkdown(settingsContent ?? '');
+
+const settings = Object.fromEntries(
+  tree.children
+    ?.find((c): c is Table => c.type === 'table')
+    ?.children.slice(1)
+    .map((c) => [
+      (c.children[0].children[0] as Text)?.value,
+      (c.children[1].children[0] as Link)?.url ?? (c.children[1].children[0] as Text)?.value
+    ]) as [string, string][]
+);
+
+if (!settings.events) {
+  return Astro.redirect(404);
+}
+
+const eventData = await outlineClient.POST('/documents.info', {
+  body: { id: settings.events.replace('/doc/', '') }
+});
+const content = cleanArticleContent(eventData.data?.data?.text);
+
+if (!content) {
+  return Astro.redirect(404);
+}
+---
+
+<MainLayout>
+  <Container w="full" p="4">
+    <Stack>
+      <Heading as="h1" fontSize="2xl">{t('common.event')}</Heading>
+      <Markdown
+        content={content}
+        linksPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
+        assetsPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
+        disableInternalLinks
+      />
+    </Stack>
+  </Container>
+</MainLayout>
+
+<style>
+  @page {
+    margin: 0;
+    size: 91mm 55mm;
+  }
+</style>

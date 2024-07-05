@@ -3,6 +3,7 @@ import removeMarkdown from 'remove-markdown';
 export const cleanArticleContent = (content?: string) => {
   return content?.replaceAll('\\\n', '')?.replaceAll('\\n', '\n\n');
 };
+
 export const getArticleBanner = (content?: string) => {
   return (
     /!\[(.*)\]\((.+?)(?:".*?")?\)/

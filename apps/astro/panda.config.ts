@@ -12,7 +12,7 @@ export default defineConfig({
       accentColor: 'amber',
       grayColor: 'neutral',
       borderRadius: 'lg',
-      additionalColors: ['red', 'blue', 'orange', 'green', 'purple', 'gray']
+      additionalColors: ['red', 'blue', 'orange', 'green', 'purple', 'gray', 'sand']
     })
   ],
 

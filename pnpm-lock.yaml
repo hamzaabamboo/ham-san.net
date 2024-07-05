@@ -232,6 +232,15 @@ importers:
       fets:
         specifier: ^0.8.1
         version: 0.8.1
+      mdast-util-from-markdown:
+        specifier: ^2.0.1
+        version: 2.0.1
+      mdast-util-gfm:
+        specifier: ^3.0.0
+        version: 3.0.0
+      micromark-extension-gfm:
+        specifier: ^3.0.0
+        version: 3.0.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -5579,7 +5588,7 @@ packages:
     engines: {node: '>= 8.0.0'}
     deprecated: '**IMPORTANT 10x+ PERFORMANCE UPGRADE**: Please upgrade to v12.0.1+ as we have fixed an issue with debuglog causing 10x slower router benchmark performance, see https://github.com/koajs/router/pull/173'
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.5(supports-color@9.4.0)
       http-errors: 1.8.1
       koa-compose: 4.1.0
       methods: 1.1.2
@@ -9490,7 +9499,7 @@ packages:
     dependencies:
       '@strapi/utils': 4.25.2
       date-fns: 2.30.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       fs-extra: 10.0.0
       knex: 2.5.0(better-sqlite3@9.4.5)(pg@8.12.0)
       lodash: 4.17.21
@@ -10317,7 +10326,7 @@ packages:
       concurrently: 8.2.2
       configstore: 5.0.1
       copyfiles: 2.4.1
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       delegates: 1.0.0
       dotenv: 14.2.0
       execa: 5.1.1
@@ -10574,7 +10583,7 @@ packages:
       vite: ^5.0.0
     dependencies:
       '@sveltejs/vite-plugin-svelte-inspector': 2.0.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.8)
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.9
@@ -11302,7 +11311,7 @@ packages:
       '@typescript-eslint/type-utils': 7.6.0(eslint@9.0.0)(typescript@5.4.4)
       '@typescript-eslint/utils': 7.6.0(eslint@9.0.0)(typescript@5.4.4)
       '@typescript-eslint/visitor-keys': 7.6.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       eslint: 9.0.0
       graphemer: 1.4.0
       ignore: 5.3.1
@@ -11369,7 +11378,7 @@ packages:
       '@typescript-eslint/types': 7.6.0
       '@typescript-eslint/typescript-estree': 7.6.0(typescript@5.4.4)
       '@typescript-eslint/visitor-keys': 7.6.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       eslint: 9.0.0
       typescript: 5.4.4
     transitivePeerDependencies:
@@ -16143,7 +16152,7 @@ packages:
       ms: 2.1.3
     dev: false
 
-  /debug@4.3.4(supports-color@5.5.0):
+  /debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
     peerDependencies:
@@ -16153,7 +16162,6 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
-      supports-color: 5.5.0
 
   /debug@4.3.5(supports-color@5.5.0):
     resolution: {integrity: sha512-pt0bNEmneDIvdL1Xsd9oDQ/wrQRkXDT4AUWlNZNPKvW5x/jyO9VFXkJUP07vQ2upmw5PlaITaPKc31jK13V+jg==}
@@ -16979,7 +16987,7 @@ packages:
     peerDependencies:
       esbuild: '>=0.12 <1'
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.5(supports-color@9.4.0)
       esbuild: 0.19.11
     transitivePeerDependencies:
       - supports-color
@@ -17336,7 +17344,7 @@ packages:
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@9.0.0)
       '@jridgewell/sourcemap-codec': 1.4.15
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       eslint: 9.0.0
       eslint-compat-utils: 0.5.0(eslint@9.0.0)
       esutils: 2.0.3
@@ -17444,7 +17452,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       escape-string-regexp: 4.0.0
       eslint-scope: 8.0.1
       eslint-visitor-keys: 4.0.0
@@ -18062,7 +18070,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -21029,7 +21037,7 @@ packages:
     dependencies:
       '@types/express': 4.17.21
       '@types/jsonwebtoken': 9.0.6
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.5(supports-color@9.4.0)
       jose: 4.15.9
       limiter: 1.1.5
       lru-memoizer: 2.3.0
@@ -21126,7 +21134,7 @@ packages:
       better-sqlite3: 9.4.5
       colorette: 2.0.19
       commander: 10.0.1
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       escalade: 3.1.2
       esm: 3.2.25
       get-package-type: 0.1.0
@@ -21203,7 +21211,7 @@ packages:
   /koa-ip@2.1.3:
     resolution: {integrity: sha512-QLVBByImwDq9enZXVOD3Astk876B7N0IYta7Kik4iyNB462rVzBB1/LD0Ek1F+v9nGUTHBFyhh8043EIlskK9Q==}
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       lodash.isplainobject: 4.0.6
       request-ip: 3.3.0
     transitivePeerDependencies:
@@ -21244,7 +21252,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       crc: 3.8.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.5(supports-color@9.4.0)
       is-type-of: 1.4.0
       uuid: 8.3.2
     transitivePeerDependencies:
@@ -23197,7 +23205,7 @@ packages:
     hasBin: true
     dependencies:
       chokidar: 3.6.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.5(supports-color@5.5.0)
       ignore-by-default: 1.0.1
       minimatch: 3.1.2
       pstree.remy: 1.1.8
@@ -29182,7 +29190,7 @@ packages:
       '@vite-pwa/assets-generator':
         optional: true
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       fast-glob: 3.3.2
       pretty-bytes: 6.1.1
       vite: 5.2.8(@types/node@20.12.7)(sass@1.74.1)
@@ -29400,7 +29408,7 @@ packages:
       '@vitest/utils': 1.4.0
       acorn-walk: 8.3.2
       chai: 4.4.1
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       execa: 8.0.1
       local-pkg: 0.5.0
       magic-string: 0.30.9

@@ -8,7 +8,7 @@ const compat = new FlatCompat({
   recommendedConfig: js.configs.recommended
 });
 
-module.exports = [
+module.exports = tseslint.config(
   { plugins: { '@nx': nxEslintPlugin } },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
@@ -36,4 +36,4 @@ module.exports = [
       '@typescript-eslint/triple-slash-reference': 'off'
     }
   }
-];
+);

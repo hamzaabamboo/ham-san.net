@@ -15,5 +15,5 @@
     "verbatimModuleSyntax": false,
     "disableSizeLimit": true
   },
-  "include": ["src", "styled-system", "./panda.config.ts", "../../libs"]
+  "include": ["src", "styled-system", "./panda.config.ts"]
 }
