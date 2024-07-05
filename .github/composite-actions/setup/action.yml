@@ -4,19 +4,15 @@ description: 'Sets up Node.js and runs install'
 runs:
   using: composite
   steps:
-    - uses: pnpm/action-setup@v2.2.4
-      with:
-        version: 7
-
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 18
 
-    - uses: pnpm/action-setup@v2
+    - uses: pnpm/action-setup@v4
       name: Install pnpm
       with:
-        version: 8.8
+        version: 8.15
         run_install: false
 
     - name: Get pnpm store directory
