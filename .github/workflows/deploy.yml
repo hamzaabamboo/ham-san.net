@@ -27,9 +27,11 @@ jobs:
             backend:
               - 'apps/api/**'
               - 'pnpm-lock.yaml'
+              - '.github/workflows/**'
             frontend:
               - 'apps/client/**'
               - 'pnpm-lock.yaml'
+              - '.github/workflows/**'
   build-push-frontend:
     name: Build and Push Frontend Container
     runs-on: ubuntu-latest

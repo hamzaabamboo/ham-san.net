@@ -8,7 +8,7 @@ export function authMiddleware(token: string): Middleware {
   return {
     onRequest({ request }) {
       request.headers.append('Authorization', `Bearer ${token}`);
-      return new Request(request, {redirect:"manual"});
+      return new Request(request, { redirect: 'manual' });
     }
   };
 }
