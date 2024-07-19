@@ -1,6 +1,5 @@
 ---
 import { parseISO } from 'date-fns';
-import { cleanArticleContent, getArticleDescription } from 'outline/article';
 import { Container, Divider, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthYear } from 'utils/date';
 import { Heading } from '~/components/ui/heading';
@@ -35,25 +34,8 @@ if (!shareRequest.response.ok) {
   return Astro.redirect(500);
 }
 
-const collectionsRequest = await outlineClient.POST('/collections.list', { headers });
-const collectionInfo = collectionsRequest.response.ok ? collectionsRequest.data?.data : undefined;
+const sharedArticlesList = shareRequest.data?.data;
 
-const sharedArticlesList = shareRequest.data;
-
-const promises =
-  sharedArticlesList?.data?.map(async (shareData) => {
-    const res = await outlineClient.POST('/documents.info', {
-      body: { shareId: shareData.id },
-      headers
-    });
-    return res.response.ok
-      ? {
-          data: res.data?.data,
-          shareData: shareData
-        }
-      : undefined;
-  }) ?? [];
-const contents = (await Promise.all(promises)).flatMap((r) => (r ? [r] : ([] as const)));
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
 
@@ -63,30 +45,30 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
       <Heading as="h1" size="2xl" fontWeight="bold">{t('note.notes')}</Heading>
       <Text>{t('note.description')}</Text>
       {
-        contents?.map(({ data, shareData }) => {
+        sharedArticlesList?.map((data) => {
           if (!data) return null;
-          const { title, collectionId, text, createdAt } = data;
-
-          const collectionName = collectionInfo?.find((c) => c?.id === collectionId)?.name;
-          const content = cleanArticleContent(text);
-
-          const description = getArticleDescription(content);
+          const { id, documentTitle, collectionName, documentSummary, createdAt } =
+            data as typeof data & {
+              collectionName: string;
+              documentSummary: string;
+              documentCreatedAt: string;
+            };
 
           return (
             <>
               <Link
                 target="_blank"
-                href={`${import.meta.env.PRIVATE_OUTLINE_SERVER.replace('/api', '')}/s/${shareData.id}`}
+                href={`${import.meta.env.PRIVATE_OUTLINE_SERVER.replace('/api', '')}/s/${id}`}
               >
                 <Stack gap={1}>
                   <Heading as="h4" size="xl" fontWeight="bold">
-                    {title}
+                    {documentTitle}
                   </Heading>
                   <Wrap fontSize="sm">
                     <Text>{collectionName}</Text> |{' '}
                     <Text>{createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}</Text>
                   </Wrap>
-                  <Text>{description}</Text>
+                  <Text>{documentSummary.substring(0, 100) + '...'}</Text>
                 </Stack>
               </Link>
               <Divider />

@@ -3611,8 +3611,10 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            sent?: components["schemas"]["Invite"][];
-                            users?: components["schemas"]["User"][];
+                            data?: {
+                                sent?: components["schemas"]["Invite"][];
+                                users?: components["schemas"]["User"][];
+                            };
                         };
                     };
                 };
@@ -4365,6 +4367,9 @@ export interface components {
             /** @example false */
             ok?: boolean;
             error?: string;
+            message?: string;
+            status?: number;
+            data?: Record<string, never>;
         };
         FileOperation: {
             /**
