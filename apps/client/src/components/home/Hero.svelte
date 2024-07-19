@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from '@components/core/Button.svelte';
   import Container from '@components/core/Container.svelte';
   import Typography from '@components/core/Typography.svelte';
   import { t } from '@i18n';
@@ -24,7 +25,7 @@
         <div class="px-4 py-4 bg-opacity-90 bg-secondary">
           <Typography variant="title">{hero}</Typography>
           <Typography variant="subtitle" class="text-black mb-4">{subtitle}</Typography>
-          <!-- <Button>{$t('home.hero-cta')}</Button> -->
+          <a href="https://v4.ham-san.net/" target="_blank"><Button>{$t('home.hero-cta')}</Button></a>
         </div>
       </div>
     </Container>
