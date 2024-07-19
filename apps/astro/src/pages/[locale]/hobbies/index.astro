@@ -1,0 +1,68 @@
+---
+import { localePaths } from '~/i18n/paths';
+
+import MainLayout from '~/layouts/MainLayout.astro';
+
+import { Center, Container, Grid, GridItem, Stack } from 'styled-system/jsx';
+import { Heading } from '~/components/ui/heading';
+import { Text } from '~/components/ui/text';
+import { useTranslations } from '~/i18n/utils';
+import { outlineClient } from '~/utils/outline-api';
+import { getOutlineSettings } from '~/utils/outline-settings';
+
+export function getStaticPaths() {
+  return localePaths;
+}
+
+const { locale } = Astro.params;
+const t = useTranslations(locale);
+
+const settings = await getOutlineSettings();
+
+if (!settings?.['hobbies-collection']) {
+  return Astro.redirect(404);
+}
+
+const hobbiesList = (
+  await outlineClient.POST('/documents.list', {
+    body: { collectionId: settings['hobbies-collection'] }
+  })
+).data;
+
+if (!hobbiesList) {
+  return Astro.redirect(404);
+}
+---
+
+<MainLayout>
+  <Container w="full" p="4">
+    <Stack>
+      <Heading as="h1" fontSize="2xl">{t('common.hobbies')}</Heading>
+      <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))">
+        {
+          hobbiesList.data?.map((hobby) => {
+            const { title } = hobby;
+            return (
+              <GridItem>
+                <Center bgColor="bg.muted" p={4} rounded="l1">
+                  <Stack>
+                    <Text fontWeight="bold" fontSize="xl">
+                      {title}
+                    </Text>
+                  </Stack>
+                </Center>
+              </GridItem>
+            );
+          })
+        }
+      </Grid>
+    </Stack>
+  </Container>
+
+  <style>
+    @page {
+      margin: 0;
+      size: 91mm 55mm;
+    }
+  </style>
+</MainLayout>

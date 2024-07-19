@@ -23,6 +23,7 @@ const NAVIGATION_LINKS = [
   { label: t('common.about-me'), value: '/about' },
   { label: t('common.projects'), value: '/projects' },
   { label: t('common.event'), value: '/events' },
+  { label: t('common.hobbies'), value: '/hobbies' },
   { label: t('common.note'), value: '/notes' },
   { label: t('common.contact'), value: '/contact' }
 ];
@@ -59,5 +60,5 @@ const NAVIGATION_LINKS = [
       })
     }
   </HStack>
-  <Sidebar locale={lang} pathname={Astro.url.pathname} client:visible />
+  <Sidebar links={NAVIGATION_LINKS} locale={lang} pathname={Astro.url.pathname} client:visible />
 </HStack>

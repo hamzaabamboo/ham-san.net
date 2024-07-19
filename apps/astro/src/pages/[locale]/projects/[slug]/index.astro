@@ -1,17 +1,18 @@
 ---
 //TODO:
 import { FaArrowLeft } from 'react-icons/fa';
-import { Box, Container, Divider, Stack, Wrap, styled } from 'styled-system/jsx';
+import { Box, Container, Divider, HStack, Stack, Wrap, styled } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { getMediaUrl } from 'utils/media';
 import { Carousel } from '~/components/common/Carousel';
 import { LinkItem } from '~/components/common/LinkItem';
 import { Markdown } from '~/components/lib/Markdown';
+import { TagBadge } from '~/components/tags/TagBadge';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
-import { ComponentUtilsLink } from '~/graphql/generated/client';
+import { ComponentUtilsLink, Tag } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
@@ -27,7 +28,7 @@ if (!validateLocale(locale)) {
   return Astro.redirect(404);
 }
 
-const { content, title, banner, links, media, category, date, finishedDate } =
+const { content, title, banner, links, media, category, date, finishedDate, tags } =
   data?.projects?.data?.[0]?.attributes ?? {};
 const { url: bannerPath, name: bannerName } = banner?.data?.attributes ?? {};
 const bannerUrl = getMediaUrl(bannerPath, {}, import.meta.env.PUBLIC_API_URL);
@@ -67,37 +68,56 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           </Box>
         )
       }
-      <Heading
-        as="h1"
-        size="2xl"
-        fontWeight="bold"
-        style={{
-          viewTransitionName: `project-title-${slug}`
-        }}>{title}</Heading
-      >
-      <Wrap fontSize="md" color="fg.subtle">
-        <Text>{category?.data?.attributes?.name}</Text>
-        <Text>|</Text>
-        <Text>
-          {formatMonthYear(parseDate(date as string), locale)} -{' '}
-          {
-            finishedDate
-              ? formatMonthYear(parseDate(finishedDate as string), locale)
-              : t('common.present')
-          }
-        </Text>
-      </Wrap>
-      {
-        links && (
-          <Stack gap="1">
-            {links
-              .filter((l): l is ComponentUtilsLink => !!l)
-              .map((l) => {
-                return <LinkItem data={l} />;
-              })}
-          </Stack>
-        )
-      }
+      <Stack gap="2">
+        <Stack gap="1">
+          <Heading
+            as="h1"
+            size="2xl"
+            fontWeight="bold"
+            style={{
+              viewTransitionName: `project-title-${slug}`
+            }}>{title}</Heading
+          >
+          <Wrap fontSize="md" color="fg.subtle">
+            <Text>{category?.data?.attributes?.name}</Text>
+            <Text>|</Text>
+            <Text>
+              {formatMonthYear(parseDate(date as string), locale)} -{' '}
+              {
+                finishedDate
+                  ? formatMonthYear(parseDate(finishedDate as string), locale)
+                  : t('common.present')
+              }
+            </Text>
+          </Wrap>
+        </Stack>
+        {
+          tags && (
+            <HStack>
+              <Text>{t('common.tags')}</Text>
+              <Wrap>
+                {tags.data
+                  .filter((t) => !!t)
+                  .map((t) => (
+                    <TagBadge tag={t.attributes as Tag} />
+                  ))}
+              </Wrap>
+            </HStack>
+          )
+        }
+        {
+          links && (
+            <Stack gap="1">
+              {links
+                .filter((l): l is ComponentUtilsLink => !!l)
+                .map((l) => {
+                  return <LinkItem data={l} />;
+                })}
+            </Stack>
+          )
+        }
+      </Stack>
+
       <Divider />
       {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
       {

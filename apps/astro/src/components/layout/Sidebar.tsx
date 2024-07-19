@@ -6,16 +6,16 @@ import { useTranslations } from '~/i18n/utils';
 import { IconButton } from '../ui/icon-button';
 import { Link } from '../ui/link';
 
-export const Sidebar = ({ locale = 'en', pathname }: { locale: Languages; pathname: string }) => {
+export const Sidebar = ({
+  locale = 'en',
+  pathname,
+  links
+}: {
+  locale: Languages;
+  pathname: string;
+  links: { label: string; value: string }[];
+}) => {
   const t = useTranslations(locale);
-
-  const NAVIGATION_LINKS = [
-    { label: t('common.home'), value: '/' },
-    { label: t('common.about-me'), value: '/about' },
-    { label: t('common.projects'), value: '/projects' },
-    { label: t('common.note'), value: '/notes' },
-    { label: t('common.contact'), value: '/contact' }
-  ];
 
   const getURLWithLanguage = (value: string) => {
     return `/${locale}${value}`;
@@ -48,9 +48,9 @@ export const Sidebar = ({ locale = 'en', pathname }: { locale: Languages; pathna
             </Drawer.Header>
             <Drawer.Body>
               <Stack gap="4">
-                {NAVIGATION_LINKS.map(({ label, value }) => {
+                {links.map(({ label, value }) => {
                   return (
-                    <Link key={value} href={getURLWithLanguage(value)}>
+                    <Link key={value} href={getURLWithLanguage(value)} data-astro-reload>
                       {label}
                     </Link>
                   );

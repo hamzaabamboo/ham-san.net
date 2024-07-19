@@ -28,6 +28,7 @@ fragment projectPreview on Project {
     }
   }
   date
+  finishedDate
   links {
     title
     url
