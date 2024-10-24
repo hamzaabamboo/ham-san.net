@@ -1,38 +1,24 @@
-import type { Assign } from '@ark-ui/react'
-import { Checkbox as ArkCheckbox } from '@ark-ui/react/checkbox'
 import { forwardRef } from 'react'
-import { css, cx } from 'styled-system/css'
-import { splitCssProps } from 'styled-system/jsx'
-import { type CheckboxVariantProps, checkbox } from 'styled-system/recipes'
-import type { JsxStyleProps } from 'styled-system/types'
+import * as StyledCheckbox from './styled/checkbox'
 
-export interface CheckboxProps
-  extends Assign<JsxStyleProps, ArkCheckbox.RootProps>,
-    CheckboxVariantProps {}
+export interface CheckboxProps extends StyledCheckbox.RootProps {}
 
 export const Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>((props, ref) => {
-  const [variantProps, checkboxProps] = checkbox.splitVariantProps(props)
-  const [cssProps, localProps] = splitCssProps(checkboxProps)
-  const { children, className, ...rootProps } = localProps
-  const styles = checkbox(variantProps)
+  const { children, ...rootProps } = props
 
   return (
-    <ArkCheckbox.Root
-      ref={ref}
-      className={cx(styles.root, css(cssProps), className)}
-      {...rootProps}
-    >
-      <ArkCheckbox.Control className={styles.control}>
-        <ArkCheckbox.Indicator className={styles.indicator}>
+    <StyledCheckbox.Root ref={ref} {...rootProps}>
+      <StyledCheckbox.Control>
+        <StyledCheckbox.Indicator>
           <CheckIcon />
-        </ArkCheckbox.Indicator>
-        <ArkCheckbox.Indicator indeterminate className={styles.indicator}>
+        </StyledCheckbox.Indicator>
+        <StyledCheckbox.Indicator indeterminate>
           <MinusIcon />
-        </ArkCheckbox.Indicator>
-      </ArkCheckbox.Control>
-      {children && <ArkCheckbox.Label className={styles.label}>{children}</ArkCheckbox.Label>}
-      <ArkCheckbox.HiddenInput />
-    </ArkCheckbox.Root>
+        </StyledCheckbox.Indicator>
+      </StyledCheckbox.Control>
+      {children && <StyledCheckbox.Label>{children}</StyledCheckbox.Label>}
+      <StyledCheckbox.HiddenInput />
+    </StyledCheckbox.Root>
   )
 })
 

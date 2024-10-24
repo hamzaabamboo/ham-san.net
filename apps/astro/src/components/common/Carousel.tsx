@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Grid, GridItem, Stack, styled } from 'styled-system/jsx';
-import * as _Carousel from '~/components/ui/carousel';
+import { Carousel as _Carousel } from '~/components/ui/carousel';
 import { IconButton } from '~/components/ui/icon-button';
 
 export const Carousel = (props: _Carousel.RootProps & { images: string[] }) => {

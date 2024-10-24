@@ -62,6 +62,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -165,6 +166,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -207,6 +209,7 @@ export interface paths {
                     };
                 };
                 401: components["responses"]["Unauthenticated"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -261,6 +264,7 @@ export interface paths {
                         };
                     };
                 };
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -312,6 +316,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -364,6 +369,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -409,6 +415,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -465,6 +472,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -522,6 +530,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -580,6 +589,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -638,6 +648,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -702,6 +713,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -759,6 +771,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -817,6 +830,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -881,6 +895,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -933,6 +948,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -988,6 +1004,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1041,6 +1058,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1097,6 +1115,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1149,6 +1168,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1201,6 +1221,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1261,6 +1282,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1314,6 +1336,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1371,6 +1394,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1420,6 +1444,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1483,6 +1508,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1544,6 +1570,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1593,6 +1620,85 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents.answerQuestion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Query documents with natural language
+         * @description This method allows asking direct questions of your documents – where possible an answer will be provided. Search results will be restricted to those accessible by the current access token. Note that "AI answers" must be enabled for the workspace.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** @example What is our holiday policy? */
+                        query?: string;
+                        /**
+                         * Format: uuid
+                         * @description Any documents that have not been edited by the user identifier will be filtered out
+                         */
+                        userId?: string;
+                        /**
+                         * Format: uuid
+                         * @description A collection to search within
+                         */
+                        collectionId?: string;
+                        /**
+                         * Format: uuid
+                         * @description A document to search within
+                         */
+                        documentId?: string;
+                        /**
+                         * @description Any documents that are not in the specified status will be filtered out
+                         * @enum {string}
+                         */
+                        statusFilter?: "draft" | "archived" | "published";
+                        /**
+                         * @description Any documents that have not been updated within the specified period will be filtered out
+                         * @enum {string}
+                         */
+                        dateFilter?: "day" | "week" | "month" | "year";
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            documents?: components["schemas"]["Document"][];
+                            policies?: components["schemas"]["Policy"][];
+                            search?: components["schemas"]["SearchResult"];
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthenticated"];
+                403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1685,6 +1791,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1752,6 +1859,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1821,6 +1929,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1873,6 +1982,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1928,6 +2038,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -1983,6 +2094,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2039,6 +2151,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2102,6 +2215,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2158,6 +2272,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2219,6 +2334,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2280,6 +2396,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2339,6 +2456,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2400,6 +2518,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2454,6 +2573,11 @@ export interface paths {
                         };
                     };
                 };
+                400: components["responses"]["Validation"];
+                401: components["responses"]["Unauthenticated"];
+                403: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2509,6 +2633,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2577,6 +2702,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2628,6 +2754,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2680,6 +2807,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2732,6 +2860,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2784,6 +2913,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2835,6 +2965,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2884,6 +3015,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2933,6 +3065,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -2985,6 +3118,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3038,6 +3172,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3101,6 +3236,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3159,6 +3295,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3218,6 +3355,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3269,6 +3407,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3314,6 +3453,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3370,6 +3510,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3415,6 +3556,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3466,6 +3608,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3518,6 +3661,7 @@ export interface paths {
                 400: components["responses"]["Validation"];
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3571,6 +3715,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3620,6 +3765,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3671,6 +3817,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3729,6 +3876,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3783,6 +3931,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3838,6 +3987,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3892,6 +4042,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -3946,6 +4097,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -4001,6 +4153,7 @@ export interface paths {
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
                 404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -4051,6 +4204,7 @@ export interface paths {
                 };
                 401: components["responses"]["Unauthenticated"];
                 403: components["responses"]["Unauthorized"];
+                429: components["responses"]["RateLimited"];
             };
         };
         delete?: never;
@@ -4598,6 +4752,31 @@ export interface components {
             readonly collectionId?: string;
             permission?: components["schemas"]["Permission"];
         };
+        SearchResult: {
+            /** Format: uuid */
+            readonly id?: string;
+            /**
+             * @description The user-provided search query
+             * @example What is our hiring policy?
+             */
+            readonly query?: string;
+            /**
+             * @description An answer to the query, if possible
+             * @example Our hiring policy can be summarized as…
+             */
+            readonly answer?: string;
+            /**
+             * @description The source of the query
+             * @example app
+             * @enum {string}
+             */
+            readonly source?: "api" | "app";
+            /**
+             * Format: date-time
+             * @description The date and time that this object was created
+             */
+            readonly createdAt?: string;
+        };
         Policy: {
             /**
              * Format: uuid
@@ -4715,10 +4894,39 @@ export interface components {
                 "application/json": components["schemas"]["Error"];
             };
         };
+        /** @description The request was rate limited. */
+        RateLimited: {
+            headers: {
+                "Retry-After": components["headers"]["Retry-After"];
+                "RateLimit-Limit": components["headers"]["RateLimit-Limit"];
+                "RateLimit-Remaining": components["headers"]["RateLimit-Remaining"];
+                "RateLimit-Reset": components["headers"]["RateLimit-Reset"];
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @example false */
+                    ok?: boolean;
+                    /** @example rate_limit_exceeded */
+                    error?: string;
+                    /** @example 429 */
+                    status?: number;
+                };
+            };
+        };
     };
     parameters: never;
     requestBodies: never;
-    headers: never;
+    headers: {
+        /** @description Seconds in the future to retry the request, if rate limited. */
+        "Retry-After": number;
+        /** @description The maximum requests available in the current duration. */
+        "RateLimit-Limit": number;
+        /** @description How many requests are left in the current duration. */
+        "RateLimit-Remaining": number;
+        /** @description Timestamp in the future the duration will reset. */
+        "RateLimit-Reset": string;
+    };
     pathItems: never;
 }
 export type $defs = Record<string, never>;

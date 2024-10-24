@@ -1,52 +1,36 @@
-import type { Assign } from '@ark-ui/react'
-import {
-  RatingGroup as ArkRatingGroup,
-  type RatingGroupRootProps,
-} from '@ark-ui/react/rating-group'
+'use client'
 import { forwardRef } from 'react'
-import { css, cx } from 'styled-system/css'
-import { splitCssProps } from 'styled-system/jsx'
-import { type RatingGroupVariantProps, ratingGroup } from 'styled-system/recipes'
-import type { JsxStyleProps } from 'styled-system/types'
+import * as StyledRatingGroup from './styled/rating-group'
 
-export interface RatingGroupProps
-  extends Assign<JsxStyleProps, RatingGroupRootProps>,
-    RatingGroupVariantProps {}
+export interface RatingGroupProps extends StyledRatingGroup.RootProps {}
 
 export const RatingGroup = forwardRef<HTMLDivElement, RatingGroupProps>((props, ref) => {
-  const [variantProps, ratingGroupProps] = ratingGroup.splitVariantProps(props)
-  const [cssProps, localProps] = splitCssProps(ratingGroupProps)
-  const { children, className, ...rootProps } = localProps
-  const styles = ratingGroup(variantProps)
-
+  const { children, ...rootProps } = props
   return (
-    <ArkRatingGroup.Root
-      ref={ref}
-      className={cx(styles.root, css(cssProps), className)}
-      {...rootProps}
-    >
-      {children && <ArkRatingGroup.Label className={styles.label}>{children}</ArkRatingGroup.Label>}
-      <ArkRatingGroup.Control className={styles.control}>
-        <ArkRatingGroup.Context>
+    <StyledRatingGroup.Root ref={ref} {...rootProps}>
+      {children && <StyledRatingGroup.Label>{children}</StyledRatingGroup.Label>}
+      <StyledRatingGroup.Control>
+        <StyledRatingGroup.Context>
           {({ items }) =>
             items.map((index) => (
-              <ArkRatingGroup.Item className={styles.item} key={index} index={index}>
-                <ArkRatingGroup.ItemContext>
-                  {(item) => <StarIcon half={item.half} />}
-                </ArkRatingGroup.ItemContext>
-              </ArkRatingGroup.Item>
+              <StyledRatingGroup.Item key={index} index={index}>
+                <StyledRatingGroup.ItemContext>
+                  {(item) => <StarIcon isHalf={item.half} />}
+                </StyledRatingGroup.ItemContext>
+              </StyledRatingGroup.Item>
             ))
           }
-        </ArkRatingGroup.Context>
-      </ArkRatingGroup.Control>
-    </ArkRatingGroup.Root>
+        </StyledRatingGroup.Context>
+      </StyledRatingGroup.Control>
+      <StyledRatingGroup.HiddenInput />
+    </StyledRatingGroup.Root>
   )
 })
 
 RatingGroup.displayName = 'RatingGroup'
 
 type IconProps = {
-  half: boolean
+  isHalf: boolean
 }
 
 const StarIcon = (props: IconProps) => (
@@ -69,7 +53,7 @@ const StarIcon = (props: IconProps) => (
       </linearGradient>
     </defs>
     <polygon
-      fill={props.half ? 'url(#half)' : 'inherit'}
+      fill={props.isHalf ? 'url(#half)' : 'inherit'}
       points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
     />
   </svg>

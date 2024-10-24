@@ -1,6 +1,6 @@
 import { FaList, FaTimes } from 'react-icons/fa';
 import { Divider, Stack } from 'styled-system/jsx';
-import * as Drawer from '~/components/ui/drawer';
+import { Drawer } from '~/components/ui/drawer';
 import { Languages, languages } from '~/i18n/ui';
 import { useTranslations } from '~/i18n/utils';
 import { IconButton } from '../ui/icon-button';

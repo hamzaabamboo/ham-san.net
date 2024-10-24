@@ -1,10 +1,6 @@
-import type { Assign } from '@ark-ui/react'
-import { TreeView as ArkTreeView, type TreeViewRootProps } from '@ark-ui/react/tree-view'
+'use client'
 import { forwardRef } from 'react'
-import { css, cx } from 'styled-system/css'
-import { splitCssProps } from 'styled-system/jsx'
-import { type TreeViewVariantProps, treeView } from 'styled-system/recipes'
-import type { JsxStyleProps } from 'styled-system/types'
+import * as StyledTreeView from './styled/tree-view'
 
 interface Child {
   value: string
@@ -17,48 +13,39 @@ export interface TreeViewData {
   children: Child[]
 }
 
-export interface TreeViewProps
-  extends Assign<JsxStyleProps, TreeViewRootProps>,
-    TreeViewVariantProps {
+export interface TreeViewProps extends StyledTreeView.RootProps {
   data: TreeViewData
 }
 
 export const TreeView = forwardRef<HTMLDivElement, TreeViewProps>((props, ref) => {
-  const [cssProps, localProps] = splitCssProps(props)
-  const { data, className, ...rootProps } = localProps
-  const styles = treeView()
+  const { data, ...rootProps } = props
 
   const renderChild = (child: Child) => (
-    <ArkTreeView.Branch key={child.value} value={child.value} className={styles.branch}>
-      <ArkTreeView.BranchControl className={styles.branchControl}>
-        <ArkTreeView.BranchIndicator className={styles.branchIndicator}>
+    <StyledTreeView.Branch key={child.value} value={child.value}>
+      <StyledTreeView.BranchControl>
+        <StyledTreeView.BranchIndicator>
           <ChevronRightIcon />
-        </ArkTreeView.BranchIndicator>
-        <ArkTreeView.BranchText className={styles.branchText}>{child.name}</ArkTreeView.BranchText>
-      </ArkTreeView.BranchControl>
-      <ArkTreeView.BranchContent className={styles.branchContent}>
+        </StyledTreeView.BranchIndicator>
+        <StyledTreeView.BranchText>{child.name}</StyledTreeView.BranchText>
+      </StyledTreeView.BranchControl>
+      <StyledTreeView.BranchContent>
         {child.children?.map((child) =>
           child.children ? (
             renderChild(child)
           ) : (
-            <ArkTreeView.Item key={child.value} value={child.value} className={styles.item}>
-              <ArkTreeView.ItemText className={styles.itemText}>{child.name}</ArkTreeView.ItemText>
-            </ArkTreeView.Item>
+            <StyledTreeView.Item key={child.value} value={child.value}>
+              <StyledTreeView.ItemText>{child.name}</StyledTreeView.ItemText>
+            </StyledTreeView.Item>
           ),
         )}
-      </ArkTreeView.BranchContent>
-    </ArkTreeView.Branch>
+      </StyledTreeView.BranchContent>
+    </StyledTreeView.Branch>
   )
 
   return (
-    <ArkTreeView.Root
-      ref={ref}
-      aria-label={data.label}
-      className={cx(styles.root, css(cssProps), className)}
-      {...rootProps}
-    >
-      <ArkTreeView.Tree className={styles.tree}>{data.children.map(renderChild)}</ArkTreeView.Tree>
-    </ArkTreeView.Root>
+    <StyledTreeView.Root ref={ref} aria-label={data.label} {...rootProps}>
+      <StyledTreeView.Tree>{data.children.map(renderChild)}</StyledTreeView.Tree>
+    </StyledTreeView.Root>
   )
 })
 
