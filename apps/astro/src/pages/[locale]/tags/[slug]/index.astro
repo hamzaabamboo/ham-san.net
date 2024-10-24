@@ -1,0 +1,176 @@
+---
+import { formatDistance } from 'date-fns';
+import { enUS, ja } from 'date-fns/locale';
+import { FaArrowLeft, FaGithub, FaGlobe } from 'react-icons/fa';
+import { Box, Container, Divider, Grid, GridItem, Stack, styled, Wrap } from 'styled-system/jsx';
+import { formatMonthYear, parseDate } from 'utils/date';
+import { getMediaUrl } from 'utils/media';
+import { Markdown } from '~/components/lib/Markdown';
+import { TagBadge } from '~/components/tags/TagBadge';
+import { Heading } from '~/components/ui/heading';
+import { IconButton } from '~/components/ui/icon-button';
+import { Link } from '~/components/ui/link';
+import { Text } from '~/components/ui/text';
+import { graphQLSdk } from '~/graphql';
+import { Enum_Componentutilslink_Type } from '~/graphql/generated/client';
+import { useTranslations, validateLocale } from '~/i18n/utils';
+import MainLayout from '~/layouts/MainLayout.astro';
+import { sortTags } from '~/utils/tags';
+
+export const prerender = false;
+
+const { locale, slug } = Astro.params;
+
+const data = await graphQLSdk.getTagBySlug({
+  slug
+});
+
+if (!validateLocale(locale)) {
+  return Astro.redirect(404);
+}
+
+const { projects, experiences, title, type } = data?.tags?.data[0].attributes ?? {};
+const t = useTranslations(locale);
+
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+---
+
+<MainLayout>
+  <Container maxW="breakpoint-xl" py="8" w="full">
+    <Stack gap="4">
+      <Link href={`/${locale}/projects`}>
+        <Wrap fontSize="sm" alignItems="center">
+          <FaArrowLeft />
+          <Text>{t('project.back-to-projects')}</Text>
+        </Wrap>
+      </Link>
+      <Stack gap="2">
+        <Stack gap="1">
+          <Heading
+            as="h1"
+            size="2xl"
+            fontWeight="bold"
+            style={{
+              viewTransitionName: `project-title-${slug}`
+            }}>{title}</Heading
+          >
+          <Wrap fontSize="md" color="fg.subtle">
+            <Text>{type}</Text>
+            <Text>|</Text>
+            <Text>{type}</Text>
+          </Wrap>
+        </Stack>
+      </Stack>
+
+      {
+        experiences &&
+          experiences.data?.map((d) => {
+            if (!d.attributes) return null;
+            const { title, content, position, tags } = d.attributes;
+            const start = d.attributes.start as string;
+            const end = d.attributes.end as string;
+            return (
+              <Stack>
+                <Heading as="h2" size="xl" fontWeight="bold">
+                  {title}
+                </Heading>
+                <Wrap fontSize="sm">
+                  <Text>{position}</Text> <Text>|</Text>
+                  <Text>
+                    {formatMonthYear(parseDate(start), locale)} -{' '}
+                    {end ? formatMonthYear(parseDate(end), locale) : t('common.present')} (
+                    {formatDistance(parseDate(start), end ? parseDate(end) : new Date(), {
+                      locale: locale === 'ja' ? ja : enUS
+                    })}
+                    )
+                  </Text>
+                </Wrap>
+                {tags && (
+                  <Wrap fontSize="sm" gap="1">
+                    <Text>{t('common.tags')}</Text>
+                    {sortTags(tags?.data).map(
+                      (s) =>
+                        s.attributes && (
+                          <Link href={`/tags/${s.attributes.slug}`}>
+                            <TagBadge tag={s.attributes} showCount size="sm" />
+                          </Link>
+                        )
+                    )}
+                  </Wrap>
+                )}
+                {content && <Markdown content={content} />}
+              </Stack>
+            );
+          })
+      }
+      <Divider />
+      <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))">
+        {
+          projects?.data?.map((p) => {
+            const { title, description, slug, banner, media, date, category, links } =
+              p.attributes ?? {};
+            const image = banner?.data?.attributes ?? media?.data?.[0]?.attributes;
+            const link = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Web);
+            const ghLink = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Github);
+
+            return (
+              <GridItem>
+                <Stack h="full">
+                  <Link flex={1} href={`/${locale}/projects/${slug}`} data-astro-prefetch="hover">
+                    <Stack h="full" gap="0.5">
+                      {image && (
+                        <Box borderRadius="l2" overflow="hidden">
+                          <styled.img
+                            src={getMediaUrl(image.url, {}, import.meta.env.PUBLIC_API_URL) ?? ''}
+                            alt={image.name}
+                            objectFit="contain"
+                            objectPosition="center"
+                            backgroundColor="bg.muted"
+                            width="full"
+                            aspectRatio="4 / 3"
+                            style={{
+                              viewTransitionName: `project-image-${slug}`
+                            }}
+                          />
+                        </Box>
+                      )}
+                      <Text
+                        fontWeight="bold"
+                        style={{
+                          viewTransitionName: `project-title-${slug}`
+                        }}
+                      >
+                        {title}
+                      </Text>
+                      <Wrap fontSize="sm" gap="1" rowGap="0.5" color="fg.subtle">
+                        <Text>{category?.data?.attributes?.name}</Text> <Text>|</Text>
+                        <Text>{formatMonthYear(parseDate(date), locale)}</Text>
+                      </Wrap>
+                      <Text fontSize="sm">{description}</Text>
+                    </Stack>
+                  </Link>
+                  <Wrap w="full">
+                    {link?.url && (
+                      <Link href={link?.url} target="_blank">
+                        <IconButton size="xs" variant="subtle">
+                          <FaGlobe />
+                        </IconButton>
+                      </Link>
+                    )}
+                    {ghLink?.url && (
+                      <Link href={ghLink.url} target="_blank">
+                        <IconButton size="xs" variant="subtle">
+                          <FaGithub />
+                        </IconButton>
+                      </Link>
+                    )}
+                  </Wrap>
+                </Stack>
+              </GridItem>
+            );
+          })
+        }
+      </Grid>
+    </Stack>
+  </Container>
+</MainLayout>

@@ -9,6 +9,7 @@ import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
 import { TagBadge } from '~/components/tags/TagBadge';
 import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
 import { useTranslations, validateLocale } from '~/i18n/utils';
@@ -66,9 +67,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                           .map(
                             (s) =>
                               s.attributes && (
-                                <a href={`/tags/${s.attributes.slug}`}>
+                                <Link href={`/tags/${s.attributes.slug}`}>
                                   <TagBadge tag={s.attributes} showCount />
-                                </a>
+                                </Link>
                               )
                           )}
                       </Wrap>
@@ -111,9 +112,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                       {sortTags(tags?.data).map(
                         (s) =>
                           s.attributes && (
-                            <a href={`/tags/${s.attributes.slug}`}>
+                            <Link href={`/tags/${s.attributes.slug}`}>
                               <TagBadge tag={s.attributes} showCount size="sm" />
-                            </a>
+                            </Link>
                           )
                       )}
                     </Wrap>

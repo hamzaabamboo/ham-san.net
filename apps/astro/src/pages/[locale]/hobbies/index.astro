@@ -5,6 +5,7 @@ import MainLayout from '~/layouts/MainLayout.astro';
 
 import { Center, Container, Grid, GridItem, Stack } from 'styled-system/jsx';
 import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { useTranslations } from '~/i18n/utils';
 import { outlineClient } from '~/utils/outline-api';
@@ -27,7 +28,7 @@ const hobbiesList = (
   await outlineClient.POST('/documents.list', {
     body: { collectionId: settings['hobbies-collection'] }
   })
-).data;
+).data?.data?.filter((d) => !d.parentDocumentId);
 
 if (!hobbiesList) {
   return Astro.redirect(404);
@@ -40,17 +41,20 @@ if (!hobbiesList) {
       <Heading as="h1" fontSize="2xl">{t('common.hobbies')}</Heading>
       <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))">
         {
-          hobbiesList.data?.map((hobby) => {
-            const { title } = hobby;
+          hobbiesList.map((hobby) => {
+            console.log(hobby);
+            const { title, id } = hobby;
             return (
               <GridItem>
-                <Center bgColor="bg.muted" p={4} rounded="l1">
-                  <Stack>
-                    <Text fontWeight="bold" fontSize="xl">
-                      {title}
-                    </Text>
-                  </Stack>
-                </Center>
+                <Link w="full" href={`/${locale}/hobbies/${id}`}>
+                  <Center w="full" bgColor="bg.muted" p={4} rounded="l1">
+                    <Stack>
+                      <Text fontWeight="bold" fontSize="xl">
+                        {title}
+                      </Text>
+                    </Stack>
+                  </Center>
+                </Link>
               </GridItem>
             );
           })

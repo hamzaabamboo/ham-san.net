@@ -1,0 +1,66 @@
+---
+//TODO:
+import { FaArrowLeft } from 'react-icons/fa';
+import { Container, Divider, Stack, Wrap } from 'styled-system/jsx';
+import { Markdown } from '~/components/lib/Markdown';
+import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
+import { Text } from '~/components/ui/text';
+import { useTranslations } from '~/i18n/utils';
+import MainLayout from '~/layouts/MainLayout.astro';
+import { outlineClient } from '~/utils/outline-api';
+import { getOutlineSettings } from '~/utils/outline-settings';
+
+export const prerender = false;
+
+const { locale, id } = Astro.params;
+
+const t = useTranslations(locale as 'en');
+
+const settings = await getOutlineSettings();
+
+if (!settings?.['hobbies-collection']) {
+  return Astro.redirect('/404');
+}
+
+const data = (
+  await outlineClient.POST('/documents.info', {
+    body: { collectionId: settings['hobbies-collection'], id: id }
+  })
+).data?.data;
+
+if (!data) {
+  return Astro.redirect('/404');
+}
+
+const { title, text } = data;
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+---
+
+<MainLayout>
+  <Container maxW="breakpoint-xl" py="8" w="full">
+    <Stack gap="4">
+      <Link href={`/${locale}/hobbies`}>
+        <Wrap fontSize="sm" alignItems="center">
+          <FaArrowLeft />
+          <Text>{t('hobbies.back-to-hobbies')}</Text>
+        </Wrap>
+      </Link>
+      <Stack gap="2">
+        <Stack gap="1">
+          <Heading
+            as="h1"
+            size="2xl"
+            fontWeight="bold"
+            style={{
+              viewTransitionName: `project-title-${id}`
+            }}>{title}</Heading
+          >
+        </Stack>
+      </Stack>
+
+      <Divider />
+      {text && <Markdown content={text} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
+    </Stack>
+  </Container>
+</MainLayout>

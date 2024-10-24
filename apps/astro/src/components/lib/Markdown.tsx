@@ -28,16 +28,18 @@ export const Markdown = ({
       <ReactMarkdown
         remarkPlugins={[remarkTextr, remarkGfm]}
         components={{
-          h1: ({ node: _, ...props }) => (
+          h1: ({ ref: __, node: _, ...props }) => (
             <Heading as="h1" size="3xl" fontWeight="bold" {...props} />
           ),
-          h2: ({ node: _, ...props }) => <Heading as="h2" size="3xl" {...props} />,
-          h3: ({ node: _, ...props }) => (
+          h2: ({ ref: __, node: _, ...props }) => <Heading as="h2" size="3xl" {...props} />,
+          h3: ({ ref: __, node: _, ...props }) => (
             <Heading as="h3" size="2xl" fontWeight="bold" {...props} />
           ),
-          h4: ({ node: _, ...props }) => <Heading as="h4" size="2xl" {...props} />,
-          h5: ({ node: _, ...props }) => <Heading as="h5" size="xl" fontWeight="bold" {...props} />,
-          h6: ({ node: _, ...props }) => <Heading as="h6" size="xl" {...props} />,
+          h4: ({ ref: __, node: _, ...props }) => <Heading as="h4" size="2xl" {...props} />,
+          h5: ({ ref: __, node: _, ...props }) => (
+            <Heading as="h5" size="xl" fontWeight="bold" {...props} />
+          ),
+          h6: ({ ref: __, node: _, ...props }) => <Heading as="h6" size="xl" {...props} />,
           p: ({ ref: _ref, node: _, ...props }) => <Text as="p" {...props} />,
           strong: ({ ref: _, node: __, ...props }) => (
             <Text as="span" fontWeight="bold" {...props} />
