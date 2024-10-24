@@ -14,7 +14,7 @@ export default defineConfig({
     }
   },
   integrations: [react()],
-  output: 'server',
+  output: 'hybrid',
   adapter: netlify({
     imageCDN: false
     // cacheOnDemandPages: true
