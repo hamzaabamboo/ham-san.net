@@ -10,6 +10,6 @@ export const fallbackLocale = <D extends { locale?: string | null | undefined }>
 ) => {
   return locale === data.attributes?.locale
     ? data.attributes
-    : data.attributes?.localizations?.data?.find((p) => p.attributes?.locale === locale)
-        ?.attributes ?? data.attributes;
+    : (data.attributes?.localizations?.data?.find((p) => p.attributes?.locale === locale)
+        ?.attributes ?? data.attributes);
 };

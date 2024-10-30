@@ -27,6 +27,7 @@ if (!settings?.events) {
 const eventData = await outlineClient.POST('/documents.info', {
   body: { id: settings.events.replace('/doc/', '') }
 });
+
 const content = cleanArticleContent(eventData.data?.data?.text);
 
 if (!content) {

@@ -19,7 +19,7 @@ const getCurrentURLWithLanguage = (language: string) => {
 };
 
 const NAVIGATION_LINKS = [
-  { label: t('common.home'), value: '/' },
+  // { label: t('common.home'), value: '/' },
   { label: t('common.about-me'), value: '/about' },
   { label: t('common.projects'), value: '/projects' },
   { label: t('common.event'), value: '/events' },
@@ -55,9 +55,11 @@ const NAVIGATION_LINKS = [
     }
     <Text> | </Text>
     {
-      Object.entries(languages).map((t) => {
-        return <Link href={getCurrentURLWithLanguage(t[0])}>{t[1]}</Link>;
-      })
+      Object.entries(languages)
+        .filter((t) => t[0] !== lang)
+        .map((t) => {
+          return <Link href={getCurrentURLWithLanguage(t[0])}>{t[1]}</Link>;
+        })
     }
   </HStack>
   <Sidebar links={NAVIGATION_LINKS} locale={lang} pathname={Astro.url.pathname} client:visible />

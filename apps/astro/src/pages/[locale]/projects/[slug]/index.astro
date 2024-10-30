@@ -99,7 +99,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 {tags.data
                   .filter((t) => !!t)
                   .map((t) => (
-                    <Link href={`/tags/${t.attributes?.slug}`}>
+                    <Link href={`/${locale}/tags/${t.attributes?.slug}`}>
                       <TagBadge tag={t.attributes as Tag} showCount size="sm" />
                     </Link>
                   ))}
