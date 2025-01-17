@@ -24,7 +24,7 @@ const data = await graphQLSdk.getTagBySlug({
 });
 
 if (!validateLocale(locale)) {
-  return Astro.redirect(404);
+  return Astro.redirect('/404');
 }
 
 const { projects, experiences, title, type } = data?.tags?.data[0].attributes ?? {};

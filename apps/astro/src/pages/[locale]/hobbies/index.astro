@@ -21,7 +21,7 @@ const t = useTranslations(locale);
 const settings = await getOutlineSettings();
 
 if (!settings?.['hobbies-collection']) {
-  return Astro.redirect(404);
+  return Astro.redirect('/404');
 }
 
 const hobbiesList = (
@@ -31,7 +31,7 @@ const hobbiesList = (
 ).data?.data?.filter((d) => !d.parentDocumentId);
 
 if (!hobbiesList) {
-  return Astro.redirect(404);
+  return Astro.redirect('/404');
 }
 ---
 

@@ -11,10 +11,10 @@ export const Carousel = (props: _Carousel.RootProps & { images: string[] }) => {
   return (
     <Stack>
       <_Carousel.Root
-        slidesPerView={1}
-        index={index}
-        onIndexChange={({ index }) => setIndex(index)}
+        slidesPerPage={1}
+        onPageChange={({ page }) => setIndex(page)}
         loop
+        page={index}
         {...rest}
       >
         <_Carousel.Viewport>

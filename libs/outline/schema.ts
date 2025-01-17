@@ -1124,6 +1124,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/comments.info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve a comment
+         * @description Retrieve a comment
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        /** @description Include the document text that the comment is anchored to, if any */
+                        includeAnchorText?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            data?: components["schemas"]["Comment"];
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthenticated"];
+                403: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+                429: components["responses"]["RateLimited"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/comments.update": {
         parameters: {
             query?: never;
@@ -1263,6 +1317,8 @@ export interface paths {
                          * @description Filter to a specific collection
                          */
                         collectionId?: string;
+                        /** @description Include the document text that the comment is anchored to, if any */
+                        includeAnchorText?: boolean;
                     };
                 };
             };
@@ -1274,7 +1330,7 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            data?: components["schemas"]["Document"][];
+                            data?: components["schemas"]["Comment"][];
                             policies?: components["schemas"]["Policy"][];
                             pagination?: components["schemas"]["Pagination"];
                         };
@@ -4391,6 +4447,8 @@ export interface components {
              */
             readonly updatedAt?: string;
             updatedBy?: components["schemas"]["User"];
+            /** @description The document text that the comment is anchored to, only included if includeAnchorText=true. */
+            readonly anchorText?: string;
         };
         Document: {
             /**

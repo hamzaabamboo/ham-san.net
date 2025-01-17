@@ -1,5 +1,7 @@
 import { defineConfig } from '@pandacss/dev';
 import { createPreset } from '@park-ui/panda-preset';
+import amber from '@park-ui/panda-preset/colors/amber';
+import neutral from '@park-ui/panda-preset/colors/neutral';
 import { theme } from './src/theme';
 
 export default defineConfig({
@@ -9,10 +11,9 @@ export default defineConfig({
   presets: [
     '@pandacss/preset-base',
     createPreset({
-      accentColor: 'amber',
-      grayColor: 'neutral',
-      borderRadius: 'lg',
-      additionalColors: ['red', 'blue', 'orange', 'green', 'purple', 'gray', 'sand']
+      accentColor: amber,
+      grayColor: neutral,
+      radius: 'lg'
     })
   ],
 

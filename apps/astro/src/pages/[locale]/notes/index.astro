@@ -14,7 +14,7 @@ export const prerender = false;
 const { locale } = Astro.params;
 
 if (!validateLocale(locale)) {
-  return Astro.redirect(404);
+  return Astro.redirect('/404');
 }
 
 const headers = {

@@ -21,7 +21,7 @@ const t = useTranslations(locale);
 const settings = await getOutlineSettings();
 
 if (!settings?.events) {
-  return Astro.redirect(404);
+  return Astro.redirect('/404');
 }
 
 const eventData = await outlineClient.POST('/documents.info', {
@@ -31,7 +31,7 @@ const eventData = await outlineClient.POST('/documents.info', {
 const content = cleanArticleContent(eventData.data?.data?.text);
 
 if (!content) {
-  return Astro.redirect(404);
+  return Astro.redirect('/404');
 }
 ---
 
