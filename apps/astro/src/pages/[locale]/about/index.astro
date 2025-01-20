@@ -3,7 +3,7 @@ import { formatDistance } from 'date-fns';
 import { enUS, ja } from 'date-fns/locale';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
-import { Container, Divider, Grid, GridItem, Stack, Wrap } from 'styled-system/jsx';
+import { Box, Container, Divider, Grid, GridItem, HStack, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
@@ -15,6 +15,7 @@ import { graphQLSdk } from '~/graphql';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { sortTags } from '~/utils/tags';
+import { AboutMeIndex } from './AboutMeIndex';
 
 export const prerender = false;
 //TODO:
@@ -45,114 +46,129 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
 
 <MainLayout>
   <Container>
-    <Stack p="4" w="full">
-      <Heading as="h1" size="2xl" fontWeight="bold">{t('about-me.title')}</Heading>
-      <Text>{aboutMe?.data?.attributes?.introduction}</Text>
-      <Divider />
-      <Stack>
-        <Heading as="h2" size="xl" fontWeight="bold">{t('about-me.skills')}</Heading>
-        <Grid gridTemplateColumns={{ base: '1fr', md: 'auto 1fr' }}>
+    <HStack alignItems="flex-start">
+      <Stack p="4" w="full">
+        <Heading as="h1" size="2xl" fontWeight="bold" id="introduction"
+          >{t('about-me.title')}</Heading
+        >
+        <Text>{aboutMe?.data?.attributes?.introduction}</Text>
+        <Divider />
+        <Stack>
+          <Heading as="h2" size="xl" fontWeight="bold" id="skills">{t('about-me.skills')}</Heading>
+          <Grid gridTemplateColumns={{ base: '1fr', md: 'auto 1fr' }}>
+            {
+              skills &&
+                Object.keys(skills).map((key) => {
+                  return (
+                    <>
+                      <GridItem>
+                        <Text fontWeight="bold">
+                          {t(`common.${toKebabCase(key) as 'frontend'}`)}
+                        </Text>
+                      </GridItem>
+                      <GridItem>
+                        <Wrap>
+                          {sortBy(skills[key], (d) => d.attributes?.projects?.data?.length)
+                            .reverse()
+                            .map(
+                              (s) =>
+                                s.attributes && (
+                                  <Link href={`/${locale}/tags/${s.attributes.slug}`}>
+                                    <TagBadge tag={s.attributes} showCount />
+                                  </Link>
+                                )
+                            )}
+                        </Wrap>
+                      </GridItem>
+                    </>
+                  );
+                })
+            }
+          </Grid>
+        </Stack>
+        <Divider />
+        <Stack>
+          <Heading as="h2" size="xl" fontWeight="bold" id="experiences"
+            >{t('common.experiences')}</Heading
+          >
           {
-            skills &&
-              Object.keys(skills).map((key) => {
+            experiences &&
+              experiences.data?.map((d) => {
+                if (!d.attributes) return null;
+                const { title, content, position, tags } = d.attributes;
+                const start = d.attributes.start as string;
+                const end = d.attributes.end as string;
                 return (
-                  <>
-                    <GridItem>
-                      <Text fontWeight="bold">{t(`common.${toKebabCase(key) as 'frontend'}`)}</Text>
-                    </GridItem>
-                    <GridItem>
-                      <Wrap>
-                        {sortBy(skills[key], (d) => d.attributes?.projects?.data?.length)
-                          .reverse()
-                          .map(
-                            (s) =>
-                              s.attributes && (
-                                <Link href={`/${locale}/tags/${s.attributes.slug}`}>
-                                  <TagBadge tag={s.attributes} showCount />
-                                </Link>
-                              )
-                          )}
+                  <Stack>
+                    <Heading as="h2" size="xl" fontWeight="bold">
+                      {title}
+                    </Heading>
+                    <Wrap fontSize="sm">
+                      <Text>{position}</Text> <Text>|</Text>
+                      <Text>
+                        {formatMonthYear(parseDate(start), locale)} -{' '}
+                        {end ? formatMonthYear(parseDate(end), locale) : t('common.present')} (
+                        {formatDistance(parseDate(start), end ? parseDate(end) : new Date(), {
+                          locale: locale === 'ja' ? ja : enUS
+                        })}
+                        )
+                      </Text>
+                    </Wrap>
+                    {tags && (
+                      <Wrap fontSize="sm" gap="1">
+                        <Text>{t('common.tags')}</Text>
+                        {sortTags(tags?.data).map(
+                          (s) =>
+                            s.attributes && (
+                              <Link href={`/${locale}/tags/${s.attributes.slug}`}>
+                                <TagBadge tag={s.attributes} showCount size="sm" />
+                              </Link>
+                            )
+                        )}
                       </Wrap>
-                    </GridItem>
-                  </>
+                    )}
+                    {content && <Markdown content={content} />}
+                  </Stack>
                 );
               })
           }
-        </Grid>
-      </Stack>
-      <Divider />
-      <Stack>
-        <Heading as="h2" size="xl" fontWeight="bold">{t('common.experiences')}</Heading>
-        {
-          experiences &&
-            experiences.data?.map((d) => {
-              if (!d.attributes) return null;
-              const { title, content, position, tags } = d.attributes;
-              const start = d.attributes.start as string;
-              const end = d.attributes.end as string;
-              return (
-                <Stack>
-                  <Heading as="h2" size="xl" fontWeight="bold">
-                    {title}
-                  </Heading>
-                  <Wrap fontSize="sm">
-                    <Text>{position}</Text> <Text>|</Text>
-                    <Text>
-                      {formatMonthYear(parseDate(start), locale)} -{' '}
-                      {end ? formatMonthYear(parseDate(end), locale) : t('common.present')} (
-                      {formatDistance(parseDate(start), end ? parseDate(end) : new Date(), {
-                        locale: locale === 'ja' ? ja : enUS
-                      })}
-                      )
-                    </Text>
-                  </Wrap>
-                  {tags && (
-                    <Wrap fontSize="sm" gap="1">
-                      <Text>{t('common.tags')}</Text>
-                      {sortTags(tags?.data).map(
-                        (s) =>
-                          s.attributes && (
-                            <Link href={`/${locale}/tags/${s.attributes.slug}`}>
-                              <TagBadge tag={s.attributes} showCount size="sm" />
-                            </Link>
-                          )
-                      )}
+        </Stack>
+        <Divider />
+        <Stack>
+          <Heading as="h2" size="xl" fontWeight="bold" id="education"
+            >{t('common.education')}</Heading
+          >
+          {
+            educations &&
+              educations.data?.map((d) => {
+                if (!d.attributes) return null;
+                const { title, description, content } = d.attributes;
+                const start = d.attributes.start as string;
+                const end = d.attributes.end as string;
+                return (
+                  <Stack>
+                    <Heading as="h2" size="xl" fontWeight="bold">
+                      {title}
+                    </Heading>
+                    <Wrap fontSize="sm">
+                      <Text>{description}</Text> <Text>|</Text>
+                      <Text>
+                        {formatMonthYear(parseDate(start), locale)} -{' '}
+                        {end ? formatMonthYear(parseDate(end), locale) : t('common.present')}
+                      </Text>
                     </Wrap>
-                  )}
-                  {content && <Markdown content={content} />}
-                </Stack>
-              );
-            })
-        }
+                    {content && <Markdown content={content} />}
+                  </Stack>
+                );
+              })
+          }
+        </Stack>
       </Stack>
-      <Divider />
-      <Stack>
-        <Heading as="h2" size="xl" fontWeight="bold">{t('common.education')}</Heading>
-        {
-          educations &&
-            educations.data?.map((d) => {
-              if (!d.attributes) return null;
-              const { title, description, content } = d.attributes;
-              const start = d.attributes.start as string;
-              const end = d.attributes.end as string;
-              return (
-                <Stack>
-                  <Heading as="h2" size="xl" fontWeight="bold">
-                    {title}
-                  </Heading>
-                  <Wrap fontSize="sm">
-                    <Text>{description}</Text> <Text>|</Text>
-                    <Text>
-                      {formatMonthYear(parseDate(start), locale)} -{' '}
-                      {end ? formatMonthYear(parseDate(end), locale) : t('common.present')}
-                    </Text>
-                  </Wrap>
-                  {content && <Markdown content={content} />}
-                </Stack>
-              );
-            })
-        }
-      </Stack>
-    </Stack>
+      <!-- <Box py="4">
+        <Box position="sticky" top="0">
+          <AboutMeIndex client:load locale={locale} />
+        </Box>
+      </Box> -->
+    </HStack>
   </Container>
 </MainLayout>
