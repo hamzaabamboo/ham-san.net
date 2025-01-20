@@ -28,10 +28,10 @@ export const InteractiveNamecard = ({ data }: { data: NamecardData }) => {
         shadow="md"
         transition="transform"
         animation={{ base: '5s linear infinite spin', _groupHover: 'none' }}
+        transformStyle="preserve-3d"
         transitionTimingFunction="linear"
         transitionDelay="0.1s"
         transitionDuration="1s"
-        transformStyle="preserve-3d"
       >
         <Box
           style={{
@@ -50,18 +50,18 @@ export const InteractiveNamecard = ({ data }: { data: NamecardData }) => {
           top="0"
           left="0"
           transformOrigin="left"
+          transform="rotate3d(0,1,0,90deg)"
           width="var(--thickness)"
           height="var(--height)"
           backgroundColor="var(--color)"
-          transform="rotate3d(0,1,0,90deg)"
         />
         <Box
           backfaceVisibility="hidden"
           position="absolute"
           top="0"
           left="0"
-          transition="transform"
           transform="rotate3d(0,1,0,180deg) translate3d(0,0,var(--thickness))"
+          transition="transform"
         >
           <StyledNamecard data={data} side="back" />
         </Box>
@@ -70,10 +70,10 @@ export const InteractiveNamecard = ({ data }: { data: NamecardData }) => {
           top="0"
           right="0"
           transformOrigin="right"
+          transform="rotate3d(0,1,0,-90deg)"
           width="var(--thickness)"
           height="var(--height)"
           backgroundColor="white"
-          transform="rotate3d(0,1,0,-90deg)"
         />
       </Box>
     </Stack>

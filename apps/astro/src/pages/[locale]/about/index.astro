@@ -3,7 +3,7 @@ import { formatDistance } from 'date-fns';
 import { enUS, ja } from 'date-fns/locale';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
-import { Box, Container, Divider, Grid, GridItem, HStack, Stack, Wrap } from 'styled-system/jsx';
+import { Container, Divider, Grid, GridItem, HStack, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
@@ -15,7 +15,6 @@ import { graphQLSdk } from '~/graphql';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { sortTags } from '~/utils/tags';
-import { AboutMeIndex } from './AboutMeIndex';
 
 export const prerender = false;
 //TODO:
@@ -165,7 +164,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
         </Stack>
       </Stack>
       <!-- <Box py="4">
-        <Box position="sticky" top="0">
+        <Box position="sticky">
           <AboutMeIndex client:load locale={locale} />
         </Box>
       </Box> -->

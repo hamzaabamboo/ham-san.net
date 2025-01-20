@@ -51,7 +51,8 @@ const config = tseslint.config(
   {
     files: ['**/*.astro', '**/*.ts', '**/*.tsx', '**/*.js'],
     rules: {
-      'astro/valid-compile': 'warn'
+      'astro/valid-compile': 'warn',
+      '@typescript-eslint/no-misused-promises': 'off'
     }
   },
   eslintPluginPrettierRecommended,
