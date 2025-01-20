@@ -11,7 +11,7 @@ query getTagBySlug($slug: String, $locale: I18NLocaleCode = "all") {
             }
           }
         }
-        experiences {
+        experiences(sort: ["start:desc"]) {
           data {
             attributes {
               ...experience

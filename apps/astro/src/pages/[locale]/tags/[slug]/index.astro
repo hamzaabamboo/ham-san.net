@@ -4,6 +4,7 @@ import { enUS, ja } from 'date-fns/locale';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Container, Divider, Grid, GridItem, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
+import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
 import { ProjectCard } from '~/components/projects/ProjectCard';
 import { TagBadge } from '~/components/tags/TagBadge';
@@ -39,7 +40,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
       <Link href={`/${locale}/projects`}>
         <Wrap fontSize="sm" alignItems="center">
           <FaArrowLeft />
-          <Text>{t('project.back-to-projects')}</Text>
+          <Text>{t('about-me.return-to')}</Text>
         </Wrap>
       </Link>
       <Stack gap="2">
@@ -53,9 +54,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
             }}>{title}</Heading
           >
           <Wrap fontSize="md" color="fg.subtle">
-            <Text>{type}</Text>
-            <Text>|</Text>
-            <Text>{type}</Text>
+            <Text>{t(`common.${toKebabCase(type as string) as 'frontend'}`)}</Text>
           </Wrap>
         </Stack>
       </Stack>

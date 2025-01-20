@@ -1,7 +1,8 @@
 ---
 import { parseISO } from 'date-fns';
-import { Container, Divider, Stack, Wrap } from 'styled-system/jsx';
+import { Center, Container, Divider, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthYear } from 'utils/date';
+import { AppPagination } from '~/components/common/AppPagination';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
@@ -11,7 +12,13 @@ import { outlineClient } from '~/utils/outline-api';
 
 export const prerender = false;
 
+const PAGE_SIZE = 10;
+
 const { locale } = Astro.params;
+const page =
+  Astro.url.searchParams.get('page') && !isNaN(Number(Astro.url.searchParams.get('page')))
+    ? Number(Astro.url.searchParams.get('page'))
+    : 1;
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
@@ -25,16 +32,20 @@ const t = useTranslations(locale);
 const shareRequest = await outlineClient.POST('/shares.list', {
   body: {
     sort: 'createdAt',
-    direction: 'DESC'
+    direction: 'DESC',
+    limit: PAGE_SIZE,
+    offset: (page - 1) * PAGE_SIZE
   },
   headers
 });
 
 if (!shareRequest.response.ok) {
-  return Astro.redirect(500);
+  return Astro.redirect('/500');
 }
 
 const sharedArticlesList = shareRequest.data?.data;
+
+console.log(shareRequest.data);
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
@@ -76,6 +87,18 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           );
         })
       }
+      <Center>
+        {
+          shareRequest?.data?.pagination && (
+            <AppPagination
+              client:visible
+              count={shareRequest.data.pagination.total ?? 1}
+              page={Math.floor(shareRequest.data.pagination.offset ?? 0 / PAGE_SIZE) + 1}
+              pageSize={PAGE_SIZE}
+            />
+          )
+        }
+      </Center>
     </Stack>
   </Container>
 </MainLayout>

@@ -1,10 +1,27 @@
 import { type PartialTheme } from '@pandacss/types';
 
+import blue from '@park-ui/panda-preset/colors/blue';
+import green from '@park-ui/panda-preset/colors/green';
+import orange from '@park-ui/panda-preset/colors/orange';
+import purple from '@park-ui/panda-preset/colors/purple';
+import red from '@park-ui/panda-preset/colors/red';
+import sand from '@park-ui/panda-preset/colors/sand';
+
+const additionalColors = [red, blue, orange, green, purple, sand];
+
 export const theme: PartialTheme = {
   semanticTokens: {
     animations: {
       pyon: { value: 'pyon 2s linear infinite' },
       kanatapeek: { value: 'kanatapeek 4s ease-in infinite' }
+    },
+    colors: {
+      ...Object.fromEntries(additionalColors.map((t) => [t.name, t.semanticTokens]))
+    }
+  },
+  tokens: {
+    colors: {
+      ...Object.fromEntries(additionalColors.map((t) => [t.name, t.tokens]))
     }
   },
   keyframes: {
