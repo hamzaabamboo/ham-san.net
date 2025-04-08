@@ -45,12 +45,16 @@ export const Markdown = ({
             <Text as="span" fontWeight="bold" {...props} />
           ),
           a: ({ ref: _, node: __, ...props }) => {
-            const { href, ...propsWithoutHref } = props;
+            const { href, children, ...rest } = props;
             const dest = linksPrefix && href?.startsWith('/') ? join(linksPrefix, href) : href;
             if (disableLinks || (disableInternalLinks && href?.startsWith('/'))) {
               return <Text as="p">{props.children}</Text>;
             }
-            return <Link target="_blank" fontWeight="bold" {...props} href={dest} />;
+            return (
+              <Link target="_blank" href={dest} fontWeight="bold" {...rest}>
+                {children as string}
+              </Link>
+            );
           },
           hr: ({ ref: _, node: __, ...props }) => <Divider {...props} />,
           blockquote: ({ ref: __, node: _, ...props }) => (

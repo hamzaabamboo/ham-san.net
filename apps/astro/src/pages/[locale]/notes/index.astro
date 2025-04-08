@@ -92,7 +92,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           shareRequest?.data?.pagination && (
             <AppPagination
               client:visible
-              count={shareRequest.data.pagination.total ?? 1}
+              count={shareRequest.data.pagination.limit ?? 1}
               page={Math.floor(shareRequest.data.pagination.offset ?? 0 / PAGE_SIZE) + 1}
               pageSize={PAGE_SIZE}
             />

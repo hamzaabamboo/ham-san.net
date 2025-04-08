@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import { Stack } from 'styled-system/jsx';
 import Footer from '~/components/layout/Footer.astro';
 import Navigation from '~/components/layout/Navigation.astro';
@@ -8,7 +8,7 @@ import BaseLayout from './BaseLayout.astro';
 
 <BaseLayout>
   <Fragment slot="head">
-    <ViewTransitions />
+    <ClientRouter />
     <slot name="head" />
   </Fragment>
   <Stack gap="0" minH="100dvh">
