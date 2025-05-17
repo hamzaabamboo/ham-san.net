@@ -1,6 +1,8 @@
 import { Stack, styled } from 'styled-system/jsx';
 import akarinLogo from '../assets/namecard/akarin-logo.png';
 import akarinQrCode from '../assets/namecard/akarin-qr-code.png';
+import ashQrCode from '../assets/namecard/ash-qr-code.png';
+import ash from '../assets/namecard/ash.webp';
 import hasuLogo from '../assets/namecard/hasu-logo.jpg';
 import hasuQrCode from '../assets/namecard/hasu-qr-code.png';
 
@@ -62,6 +64,28 @@ export const NAMECARDS = [
               フラワー
             </styled.span>
             」<br /> ー 日野下花帆（CV:楡井希実）
+          </styled.blockquote>
+        </Stack>
+      );
+    }
+  },
+  {
+    variant: 'ktk',
+    color: '#6a6c6d',
+    content: {
+      firstRow: '株式会社アッシュ',
+      secondRow: 'アッシュくんの爪研ぎ、タイ支部 🇹🇭',
+      name: 'ハムP',
+      nameSubtitle: 'はむぴー／HamP',
+      message: 'สวัสดีครับ!（サワディーカー）'
+    },
+    logoBottom: ash.src,
+    qrCode: ashQrCode.src,
+    Quote: () => {
+      return (
+        <Stack gap={0}>
+          <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
+            「にゃにゃにゃ〜にゃん、<b>にゃん</b>にゃにゃん」 <br />ー アッシュくん
           </styled.blockquote>
         </Stack>
       );

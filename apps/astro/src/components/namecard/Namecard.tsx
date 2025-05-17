@@ -3,10 +3,12 @@ import { NamecardData } from '~/constants/namecard';
 
 export const Namecard = ({
   data,
-  side = 'front'
+  side = 'front',
+  nametag = false
 }: {
   data: NamecardData;
   side: 'front' | 'back';
+  nametag?: boolean;
 }) => {
   const { color, content, logoTop, logoBottom, logoMiddle, qrCode, Quote } = data;
   if (side === 'front') {
@@ -14,7 +16,11 @@ export const Namecard = ({
       <HStack
         style={{
           WebkitPrintColorAdjust: 'exact',
-          ['--main-color' as 'color']: color
+          ['--main-color' as 'color']: color,
+          ['--name-size' as 'fontSize']: nametag
+            ? 'var(--font-sizes-5xl)'
+            : 'var(--font-sizes-4xl)',
+          ['--subtitle-size' as 'width']: nametag ? '0.6rem' : 'var(--font-sizes-sm)'
         }}
         gap="0"
         width="91mm"
@@ -28,16 +34,16 @@ export const Namecard = ({
       >
         <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
         <Stack flex="1" gap="2" justifyContent="space-around" h="full" py="4" pl="4" pr="2">
-          <Stack gap="1" fontSize="xs">
+          <Stack gap="1" fontSize="var(--subtitle-size)">
             <styled.p lineHeight="1">{content.firstRow}</styled.p>
             <styled.p>{content.secondRow}</styled.p>
           </Stack>
           <styled.hr borderColor="var(--main-color)" />
           <Stack gap="0">
-            <styled.h1 fontSize="4xl" fontWeight="semibold" lineHeight="1.12">
+            <styled.h1 fontSize="var(--name-size)" fontWeight="semibold" lineHeight="1.12">
               {content.name}
             </styled.h1>
-            <styled.p fontSize="sm">{content.nameSubtitle}</styled.p>
+            <styled.p fontSize="var(--subtitle-size)">{content.nameSubtitle}</styled.p>
           </Stack>
           <Stack gap="1">
             <Stack gap="0" fontSize="xs">
@@ -69,7 +75,11 @@ export const Namecard = ({
           ['--main-color' as 'color']: color
         }}
         gap="0"
-        border={{ _print: '1px solid' }}
+        border={
+          {
+            // _print: '1px solid'
+          }
+        }
         width="91mm"
         height="55mm"
         bgColor="white"
