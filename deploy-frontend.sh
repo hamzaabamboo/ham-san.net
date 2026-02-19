@@ -1,4 +1,3 @@
-docker-compose pull client
-docker-compose down client
-docker-compose up -d client
-yes | docker system prune
+docker compose pull client
+docker compose up -d --no-deps client
+docker image prune -f

@@ -7,7 +7,7 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "compose:dev": "docker-compose -f docker-compose.dev.yml",
+    "compose:dev": "docker compose -f docker-compose.dev.yml",
     "prepare": "husky install && pnpm codegen:api && nx sync client && nx run-many -p client, astro -t prepare",
     "codegen": "nx run-many -p client, astro -t codegen",
     "check": "nx run-many -p client, astro -t lint, format",

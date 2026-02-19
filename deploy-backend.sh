@@ -1,4 +1,3 @@
-docker-compose pull api
-docker-compose down api
-docker-compose up -d api
-yes | docker system prune
+docker compose pull api
+docker compose up -d --no-deps api
+docker image prune -f

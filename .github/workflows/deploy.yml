@@ -60,7 +60,7 @@ jobs:
     name: Build and Push Frontend Container
     runs-on: ubuntu-latest
     needs: detect-changes
-    if: ${{ needs.detect-changes.outputs.frontend == 'true' }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.frontend) || (github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.frontend == 'true') }}
     environment:
       name: prod
     env:
@@ -101,7 +101,7 @@ jobs:
     environment:
       name: prod
     needs: detect-changes
-    if: ${{ needs.detect-changes.outputs.backend == 'true' }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.backend) || (github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.backend == 'true') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -136,7 +136,7 @@ jobs:
       - build-push-backend
       - detect-changes
     runs-on: ubuntu-latest
-    if: ${{ needs.detect-changes.outputs.backend == 'true' || needs.detect-changes.outputs.frontend == 'true' }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && (inputs.backend || inputs.frontend)) || (github.event_name != 'workflow_dispatch' && (needs.detect-changes.outputs.backend == 'true' || needs.detect-changes.outputs.frontend == 'true')) }}
     environment:
       name: prod
       url: https://ham-san.net
@@ -155,7 +155,7 @@ jobs:
             ./pre-deploy.sh
       - name: Deploy Backend
         uses: appleboy/ssh-action@master
-        if: ${{ needs.detect-changes.outputs.backend == 'true' }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.backend) || (github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.backend == 'true') }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -165,7 +165,7 @@ jobs:
             ./deploy-backend.sh
       - name: Deploy Frontend
         uses: appleboy/ssh-action@master
-        if: ${{ needs.detect-changes.outputs.frontend == 'true' }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.frontend) || (github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.frontend == 'true') }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
