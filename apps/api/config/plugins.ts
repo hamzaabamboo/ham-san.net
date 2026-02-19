@@ -4,6 +4,7 @@ module.exports = {
     config: {
       endpoint: '/graphql',
       shadowCRUD: true,
+      v4CompatibilityMode: true,
       playgroundAlways: false,
       depthLimit: 10,
       amountLimit: 100,

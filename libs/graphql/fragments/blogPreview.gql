@@ -3,28 +3,13 @@ fragment blogPreview on Blog {
   description
   slug
   category {
-    data {
-      id
-      attributes {
-        name
-      }
-    }
+    name
   }
   thumbnail {
-    data {
-      id
-      attributes {
-        ...media
-      }
-    }
+    ...media
   }
   createdAt
   tags {
-    data {
-      id
-      attributes {
-        ...tag
-      }
-    }
+    ...tag
   }
 }

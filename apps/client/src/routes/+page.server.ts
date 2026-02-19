@@ -1,4 +1,5 @@
 import { graphQLSdk } from '@graphql/sdk';
+import { toLegacyFetchHomePage } from '@graphql/legacy';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -8,7 +9,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   if (data) {
     return {
-      data
+      data: toLegacyFetchHomePage(data)
     };
   }
 };

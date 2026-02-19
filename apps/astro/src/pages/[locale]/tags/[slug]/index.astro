@@ -12,6 +12,8 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
+import { toLegacyGetTagBySlug } from '~/graphql/legacy';
+import { ProjectPreviewFragment, Tag } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { sortTags } from '~/utils/tags';
@@ -20,16 +22,38 @@ export const prerender = false;
 
 const { locale, slug } = Astro.params;
 
-const data = await graphQLSdk.getTagBySlug({
+const data = toLegacyGetTagBySlug(
+  await graphQLSdk.getTagBySlug({
   slug
-});
+})
+);
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
-const { projects, experiences, title, type } = data?.tags?.data[0].attributes ?? {};
+type LegacyTagPageData = {
+  projects?: { data?: Array<{ attributes?: ProjectPreviewFragment }> };
+  experiences?: {
+    data?: Array<{
+      attributes?: {
+        title?: string;
+        content?: string;
+        position?: string;
+        start?: string;
+        end?: string;
+        tags?: { data?: Array<{ attributes?: Tag }> };
+      };
+    }>;
+  };
+  title?: string;
+  type?: string;
+};
+const tagData = (data?.tags?.data?.[0]?.attributes ?? {}) as LegacyTagPageData;
+const { projects, experiences, title, type } = tagData;
 const t = useTranslations(locale);
+const experienceItems = experiences?.data ?? [];
+const projectItems = (projects?.data ?? []) as Array<{ attributes?: ProjectPreviewFragment }>;
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
@@ -61,7 +85,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 
       {
         experiences &&
-          experiences.data?.map((d) => {
+          experienceItems.map((d) => {
             if (!d.attributes) return null;
             const { title, content, position, tags } = d.attributes;
             const start = d.attributes.start as string;
@@ -85,7 +109,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 {tags && (
                   <Wrap fontSize="sm" gap="1">
                     <Text>{t('common.tags')}</Text>
-                    {sortTags(tags?.data).map(
+                    {sortTags(tags?.data ?? []).map(
                       (s) =>
                         s.attributes && (
                           <Link href={`/${locale}/tags/${s.attributes.slug}`}>
@@ -103,8 +127,8 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
       <Divider />
       <Grid gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))">
         {
-          projects?.data
-            ?.filter((p) => p.attributes)
+          projectItems
+            .filter((p) => p.attributes)
             .map((p) => {
               return (
                 <GridItem>

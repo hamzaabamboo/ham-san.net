@@ -5,27 +5,13 @@ fragment projectPreview on Project {
   isActive
   locale
   category {
-    data {
-      id
-      attributes {
-        name
-      }
-    }
+    name
   }
-  media(pagination: { pageSize: 1 }) {
-    data {
-      id
-      attributes {
-        ...media
-      }
-    }
+  media {
+    ...media
   }
   banner {
-    data {
-      attributes {
-        ...media
-      }
-    }
+    ...media
   }
   date
   finishedDate
@@ -35,11 +21,6 @@ fragment projectPreview on Project {
     type
   }
   tags {
-    data {
-      id
-      attributes {
-        ...tag
-      }
-    }
+    ...tag
   }
 }

@@ -12,6 +12,7 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
+import { toLegacyGetProjectBySlug } from '~/graphql/legacy';
 import { ComponentUtilsLink, Tag } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
@@ -20,22 +21,39 @@ export const prerender = false;
 
 const { locale, slug } = Astro.params;
 
-const data = await graphQLSdk.getProjectBySlug({
+const data = toLegacyGetProjectBySlug(
+  await graphQLSdk.getProjectBySlug({
   slug
-});
+})
+);
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
-const { content, title, banner, links, media, category, date, finishedDate, tags } =
-  data?.projects?.data?.[0]?.attributes ?? {};
+type LegacyMedia = { data?: { attributes?: { url?: string; name?: string } | null } | null };
+type LegacyTagCollection = { data?: Array<{ attributes?: Tag | null }> };
+type LegacyProject = {
+  content?: string;
+  title?: string;
+  banner?: LegacyMedia;
+  links?: Array<ComponentUtilsLink | null | undefined>;
+  media?: { data?: Array<{ attributes?: { url?: string } | null }> };
+  category?: { data?: { attributes?: { name?: string } | null } | null };
+  date?: string;
+  finishedDate?: string;
+  tags?: LegacyTagCollection;
+};
+const project = (data?.projects?.data?.[0]?.attributes ?? {}) as LegacyProject;
+const { content, title, banner, links, media, category, date, finishedDate, tags } = project;
 const { url: bannerPath, name: bannerName } = banner?.data?.attributes ?? {};
 const bannerUrl = getMediaUrl(bannerPath, {}, import.meta.env.PUBLIC_API_URL);
-const images =
-  (media?.data
-    .map((d) => getMediaUrl(d.attributes?.url, {}, import.meta.env.PUBLIC_API_URL))
-    .filter((d) => !!d) as string[]) ?? [];
+const mediaItems = (media?.data ?? []) as Array<{ attributes?: { url?: string } }>;
+const images = mediaItems
+  .map((d) => getMediaUrl(d.attributes?.url, {}, import.meta.env.PUBLIC_API_URL))
+  .filter((d): d is string => !!d);
+const tagItems = (tags?.data ?? []) as Array<{ attributes?: Tag }>;
+const linkItems = (links ?? []) as Array<ComponentUtilsLink | null | undefined>;
 const t = useTranslations(locale);
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
@@ -96,7 +114,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
             <HStack>
               <Text>{t('common.tags')}</Text>
               <Wrap>
-                {tags.data
+                {tagItems
                   .filter((t) => !!t)
                   .map((t) => (
                     <Link href={`/${locale}/tags/${t.attributes?.slug}`}>
@@ -110,7 +128,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
         {
           links && (
             <Stack gap="1">
-              {links
+              {linkItems
                 .filter((l): l is ComponentUtilsLink => !!l)
                 .map((l) => {
                   return <LinkItem data={l} />;

@@ -1,4 +1,5 @@
 import { graphQLSdk } from '@graphql/sdk';
+import { toLegacyFetchAboutMe } from '@graphql/legacy';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -9,7 +10,7 @@ export const load: PageServerLoad = async () => {
 
   if (data) {
     return {
-      data
+      data: toLegacyFetchAboutMe(data)
     };
   }
 

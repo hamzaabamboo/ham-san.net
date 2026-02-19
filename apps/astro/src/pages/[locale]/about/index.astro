@@ -12,6 +12,7 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
+import { toLegacyFetchAboutMe } from '~/graphql/legacy';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { sortTags } from '~/utils/tags';
@@ -27,10 +28,12 @@ if (!validateLocale(locale)) {
 
 const t = useTranslations(locale);
 
-const data = await graphQLSdk.fetchAboutMe({
+const data = toLegacyFetchAboutMe(
+  await graphQLSdk.fetchAboutMe({
   // TODO: Localize Japanese Text
   locale: 'en'
-});
+})
+);
 
 //TODO: Tags
 const { aboutMe, educations, experiences, tags: _tags } = data ?? {};

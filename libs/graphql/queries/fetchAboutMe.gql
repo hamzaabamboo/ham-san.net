@@ -1,49 +1,23 @@
 query fetchAboutMe($locale: I18NLocaleCode) {
   aboutMe(locale: $locale) {
-    data {
-      attributes {
-        introduction
-      }
-    }
+    introduction
   }
   experiences(locale: $locale, sort: ["start:desc"]) {
-    data {
-      attributes {
-        ...experience
-        localizations {
-          data {
-            attributes {
-              ...experience
-            }
-          }
-        }
-      }
+    ...experience
+    localizations {
+      ...experience
     }
   }
   educations(locale: $locale, sort: ["start:desc"]) {
-    data {
-      attributes {
-        ...education
-        localizations {
-          data {
-            attributes {
-              ...education
-            }
-          }
-        }
-      }
+    ...education
+    localizations {
+      ...education
     }
   }
   tags(locale: $locale, sort: ["order:asc"], pagination: { limit: 100 }) {
-    data {
-      attributes {
-        ...tag
-        projects {
-          data {
-            id
-          }
-        }
-      }
+    ...tag
+    projects {
+      id: documentId
     }
   }
 }

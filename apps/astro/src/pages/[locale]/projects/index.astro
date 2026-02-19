@@ -4,6 +4,7 @@ import { Container, Grid, GridItem, Stack } from 'styled-system/jsx';
 import { ProjectCard } from '~/components/projects/ProjectCard';
 import { Heading } from '~/components/ui/heading';
 import { graphQLSdk } from '~/graphql';
+import { toLegacyFetchProjects } from '~/graphql/legacy';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
@@ -17,10 +18,12 @@ if (!validateLocale(locale)) {
 
 //TODO:
 
-const data = await graphQLSdk.fetchProjects({
+const data = toLegacyFetchProjects(
+  await graphQLSdk.fetchProjects({
   // locale,
   limit: 75
-});
+})
+);
 
 const projects = data?.projects?.data ?? [];
 

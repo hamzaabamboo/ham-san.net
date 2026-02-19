@@ -1,13 +1,15 @@
 import { graphQLSdk } from '@graphql/sdk';
+import { toLegacyGetProjectBySlug } from '@graphql/legacy';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, cookies }) => {
-  const data = await graphQLSdk.getProjectBySlug({
+  const raw = await graphQLSdk.getProjectBySlug({
     slug: params.slug
   });
 
-  if (data) {
+  if (raw) {
+    const data = toLegacyGetProjectBySlug(raw);
     const locale = data.projects?.data?.[0]?.attributes?.locale;
     if (locale) {
       /* @migration task: add path argument */ cookies.set('language', locale, { path: '/' });

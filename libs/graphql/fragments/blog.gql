@@ -4,43 +4,20 @@ fragment blog on Blog {
   content
   slug
   category {
-    data {
-      id
-      attributes {
-        name
-      }
-    }
+    name
   }
   thumbnail {
-    data {
-      id
-      attributes {
-        ...media
-      }
-    }
+    ...media
   }
   tags {
-    data {
-      id
-      attributes {
-        ...tag
-      }
-    }
+    ...tag
   }
   banner {
-    data {
-      attributes {
-        ...media
-      }
-    }
+    ...media
   }
   localizations {
-    data {
-      attributes {
-        locale
-        slug
-      }
-    }
+    locale
+    slug
   }
   createdAt
 }

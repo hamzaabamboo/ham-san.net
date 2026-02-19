@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { graphQLSdk } from '@graphql/sdk';
+import { toLegacyFetchBlogPosts } from '@graphql/legacy';
 
 export const load: PageServerLoad = async ({ cookies }) => {
   const data = await graphQLSdk.fetchBlogPosts({
@@ -9,7 +10,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   if (data) {
     return {
-      data
+      data: toLegacyFetchBlogPosts(data)
     };
   }
 

@@ -6,30 +6,15 @@ fragment project on Project {
   isActive
   locale
   category {
-    data {
-      id
-      attributes {
-        name
-      }
-    }
+    name
   }
   media {
-    data {
-      id
-      attributes {
-        ...media
-      }
-    }
+    ...media
   }
   date
   finishedDate
   tags {
-    data {
-      id
-      attributes {
-        ...tag
-      }
-    }
+    ...tag
   }
   links {
     title
@@ -37,18 +22,10 @@ fragment project on Project {
     type
   }
   banner {
-    data {
-      attributes {
-        ...media
-      }
-    }
+    ...media
   }
   localizations {
-    data {
-      attributes {
-        locale
-        slug
-      }
-    }
+    locale
+    slug
   }
 }

@@ -6,11 +6,7 @@ fragment experience on Experience {
   end
   slug
   tags {
-    data {
-      attributes {
-        ...tag
-      }
-    }
+    ...tag
   }
   content
   position

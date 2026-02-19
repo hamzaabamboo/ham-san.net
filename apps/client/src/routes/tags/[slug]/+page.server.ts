@@ -1,4 +1,5 @@
 import { graphQLSdk } from '@graphql/sdk';
+import { toLegacyGetTagBySlug } from '@graphql/legacy';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -10,7 +11,7 @@ export const load: PageServerLoad = async ({ params }) => {
 
   if (data) {
     return {
-      data
+      data: toLegacyGetTagBySlug(data)
     };
   }
 

@@ -3,44 +3,23 @@ query fetchHomePage($locale: I18NLocaleCode) {
     pagination: { pageSize: 3 }
     filters: { isFeatured: { eq: true } }
     sort: ["isFeatured:desc", "date:desc"]
+    locale: $locale
   ) {
-    data {
-      id
-      attributes {
-        ...projectPreview
-        localizations {
-          data {
-            attributes {
-              ...projectPreview
-            }
-          }
-        }
-      }
+    id: documentId
+    ...projectPreview
+    localizations {
+      ...projectPreview
     }
   }
   homepage(locale: $locale) {
-    data {
-      attributes {
-        introduction
-        introductionImage {
-          data {
-            id
-            attributes {
-              ...media
-            }
-          }
-        }
-        hero
-        heroSubtitle
-        heroImage {
-          data {
-            id
-            attributes {
-              ...media
-            }
-          }
-        }
-      }
+    introduction
+    introductionImage {
+      ...media
+    }
+    hero
+    heroSubtitle
+    heroImage {
+      ...media
     }
   }
 }
