@@ -1,8 +1,8 @@
 #TODO: Better Dockerfile
-FROM node:18-alpine3.18 AS base
+FROM node:20-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN npm install -g pnpm@9.12.3
 
 FROM base AS build
 COPY . /usr/src/app
