@@ -4,6 +4,18 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      frontend:
+        description: Build and deploy frontend
+        required: true
+        type: boolean
+        default: true
+      backend:
+        description: Build and deploy backend
+        required: true
+        type: boolean
+        default: true
 
 jobs:
   detect-changes:
@@ -13,13 +25,14 @@ jobs:
       pull-requests: read
     # Set job outputs to values from filter step
     outputs:
-      backend: ${{ steps.filter.outputs.backend }}
-      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.resolve.outputs.backend }}
+      frontend: ${{ steps.resolve.outputs.frontend }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       # For pull requests it's not necessary to checkout the code
       - name: Check Paths
+        if: ${{ github.event_name == 'push' }}
         uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -32,6 +45,17 @@ jobs:
               - 'apps/client/**'
               - 'pnpm-lock.yaml'
               - '.github/workflows/**'
+      - name: Resolve targets
+        id: resolve
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "backend=${{ inputs.backend }}" >> "$GITHUB_OUTPUT"
+            echo "frontend=${{ inputs.frontend }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "backend=${{ steps.filter.outputs.backend }}" >> "$GITHUB_OUTPUT"
+            echo "frontend=${{ steps.filter.outputs.frontend }}" >> "$GITHUB_OUTPUT"
+          fi
   build-push-frontend:
     name: Build and Push Frontend Container
     runs-on: ubuntu-latest
