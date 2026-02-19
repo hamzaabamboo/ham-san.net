@@ -6,6 +6,8 @@ import { localePaths } from '~/i18n/paths';
 
 import MainLayout from '~/layouts/MainLayout.astro';
 
+export const prerender = false;
+
 export function getStaticPaths() {
   return localePaths;
 }

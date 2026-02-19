@@ -1,5 +1,6 @@
 module.exports = {
   graphql: {
+    enabled: true,
     config: {
       endpoint: '/graphql',
       shadowCRUD: true,
@@ -10,30 +11,6 @@ module.exports = {
         tracing: false,
         introspection: true
       }
-    }
-  },
-  slugify: {
-    enabled: false,
-    config: {
-      contentTypes: {
-        projects: {
-          field: 'slug',
-          references: 'title'
-        },
-        tags: {
-          field: 'slug',
-          references: 'title'
-        },
-        blogs: {
-          field: 'slug',
-          references: 'title'
-        }
-      }
-    }
-  },
-  'local-image-sharp': {
-    config: {
-      cacheDir: '.image-cache'
     }
   }
 };

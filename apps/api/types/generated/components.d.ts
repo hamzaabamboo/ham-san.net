@@ -1,21 +1,21 @@
-import type { Schema, Attribute } from '@strapi/strapi';
+import type { Schema, Struct } from '@strapi/strapi';
 
-export interface UtilsLink extends Schema.Component {
+export interface UtilsLink extends Struct.ComponentSchema {
   collectionName: 'components_utils_links';
   info: {
-    displayName: 'link';
     description: '';
+    displayName: 'link';
   };
   attributes: {
-    url: Attribute.String;
-    title: Attribute.String;
-    type: Attribute.Enumeration<['web', 'github', 'others']>;
+    title: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<['web', 'github', 'others']>;
+    url: Schema.Attribute.String;
   };
 }
 
 declare module '@strapi/strapi' {
-  export module Shared {
-    export interface Components {
+  export module Public {
+    export interface ComponentSchemas {
       'utils.link': UtilsLink;
     }
   }

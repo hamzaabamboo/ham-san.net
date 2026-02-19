@@ -85,7 +85,7 @@ export const Markdown = ({
           img: ({ ref: _, node: __, ...props }) => {
             const rawUrl = props.src;
             const url = rawUrl?.[0] === '/' && assetsPrefix ? `${assetsPrefix}${rawUrl}` : rawUrl;
-            return <img {...props} src={url} />;
+            return <img src={url} alt={props.alt} />;
           }
         }}
       >

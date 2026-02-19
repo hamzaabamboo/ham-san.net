@@ -4,13 +4,14 @@ import { Grid, GridItem, Stack, styled } from 'styled-system/jsx';
 import { Carousel as _Carousel } from '~/components/ui/carousel';
 import { IconButton } from '~/components/ui/icon-button';
 
-export const Carousel = (props: _Carousel.RootProps & { images: string[] }) => {
+export const Carousel = (props: Omit<_Carousel.RootProps, 'slideCount'> & { images: string[] }) => {
   const [index, setIndex] = useState(0);
   const { images, ...rest } = props;
 
   return (
     <Stack>
       <_Carousel.Root
+        slideCount={images.length}
         slidesPerPage={1}
         onPageChange={({ page }) => setIndex(page)}
         loop
@@ -61,11 +62,11 @@ export const Carousel = (props: _Carousel.RootProps & { images: string[] }) => {
               key={`slide-${idx}`}
               onClick={() => setIndex(idx)}
               aria-selected={idx === index}
+              cursor="pointer"
               border="1px solid"
               borderColor="border.default"
               rounded="l1"
               backgroundColor={{ _selected: 'bg.subtle' }}
-              cursor="pointer"
             >
               <styled.img
                 src={image}

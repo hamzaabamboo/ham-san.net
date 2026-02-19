@@ -113,7 +113,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Retrieve a collection */
+        /**
+         * Retrieve a collection
+         * @description Retrieve the details of a collection by its unique identifier.
+         */
         post: operations["collectionsInfo"];
         delete?: never;
         options?: never;
@@ -130,7 +133,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Retrieve a collections document structure */
+        /**
+         * Retrieve a collections document structure
+         * @description Returns the document structure of a collection as a tree of navigation nodes, representing the hierarchy of documents within the collection.
+         */
         post: operations["collectionsDocuments"];
         delete?: never;
         options?: never;
@@ -147,7 +153,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** List all collections */
+        /**
+         * List all collections
+         * @description List all collections that the authenticated user has access to.
+         */
         post: operations["collectionsList"];
         delete?: never;
         options?: never;
@@ -164,7 +173,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create a collection */
+        /**
+         * Create a collection
+         * @description Create a new collection with the specified name, description, icon, color, and permission settings. Collections are used to organize documents.
+         */
         post: operations["collectionsCreate"];
         delete?: never;
         options?: never;
@@ -181,7 +193,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Update a collection */
+        /**
+         * Update a collection
+         * @description Update an existing collection's properties such as name, description, icon, color, sharing settings, or permission level.
+         */
         post: operations["collectionsUpdate"];
         delete?: never;
         options?: never;
@@ -360,7 +375,7 @@ export interface paths {
         put?: never;
         /**
          * Export all collections
-         * @description Triggers a bulk export of all documents in and their attachments. The endpoint returns a `FileOperation` that can be queried through the fileOperations endpoint to track the progress of the export and get the url for the final file.
+         * @description Triggers a bulk export of multiple collections and their documents. The endpoint returns a `FileOperation` that can be queried through the fileOperations endpoint to track the progress of the export and get the url for the final file.
          */
         post: operations["collectionsExportAll"];
         delete?: never;
@@ -380,7 +395,7 @@ export interface paths {
         put?: never;
         /**
          * Create a comment
-         * @description Create a comment
+         * @description Add a comment or reply to a document, either `data` or `text` is required.
          */
         post: operations["commentsCreate"];
         delete?: never;
@@ -440,7 +455,7 @@ export interface paths {
         put?: never;
         /**
          * Delete a comment
-         * @description Delete a comment
+         * @description Deletes a comment. If the comment is a top-level comment, all its children will be deleted as well.
          */
         post: operations["commentsDelete"];
         delete?: never;
@@ -469,6 +484,106 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/dataAttributes.info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve a data attribute
+         * @description Retrieve a data attribute by its unique identifier.
+         */
+        post: operations["dataAttributesInfo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/dataAttributes.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List all data attributes
+         * @description List all data attributes.
+         */
+        post: operations["dataAttributesList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/dataAttributes.create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a data attribute
+         * @description Create a new data attribute. Only admins can create data attributes.
+         */
+        post: operations["dataAttributesCreate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/dataAttributes.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update a data attribute
+         * @description Update an existing data attribute. Only admins can update data attributes. Note that the dataType cannot be changed after creation.
+         */
+        post: operations["dataAttributesUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/dataAttributes.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete a data attribute
+         * @description Delete a data attribute. Only admins can delete data attributes.
+         */
+        post: operations["dataAttributesDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/documents.info": {
         parameters: {
             query?: never;
@@ -478,7 +593,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Retrieve a document */
+        /**
+         * Retrieve a document
+         * @description Retrieve a document by its `UUID`, `urlId`, or `shareId`. At least one of these parameters must be provided.
+         */
         post: operations["documentsInfo"];
         delete?: never;
         options?: never;
@@ -515,7 +633,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Export a document as markdown */
+        /**
+         * Export a document.
+         * @description Export a document in Markdown, HTML, or PDF format. The response format is determined by the Accept header. Optionally include child documents in the export as a zip file.
+         */
         post: operations["documentsExport"];
         delete?: never;
         options?: never;
@@ -537,6 +658,26 @@ export interface paths {
          * @description This method will list all published documents and draft documents belonging to the current user.
          */
         post: operations["documentsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents.documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve a document's child structure
+         * @description This method returns the nested document structure (tree) for the children of the specified document.
+         */
+        post: operations["documentsDocuments"];
         delete?: never;
         options?: never;
         head?: never;
@@ -596,7 +737,27 @@ export interface paths {
          * Query documents with natural language
          * @description This method allows asking direct questions of your documents – where possible an answer will be provided. Search results will be restricted to those accessible by the current access token. Note that "AI answers" must be enabled for the workspace.
          */
-        post: operations["documentsAnswerquestion"];
+        post: operations["documentsAnswerQuestion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents.search_titles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Search document titles
+         * @description This method allows you to search document titles with keywords. Unlike documents.search, this only searches titles and returns faster results.
+         */
+        post: operations["documentsSearchTitles"];
         delete?: never;
         options?: never;
         head?: never;
@@ -614,7 +775,7 @@ export interface paths {
         put?: never;
         /**
          * Search all documents
-         * @description This methods allows you to search your teams documents with keywords. Note that search results will be restricted to those accessible by the current access token.
+         * @description This methods allows you to search your workspace's documents with keywords. Note that search results will be restricted to those accessible by the current access token.
          */
         post: operations["documentsSearch"];
         delete?: never;
@@ -863,6 +1024,146 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/documents.archived": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List all archived documents
+         * @description This method will list all archived documents belonging to the workspace that the current user has access to.
+         */
+        post: operations["documentsArchived"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents.deleted": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List all deleted documents
+         * @description This method will list all deleted documents belonging to the workspace that the current user has access to.
+         */
+        post: operations["documentsDeleted"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents.duplicate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Duplicate a document
+         * @description This method allows you to duplicate an existing document and optionally all of its child documents.
+         */
+        post: operations["documentsDuplicate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents.add_group": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add a group to a document
+         * @description This method allows you to give all members in a group access to a document.
+         */
+        post: operations["documentsAddGroup"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents.remove_group": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Remove a group from a document
+         * @description This method allows you to revoke all members in a group access to a document.
+         */
+        post: operations["documentsRemoveGroup"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents.group_memberships": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List document group memberships
+         * @description This method allows you to list a document's group memberships.
+         */
+        post: operations["documentsGroupMemberships"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents.empty_trash": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Empty trash
+         * @description Permanently delete all documents in the trash. This action is irreversible. Only available to admin users.
+         */
+        post: operations["documentsEmptyTrash"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/events.list": {
         parameters: {
             query?: never;
@@ -892,8 +1193,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Retrieve a file operation */
-        post: operations["fileoperationsInfo"];
+        /**
+         * Retrieve a file operation
+         * @description Retrieve the details and current status of a file operation by its unique identifier. File operations represent long-running import or export tasks.
+         */
+        post: operations["fileOperationsInfo"];
         delete?: never;
         options?: never;
         head?: never;
@@ -909,8 +1213,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Delete a file operation */
-        post: operations["fileoperationsDelete"];
+        /**
+         * Delete a file operation
+         * @description Delete a file operation and its associated files. This is useful for cleaning up completed or failed import/export operations.
+         */
+        post: operations["fileOperationsDelete"];
         delete?: never;
         options?: never;
         head?: never;
@@ -930,7 +1237,7 @@ export interface paths {
          * Retrieve the file
          * @description Load the resulting file from where it is stored based on the id. A temporary, signed url with embedded credentials is generated on demand.
          */
-        post: operations["fileoperationsRedirect"];
+        post: operations["fileOperationsRedirect"];
         delete?: never;
         options?: never;
         head?: never;
@@ -946,8 +1253,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** List all file operations */
-        post: operations["fileoperationsList"];
+        /**
+         * List all file operations
+         * @description List all file operations for the current workspace, filtered by type (import or export).
+         */
+        post: operations["fileOperationsList"];
         delete?: never;
         options?: never;
         head?: never;
@@ -963,7 +1273,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Retrieve a group */
+        /**
+         * Retrieve a group
+         * @description Retrieve the details of a group by its unique identifier, including its name and member count.
+         */
         post: operations["groupsInfo"];
         delete?: never;
         options?: never;
@@ -980,7 +1293,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** List all groups */
+        /**
+         * List all groups
+         * @description List all groups in the workspace. Groups are used to organize users and manage permissions for collections.
+         */
         post: operations["groupsList"];
         delete?: never;
         options?: never;
@@ -997,7 +1313,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create a group */
+        /**
+         * Create a group
+         * @description Create a new group with the specified name. Groups can be used to organize users and assign collection permissions to multiple users at once.
+         */
         post: operations["groupsCreate"];
         delete?: never;
         options?: never;
@@ -1014,7 +1333,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Update a group */
+        /**
+         * Update a group
+         * @description Update an existing group's name. The group is identified by its unique identifier.
+         */
         post: operations["groupsUpdate"];
         delete?: never;
         options?: never;
@@ -1102,6 +1424,166 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/oauthClients.info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve an OAuth client
+         * @description To retrieve information about an OAuth client you must pass either an `id` or a `clientId`.
+         */
+        post: operations["oauthClientsInfo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauthClients.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List accessible OAuth clients
+         * @description List all OAuth clients that the authenticated user has access to. This includes both clients created by the user and published clients available to the workspace.
+         */
+        post: operations["oauthClientsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauthClients.create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create an OAuth client
+         * @description Create a new OAuth client application that can be used to authenticate users and access the API on their behalf.
+         */
+        post: operations["oauthClientsCreate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauthClients.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update an OAuth client
+         * @description Update an existing OAuth client's properties such as name, description, redirect URIs, or published status.
+         */
+        post: operations["oauthClientsUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauthClients.rotate_secret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Rotate the secret for an OAuth client
+         * @description Generate a new client secret for an OAuth client. The old secret will be invalidated immediately, so ensure your application is updated to use the new secret.
+         */
+        post: operations["oauthClientsRotateSecret"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauthClients.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete an OAuth client
+         * @description Permanently delete an OAuth client and revoke all associated access tokens. This action cannot be undone.
+         */
+        post: operations["oauthClientsDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauthAuthentications.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List accessible OAuth authentications
+         * @description List all OAuth authentications for the current user. These represent the third-party applications that the user has authorized to access their account.
+         */
+        post: operations["oauthAuthenticationsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauthAuthentications.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete an OAuth authentiation
+         * @description Revoke an OAuth authentication, removing the third-party application's access to the user's account.
+         */
+        post: operations["oauthAuthenticationsDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/revisions.info": {
         parameters: {
             query?: never;
@@ -1111,7 +1593,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Retrieve a revision */
+        /**
+         * Retrieve a revision
+         * @description A revision is a snapshot of a document at a specific point in time. This endpoint allows you to retrieve a specific version of a document by its unique identifier.
+         */
         post: operations["revisionsInfo"];
         delete?: never;
         options?: never;
@@ -1128,7 +1613,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** List all revisions */
+        /**
+         * List all revisions
+         * @description List all revisions for a specific document. Revisions represent historical snapshots of a document's content and can be used to track changes over time.
+         */
         post: operations["revisionsList"];
         delete?: never;
         options?: never;
@@ -1145,7 +1633,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Retrieve a share object */
+        /**
+         * Retrieve a share object
+         * @description Retrieve the details of a share link by its unique identifier or by the associated document ID. Shares allow documents to be accessed publicly or by specific users.
+         */
         post: operations["sharesInfo"];
         delete?: never;
         options?: never;
@@ -1162,7 +1653,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** List all shares */
+        /**
+         * List all shares
+         * @description List all share links in the workspace.
+         */
         post: operations["sharesList"];
         delete?: never;
         options?: never;
@@ -1201,7 +1695,7 @@ export interface paths {
         put?: never;
         /**
          * Update a share
-         * @description Allows changing an existing shares published status, which removes authentication and makes it available to anyone with the link.
+         * @description Allows changing an existing share's published status, which removes authentication and makes it available to anyone with the link.
          */
         post: operations["sharesUpdate"];
         delete?: never;
@@ -1239,7 +1733,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create a star */
+        /**
+         * Create a star
+         * @description Stars a document or collection so it appears in the users sidebar. One of either `documentId` or `collectionId` must be provided.
+         */
         post: operations["starsCreate"];
         delete?: never;
         options?: never;
@@ -1256,7 +1753,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** List all stars */
+        /**
+         * List all stars
+         * @description List all starred documents for the authenticated user. Stars allow users to bookmark important documents for quick access in the sidebar.
+         */
         post: operations["starsList"];
         delete?: never;
         options?: never;
@@ -1273,7 +1773,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Update a stars index */
+        /**
+         * Update a stars order in the sidebar
+         * @description Update the position of a starred document in the sidebar. The index parameter determines the display order relative to other starred documents.
+         */
         post: operations["starsUpdate"];
         delete?: never;
         options?: never;
@@ -1290,7 +1793,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Delete a star */
+        /**
+         * Delete a star
+         * @description Remove a star from a document, removing it from the user's starred documents list in the sidebar.
+         */
         post: operations["starsDelete"];
         delete?: never;
         options?: never;
@@ -1307,7 +1813,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Invite users */
+        /**
+         * Invite users
+         * @description Send email invitations to one or more users to join the workspace. Invitations include a link to create an account and join the workspace.
+         */
         post: operations["usersInvite"];
         delete?: never;
         options?: never;
@@ -1324,7 +1833,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Retrieve a user */
+        /**
+         * Retrieve a user
+         * @description Retrieve the details of a user by their unique identifier, including their name, email, avatar, and role within the workspace.
+         */
         post: operations["usersInfo"];
         delete?: never;
         options?: never;
@@ -1343,7 +1855,7 @@ export interface paths {
         put?: never;
         /**
          * List all users
-         * @description List and filter all the users in the team
+         * @description List and filter all the users in the workspace
          */
         post: operations["usersList"];
         delete?: never;
@@ -1498,6 +2010,11 @@ export interface components {
     schemas: {
         /** @enum {string} */
         Permission: "read" | "read_write";
+        /**
+         * @description The editing mode for text updates to a document.
+         * @enum {string}
+         */
+        TextEditMode: "append" | "prepend" | "replace";
         Attachment: {
             /** @example image/png */
             contentType?: string;
@@ -1512,6 +2029,7 @@ export interface components {
             documentId?: string;
         };
         Pagination: {
+            /** @example 0 */
             offset?: number;
             /** @example 25 */
             limit?: number;
@@ -1576,7 +2094,7 @@ export interface components {
              * @example #123123
              */
             color?: string;
-            /** @description A string that represents an icon in the outline-icons package */
+            /** @description A string that represents an icon in the outline-icons package or an emoji */
             icon?: string;
             permission?: components["schemas"]["Permission"];
             /**
@@ -1639,6 +2157,79 @@ export interface components {
             /** @description The document text that the comment is anchored to, only included if includeAnchorText=true. */
             readonly anchorText?: string;
         };
+        DataAttribute: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /**
+             * @description The name of this data attribute.
+             * @example Status
+             */
+            name?: string;
+            /**
+             * @description A description of the data attribute.
+             * @example The current status of the document.
+             */
+            description?: string;
+            dataType?: components["schemas"]["DataAttributeDataType"];
+            options?: components["schemas"]["DataAttributeOptions"];
+            /**
+             * @description Whether this data attribute is pinned to the top of documents.
+             * @default false
+             */
+            pinned: boolean;
+            /**
+             * Format: date-time
+             * @description The date and time that this object was created
+             */
+            readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description The date and time that this object was last changed
+             */
+            readonly updatedAt?: string;
+            /**
+             * Format: date-time
+             * @description The date and time that this object was deleted
+             */
+            readonly deletedAt?: string | null;
+        };
+        /**
+         * @description The data type of the attribute value.
+         * @enum {string}
+         */
+        DataAttributeDataType: "string" | "number" | "boolean" | "list";
+        /** @description Additional options for certain data attribute types. */
+        DataAttributeOptions: {
+            /** @description An icon representing the data attribute from the outline-icons package. */
+            icon?: string;
+            /** @description Valid options for list data type. */
+            options?: {
+                /** @description The label/value of the option. */
+                value?: string;
+                /** @description Optional color for the option. */
+                color?: string;
+            }[];
+        };
+        DocumentDataAttribute: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the associated data attribute.
+             */
+            dataAttributeId?: string;
+            /**
+             * @description The value of the data attribute for this document.
+             * @example In Progress
+             */
+            value?: string | boolean | number;
+            /**
+             * Format: date-time
+             * @description The date and time that this object attribute was last changed
+             */
+            readonly updatedAt?: string;
+        };
         Document: {
             /**
              * Format: uuid
@@ -1657,7 +2248,7 @@ export interface components {
             parentDocumentId?: string;
             /**
              * @description The title of the document.
-             * @example 🎉 Welcome to Acme Inc
+             * @example Welcome to Acme Inc
              */
             title?: string;
             /** @description Whether this document should be displayed in a full-width view. */
@@ -1706,6 +2297,7 @@ export interface components {
              * @description The date and time that this object was published
              */
             readonly publishedAt?: string | null;
+            dataAttributes?: components["schemas"]["DocumentDataAttribute"][] | null;
             /**
              * Format: date-time
              * @description The date and time that this object was archived
@@ -1830,6 +2422,112 @@ export interface components {
              */
             readonly updatedAt?: string;
         };
+        OAuthClient: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /**
+             * @description The name of this OAuth client.
+             * @example Acme Inc
+             */
+            name?: string;
+            /**
+             * @description A short description of this OAuth client.
+             * @example Integrate Acme Inc's services into Outline.
+             */
+            description?: string;
+            /**
+             * @description The name of the developer who created this OAuth client.
+             * @example Acme Inc
+             */
+            developerName?: string;
+            /**
+             * @description The URL of the developer who created this OAuth client.
+             * @example https://example.com
+             */
+            developerUrl?: string;
+            /** @description A URL pointing to an image representing the OAuth client. */
+            avatarUrl?: string;
+            /**
+             * @description The client ID for the OAuth client.
+             * @example 2bquf8avrpdv31par42a
+             */
+            readonly clientId?: string;
+            /**
+             * @description The client secret for the OAuth client.
+             * @example ol_sk_rapdv31...
+             */
+            readonly clientSecret?: string;
+            /**
+             * @description The redirect URIs for the OAuth client.
+             * @example [
+             *       "https://example.com/callback"
+             *     ]
+             */
+            redirectUris?: string[];
+            /**
+             * @description Whether the OAuth client is available to other workspaces.
+             * @example true
+             */
+            published?: boolean;
+            /**
+             * Format: date-time
+             * @description Date and time when this OAuth client was created
+             */
+            readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this OAuth client was updated
+             */
+            readonly updatedAt?: string;
+        };
+        OAuthAuthentication: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated OAuthClient.
+             */
+            readonly oauthClientId?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated User.
+             */
+            readonly userId?: string;
+            scope?: string[];
+            /**
+             * Format: date-time
+             * @description Date and time when this authentication was last used
+             */
+            readonly lastActiveAt?: string;
+        };
+        Revision: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated document.
+             */
+            readonly documentId?: string;
+            /** @description Title of the document. */
+            readonly title?: string;
+            /** @description Body of the document, may contain markdown formatting */
+            readonly text?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this revision was created
+             */
+            readonly createdAt?: string;
+            createdBy?: components["schemas"]["User"];
+        };
         Share: {
             /**
              * Format: uuid
@@ -1907,42 +2605,20 @@ export interface components {
              */
             readonly createdAt?: string;
         };
-        Revision: {
-            /**
-             * Format: uuid
-             * @description Unique identifier for the object.
-             */
-            readonly id?: string;
-            /**
-             * Format: uuid
-             * @description Identifier for the associated document.
-             */
-            readonly documentId?: string;
-            /** @description Title of the document. */
-            readonly title?: string;
-            /** @description Body of the document, may contain markdown formatting */
-            readonly text?: string;
-            /**
-             * Format: date-time
-             * @description Date and time when this revision was created
-             */
-            readonly createdAt?: string;
-            createdBy?: components["schemas"]["User"];
-        };
         Team: {
             /**
              * Format: uuid
              * @description Unique identifier for the object.
              */
             readonly id?: string;
-            /** @description The name of this team, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary. */
+            /** @description The name of this workspace, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary. */
             name?: string;
             /**
              * Format: uri
-             * @description The URL for the image associated with this team, it will be displayed in the team switcher and in the top left of the knowledge base along with the name.
+             * @description The URL for the image associated with this workspace, it will be displayed in the workspace switcher and in the top left of the knowledge base along with the name.
              */
             avatarUrl?: string;
-            /** @description Whether this team has share links globally enabled. If this value is false then all sharing UI and APIs are disabled. */
+            /** @description Whether this workspace has share links globally enabled. If this value is false then all sharing UI and APIs are disabled. */
             sharing?: boolean;
             /**
              * Format: uuid
@@ -1952,20 +2628,20 @@ export interface components {
             defaultUserRole?: components["schemas"]["UserRole"];
             /** @description Whether members are allowed to create new collections. If false then only admins can create collections. */
             memberCollectionCreate?: boolean;
-            /** @description Whether this team has embeds in documents globally enabled. It can be disabled to reduce potential data leakage to third parties. */
+            /** @description Whether this workspace has embeds in documents globally enabled. It can be disabled to reduce potential data leakage to third parties. */
             documentEmbeds?: boolean;
-            /** @description Whether this team has collaborative editing in documents globally enabled. */
+            /** @description Whether this workspace has collaborative editing in documents globally enabled. */
             collaborativeEditing?: boolean;
-            /** @description Whether an invite is required to join this team, if false users may join with a linked SSO provider. */
+            /** @description Whether an invite is required to join this workspace, if false users may join with a linked SSO provider. */
             inviteRequired?: boolean;
             allowedDomains?: string[];
-            /** @description Whether this team has guest signin enabled. Guests can signin with an email address and are not required to have a Google Workspace/Slack SSO account once invited. */
+            /** @description Whether this workspace has guest signin enabled. Guests can signin with an email address and are not required to have a Google Workspace/Slack SSO account once invited. */
             guestSignin?: boolean;
-            /** @description Represents the subdomain at which this team's knowledge base can be accessed. */
+            /** @description Represents the subdomain at which this workspace's knowledge base can be accessed. */
             subdomain?: string;
             /**
              * Format: uri
-             * @description The fully qualified URL at which this team's knowledge base can be accessed.
+             * @description The fully qualified URL at which this workspace's knowledge base can be accessed.
              */
             readonly url?: string;
         };
@@ -2061,24 +2737,23 @@ export interface components {
              * @description Unique identifier for the object this policy references.
              */
             readonly id?: string;
+            /**
+             * @description The abilities that are allowed by this policy, if an array is returned then the individual ID's in the array represent the memberships that grant the ability.
+             * @example {
+             *       "read": true,
+             *       "update": true,
+             *       "delete": false
+             *     }
+             */
             abilities?: {
-                create?: boolean;
-                read?: boolean;
-                update?: boolean;
-                delete?: boolean;
-                restore?: boolean;
-                star?: boolean;
-                unstar?: boolean;
-                share?: boolean;
-                download?: boolean;
-                pin?: boolean;
-                unpin?: boolean;
-                move?: boolean;
-                archive?: boolean;
-                unarchive?: boolean;
-                createChildDocument?: boolean;
+                [key: string]: components["schemas"]["Ability"];
             };
         };
+        /**
+         * @description A single permission granted by a policy
+         * @example true
+         */
+        Ability: string[] | boolean;
         GroupMembership: {
             /** @description Unique identifier for the object. */
             readonly id?: string;
@@ -2410,6 +3085,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Collection"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -2504,13 +3180,24 @@ export interface operations {
                 "application/json": {
                     /** @example Human Resources */
                     name: string;
-                    /** @example  */
+                    /**
+                     * @description A brief description of the collection, markdown supported.
+                     * @example HR documentation is confidential and should be handled with care.
+                     */
                     description?: string;
                     permission?: components["schemas"]["Permission"];
-                    /** @example #123123 */
+                    /** @description A string that represents an icon in the outline-icons package or an emoji */
+                    icon?: string;
+                    /**
+                     * @description A hex color code for the collection icon
+                     * @example #123123
+                     */
                     color?: string;
-                    /** @example false */
-                    private?: boolean;
+                    /**
+                     * @description Whether public sharing of documents is allowed
+                     * @example false
+                     */
+                    sharing?: boolean;
                 };
             };
         };
@@ -2547,11 +3234,24 @@ export interface operations {
                     id: string;
                     /** @example Human Resources */
                     name?: string;
-                    permission?: components["schemas"]["Permission"];
-                    /** @example  */
+                    /**
+                     * @description A brief description of the collection, markdown supported.
+                     * @example HR documentation is confidential and should be handled with care.
+                     */
                     description?: string;
-                    /** @example #123123 */
+                    permission?: components["schemas"]["Permission"];
+                    /** @description A string that represents an icon in the outline-icons package or an emoji */
+                    icon?: string;
+                    /**
+                     * @description A hex color code for the collection icon
+                     * @example #123123
+                     */
                     color?: string;
+                    /**
+                     * @description Whether public sharing of documents is allowed
+                     * @example false
+                     */
+                    sharing?: boolean;
                 };
             };
         };
@@ -2909,6 +3609,16 @@ export interface operations {
                 "application/json": {
                     /** @enum {string} */
                     format?: "outline-markdown" | "json" | "html";
+                    /**
+                     * @description Whether to include attachments in the export.
+                     * @default true
+                     */
+                    includeAttachments?: boolean;
+                    /**
+                     * @description Whether to include private collections in the export.
+                     * @default true
+                     */
+                    includePrivate?: boolean;
                 };
             };
         };
@@ -2988,7 +3698,7 @@ export interface operations {
                 "application/json": {
                     /** Format: uuid */
                     id: string;
-                    /** @description Include the document text that the comment is anchored to, if any */
+                    /** @description Include the document text that the comment is anchored to, if any, in the response. */
                     includeAnchorText?: boolean;
                 };
             };
@@ -3002,6 +3712,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Comment"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -3036,6 +3747,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Comment"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -3099,7 +3811,7 @@ export interface operations {
                      * @description Filter to a specific collection
                      */
                     collectionId?: string;
-                    /** @description Include the document text that the comment is anchored to, if any */
+                    /** @description Include the document text that the comment is anchored to, if any, in the response. */
                     includeAnchorText?: boolean;
                 };
             };
@@ -3120,6 +3832,217 @@ export interface operations {
             };
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    dataAttributesInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the data attribute.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["DataAttribute"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    dataAttributesList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & {
+                    /**
+                     * @description Specifies the attributes by which data attributes will be sorted in the list.
+                     * @default createdAt
+                     * @enum {string}
+                     */
+                    sort?: "createdAt" | "updatedAt";
+                    /**
+                     * @description Specifies the sort order with respect to sort field.
+                     * @default DESC
+                     * @enum {string}
+                     */
+                    direction?: "ASC" | "DESC";
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["DataAttribute"][];
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    dataAttributesCreate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Name of the data attribute.
+                     * @example Status
+                     */
+                    name: string;
+                    /**
+                     * @description Description of the data attribute.
+                     * @example The current status of the document.
+                     */
+                    description?: string;
+                    dataType: components["schemas"]["DataAttributeDataType"];
+                    options?: components["schemas"]["DataAttributeOptions"];
+                    /**
+                     * @description Whether the data attribute is pinned to the top of document.
+                     * @default false
+                     */
+                    pinned?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["DataAttribute"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    dataAttributesUpdate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the data attribute.
+                     */
+                    id: string;
+                    /**
+                     * @description Name of the data attribute.
+                     * @example Status
+                     */
+                    name: string;
+                    /** @description Description of the data attribute. */
+                    description?: string;
+                    options?: components["schemas"]["DataAttributeOptions"];
+                    /** @description Whether the data attribute is pinned to the top of document. */
+                    pinned?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["DataAttribute"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    dataAttributesDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the data attribute.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
             429: components["responses"]["RateLimited"];
         };
     };
@@ -3152,6 +4075,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Document"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -3172,12 +4096,18 @@ export interface operations {
             content: {
                 "multipart/form-data": {
                     /** @description Plain text, markdown, docx, csv, tsv, and html format are supported. */
-                    file?: Record<string, never>;
-                    /** Format: uuid */
-                    collectionId?: string;
-                    /** Format: uuid */
-                    parentDocumentId?: string;
-                    template?: boolean;
+                    file: Record<string, never>;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to import into. One of collectionId or parentDocumentId is required.
+                     */
+                    collectionId?: string | null;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the parent document to import under. One of collectionId or parentDocumentId is required.
+                     */
+                    parentDocumentId?: string | null;
+                    /** @description Whether to publish the imported document */
                     publish?: boolean;
                 };
             };
@@ -3191,6 +4121,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Document"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -3211,7 +4142,16 @@ export interface operations {
             content: {
                 "application/json": {
                     /** @description Unique identifier for the document. Either the UUID or the urlId is acceptable. */
-                    id?: string;
+                    id: string;
+                    /** @description Paper size for PDF export (e.g., "A4", "Letter") */
+                    paperSize?: string;
+                    /** @description How long signed URLs should remain valid for attachment links (in seconds) */
+                    signedUrls?: number;
+                    /**
+                     * @description Whether to include child documents in the export. Using this option will always return a zip file.
+                     * @default false
+                     */
+                    includeChildDocuments?: boolean;
                 };
             };
         };
@@ -3257,6 +4197,8 @@ export interface operations {
                     parentDocumentId?: string;
                     /** @description Optionally filter to only templates */
                     template?: boolean;
+                    /** @description Document statuses to include in results */
+                    statusFilter?: ("draft" | "archived" | "published")[];
                 };
             };
         };
@@ -3276,6 +4218,39 @@ export interface operations {
             };
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    documentsDocuments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the document. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["NavigationNode"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
             429: components["responses"]["RateLimited"];
         };
     };
@@ -3353,7 +4328,7 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
-    documentsAnswerquestion: {
+    documentsAnswerQuestion: {
         parameters: {
             query?: never;
             header?: never;
@@ -3412,6 +4387,74 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    documentsSearchTitles: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & {
+                    /** @description Search query to match against document titles */
+                    query: string;
+                    /**
+                     * Format: uuid
+                     * @description Filter to a specific collection
+                     */
+                    collectionId?: string;
+                    /**
+                     * Format: uuid
+                     * @description Filter results based on user
+                     */
+                    userId?: string;
+                    /**
+                     * Format: uuid
+                     * @description Filter results based on content within a document and its children
+                     */
+                    documentId?: string;
+                    /** @description Document statuses to include in results */
+                    statusFilter?: ("draft" | "archived" | "published")[];
+                    /**
+                     * @description Any documents that have not been updated within the specified period will be filtered out
+                     * @enum {string}
+                     */
+                    dateFilter?: "day" | "week" | "month" | "year";
+                    /** @description Filter results for the collection or document referenced by the shareId */
+                    shareId?: string;
+                    /**
+                     * @description Specifies the attributes by which search results will be sorted
+                     * @enum {string}
+                     */
+                    sort?: "relevance" | "createdAt" | "updatedAt" | "title";
+                    /**
+                     * @description Specifies the sort order with respect to sort field
+                     * @enum {string}
+                     */
+                    direction?: "ASC" | "DESC";
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Document"][];
+                        policies?: components["schemas"]["Policy"][];
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     documentsSearch: {
         parameters: {
             query?: never;
@@ -3439,18 +4482,36 @@ export interface operations {
                      * @description A document to search within
                      */
                     documentId?: string;
-                    /**
-                     * @description Any documents that are not in the specified status will be filtered out
-                     * @example published
-                     * @enum {string}
-                     */
-                    statusFilter?: "draft" | "archived" | "published";
+                    /** @description Document statuses to include in results */
+                    statusFilter?: ("draft" | "archived" | "published")[];
                     /**
                      * @description Any documents that have not been updated within the specified period will be filtered out
                      * @example month
                      * @enum {string}
                      */
                     dateFilter?: "day" | "week" | "month" | "year";
+                    /** @description Filter results to the collection or document referenced by the shareId */
+                    shareId?: string;
+                    /**
+                     * @description Minimum number of words to show in search result snippets
+                     * @default 20
+                     */
+                    snippetMinWords?: number;
+                    /**
+                     * @description Maximum number of words to show in search result snippets
+                     * @default 30
+                     */
+                    snippetMaxWords?: number;
+                    /**
+                     * @description Specifies the attributes by which search results will be sorted
+                     * @enum {string}
+                     */
+                    sort?: "relevance" | "createdAt" | "updatedAt" | "title";
+                    /**
+                     * @description Specifies the sort order with respect to sort field
+                     * @enum {string}
+                     */
+                    direction?: "ASC" | "DESC";
                 };
             };
         };
@@ -3496,20 +4557,55 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Optional identifier for the document
+                     */
+                    id?: string;
                     /** @example Welcome to Acme Inc */
-                    title: string;
+                    title?: string;
                     /** @description The body of the document in markdown */
                     text?: string;
-                    /** Format: uuid */
-                    collectionId: string;
-                    /** Format: uuid */
-                    parentDocumentId?: string;
+                    /** @description Icon displayed alongside the document title */
+                    icon?: string;
+                    /** @description Color for the document icon (hex format) */
+                    color?: string | null;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection. Required to publish unless parentDocumentId is provided
+                     */
+                    collectionId?: string | null;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the parent document. Required to publish unless collectionId is provided
+                     */
+                    parentDocumentId?: string | null;
                     /** Format: uuid */
                     templateId?: string;
                     /** @description Whether this document should be considered to be a template. */
                     template?: boolean;
-                    /** @description Whether this document should be immediately published and made visible to other team members. */
+                    /** @description Whether this document should be immediately published and made visible to other workspace members. */
                     publish?: boolean;
+                    /** @description Whether the document should be displayed in full width */
+                    fullWidth?: boolean;
+                    /**
+                     * Format: date-time
+                     * @description Optionally set the created date in the past
+                     */
+                    createdAt?: string;
+                    /** @description Data attributes to be included on the document. */
+                    dataAttributes?: {
+                        /**
+                         * Format: uuid
+                         * @description Unique identifier for the data attribute.
+                         */
+                        dataAttributeId: string;
+                        /**
+                         * @description The value of the data attribute. Can be a string, boolean, or number depending on the data attribute type.
+                         * @example In Progress
+                         */
+                        value: string | boolean | number;
+                    }[];
                 };
             };
         };
@@ -3551,12 +4647,40 @@ export interface operations {
                     title?: string;
                     /** @description The body of the document in markdown. */
                     text?: string;
-                    /** @description If true the text field will be appended to the end of the existing document, rather than the default behavior of replacing it. This is potentially useful for things like logging into a document. */
-                    append?: boolean;
-                    /** @description Whether this document should be published and made visible to other team members, if a draft */
+                    /** @description Icon displayed alongside the document title */
+                    icon?: string | null;
+                    /** @description Color for the document icon (hex format) */
+                    color?: string | null;
+                    /** @description Whether the document should be displayed in full width */
+                    fullWidth?: boolean;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the template this document is based on
+                     */
+                    templateId?: string | null;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to move the document to
+                     */
+                    collectionId?: string | null;
+                    /** @description Whether insights should be visible on the document */
+                    insightsEnabled?: boolean;
+                    editMode?: components["schemas"]["TextEditMode"];
+                    /** @description Whether this document should be published and made visible to other workspace members, if a draft */
                     publish?: boolean;
-                    /** @description Whether the editing session has finished, this will trigger any notifications. This property will soon be deprecated. */
-                    done?: boolean;
+                    /** @description Data attributes to be updated. Attributes not included will be removed from the document. */
+                    dataAttributes?: {
+                        /**
+                         * Format: uuid
+                         * @description Unique identifier for the data attribute.
+                         */
+                        dataAttributeId: string;
+                        /**
+                         * @description The value of the data attribute. Can be a string, boolean, or number depending on the data attribute type.
+                         * @example In Progress
+                         */
+                        value: string | boolean | number;
+                    }[] | null;
                 };
             };
         };
@@ -3592,6 +4716,13 @@ export interface operations {
                 "application/json": {
                     /** Format: uuid */
                     id: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection where the template should be created
+                     */
+                    collectionId?: string | null;
+                    /** @description Whether the new template should be published */
+                    publish: boolean;
                 };
             };
         };
@@ -3629,6 +4760,11 @@ export interface operations {
                      * @example hDYep1TPAM
                      */
                     id: string;
+                    /**
+                     * @description Whether to detach the document from the collection
+                     * @default false
+                     */
+                    detach?: boolean;
                 };
             };
         };
@@ -3671,6 +4807,8 @@ export interface operations {
                     collectionId?: string;
                     /** Format: uuid */
                     parentDocumentId?: string;
+                    /** @description The position index in the collection structure */
+                    index?: number;
                 };
             };
         };
@@ -3750,6 +4888,11 @@ export interface operations {
                      * @example hDYep1TPAM
                      */
                     id: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to restore the document to.
+                     */
+                    collectionId?: string;
                     /**
                      * Format: uuid
                      * @description Identifier for the revision to restore to.
@@ -3838,6 +4981,11 @@ export interface operations {
                     id: string;
                     /** @description If set, will filter the results by user name. */
                     query?: string;
+                    /**
+                     * Format: uuid
+                     * @description If set, will filter the results to a specific user.
+                     */
+                    userId?: string;
                 };
             };
         };
@@ -3879,6 +5027,7 @@ export interface operations {
                     id: string;
                     /** @description If set, will filter the results by user name */
                     query?: string;
+                    permission?: components["schemas"]["Permission"];
                 };
             };
         };
@@ -3982,6 +5131,270 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    documentsArchived: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /**
+                     * Format: uuid
+                     * @description Optionally filter to a specific collection
+                     */
+                    collectionId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Document"][];
+                        policies?: components["schemas"]["Policy"][];
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    documentsDeleted: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Document"][];
+                        policies?: components["schemas"]["Policy"][];
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    documentsDuplicate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the document. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                    /** @description New title for the duplicated document */
+                    title?: string;
+                    /** @description Whether child documents should also be duplicated */
+                    recursive?: boolean;
+                    /** @description Whether the new document should be published */
+                    publish?: boolean;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection the document should be copied to
+                     */
+                    collectionId?: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the parent document the document should be copied to
+                     */
+                    parentDocumentId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            documents?: components["schemas"]["Document"][];
+                        };
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    documentsAddGroup: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the document. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                    /** Format: uuid */
+                    groupId: string;
+                    permission?: components["schemas"]["Permission"];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            groupMemberships?: components["schemas"]["CollectionGroupMembership"][];
+                        };
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    documentsRemoveGroup: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the document. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                    /** Format: uuid */
+                    groupId: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    documentsGroupMemberships: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & {
+                    /** @description Unique identifier for the document. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                    /** @description Filter memberships by group names */
+                    query?: string;
+                    permission?: components["schemas"]["Permission"];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            groups?: components["schemas"]["Group"][];
+                            groupMemberships?: components["schemas"]["CollectionGroupMembership"][];
+                        };
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    documentsEmptyTrash: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     eventsList: {
         parameters: {
             query?: never;
@@ -4032,7 +5445,7 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
-    fileoperationsInfo: {
+    fileOperationsInfo: {
         parameters: {
             query?: never;
             header?: never;
@@ -4068,7 +5481,7 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
-    fileoperationsDelete: {
+    fileOperationsDelete: {
         parameters: {
             query?: never;
             header?: never;
@@ -4105,7 +5518,7 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
-    fileoperationsRedirect: {
+    fileOperationsRedirect: {
         parameters: {
             query?: never;
             header?: never;
@@ -4139,7 +5552,7 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
-    fileoperationsList: {
+    fileOperationsList: {
         parameters: {
             query?: never;
             header?: never;
@@ -4203,6 +5616,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Group"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -4221,7 +5635,23 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"];
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /**
+                     * Format: uuid
+                     * @description Filter to groups including a specific user
+                     */
+                    userId?: string;
+                    /**
+                     * Format: uuid
+                     * @description Filter to groups matching an external ID
+                     */
+                    externalId?: string;
+                    /**
+                     * Format: uuid
+                     * @description Filter to groups matching a search query
+                     */
+                    query?: string;
+                };
             };
         };
         responses: {
@@ -4237,6 +5667,7 @@ export interface operations {
                             /** @description A preview of memberships in the group, note that this is not all memberships which can be queried from `groups.memberships`. */
                             groupMemberships?: components["schemas"]["GroupMembership"][];
                         };
+                        policies?: components["schemas"]["Policy"][];
                         pagination?: components["schemas"]["Pagination"];
                     };
                 };
@@ -4425,7 +5856,7 @@ export interface operations {
                         data?: {
                             users?: components["schemas"]["User"][];
                             groups?: components["schemas"]["Group"][];
-                            groupMemberships?: components["schemas"]["Membership"][];
+                            groupMemberships?: components["schemas"]["GroupMembership"][];
                         };
                     };
                 };
@@ -4468,6 +5899,347 @@ export interface operations {
                         data?: {
                             groups?: components["schemas"]["Group"][];
                         };
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthClientsInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the OAuth client.
+                     */
+                    id?: string;
+                    /**
+                     * @description Public identifier for the OAuth client.
+                     * @example 2bquf8avrpdv31par42a
+                     */
+                    clientId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["OAuthClient"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthClientsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                        data?: components["schemas"]["OAuthClient"][];
+                        policies?: components["schemas"]["Policy"][];
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthClientsCreate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Name of the OAuth client.
+                     * @example My App
+                     */
+                    name: string;
+                    /**
+                     * @description A short description of this OAuth client.
+                     * @example Integrate Acme Inc's services into Outline.
+                     */
+                    description?: string;
+                    /**
+                     * @description The name of the developer who created this OAuth client.
+                     * @example Acme Inc
+                     */
+                    developerName?: string;
+                    /**
+                     * @description The URL of the developer who created this OAuth client.
+                     * @example https://example.com
+                     */
+                    developerUrl?: string;
+                    /** @description A URL pointing to an image representing the OAuth client. */
+                    avatarUrl?: string;
+                    /**
+                     * @description List of redirect URIs for the OAuth client.
+                     * @example [
+                     *       "https://example.com/callback"
+                     *     ]
+                     */
+                    redirectUris: string[];
+                    /**
+                     * @description Whether the OAuth client is available to other workspaces.
+                     * @example true
+                     */
+                    published?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["OAuthClient"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthClientsUpdate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the OAuth client.
+                     */
+                    id: string;
+                    /**
+                     * @description Name of the OAuth client.
+                     * @example My App
+                     */
+                    name?: string;
+                    /**
+                     * @description A short description of this OAuth client.
+                     * @example Integrate Acme Inc's services into Outline.
+                     */
+                    description?: string;
+                    /**
+                     * @description The name of the developer who created this OAuth client.
+                     * @example Acme Inc
+                     */
+                    developerName?: string;
+                    /**
+                     * @description The URL of the developer who created this OAuth client.
+                     * @example https://example.com
+                     */
+                    developerUrl?: string;
+                    /** @description A URL pointing to an image representing the OAuth client. */
+                    avatarUrl?: string;
+                    /**
+                     * @description List of redirect URIs for the OAuth client.
+                     * @example [
+                     *       "https://example.com/callback"
+                     *     ]
+                     */
+                    redirectUris?: string[];
+                    /**
+                     * @description Whether the OAuth client is available to other workspaces.
+                     * @example true
+                     */
+                    published?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["OAuthClient"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthClientsRotateSecret: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the OAuth client.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["OAuthClient"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthClientsDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the OAuth client.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthAuthenticationsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                        data?: components["schemas"]["OAuthAuthentication"][];
+                        policies?: components["schemas"]["Policy"][];
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthAuthenticationsDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** Format: uuid */
+                    oauthClientId: string;
+                    scope?: string[];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
                     };
                 };
             };
@@ -4523,7 +6295,13 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"];
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /**
+                     * Format: uuid
+                     * @description The document ID to retrieve revisions for
+                     */
+                    documentId?: string;
+                };
             };
         };
         responses: {
@@ -4576,6 +6354,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Share"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -4594,7 +6373,13 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"];
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /**
+                     * Format: uuid
+                     * @description Filter to shared documents matching a search query
+                     */
+                    query?: string;
+                };
             };
         };
         responses: {
@@ -4606,6 +6391,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Share"][];
+                        policies?: components["schemas"]["Policy"][];
                         pagination?: components["schemas"]["Pagination"];
                     };
                 };
@@ -4639,6 +6425,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Share"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -4673,6 +6460,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["Share"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -4800,8 +6588,8 @@ export interface operations {
             content: {
                 "application/json": {
                     /** Format: uuid */
-                    id?: string;
-                    index?: string;
+                    id: string;
+                    index: string;
                 };
             };
         };
@@ -4836,7 +6624,7 @@ export interface operations {
             content: {
                 "application/json": {
                     /** Format: uuid */
-                    id?: string;
+                    id: string;
                 };
             };
         };
@@ -4921,6 +6709,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["User"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -4968,6 +6757,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["User"][];
+                        policies?: components["schemas"]["Policy"][];
                         pagination?: components["schemas"]["Pagination"];
                     };
                 };
@@ -5004,6 +6794,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["User"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -5041,6 +6832,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["User"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -5077,6 +6869,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["User"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -5113,6 +6906,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["User"];
+                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
@@ -5169,7 +6963,10 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** Format: uuid */
+                    /**
+                     * Format: uuid
+                     * @description The document ID to retrieve views for
+                     */
                     documentId: string;
                 };
             };

@@ -18,6 +18,8 @@ import { useTranslations } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 //TODO:
+export const prerender = false;
+
 export function getStaticPaths() {
   return localePaths;
 }

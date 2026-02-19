@@ -22,9 +22,7 @@
   },
   "dependencies": {
     "openapi-fetch": "^0.10.2",
-    "plugin-upload": "link:@strapi/plugin-upload",
     "postcss-import": "^16.1.0",
-    "strapi-admin": "link:@strapi/plugin-content-type-builder/strapi-admin",
     "tslib": "^2.6.3",
     "typescript-eslint": "^7.15.0",
     "vite": "^5.3.3"
@@ -63,8 +61,14 @@
   },
   "pnpm": {
     "overrides": {
-      "react": "19.1.0",
-      "react-dom": "19.1.0"
-    }
+      "@radix-ui/react-slot": "1.2.3",
+      "graphql": "16.12.0",
+      "nexus>graphql": "16.12.0"
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "better-sqlite3",
+      "sharp"
+    ]
   }
 }

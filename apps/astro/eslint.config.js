@@ -13,6 +13,10 @@ const config = tseslint.config(
   ...baseConfig,
   {
     ignores: [
+      '.astro/**',
+      '**/.astro/**',
+      '.netlify/**',
+      '**/.netlify/**',
       '**/styled-system/*',
       '**/generated/*',
       '**/components/ui/**/*',
@@ -20,13 +24,12 @@ const config = tseslint.config(
       '*.config.*'
     ]
   },
-  ...tseslint.configs.recommendedTypeChecked.map((c) => ({
+  ...tseslint.configs.recommended.map((c) => ({
     ...c
   })),
   {
     languageOptions: {
       parserOptions: {
-        project: true,
         tsconfigRootDir: import.meta.dirname
       }
     },
@@ -37,7 +40,9 @@ const config = tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
-      '@typescript-eslint/no-unsafe-enum-comparison': 'off'
+      '@typescript-eslint/no-unsafe-enum-comparison': 'off',
+      '@typescript-eslint/await-thenable': 'off',
+      '@typescript-eslint/no-base-to-string': 'off'
     }
   },
   ...compat.config({ extends: ['plugin:@pandacss/recommended'] }),

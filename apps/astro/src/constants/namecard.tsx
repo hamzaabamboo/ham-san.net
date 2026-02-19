@@ -90,6 +90,28 @@ export const NAMECARDS = [
         </Stack>
       );
     }
+  },
+  {
+    variant: 'polka',
+    color: '#6a6c6d',
+    content: {
+      firstRow: 'Love学院高等学校',
+      secondRow: 'L高生、バンコクサテライト 🇹🇭',
+      name: 'ハムP',
+      nameSubtitle: 'はむぴー／HamP',
+      message: 'สวัสดีครับ!（サワディーカー）'
+    },
+    logoBottom: ash.src,
+    qrCode: ashQrCode.src,
+    Quote: () => {
+      return (
+        <Stack gap={0}>
+          <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
+            「敗け立って、<b>次</b>はある」 <br />ー 高橋ポルカ
+          </styled.blockquote>
+        </Stack>
+      );
+    }
   }
 ];
 

@@ -10,27 +10,21 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi/plugin-content-type-builder": "^4.25.4",
-    "@strapi/plugin-email": "^4.25.4",
-    "@strapi/plugin-graphql": "^4.25.4",
-    "@strapi/plugin-i18n": "^4.25.4",
-    "@strapi/plugin-upload": "^4.25.4",
-    "@strapi/plugin-users-permissions": "^4.25.4",
-    "@strapi/strapi": "^4.25.4",
-    "@strapi/typescript-utils": "^4.25.4",
-    "@strapi/utils": "^4.25.4",
+    "@strapi/plugin-graphql": "^5.36.1",
+    "@strapi/plugin-users-permissions": "^5.36.1",
+    "@strapi/strapi": "^5.36.1",
+    "@strapi/typescript-utils": "^5.36.1",
+    "@strapi/utils": "^5.36.1",
     "better-sqlite3": "9.4.5",
     "domain-browser": "^5.7.0",
     "dotenv": "^16.4.5",
     "find-config": "^1.0.0",
+    "graphql": "16.12.0",
     "pg": "^8.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^5.3.4",
-    "strapi-plugin-config-sync": "^1.2.5",
-    "strapi-plugin-local-image-sharp": "^1.7.0",
-    "strapi-plugin-slugify": "^2.3.8",
-    "styled-components": "~5.2.3"
+    "react-router-dom": "^6.30.1",
+    "styled-components": "^6.1.19"
   },
   "author": {
     "name": "A Strapi developer"
@@ -39,7 +33,7 @@
     "uuid": "50c990ae-536d-4d8f-8960-bb4c84350ab6"
   },
   "engines": {
-    "node": ">=14.19.1 <=20.x.x",
+    "node": ">=20.0.0 <=24.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT",
