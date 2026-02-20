@@ -11,7 +11,7 @@ import { Text } from '../ui/text';
 export const ProjectCard = (props: { data: ProjectPreviewFragment; locale: Languages }) => {
   const { data, locale } = props;
   const { title, description, slug, banner, media, date, category, links } = data;
-  const image = banner?.data?.attributes ?? media?.data?.[0]?.attributes;
+  const image = banner ?? media?.[0];
   const link = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Web);
   const ghLink = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Github);
 
@@ -47,7 +47,7 @@ export const ProjectCard = (props: { data: ProjectPreviewFragment; locale: Langu
             {title}
           </Text>
           <Wrap gap="1" rowGap="0.5" color="fg.subtle" fontSize="sm">
-            <Text>{category?.data?.attributes?.name}</Text> <Text>|</Text>
+            <Text>{category?.name}</Text> <Text>|</Text>
             <Text>{formatMonthYear(parseDate(date), locale)}</Text>
           </Wrap>
           <Text fontSize="sm">{description}</Text>

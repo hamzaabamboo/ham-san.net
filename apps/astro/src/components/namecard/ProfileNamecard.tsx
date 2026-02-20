@@ -1,20 +1,22 @@
 import type { ReactNode } from 'react';
 import { Box, HStack, Stack, styled } from 'styled-system/jsx';
 
+type Renderable = ReactNode | (() => ReactNode);
+
 type ProfileLabels = {
-  name: string;
-  birthday: string;
-  location: string;
-  oshi: string;
-  message: string;
+  name: Renderable;
+  birthday: Renderable;
+  location: Renderable;
+  oshi: Renderable;
+  message: Renderable;
 };
 
 type ProfilePerson = {
-  name: string;
-  birthday: string;
-  location: string;
-  oshi: string;
-  message: string;
+  name: Renderable;
+  birthday: Renderable;
+  location: Renderable;
+  oshi: Renderable;
+  message: Renderable;
 };
 
 type ProfileLogos = {
@@ -23,26 +25,32 @@ type ProfileLogos = {
   bottom?: string;
 };
 
+type ProfileCornerStripeStop = {
+  start: number;
+  end: number;
+  color: string;
+};
+
 type ProfileIllustration = {
   src: string;
+  props?: Record<string, string | number | Record<string, string | number>>;
 };
 
 type ProfileFace = {
-  title?: string;
-  brand?: string;
-  footer?: string;
+  title?: Renderable;
+  footer?: Renderable;
   labels?: Partial<ProfileLabels>;
   person?: Partial<ProfilePerson>;
-  message?: string;
+  message?: Renderable;
   illustration?: ProfileIllustration;
-  showBrand?: boolean;
   showFooter?: boolean;
-  showValues?: boolean;
+  backTop?: Renderable;
 };
 
 export type ProfileNamecardProps = {
   side: 'front' | 'back';
   accentColor?: string;
+  cornerStripeColors?: string[];
   widthMm?: number;
   heightMm?: number;
   logos: ProfileLogos;
@@ -67,10 +75,23 @@ const emptyPerson: ProfilePerson = {
 };
 
 const mm = (value: number) => `${value}mm`;
+const cornerStripeSizeMm = 50.5;
+const cornerDotBoxSizeMm = 18;
+const cornerDotRadiusMm = 0.5;
+const cornerDotStepMm = 3.5;
+const cornerDotGridCount = 5;
+const cornerStripeRanges = [
+  { start: 0, end: 7 },
+  { start: 7, end: 11.5 },
+  { start: 11.5, end: 16 },
+  { start: 16, end: 20.5 }
+] as const;
+const defaultCornerStripeColors = ['#ef701c', '#fbe67c', '#ba2635', '#f8b500'];
 const textStrokeStyle = {
   WebkitTextStroke: '0.5mm rgba(255, 255, 255, 0.95)',
   paintOrder: 'stroke fill'
 } as const;
+const resolveRenderable = (value: Renderable) => (typeof value === 'function' ? value() : value);
 
 const mergeFace = (front: ProfileFace, back?: ProfileFace) => ({
   ...front,
@@ -85,17 +106,79 @@ const mergeFace = (front: ProfileFace, back?: ProfileFace) => ({
   }
 });
 
+const CornerStripes = ({
+  corner,
+  stops
+}: {
+  corner: 'top-left' | 'bottom-right';
+  stops: ProfileCornerStripeStop[];
+}) => {
+  return (
+    <svg
+      aria-hidden="true"
+      width={mm(cornerStripeSizeMm)}
+      height={mm(cornerStripeSizeMm)}
+      viewBox={`0 0 ${cornerStripeSizeMm} ${cornerStripeSizeMm}`}
+    >
+      {stops.map(({ start, end, color }) => (
+        <polygon
+          key={`${start}-${end}-${corner}`}
+          points={
+            corner === 'top-left'
+              ? `0,${end} ${end},0 ${start},0 0,${start}`
+              : `${cornerStripeSizeMm},${cornerStripeSizeMm - start} ${cornerStripeSizeMm - start},${cornerStripeSizeMm} ${cornerStripeSizeMm - end},${cornerStripeSizeMm} ${cornerStripeSizeMm},${cornerStripeSizeMm - end}`
+          }
+          fill={color}
+        />
+      ))}
+    </svg>
+  );
+};
+
+const CornerDots = () => {
+  const dotGridSizeMm = cornerDotRadiusMm * 2 + cornerDotStepMm * (cornerDotGridCount - 1);
+  const offsetMm = (cornerDotBoxSizeMm - dotGridSizeMm) / 2;
+
+  return (
+    <svg
+      aria-hidden="true"
+      width={mm(cornerDotBoxSizeMm)}
+      height={mm(cornerDotBoxSizeMm)}
+      viewBox={`0 0 ${cornerDotBoxSizeMm} ${cornerDotBoxSizeMm}`}
+    >
+      {Array.from({ length: cornerDotGridCount }, (_, y) =>
+        Array.from({ length: cornerDotGridCount }, (_, x) => (
+          <circle
+            key={`${x}-${y}`}
+            cx={offsetMm + cornerDotRadiusMm + cornerDotStepMm * x}
+            cy={offsetMm + cornerDotRadiusMm + cornerDotStepMm * y}
+            r={cornerDotRadiusMm}
+            fill="rgba(236, 236, 236, 0.88)"
+          />
+        ))
+      )}
+    </svg>
+  );
+};
+
 const CardShell = ({
   accentColor,
+  cornerStripeColors,
   widthMm,
   heightMm,
   children
 }: {
   accentColor: string;
+  cornerStripeColors: string[];
   widthMm: number;
   heightMm: number;
   children: ReactNode;
 }) => {
+  const cornerStripeStops = cornerStripeRanges.map((range, index) => ({
+    ...range,
+    color: cornerStripeColors[index] ?? defaultCornerStripeColors[index]
+  }));
+
   return (
     <Box
       style={{
@@ -112,36 +195,40 @@ const CardShell = ({
         printColorAdjust: 'exact'
       }}
     >
-      <Box position="absolute" top="0" left="0" width="50.5mm" height="50.5mm">
+      <Box
+        position="absolute"
+        top="0"
+        left="0"
+        width={mm(cornerStripeSizeMm)}
+        height={mm(cornerStripeSizeMm)}
+      >
+        <CornerStripes corner="top-left" stops={cornerStripeStops} />
         <Box
-          inset="0"
           position="absolute"
-          backgroundImage="linear-gradient(135deg, #79aedd 0 7mm, #9ad68b 7mm 11.5mm, #f1b167 11.5mm 16mm, #79aedd 16mm 20.5mm, transparent 20.5mm 100%)"
-          clipPath="polygon(0 0, 100% 0, 0 100%)"
-        />
-        <Box position="absolute" top="1.5mm" left="1.5mm" width="18mm" height="18mm">
-          <Box
-            inset="0"
-            position="absolute"
-            backgroundImage="radial-gradient(circle, rgba(236, 236, 236, 0.88) 0.35mm, transparent 0.36mm)"
-            backgroundSize="3.5mm 3.5mm"
-          />
+          top="1.5mm"
+          left="1.5mm"
+          width={mm(cornerDotBoxSizeMm)}
+          height={mm(cornerDotBoxSizeMm)}
+        >
+          <CornerDots />
         </Box>
       </Box>
-      <Box position="absolute" right="0" bottom="0" width="50.5mm" height="50.5mm">
+      <Box
+        position="absolute"
+        right="0"
+        bottom="0"
+        width={mm(cornerStripeSizeMm)}
+        height={mm(cornerStripeSizeMm)}
+      >
+        <CornerStripes corner="bottom-right" stops={cornerStripeStops} />
         <Box
-          inset="0"
           position="absolute"
-          backgroundImage="linear-gradient(-45deg, #79aedd 0 7mm, #9ad68b 7mm 11.5mm, #f1b167 11.5mm 16mm, #79aedd 16mm 20.5mm, transparent 20.5mm 100%)"
-          clipPath="polygon(100% 0, 100% 100%, 0 100%)"
-        />
-        <Box position="absolute" right="1.5mm" bottom="1.5mm" width="18mm" height="18mm">
-          <Box
-            inset="0"
-            position="absolute"
-            backgroundImage="radial-gradient(circle, rgba(236, 236, 236, 0.88) 0.35mm, transparent 0.36mm)"
-            backgroundSize="3.5mm 3.5mm"
-          />
+          right="1.5mm"
+          bottom="1.5mm"
+          width={mm(cornerDotBoxSizeMm)}
+          height={mm(cornerDotBoxSizeMm)}
+        >
+          <CornerDots />
         </Box>
       </Box>
       {children}
@@ -149,20 +236,12 @@ const CardShell = ({
   );
 };
 
-const Header = ({
-  title,
-  logos,
-  showBrand
-}: {
-  title: string;
-  logos: ProfileLogos;
-  showBrand: boolean;
-}) => {
+const Header = ({ title, logos }: { title: Renderable; logos: ProfileLogos }) => {
   return (
     <HStack justifyContent="space-between" alignItems="center" h="8mm">
       <HStack gap="1.5mm" alignItems="center">
         <styled.img src={logos.top} objectFit="contain" width="9mm" height="9mm" />
-        <styled.p
+        <Box
           style={textStrokeStyle}
           color="var(--main-color)"
           fontFamily='"Fredoka", "Helvetica Neue", Arial, sans-serif'
@@ -170,15 +249,12 @@ const Header = ({
           fontWeight="bold"
           lineHeight="1"
         >
-          {title}
-        </styled.p>
+          {resolveRenderable(title)}
+        </Box>
       </HStack>
-      {showBrand && (
-        <HStack gap="1.5mm" justifyContent="flex-end" alignItems="center">
-          {logos.middle && <styled.img src={logos.middle} objectFit="contain" height="4mm" />}
-          {logos.bottom && <styled.img src={logos.bottom} objectFit="contain" height="4mm" />}
-        </HStack>
-      )}
+      <HStack gap="1.5mm" justifyContent="flex-end" alignItems="center">
+        {logos.middle && <styled.img src={logos.middle} objectFit="contain" height="8mm" />}
+      </HStack>
     </HStack>
   );
 };
@@ -189,31 +265,32 @@ const MessageBox = ({
   widthMm,
   heightMm
 }: {
-  label: string;
-  message: string;
+  label: Renderable;
+  message: Renderable;
   widthMm: number;
   heightMm: number;
 }) => {
   return (
     <Box
+      style={{
+        width: mm(widthMm),
+        height: mm(heightMm)
+      }}
       position="relative"
       borderColor="var(--main-color)"
       borderRadius="3mm"
       borderWidth="0.45mm"
-      width={mm(widthMm)}
-      height={mm(heightMm)}
       py="2mm"
       px="1mm"
       bgColor="white.a9"
     >
-      <styled.p
+      <Box
         style={textStrokeStyle}
         position="absolute"
-        top="-1.5mm"
+        top="-1.25mm"
         left="50%"
         transform="translateX(-50%)"
         width="fit-content"
-        px="1mm"
         color="var(--main-color)"
         fontSize="2mm"
         fontWeight="bold"
@@ -221,18 +298,20 @@ const MessageBox = ({
         bgColor="white"
         whiteSpace="nowrap"
       >
-        {label}
-      </styled.p>
-      <styled.p
+        {resolveRenderable(label)}
+      </Box>
+      <Box
         style={textStrokeStyle}
+        display="flex"
+        alignItems="center"
+        height="100%"
         color="var(--main-color)"
-        fontSize="2mm"
+        fontSize="1.95mm"
         fontWeight="bold"
-        lineHeight="1.25"
         whiteSpace="pre-wrap"
       >
-        {message}
-      </styled.p>
+        {resolveRenderable(message)}
+      </Box>
     </Box>
   );
 };
@@ -243,20 +322,14 @@ export const ProfileNamecardFront = ({
   labels,
   person,
   message,
-  footer,
-  illustration,
-  showBrand,
-  showFooter
+  illustration
 }: {
-  title: string;
+  title: Renderable;
   logos: ProfileLogos;
   labels: ProfileLabels;
   person: ProfilePerson;
-  message: string;
-  footer: string;
+  message: Renderable;
   illustration?: ProfileIllustration;
-  showBrand: boolean;
-  showFooter: boolean;
 }) => {
   return (
     <>
@@ -267,13 +340,14 @@ export const ProfileNamecardFront = ({
           position="absolute"
           right="4.5mm"
           bottom="-14mm"
-          scale="2.15"
+          scale={2.15}
           objectFit="contain"
           width="30mm"
           maxHeight="50mm"
           opacity={0.95}
           userSelect="none"
           pointerEvents="none"
+          {...illustration.props}
         />
       )}
       <Stack
@@ -284,64 +358,49 @@ export const ProfileNamecardFront = ({
         py="3mm"
         px="3mm"
       >
-        <Header title={title} logos={logos} showBrand={showBrand} />
+        <Header title={title} logos={logos} />
         <Stack gap="2mm">
           <HStack gap="5mm">
-            <styled.p
-              style={textStrokeStyle}
-              color="var(--main-color)"
-              fontSize="2mm"
-              fontWeight="bold"
-            >
-              {labels.name}
-            </styled.p>
-            <styled.p
+            <Box style={textStrokeStyle} color="var(--main-color)" fontSize="2mm" fontWeight="bold">
+              {resolveRenderable(labels.name)}
+            </Box>
+            <Box
               style={textStrokeStyle}
               color="var(--main-color)"
               fontSize="4mm"
               fontWeight="bold"
               lineHeight="1"
             >
-              {person.name}
-            </styled.p>
+              {resolveRenderable(person.name)}
+            </Box>
           </HStack>
           <HStack gap="2mm">
-            <styled.p
-              style={textStrokeStyle}
-              color="var(--main-color)"
-              fontSize="2mm"
-              fontWeight="bold"
-            >
-              {labels.birthday}
-            </styled.p>
-            <styled.p
+            <Box style={textStrokeStyle} color="var(--main-color)" fontSize="2mm" fontWeight="bold">
+              {resolveRenderable(labels.birthday)}
+            </Box>
+            <Box
               style={textStrokeStyle}
               color="var(--main-color)"
               fontSize="2mm"
               fontWeight="bold"
               lineHeight="1.05"
             >
-              {person.birthday}
-            </styled.p>
+              {resolveRenderable(person.birthday)}
+            </Box>
           </HStack>
           <HStack gap="2mm">
-            <styled.p
-              style={textStrokeStyle}
-              color="var(--main-color)"
-              fontSize="2mm"
-              fontWeight="bold"
-            >
-              {labels.location}
-            </styled.p>
-            <styled.p
+            <Box style={textStrokeStyle} color="var(--main-color)" fontSize="2mm" fontWeight="bold">
+              {resolveRenderable(labels.location)}
+            </Box>
+            <Box
               style={textStrokeStyle}
               color="var(--main-color)"
               fontSize="2mm"
               fontWeight="bold"
               lineHeight="1.05"
             >
-              {person.location}
-            </styled.p>
+              {resolveRenderable(person.location)}
+            </Box>
           </HStack>
         </Stack>
         <Stack gap="1.8mm">
@@ -356,107 +415,37 @@ export const ProfileNamecardBack = ({
   title,
   logos,
   labels,
-  person,
+  backTop,
   message,
   footer,
-  showBrand,
-  showFooter,
-  showValues
+  showFooter
 }: {
-  title: string;
+  title: Renderable;
   logos: ProfileLogos;
   labels: ProfileLabels;
-  person: ProfilePerson;
-  message: string;
-  footer: string;
-  showBrand: boolean;
+  backTop: Renderable;
+  message: Renderable;
+  footer: Renderable;
   showFooter: boolean;
-  showValues: boolean;
 }) => {
   return (
     <Stack
       zIndex="2"
       position="relative"
-      gap="4.5mm"
+      gap="3.5mm"
       justifyContent="space-between"
       h="full"
       py="3mm"
       px="3mm"
     >
-      <Header title={title} logos={logos} showBrand={showBrand} />
-      <Stack gap="4.5mm" width="100%">
-        <HStack gap="2mm">
-          <styled.p
-            style={textStrokeStyle}
-            color="var(--main-color)"
-            fontSize="2.4mm"
-            fontWeight="bold"
-          >
-            {labels.name}
-          </styled.p>
-          {showValues && (
-            <styled.p
-              style={textStrokeStyle}
-              color="var(--main-color)"
-              fontSize="4mm"
-              fontWeight="bold"
-              lineHeight="1.05"
-            >
-              {person.name}
-            </styled.p>
-          )}
-        </HStack>
-        <HStack gap="20mm">
-          <HStack gap="2mm">
-            <styled.p
-              style={textStrokeStyle}
-              color="var(--main-color)"
-              fontSize="2mm"
-              fontWeight="bold"
-            >
-              {labels.birthday}
-            </styled.p>
-            {showValues && (
-              <styled.p
-                style={textStrokeStyle}
-                color="var(--main-color)"
-                fontSize="3.4mm"
-                fontWeight="bold"
-                lineHeight="1.05"
-              >
-                {person.birthday}
-              </styled.p>
-            )}
-          </HStack>
-          <HStack gap="2mm">
-            <styled.p
-              style={textStrokeStyle}
-              color="var(--main-color)"
-              fontSize="2.4mm"
-              fontWeight="bold"
-            >
-              {labels.oshi}
-            </styled.p>
-            {showValues && (
-              <styled.p
-                style={textStrokeStyle}
-                color="var(--main-color)"
-                fontSize="3.4mm"
-                fontWeight="bold"
-                lineHeight="1.05"
-              >
-                {person.oshi}
-              </styled.p>
-            )}
-          </HStack>
-        </HStack>
-      </Stack>
-      <Stack gap="1.8mm" alignItems="center">
-        <MessageBox label={labels.message} message={message} widthMm={85} heightMm={20} />
+      <Header title={title} logos={logos} />
+      <Box width="100%">{resolveRenderable(backTop)}</Box>
+      <Stack gap="1mm">
+        <MessageBox label={labels.message} message={message} widthMm={85} heightMm={18} />
         {showFooter && (
-          <styled.p style={textStrokeStyle} color="var(--main-color)" fontSize="2mm" lineHeight="1">
-            {footer}
-          </styled.p>
+          <Box style={textStrokeStyle} color="var(--main-color)" fontSize="2mm" lineHeight="1">
+            {resolveRenderable(footer)}
+          </Box>
         )}
       </Stack>
     </Stack>
@@ -468,6 +457,7 @@ export const mmToPx = (value: number) => (value * 96) / 25.4;
 export const ProfileNamecard = ({
   side,
   accentColor = '#305483',
+  cornerStripeColors,
   widthMm = 91,
   heightMm = 55,
   logos,
@@ -479,13 +469,18 @@ export const ProfileNamecard = ({
   const person = { ...emptyPerson, ...mergedFace.person };
   const title = mergedFace.title ?? 'PROFILE CARD';
   const footer = mergedFace.footer ?? '©IKZL';
-  const message = mergedFace.message ?? person.message;
-  const showBrand = mergedFace.showBrand ?? side === 'back';
+  const message = mergedFace.message ?? (side === 'front' ? person.message : '');
+  const stripeColors = cornerStripeColors ?? defaultCornerStripeColors;
   const showFooter = mergedFace.showFooter ?? true;
-  const showValues = mergedFace.showValues ?? side === 'front';
+  const backTop = mergedFace.backTop ?? '';
 
   return (
-    <CardShell widthMm={widthMm} heightMm={heightMm} accentColor={accentColor}>
+    <CardShell
+      widthMm={widthMm}
+      heightMm={heightMm}
+      cornerStripeColors={stripeColors}
+      accentColor={accentColor}
+    >
       {side === 'front' ? (
         <ProfileNamecardFront
           title={title}
@@ -493,22 +488,17 @@ export const ProfileNamecard = ({
           labels={labels}
           person={person}
           message={message}
-          footer={footer}
           illustration={mergedFace.illustration}
-          showBrand={showBrand}
-          showFooter={showFooter}
         />
       ) : (
         <ProfileNamecardBack
           title={title}
           logos={logos}
           labels={labels}
-          person={person}
+          backTop={backTop}
           message={message}
           footer={footer}
-          showBrand={showBrand}
           showFooter={showFooter}
-          showValues={showValues}
         />
       )}
     </CardShell>
