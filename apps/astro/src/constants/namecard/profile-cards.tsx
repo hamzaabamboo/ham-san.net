@@ -103,7 +103,9 @@ export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
                 </HStack>
                 <HStack gap="1mm" alignItems="center">
                   <styled.img src={akarinLogo.src} objectFit="contain" width="3mm" height="3mm" />
-                  <ProfileText fontSize="3mm">鬼頭明里</ProfileText>
+                  <ProfileText color="#ee6a5a" fontSize="3mm">
+                    鬼頭明里
+                  </ProfileText>
                 </HStack>
               </Grid>
             </Stack>
@@ -191,10 +193,13 @@ export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
               </GridItem>
               <GridItem rowSpan={2} minW="0">
                 <ProfileText style={{ whiteSpace: 'normal', lineHeight: '1.15' }} fontSize="3mm">
-                  綾咲穂音、楡井希実、
-                  <br /> 百瀬安由未、佐々木琴子、
+                  <span style={{ color: '#fbe67c' }}>綾咲穂音</span>、
+                  <span style={{ color: '#f8b500' }}>楡井希実</span>、
                   <br />
-                  鬼頭明里
+                  <span style={{ color: '#ef701c' }}>百瀬安由未</span>、
+                  <span style={{ color: '#ba2635' }}>佐々木琴子</span>、
+                  <br />
+                  <span >鬼頭明里</span>
                 </ProfileText>
               </GridItem>
               <GridItem>
