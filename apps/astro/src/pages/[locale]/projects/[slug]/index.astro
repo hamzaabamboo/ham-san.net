@@ -111,13 +111,13 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
         </Stack>
         {
           tags && (
-            <HStack>
+            <HStack gap="2" alignItems="center" flexWrap="wrap">
               <Text>{t('common.tags')}</Text>
-              <Wrap>
+              <Wrap gap="2" rowGap="2" alignItems="center">
                 {tagItems
                   .filter((t) => !!t)
                   .map((t) => (
-                    <Link href={`/${locale}/tags/${t.attributes?.slug}`}>
+                    <Link href={`/${locale}/tags/${t.attributes?.slug}`} display="inline-flex">
                       <TagBadge tag={t.attributes as Tag} showCount size="sm" />
                     </Link>
                   ))}

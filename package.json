@@ -13,6 +13,7 @@
     "check": "nx run-many -p client, astro -t lint, format",
     "fix": "nx run-many -p client, astro -t fix:all",
     "codegen:prod": "nx run-many -p client, astro -t codegen:prod",
+    "check:react-astro": "bash ./tools/check-react-astro.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "codegen:api": "pnpx openapi-typescript https://raw.githubusercontent.com/outline/openapi/main/spec3.yml -o ./libs/outline/schema.ts"
   },

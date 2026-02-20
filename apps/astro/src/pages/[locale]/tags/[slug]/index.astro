@@ -107,12 +107,12 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                   </Text>
                 </Wrap>
                 {tags && (
-                  <Wrap fontSize="sm" gap="1">
+                  <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
                     <Text>{t('common.tags')}</Text>
                     {sortTags(tags?.data ?? []).map(
                       (s) =>
                         s.attributes && (
-                          <Link href={`/${locale}/tags/${s.attributes.slug}`}>
+                          <Link href={`/${locale}/tags/${s.attributes.slug}`} display="inline-flex">
                             <TagBadge tag={s.attributes} showCount size="sm" />
                           </Link>
                         )

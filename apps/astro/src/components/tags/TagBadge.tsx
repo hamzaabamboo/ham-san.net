@@ -11,8 +11,11 @@ export const TagBadge = ({
   size?: 'sm' | 'md' | 'lg';
 }) => {
   const { title, type } = tag;
-
-  const projectsCount = tag?.projects?.data.length;
+  const projectsCount = Array.isArray(tag?.projects)
+    ? tag.projects.filter(Boolean).length
+    : Array.isArray((tag as { projects?: { data?: unknown[] } }).projects?.data)
+      ? (((tag as { projects?: { data?: unknown[] } }).projects?.data?.length ?? 0) as number)
+      : 0;
 
   const colorPalette = (() => {
     switch (type) {

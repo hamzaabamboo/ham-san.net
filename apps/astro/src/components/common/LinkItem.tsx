@@ -1,4 +1,5 @@
 import { FaGithub, FaGlobe } from 'react-icons/fa';
+import type { IconType } from 'react-icons/lib';
 import { Wrap } from 'styled-system/jsx';
 import { ComponentUtilsLink, Enum_Componentutilslink_Type } from '~/graphql/generated/client';
 import { Link } from '../ui/link';
@@ -30,7 +31,7 @@ export const LinkItem = ({
   linkText
 }: {
   data: Omit<ComponentUtilsLink, 'id'>;
-  Icon?: React.FunctionComponent;
+  Icon?: IconType;
   linkText?: string;
 }) => {
   const Icon = _icon ? _icon : linkIcon(data);

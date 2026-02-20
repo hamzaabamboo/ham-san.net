@@ -19,6 +19,14 @@ export default defineConfig({
     imageCDN: false
     // cacheOnDemandPages: true
   }),
+  vite: {
+    resolve: {
+      dedupe: ['react', 'react-dom']
+    },
+    ssr: {
+      noExternal: ['@ark-ui/react', /^@zag-js\//]
+    }
+  },
   prefetch: true,
   trailingSlash: 'ignore'
 });

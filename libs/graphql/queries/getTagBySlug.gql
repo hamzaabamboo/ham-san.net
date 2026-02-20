@@ -1,4 +1,4 @@
-query getTagBySlug($slug: String, $locale: I18NLocaleCode = "all") {
+query getTagBySlug($slug: String, $locale: I18NLocaleCode) {
   tags(filters: { slug: { eq: $slug } }, locale: $locale) {
     id: documentId
     ...tag

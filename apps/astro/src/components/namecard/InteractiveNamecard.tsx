@@ -27,7 +27,7 @@ export const InteractiveNamecard = ({ data }: { data: NamecardData }) => {
         position="relative"
         shadow="md"
         transition="transform"
-        animation={{ base: '5s linear infinite spin', _groupHover: 'none' }}
+        animation={{ base: 'namecard-spin-y 5s linear infinite', _groupHover: 'none' }}
         transformStyle="preserve-3d"
         transitionTimingFunction="linear"
         transitionDelay="0.1s"

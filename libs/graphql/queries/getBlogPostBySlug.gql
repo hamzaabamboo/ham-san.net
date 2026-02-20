@@ -1,4 +1,4 @@
-query getBlogPostBySlug($slug: String, $locale: I18NLocaleCode = "all") {
+query getBlogPostBySlug($slug: String, $locale: I18NLocaleCode) {
   blogs(filters: { slug: { eq: $slug } }, locale: $locale) {
     id: documentId
     ...blog

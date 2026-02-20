@@ -1,8 +1,12 @@
 import { defineConfig } from '@pandacss/dev';
-import { createPreset } from '@park-ui/panda-preset';
-import amber from '@park-ui/panda-preset/colors/amber';
-import neutral from '@park-ui/panda-preset/colors/neutral';
 import { theme } from './src/theme';
+import { globalCss } from './src/theme/global-css';
+import { conditions } from './src/theme/conditions';
+import { blue } from './src/theme/colors/blue';
+import { mauve } from './src/theme/colors/mauve';
+import { red } from './src/theme/colors/red';
+import { green } from './src/theme/colors/green';
+import { amber } from './src/theme/colors/amber';
 
 export default defineConfig({
   // Whether to use css reset
@@ -10,43 +14,56 @@ export default defineConfig({
 
   presets: [
     '@pandacss/preset-base',
-    createPreset({
-      accentColor: amber,
-      grayColor: neutral,
-      radius: 'lg'
-    })
+    '@pandacss/preset-panda'
   ],
 
   // Where to look for your css declarations
   include: ['./src/**/*.{js,jsx,ts,tsx,astro}'],
 
   // Files to exclude
-  exclude: [],
+  exclude: [
+    process.env.ENVIRONMENT === 'ssr' && '**/static/**',
+    process.env.ENVIRONMENT === 'static' && '**/*non-static*/**'
+  ].filter((a) => !!a) as string[],
+
+  globalCss,
 
   staticCss: {
     recipes: {
       // text: ['*']
-      badge: [
-        {
-          size: ['*']
-        }
-      ]
     },
-    // TODO: WORKAROUND
     css: [
       {
-        properties: {
-          listStyleType: ['none', 'disc', 'decimal'],
-          fontWeight: ['bold'],
-          fontSize: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
-          colorPalette: ['*']
-        }
+        properties: {}
       }
     ]
   },
   // Useful for theme customization
   theme: {
-    extend: theme
+    extend: {
+      ...theme,
+      tokens: {
+        ...theme.tokens
+      },
+      semanticTokens: {
+        ...theme.semanticTokens,
+        colors: {
+          ...theme.semanticTokens?.colors,
+          accent: blue,
+          blue: blue,
+          gray: mauve,
+          mauve: mauve,
+          red: red,
+          green: green,
+          amber: amber
+        },
+        radii: {
+          l1: { value: '{radii.md}' },
+          l2: { value: '{radii.lg}' },
+          l3: { value: '{radii.xl}' }
+        }
+      }
+    }
   },
 
   jsxFramework: 'react',
@@ -61,5 +78,22 @@ export default defineConfig({
     jsx: 'styled-system/jsx'
   },
 
-  lightningcss: true
+  conditions,
+
+  lightningcss: true,
+  minify: process.env.NODE_ENV === 'production',
+  hash:
+    process.env.NODE_ENV === 'production'
+      ? {
+          className: true,
+          cssVar: true
+        }
+      : false,
+  hooks: {
+    // 'cssgen:done': ({ artifact, content }) => {
+    //   if (artifact === 'styles.css') {
+    //     return removeUnusedCssVars(removeUnusedKeyframes(content));
+    //   }
+    // }
+  }
 });

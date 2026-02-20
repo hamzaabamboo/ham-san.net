@@ -1,27 +1,27 @@
 import { useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Grid, GridItem, Stack, styled } from 'styled-system/jsx';
-import { Carousel as _Carousel } from '~/components/ui/carousel';
+import { Carousel as UICarousel, type RootProps } from '~/components/ui/carousel';
 import { IconButton } from '~/components/ui/icon-button';
 
-export const Carousel = (props: Omit<_Carousel.RootProps, 'slideCount'> & { images: string[] }) => {
+export const AppCarousel = (props: Omit<RootProps, 'slideCount'> & { images: string[] }) => {
   const [index, setIndex] = useState(0);
   const { images, ...rest } = props;
 
   return (
     <Stack>
-      <_Carousel.Root
+      <UICarousel.Root
         slideCount={images.length}
         slidesPerPage={1}
-        onPageChange={({ page }) => setIndex(page)}
+        onPageChange={({ page }: { page: number }) => setIndex(page)}
         loop
-        page={index}
+        page={String(index)}
         {...rest}
       >
-        <_Carousel.Viewport>
-          <_Carousel.ItemGroup>
+        <UICarousel.Viewport>
+          <UICarousel.ItemGroup>
             {images.map((image, index) => (
-              <_Carousel.Item key={index} index={index}>
+              <UICarousel.Item key={index} index={index}>
                 <styled.img
                   src={image}
                   alt={`Slide ${index}`}
@@ -29,32 +29,32 @@ export const Carousel = (props: Omit<_Carousel.RootProps, 'slideCount'> & { imag
                   objectFit="contain"
                   w="full"
                 />
-              </_Carousel.Item>
+              </UICarousel.Item>
             ))}
-          </_Carousel.ItemGroup>
-          <_Carousel.Control>
-            <_Carousel.PrevTrigger asChild>
+          </UICarousel.ItemGroup>
+          <UICarousel.Control>
+            <UICarousel.PrevTrigger asChild>
               <IconButton size="sm" variant="link" aria-label="Previous Slide">
                 <FaChevronLeft />
               </IconButton>
-            </_Carousel.PrevTrigger>
-            <_Carousel.IndicatorGroup>
+            </UICarousel.PrevTrigger>
+            <UICarousel.IndicatorGroup>
               {images.map((_, index) => (
-                <_Carousel.Indicator
+                <UICarousel.Indicator
                   key={index}
                   index={index}
                   aria-label={`Goto slide ${index + 1}`}
                 />
               ))}
-            </_Carousel.IndicatorGroup>
-            <_Carousel.NextTrigger asChild>
+            </UICarousel.IndicatorGroup>
+            <UICarousel.NextTrigger asChild>
               <IconButton size="sm" variant="link" aria-label="Next Slide">
                 <FaChevronRight />
               </IconButton>
-            </_Carousel.NextTrigger>
-          </_Carousel.Control>
-        </_Carousel.Viewport>
-      </_Carousel.Root>
+            </UICarousel.NextTrigger>
+          </UICarousel.Control>
+        </UICarousel.Viewport>
+      </UICarousel.Root>
       <Grid gridTemplateColumns="repeat(auto-fit, 100px)">
         {images.map((image, idx) => {
           return (
@@ -82,3 +82,5 @@ export const Carousel = (props: Omit<_Carousel.RootProps, 'slideCount'> & { imag
     </Stack>
   );
 };
+
+export const Carousel = AppCarousel;

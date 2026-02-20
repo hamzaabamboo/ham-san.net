@@ -1,5 +1,6 @@
 import { Box, Center, HStack, Stack, styled } from 'styled-system/jsx';
 import { NamecardData } from '~/constants/namecard';
+import { ProfileNamecard } from './ProfileNamecard';
 
 export const Namecard = ({
   data,
@@ -11,16 +12,45 @@ export const Namecard = ({
   nametag?: boolean;
 }) => {
   const { color, content, logoTop, logoBottom, logoMiddle, qrCode, Quote } = data;
+
+  if (side === 'front' && data.style === 'profile' && data.profile) {
+    return (
+      <ProfileNamecard
+        side="front"
+        accentColor={data.profile.accentColor ?? color}
+        logos={{
+          top: logoTop ?? logoBottom,
+          middle: logoMiddle,
+          bottom: logoBottom
+        }}
+        front={data.profile.front}
+        back={data.profile.back}
+      />
+    );
+  }
+
+  if (side === 'back' && data.style === 'profile' && data.profile) {
+    return (
+      <ProfileNamecard
+        side="back"
+        accentColor={data.profile.accentColor ?? color}
+        logos={{
+          top: logoTop ?? logoBottom,
+          middle: logoMiddle,
+          bottom: logoBottom
+        }}
+        front={data.profile.front}
+        back={data.profile.back}
+      />
+    );
+  }
+
   if (side === 'front') {
     return (
       <HStack
         style={{
           WebkitPrintColorAdjust: 'exact',
-          ['--main-color' as 'color']: color,
-          ['--name-size' as 'fontSize']: nametag
-            ? 'var(--font-sizes-5xl)'
-            : 'var(--font-sizes-4xl)',
-          ['--subtitle-size' as 'width']: nametag ? '0.6rem' : 'var(--font-sizes-sm)'
+          ['--main-color' as 'color']: color
         }}
         gap="0"
         width="91mm"
@@ -34,16 +64,16 @@ export const Namecard = ({
       >
         <Box width="5mm" h="full" bgColor="var(--main-color, #1F1F5A)" />
         <Stack flex="1" gap="2" justifyContent="space-around" h="full" py="4" pl="4" pr="2">
-          <Stack gap="1" fontSize="var(--subtitle-size)">
+          <Stack gap="1" fontSize={nametag ? '0.6rem' : 'xs'}>
             <styled.p lineHeight="1">{content.firstRow}</styled.p>
             <styled.p>{content.secondRow}</styled.p>
           </Stack>
           <styled.hr borderColor="var(--main-color)" />
           <Stack gap="0">
-            <styled.h1 fontSize="var(--name-size)" fontWeight="semibold" lineHeight="1.12">
+            <styled.h1 fontSize={nametag ? '5xl' : '4xl'} fontWeight="semibold" lineHeight="1.12">
               {content.name}
             </styled.h1>
-            <styled.p fontSize="var(--subtitle-size)">{content.nameSubtitle}</styled.p>
+            <styled.p fontSize={nametag ? '0.6rem' : 'sm'}>{content.nameSubtitle}</styled.p>
           </Stack>
           <Stack gap="1">
             <Stack gap="0" fontSize="xs">
@@ -60,7 +90,12 @@ export const Namecard = ({
           </Stack>
         </Stack>
         <Stack justifyContent="space-between" alignItems="flex-end" w="84px" h="full" py="4" pr="4">
-          <styled.img src={logoTop} />
+          <styled.img
+            src={logoTop}
+            aspectRatio="square"
+            objectPosition="center"
+            objectFit="contain"
+          />
           {logoMiddle && <styled.img src={logoMiddle} />}
           <styled.img src={logoBottom} />
         </Stack>

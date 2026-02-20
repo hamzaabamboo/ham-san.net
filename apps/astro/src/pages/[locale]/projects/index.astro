@@ -48,7 +48,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 {group}
               </Heading>
               <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))">
-                {projectGroups[group].map((p) => {
+                {(projectGroups[group] ?? []).map((p) => {
                   return (
                     <GridItem>
                       {p.attributes && <ProjectCard data={p.attributes} locale={locale} />}

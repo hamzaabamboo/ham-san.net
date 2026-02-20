@@ -22,6 +22,7 @@ import { localePaths } from '~/i18n/paths';
 import { languages } from '~/i18n/ui';
 import { useTranslations } from '~/i18n/utils';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { NAMECARD_PAGE_LINKS } from 'utils/namecard-page';
 
 export function getStaticPaths() {
   return localePaths.flatMap((l) =>
@@ -40,56 +41,28 @@ export function getStaticPaths() {
 const { locale, variant } = Astro.params;
 const t = useTranslations(locale);
 
-const links = [
-  {
-    label: t('contact.twitter'),
-    value: '@HamP_punipuni',
-    url: 'https://twitter.com/HamP_punipuni',
-    icon: FaTwitter
-  },
-  {
-    label: 'Discord',
-    value: 'hamp',
-    url: 'https://discordapp.com/users/260776161032798208',
-    icon: FaDiscord
-  },
-  {
-    label: 'Eventernote',
-    value: 'HamP_punipuni',
-    url: 'https://www.eventernote.com/users/HamP_punipuni',
-    icon: FaLink
-  },
-  {
-    label: t('contact.github'),
-    value: 'hamzaabamboo',
-    url: 'https://github.com/hamzaabamboo',
-    icon: FaGithub
-  },
-  {
-    label: t('name-card.tierlist'),
-    url: 'https://tiermaker.com/list/actors-actresses/love-live-seiyuu-2023-15476088/3747761',
-    icon: FaList,
-    value: t('name-card.tierlist-description')
-  },
-  {
-    label: t('name-card.home'),
-    url: '/',
-    icon: FaHouseUser
-  },
-  {
-    label: 'Spotify',
-    url: 'https://open.spotify.com/user/dick8a92koqqd6ti4sqtz40co?si=3c9b1b72a71a47be',
-    icon: FaSpotify
-  },
-  {
-    label: 'last.fm',
-    url: 'https://www.last.fm/user/Betcrg',
-    icon: FaLastfm
-  }
-  // Link Like Lovelive, SIF2, Starlight, Deres
-];
+const iconMap = {
+  twitter: FaTwitter,
+  discord: FaDiscord,
+  eventernote: FaLink,
+  github: FaGithub,
+  tierlist: FaList,
+  home: FaHouseUser,
+  spotify: FaSpotify,
+  lastfm: FaLastfm
+} as const;
 
-const namecard = NAMECARDS.find((n) => n.variant === variant) ?? NAMECARDS[0];
+const links = NAMECARD_PAGE_LINKS.map((item) => ({
+  ...item,
+  icon: iconMap[item.id],
+  label: item.labelKey ? t(item.labelKey as never) : item.label,
+  value: item.valueKey ? t(item.valueKey as never) : item.value
+}));
+
+const namecard = NAMECARDS.find((n) => n.variant === variant);
+if (!namecard) {
+  return Astro.redirect('/404');
+}
 
 const { color } = namecard;
 

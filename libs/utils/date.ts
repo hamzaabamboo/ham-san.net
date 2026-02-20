@@ -1,9 +1,10 @@
-import { formatDistanceToNow as _formatDistanceToNow, format, parse } from 'date-fns';
+import { formatDistanceToNow as _formatDistanceToNow, format, isValid, parse } from 'date-fns';
 import { enUS, ja } from 'date-fns/locale';
 
 export const parseDate = (date: string) => parse(date, 'yyyy-MM-dd', new Date());
 
 export const formatMonthYear = (date: Date, locale = 'en') => {
+  if (!isValid(date)) return '';
   return format(date, locale === 'ja' ? 'yyyy年 MMMM' : 'MMMM yyyy', {
     locale: locale === 'ja' ? ja : enUS
   });

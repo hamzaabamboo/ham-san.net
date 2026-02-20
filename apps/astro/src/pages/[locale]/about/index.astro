@@ -28,6 +28,25 @@ if (!validateLocale(locale)) {
 
 const t = useTranslations(locale);
 
+const formatDateRange = (start?: string, end?: string) => {
+  const startText = start ? formatMonthYear(parseDate(start), locale) : '';
+  const endText = end ? formatMonthYear(parseDate(end), locale) : t('common.present');
+  if (!startText) return endText === t('common.present') ? '' : endText;
+  return `${startText} - ${endText}`;
+};
+
+const formatDuration = (start?: string, end?: string) => {
+  if (!start) return '';
+  const startDate = parseDate(start);
+  const endDate = end ? parseDate(end) : new Date();
+  const startText = formatMonthYear(startDate, locale);
+  const endText = end ? formatMonthYear(endDate, locale) : t('common.present');
+  if (!startText || (end && !endText)) return '';
+  return formatDistance(startDate, endDate, {
+    locale: locale === 'ja' ? ja : enUS
+  });
+};
+
 const data = toLegacyFetchAboutMe(
   await graphQLSdk.fetchAboutMe({
   // TODO: Localize Japanese Text
@@ -39,7 +58,14 @@ const data = toLegacyFetchAboutMe(
 const { aboutMe, educations, experiences, tags: _tags } = data ?? {};
 
 const skills = groupBy(
-  _tags?.data?.filter((tag) => tag.attributes?.type !== 'Non_Dev'),
+  _tags?.data?.filter(
+    (tag) =>
+      !!tag.attributes?.title &&
+      !!tag.attributes?.slug &&
+      !!tag.attributes?.type &&
+      tag.attributes.type !== 'Non_Dev' &&
+      tag.attributes.type !== 'NonDev'
+  ),
   (tag) => tag.attributes?.type
 );
 
@@ -70,11 +96,11 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                       </GridItem>
                       <GridItem>
                         <Wrap>
-                          {sortBy(skills[key], (d) => d.attributes?.projects?.data?.length)
+                          {sortBy(skills[key], (d) => d.attributes?.projects?.data?.length ?? 0)
                             .reverse()
                             .map(
                               (s) =>
-                                s.attributes && (
+                                s.attributes?.slug && (
                                   <Link href={`/${locale}/tags/${s.attributes.slug}`}>
                                     <TagBadge tag={s.attributes} showCount />
                                   </Link>
@@ -108,21 +134,17 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                     <Wrap fontSize="sm">
                       <Text>{position}</Text> <Text>|</Text>
                       <Text>
-                        {formatMonthYear(parseDate(start), locale)} -{' '}
-                        {end ? formatMonthYear(parseDate(end), locale) : t('common.present')} (
-                        {formatDistance(parseDate(start), end ? parseDate(end) : new Date(), {
-                          locale: locale === 'ja' ? ja : enUS
-                        })}
-                        )
+                        {formatDateRange(start, end)}
+                        {formatDuration(start, end) && ` (${formatDuration(start, end)})`}
                       </Text>
                     </Wrap>
                     {tags && (
-                      <Wrap fontSize="sm" gap="1">
+                      <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
                         <Text>{t('common.tags')}</Text>
                         {sortTags(tags?.data).map(
                           (s) =>
                             s.attributes && (
-                              <Link href={`/${locale}/tags/${s.attributes.slug}`}>
+                              <Link href={`/${locale}/tags/${s.attributes.slug}`} display="inline-flex">
                                 <TagBadge tag={s.attributes} showCount size="sm" />
                               </Link>
                             )
@@ -155,8 +177,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                     <Wrap fontSize="sm">
                       <Text>{description}</Text> <Text>|</Text>
                       <Text>
-                        {formatMonthYear(parseDate(start), locale)} -{' '}
-                        {end ? formatMonthYear(parseDate(end), locale) : t('common.present')}
+                        {formatDateRange(start, end)}
                       </Text>
                     </Wrap>
                     {content && <Markdown content={content} />}

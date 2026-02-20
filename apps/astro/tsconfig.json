@@ -15,5 +15,12 @@
     "verbatimModuleSyntax": false,
     "disableSizeLimit": true
   },
-  "include": ["src", "styled-system", "./panda.config.ts"]
+  "include": ["src", "styled-system", "./panda.config.ts"],
+  "exclude": [
+    "src/components/ui/styled/**/*",
+    "src/components/ui/qr-code.tsx",
+    "src/components/ui/radio-button-group.tsx",
+    "src/components/ui/signature-pad.tsx",
+    "src/components/ui/tree-view.tsx"
+  ]
 }

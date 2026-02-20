@@ -1,4 +1,4 @@
-query getProjectBySlug($slug: String, $locale: I18NLocaleCode = "all") {
+query getProjectBySlug($slug: String, $locale: I18NLocaleCode) {
   projects(filters: { slug: { eq: $slug } }, locale: $locale) {
     id: documentId
     ...project

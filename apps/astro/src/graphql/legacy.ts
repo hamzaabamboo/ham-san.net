@@ -1,65 +1,96 @@
 type AnyObj = Record<string, any>;
-type AnyObjArray = AnyObj[] | null | undefined;
+type Entity = { id: string | null; attributes: AnyObj | null };
+type EntityResponse = { data: Entity | null };
+type EntityCollection = { data: Entity[] };
 
-const wrapEntity = (attributes: AnyObj | null | undefined, id?: string | null) => ({
-  id: id ?? attributes?.id ?? attributes?.documentId ?? null,
-  attributes: attributes ?? null
-});
+const isObject = (value: unknown): value is AnyObj => typeof value === 'object' && value !== null;
 
-const wrapOne = (value: AnyObj | null | undefined) => ({
-  data: value ? wrapEntity(value) : null
-});
+const hasData = (value: unknown): value is { data: unknown } =>
+  isObject(value) && Object.prototype.hasOwnProperty.call(value, 'data');
 
-const wrapMany = (
-  items: AnyObj[] | null | undefined,
-  map?: (v: AnyObj) => AnyObj | null | undefined
-) => ({
-  data: (items ?? []).map((item) => wrapEntity(map ? (map(item) ?? item) : item))
-});
+const toEntity = (value: unknown): Entity | null => {
+  if (!isObject(value)) return null;
+  if (hasData(value)) return toEntity(value.data);
+  if ('attributes' in value) {
+    return {
+      id: (value.id as string | null | undefined) ?? null,
+      attributes: (value.attributes as AnyObj | null | undefined) ?? null
+    };
+  }
+  return {
+    id: (value.id as string | null | undefined) ?? (value.documentId as string | null | undefined) ?? null,
+    attributes: value
+  };
+};
 
-const mapMedia = (value: AnyObj | null | undefined) => (value ? { ...value } : value);
+const toResponse = (value: unknown, map?: (v: AnyObj) => AnyObj): EntityResponse => {
+  const entity = toEntity(value);
+  if (!entity) return { data: null };
+  return {
+    data: {
+      id: entity.id,
+      attributes: entity.attributes ? (map ? map(entity.attributes) : entity.attributes) : null
+    }
+  };
+};
+
+const toCollection = (value: unknown, map?: (v: AnyObj) => AnyObj): EntityCollection => {
+  const source = hasData(value) ? value.data : value;
+  const entries = Array.isArray(source) ? source : [];
+  return {
+    data: entries
+      .map((entry) => toEntity(entry))
+      .filter((entry): entry is Entity => entry !== null)
+      .map((entry) => ({
+        id: entry.id,
+        attributes: entry.attributes ? (map ? map(entry.attributes) : entry.attributes) : null
+      }))
+  };
+};
+
+const mapMedia = (value: AnyObj) => ({ ...value });
 
 const mapTag = (value: AnyObj) => ({
   ...value,
-  projects: wrapMany(value.projects, mapProject),
-  experiences: wrapMany(value.experiences, mapExperience)
+  projects: toCollection(value.projects, mapProject),
+  experiences: toCollection(value.experiences, mapExperience)
 });
 
 const mapExperience = (value: AnyObj) => ({
   ...value,
-  tags: wrapMany(value.tags, mapTag),
-  localizations: wrapMany(value.localizations, mapExperience)
+  tags: toCollection(value.tags, mapTag),
+  localizations: toCollection(value.localizations, mapExperience)
 });
 
 const mapEducation = (value: AnyObj) => ({
   ...value,
-  localizations: wrapMany(value.localizations, mapEducation)
+  localizations: toCollection(value.localizations, mapEducation)
 });
 
 const mapProject = (value: AnyObj) => ({
   ...value,
-  category: wrapOne(value.category),
-  media: wrapMany(value.media, mapMedia),
-  tags: wrapMany(value.tags, mapTag),
-  banner: wrapOne(mapMedia(value.banner)),
-  localizations: wrapMany(value.localizations, mapProject)
+  category: toResponse(value.category),
+  media: toCollection(value.media, mapMedia),
+  tags: toCollection(value.tags, mapTag),
+  banner: toResponse(value.banner, mapMedia),
+  localizations: toCollection(value.localizations, mapProject)
 });
 
 export const toLegacyFetchAboutMe = (data: AnyObj) => ({
-  aboutMe: wrapOne(data.aboutMe),
-  experiences: wrapMany(data.experiences as AnyObjArray, mapExperience),
-  educations: wrapMany(data.educations as AnyObjArray, mapEducation),
-  tags: wrapMany(data.tags as AnyObjArray, mapTag)
+  aboutMe: toResponse(data.aboutMe),
+  experiences: toCollection(data.experiences, mapExperience),
+  educations: toCollection(data.educations, mapEducation),
+  tags: toCollection(data.tags, mapTag)
 });
 
 export const toLegacyFetchProjects = (data: AnyObj) => ({
-  projects: wrapMany(data.projects as AnyObjArray, mapProject)
+  projects: toCollection(data.projects, mapProject)
 });
 
 export const toLegacyGetProjectBySlug = (data: AnyObj) => ({
-  projects: wrapMany(data.projects as AnyObjArray, mapProject)
+  projects: toCollection(data.projects, mapProject)
 });
 
 export const toLegacyGetTagBySlug = (data: AnyObj) => ({
-  tags: wrapMany(data.tags as AnyObjArray, mapTag)
+  tags: toCollection(data.tags, mapTag)
 });

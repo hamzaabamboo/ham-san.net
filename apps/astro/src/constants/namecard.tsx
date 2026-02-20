@@ -1,13 +1,78 @@
 import { Stack, styled } from 'styled-system/jsx';
+import type { ReactNode } from 'react';
 import akarinLogo from '../assets/namecard/akarin-logo.png';
 import akarinQrCode from '../assets/namecard/akarin-qr-code.png';
 import ashQrCode from '../assets/namecard/ash-qr-code.png';
 import ash from '../assets/namecard/ash.webp';
+import hasuHdLogo from '../assets/namecard/hasu-hd-logo.png';
 import hasuLogo from '../assets/namecard/hasu-logo.jpg';
+import hasuMember01Icon from '../assets/namecard/hasu-member-01-icon.png';
 import hasuQrCode from '../assets/namecard/hasu-qr-code.png';
+import honoshi from '../assets/namecard/honoshi.png';
+import polkaKoushou from '../assets/namecard/polka-koushou.png';
+import polkaLogo3 from '../assets/namecard/polka-logo3.png';
+import polkaMember01 from '../assets/namecard/polka-member-01.png';
+
+type NamecardProfileLabels = {
+  name?: string;
+  birthday?: string;
+  location?: string;
+  oshi?: string;
+  message?: string;
+};
+
+type NamecardProfilePerson = {
+  name: string;
+  birthday: string;
+  location: string;
+  oshi: string;
+  message: string;
+};
+
+type NamecardProfileIllustration = {
+  src: string;
+};
+
+type NamecardProfileFace = {
+  title?: string;
+  brand?: string;
+  footer?: string;
+  labels?: NamecardProfileLabels;
+  person?: Partial<NamecardProfilePerson>;
+  message?: string;
+  illustration?: NamecardProfileIllustration;
+  showBrand?: boolean;
+  showFooter?: boolean;
+  showValues?: boolean;
+};
+
+type NamecardProfile = {
+  accentColor?: string;
+  front: NamecardProfileFace;
+  back?: NamecardProfileFace;
+};
+
+export type NamecardData = {
+  variant: string;
+  color: string;
+  content: {
+    firstRow: string;
+    secondRow: string;
+    name: string;
+    nameSubtitle: string;
+    message: string;
+  };
+  logoTop?: string;
+  logoMiddle?: string;
+  logoBottom: string;
+  qrCode: string;
+  Quote: () => ReactNode;
+  style?: 'default' | 'profile';
+  profile?: NamecardProfile;
+};
 
 // QRCode from https://www.qrcode-monkey.com/
-export const NAMECARDS = [
+export const NAMECARDS: NamecardData[] = [
   {
     variant: 'default',
     color: '#1F1F5A',
@@ -24,7 +89,7 @@ export const NAMECARDS = [
     qrCode: akarinQrCode.src,
     Quote: () => {
       return (
-        <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
+        <styled.blockquote fontSize="xs" textAlign="center" fontStyle="italic">
           「…推しって<b>“応援する存在”</b>というよりも、
           <br />
           <b>“自分のモチベーションを高める存在”</b>…」
@@ -44,21 +109,21 @@ export const NAMECARDS = [
       message: 'สวัสดีครับ!（サワディーカー）'
     },
     logoTop: hasuLogo.src,
-    logoMiddle: 'https://www.lovelive-anime.jp/hasunosora/shared/img/member/01_icon.png',
-    logoBottom: 'https://www.lovelive-anime.jp/hasunosora/shared/img/common/hd_logo.svg',
+    logoMiddle: hasuMember01Icon.src,
+    logoBottom: hasuHdLogo.src,
     qrCode: hasuQrCode.src,
     Quote: () => {
       return (
         <Stack gap={0}>
           {' '}
-          <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
+          <styled.blockquote fontSize="xs" textAlign="center" fontStyle="italic">
             「…光を、雨を、風を、
             <styled.span fontWeight="bold">待ってるだけじゃない！</styled.span>
             <br />
             あたしはあたしの力で、
             <styled.span fontWeight="bold">咲いててみせる！</styled.span>… 」
           </styled.blockquote>
-          <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
+          <styled.blockquote fontSize="xs" textAlign="center" fontStyle="italic">
             「はい、笑って笑って。
             <styled.span color="var(--main-color)" fontSize="md" fontWeight="bold">
               フラワー
@@ -84,7 +149,7 @@ export const NAMECARDS = [
     Quote: () => {
       return (
         <Stack gap={0}>
-          <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
+          <styled.blockquote fontSize="xs" textAlign="center" fontStyle="italic">
             「にゃにゃにゃ〜にゃん、<b>にゃん</b>にゃにゃん」 <br />ー アッシュくん
           </styled.blockquote>
         </Stack>
@@ -93,7 +158,7 @@ export const NAMECARDS = [
   },
   {
     variant: 'polka',
-    color: '#6a6c6d',
+    color: '#fbe67c',
     content: {
       firstRow: 'Love学院高等学校',
       secondRow: 'L高生、バンコクサテライト 🇹🇭',
@@ -101,18 +166,76 @@ export const NAMECARDS = [
       nameSubtitle: 'はむぴー／HamP',
       message: 'สวัสดีครับ!（サワディーカー）'
     },
-    logoBottom: ash.src,
+    logoTop: polkaKoushou.src,
+    logoMiddle: polkaMember01.src,
+    logoBottom: polkaLogo3.src,
     qrCode: ashQrCode.src,
     Quote: () => {
       return (
         <Stack gap={0}>
-          <styled.blockquote textAlign="center" fontSize="xs" fontStyle="italic">
-            「敗け立って、<b>次</b>はある」 <br />ー 高橋ポルカ
+          <styled.blockquote fontSize="xs" textAlign="center" fontStyle="italic">
+            「嬉しくなると踊っちゃう～」 <br />
+            「敗けたって次はある」 <br />ー 高橋ポルカ
+          </styled.blockquote>
+        </Stack>
+      );
+    }
+  },
+  {
+    variant: 'polka-new',
+    color: '#305483',
+    style: 'profile',
+    profile: {
+      accentColor: '#305483',
+      front: {
+        title: 'PROFILE CARD',
+        footer: '©IKZL',
+        person: {
+          name: '高橋ポルカ',
+          birthday: '8/18',
+          location: '浅草',
+          oshi: '高橋ポルカ',
+          message: '中学時代は数学が苦手すぎて困りすぎたあげく、\nこの学校を見つけられてとりあえずホッとしています！\nもし同じような人いたら友達になってください!!'
+        },
+        illustration: {
+          src: honoshi.src
+        },
+        showBrand: false
+      },
+      back: {
+        title: 'PROFILE CARD',
+        brand: 'What is my ?',
+        footer: '©IKZL',
+        person: {
+          name: '高橋ポルカ',
+          birthday: '8/18',
+          oshi: '高橋ポルカ'
+        },
+        message: '',
+        showBrand: true,
+        showValues: false
+      }
+    },
+    content: {
+      firstRow: 'Love学院高等学校',
+      secondRow: 'L高生、バンコクサテライト 🇹🇭',
+      name: 'ハムP',
+      nameSubtitle: 'はむぴー／HamP',
+      message: 'สวัสดีครับ!（サワディーカー）'
+    },
+    logoTop: polkaKoushou.src,
+    logoMiddle: polkaMember01.src,
+    logoBottom: polkaLogo3.src,
+    qrCode: ashQrCode.src,
+    Quote: () => {
+      return (
+        <Stack gap={0}>
+          <styled.blockquote fontSize="xs" textAlign="center" fontStyle="italic">
+            「嬉しくなると踊っちゃう～」 <br />
+            「敗けたって次はある」 <br />ー 高橋ポルカ
           </styled.blockquote>
         </Stack>
       );
     }
   }
 ];
-
-export type NamecardData = (typeof NAMECARDS)[0];

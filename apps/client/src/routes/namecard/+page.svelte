@@ -15,56 +15,26 @@
   import { faHouse, faLink, faList } from '@fortawesome/free-solid-svg-icons';
   import { locale, t } from '@i18n';
   import { LANGUAGES } from '@utils/localization';
+  import { NAMECARD_PAGE_LINKS } from '../../../../libs/utils/namecard-page';
   import Fa from 'svelte-fa';
 
-  $: items = [
-    {
-      label: $t('contact.twitter'),
-      value: '@HamP_punipuni',
-      url: 'https://twitter.com/HamP_punipuni',
-      icon: faXTwitter
-    },
-    {
-      label: 'Discord',
-      value: 'hamp',
-      url: 'https://discordapp.com/users/260776161032798208',
-      icon: faDiscord
-    },
-    {
-      label: 'Eventernote',
-      value: 'HamP_punipuni',
-      url: 'https://www.eventernote.com/users/HamP_punipuni',
-      icon: faLink
-    },
-    {
-      label: $t('contact.github'),
-      value: 'hamzaabamboo',
-      url: 'https://github.com/hamzaabamboo',
-      icon: faGithub
-    },
-    {
-      label: $t('name-card.tierlist'),
-      url: 'https://tiermaker.com/list/actors-actresses/love-live-seiyuu-2023-15476088/3747761',
-      icon: faList,
-      value: $t('name-card.tierlist-description')
-    },
-    {
-      label: $t('name-card.home'),
-      url: '/',
-      icon: faHouse
-    },
-    {
-      label: 'Spotify',
-      url: 'https://open.spotify.com/user/dick8a92koqqd6ti4sqtz40co?si=3c9b1b72a71a47be',
-      icon: faSpotify
-    },
-    {
-      label: 'last.fm',
-      url: 'https://www.last.fm/user/Betcrg',
-      icon: faLastfm
-    }
-    // Link Like Lovelive, SIF2, Starlight, Deresute, ID...
-  ];
+  const iconMap = {
+    twitter: faXTwitter,
+    discord: faDiscord,
+    eventernote: faLink,
+    github: faGithub,
+    tierlist: faList,
+    home: faHouse,
+    spotify: faSpotify,
+    lastfm: faLastfm
+  } as const;
+
+  $: items = NAMECARD_PAGE_LINKS.map((item) => ({
+    ...item,
+    icon: iconMap[item.id],
+    label: item.labelKey ? $t(item.labelKey) : item.label,
+    value: item.valueKey ? $t(item.valueKey) : item.value
+  }));
 
   const handleChangeLanguage = (language: (typeof LANGUAGES)[number]) => {
     locale.set(language);
