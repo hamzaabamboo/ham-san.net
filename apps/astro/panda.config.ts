@@ -79,13 +79,7 @@ export default defineConfig({
 
   lightningcss: true,
   minify: process.env.NODE_ENV === 'production',
-  hash:
-    process.env.NODE_ENV === 'production'
-      ? {
-          className: true,
-          cssVar: true
-        }
-      : false,
+  hash: false,
   hooks: {
     // 'cssgen:done': ({ artifact, content }) => {
     //   if (artifact === 'styles.css') {
