@@ -46,7 +46,7 @@ export default defineConfig({
         ...theme.semanticTokens,
         colors: {
           ...theme.semanticTokens?.colors,
-          accent: blue,
+          accent: amber,
           blue: blue,
           gray: mauve,
           mauve: mauve,
