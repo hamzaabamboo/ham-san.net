@@ -15,7 +15,7 @@
   import { faHouse, faLink, faList } from '@fortawesome/free-solid-svg-icons';
   import { locale, t } from '@i18n';
   import { LANGUAGES } from '@utils/localization';
-  import { NAMECARD_PAGE_LINKS } from '../../../../libs/utils/namecard-page';
+  import { NAMECARD_PAGE_LINKS } from 'utils/namecard-page';
   import Fa from 'svelte-fa';
 
   const iconMap = {
