@@ -9,6 +9,7 @@ import { Button } from '~/components/ui/button';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
+import { HeroBackground } from '~/components/home/HeroBackground';
 import { graphQLSdk } from '~/graphql';
 import { localePaths } from '~/i18n/paths';
 import type { ProjectPreviewFragment, TagFragment } from '~/graphql/generated/client';
@@ -66,9 +67,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
     overflow="hidden"
     display="flex"
     alignItems="center"
-    zIndex={1}
   >
-    <Container maxW="breakpoint-xl" position="relative">
+    <HeroBackground client:idle />
+    <Container maxW="breakpoint-xl" position="relative" zIndex={1}>
       <Stack gap="8" maxW="4xl">
         <Box animation="fade-in-up 0.8s">
           <Heading
@@ -100,7 +101,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
         <Flex gap="4" pt="8" animation="fade-in-up 1.2s">
           <Link href={`/${locale}/projects`}>
             <Button size="2xl" colorPalette="amber" variant="solid" fontWeight="bold">
-              View My Work
+              {t('home.view-my-work')}
             </Button>
           </Link>
           <Link href="https://github.com/hamzaabamboo" target="_blank">
@@ -234,10 +235,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
         textAlign="center"
         letterSpacing="-0.03em"
       >
-        About <Box color="amber.500">Me</Box>
+        {t('home.about-me')}
       </Heading>
 
-      <BentoGrid introImage={introImage} />
+      <BentoGrid introImage={introImage} locale={locale} />
     </Stack>
   </Container>
 </MainLayout>

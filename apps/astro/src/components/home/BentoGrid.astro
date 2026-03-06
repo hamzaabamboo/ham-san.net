@@ -15,12 +15,16 @@ import { Text } from '~/components/ui/text';
 import { Button } from '~/components/ui/button';
 import { Link } from '~/components/ui/link';
 import { css } from 'styled-system/css';
+import type { Languages } from '~/i18n/ui';
+import { useTranslations } from '~/i18n/utils';
 
 interface Props {
   introImage: string;
+  locale: Languages;
 }
 
-const { introImage } = Astro.props;
+const { introImage, locale } = Astro.props;
+const t = useTranslations(locale);
 
 const BentoCard = styled(Box, {
   base: {
@@ -92,11 +96,10 @@ const IconBox = styled(Box, {
           lineHeight="1.1"
           letterSpacing="-0.02em"
         >
-          Building <Box style={{ color: '#d97706' }}>digital experiences</Box> that matter.
+          {t('home.bento-headline')}
         </Heading>
         <Text color="fg.muted" fontSize="lg" lineHeight="relaxed">
-          I craft pixel-perfect websites and applications with a focus on motion, aesthetic, and
-          usability.
+          {t('home.bento-description')}
         </Text>
       </Stack>
     </BentoCard>
@@ -147,7 +150,7 @@ const IconBox = styled(Box, {
           textTransform="uppercase"
           fontSize="xs"
           letterSpacing="widest"
-          color="fg.subtle">Toolbox</Text
+          color="fg.subtle">{t('home.bento-toolbox')}</Text
         >
         <Grid gridTemplateColumns="repeat(3, 1fr)" gap="3">
           <IconBox><FaReact /></IconBox>
@@ -181,13 +184,13 @@ const IconBox = styled(Box, {
             bg="black/20"
             px="2"
             py="1"
-            borderRadius="full">ONLINE</Text
+            borderRadius="full">{t('home.bento-online')}</Text
           >
         </Box>
         <Box>
-          <Text fontSize="xs" fontWeight="bold" opacity="0.8" mb="1">Current Status</Text>
-          <Text fontWeight="black" fontSize="lg" lineHeight="tight">Open to Work</Text>
-          <Text fontSize="sm" opacity="0.9">Freelance & Full-time</Text>
+          <Text fontSize="xs" fontWeight="bold" opacity="0.8" mb="1">{t('home.bento-status')}</Text>
+          <Text fontWeight="black" fontSize="lg" lineHeight="tight">{t('home.bento-open-to-work')}</Text>
+          <Text fontSize="sm" opacity="0.9">{t('home.bento-availability')}</Text>
         </Box>
       </Flex>
     </BentoCard>
@@ -204,13 +207,13 @@ const IconBox = styled(Box, {
     >
       <Flex w="full" justify="space-between" align="center" gap="8" wrap="wrap">
         <Box>
-          <Heading fontSize="2xl" color="white" mb="2">Let's work together</Heading>
-          <Text color="neutral.400">Have a project in mind?</Text>
+          <Heading fontSize="2xl" color="white" mb="2">{t('home.bento-cta-title')}</Heading>
+          <Text color="neutral.400">{t('home.bento-cta-subtitle')}</Text>
         </Box>
         <Flex gap="3">
           <Link href="mailto:hello@ham-san.net">
             <Button size="xl" colorPalette="amber" borderRadius="full">
-              <FaEnvelope /> Email Me
+              <FaEnvelope /> {t('home.bento-email')}
             </Button>
           </Link>
           <Link href="https://github.com/hamzaabamboo" target="_blank">

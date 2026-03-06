@@ -86,20 +86,22 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                         <Box
                           h="64"
                           bg="bg.muted"
-                          bgImage={`url(${
-                            project.media?.[0]?.url
-                              ? getMediaUrl(
-                                  project.media[0].url,
-                                  { height: 400 },
-                                  import.meta.env.PUBLIC_API_URL
-                                )
-                              : '/images/placeholder-project.jpg'
-                          })`}
-                          bgColor="neutral.200"
                           bgSize="cover"
                           bgPosition="center"
                           borderBottom="1px solid"
                           borderColor="border.subtle"
+                          style={{
+                            backgroundImage: `url(${(() => {
+                              const url = project.media?.[0]?.url;
+                              if (url)
+                                return getMediaUrl(
+                                  url,
+                                  { height: 400 },
+                                  import.meta.env.PUBLIC_API_URL
+                                );
+                              return '/images/placeholder-project.jpg';
+                            })()})`
+                          }}
                         />
 
                         <Stack p="4" gap="2" flex="1">

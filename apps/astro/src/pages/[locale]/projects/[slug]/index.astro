@@ -19,12 +19,11 @@ export const prerender = false;
 
 const { locale, slug } = Astro.params;
 
-const data = await graphQLSdk.getProjectBySlug({ slug });
-
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
+const data = await graphQLSdk.getProjectBySlug({ slug });
 const project = data?.projects?.[0] as (ProjectFragment & { id: string }) | undefined;
 const { content, title, banner, links, media, category, date, finishedDate, tags } = project ?? {};
 const bannerUrl = getMediaUrl(banner?.url, {}, import.meta.env.PUBLIC_API_URL);
