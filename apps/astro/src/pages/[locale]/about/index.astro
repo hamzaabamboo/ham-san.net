@@ -49,9 +49,9 @@ const formatDuration = (start?: string, end?: string) => {
 
 const data = toLegacyFetchAboutMe(
   await graphQLSdk.fetchAboutMe({
-  // TODO: Localize Japanese Text
-  locale: 'en'
-})
+    // TODO: Localize Japanese Text
+    locale: 'en'
+  })
 );
 
 //TODO: Tags
@@ -144,7 +144,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                         {sortTags(tags?.data).map(
                           (s) =>
                             s.attributes && (
-                              <Link href={`/${locale}/tags/${s.attributes.slug}`} display="inline-flex">
+                              <Link
+                                href={`/${locale}/tags/${s.attributes.slug}`}
+                                display="inline-flex"
+                              >
                                 <TagBadge tag={s.attributes} showCount size="sm" />
                               </Link>
                             )
@@ -176,9 +179,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                     </Heading>
                     <Wrap fontSize="sm">
                       <Text>{description}</Text> <Text>|</Text>
-                      <Text>
-                        {formatDateRange(start, end)}
-                      </Text>
+                      <Text>{formatDateRange(start, end)}</Text>
                     </Wrap>
                     {content && <Markdown content={content} />}
                   </Stack>

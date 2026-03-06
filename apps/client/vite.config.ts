@@ -28,6 +28,9 @@ const config: UserConfig = {
       utils: join(__dirname, '../../libs/utils/')
       // 'three/addons': join(__dirname, '../../node_modules/three/examples/jsm/')
     }
+  },
+  ssr: {
+    noExternal: ['graphql-request']
   }
 };
 

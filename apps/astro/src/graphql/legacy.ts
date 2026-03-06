@@ -18,7 +18,10 @@ const toEntity = (value: unknown): Entity | null => {
     };
   }
   return {
-    id: (value.id as string | null | undefined) ?? (value.documentId as string | null | undefined) ?? null,
+    id:
+      (value.id as string | null | undefined) ??
+      (value.documentId as string | null | undefined) ??
+      null,
     attributes: value
   };
 };

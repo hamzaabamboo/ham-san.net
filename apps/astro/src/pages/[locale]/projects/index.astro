@@ -20,9 +20,9 @@ if (!validateLocale(locale)) {
 
 const data = toLegacyFetchProjects(
   await graphQLSdk.fetchProjects({
-  // locale,
-  limit: 75
-})
+    // locale,
+    limit: 75
+  })
 );
 
 const projects = data?.projects?.data ?? [];

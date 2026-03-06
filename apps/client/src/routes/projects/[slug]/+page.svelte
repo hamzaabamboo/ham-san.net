@@ -19,7 +19,7 @@
 
   export let data: PageData;
 
-  $: project = data.data.projects?.data[0].attributes;
+  $: project = data.data.projects?.data?.[0]?.attributes;
   $: title = project?.title;
   $: content = project?.content;
   $: banner = project?.banner?.data?.attributes?.url;

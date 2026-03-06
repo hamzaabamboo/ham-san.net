@@ -77,14 +77,10 @@ export const Markdown = ({
             const language = className?.replace('language-', '');
             const content = children?.toString() ?? '';
             if (!language) {
-              return (
-                <Code {...props}>
-                  {content}
-                </Code>
-              );
+              return <Code {...props}>{content}</Code>;
             }
             return (
-              <styled.pre overflowX="auto" p="4" bg="bg.muted" rounded="l2">
+              <styled.pre rounded="l2" p="4" bg="bg.muted" overflowX="auto">
                 <styled.code className={className}>{content}</styled.code>
               </styled.pre>
             );

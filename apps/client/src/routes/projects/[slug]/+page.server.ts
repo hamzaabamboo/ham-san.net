@@ -10,7 +10,11 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 
   if (raw) {
     const data = toLegacyGetProjectBySlug(raw);
-    const locale = data.projects?.data?.[0]?.attributes?.locale;
+    const project = data.projects?.data?.[0]?.attributes;
+    if (!project) {
+      error(404, 'Project Not found');
+    }
+    const locale = project?.locale;
     if (locale) {
       /* @migration task: add path argument */ cookies.set('language', locale, { path: '/' });
     }

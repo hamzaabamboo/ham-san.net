@@ -24,8 +24,8 @@ const { locale, slug } = Astro.params;
 
 const data = toLegacyGetTagBySlug(
   await graphQLSdk.getTagBySlug({
-  slug
-})
+    slug
+  })
 );
 
 if (!validateLocale(locale)) {

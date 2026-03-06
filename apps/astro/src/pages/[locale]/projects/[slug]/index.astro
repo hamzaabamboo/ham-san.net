@@ -23,8 +23,8 @@ const { locale, slug } = Astro.params;
 
 const data = toLegacyGetProjectBySlug(
   await graphQLSdk.getProjectBySlug({
-  slug
-})
+    slug
+  })
 );
 
 if (!validateLocale(locale)) {

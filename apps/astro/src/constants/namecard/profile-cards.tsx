@@ -199,7 +199,7 @@ export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
                   <span style={{ color: '#ef701c' }}>百瀬安由未</span>、
                   <span style={{ color: '#ba2635' }}>佐々木琴子</span>、
                   <br />
-                  <span >鬼頭明里</span>
+                  <span>鬼頭明里</span>
                 </ProfileText>
               </GridItem>
               <GridItem>

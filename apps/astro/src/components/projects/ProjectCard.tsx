@@ -11,7 +11,7 @@ import { Text } from '../ui/text';
 export const ProjectCard = (props: { data: ProjectPreviewFragment; locale: Languages }) => {
   const { data, locale } = props;
   const { title, description, slug, banner, media, date, category, links } = data;
-  const image = banner ?? media?.[0];
+  const image = banner?.data?.attributes ?? media?.data?.[0]?.attributes;
   const link = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Web);
   const ghLink = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Github);
 

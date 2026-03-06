@@ -41,6 +41,7 @@ const config = tseslint.config(
       '@typescript-eslint/no-unsafe-argument': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/no-unsafe-enum-comparison': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/await-thenable': 'off',
       '@typescript-eslint/no-base-to-string': 'off'
     }
@@ -49,7 +50,8 @@ const config = tseslint.config(
   {
     rules: {
       '@pandacss/no-unsafe-token-fn-usage': 'off',
-      '@pandacss/no-hardcoded-color': 'off'
+      '@pandacss/no-hardcoded-color': 'off',
+      '@pandacss/file-not-included': 'off'
     }
   },
   ...eslintPluginAstro.configs['flat/recommended'],

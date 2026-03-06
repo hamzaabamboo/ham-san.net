@@ -16,7 +16,9 @@ const SORT_ORDER = [
 type TagLike = { attributes?: Tag | null } | Tag | null | undefined;
 
 const unwrapTag = (tag: TagLike): Tag | null =>
-  (tag && 'attributes' in tag ? ((tag.attributes as Tag | null | undefined) ?? null) : (tag as Tag | null)) ?? null;
+  (tag && 'attributes' in tag
+    ? ((tag.attributes as Tag | null | undefined) ?? null)
+    : (tag as Tag | null)) ?? null;
 
 const getTypeOrder = (tag: TagLike) => {
   const value = unwrapTag(tag);
