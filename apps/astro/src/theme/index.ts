@@ -3,6 +3,15 @@ import { semanticTokens } from './semantic-tokens';
 import { tokens } from './tokens';
 import { keyframes } from './keyframes';
 
+import blue from '@park-ui/panda-preset/colors/blue';
+import green from '@park-ui/panda-preset/colors/green';
+import orange from '@park-ui/panda-preset/colors/orange';
+import purple from '@park-ui/panda-preset/colors/purple';
+import red from '@park-ui/panda-preset/colors/red';
+import sand from '@park-ui/panda-preset/colors/sand';
+
+const additionalColors = [red, blue, orange, green, purple, sand];
+
 export const theme = {
   layerStyles: {
     textStroke: {
@@ -20,9 +29,64 @@ export const theme = {
       }
     }
   },
-  tokens,
-  semanticTokens,
-  keyframes,
+  semanticTokens: {
+    ...semanticTokens,
+    animations: {
+      pyon: { value: 'pyon 2s linear infinite' },
+      kanatapeek: { value: 'kanatapeek 4s ease-in infinite' },
+      'fade-in-up': { value: 'fade-in-up 0.5s ease-out forwards' }
+    },
+    colors: {
+      ...semanticTokens?.colors,
+      ...Object.fromEntries(additionalColors.map((t) => [t.name, t.semanticTokens]))
+    }
+  },
+  tokens: {
+    ...tokens,
+    colors: {
+      ...tokens?.colors,
+      ...Object.fromEntries(additionalColors.map((t) => [t.name, t.tokens]))
+    }
+  },
+  keyframes: {
+    ...keyframes,
+    pyon: {
+      '0%, 25%, 50%, 100%': {
+        transform: 'translateY(0%)',
+        animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)'
+      },
+      '12.5%, 37.5%': {
+        transform: 'translateY(-5%)',
+        animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)'
+      }
+    },
+    'fade-in-up': {
+      '0%': {
+        opacity: '0',
+        transform: 'translateY(20px)'
+      },
+      '100%': {
+        opacity: '1',
+        transform: 'translateY(0)'
+      }
+    },
+    spin: {
+      '0%': {
+        transform: 'rotateY(0deg)'
+      },
+      '100%': {
+        transform: 'rotateY(360deg)'
+      }
+    },
+    marquee: {
+      '0%': {
+        transform: 'translateX(0)'
+      },
+      '100%': {
+        transform: 'translateX(-50%)'
+      }
+    }
+  },
   recipes: {
     ...recipes,
     formLabel: {

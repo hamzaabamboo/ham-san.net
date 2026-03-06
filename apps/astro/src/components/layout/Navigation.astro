@@ -3,8 +3,8 @@ import { languages } from '~/i18n/ui';
 import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 import { HStack } from '../../../styled-system/jsx';
 import { Link } from '../ui/link';
-import { Text } from '../ui/text';
 import { Sidebar } from './Sidebar';
+import { ThemeToggle } from '~/components/theme/ThemeToggle';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -22,45 +22,113 @@ const NAVIGATION_LINKS = [
   // { label: t('common.home'), value: '/' },
   { label: t('common.about-me'), value: '/about' },
   { label: t('common.projects'), value: '/projects' },
-  { label: t('common.event'), value: '/events' },
-  { label: t('common.hobbies'), value: '/hobbies' },
+  // { label: t('common.event'), value: '/events' },
+  // { label: t('common.hobbies'), value: '/hobbies' },
   { label: t('common.note'), value: '/notes' },
   { label: t('common.contact'), value: '/contact' }
 ];
 ---
 
+<script>
+  const nav = document.getElementById('main-nav');
+  const updateNav = () => {
+    if (!nav) return;
+    if (window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  };
+  window.addEventListener('scroll', updateNav);
+  updateNav(); // Init
+</script>
+
 <HStack
+  id="main-nav"
   _print={{ display: 'none' }}
-  p={2}
-  bgColor="bg.default"
-  borderBottom="1px solid"
-  borderBottomColor="border.subtle"
-  justifyContent="space-between"
-  position="sticky"
+  py="4"
+  px={{ base: '4', md: '8' }}
+  w="full"
+  justifyContent="center"
+  position="fixed"
   top="0"
+  left="0"
   zIndex="banner"
+  transition="all 0.3s"
+  bg="transparent"
+  borderBottom="1px solid"
+  borderColor="transparent"
 >
-  <HStack>
-    <Link href={getURLWithLanguage('/')}>{t('common.ham')}</Link>
-  </HStack>
-  <HStack gap="2" hideBelow="sm">
-    {
-      NAVIGATION_LINKS.map(({ label, value }) => {
-        return (
-          <Link href={getURLWithLanguage(value)} data-astro-reload>
-            {label}
-          </Link>
-        );
-      })
-    }
-    <Text> | </Text>
-    {
-      Object.entries(languages)
-        .filter((t) => t[0] !== lang)
-        .map((t) => {
-          return <Link href={getCurrentURLWithLanguage(t[0])}>{t[1]}</Link>;
+  <HStack w="full" maxW="breakpoint-xl" justify="space-between">
+    <HStack gap="4">
+      <Link
+        href={getURLWithLanguage('/')}
+        fontWeight="bold"
+        fontSize="xl"
+        letterSpacing="-0.02em"
+        color="fg.default"
+        _hover={{ color: 'amber.400' }}
+      >
+        {t('common.ham')}
+      </Link>
+    </HStack>
+
+    <HStack gap="8" hideBelow="md">
+      {
+        NAVIGATION_LINKS.map(({ label, value }) => {
+          const fullPath = getURLWithLanguage(value);
+          const isCurrent =
+            value === '/'
+              ? Astro.url.pathname === fullPath
+              : Astro.url.pathname.startsWith(fullPath);
+
+          return (
+            <Link
+              href={fullPath}
+              data-astro-reload
+              color="fg.default"
+              fontSize="sm"
+              fontWeight="medium"
+              transition="colors"
+              _hover={{ color: 'amber.400' }}
+              aria-current={isCurrent ? 'page' : undefined}
+              _current={{ color: 'amber.400' }}
+            >
+              {label}
+            </Link>
+          );
         })
-    }
+      }
+    </HStack>
+
+    <HStack gap="4">
+      <HStack gap="2" hideBelow="sm">
+        {
+          Object.entries(languages)
+            .filter((t) => t[0] !== lang)
+            .map((t) => {
+              return (
+                <Link
+                  href={getCurrentURLWithLanguage(t[0])}
+                  fontSize="xs"
+                  color="white/40"
+                  textTransform="uppercase"
+                  fontWeight="bold"
+                  _hover={{ color: 'amber.400' }}
+                >
+                  {t[1]}
+                </Link>
+              );
+            })
+        }
+      </HStack>
+      <Sidebar
+        links={NAVIGATION_LINKS}
+        locale={lang}
+        pathname={Astro.url.pathname}
+        client:visible
+      />
+      <ThemeToggle client:load />
+    </HStack>
   </HStack>
-  <Sidebar links={NAVIGATION_LINKS} locale={lang} pathname={Astro.url.pathname} client:visible />
 </HStack>

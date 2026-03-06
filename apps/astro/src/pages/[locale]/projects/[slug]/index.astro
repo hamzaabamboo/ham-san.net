@@ -1,5 +1,4 @@
 ---
-//TODO:
 import { FaArrowLeft } from 'react-icons/fa';
 import { Box, Container, Divider, HStack, Stack, Wrap, styled } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
@@ -12,8 +11,7 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
-import { toLegacyGetProjectBySlug } from '~/graphql/legacy';
-import { ComponentUtilsLink, Tag } from '~/graphql/generated/client';
+import type { ProjectFragment, TagFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
@@ -21,39 +19,23 @@ export const prerender = false;
 
 const { locale, slug } = Astro.params;
 
-const data = toLegacyGetProjectBySlug(
-  await graphQLSdk.getProjectBySlug({
-    slug
-  })
-);
+const data = await graphQLSdk.getProjectBySlug({ slug });
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
-type LegacyMedia = { data?: { attributes?: { url?: string; name?: string } | null } | null };
-type LegacyTagCollection = { data?: Array<{ attributes?: Tag | null }> };
-type LegacyProject = {
-  content?: string;
-  title?: string;
-  banner?: LegacyMedia;
-  links?: Array<ComponentUtilsLink | null | undefined>;
-  media?: { data?: Array<{ attributes?: { url?: string } | null }> };
-  category?: { data?: { attributes?: { name?: string } | null } | null };
-  date?: string;
-  finishedDate?: string;
-  tags?: LegacyTagCollection;
-};
-const project = (data?.projects?.data?.[0]?.attributes ?? {}) as LegacyProject;
-const { content, title, banner, links, media, category, date, finishedDate, tags } = project;
-const { url: bannerPath, name: bannerName } = banner?.data?.attributes ?? {};
-const bannerUrl = getMediaUrl(bannerPath, {}, import.meta.env.PUBLIC_API_URL);
-const mediaItems = (media?.data ?? []) as Array<{ attributes?: { url?: string } }>;
-const images = mediaItems
-  .map((d) => getMediaUrl(d.attributes?.url, {}, import.meta.env.PUBLIC_API_URL))
+const project = data?.projects?.[0] as (ProjectFragment & { id: string }) | undefined;
+const { content, title, banner, links, media, category, date, finishedDate, tags } = project ?? {};
+const bannerUrl = getMediaUrl(banner?.url, {}, import.meta.env.PUBLIC_API_URL);
+const bannerName = banner?.name;
+const images = (media ?? [])
+  .filter((d): d is { name: string; url: string } => !!d)
+  .map((d) => getMediaUrl(d.url, {}, import.meta.env.PUBLIC_API_URL))
   .filter((d): d is string => !!d);
-const tagItems = (tags?.data ?? []) as Array<{ attributes?: Tag }>;
-const linkItems = (links ?? []) as Array<ComponentUtilsLink | null | undefined>;
+const nonNullTags = (items: Array<TagFragment | null>) =>
+  items.filter((t): t is TagFragment => !!t);
+const nonNullLinks = (links ?? []).filter((l): l is NonNullable<typeof l> => !!l);
 const t = useTranslations(locale);
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
@@ -61,95 +43,110 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 
 <MainLayout>
   <Container maxW="breakpoint-xl" py="8" w="full">
-    <Stack gap="4">
-      <Link href={`/${locale}/projects`}>
-        <Wrap fontSize="sm" alignItems="center">
-          <FaArrowLeft />
-          <Text>{t('project.back-to-projects')}</Text>
-        </Wrap>
-      </Link>
-      {
-        bannerUrl && (
-          <Box rounded="l1" overflow="hidden">
-            <styled.img
-              src={bannerUrl}
-              alt={bannerName ?? title ?? undefined}
-              objectFit="contain"
-              objectPosition="center"
-              width="full"
-              aspectRatio="16 / 9"
-              backgroundColor="bg.muted"
-              style={{
-                viewTransitionName: `project-image-${slug}`
-              }}
-            />
-          </Box>
-        )
-      }
-      <Stack gap="2">
-        <Stack gap="1">
-          <Heading
-            as="h1"
-            size="2xl"
-            fontWeight="bold"
-            style={{
-              viewTransitionName: `project-title-${slug}`
-            }}>{title}</Heading
+    <Box
+      bg="bg.default/80"
+      backdropFilter="blur(10px)"
+      rounded="xl"
+      p={{ base: '6', md: '10' }}
+      border="1px solid"
+      borderColor="white/10"
+      shadow="xl"
+    >
+      <Stack gap="8">
+        <Link href={`/${locale}/projects`}>
+          <Wrap
+            fontSize="sm"
+            alignItems="center"
+            color="fg.muted"
+            _hover={{ color: 'amber.400' }}
+            transition="colors"
           >
-          <Wrap fontSize="md" color="fg.subtle">
-            <Text>{category?.data?.attributes?.name}</Text>
-            <Text>|</Text>
-            <Text>
-              {formatMonthYear(parseDate(date as string), locale)} -{' '}
-              {
-                finishedDate
-                  ? formatMonthYear(parseDate(finishedDate as string), locale)
-                  : t('common.present')
-              }
-            </Text>
+            <FaArrowLeft />
+            <Text>{t('project.back-to-projects')}</Text>
           </Wrap>
-        </Stack>
+        </Link>
         {
-          tags && (
-            <HStack gap="2" alignItems="center" flexWrap="wrap">
-              <Text>{t('common.tags')}</Text>
-              <Wrap gap="2" rowGap="2" alignItems="center">
-                {tagItems
-                  .filter((t) => !!t)
-                  .map((t) => (
-                    <Link href={`/${locale}/tags/${t.attributes?.slug}`} display="inline-flex">
-                      <TagBadge tag={t.attributes as Tag} showCount size="sm" />
-                    </Link>
-                  ))}
-              </Wrap>
-            </HStack>
+          bannerUrl && (
+            <Box rounded="lg" overflow="hidden" shadow="md">
+              <styled.img
+                src={bannerUrl}
+                alt={bannerName ?? title ?? undefined}
+                objectFit="contain"
+                objectPosition="center"
+                width="full"
+                aspectRatio="16 / 9"
+                backgroundColor="bg.muted"
+                style={{
+                  viewTransitionName: `project-image-${slug}`
+                }}
+              />
+            </Box>
           )
         }
-        {
-          links && (
-            <Stack gap="1">
-              {linkItems
-                .filter((l): l is ComponentUtilsLink => !!l)
-                .map((l) => {
+        <Stack gap="4">
+          <Stack gap="2">
+            <Heading
+              as="h1"
+              size="3xl"
+              fontWeight="black"
+              letterSpacing="-0.03em"
+              style={{
+                viewTransitionName: `project-title-${slug}`
+              }}>{title}</Heading
+            >
+            <Wrap fontSize="md" color="fg.subtle">
+              <Text fontWeight="bold" color="amber.500">{category?.name}</Text>
+              <Text color="border.default">|</Text>
+              <Text>
+                {formatMonthYear(parseDate(date as string), locale)} -{' '}
+                {
+                  finishedDate
+                    ? formatMonthYear(parseDate(finishedDate as string), locale)
+                    : t('common.present')
+                }
+              </Text>
+            </Wrap>
+          </Stack>
+          {
+            tags && (
+              <HStack>
+                <Text fontWeight="bold" fontSize="sm" color="fg.muted">
+                  {t('common.tags')}:
+                </Text>
+                <Wrap>
+                  {nonNullTags(tags).map((tag) => (
+                    <Link href={`/${locale}/tags/${tag.slug}`}>
+                      <TagBadge tag={tag} showCount size="sm" />
+                    </Link>
+                  ))}
+                </Wrap>
+              </HStack>
+            )
+          }
+          {
+            links && (
+              <Stack gap="2">
+                {nonNullLinks.map((l) => {
                   return <LinkItem data={l} />;
                 })}
+              </Stack>
+            )
+          }
+        </Stack>
+
+        <Divider borderColor="white/10" />
+        {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
+        {
+          images.length > 0 && (
+            <Stack gap="6">
+              <Heading as="h2" size="xl" fontWeight="bold">
+                {t('project.screenshots')}
+              </Heading>
+              <Carousel client:visible images={images} />
             </Stack>
           )
         }
       </Stack>
-
-      <Divider />
-      {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
-      {
-        images.length > 0 && (
-          <Stack gap="4">
-            <Heading as="h2" size="xl" fontWeight="bold">
-              {t('project.screenshots')}
-            </Heading>
-            <Carousel client:visible images={images} />
-          </Stack>
-        )
-      }
-    </Stack>
+    </Box>
   </Container>
 </MainLayout>

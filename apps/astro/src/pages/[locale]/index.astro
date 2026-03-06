@@ -1,9 +1,19 @@
 ---
-import { Center, Stack } from 'styled-system/jsx';
+import { FaArrowRight, FaGithub } from 'react-icons/fa';
+import { Box, Container, Flex, Stack } from 'styled-system/jsx';
+import { getMediaUrl } from 'utils/media';
+import { Marquee } from '~/components/common/Marquee';
+import BentoGrid from '~/components/home/BentoGrid.astro';
+import { TagBadge } from '~/components/tags/TagBadge';
+import { Button } from '~/components/ui/button';
 import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
+import { graphQLSdk } from '~/graphql';
 import { localePaths } from '~/i18n/paths';
-
+import type { ProjectPreviewFragment, TagFragment } from '~/graphql/generated/client';
+import { pickLocale } from '~/utils/fallbackLocale';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
@@ -11,13 +21,223 @@ export const prerender = false;
 export function getStaticPaths() {
   return localePaths;
 }
+
+const { locale } = Astro.params;
+
+if (!validateLocale(locale)) {
+  return Astro.redirect('/404');
+}
+
+const t = useTranslations(locale);
+
+// Feature flag: Hide new homepage if disabled
+const ENABLE_NEW_HOMEPAGE = import.meta.env.PUBLIC_ENABLE_NEW_HOMEPAGE === 'true';
+
+if (!ENABLE_NEW_HOMEPAGE) {
+  // Redirect to projects page or show simple landing
+  return Astro.redirect(`/${locale}/projects`);
+}
+
+const data = await graphQLSdk.fetchHomePage({
+  locale: locale === 'ja' ? 'ja' : 'en'
+});
+
+const homepageData = data?.homepage;
+const rawProjects = data?.projects ?? [];
+const projects = rawProjects
+  .map((p) => pickLocale(p, locale))
+  .filter((p): p is ProjectPreviewFragment => !!p);
+
+const introImage =
+  getMediaUrl(
+    homepageData?.introductionImage?.url,
+    { height: 600 },
+    import.meta.env.PUBLIC_API_URL
+  ) || '/images/placeholder-project.jpg';
+
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
 ---
 
 <MainLayout>
-  <Center flex="1">
-    <Stack alignItems="center">
-      <Heading fontSize="3xl">ham-san.net v4</Heading>
-      <Text>Coming Soon...</Text>
+  <!-- Hero Section (Restored Premium) -->
+  <Box
+    position="relative"
+    minH="100dvh"
+    overflow="hidden"
+    display="flex"
+    alignItems="center"
+    zIndex={1}
+  >
+    <Container maxW="breakpoint-xl" position="relative">
+      <Stack gap="8" maxW="4xl">
+        <Box animation="fade-in-up 0.8s">
+          <Heading
+            as="h1"
+            fontSize={{ base: '5xl', md: '7xl', lg: '8xl' }}
+            fontWeight="black"
+            letterSpacing="-0.04em"
+            color="fg.default"
+            lineHeight="0.9"
+            textTransform="uppercase"
+          >
+            Digital <br />
+            <Box color="amber.500" display="inline-block" transform="translateX(20px)"
+              >Craftsman</Box
+            >
+          </Heading>
+        </Box>
+
+        <Text
+          fontSize={{ base: 'xl', md: '2xl' }}
+          color="fg.muted"
+          lineHeight="relaxed"
+          maxW="2xl"
+          animation="fade-in-up 1s"
+        >
+          {homepageData?.heroSubtitle ?? t('home.hero-subtitle')}
+        </Text>
+
+        <Flex gap="4" pt="8" animation="fade-in-up 1.2s">
+          <Link href={`/${locale}/projects`}>
+            <Button size="2xl" colorPalette="amber" variant="solid" fontWeight="bold">
+              View My Work
+            </Button>
+          </Link>
+          <Link href="https://github.com/hamzaabamboo" target="_blank">
+            <Button size="2xl" variant="outline" fontWeight="bold">
+              <FaGithub /> GitHub
+            </Button>
+          </Link>
+        </Flex>
+      </Stack>
+    </Container>
+
+    <!-- Scroll Down Indicator -->
+    <Box
+      position="absolute"
+      bottom="10"
+      left="50%"
+      transform="translateX(-50%)"
+      animation="bounce 2s infinite"
+      color="fg.muted"
+    >
+      <Box w="1px" h="12" bg="currentColor" />
+    </Box>
+  </Box>
+
+  <!-- Tech Stack Marquee (New Spice) -->
+  <Marquee client:load />
+
+  <!-- Projects Section (Svelte-Style Grid) -->
+  <Box bg="bg.subtle" py="24">
+    <Container maxW="breakpoint-xl">
+      <Stack gap="16">
+        <Flex justify="space-between" align="center">
+          <Heading
+            fontSize="3xl"
+            fontWeight="black"
+            textTransform="uppercase"
+            letterSpacing="tight"
+            color="fg.default">{t('home.featured-projects')}</Heading
+          >
+          <Link href={`/${locale}/projects`}>
+            <Button variant="link" colorPalette="gray">View All <FaArrowRight /></Button>
+          </Link>
+        </Flex>
+
+        <Flex wrap="wrap" gap="0" mx="-4">
+          {
+            projects.map((project, idx) => (
+              <Box key={idx} w={{ base: '100%', md: '50%', lg: '33.33%' }} p="4">
+                <Link
+                  href={`/${locale}/projects/${project.slug}`}
+                  display="block"
+                  transition="all 0.3s"
+                  _hover={{ transform: 'scale(1.05)', shadow: 'lg' }}
+                  h="full"
+                >
+                  <Box
+                    bg="bg.default"
+                    borderRadius="md"
+                    overflow="hidden"
+                    shadow="md"
+                    h="full"
+                    display="flex"
+                    flexDirection="column"
+                  >
+                    <Box
+                      h="64"
+                      bg="bg.muted"
+                      style={{
+                        backgroundImage: `url(${(() => {
+                          const url = project.media?.[0]?.url;
+                          if (url)
+                            return getMediaUrl(
+                              url,
+                              { height: 400 },
+                              import.meta.env.PUBLIC_API_URL
+                            );
+                          return '/images/placeholder-project.jpg';
+                        })()})`
+                      }}
+                      bgSize="cover"
+                      bgPosition="center"
+                      borderBottom="1px solid"
+                      borderColor="border.subtle"
+                    />
+
+                    <Stack p="4" gap="2" flex="1">
+                      <Heading fontSize="xl" fontWeight="bold" color="fg.default">
+                        {project.title}
+                      </Heading>
+
+                      <Flex gap="2" fontSize="sm" color="fg.muted" align="center">
+                        {project.category?.name && <Box>{project.category.name}</Box>}
+                      </Flex>
+
+                      {project.tags && project.tags.length > 0 && (
+                        <Flex align="center" gap="2" wrap="wrap">
+                          <Text fontSize="xs" fontWeight="bold" color="fg.muted">
+                            {t('common.tags')}:
+                          </Text>
+                          {project.tags
+                            .filter((tag): tag is TagFragment => !!tag)
+                            .map((tag) => (
+                              <TagBadge tag={tag} size="sm" />
+                            ))}
+                        </Flex>
+                      )}
+
+                      {project.description && (
+                        <Text color="fg.muted" lineClamp={3} fontSize="sm" mt="2">
+                          {project.description}
+                        </Text>
+                      )}
+                    </Stack>
+                  </Box>
+                </Link>
+              </Box>
+            ))
+          }
+        </Flex>
+      </Stack>
+    </Container>
+  </Box>
+
+  <!-- About Section (Bento Grid) -->
+  <Container maxW="breakpoint-xl" py="24">
+    <Stack gap="12">
+      <Heading
+        fontSize={{ base: '4xl', lg: '6xl' }}
+        fontWeight="black"
+        color="fg.default"
+        textAlign="center"
+        letterSpacing="-0.03em"
+      >
+        About <Box color="amber.500">Me</Box>
+      </Heading>
+
+      <BentoGrid introImage={introImage} />
     </Stack>
-  </Center>
+  </Container>
 </MainLayout>

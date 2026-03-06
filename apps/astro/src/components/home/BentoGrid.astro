@@ -1,0 +1,248 @@
+---
+import { Box, Grid, Stack, Flex, styled } from 'styled-system/jsx';
+import {
+  FaGithub,
+  FaLinkedin,
+  FaMapMarkerAlt,
+  FaEnvelope,
+  FaReact,
+  FaFigma,
+  FaDocker
+} from 'react-icons/fa';
+import { SiTypescript, SiNextdotjs, SiTailwindcss } from 'react-icons/si';
+import { Heading } from '~/components/ui/heading';
+import { Text } from '~/components/ui/text';
+import { Button } from '~/components/ui/button';
+import { Link } from '~/components/ui/link';
+import { css } from 'styled-system/css';
+
+interface Props {
+  introImage: string;
+}
+
+const { introImage } = Astro.props;
+
+const BentoCard = styled(Box, {
+  base: {
+    bg: 'bg.default',
+    background:
+      'linear-gradient(145deg, token(colors.bg.default) 0%, token(colors.bg.subtle) 100%)',
+    border: '1px solid',
+    borderColor: 'border.subtle',
+    borderRadius: '3xl',
+    overflow: 'hidden',
+    position: 'relative',
+    transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    _hover: {
+      transform: 'translateY(-4px) scale(1.01)',
+      shadow: '2xl',
+      borderColor: 'amber.400',
+      zIndex: 10
+    }
+  }
+});
+
+const IconBox = styled(Box, {
+  base: {
+    p: '3',
+    bg: 'bg.subtle',
+    borderRadius: 'xl',
+    fontSize: '2xl',
+    color: 'fg.default',
+    transition: 'color 0.3s',
+    _hover: { color: 'amber.500', bg: 'bg.muted' }
+  }
+});
+---
+
+<Box py="8">
+  <Grid
+    gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' }}
+    gridAutoRows="minmax(180px, auto)"
+    gap="6"
+  >
+    <!-- 1. Introduction (Wide & Bold) -->
+    <BentoCard
+      gridColumn={{ md: 'span 2', lg: 'span 3' }}
+      gridRow={{ md: 'span 1' }}
+      p={{ base: '6', md: '10' }}
+      display="flex"
+      alignItems="center"
+      gap="8"
+      className="noise-bg"
+    >
+      <img
+        src={introImage}
+        alt="Profile"
+        style={{
+          display: 'none',
+          width: '8rem',
+          height: '8rem',
+          borderRadius: '9999px',
+          objectFit: 'cover',
+          border: '4px solid white',
+          boxShadow: 'var(--shadow-xl)'
+        }}
+        class="md:block"
+      />
+      <Stack gap="6">
+        <Heading
+          fontSize={{ base: '3xl', lg: '5xl' }}
+          fontWeight="black"
+          lineHeight="1.1"
+          letterSpacing="-0.02em"
+        >
+          Building <Box style={{ color: '#d97706' }}>digital experiences</Box> that matter.
+        </Heading>
+        <Text color="fg.muted" fontSize="lg" lineHeight="relaxed">
+          I craft pixel-perfect websites and applications with a focus on motion, aesthetic, and
+          usability.
+        </Text>
+      </Stack>
+    </BentoCard>
+
+    <!-- 2. Location (Map Visual) -->
+    <BentoCard
+      gridColumn={{ md: 'span 1', lg: 'span 1' }}
+      gridRow={{ md: 'span 1' }}
+      position="relative"
+    >
+      <!-- Abstract Map Background -->
+      <Box
+        position="absolute"
+        inset="0"
+        style={{
+          backgroundImage: 'radial-gradient(#d1d5db 1px, transparent 1px)',
+          backgroundSize: '20px 20px'
+        }}
+        opacity="0.4"
+        transition="opacity 0.3s"
+        _groupHover={{ opacity: 0.6 }}
+      />
+      <Stack h="full" justify="center" align="center" position="relative" zIndex="1" gap="2">
+        <Box
+          w="12"
+          h="12"
+          bg="amber.500"
+          borderRadius="full"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          shadow="lg"
+          animation="bounce 2s infinite"
+        >
+          <FaMapMarkerAlt color="white" size={20} />
+        </Box>
+        <Box bg="bg.default/80" backdropFilter="blur(4px)" px="4" py="2" borderRadius="full">
+          <Text fontWeight="bold" fontSize="sm">Bangkok, TH</Text>
+        </Box>
+      </Stack>
+    </BentoCard>
+
+    <!-- 3. Tech Focus (Icons Grid) -->
+    <BentoCard gridColumn={{ md: 'span 1', lg: 'span 1' }} gridRow={{ md: 'span 1' }} p="6">
+      <Stack h="full" justify="space-between">
+        <Text
+          fontWeight="bold"
+          textTransform="uppercase"
+          fontSize="xs"
+          letterSpacing="widest"
+          color="fg.subtle">Toolbox</Text
+        >
+        <Grid gridTemplateColumns="repeat(3, 1fr)" gap="3">
+          <IconBox><FaReact /></IconBox>
+          <IconBox><SiTypescript /></IconBox>
+          <IconBox><SiNextdotjs /></IconBox>
+          <IconBox><SiTailwindcss /></IconBox>
+          <IconBox><FaFigma /></IconBox>
+          <IconBox><FaDocker /></IconBox>
+        </Grid>
+      </Stack>
+    </BentoCard>
+
+    <!-- 4. Availability / Status (Square) -->
+    <BentoCard
+      gridColumn={{ md: 'span 1', lg: 'span 1' }}
+      gridRow={{ md: 'span 1' }}
+      style={{ background: '#059669' }}
+      color="white"
+      p="6"
+      className="noise-bg"
+    >
+      <Flex direction="column" h="full" justify="space-between">
+        <Box display="flex" justifyContent="space-between" alignItems="flex-start">
+          <Box p="2" bg="white/20" borderRadius="lg">
+            <Box w="3" h="3" bg="white" borderRadius="full" animation="pulse 2s infinite" />
+          </Box>
+          <Text
+            fontSize="xs"
+            fontWeight="bold"
+            opacity="0.8"
+            bg="black/20"
+            px="2"
+            py="1"
+            borderRadius="full">ONLINE</Text
+          >
+        </Box>
+        <Box>
+          <Text fontSize="xs" fontWeight="bold" opacity="0.8" mb="1">Current Status</Text>
+          <Text fontWeight="black" fontSize="lg" lineHeight="tight">Open to Work</Text>
+          <Text fontSize="sm" opacity="0.9">Freelance & Full-time</Text>
+        </Box>
+      </Flex>
+    </BentoCard>
+
+    <!-- 5. Connect (Wide Actions) -->
+    <BentoCard
+      gridColumn={{ md: 'span 1', lg: 'span 2' }}
+      gridRow={{ md: 'span 1' }}
+      p="8"
+      display="flex"
+      alignItems="center"
+      style={{ background: '#171717', color: 'white' }}
+      className="noise-bg"
+    >
+      <Flex w="full" justify="space-between" align="center" gap="8" wrap="wrap">
+        <Box>
+          <Heading fontSize="2xl" color="white" mb="2">Let's work together</Heading>
+          <Text color="neutral.400">Have a project in mind?</Text>
+        </Box>
+        <Flex gap="3">
+          <Link href="mailto:hello@ham-san.net">
+            <Button size="xl" colorPalette="amber" borderRadius="full">
+              <FaEnvelope /> Email Me
+            </Button>
+          </Link>
+          <Link href="https://github.com/hamzaabamboo" target="_blank">
+            <Button
+              size="xl"
+              variant="outline"
+              borderRadius="full"
+              className={css({
+                borderColor: 'white/20',
+                color: 'white',
+                _hover: { bg: 'white/10' }
+              })}
+            >
+              <FaGithub />
+            </Button>
+          </Link>
+          <Link href="https://linkedin.com/in/hamzaabamboo" target="_blank">
+            <Button
+              size="xl"
+              variant="outline"
+              borderRadius="full"
+              className={css({
+                borderColor: 'white/20',
+                color: 'white',
+                _hover: { bg: 'white/10' }
+              })}
+            >
+              <FaLinkedin />
+            </Button>
+          </Link>
+        </Flex>
+      </Flex>
+    </BentoCard>
+  </Grid>
+</Box>

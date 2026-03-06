@@ -12,8 +12,11 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
-import { toLegacyGetTagBySlug } from '~/graphql/legacy';
-import { ProjectPreviewFragment, Tag } from '~/graphql/generated/client';
+import type {
+  ExperienceFragment,
+  ProjectPreviewFragment,
+  TagFragment
+} from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { sortTags } from '~/utils/tags';
@@ -22,38 +25,23 @@ export const prerender = false;
 
 const { locale, slug } = Astro.params;
 
-const data = toLegacyGetTagBySlug(
-  await graphQLSdk.getTagBySlug({
-    slug
-  })
-);
+const data = await graphQLSdk.getTagBySlug({ slug });
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
-type LegacyTagPageData = {
-  projects?: { data?: Array<{ attributes?: ProjectPreviewFragment }> };
-  experiences?: {
-    data?: Array<{
-      attributes?: {
-        title?: string;
-        content?: string;
-        position?: string;
-        start?: string;
-        end?: string;
-        tags?: { data?: Array<{ attributes?: Tag }> };
-      };
-    }>;
-  };
-  title?: string;
-  type?: string;
-};
-const tagData = (data?.tags?.data?.[0]?.attributes ?? {}) as LegacyTagPageData;
-const { projects, experiences, title, type } = tagData;
+const tagData = data?.tags?.[0];
+const title = tagData?.title;
+const type = tagData?.type;
+const experienceItems = (tagData?.experiences ?? []).filter(
+  (e): e is ExperienceFragment & { id: string } => !!e
+);
+const projectItems = (tagData?.projects ?? []).filter(
+  (p): p is ProjectPreviewFragment & { id: string } => !!p
+);
+const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is TagFragment => !!t);
 const t = useTranslations(locale);
-const experienceItems = experiences?.data ?? [];
-const projectItems = (projects?.data ?? []) as Array<{ attributes?: ProjectPreviewFragment }>;
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
@@ -84,59 +72,54 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
       </Stack>
 
       {
-        experiences &&
-          experienceItems.map((d) => {
-            if (!d.attributes) return null;
-            const { title, content, position, tags } = d.attributes;
-            const start = d.attributes.start as string;
-            const end = d.attributes.end as string;
-            return (
-              <Stack>
-                <Heading as="h2" size="xl" fontWeight="bold">
-                  {title}
-                </Heading>
-                <Wrap fontSize="sm">
-                  <Text>{position}</Text> <Text>|</Text>
-                  <Text>
-                    {formatMonthYear(parseDate(start), locale)} -{' '}
-                    {end ? formatMonthYear(parseDate(end), locale) : t('common.present')} (
-                    {formatDistance(parseDate(start), end ? parseDate(end) : new Date(), {
+        experienceItems.map((experience) => {
+          const { title, content, position, tags, start, end } = experience;
+          return (
+            <Stack>
+              <Heading as="h2" size="xl" fontWeight="bold">
+                {title}
+              </Heading>
+              <Wrap fontSize="sm">
+                <Text>{position}</Text> <Text>|</Text>
+                <Text>
+                  {formatMonthYear(parseDate(start as string), locale)} -{' '}
+                  {end ? formatMonthYear(parseDate(end as string), locale) : t('common.present')} (
+                  {formatDistance(
+                    parseDate(start as string),
+                    end ? parseDate(end as string) : new Date(),
+                    {
                       locale: locale === 'ja' ? ja : enUS
-                    })}
-                    )
-                  </Text>
+                    }
+                  )}
+                  )
+                </Text>
+              </Wrap>
+              {tags && (
+                <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
+                  <Text>{t('common.tags')}</Text>
+                  {sortTags(nonNullTags(tags)).map(
+                    (tag) =>
+                      tag && (
+                        <Link href={`/${locale}/tags/${tag.slug}`} display="inline-flex">
+                          <TagBadge tag={tag} showCount size="sm" />
+                        </Link>
+                      )
+                  )}
                 </Wrap>
-                {tags && (
-                  <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
-                    <Text>{t('common.tags')}</Text>
-                    {sortTags(tags?.data ?? []).map(
-                      (s) =>
-                        s &&
-                        s.attributes && (
-                          <Link href={`/${locale}/tags/${s.attributes.slug}`} display="inline-flex">
-                            <TagBadge tag={s.attributes} showCount size="sm" />
-                          </Link>
-                        )
-                    )}
-                  </Wrap>
-                )}
-                {content && <Markdown content={content} />}
-              </Stack>
-            );
-          })
+              )}
+              {content && <Markdown content={content} />}
+            </Stack>
+          );
+        })
       }
       <Divider />
       <Grid gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))">
         {
-          projectItems
-            .filter((p) => p.attributes)
-            .map((p) => {
-              return (
-                <GridItem>
-                  {p.attributes && <ProjectCard data={p.attributes} locale={locale} />}
-                </GridItem>
-              );
-            })
+          projectItems.map((project) => (
+            <GridItem>
+              <ProjectCard data={project} locale={locale} />
+            </GridItem>
+          ))
         }
       </Grid>
     </Stack>

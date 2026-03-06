@@ -51,7 +51,8 @@ const config = tseslint.config(
     rules: {
       '@pandacss/no-unsafe-token-fn-usage': 'off',
       '@pandacss/no-hardcoded-color': 'off',
-      '@pandacss/file-not-included': 'off'
+      '@pandacss/file-not-included': 'off',
+      '@pandacss/no-config-function-in-source': 'off'
     }
   },
   ...eslintPluginAstro.configs['flat/recommended'],
@@ -63,6 +64,12 @@ const config = tseslint.config(
     }
   },
   eslintPluginPrettierRecommended,
+  {
+    files: ['**/*.astro', '**/*.astro/*.ts', '**/*.astro/*.js'],
+    rules: {
+      'prettier/prettier': 'off'
+    }
+  },
   {
     files: ['**/*.d.ts'],
     rules: {

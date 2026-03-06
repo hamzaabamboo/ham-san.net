@@ -1,8 +1,11 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import { Stack } from 'styled-system/jsx';
+import { SmoothScroll } from '~/components/common/SmoothScroll';
 import Footer from '~/components/layout/Footer.astro';
 import Navigation from '~/components/layout/Navigation.astro';
+import { HeroBackground } from '~/components/home/HeroBackground';
+import { Box } from 'styled-system/jsx';
 import BaseLayout from './BaseLayout.astro';
 ---
 
@@ -10,10 +13,32 @@ import BaseLayout from './BaseLayout.astro';
   <Fragment slot="head">
     <ClientRouter />
     <slot name="head" />
+    <script is:inline>
+      const savedTheme = localStorage.getItem('theme');
+      if (
+        savedTheme === 'dark' ||
+        (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
   </Fragment>
-  <Stack gap="0" minH="100dvh">
+  <SmoothScroll client:only="react" />
+  <Stack gap="0" minH="100dvh" bg="bg.canvas" color="fg.default" overflowX="hidden">
     <Navigation transition:persist="navbar" />
-    <Stack flex={1}><slot /></Stack>
+    <!-- Global Parallax Background -->
+    <Box
+      position="fixed"
+      inset="0"
+      zIndex={0}
+      opacity={{ base: 0.5, md: 0.8 }}
+      pointerEvents="none"
+    >
+      <HeroBackground client:idle transition:persist="hero-bg" />
+    </Box>
+    <Stack flex={1} position="relative" zIndex={1} pt="24"><slot /></Stack>
     <Footer transition:persist="footer" />
   </Stack>
 </BaseLayout>

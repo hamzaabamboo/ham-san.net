@@ -12,13 +12,14 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
-import { toLegacyFetchAboutMe } from '~/graphql/legacy';
+import type { TagFragment } from '~/graphql/generated/client';
+import { Enum_Tag_Type } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import { pickLocale } from '~/utils/fallbackLocale';
 import { sortTags } from '~/utils/tags';
 
 export const prerender = false;
-//TODO:
 
 const { locale } = Astro.params;
 
@@ -47,26 +48,18 @@ const formatDuration = (start?: string, end?: string) => {
   });
 };
 
-const data = toLegacyFetchAboutMe(
-  await graphQLSdk.fetchAboutMe({
-    // TODO: Localize Japanese Text
-    locale: 'en'
-  })
-);
+const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is TagFragment => !!t);
 
-//TODO: Tags
-const { aboutMe, educations, experiences, tags: _tags } = data ?? {};
+const { aboutMe, educations, experiences, tags } = await graphQLSdk.fetchAboutMe({
+  locale: 'en'
+});
 
 const skills = groupBy(
-  _tags?.data?.filter(
-    (tag) =>
-      !!tag.attributes?.title &&
-      !!tag.attributes?.slug &&
-      !!tag.attributes?.type &&
-      tag.attributes.type !== 'Non_Dev' &&
-      tag.attributes.type !== 'NonDev'
+  tags?.filter(
+    (tag): tag is NonNullable<typeof tag> =>
+      !!tag?.title && !!tag?.slug && !!tag?.type && tag.type !== Enum_Tag_Type.NonDev
   ),
-  (tag) => tag.attributes?.type
+  (tag) => tag.type
 );
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
@@ -79,7 +72,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
         <Heading as="h1" size="2xl" fontWeight="bold" id="introduction"
           >{t('about-me.title')}</Heading
         >
-        <Text>{aboutMe?.data?.attributes?.introduction}</Text>
+        <Text>{aboutMe?.introduction}</Text>
         <Divider />
         <Stack>
           <Heading as="h2" size="xl" fontWeight="bold" id="skills">{t('about-me.skills')}</Heading>
@@ -96,13 +89,13 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                       </GridItem>
                       <GridItem>
                         <Wrap>
-                          {sortBy(skills[key], (d) => d.attributes?.projects?.data?.length ?? 0)
+                          {sortBy(skills[key], (d) => d.projects?.length ?? 0)
                             .reverse()
                             .map(
                               (s) =>
-                                s.attributes?.slug && (
-                                  <Link href={`/${locale}/tags/${s.attributes.slug}`}>
-                                    <TagBadge tag={s.attributes} showCount />
+                                s.slug && (
+                                  <Link href={`/${locale}/tags/${s.slug}`}>
+                                    <TagBadge tag={s} showCount />
                                   </Link>
                                 )
                             )}
@@ -120,45 +113,41 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             >{t('common.experiences')}</Heading
           >
           {
-            experiences &&
-              experiences.data?.map((d) => {
-                if (!d.attributes) return null;
-                const { title, content, position, tags } = d.attributes;
-                const start = d.attributes.start as string;
-                const end = d.attributes.end as string;
-                return (
-                  <Stack>
-                    <Heading as="h2" size="xl" fontWeight="bold">
-                      {title}
-                    </Heading>
-                    <Wrap fontSize="sm">
-                      <Text>{position}</Text> <Text>|</Text>
-                      <Text>
-                        {formatDateRange(start, end)}
-                        {formatDuration(start, end) && ` (${formatDuration(start, end)})`}
-                      </Text>
+            experiences?.map((d) => {
+              const exp = pickLocale(d, locale);
+              if (!exp) return null;
+              const { title, content, position, tags: expTags } = exp;
+              const start = exp.start as string;
+              const end = exp.end as string;
+              return (
+                <Stack>
+                  <Heading as="h2" size="xl" fontWeight="bold">
+                    {title}
+                  </Heading>
+                  <Wrap fontSize="sm">
+                    <Text>{position}</Text> <Text>|</Text>
+                    <Text>
+                      {formatDateRange(start, end)}
+                      {formatDuration(start, end) && ` (${formatDuration(start, end)})`}
+                    </Text>
+                  </Wrap>
+                  {expTags && (
+                    <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
+                      <Text>{t('common.tags')}</Text>
+                      {sortTags(nonNullTags(expTags)).map(
+                        (s) =>
+                          s.slug && (
+                            <Link href={`/${locale}/tags/${s.slug}`} display="inline-flex">
+                              <TagBadge tag={s} showCount size="sm" />
+                            </Link>
+                          )
+                      )}
                     </Wrap>
-                    {tags && (
-                      <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
-                        <Text>{t('common.tags')}</Text>
-                        {sortTags(tags?.data ?? []).map(
-                          (s) =>
-                            s &&
-                            s.attributes && (
-                              <Link
-                                href={`/${locale}/tags/${s.attributes.slug}`}
-                                display="inline-flex"
-                              >
-                                <TagBadge tag={s.attributes} showCount size="sm" />
-                              </Link>
-                            )
-                        )}
-                      </Wrap>
-                    )}
-                    {content && <Markdown content={content} />}
-                  </Stack>
-                );
-              })
+                  )}
+                  {content && <Markdown content={content} />}
+                </Stack>
+              );
+            })
           }
         </Stack>
         <Divider />
@@ -167,25 +156,25 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             >{t('common.education')}</Heading
           >
           {
-            educations &&
-              educations.data?.map((d) => {
-                if (!d.attributes) return null;
-                const { title, description, content } = d.attributes;
-                const start = d.attributes.start as string;
-                const end = d.attributes.end as string;
-                return (
-                  <Stack>
-                    <Heading as="h2" size="xl" fontWeight="bold">
-                      {title}
-                    </Heading>
-                    <Wrap fontSize="sm">
-                      <Text>{description}</Text> <Text>|</Text>
-                      <Text>{formatDateRange(start, end)}</Text>
-                    </Wrap>
-                    {content && <Markdown content={content} />}
-                  </Stack>
-                );
-              })
+            educations?.map((d) => {
+              const edu = pickLocale(d, locale);
+              if (!edu) return null;
+              const { title, description, content } = edu;
+              const start = edu.start as string;
+              const end = edu.end as string;
+              return (
+                <Stack>
+                  <Heading as="h2" size="xl" fontWeight="bold">
+                    {title}
+                  </Heading>
+                  <Wrap fontSize="sm">
+                    <Text>{description}</Text> <Text>|</Text>
+                    <Text>{formatDateRange(start, end)}</Text>
+                  </Wrap>
+                  {content && <Markdown content={content} />}
+                </Stack>
+              );
+            })
           }
         </Stack>
       </Stack>

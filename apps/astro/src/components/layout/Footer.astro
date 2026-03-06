@@ -11,16 +11,24 @@ const t = useTranslations(locale);
 <Wrap
   _print={{ display: 'none' }}
   w="full"
-  py="2"
-  px="2"
-  justifyContent="center"
+  py="8"
+  px="8"
+  justifyContent="space-between"
+  alignItems="center"
+  bg="bg.default"
+  color="fg.muted"
   borderTop="1px solid"
-  borderTopColor="border.subtle"
-  _print={{ display: 'none' }}
+  borderColor="border.subtle"
+  fontSize="sm"
 >
   <Text>{t('common.copyright')}</Text>
-  <Text>|</Text>
-  <Link target="_blank" rel="noreferrer" href="https://github.com/hamzaabamboo/ham-san.net"
-    >{t('common.view-source')}</Link
+  <Link
+    target="_blank"
+    rel="noreferrer"
+    href="https://github.com/hamzaabamboo/ham-san.net"
+    _hover={{ color: 'fg.default' }}
+    transition="colors"
   >
+    {t('common.view-source')}
+  </Link>
 </Wrap>

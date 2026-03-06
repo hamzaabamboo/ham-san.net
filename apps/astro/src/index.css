@@ -1,1 +1,35 @@
 @layer reset, base, tokens, recipes, utilities;
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Navbar Scroll Styles */
+#main-nav.scrolled {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+html.dark #main-nav.scrolled {
+  background-color: rgba(10, 10, 10, 0.8) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: token(colors.bg.canvas);
+    color: token(colors.fg.default);
+  }
+
+  /* Force black text in light mode if token fails */
+  html:not(.dark) body {
+    color: #0d0d0d;
+  }
+}
+

@@ -1,11 +1,15 @@
 ---
 import groupBy from 'lodash/groupBy';
-import { Container, Grid, GridItem, Stack } from 'styled-system/jsx';
-import { ProjectCard } from '~/components/projects/ProjectCard';
+import { Container, Flex, Box, Stack } from 'styled-system/jsx';
 import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
+import { Text } from '~/components/ui/text';
+import { TagBadge } from '~/components/tags/TagBadge';
+import { getMediaUrl } from 'utils/media';
 import { graphQLSdk } from '~/graphql';
-import { toLegacyFetchProjects } from '~/graphql/legacy';
+import type { TagFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
+import { pickLocale } from '~/utils/fallbackLocale';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
@@ -16,22 +20,17 @@ if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
-//TODO:
+const data = await graphQLSdk.fetchProjects({ limit: 75 });
 
-const data = toLegacyFetchProjects(
-  await graphQLSdk.fetchProjects({
-    // locale,
-    limit: 75
-  })
-);
-
-const projects = data?.projects?.data ?? [];
+const projects = (data?.projects ?? []).map((p) => pickLocale(p, locale)).filter((p) => !!p);
 
 const t = useTranslations(locale);
 
 const projectGroups = groupBy(projects, (project) =>
-  project.attributes?.isActive ? t('project.active') : t('project.inactive')
+  project.isActive ? t('project.active') : t('project.inactive')
 );
+
+const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is TagFragment => !!t);
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
@@ -39,23 +38,101 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 <MainLayout>
   <Container maxW="breakpoint-xl">
     <Stack py="4" gap="4" w="full">
-      <Heading as="h1" size="2xl" fontWeight="bold">{t('project.projects')}</Heading>
+      <Heading
+        as="h1"
+        size="2xl"
+        fontWeight="black"
+        textTransform="uppercase"
+        letterSpacing="-0.03em"
+        pt="8">{t('project.projects')}</Heading
+      >
       {
         [t('project.active'), t('project.inactive')].map((group: keyof typeof projectGroups) => {
+          const groupProjects = projectGroups[group];
+          if (!groupProjects || groupProjects.length === 0) return null;
+
           return (
-            <Stack>
-              <Heading as="h2" fontSize="xl" fontWeight="bold">
+            <Stack gap="6">
+              <Heading
+                as="h2"
+                fontSize="2xl"
+                fontWeight="bold"
+                color="fg.muted"
+                borderBottom="1px solid"
+                borderColor="white/10"
+                pb="2"
+              >
                 {group}
               </Heading>
-              <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))">
-                {(projectGroups[group] ?? []).map((p) => {
-                  return (
-                    <GridItem>
-                      {p.attributes && <ProjectCard data={p.attributes} locale={locale} />}
-                    </GridItem>
-                  );
-                })}
-              </Grid>
+              <Flex wrap="wrap" gap="0" mx="-4">
+                {groupProjects.map((project, idx) => (
+                  <Box key={idx} w={{ base: '100%', md: '50%', lg: '33.33%' }} p="4">
+                    <Link
+                      href={`/${locale}/projects/${project.slug}`}
+                      display="block"
+                      transition="all 0.3s"
+                      _hover={{ transform: 'scale(1.05)', shadow: 'lg' }}
+                      h="full"
+                    >
+                      <Box
+                        bg="bg.default"
+                        borderRadius="md"
+                        overflow="hidden"
+                        shadow="md"
+                        h="full"
+                        display="flex"
+                        flexDirection="column"
+                      >
+                        <Box
+                          h="64"
+                          bg="bg.muted"
+                          bgImage={`url(${
+                            project.media?.[0]?.url
+                              ? getMediaUrl(
+                                  project.media[0].url,
+                                  { height: 400 },
+                                  import.meta.env.PUBLIC_API_URL
+                                )
+                              : '/images/placeholder-project.jpg'
+                          })`}
+                          bgColor="neutral.200"
+                          bgSize="cover"
+                          bgPosition="center"
+                          borderBottom="1px solid"
+                          borderColor="border.subtle"
+                        />
+
+                        <Stack p="4" gap="2" flex="1">
+                          <Heading fontSize="xl" fontWeight="bold" color="fg.default">
+                            {project.title}
+                          </Heading>
+
+                          <Flex gap="2" fontSize="sm" color="fg.muted" align="center">
+                            {project.category?.name && <Box>{project.category.name}</Box>}
+                          </Flex>
+
+                          {project.tags && (
+                            <Flex align="center" gap="2" wrap="wrap">
+                              <Text fontSize="xs" fontWeight="bold" color="fg.muted">
+                                {t('common.tags')}:
+                              </Text>
+                              {nonNullTags(project.tags).map((tag) => (
+                                <TagBadge tag={tag} size="sm" />
+                              ))}
+                            </Flex>
+                          )}
+
+                          {project.description && (
+                            <Text color="fg.muted" lineClamp={3} fontSize="sm" mt="2">
+                              {project.description}
+                            </Text>
+                          )}
+                        </Stack>
+                      </Box>
+                    </Link>
+                  </Box>
+                ))}
+              </Flex>
             </Stack>
           );
         })
