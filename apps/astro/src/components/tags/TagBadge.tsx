@@ -1,20 +1,26 @@
-import { Enum_Tag_Type, Tag } from '~/graphql/generated/client';
+import { Enum_Tag_Type } from '~/graphql/generated/client';
 import { Badge } from '../ui/badge';
+
+type TagBadgeData = {
+  title?: string | null;
+  type?: Enum_Tag_Type | null;
+  projects?: unknown[] | { data?: unknown[] } | null;
+};
 
 export const TagBadge = ({
   tag,
   showCount = false,
   size
 }: {
-  tag: Tag;
+  tag: TagBadgeData;
   showCount?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }) => {
   const { title, type } = tag;
   const projectsCount = Array.isArray(tag?.projects)
     ? tag.projects.filter(Boolean).length
-    : Array.isArray((tag as { projects?: { data?: unknown[] } }).projects?.data)
-      ? (((tag as { projects?: { data?: unknown[] } }).projects?.data?.length ?? 0) as number)
+    : Array.isArray((tag.projects as { data?: unknown[] } | null)?.data)
+      ? ((tag.projects as { data?: unknown[] }).data?.length ?? 0)
       : 0;
 
   const colorPalette = (() => {

@@ -1,11 +1,17 @@
 import { FaGithub, FaGlobe } from 'react-icons/fa';
 import type { IconType } from 'react-icons/lib';
 import { Wrap } from 'styled-system/jsx';
-import { ComponentUtilsLink, Enum_Componentutilslink_Type } from '~/graphql/generated/client';
+import { Enum_Componentutilslink_Type } from '~/graphql/generated/client';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
 
-const processUrl = (link: Pick<ComponentUtilsLink, 'url' | 'type'>) => {
+type LinkData = {
+  title?: string | null;
+  url?: string | null;
+  type?: Enum_Componentutilslink_Type | null;
+};
+
+const processUrl = (link: Pick<LinkData, 'url' | 'type'>) => {
   switch (link.type) {
     case Enum_Componentutilslink_Type.Github:
       return link.url?.split('github.com/').splice(-1)[0];
@@ -14,7 +20,7 @@ const processUrl = (link: Pick<ComponentUtilsLink, 'url' | 'type'>) => {
   }
 };
 
-const linkIcon = (link: Pick<ComponentUtilsLink, 'type'>) => {
+const linkIcon = (link: Pick<LinkData, 'type'>) => {
   switch (link.type) {
     case Enum_Componentutilslink_Type.Github:
       return FaGithub;
@@ -30,7 +36,7 @@ export const LinkItem = ({
   Icon: _icon,
   linkText
 }: {
-  data: Omit<ComponentUtilsLink, 'id'>;
+  data: LinkData;
   Icon?: IconType;
   linkText?: string;
 }) => {

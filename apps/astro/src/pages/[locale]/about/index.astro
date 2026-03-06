@@ -141,8 +141,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                     {tags && (
                       <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
                         <Text>{t('common.tags')}</Text>
-                        {sortTags(tags?.data).map(
+                        {sortTags(tags?.data ?? []).map(
                           (s) =>
+                            s &&
                             s.attributes && (
                               <Link
                                 href={`/${locale}/tags/${s.attributes.slug}`}
