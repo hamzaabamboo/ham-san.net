@@ -1,26 +1,27 @@
-#TODO: Better Dockerfile
-FROM node:20-alpine AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN npm install -g pnpm@9.12.3
-
-FROM base AS build
-COPY . /usr/src/app
+FROM node:20-bookworm-slim AS base
 WORKDIR /usr/src/app
-RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev curl nasm bash git > /dev/null 2>&1
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm run -r build
-RUN pnpm deploy --filter=api --prod /prod/api
-RUN pnpm deploy --filter=client --prod /prod/client
+RUN npm install -g bun@1.3.10
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ curl bash git && rm -rf /var/lib/apt/lists/*
+
+FROM base AS install
+COPY . /usr/src/app
+RUN bun install --frozen-lockfile
+
+FROM install AS build
+RUN bunx nx run-many -p api,client -t build
 
 FROM base AS api
-COPY --from=build /prod/app1 /prod/app1
-WORKDIR /prod/app1
+WORKDIR /opt/app
+COPY --from=build /usr/src/app/dist/apps/api ./
+RUN bun install --production
 EXPOSE 1337
-CMD [ "pnpm", "start" ]
+CMD ["bun", "run", "start"]
 
 FROM base AS client
-COPY --from=build /prod/app2 /prod/app2
-WORKDIR /prod/app2
+WORKDIR /opt/app
+COPY --from=build /usr/src/app/dist/apps/client ./
+COPY --from=build /usr/src/app/apps/client/scripts ./scripts
+COPY --from=build /usr/src/app/apps/client/package.json ./package.json
+RUN bun install --production
 EXPOSE 1337
-CMD [ "pnpm", "start" ]
+CMD ["bun", "run", "start:prod"]

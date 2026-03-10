@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import {
   FaDiscord,
   FaGithub,
@@ -18,27 +18,17 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { NAMECARDS } from '~/constants/namecard';
-import { localePaths } from '~/i18n/paths';
 import { languages } from '~/i18n/ui';
-import { useTranslations } from '~/i18n/utils';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { NAMECARD_PAGE_LINKS } from 'utils/namecard-page';
 
-export function getStaticPaths() {
-  return localePaths.flatMap((l) =>
-    NAMECARDS.map((n) => {
-      return {
-        ...l,
-        params: {
-          ...l.params,
-          variant: n.variant
-        }
-      };
-    })
-  );
+const { locale, variant } = Astro.params;
+
+if (!validateLocale(locale)) {
+  return Astro.redirect('/404');
 }
 
-const { locale, variant } = Astro.params;
 const t = useTranslations(locale);
 
 const iconMap = {
@@ -71,14 +61,14 @@ const Image = styled.img;
 
 <BaseLayout>
   <Fragment name="head">
-    <ViewTransitions />
+    <ClientRouter />
   </Fragment>
   <Stack
     pt="8"
     minW="screen"
     minH="screen"
     alignItems="center"
-    style={{ ['--main-color' as 'color']: color }}
+    style={{ '--main-color': color } as Record<string, string>}
   >
     <Box
       position="fixed"
@@ -151,7 +141,6 @@ const Image = styled.img;
         <Box
           mx="auto"
           textAlign="start"
-          style={{ viewTransitionName: `namecard-${namecard.variant}-front` }}
         >
           <a href={`/${locale}/namecard/all`}>
             <Namecard side="front" data={namecard} />

@@ -211,39 +211,41 @@ const IconBox = styled(Box, {
           <Text color="neutral.400">{t('home.bento-cta-subtitle')}</Text>
         </Box>
         <Flex gap="3">
-          <Link href="mailto:hello@ham-san.net">
-            <Button size="xl" colorPalette="amber" borderRadius="full">
+          <Button asChild size="xl" colorPalette="amber" borderRadius="full">
+            <Link href="mailto:hello@ham-san.net">
               <FaEnvelope /> {t('home.bento-email')}
-            </Button>
-          </Link>
-          <Link href="https://github.com/hamzaabamboo" target="_blank">
-            <Button
-              size="xl"
-              variant="outline"
-              borderRadius="full"
-              className={css({
-                borderColor: 'white/20',
-                color: 'white',
-                _hover: { bg: 'white/10' }
-              })}
-            >
+            </Link>
+          </Button>
+          <Button
+            asChild
+            size="xl"
+            variant="outline"
+            borderRadius="full"
+            className={css({
+              borderColor: 'white/20',
+              color: 'white',
+              _hover: { bg: 'white/10' }
+            })}
+          >
+            <Link href="https://github.com/hamzaabamboo" target="_blank">
               <FaGithub />
-            </Button>
-          </Link>
-          <Link href="https://linkedin.com/in/hamzaabamboo" target="_blank">
-            <Button
-              size="xl"
-              variant="outline"
-              borderRadius="full"
-              className={css({
-                borderColor: 'white/20',
-                color: 'white',
-                _hover: { bg: 'white/10' }
-              })}
-            >
+            </Link>
+          </Button>
+          <Button
+            asChild
+            size="xl"
+            variant="outline"
+            borderRadius="full"
+            className={css({
+              borderColor: 'white/20',
+              color: 'white',
+              _hover: { bg: 'white/10' }
+            })}
+          >
+            <Link href="https://linkedin.com/in/hamzaabamboo" target="_blank">
               <FaLinkedin />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </Flex>
       </Flex>
     </BentoCard>

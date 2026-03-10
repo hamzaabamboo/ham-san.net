@@ -1,10 +1,6 @@
 ---
-import { formatDistance } from 'date-fns';
-import { enUS, ja } from 'date-fns/locale';
-import groupBy from 'lodash/groupBy';
-import sortBy from 'lodash/sortBy';
 import { Container, Divider, Grid, GridItem, HStack, Stack, Wrap } from 'styled-system/jsx';
-import { formatMonthYear, parseDate } from 'utils/date';
+import { formatDistanceBetween, formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
 import { TagBadge } from '~/components/tags/TagBadge';
@@ -43,24 +39,28 @@ const formatDuration = (start?: string, end?: string) => {
   const startText = formatMonthYear(startDate, locale);
   const endText = end ? formatMonthYear(endDate, locale) : t('common.present');
   if (!startText || (end && !endText)) return '';
-  return formatDistance(startDate, endDate, {
-    locale: locale === 'ja' ? ja : enUS
-  });
+  return formatDistanceBetween(startDate, endDate, locale);
 };
 
 const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is TagFragment => !!t);
+
+const groupByType = <T extends { type: Enum_Tag_Type }>(items: T[]) =>
+  items.reduce<Record<string, T[]>>((acc, item) => {
+    acc[item.type] ??= [];
+    acc[item.type].push(item);
+    return acc;
+  }, {});
 
 const { aboutMe, educations, experiences, tags } = await graphQLSdk.fetchAboutMe({
   locale: 'en'
 });
 
-const skills = groupBy(
-  tags?.filter(
-    (tag): tag is NonNullable<typeof tag> =>
-      !!tag?.title && !!tag?.slug && !!tag?.type && tag.type !== Enum_Tag_Type.NonDev
-  ),
-  (tag) => tag.type
-);
+const skillTags = (tags?.filter(
+  (tag): tag is NonNullable<typeof tag> & { type: Enum_Tag_Type } =>
+    !!tag?.title && !!tag?.slug && !!tag?.type && tag.type !== Enum_Tag_Type.NonDev
+) ?? []) as Array<NonNullable<(typeof tags)[number]> & { type: Enum_Tag_Type }>;
+
+const skills = groupByType(skillTags);
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
 ---
@@ -89,8 +89,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                       </GridItem>
                       <GridItem>
                         <Wrap>
-                          {sortBy(skills[key], (d) => d.projects?.length ?? 0)
-                            .reverse()
+                          {[...skills[key]].sort(
+                            (a, b) => (b.projects?.length ?? 0) - (a.projects?.length ?? 0)
+                          )
                             .map(
                               (s) =>
                                 s.slug && (

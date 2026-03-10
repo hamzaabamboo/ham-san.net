@@ -1,5 +1,3 @@
-import kebabCase from 'lodash/kebabCase';
-
 export const LANGUAGES = ['en', 'ja'];
 
 export const getLocalizedItems = <
@@ -16,4 +14,9 @@ export const getLocalizedItems = <
     return items?.find((d) => d?.attributes?.locale === locale)?.attributes ?? items?.[0]?.attributes;
 };
 
-export const toKebabCase = kebabCase;
+export const toKebabCase = (value: string) =>
+    value
+        .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+        .replace(/[^a-zA-Z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .toLowerCase();

@@ -4,7 +4,6 @@
 	import Typography from '@components/core/Typography.svelte';
 	import BlogPostItem from '@components/blog/BlogPostItem.svelte';
 	import { t } from '@i18n';
-	import groupBy from 'lodash/groupBy';
 	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;

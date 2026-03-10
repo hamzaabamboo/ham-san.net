@@ -1,20 +1,17 @@
-FROM node:20-alpine
+FROM node:20-bookworm-slim
 
-# Install pnpm
-RUN npm install -g pnpm@9.12.3
-
-# Installing libvips-dev for sharp Compatibility
-RUN apk update && apk add --no-cache curl build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev
+RUN npm install -g bun@1.3.10
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ curl bash && rm -rf /var/lib/apt/lists/*
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /opt/app
 
 COPY package.json ./
-# COPY patches ./patches
-RUN pnpm install --prod
+RUN bun install
 
 COPY ./ .
+RUN bun run build
 
 EXPOSE 1337
-CMD ["pnpm", "start"]
+CMD ["bun", "run", "start"]

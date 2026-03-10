@@ -1,3 +1,5 @@
+import { purple } from "~/theme/colors/purple";
+import { orange } from "~/theme/colors/orange";
 import { defineConfig } from '@pandacss/dev';
 import { theme } from './src/theme';
 import { globalCss } from './src/theme/global-css';
@@ -52,7 +54,9 @@ export default defineConfig({
           mauve: mauve,
           red: red,
           green: green,
-          amber: amber
+          amber: amber,
+          orange: orange,
+          purple: purple
         },
         radii: {
           l1: { value: '{radii.md}' },

@@ -63,9 +63,6 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               <styled.img
                 src={getMediaUrl(image.url, {}, import.meta.env.PUBLIC_API_URL) ?? ''}
                 alt={image.name}
-                style={{
-                  viewTransitionName: `project-image-${slug}`
-                }}
                 aspectRatio="4 / 3"
                 objectPosition="center"
                 objectFit="contain"
@@ -78,9 +75,6 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             )}
           </Box>
           <Text
-            style={{
-              viewTransitionName: `project-title-${slug}`
-            }}
             fontWeight="bold"
           >
             {title}

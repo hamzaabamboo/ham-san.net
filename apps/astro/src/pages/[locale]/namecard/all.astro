@@ -2,14 +2,8 @@
 import { Center, Grid } from 'styled-system/jsx';
 import { NAMECARDS } from '../../../constants/namecard';
 
-import { localePaths } from '~/i18n/paths';
-
 import { Namecard } from '~/components/namecard/Namecard';
 import MainLayout from '~/layouts/MainLayout.astro';
-
-export function getStaticPaths() {
-  return localePaths;
-}
 const { locale } = Astro.params;
 // <styled.p fontSize="xs" textAlign="center" fontStyle="italic">
 //   Pと書いてあるけどプロデューサーじゃないからね。
@@ -44,10 +38,7 @@ const { locale } = Astro.params;
         NAMECARDS.map((namecard) => {
           return (
             <>
-              <a
-                href={`/${locale}/namecard/${namecard.variant}`}
-                style={{ viewTransitionName: `namecard-${namecard.variant}-front` }}
-              >
+              <a href={`/${locale}/namecard/${namecard.variant}`}>
                 <Namecard side="front" data={namecard} />
               </a>
               <a href={`/${locale}/namecard/${namecard.variant}`}>

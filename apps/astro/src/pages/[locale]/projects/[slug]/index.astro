@@ -75,9 +75,6 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 width="full"
                 aspectRatio="16 / 9"
                 backgroundColor="bg.muted"
-                style={{
-                  viewTransitionName: `project-image-${slug}`
-                }}
               />
             </Box>
           )
@@ -88,10 +85,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               as="h1"
               size="3xl"
               fontWeight="black"
-              letterSpacing="-0.03em"
-              style={{
-                viewTransitionName: `project-title-${slug}`
-              }}>{title}</Heading
+              letterSpacing="-0.03em">{title}</Heading
             >
             <Wrap fontSize="md" color="fg.subtle">
               <Text fontWeight="bold" color="amber.500">{category?.name}</Text>

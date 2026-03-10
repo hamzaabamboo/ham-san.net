@@ -1,5 +1,4 @@
 ---
-import groupBy from 'lodash/groupBy';
 import { Container, Flex, Box, Stack } from 'styled-system/jsx';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
@@ -26,9 +25,12 @@ const projects = (data?.projects ?? []).map((p) => pickLocale(p, locale)).filter
 
 const t = useTranslations(locale);
 
-const projectGroups = groupBy(projects, (project) =>
-  project.isActive ? t('project.active') : t('project.inactive')
-);
+const projectGroups = projects.reduce<Record<string, typeof projects>>((acc, project) => {
+  const key = project.isActive ? t('project.active') : t('project.inactive');
+  acc[key] ??= [];
+  acc[key].push(project);
+  return acc;
+}, {});
 
 const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is TagFragment => !!t);
 

@@ -11,17 +11,12 @@ import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { HeroBackground } from '~/components/home/HeroBackground';
 import { graphQLSdk } from '~/graphql';
-import { localePaths } from '~/i18n/paths';
 import type { ProjectPreviewFragment, TagFragment } from '~/graphql/generated/client';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
-
-export function getStaticPaths() {
-  return localePaths;
-}
 
 const { locale } = Astro.params;
 
@@ -99,16 +94,16 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
         </Text>
 
         <Flex gap="4" pt="8" animation="fade-in-up 1.2s">
-          <Link href={`/${locale}/projects`}>
-            <Button size="2xl" colorPalette="amber" variant="solid" fontWeight="bold">
+          <Button asChild size="2xl" colorPalette="amber" variant="solid" fontWeight="bold">
+            <Link href={`/${locale}/projects`}>
               {t('home.view-my-work')}
-            </Button>
-          </Link>
-          <Link href="https://github.com/hamzaabamboo" target="_blank">
-            <Button size="2xl" variant="outline" fontWeight="bold">
+            </Link>
+          </Button>
+          <Button asChild size="2xl" variant="outline" fontWeight="bold">
+            <Link href="https://github.com/hamzaabamboo" target="_blank">
               <FaGithub /> GitHub
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </Flex>
       </Stack>
     </Container>
@@ -141,9 +136,11 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             letterSpacing="tight"
             color="fg.default">{t('home.featured-projects')}</Heading
           >
-          <Link href={`/${locale}/projects`}>
-            <Button variant="link" colorPalette="gray">View All <FaArrowRight /></Button>
-          </Link>
+          <Button asChild variant="link" colorPalette="gray">
+            <Link href={`/${locale}/projects`}>
+              {t('home.find-out-more')} <FaArrowRight />
+            </Link>
+          </Button>
         </Flex>
 
         <Flex wrap="wrap" gap="0" mx="-4">

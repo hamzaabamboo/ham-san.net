@@ -13,18 +13,18 @@ import { LinkItem } from '~/components/common/LinkItem';
 import { InteractiveNamecard } from '~/components/namecard/InteractiveNamecard';
 import { Heading } from '~/components/ui/heading';
 import { NAMECARDS } from '~/constants/namecard';
-import { localePaths } from '~/i18n/paths';
-import { useTranslations } from '~/i18n/utils';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 //TODO:
 export const prerender = false;
 
-export function getStaticPaths() {
-  return localePaths;
+const { locale } = Astro.params;
+
+if (!validateLocale(locale)) {
+  return Astro.redirect('/404');
 }
 
-const { locale } = Astro.params;
 const t = useTranslations(locale);
 
 const items = [

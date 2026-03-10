@@ -3,15 +3,6 @@ import { semanticTokens } from './semantic-tokens';
 import { tokens } from './tokens';
 import { keyframes } from './keyframes';
 
-import blue from '@park-ui/panda-preset/colors/blue';
-import green from '@park-ui/panda-preset/colors/green';
-import orange from '@park-ui/panda-preset/colors/orange';
-import purple from '@park-ui/panda-preset/colors/purple';
-import red from '@park-ui/panda-preset/colors/red';
-import sand from '@park-ui/panda-preset/colors/sand';
-
-const additionalColors = [red, blue, orange, green, purple, sand];
-
 export const theme = {
   layerStyles: {
     textStroke: {
@@ -29,25 +20,8 @@ export const theme = {
       }
     }
   },
-  semanticTokens: {
-    ...semanticTokens,
-    animations: {
-      pyon: { value: 'pyon 2s linear infinite' },
-      kanatapeek: { value: 'kanatapeek 4s ease-in infinite' },
-      'fade-in-up': { value: 'fade-in-up 0.5s ease-out forwards' }
-    },
-    colors: {
-      ...semanticTokens?.colors,
-      ...Object.fromEntries(additionalColors.map((t) => [t.name, t.semanticTokens]))
-    }
-  },
-  tokens: {
-    ...tokens,
-    colors: {
-      ...tokens?.colors,
-      ...Object.fromEntries(additionalColors.map((t) => [t.name, t.tokens]))
-    }
-  },
+  tokens,
+  semanticTokens,
   keyframes: {
     ...keyframes,
     pyon: {

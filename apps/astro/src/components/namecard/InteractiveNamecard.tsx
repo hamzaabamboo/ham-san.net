@@ -1,4 +1,5 @@
 import { Box, Stack, styled } from 'styled-system/jsx';
+import type { CSSProperties } from 'react';
 import { NamecardData } from '~/constants/namecard';
 import { Namecard } from './Namecard';
 
@@ -8,12 +9,14 @@ export const InteractiveNamecard = ({ data }: { data: NamecardData }) => {
   return (
     <Stack
       className="group"
-      style={{
-        ['--height' as 'height']: '55mm',
-        ['--width' as 'width']: '91mm',
-        ['--thickness' as 'minHeight']: '2mm',
-        ['--color' as 'color']: data.color
-      }}
+      style={
+        {
+          '--height': '55mm',
+          '--width': '91mm',
+          '--thickness': '2mm',
+          '--color': data.color
+        } as CSSProperties
+      }
       gap="0"
       w="full"
       width="var(--width)"
@@ -34,9 +37,6 @@ export const InteractiveNamecard = ({ data }: { data: NamecardData }) => {
         transitionDuration="1s"
       >
         <Box
-          style={{
-            viewTransitionName: `namecard-${data.variant}-front`
-          }}
           backfaceVisibility="hidden"
           position="absolute"
           top="0"

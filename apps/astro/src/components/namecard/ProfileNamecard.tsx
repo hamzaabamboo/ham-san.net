@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Box, HStack, Stack, styled } from 'styled-system/jsx';
 
 type Renderable = ReactNode | (() => ReactNode);
@@ -183,8 +183,8 @@ const CardShell = ({
     <Box
       style={{
         WebkitPrintColorAdjust: 'exact',
-        ['--main-color' as 'color']: accentColor
-      }}
+        '--main-color': accentColor
+      } as CSSProperties}
       position="relative"
       width={mm(widthMm)}
       height={mm(heightMm)}

@@ -17,7 +17,6 @@ export const AppCarousel = (props: Omit<RootProps, 'slideCount'> & { images: str
         loop
         page={String(index)}
         {...rest}
-        slideCount={images.length}
       >
         <UICarousel.Viewport>
           <UICarousel.ItemGroup>
