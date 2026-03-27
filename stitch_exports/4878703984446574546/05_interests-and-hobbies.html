@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#464747",
+              "surface": "#131313",
+              "tertiary-container": "#bfbfbf",
+              "on-tertiary-fixed-variant": "#464747",
+              "primary-fixed-dim": "#ffba43",
+              "error": "#ffb4ab",
+              "secondary-fixed": "#e3e2e2",
+              "surface-container-highest": "#353534",
+              "secondary-container": "#464747",
+              "surface-dim": "#131313",
+              "primary-fixed": "#ffddaf",
+              "on-secondary-container": "#b6b5b5",
+              "on-tertiary": "#2f3131",
+              "surface-container-high": "#2a2a2a",
+              "on-tertiary-fixed": "#1a1c1c",
+              "on-primary": "#432c00",
+              "on-tertiary-container": "#4c4e4e",
+              "primary": "#ffd597",
+              "surface-container-low": "#1c1b1b",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "on-primary-fixed": "#281800",
+              "surface-container-lowest": "#0e0e0e",
+              "on-primary-fixed-variant": "#614000",
+              "on-secondary-fixed": "#1b1c1c",
+              "tertiary-fixed": "#e3e2e2",
+              "surface-variant": "#353534",
+              "primary-container": "#ffb000",
+              "background": "#131313",
+              "secondary-fixed-dim": "#c7c6c6",
+              "outline-variant": "#524533",
+              "on-surface-variant": "#d7c4ac",
+              "on-secondary": "#303031",
+              "inverse-on-surface": "#313030",
+              "surface-container": "#201f1f",
+              "on-background": "#e5e2e1",
+              "inverse-primary": "#805600",
+              "on-error": "#690005",
+              "surface-bright": "#393939",
+              "secondary": "#c7c6c6",
+              "on-surface": "#e5e2e1",
+              "on-error-container": "#ffdad6",
+              "surface-tint": "#ffba43",
+              "tertiary": "#dbdbdb",
+              "on-primary-container": "#6a4700",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "outline": "#9f8e78"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        background-color: #131313;
+        color: #e5e2e1;
+      }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313] border-b border-[#524533] shadow-[4px_4px_0px_0px_rgba(14,14,14,1)]">
+<div class="font-['Manrope'] font-black uppercase tracking-widest text-[#FFB000] text-lg">ATELIER.EXE</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] font-['Newsreader'] italic text-xl tracking-tight transition-colors duration-100" href="#">Projects</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] font-['Newsreader'] italic text-xl tracking-tight transition-colors duration-100" href="#">Notes</a>
+<a class="text-[#FFB000] border-b-2 border-[#FFB000] pb-1 font-bold font-['Newsreader'] italic text-xl tracking-tight" href="#">Hobbies</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] font-['Newsreader'] italic text-xl tracking-tight transition-colors duration-100" href="#">About</a>
+</div>
+<div class="text-[#FFB000] font-['Manrope'] font-bold text-sm tracking-widest cursor-pointer hover:bg-[#353534] px-3 py-1 transition-colors duration-100 border border-outline-variant">EN/JA</div>
+</nav>
+<!-- Side Navigation (Web Only) -->
+<aside class="hidden md:flex fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex-col pt-8 bg-[#0e0e0e] border-r border-[#524533] z-40">
+<div class="px-6 mb-8">
+<div class="font-['Manrope'] uppercase text-[10px] tracking-tighter text-[#FFB000] font-bold">STRUC_DATA</div>
+<div class="font-['Manrope'] uppercase text-[10px] tracking-tighter text-[#dbdbdb] opacity-50">v2.0.48</div>
+</div>
+<div class="flex flex-col space-y-1">
+<a class="flex items-center px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75 group" href="#">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="terminal">terminal</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Engineering</span>
+</a>
+<a class="flex items-center px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75 group" href="#">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="photo_camera">photo_camera</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Photography</span>
+</a>
+<a class="flex items-center px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75 group" href="#">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="auto_stories">auto_stories</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Philosophy</span>
+</a>
+<a class="flex items-center px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75 group" href="#">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="description">description</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Resume</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-64 pt-24 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
+<!-- Header Section -->
+<header class="mb-16 border-l-4 border-primary-container pl-6 py-2">
+<h1 class="text-5xl md:text-7xl font-headline italic font-bold text-on-surface tracking-tight leading-none mb-4">
+                Extracurricular Pursuits.
+            </h1>
+<p class="text-xl md:text-2xl font-body text-secondary max-w-2xl leading-relaxed">
+                A collection of the things that keep me curious when I am away from the screen.
+            </p>
+</header>
+<!-- Hobbies Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-0 border border-outline-variant bg-outline-variant">
+<!-- Film Photography Card -->
+<div class="md:col-span-8 bg-surface-container-low border border-outline-variant flex flex-col group relative overflow-hidden">
+<div class="relative h-96 overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-500" data-alt="atmospheric close-up of a vintage 35mm film camera on a dark wooden desk with harsh geometric shadows and amber light leaks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhrCwl8ve9s6oTeRmqB0o0F3uuE5aJQTyRi1mtsrpkyuKhYpvmTcWklXpmrnQIo4hwIM6oZYcNN2zNSbX_eo_l88QKzvwiZKo3i1S4DRWzaZ3v-d5Iqy7v3G88OL2qmioQI_cPdZfAwmWpPSZn8kQxAytolZUqX_U8mn_A2zGNgjjOHHYeVqXB5vOkcSCDqhL_FDHwdOdUOp5mRsZjNa8PDi5hE2eA4k4Josj12jwMYTkDiP9r-lmjBrsN2M7lP1T845Zsns69VyU"/>
+<div class="absolute top-0 left-0 bg-surface-container-highest px-3 py-1 font-mono text-[10px] text-primary-container border-b border-r border-outline-variant">
+                        SPEC_ID: OPTIC_01
+                    </div>
+</div>
+<div class="p-8 border-t border-outline-variant">
+<div class="flex justify-between items-start mb-4">
+<h2 class="text-3xl font-headline italic font-bold">Film Photography</h2>
+<span class="material-symbols-outlined text-primary-container" data-icon="photo_camera">photo_camera</span>
+</div>
+<p class="text-secondary font-body mb-6 max-w-lg">
+                        Exploring the tactile nature of light and chemistry. Focused on medium format landscapes and street silhouettes using traditional analog workflows.
+                    </p>
+<div class="flex flex-wrap gap-4 mt-auto">
+<a class="px-6 py-2 bg-primary-container text-on-primary font-body font-bold text-sm border border-outline hover:shadow-[4px_4px_0px_0px_rgba(14,14,14,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all" href="#">VIEW GALLERY</a>
+<a class="px-6 py-2 border border-outline text-secondary font-body font-medium text-sm hover:bg-surface-container-highest transition-colors" href="#">WORKFLOW DOCS</a>
+</div>
+</div>
+</div>
+<!-- Language Study Card -->
+<div class="md:col-span-4 bg-surface-container-low border border-outline-variant flex flex-col group relative">
+<div class="p-8 h-full flex flex-col">
+<div class="bg-surface-container-highest self-start px-3 py-1 font-mono text-[10px] text-primary-container border border-outline-variant mb-8">
+                        STATUS: N2_QUALIFIED
+                    </div>
+<h2 class="text-3xl font-headline italic font-bold mb-4">Language Study</h2>
+<p class="text-secondary font-body mb-8">
+                        Continuous immersion in Japanese linguistics. Daily practice through technical literature and kanji structural analysis.
+                    </p>
+<div class="mt-auto space-y-4">
+<div class="border-t border-outline-variant pt-4">
+<div class="flex justify-between text-[10px] font-mono text-tertiary mb-1 uppercase">Daily Streak</div>
+<div class="h-2 w-full bg-surface-container-highest">
+<div class="h-full bg-primary-container w-[85%]"></div>
+</div>
+</div>
+<div class="flex items-center text-sm font-body text-[#FFB000] font-bold italic">
+<span class="material-symbols-outlined mr-2 text-base" data-icon="translate">translate</span>
+                            日本語学習記録を見る
+                        </div>
+</div>
+</div>
+<div class="absolute bottom-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="text-8xl font-headline font-black italic">書</span>
+</div>
+</div>
+<!-- Music & Sound Card -->
+<div class="md:col-span-5 bg-surface-container-low border border-outline-variant flex flex-col group relative overflow-hidden">
+<div class="p-8">
+<div class="flex justify-between items-start mb-6">
+<h2 class="text-3xl font-headline italic font-bold leading-tight">Music &amp;<br/>Sound Design</h2>
+<span class="material-symbols-outlined text-primary-container" data-icon="graphic_eq">graphic_eq</span>
+</div>
+<p class="text-secondary font-body mb-8">
+                        Synthesis, ambient textures, and structural production. Building sonic landscapes using hardware sequencers and granular processing.
+                    </p>
+<div class="grid grid-cols-2 gap-2 font-mono text-[10px] text-tertiary mb-8">
+<div class="border border-outline-variant p-2 hover:bg-surface-container-highest cursor-crosshair">SYNTH_PATCHES.V3</div>
+<div class="border border-outline-variant p-2 hover:bg-surface-container-highest cursor-crosshair">AMBIENT_COLLECTION</div>
+</div>
+</div>
+<div class="h-64 mt-auto">
+<img class="w-full h-full object-cover grayscale opacity-40 group-hover:opacity-70 transition-opacity duration-500" data-alt="abstract close-up of high-end modular synthesizer knobs and cables with glowing orange LEDs in a dim professional studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOZhzJSnx0hV4s1-hcwaWZSA_98QE6is_N0cSFACR_EfQEJys1st0fcZk9v1fyy8mtFv7ITp4kurNy3-Gn90YH72xDCysz1k2JFjPV52xy6-uVXwUGRMh9iI8ohqKd7RwM75V-4GwdxpmWJJ8Zgo7n5lnrepbaIBCEuvC0EOTqi944RgtcoV-GG5HN-Yq8hgkDz38TDVSeVIYBBkOV6rwUf5s73ufADhy2pf0GTWWgA3YcTTGYdWFYLhDJq9asLVKHSK5692WqsLc"/>
+</div>
+</div>
+<!-- Skill Toys Card -->
+<div class="md:col-span-7 bg-surface-container-low border border-outline-variant flex flex-col group">
+<div class="relative flex-grow">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 opacity-50 transition-all duration-500" data-alt="minimalist overhead shot of a precision-machined metal kendama on a concrete surface with deep industrial shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtL0XqyhcBRkQ05Bde-FgHkCnCutxe43IlGSDkPpTR3AQSFLQX0CnIsZSfy7qUZ4_KwqjWY8jVmHPzruxuEdxOp7wHlGXxgaBjmpYXzJGzWikAmeIjEdWV2hR5cUjKoLkj45ZGDQItzGaSgfj5GXY9L7ndq_zH9ZC6qPTMFd3x2pplnb3KOVhMrmYXl9sTRNc2cyMVxvmsYeJswBM4B7GR3t7Ok5t_aHgIG6p6URGhH2HtSP13qP7MwrIZnsR7Ay-HYI6SHlYr4XE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent opacity-80"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<div class="bg-primary-container text-on-primary inline-block px-3 py-1 font-mono text-[10px] font-bold mb-4">
+                            PRECISION_FOCUS
+                        </div>
+<h2 class="text-4xl font-headline italic font-bold mb-2">Skill Toys</h2>
+<p class="text-secondary font-body max-w-md">
+                            Exploring physics through flow-based movement. A study of kinetic energy, hand-eye coordination, and mechanical meditation.
+                        </p>
+</div>
+</div>
+<div class="border-t border-outline-variant p-6 flex justify-between items-center bg-surface-container-lowest">
+<div class="flex gap-4">
+<span class="text-[10px] font-mono text-tertiary opacity-60 uppercase">Hardware: Kendama / Yo-yo</span>
+</div>
+<button class="flex items-center font-mono text-[10px] text-[#FFB000] uppercase font-bold tracking-widest hover:underline transition-all">
+<span class="mr-2">+</span> VIEW PRACTICE LOGS
+                    </button>
+</div>
+</div>
+</div>
+<!-- Secondary Detail Section -->
+<section class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-outline-variant pt-12">
+<div>
+<h3 class="font-headline italic font-bold text-2xl mb-6 flex items-center">
+<span class="material-symbols-outlined mr-3 text-primary-container" data-icon="database">database</span>
+                    Technical Archive
+                </h3>
+<ul class="space-y-4 font-body">
+<li class="flex justify-between border-b border-outline-variant pb-2 group">
+<span class="text-secondary group-hover:text-primary transition-colors">35mm Develop/Scan Workflow</span>
+<span class="font-mono text-xs opacity-50">PDF // 4.2MB</span>
+</li>
+<li class="flex justify-between border-b border-outline-variant pb-2 group">
+<span class="text-secondary group-hover:text-primary transition-colors">Japanese Grammar Heuristics</span>
+<span class="font-mono text-xs opacity-50">MD // 12KB</span>
+</li>
+<li class="flex justify-between border-b border-outline-variant pb-2 group">
+<span class="text-secondary group-hover:text-primary transition-colors">Hardware Synth Rig 2024</span>
+<span class="font-mono text-xs opacity-50">PNG // 1.1MB</span>
+</li>
+</ul>
+</div>
+<div class="bg-surface-container-high p-8 border border-outline-variant relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[120px]" data-icon="settings_input_component">settings_input_component</span>
+</div>
+<h3 class="font-headline italic font-bold text-2xl mb-4 text-primary-container">Seeking Collaboration?</h3>
+<p class="text-secondary font-body mb-6 leading-relaxed">
+                    Always open to discussing photography projects, sound collaborations, or language exchange. The workshop is perpetually open for high-precision experimentation.
+                </p>
+<a class="inline-block px-8 py-3 bg-primary-container text-on-primary font-bold font-['Manrope'] tracking-widest text-sm hover:shadow-[8px_8px_0px_0px_rgba(14,14,14,1)] transition-all" href="#">INITIATE_CONTACT</a>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-6 px-6 flex flex-col md:flex-row justify-between items-center bg-[#131313] border-t-2 border-[#524533] mt-12 cursor-crosshair">
+<div class="font-['Monospace'] text-[11px] uppercase opacity-80 text-[#c7c6c6] mb-4 md:mb-0">
+            ©2024 CONSTRUCT_SYSTEMS // STATUS: SELECTIVE_OPEN_FOR_COLLAB
+        </div>
+<div class="flex space-x-6">
+<a class="font-['Monospace'] text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">Github</a>
+<a class="font-['Monospace'] text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">LinkedIn</a>
+<a class="font-['Monospace'] text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">RSS</a>
+</div>
+</footer>
+</body></html>

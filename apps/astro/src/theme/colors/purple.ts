@@ -1,4 +1,4 @@
-import { defineSemanticTokens } from '@pandacss/dev'
+import { defineSemanticTokens } from '@pandacss/dev';
 
 export const purple = defineSemanticTokens.colors({
   '1': { value: { _light: '#fefcfe', _dark: '#18111b' } },
@@ -28,42 +28,42 @@ export const purple = defineSemanticTokens.colors({
   solid: {
     bg: {
       DEFAULT: { value: { _light: '{colors.purple.9}', _dark: '{colors.purple.9}' } },
-      hover: { value: { _light: '{colors.purple.10}', _dark: '{colors.purple.10}' } },
+      hover: { value: { _light: '{colors.purple.10}', _dark: '{colors.purple.10}' } }
     },
-    fg: { DEFAULT: { value: { _light: 'white', _dark: 'white' } } },
+    fg: { DEFAULT: { value: { _light: 'white', _dark: 'white' } } }
   },
   subtle: {
     bg: {
       DEFAULT: { value: { _light: '{colors.purple.a3}', _dark: '{colors.purple.a3}' } },
       hover: { value: { _light: '{colors.purple.a4}', _dark: '{colors.purple.a4}' } },
-      active: { value: { _light: '{colors.purple.a5}', _dark: '{colors.purple.a5}' } },
+      active: { value: { _light: '{colors.purple.a5}', _dark: '{colors.purple.a5}' } }
     },
-    fg: { DEFAULT: { value: { _light: '{colors.purple.a11}', _dark: '{colors.purple.a11}' } } },
+    fg: { DEFAULT: { value: { _light: '{colors.purple.a11}', _dark: '{colors.purple.a11}' } } }
   },
   surface: {
     bg: {
       DEFAULT: { value: { _light: '{colors.purple.a2}', _dark: '{colors.purple.a2}' } },
-      active: { value: { _light: '{colors.purple.a3}', _dark: '{colors.purple.a3}' } },
+      active: { value: { _light: '{colors.purple.a3}', _dark: '{colors.purple.a3}' } }
     },
     border: {
       DEFAULT: { value: { _light: '{colors.purple.a6}', _dark: '{colors.purple.a6}' } },
-      hover: { value: { _light: '{colors.purple.a7}', _dark: '{colors.purple.a7}' } },
+      hover: { value: { _light: '{colors.purple.a7}', _dark: '{colors.purple.a7}' } }
     },
-    fg: { DEFAULT: { value: { _light: '{colors.purple.a11}', _dark: '{colors.purple.a11}' } } },
+    fg: { DEFAULT: { value: { _light: '{colors.purple.a11}', _dark: '{colors.purple.a11}' } } }
   },
   outline: {
     bg: {
       hover: { value: { _light: '{colors.purple.a2}', _dark: '{colors.purple.a2}' } },
-      active: { value: { _light: '{colors.purple.a3}', _dark: '{colors.purple.a3}' } },
+      active: { value: { _light: '{colors.purple.a3}', _dark: '{colors.purple.a3}' } }
     },
     border: { DEFAULT: { value: { _light: '{colors.purple.a7}', _dark: '{colors.purple.a7}' } } },
-    fg: { DEFAULT: { value: { _light: '{colors.purple.a11}', _dark: '{colors.purple.a11}' } } },
+    fg: { DEFAULT: { value: { _light: '{colors.purple.a11}', _dark: '{colors.purple.a11}' } } }
   },
   plain: {
     bg: {
       hover: { value: { _light: '{colors.purple.a3}', _dark: '{colors.purple.a3}' } },
-      active: { value: { _light: '{colors.purple.a4}', _dark: '{colors.purple.a4}' } },
+      active: { value: { _light: '{colors.purple.a4}', _dark: '{colors.purple.a4}' } }
     },
-    fg: { DEFAULT: { value: { _light: '{colors.purple.a11}', _dark: '{colors.purple.a11}' } } },
-  },
-})
+    fg: { DEFAULT: { value: { _light: '{colors.purple.a11}', _dark: '{colors.purple.a11}' } } }
+  }
+});

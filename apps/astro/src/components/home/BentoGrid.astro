@@ -189,7 +189,9 @@ const IconBox = styled(Box, {
         </Box>
         <Box>
           <Text fontSize="xs" fontWeight="bold" opacity="0.8" mb="1">{t('home.bento-status')}</Text>
-          <Text fontWeight="black" fontSize="lg" lineHeight="tight">{t('home.bento-open-to-work')}</Text>
+          <Text fontWeight="black" fontSize="lg" lineHeight="tight"
+            >{t('home.bento-open-to-work')}</Text
+          >
           <Text fontSize="sm" opacity="0.9">{t('home.bento-availability')}</Text>
         </Box>
       </Flex>
@@ -213,7 +215,8 @@ const IconBox = styled(Box, {
         <Flex gap="3">
           <Button asChild size="xl" colorPalette="amber" borderRadius="full">
             <Link href="mailto:hello@ham-san.net">
-              <FaEnvelope /> {t('home.bento-email')}
+              <FaEnvelope />
+              {t('home.bento-email')}
             </Link>
           </Button>
           <Button

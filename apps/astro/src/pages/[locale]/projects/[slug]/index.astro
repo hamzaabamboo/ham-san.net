@@ -36,25 +36,19 @@ const nonNullTags = (items: Array<TagFragment | null>) =>
   items.filter((t): t is TagFragment => !!t);
 const nonNullLinks = (links ?? []).filter((l): l is NonNullable<typeof l> => !!l);
 const t = useTranslations(locale);
+const pageTitle = `${title ?? t('common.projects')} | ${t('common.name')}`;
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
 
-<MainLayout>
+<MainLayout title={pageTitle}>
   <Container maxW="breakpoint-xl" py="8" w="full">
-    <Box
-      bg="bg.default/80"
-      backdropFilter="blur(10px)"
-      rounded="xl"
-      p={{ base: '6', md: '10' }}
-      border="1px solid"
-      borderColor="white/10"
-      shadow="xl"
-    >
+    <Box bg="bg.default" p={{ base: '6', md: '10' }} border="1px solid" borderColor="border.subtle">
       <Stack gap="8">
         <Link href={`/${locale}/projects`}>
           <Wrap
-            fontSize="sm"
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="xs"
             alignItems="center"
             color="fg.muted"
             _hover={{ color: 'amber.400' }}
@@ -66,28 +60,40 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
         </Link>
         {
           bannerUrl && (
-            <Box rounded="lg" overflow="hidden" shadow="md">
+            <Box overflow="hidden" border="1px solid" borderColor="border.subtle">
               <styled.img
                 src={bannerUrl}
                 alt={bannerName ?? title ?? undefined}
-                objectFit="contain"
+                objectFit="cover"
                 objectPosition="center"
                 width="full"
                 aspectRatio="16 / 9"
                 backgroundColor="bg.muted"
+                filter="grayscale(1)"
               />
             </Box>
           )
         }
         <Stack gap="4">
           <Stack gap="2">
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              letterSpacing="0.12em"
+              color="amber.500"
+            >
+              project_dossier
+            </Text>
             <Heading
               as="h1"
-              size="3xl"
-              fontWeight="black"
-              letterSpacing="-0.03em">{title}</Heading
+              fontSize={{ base: '5xl', md: '7xl' }}
+              fontStyle="italic"
+              lineHeight="0.95"
             >
-            <Wrap fontSize="md" color="fg.subtle">
+              {title}
+            </Heading>
+            <Wrap fontSize="sm" color="fg.subtle" fontFamily="JetBrains Mono, monospace">
               <Text fontWeight="bold" color="amber.500">{category?.name}</Text>
               <Text color="border.default">|</Text>
               <Text>
@@ -127,12 +133,12 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           }
         </Stack>
 
-        <Divider borderColor="white/10" />
+        <Divider borderColor="border.subtle" />
         {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
         {
           images.length > 0 && (
             <Stack gap="6">
-              <Heading as="h2" size="xl" fontWeight="bold">
+              <Heading as="h2" fontSize="4xl" fontStyle="italic">
                 {t('project.screenshots')}
               </Heading>
               <Carousel client:visible images={images} />

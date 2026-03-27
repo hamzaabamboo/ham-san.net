@@ -34,7 +34,10 @@ export const ThemeToggle = () => {
       aria-label="Toggle theme"
       size="sm"
       colorPalette="gray"
-      _hover={{ bg: 'bg.subtle' }}
+      border="1px solid"
+      borderColor="border.subtle"
+      bg="bg.default/80"
+      _hover={{ bg: 'bg.subtle', color: 'amber.500' }}
     >
       {isDark ? <FaSun /> : <FaMoon />}
     </IconButton>

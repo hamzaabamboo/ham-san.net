@@ -1,23 +1,179 @@
 ---
-import { Container } from 'styled-system/jsx';
+import { Box, Container, Grid, Stack } from 'styled-system/jsx';
+import { cleanArticleContent, getArticleBanner } from 'outline/article';
 import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
+import { Markdown } from '~/components/lib/Markdown';
+import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import { outlineClient } from '~/utils/outline-api';
 
-//TODO:
 export const prerender = false;
 
 const { locale } = Astro.params;
+const slugParts = Astro.params.slug?.split('/') ?? [];
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
 const t = useTranslations(locale);
+const [shareId, maybeDocSegment, maybeDocId] = slugParts;
+const outlineAssetPrefix = import.meta.env.PRIVATE_OUTLINE_SERVER.replace('/api', '');
+const outlineAssetProxyPath = `/${locale}/api/outline-asset`;
+const resolveOutlineAssetUrl = (rawUrl?: string) => {
+  if (!rawUrl) return rawUrl;
+  if (/^(?:[a-z]+:)?\/\//i.test(rawUrl) || rawUrl.startsWith('data:')) {
+    return rawUrl;
+  }
+  if (rawUrl.includes('attachments.redirect')) {
+    const query = rawUrl.split('?')[1];
+    return query ? `${outlineAssetProxyPath}?${query}` : outlineAssetProxyPath;
+  }
+
+  const normalizedUrl = rawUrl.startsWith('/') ? rawUrl : `/${rawUrl.replace(/^\.?\/*/, '')}`;
+  return `${outlineAssetPrefix}${normalizedUrl}`;
+};
+
+if (!shareId) {
+  return Astro.redirect(`/${locale}/notes`);
+}
+
+const noteRequest = await outlineClient.POST('/documents.info', {
+  body: maybeDocSegment === 'doc' && maybeDocId ? { shareId, id: maybeDocId } : { shareId }
+});
+
+if (!noteRequest.response.ok || !noteRequest.data?.data) {
+  return Astro.redirect('/404');
+}
+
+const note = noteRequest.data.data;
+const pageTitle = `${note.title ?? t('common.note')} | ${t('common.name')}`;
+const content = cleanArticleContent(note.text);
+const banner = resolveOutlineAssetUrl(getArticleBanner(content) ?? undefined);
+
+const siblingsRequest = await outlineClient.POST('/documents.list', {
+  body: {
+    parentDocumentId: maybeDocSegment === 'doc' && maybeDocId ? note.parentDocumentId : note.id
+  }
+});
+
+const siblings = siblingsRequest.data?.data ?? [];
+const outlineUrl = `${outlineAssetPrefix}/s/${shareId}${maybeDocSegment === 'doc' && maybeDocId ? `/doc/${maybeDocId}` : ''}`;
 ---
 
-<MainLayout>
-  <Container>
-    <Heading as="h1" size="2xl" fontWeight="bold">{t('note.notes')}</Heading>
+<MainLayout title={pageTitle}>
+  <Container maxW="breakpoint-xl" py="8">
+    <Grid gridTemplateColumns={{ base: '1fr', xl: '280px minmax(0, 1fr)' }} gap="8">
+      <Stack gap="6">
+        <Box border="1px solid" borderColor="border.subtle" bg="bg.subtle" p="6">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            letterSpacing="0.12em"
+            color="amber.500"
+            mb="4"
+          >
+            note_archive
+          </Text>
+          <Stack gap="3">
+            <Link href={`/${locale}/notes`} fontFamily="JetBrains Mono, monospace" fontSize="xs">
+              {t('note.back-to-posts')}
+            </Link>
+            <Link
+              href={outlineUrl}
+              target="_blank"
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="xs"
+            >
+              {t('note.read-in-outline')}
+            </Link>
+          </Stack>
+        </Box>
+        {
+          siblings.length > 0 && (
+            <Box border="1px solid" borderColor="border.subtle" bg="bg.default" p="6">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                letterSpacing="0.12em"
+                color="fg.subtle"
+                mb="4"
+              >
+                linked_documents
+              </Text>
+              <Stack gap="3">
+                {siblings.map((item) =>
+                  item.id === note.id ? (
+                    <Link href={`/${locale}/notes/${shareId}`} color="amber.500">
+                      {item.title}
+                    </Link>
+                  ) : (
+                    <Link href={`/${locale}/notes/${shareId}/doc/${item.id}`} color="fg.muted">
+                      {item.title}
+                    </Link>
+                  )
+                )}
+              </Stack>
+            </Box>
+          )
+        }
+      </Stack>
+      <Stack
+        gap="8"
+        border="1px solid"
+        borderColor="border.subtle"
+        bg="bg.default"
+        p={{ base: '6', md: '8' }}
+      >
+        <Stack gap="4">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            letterSpacing="0.12em"
+            color="amber.500"
+          >
+            knowledge_garden
+          </Text>
+          <Heading
+            as="h1"
+            fontSize={{ base: '5xl', md: '7xl' }}
+            fontStyle="italic"
+            lineHeight="0.95"
+          >
+            {note.title}
+          </Heading>
+        </Stack>
+        {
+          banner && (
+            <Box border="1px solid" borderColor="border.subtle" overflow="hidden">
+              <img
+                src={banner}
+                alt={note.title ?? undefined}
+                style={{
+                  width: '100%',
+                  maxHeight: '420px',
+                  objectFit: 'cover',
+                  filter: 'grayscale(1)'
+                }}
+              />
+            </Box>
+          )
+        }
+        {
+          content && (
+            <Markdown
+              content={content}
+              assetsPrefix={outlineAssetPrefix}
+              assetProxyBasePath={outlineAssetProxyPath}
+            />
+          )
+        }
+      </Stack>
+    </Grid>
   </Container>
 </MainLayout>

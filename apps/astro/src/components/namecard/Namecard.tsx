@@ -30,10 +30,12 @@ export const Namecard = ({
   if (side === 'front') {
     return (
       <HStack
-        style={{
-          WebkitPrintColorAdjust: 'exact',
-          '--main-color': data.color
-        } as CSSProperties}
+        style={
+          {
+            WebkitPrintColorAdjust: 'exact',
+            '--main-color': data.color
+          } as CSSProperties
+        }
         gap="0"
         width="91mm"
         height="55mm"
@@ -54,10 +56,12 @@ export const Namecard = ({
 
   return (
     <HStack
-      style={{
-        WebkitPrintColorAdjust: 'exact',
-        '--main-color': data.color
-      } as CSSProperties}
+      style={
+        {
+          WebkitPrintColorAdjust: 'exact',
+          '--main-color': data.color
+        } as CSSProperties
+      }
       gap="0"
       width="91mm"
       height="55mm"

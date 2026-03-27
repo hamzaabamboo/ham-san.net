@@ -2,6 +2,7 @@
 import { languages } from '~/i18n/ui';
 import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 import { HStack } from '../../../styled-system/jsx';
+import { BrandMark } from '~/components/brand/BrandMark';
 import { Link } from '../ui/link';
 import { Sidebar } from './Sidebar';
 import { ThemeToggle } from '~/components/theme/ThemeToggle';
@@ -19,12 +20,10 @@ const getCurrentURLWithLanguage = (language: string) => {
 };
 
 const NAVIGATION_LINKS = [
-  // { label: t('common.home'), value: '/' },
-  { label: t('common.about-me'), value: '/about' },
   { label: t('common.projects'), value: '/projects' },
-  // { label: t('common.event'), value: '/events' },
-  // { label: t('common.hobbies'), value: '/hobbies' },
   { label: t('common.note'), value: '/notes' },
+  { label: t('common.hobbies'), value: '/hobbies' },
+  { label: t('common.about-me'), value: '/about' },
   { label: t('common.contact'), value: '/contact' }
 ];
 ---
@@ -46,7 +45,7 @@ const NAVIGATION_LINKS = [
 <HStack
   id="main-nav"
   _print={{ display: 'none' }}
-  py="4"
+  py="3"
   px={{ base: '4', md: '8' }}
   w="full"
   justifyContent="center"
@@ -59,21 +58,30 @@ const NAVIGATION_LINKS = [
   borderBottom="1px solid"
   borderColor="transparent"
 >
-  <HStack w="full" maxW="breakpoint-xl" justify="space-between">
-    <HStack gap="4">
+  <HStack w="full" maxW="breakpoint-xl" justify="space-between" minH="14">
+    <HStack gap="3">
       <Link
         href={getURLWithLanguage('/')}
-        fontWeight="bold"
-        fontSize="xl"
-        letterSpacing="-0.02em"
-        color="fg.default"
+        display="inline-flex"
+        alignItems="center"
+        gap="3"
+        fontWeight="black"
+        fontSize="sm"
+        letterSpacing="0.18em"
+        textTransform="uppercase"
+        color="amber.500"
         _hover={{ color: 'amber.400' }}
       >
-        {t('common.ham')}
+        <BrandMark />
+        <HStack gap="2" hideBelow="sm">
+          <span>atelier</span>
+          <span style="color: var(--colors-fg-subtle)">/</span>
+          <span>{t('common.ham')}</span>
+        </HStack>
       </Link>
     </HStack>
 
-    <HStack gap="8" hideBelow="md">
+    <HStack gap="6" hideBelow="md">
       {
         NAVIGATION_LINKS.map(({ label, value }) => {
           const fullPath = getURLWithLanguage(value);
@@ -83,18 +91,37 @@ const NAVIGATION_LINKS = [
               : Astro.url.pathname.startsWith(fullPath);
 
           return (
-            <Link
-              href={fullPath}
-              color="fg.default"
-              fontSize="sm"
-              fontWeight="medium"
-              transition="colors"
-              _hover={{ color: 'amber.400' }}
-              aria-current={isCurrent ? 'page' : undefined}
-              _current={{ color: 'amber.400' }}
-            >
-              {label}
-            </Link>
+            isCurrent ? (
+              <Link
+                href={fullPath}
+                color="amber.500"
+                fontFamily="Newsreader, serif"
+                fontSize="xl"
+                fontStyle="italic"
+                transition="colors"
+                _hover={{ color: 'amber.400' }}
+                aria-current="page"
+                borderBottomWidth="2px"
+                borderBottomStyle="solid"
+                borderBottomColor="amber.500"
+                pb="1"
+              >
+                {label}
+              </Link>
+            ) : (
+              <Link
+                href={fullPath}
+                color="fg.muted"
+                fontFamily="Newsreader, serif"
+                fontSize="xl"
+                fontStyle="italic"
+                transition="colors"
+                _hover={{ color: 'amber.400' }}
+                pb="1"
+              >
+                {label}
+              </Link>
+            )
           );
         })
       }
@@ -110,9 +137,14 @@ const NAVIGATION_LINKS = [
                 <Link
                   href={getCurrentURLWithLanguage(t[0])}
                   fontSize="xs"
-                  color="white/40"
+                  color="fg.subtle"
+                  border="1px solid"
+                  borderColor="border.subtle"
+                  px="2"
+                  py="1"
                   textTransform="uppercase"
                   fontWeight="bold"
+                  letterSpacing="0.12em"
                   _hover={{ color: 'amber.400' }}
                 >
                   {t[1]}

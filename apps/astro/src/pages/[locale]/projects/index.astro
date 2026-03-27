@@ -1,10 +1,9 @@
 ---
-import { Container, Flex, Box, Stack } from 'styled-system/jsx';
+import { Container, Flex, Box, Grid, Stack } from 'styled-system/jsx';
+import { ProjectCard } from '~/components/projects/ProjectCard';
 import { Heading } from '~/components/ui/heading';
-import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { TagBadge } from '~/components/tags/TagBadge';
-import { getMediaUrl } from 'utils/media';
 import { graphQLSdk } from '~/graphql';
 import type { TagFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
@@ -24,6 +23,7 @@ const data = await graphQLSdk.fetchProjects({ limit: 75 });
 const projects = (data?.projects ?? []).map((p) => pickLocale(p, locale)).filter((p) => !!p);
 
 const t = useTranslations(locale);
+const pageTitle = `${t('common.projects')} | ${t('common.name')}`;
 
 const projectGroups = projects.reduce<Record<string, typeof projects>>((acc, project) => {
   const key = project.isActive ? t('project.active') : t('project.inactive');
@@ -37,17 +37,33 @@ const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is T
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
 
-<MainLayout>
+<MainLayout title={pageTitle}>
   <Container maxW="breakpoint-xl">
-    <Stack py="4" gap="4" w="full">
-      <Heading
-        as="h1"
-        size="2xl"
-        fontWeight="black"
-        textTransform="uppercase"
-        letterSpacing="-0.03em"
-        pt="8">{t('project.projects')}</Heading
+    <Stack py="8" gap="12" w="full">
+      <Stack
+        gap="4"
+        borderLeftWidth="2px"
+        borderLeftStyle="solid"
+        borderLeftColor="amber.500"
+        pl="6"
       >
+        <Text
+          fontFamily="JetBrains Mono, monospace"
+          fontSize="10px"
+          textTransform="uppercase"
+          letterSpacing="0.12em"
+          color="amber.500"
+        >
+          index / main_archive
+        </Text>
+        <Heading as="h1" fontSize={{ base: '5xl', md: '8xl' }} fontStyle="italic">
+          Work & experiments.
+        </Heading>
+        <Text maxW="2xl" color="fg.muted" fontSize="lg">
+          Frontend systems, interaction prototypes, and digital tools. Commercial work and personal
+          lab artifacts, organized as a working archive.
+        </Text>
+      </Stack>
       {
         [t('project.active'), t('project.inactive')].map((group: keyof typeof projectGroups) => {
           const groupProjects = projectGroups[group];
@@ -55,88 +71,40 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 
           return (
             <Stack gap="6">
-              <Heading
-                as="h2"
-                fontSize="2xl"
-                fontWeight="bold"
-                color="fg.muted"
-                borderBottom="1px solid"
-                borderColor="white/10"
-                pb="2"
-              >
+              <Flex align="center" gap="4">
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  letterSpacing="0.12em"
+                  color="fg.subtle"
+                >
+                  {group === t('project.active') ? 'commercial_work' : 'personal_lab'}
+                </Text>
+                <Box h="1px" flex={1} bg="border.subtle" />
+              </Flex>
+              <Heading as="h2" fontSize="4xl" fontStyle="italic">
                 {group}
               </Heading>
-              <Flex wrap="wrap" gap="0" mx="-4">
+              <Grid
+                gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' }}
+                gap="6"
+              >
                 {groupProjects.map((project, idx) => (
-                  <Box key={idx} w={{ base: '100%', md: '50%', lg: '33.33%' }} p="4">
-                    <Link
-                      href={`/${locale}/projects/${project.slug}`}
-                      display="block"
-                      transition="all 0.3s"
-                      _hover={{ transform: 'scale(1.05)', shadow: 'lg' }}
-                      h="full"
-                    >
-                      <Box
-                        bg="bg.default"
-                        borderRadius="md"
-                        overflow="hidden"
-                        shadow="md"
-                        h="full"
-                        display="flex"
-                        flexDirection="column"
-                      >
-                        <Box
-                          h="64"
-                          bg="bg.muted"
-                          bgSize="cover"
-                          bgPosition="center"
-                          borderBottom="1px solid"
-                          borderColor="border.subtle"
-                          style={{
-                            backgroundImage: `url(${(() => {
-                              const url = project.media?.[0]?.url;
-                              if (url)
-                                return getMediaUrl(
-                                  url,
-                                  { height: 400 },
-                                  import.meta.env.PUBLIC_API_URL
-                                );
-                              return '/images/placeholder-project.jpg';
-                            })()})`
-                          }}
-                        />
-
-                        <Stack p="4" gap="2" flex="1">
-                          <Heading fontSize="xl" fontWeight="bold" color="fg.default">
-                            {project.title}
-                          </Heading>
-
-                          <Flex gap="2" fontSize="sm" color="fg.muted" align="center">
-                            {project.category?.name && <Box>{project.category.name}</Box>}
-                          </Flex>
-
-                          {project.tags && (
-                            <Flex align="center" gap="2" wrap="wrap">
-                              <Text fontSize="xs" fontWeight="bold" color="fg.muted">
-                                {t('common.tags')}:
-                              </Text>
-                              {nonNullTags(project.tags).map((tag) => (
-                                <TagBadge tag={tag} size="sm" />
-                              ))}
-                            </Flex>
-                          )}
-
-                          {project.description && (
-                            <Text color="fg.muted" lineClamp={3} fontSize="sm" mt="2">
-                              {project.description}
-                            </Text>
-                          )}
-                        </Stack>
-                      </Box>
-                    </Link>
+                  <Box key={idx}>
+                    <ProjectCard data={project} locale={locale} />
+                    {project.tags && (
+                      <Flex align="center" gap="2" wrap="wrap" mt="3">
+                        {nonNullTags(project.tags)
+                          .slice(0, 4)
+                          .map((tag) => (
+                            <TagBadge tag={tag} size="sm" />
+                          ))}
+                      </Flex>
+                    )}
                   </Box>
                 ))}
-              </Flex>
+              </Grid>
             </Stack>
           );
         })

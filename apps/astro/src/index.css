@@ -1,35 +1,72 @@
 @layer reset, base, tokens, recipes, utilities;
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-/* Navbar Scroll Styles */
 #main-nav.scrolled {
-  background-color: rgba(255, 255, 255, 0.8) !important;
+  background-color: rgba(19, 19, 19, 0.88) !important;
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
-}
-html.dark #main-nav.scrolled {
-  background-color: rgba(10, 10, 10, 0.8) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-bottom: 1px solid rgba(82, 69, 51, 0.9) !important;
+  box-shadow: 4px 4px 0 0 rgba(14, 14, 14, 0.9);
 }
 
 @layer base {
+  :root {
+    color-scheme: dark;
+  }
+
   html {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
     scroll-behavior: smooth;
+    background:
+      linear-gradient(rgba(82, 69, 51, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(82, 69, 51, 0.1) 1px, transparent 1px), #131313;
+    background-size:
+      48px 48px,
+      48px 48px,
+      auto;
   }
 
   body {
     background-color: token(colors.bg.canvas);
     color: token(colors.fg.default);
+    min-height: 100vh;
+    text-rendering: optimizeLegibility;
+    selection-background-color: #ffb000;
+    selection-color: #432c00;
   }
 
-  /* Force black text in light mode if token fails */
-  html:not(.dark) body {
-    color: #0d0d0d;
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at top right, rgba(255, 176, 0, 0.1), transparent 30%);
+    z-index: -1;
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Newsreader', serif;
+    letter-spacing: -0.03em;
+  }
+
+  code,
+  pre {
+    font-family: 'JetBrains Mono', monospace;
   }
 }
-

@@ -1,7 +1,7 @@
 ---
 import MainLayout from '~/layouts/MainLayout.astro';
 
-import { Center, Container, Grid, GridItem, Stack } from 'styled-system/jsx';
+import { Container, Grid, GridItem, Stack } from 'styled-system/jsx';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
@@ -35,23 +35,74 @@ if (!hobbiesList) {
 ---
 
 <MainLayout>
-  <Container w="full" p="4">
-    <Stack>
-      <Heading as="h1" fontSize="2xl">{t('common.hobbies')}</Heading>
-      <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))">
+  <Container maxW="breakpoint-xl" w="full" py="8">
+    <Stack gap="10">
+      <Stack
+        gap="4"
+        borderLeftWidth="2px"
+        borderLeftStyle="solid"
+        borderLeftColor="amber.500"
+        pl="6"
+      >
+        <Text
+          fontFamily="JetBrains Mono, monospace"
+          fontSize="10px"
+          textTransform="uppercase"
+          letterSpacing="0.12em"
+          color="amber.500"
+        >
+          leisure / archive
+        </Text>
+        <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic"
+          >{t('common.hobbies')}</Heading
+        >
+        <Text color="fg.muted" fontSize="lg">{t('hobbies.description')}</Text>
+      </Stack>
+      <Grid
+        gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' }}
+        gap="6"
+      >
         {
-          hobbiesList.map((hobby) => {
+          hobbiesList.map((hobby, index) => {
             const { title, id } = hobby;
             return (
               <GridItem>
-                <Link w="full" href={`/${locale}/hobbies/${id}`}>
-                  <Center w="full" bgColor="bg.muted" p={4} rounded="l1">
-                    <Stack>
-                      <Text fontWeight="bold" fontSize="xl">
+                <Link w="full" href={`/${locale}/hobbies/${id}`} display="block" h="full">
+                  <Stack
+                    w="full"
+                    h="full"
+                    bgColor="bg.default"
+                    border="1px solid"
+                    borderColor="border.subtle"
+                    p="6"
+                    gap="10"
+                    _hover={{ transform: 'translate(-2px, -2px)' }}
+                    transition="transform 0.2s ease"
+                  >
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      letterSpacing="0.12em"
+                      color="amber.500"
+                    >
+                      hobby_{String(index + 1).padStart(2, '0')}
+                    </Text>
+                    <Stack gap="3">
+                      <Text
+                        fontWeight="bold"
+                        fontSize="4xl"
+                        fontFamily="Newsreader, serif"
+                        fontStyle="italic"
+                        lineHeight="0.95"
+                      >
                         {title}
                       </Text>
+                      <Text color="fg.subtle" fontSize="sm">
+                        Enter the archive
+                      </Text>
                     </Stack>
-                  </Center>
+                  </Stack>
                 </Link>
               </GridItem>
             );

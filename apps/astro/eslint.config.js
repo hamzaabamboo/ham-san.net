@@ -1,13 +1,11 @@
 import { FlatCompat } from '@eslint/eslintrc';
-import js from '@eslint/js';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
 import baseConfig from '../../eslint.config.js';
 
 const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-  recommendedConfig: js.configs.recommended
+  baseDirectory: import.meta.dirname
 });
 const config = tseslint.config(
   ...baseConfig,

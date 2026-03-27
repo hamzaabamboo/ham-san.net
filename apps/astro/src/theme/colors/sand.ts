@@ -1,4 +1,4 @@
-import { defineSemanticTokens } from '@pandacss/dev'
+import { defineSemanticTokens } from '@pandacss/dev';
 
 export const sand = defineSemanticTokens.colors({
   '1': { value: { _light: '#fdfdfc', _dark: '#111110' } },
@@ -28,43 +28,43 @@ export const sand = defineSemanticTokens.colors({
   solid: {
     bg: {
       DEFAULT: { value: { _light: '{colors.black}', _dark: '{colors.white}' } },
-      hover: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } },
+      hover: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } }
     },
-    fg: { DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.black}' } } },
+    fg: { DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.black}' } } }
   },
   subtle: {
     bg: {
       DEFAULT: { value: { _light: '{colors.gray.a3}', _dark: '{colors.gray.a3}' } },
       hover: { value: { _light: '{colors.gray.a4}', _dark: '{colors.gray.a4}' } },
-      active: { value: { _light: '{colors.gray.a5}', _dark: '{colors.gray.a5}' } },
+      active: { value: { _light: '{colors.gray.a5}', _dark: '{colors.gray.a5}' } }
     },
-    fg: { DEFAULT: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } } },
+    fg: { DEFAULT: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } } }
   },
   surface: {
     bg: {
       DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.gray.1}' } },
       hover: { value: { _light: '{colors.gray.2}', _dark: '{colors.gray.2}' } },
-      active: { value: { _light: '{colors.gray.3}', _dark: '{colors.gray.3}' } },
+      active: { value: { _light: '{colors.gray.3}', _dark: '{colors.gray.3}' } }
     },
     border: {
       DEFAULT: { value: { _light: '{colors.gray.6}', _dark: '{colors.gray.6}' } },
-      hover: { value: { _light: '{colors.gray.7}', _dark: '{colors.gray.7}' } },
+      hover: { value: { _light: '{colors.gray.7}', _dark: '{colors.gray.7}' } }
     },
-    fg: { DEFAULT: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } } },
+    fg: { DEFAULT: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } } }
   },
   outline: {
     bg: {
       hover: { value: { _light: '{colors.gray.a2}', _dark: '{colors.gray.a2}' } },
-      active: { value: { _light: '{colors.gray.a3}', _dark: '{colors.gray.a3}' } },
+      active: { value: { _light: '{colors.gray.a3}', _dark: '{colors.gray.a3}' } }
     },
     border: { DEFAULT: { value: { _light: '{colors.gray.6}', _dark: '{colors.gray.6}' } } },
-    fg: { DEFAULT: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } } },
+    fg: { DEFAULT: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } } }
   },
   plain: {
     bg: {
       hover: { value: { _light: '{colors.gray.a3}', _dark: '{colors.gray.a3}' } },
-      active: { value: { _light: '{colors.gray.a4}', _dark: '{colors.gray.a4}' } },
+      active: { value: { _light: '{colors.gray.a4}', _dark: '{colors.gray.a4}' } }
     },
-    fg: { DEFAULT: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } } },
-  },
-})
+    fg: { DEFAULT: { value: { _light: '{colors.gray.12}', _dark: '{colors.gray.12}' } } }
+  }
+});

@@ -3,8 +3,14 @@ import { Center, Grid } from 'styled-system/jsx';
 import { NAMECARDS } from '../../../constants/namecard';
 
 import { Namecard } from '~/components/namecard/Namecard';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 const { locale } = Astro.params;
+if (!validateLocale(locale)) {
+  return Astro.redirect('/404');
+}
+const t = useTranslations(locale);
+const pageTitle = `${t('common.name-card')} | ${t('common.name')}`;
 // <styled.p fontSize="xs" textAlign="center" fontStyle="italic">
 //   Pと書いてあるけどプロデューサーじゃないからね。
 //   <br /> ただただ「ぴー」の響きがいいだけ。
@@ -15,7 +21,7 @@ const { locale } = Astro.params;
 // <Box width="64px" height="64px" objectPosition="0 -1350px" backgroundImage="url('https://kitoakari.com/wp/wp-content/themes/kitoakari/assets/images/common/sprite_loading.png')" backgroundPosition="0 -576px" backgroundSize="64px 640px" backgroundRepeat='no-repeat'/>
 ---
 
-<MainLayout>
+<MainLayout title={pageTitle}>
   <Center
     flex={1}
     h={{
@@ -38,10 +44,16 @@ const { locale } = Astro.params;
         NAMECARDS.map((namecard) => {
           return (
             <>
-              <a href={`/${locale}/namecard/${namecard.variant}`}>
+              <a
+                href={`/${locale}/namecard/${namecard.variant}`}
+                aria-label={`${namecard.variant} front namecard`}
+              >
                 <Namecard side="front" data={namecard} />
               </a>
-              <a href={`/${locale}/namecard/${namecard.variant}`}>
+              <a
+                href={`/${locale}/namecard/${namecard.variant}`}
+                aria-label={`${namecard.variant} back namecard`}
+              >
                 <Namecard side="back" data={namecard} />
               </a>
             </>

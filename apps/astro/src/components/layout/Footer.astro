@@ -1,6 +1,7 @@
 ---
-import { Wrap } from 'styled-system/jsx';
+import { HStack, Stack, Wrap } from 'styled-system/jsx';
 import { useTranslations, validateLocale } from '~/i18n/utils';
+import { BrandMark } from '../brand/BrandMark';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
 
@@ -11,8 +12,8 @@ const t = useTranslations(locale);
 <Wrap
   _print={{ display: 'none' }}
   w="full"
-  py="8"
-  px="8"
+  py="6"
+  px={{ base: '4', md: '8' }}
   justifyContent="space-between"
   alignItems="center"
   bg="bg.default"
@@ -21,14 +22,30 @@ const t = useTranslations(locale);
   borderColor="border.subtle"
   fontSize="sm"
 >
-  <Text>{t('common.copyright')}</Text>
-  <Link
-    target="_blank"
-    rel="noreferrer"
-    href="https://github.com/hamzaabamboo/ham-san.net"
-    _hover={{ color: 'fg.default' }}
-    transition="colors"
-  >
-    {t('common.view-source')}
-  </Link>
+  <Stack gap="2">
+    <HStack gap="3" alignItems="center">
+      <BrandMark size={22} />
+      <Text textTransform="uppercase" letterSpacing="0.18em" fontWeight="bold" fontSize="xs">
+        atelier log
+      </Text>
+    </HStack>
+    <Text fontFamily="JetBrains Mono, monospace" fontSize="xs">
+      {t('common.copyright')}
+    </Text>
+  </Stack>
+  <HStack gap="6">
+    <Link
+      target="_blank"
+      rel="noreferrer"
+      href="https://github.com/hamzaabamboo/ham-san.net"
+      fontFamily="JetBrains Mono, monospace"
+      textTransform="uppercase"
+      fontSize="xs"
+      letterSpacing="0.12em"
+      _hover={{ color: 'amber.500' }}
+      transition="colors"
+    >
+      {t('common.view-source')}
+    </Link>
+  </HStack>
 </Wrap>

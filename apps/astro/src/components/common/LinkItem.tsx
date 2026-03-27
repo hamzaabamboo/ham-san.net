@@ -1,6 +1,6 @@
 import { FaGithub, FaGlobe } from 'react-icons/fa';
 import type { IconType } from 'react-icons/lib';
-import { Wrap } from 'styled-system/jsx';
+import { Stack, Wrap } from 'styled-system/jsx';
 import { Enum_Componentutilslink_Type } from '~/graphql/generated/client';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
@@ -43,15 +43,29 @@ export const LinkItem = ({
   const Icon = _icon ? _icon : linkIcon(data);
   const text = linkText ? linkText : processUrl(data);
   return (
-    <Wrap gap="1" alignItems="center">
-      <Text as="span" fontSize="lg">
-        {Icon && <Icon />}
-      </Text>
-      {data.title}
-      <Text>:</Text>
-      <Link href={data.url ?? ''} target="_blank">
-        {text}
-      </Link>
+    <Wrap
+      gap="3"
+      justifyContent="space-between"
+      alignItems="center"
+      border="1px solid"
+      borderColor="border.subtle"
+      py="3"
+      px="4"
+      bg="bg.default"
+    >
+      <Wrap gap="3" alignItems="center">
+        <Text as="span" color="amber.500" fontSize="lg">
+          {Icon && <Icon />}
+        </Text>
+        <Stack gap="0">
+          <Text color="fg.subtle" fontSize="10px" letterSpacing="0.12em" textTransform="uppercase">
+            {data.title}
+          </Text>
+          <Link href={data.url ?? ''} target="_blank" fontFamily="JetBrains Mono, monospace">
+            {text}
+          </Link>
+        </Stack>
+      </Wrap>
     </Wrap>
   );
 };

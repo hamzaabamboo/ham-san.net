@@ -55,18 +55,44 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
   const ghLink = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Github);
 
   return (
-    <Stack h="full">
-      <Link href={`/${locale}/projects/${slug}`} data-astro-prefetch="hover" flex={1}>
-        <Stack gap="0.5" h="full">
-          <Box borderRadius="l2" backgroundColor="bg.muted" overflow="hidden">
+    <Stack border="1px solid" borderColor="border.subtle" h="full" bg="bg.default">
+      <Link
+        href={`/${locale}/projects/${slug}`}
+        data-astro-prefetch="hover"
+        display="block"
+        flex={1}
+      >
+        <Stack gap="0" h="full">
+          <Box
+            borderColor="border.subtle"
+            borderBottom="1px solid"
+            py="2"
+            px="3"
+            color="amber.500"
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            letterSpacing="0.12em"
+            textTransform="uppercase"
+          >
+            {data.isActive ? 'active archive' : 'lab archive'}
+          </Box>
+          <Box
+            borderColor="border.subtle"
+            borderBottom="1px solid"
+            backgroundColor="bg.muted"
+            overflow="hidden"
+          >
             {image ? (
               <styled.img
                 src={getMediaUrl(image.url, {}, import.meta.env.PUBLIC_API_URL) ?? ''}
                 alt={image.name}
                 aspectRatio="4 / 3"
                 objectPosition="center"
-                objectFit="contain"
+                objectFit="cover"
                 width="full"
+                transition="transform 0.3s ease, filter 0.3s ease"
+                filter="grayscale(1)"
+                _groupHover={{ transform: 'scale(1.03)', filter: 'grayscale(0)' }}
               />
             ) : (
               <Center aspectRatio="4 / 3" color="fg.subtle" fontSize="xl">
@@ -74,29 +100,44 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               </Center>
             )}
           </Box>
-          <Text
-            fontWeight="bold"
-          >
-            {title}
-          </Text>
-          <Wrap gap="1" rowGap="0.5" color="fg.subtle" fontSize="sm">
-            <Text>{category?.name}</Text> <Text>|</Text>
-            <Text>{date && formatMonthYear(parseDate(date), locale)}</Text>
-          </Wrap>
-          <Text fontSize="sm">{description}</Text>
+          <Stack gap="3" h="full" p="5">
+            <Wrap
+              gap="2"
+              rowGap="0.5"
+              color="fg.subtle"
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="xs"
+            >
+              {category?.name && <Text>{category.name}</Text>}
+              {category?.name && date && <Text>|</Text>}
+              <Text>{date && formatMonthYear(parseDate(date), locale)}</Text>
+            </Wrap>
+            <Text
+              as="h3"
+              fontFamily="Newsreader, serif"
+              fontSize="3xl"
+              lineHeight="0.95"
+              fontStyle="italic"
+            >
+              {title}
+            </Text>
+            <Text color="fg.muted" fontSize="sm" lineHeight="1.7">
+              {description}
+            </Text>
+          </Stack>
         </Stack>
       </Link>
-      <Wrap w="full">
+      <Wrap w="full" p="4" pt="0">
         {link?.url && (
           <Link href={link?.url} target="_blank">
-            <IconButton size="xs" variant="subtle">
+            <IconButton size="xs" variant="subtle" border="1px solid" borderColor="border.subtle">
               <FaGlobe />
             </IconButton>
           </Link>
         )}
         {ghLink?.url && (
           <Link href={ghLink.url} target="_blank">
-            <IconButton size="xs" variant="subtle">
+            <IconButton size="xs" variant="subtle" border="1px solid" borderColor="border.subtle">
               <FaGithub />
             </IconButton>
           </Link>

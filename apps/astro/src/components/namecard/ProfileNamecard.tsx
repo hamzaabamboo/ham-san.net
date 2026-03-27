@@ -181,13 +181,15 @@ const CardShell = ({
 
   return (
     <Box
-      style={{
-        WebkitPrintColorAdjust: 'exact',
-        '--main-color': accentColor
-      } as CSSProperties}
+      style={
+        {
+          WebkitPrintColorAdjust: 'exact',
+          '--main-color': accentColor,
+          width: mm(widthMm),
+          height: mm(heightMm)
+        } as CSSProperties
+      }
       position="relative"
-      width={mm(widthMm)}
-      height={mm(heightMm)}
       bgColor="white"
       overflow="hidden"
       _print={{
@@ -196,37 +198,33 @@ const CardShell = ({
       }}
     >
       <Box
+        style={{ width: mm(cornerStripeSizeMm), height: mm(cornerStripeSizeMm) }}
         position="absolute"
         top="0"
         left="0"
-        width={mm(cornerStripeSizeMm)}
-        height={mm(cornerStripeSizeMm)}
       >
         <CornerStripes corner="top-left" stops={cornerStripeStops} />
         <Box
+          style={{ width: mm(cornerDotBoxSizeMm), height: mm(cornerDotBoxSizeMm) }}
           position="absolute"
           top="1.5mm"
           left="1.5mm"
-          width={mm(cornerDotBoxSizeMm)}
-          height={mm(cornerDotBoxSizeMm)}
         >
           <CornerDots />
         </Box>
       </Box>
       <Box
+        style={{ width: mm(cornerStripeSizeMm), height: mm(cornerStripeSizeMm) }}
         position="absolute"
         right="0"
         bottom="0"
-        width={mm(cornerStripeSizeMm)}
-        height={mm(cornerStripeSizeMm)}
       >
         <CornerStripes corner="bottom-right" stops={cornerStripeStops} />
         <Box
+          style={{ width: mm(cornerDotBoxSizeMm), height: mm(cornerDotBoxSizeMm) }}
           position="absolute"
           right="1.5mm"
           bottom="1.5mm"
-          width={mm(cornerDotBoxSizeMm)}
-          height={mm(cornerDotBoxSizeMm)}
         >
           <CornerDots />
         </Box>

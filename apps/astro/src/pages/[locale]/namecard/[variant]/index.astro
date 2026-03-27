@@ -30,6 +30,7 @@ if (!validateLocale(locale)) {
 }
 
 const t = useTranslations(locale);
+const pageTitle = `${t('common.name-card')} | ${t('common.name')}`;
 
 const iconMap = {
   twitter: FaTwitter,
@@ -59,7 +60,7 @@ const { color } = namecard;
 const Image = styled.img;
 ---
 
-<BaseLayout>
+<BaseLayout title={pageTitle}>
   <Fragment name="head">
     <ClientRouter />
   </Fragment>
@@ -91,9 +92,9 @@ const Image = styled.img;
             })
           }
         </HStack>
-        <Heading as="h1" size="3xl" fontWeight="bold">{t('name-card.name')}</Heading>
-        <Text as="span" size="md" whiteSpace="pre-wrap">{t('name-card.subtitle')}</Text>
-        <Text as="span" size="sm">{t('name-card.message')}</Text>
+        <Heading as="h1" fontSize="3xl" fontWeight="bold">{t('name-card.name')}</Heading>
+        <Text as="span" fontSize="md" whiteSpace="pre-wrap">{t('name-card.subtitle')}</Text>
+        <Text as="span" fontSize="sm">{t('name-card.message')}</Text>
         <Grid
           gridGap="2"
           alignItems="stretch"
@@ -138,16 +139,12 @@ const Image = styled.img;
             })
           }
         </Grid>
-        <Box
-          mx="auto"
-          textAlign="start"
-        >
+        <Box mx="auto" textAlign="start">
           <a href={`/${locale}/namecard/all`}>
             <Namecard side="front" data={namecard} />
           </a>
         </Box>
-        <!-- //TODO: localize -->
-        <Link href={`/${locale}/namecard/all`}>View other namecards</Link>
+        <Link href={`/${locale}/namecard/all`}>{t('name-card.view-other-namecards')}</Link>
       </Stack>
     </Container>
     <Box w="full" overflow="hidden" flex="1" minH="240px" position="relative">

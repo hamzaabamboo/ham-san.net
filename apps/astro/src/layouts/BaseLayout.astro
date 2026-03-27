@@ -3,6 +3,7 @@ import { getLangFromUrl } from '../i18n/utils';
 import '../index.css';
 
 const lang = getLangFromUrl(Astro.url);
+const { title = "Ham's Web" } = Astro.props;
 ---
 
 <html lang={lang}>
@@ -14,10 +15,10 @@ const lang = getLangFromUrl(Astro.url);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;500;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,700;6..72,800&display=swap"
       rel="stylesheet"
     />
-    <title>Ham's Web</title>
+    <title>{title}</title>
     <slot name="head" />
   </head>
   <body>

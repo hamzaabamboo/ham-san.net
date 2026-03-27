@@ -1,5 +1,5 @@
 ---
-import { Container, Divider, Grid, GridItem, HStack, Stack, Wrap } from 'styled-system/jsx';
+import { Box, Container, Divider, Grid, Stack, Wrap } from 'styled-system/jsx';
 import { formatDistanceBetween, formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
@@ -24,6 +24,7 @@ if (!validateLocale(locale)) {
 }
 
 const t = useTranslations(locale);
+const pageTitle = `${t('common.about-me')} | ${t('common.name')}`;
 
 const formatDateRange = (start?: string, end?: string) => {
   const startText = start ? formatMonthYear(parseDate(start), locale) : '';
@@ -65,33 +66,72 @@ const skills = groupByType(skillTags);
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
 ---
 
-<MainLayout>
-  <Container>
-    <HStack alignItems="flex-start">
-      <Stack p="4" w="full">
-        <Heading as="h1" size="2xl" fontWeight="bold" id="introduction"
-          >{t('about-me.title')}</Heading
-        >
-        <Text>{aboutMe?.introduction}</Text>
-        <Divider />
-        <Stack>
-          <Heading as="h2" size="xl" fontWeight="bold" id="skills">{t('about-me.skills')}</Heading>
-          <Grid gridTemplateColumns={{ base: '1fr', md: 'auto 1fr' }}>
-            {
-              skills &&
-                Object.keys(skills).map((key) => {
-                  return (
-                    <>
-                      <GridItem>
-                        <Text fontWeight="bold">
+<MainLayout title={pageTitle}>
+  <Container maxW="breakpoint-xl" w="full">
+    <Grid
+      gridTemplateColumns={{ base: '1fr', xl: 'minmax(280px, 0.9fr) minmax(0, 1.5fr)' }}
+      border="1px solid"
+      borderColor="border.subtle"
+    >
+      <Stack
+        gap="10"
+        p={{ base: '6', md: '8' }}
+        bg="bg.subtle"
+        borderRightWidth={{ xl: '1px' }}
+        borderRightStyle={{ xl: 'solid' }}
+        borderRightColor={{ xl: 'border.subtle' }}
+      >
+        <Stack gap="4">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            letterSpacing="0.12em"
+            color="amber.500"
+          >
+            dossier_id: 9942-x
+          </Text>
+          <Heading
+            as="h1"
+            fontSize={{ base: '5xl', md: '7xl' }}
+            fontStyle="italic"
+            lineHeight="0.95"
+          >
+            The archive of construction.
+          </Heading>
+          <Text color="fg.muted" fontSize="lg" lineHeight="1.8">
+            {aboutMe?.introduction}
+          </Text>
+        </Stack>
+        <Stack gap="8">
+          <Stack gap="4">
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              letterSpacing="0.12em"
+              color="fg.subtle"
+            >
+              material inventory
+            </Text>
+            <Grid gap="4">
+              {
+                skills &&
+                  Object.keys(skills).map((key) => {
+                    return (
+                      <Box borderBottom="1px solid" borderColor="border.subtle" pb="4">
+                        <Text
+                          fontSize="xs"
+                          textTransform="uppercase"
+                          letterSpacing="0.12em"
+                          color="fg.subtle"
+                          mb="3"
+                        >
                           {t(`common.${toKebabCase(key) as 'frontend'}`)}
                         </Text>
-                      </GridItem>
-                      <GridItem>
                         <Wrap>
-                          {[...skills[key]].sort(
-                            (a, b) => (b.projects?.length ?? 0) - (a.projects?.length ?? 0)
-                          )
+                          {[...skills[key]]
+                            .sort((a, b) => (b.projects?.length ?? 0) - (a.projects?.length ?? 0))
                             .map(
                               (s) =>
                                 s.slug && (
@@ -101,89 +141,131 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                                 )
                             )}
                         </Wrap>
-                      </GridItem>
-                    </>
+                      </Box>
+                    );
+                  })
+              }
+            </Grid>
+          </Stack>
+        </Stack>
+      </Stack>
+      <Stack p={{ base: '6', md: '8' }} gap="12">
+        <Stack gap="6">
+          <Heading as="h2" fontSize="4xl" fontStyle="italic" id="experiences">
+            {t('common.experiences')}
+          </Heading>
+          <Box position="relative" pl={{ base: '0', md: '10' }}>
+            <Box
+              display={{ base: 'none', md: 'block' }}
+              position="absolute"
+              left="1"
+              top="0"
+              bottom="0"
+              w="1px"
+              bg="linear-gradient(180deg, transparent, #FFB000, transparent)"
+            />
+            <Stack gap="10">
+              {
+                experiences?.map((d) => {
+                  const exp = pickLocale(d, locale);
+                  if (!exp) return null;
+                  const { title, content, position, tags: expTags } = exp;
+                  const start = exp.start as string;
+                  const end = exp.end as string;
+                  return (
+                    <Box position="relative">
+                      <Box
+                        display={{ base: 'none', md: 'block' }}
+                        position="absolute"
+                        left="-8"
+                        top="2"
+                        w="3"
+                        h="3"
+                        bg="bg.canvas"
+                        border="2px solid"
+                        borderColor="amber.500"
+                      />
+                      <Stack
+                        border="1px solid"
+                        borderColor="border.subtle"
+                        bg="bg.default"
+                        p="6"
+                        gap="4"
+                      >
+                        <Wrap justifyContent="space-between" gap="4">
+                          <Stack gap="1">
+                            <Heading as="h3" fontSize="4xl" fontStyle="italic">
+                              {title}
+                            </Heading>
+                            <Text
+                              fontSize="sm"
+                              textTransform="uppercase"
+                              letterSpacing="0.12em"
+                              color="amber.500"
+                            >
+                              {position}
+                            </Text>
+                          </Stack>
+                          <Text
+                            fontFamily="JetBrains Mono, monospace"
+                            fontSize="xs"
+                            color="fg.subtle"
+                          >
+                            {formatDateRange(start, end)}
+                            {formatDuration(start, end) && ` (${formatDuration(start, end)})`}
+                          </Text>
+                        </Wrap>
+                        {expTags && (
+                          <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
+                            {sortTags(nonNullTags(expTags)).map(
+                              (s) =>
+                                s.slug && (
+                                  <Link href={`/${locale}/tags/${s.slug}`} display="inline-flex">
+                                    <TagBadge tag={s} showCount size="sm" />
+                                  </Link>
+                                )
+                            )}
+                          </Wrap>
+                        )}
+                        {content && <Markdown content={content} />}
+                      </Stack>
+                    </Box>
                   );
                 })
+              }
+            </Stack>
+          </Box>
+        </Stack>
+        <Divider borderColor="border.subtle" />
+        <Stack gap="6">
+          <Heading as="h2" fontSize="4xl" fontStyle="italic" id="education">
+            {t('common.education')}
+          </Heading>
+          <Grid gap="6">
+            {
+              educations?.map((d) => {
+                const edu = pickLocale(d, locale);
+                if (!edu) return null;
+                const { title, description, content } = edu;
+                const start = edu.start as string;
+                const end = edu.end as string;
+                return (
+                  <Stack border="1px solid" borderColor="border.subtle" bg="bg.default" p="6">
+                    <Heading as="h3" fontSize="3xl" fontStyle="italic">
+                      {title}
+                    </Heading>
+                    <Wrap fontSize="sm" color="fg.muted">
+                      <Text>{description}</Text> <Text>|</Text>
+                      <Text>{formatDateRange(start, end)}</Text>
+                    </Wrap>
+                    {content && <Markdown content={content} />}
+                  </Stack>
+                );
+              })
             }
           </Grid>
         </Stack>
-        <Divider />
-        <Stack>
-          <Heading as="h2" size="xl" fontWeight="bold" id="experiences"
-            >{t('common.experiences')}</Heading
-          >
-          {
-            experiences?.map((d) => {
-              const exp = pickLocale(d, locale);
-              if (!exp) return null;
-              const { title, content, position, tags: expTags } = exp;
-              const start = exp.start as string;
-              const end = exp.end as string;
-              return (
-                <Stack>
-                  <Heading as="h2" size="xl" fontWeight="bold">
-                    {title}
-                  </Heading>
-                  <Wrap fontSize="sm">
-                    <Text>{position}</Text> <Text>|</Text>
-                    <Text>
-                      {formatDateRange(start, end)}
-                      {formatDuration(start, end) && ` (${formatDuration(start, end)})`}
-                    </Text>
-                  </Wrap>
-                  {expTags && (
-                    <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
-                      <Text>{t('common.tags')}</Text>
-                      {sortTags(nonNullTags(expTags)).map(
-                        (s) =>
-                          s.slug && (
-                            <Link href={`/${locale}/tags/${s.slug}`} display="inline-flex">
-                              <TagBadge tag={s} showCount size="sm" />
-                            </Link>
-                          )
-                      )}
-                    </Wrap>
-                  )}
-                  {content && <Markdown content={content} />}
-                </Stack>
-              );
-            })
-          }
-        </Stack>
-        <Divider />
-        <Stack>
-          <Heading as="h2" size="xl" fontWeight="bold" id="education"
-            >{t('common.education')}</Heading
-          >
-          {
-            educations?.map((d) => {
-              const edu = pickLocale(d, locale);
-              if (!edu) return null;
-              const { title, description, content } = edu;
-              const start = edu.start as string;
-              const end = edu.end as string;
-              return (
-                <Stack>
-                  <Heading as="h2" size="xl" fontWeight="bold">
-                    {title}
-                  </Heading>
-                  <Wrap fontSize="sm">
-                    <Text>{description}</Text> <Text>|</Text>
-                    <Text>{formatDateRange(start, end)}</Text>
-                  </Wrap>
-                  {content && <Markdown content={content} />}
-                </Stack>
-              );
-            })
-          }
-        </Stack>
       </Stack>
-      <!-- <Box py="4">
-        <Box position="sticky">
-          <AboutMeIndex client:load locale={locale} />
-        </Box>
-      </Box> -->
-    </HStack>
+    </Grid>
   </Container>
 </MainLayout>

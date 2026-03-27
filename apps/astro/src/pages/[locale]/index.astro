@@ -1,9 +1,10 @@
 ---
 import { FaArrowRight, FaGithub } from 'react-icons/fa';
-import { Box, Container, Flex, Stack } from 'styled-system/jsx';
+import { Box, Container, Flex, Grid, GridItem, Stack, Wrap } from 'styled-system/jsx';
 import { getMediaUrl } from 'utils/media';
 import { Marquee } from '~/components/common/Marquee';
 import BentoGrid from '~/components/home/BentoGrid.astro';
+import { BrandMark } from '~/components/brand/BrandMark';
 import { TagBadge } from '~/components/tags/TagBadge';
 import { Button } from '~/components/ui/button';
 import { Heading } from '~/components/ui/heading';
@@ -25,14 +26,7 @@ if (!validateLocale(locale)) {
 }
 
 const t = useTranslations(locale);
-
-// Feature flag: Hide new homepage if disabled
-const ENABLE_NEW_HOMEPAGE = import.meta.env.PUBLIC_ENABLE_NEW_HOMEPAGE === 'true';
-
-if (!ENABLE_NEW_HOMEPAGE) {
-  // Redirect to projects page or show simple landing
-  return Astro.redirect(`/${locale}/projects`);
-}
+const pageTitle = `${t('common.home')} | ${t('common.name')}`;
 
 const data = await graphQLSdk.fetchHomePage({
   locale: locale === 'ja' ? 'ja' : 'en'
@@ -54,61 +48,164 @@ const introImage =
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
 ---
 
-<MainLayout>
-  <!-- Hero Section (Restored Premium) -->
-  <Box
-    position="relative"
-    minH="100dvh"
-    overflow="hidden"
-    display="flex"
-    alignItems="center"
-  >
+<MainLayout title={pageTitle}>
+  <Box position="relative" minH="100dvh" overflow="hidden" display="flex" alignItems="center">
     <HeroBackground client:idle />
     <Container maxW="breakpoint-xl" position="relative" zIndex={1}>
-      <Stack gap="8" maxW="4xl">
-        <Box animation="fade-in-up 0.8s">
+      <Grid
+        gap="8"
+        gridTemplateColumns={{ base: '1fr', lg: 'minmax(0, 1.4fr) minmax(320px, 0.8fr)' }}
+      >
+        <Stack gap="8" maxW="4xl">
+          <Wrap
+            display="inline-flex"
+            alignItems="center"
+            gap="3"
+            px="3"
+            py="2"
+            bg="bg.default/70"
+            border="1px solid"
+            borderColor="border.subtle"
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            letterSpacing="0.12em"
+            color="amber.500"
+          >
+            <BrandMark size={18} />
+            atelier.exe
+          </Wrap>
           <Heading
             as="h1"
             fontSize={{ base: '5xl', md: '7xl', lg: '8xl' }}
-            fontWeight="black"
+            fontWeight="bold"
             letterSpacing="-0.04em"
             color="fg.default"
             lineHeight="0.9"
-            textTransform="uppercase"
+            fontStyle="italic"
           >
-            Digital <br />
-            <Box color="amber.500" display="inline-block" transform="translateX(20px)"
-              >Craftsman</Box
-            >
+            {t('home.hero-heading-prefix')} <br />
+            <Box color="amber.500" display="inline-block">{t('home.hero-heading-emphasis')}</Box>
           </Heading>
-        </Box>
 
-        <Text
-          fontSize={{ base: 'xl', md: '2xl' }}
-          color="fg.muted"
-          lineHeight="relaxed"
-          maxW="2xl"
-          animation="fade-in-up 1s"
-        >
-          {homepageData?.heroSubtitle ?? t('home.hero-subtitle')}
-        </Text>
+          <Text fontSize={{ base: 'xl', md: '2xl' }} color="fg.muted" lineHeight="1.7" maxW="2xl">
+            {homepageData?.heroSubtitle ?? t('home.hero-subtitle')}
+          </Text>
 
-        <Flex gap="4" pt="8" animation="fade-in-up 1.2s">
-          <Button asChild size="2xl" colorPalette="amber" variant="solid" fontWeight="bold">
-            <Link href={`/${locale}/projects`}>
-              {t('home.view-my-work')}
-            </Link>
-          </Button>
-          <Button asChild size="2xl" variant="outline" fontWeight="bold">
-            <Link href="https://github.com/hamzaabamboo" target="_blank">
-              <FaGithub /> GitHub
-            </Link>
-          </Button>
-        </Flex>
-      </Stack>
+          <Flex gap="4" pt="6" wrap="wrap">
+            <Button
+              asChild
+              size="2xl"
+              colorPalette="amber"
+              variant="solid"
+              fontWeight="bold"
+              borderRadius="none"
+            >
+              <Link href={`/${locale}/projects`}>
+                {t('home.view-my-work')}
+              </Link>
+            </Button>
+            <Button asChild size="2xl" variant="outline" fontWeight="bold" borderRadius="none">
+              <Link href="https://github.com/hamzaabamboo" target="_blank">
+                <FaGithub /> GitHub
+              </Link>
+            </Button>
+          </Flex>
+        </Stack>
+        <GridItem>
+          <Stack
+            h="full"
+            minH={{ base: '340px', lg: '100%' }}
+            border="1px solid"
+            borderColor="border.subtle"
+            bg="bg.default/85"
+            p="6"
+            justifyContent="space-between"
+            backdropFilter="blur(8px)"
+          >
+            <Stack gap="4">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                letterSpacing="0.14em"
+                color="amber.500"
+              >
+                hardware_manifest
+              </Text>
+              <Box
+                border="1px solid"
+                borderColor="border.subtle"
+                bg="bg.muted"
+                overflow="hidden"
+                aspectRatio="1 / 1"
+              >
+                <img
+                  src={introImage}
+                  alt="Profile"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    filter: 'grayscale(1)'
+                  }}
+                />
+              </Box>
+            </Stack>
+            <Stack gap="3">
+              <Wrap gap="2">
+                <Box
+                  border="1px solid"
+                  borderColor="border.subtle"
+                  px="2"
+                  py="1"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  color="fg.muted"
+                >
+                  Frontend
+                </Box>
+                <Box
+                  border="1px solid"
+                  borderColor="border.subtle"
+                  px="2"
+                  py="1"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  color="fg.muted"
+                >
+                  Design Systems
+                </Box>
+                <Box
+                  border="1px solid"
+                  borderColor="border.subtle"
+                  px="2"
+                  py="1"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  color="fg.muted"
+                >
+                  Curiosity
+                </Box>
+              </Wrap>
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                color="fg.subtle"
+                textTransform="uppercase"
+                letterSpacing="0.12em"
+              >
+                Tokyo / Bangkok / Remote
+              </Text>
+            </Stack>
+          </Stack>
+        </GridItem>
+      </Grid>
     </Container>
 
-    <!-- Scroll Down Indicator -->
     <Box
       position="absolute"
       bottom="10"
@@ -121,47 +218,46 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
     </Box>
   </Box>
 
-  <!-- Tech Stack Marquee (New Spice) -->
   <Marquee client:load />
 
-  <!-- Projects Section (Svelte-Style Grid) -->
-  <Box bg="bg.subtle" py="24">
+  <Box py="24" borderTop="1px solid" borderColor="border.subtle">
     <Container maxW="breakpoint-xl">
       <Stack gap="16">
         <Flex justify="space-between" align="center">
-          <Heading
-            fontSize="3xl"
-            fontWeight="black"
-            textTransform="uppercase"
-            letterSpacing="tight"
-            color="fg.default">{t('home.featured-projects')}</Heading
+          <Heading fontSize={{ base: '4xl', md: '6xl' }} fontStyle="italic" color="fg.default"
+            >{t('home.featured-projects')}</Heading
           >
-          <Button asChild variant="link" colorPalette="gray">
+          <Button asChild variant="link" colorPalette="gray" borderRadius="none">
             <Link href={`/${locale}/projects`}>
-              {t('home.find-out-more')} <FaArrowRight />
+              {t('home.find-out-more')}
+              <FaArrowRight />
             </Link>
           </Button>
         </Flex>
 
-        <Flex wrap="wrap" gap="0" mx="-4">
+        <Grid
+          gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' }}
+          gap="6"
+        >
           {
             projects.map((project, idx) => (
-              <Box key={idx} w={{ base: '100%', md: '50%', lg: '33.33%' }} p="4">
+              <Box key={idx}>
                 <Link
                   href={`/${locale}/projects/${project.slug}`}
                   display="block"
                   transition="all 0.3s"
-                  _hover={{ transform: 'scale(1.05)', shadow: 'lg' }}
+                  _hover={{ transform: 'translate(-2px, -2px)' }}
                   h="full"
                 >
                   <Box
                     bg="bg.default"
                     borderRadius="md"
                     overflow="hidden"
-                    shadow="md"
                     h="full"
                     display="flex"
                     flexDirection="column"
+                    border="1px solid"
+                    borderColor="border.subtle"
                   >
                     <Box
                       h="64"
@@ -182,14 +278,35 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                       bgPosition="center"
                       borderBottom="1px solid"
                       borderColor="border.subtle"
+                      filter="grayscale(1)"
                     />
 
                     <Stack p="4" gap="2" flex="1">
-                      <Heading fontSize="xl" fontWeight="bold" color="fg.default">
+                      <Text
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="10px"
+                        color="amber.500"
+                        textTransform="uppercase"
+                        letterSpacing="0.12em"
+                      >
+                        project_{String(idx + 1).padStart(2, '0')}
+                      </Text>
+                      <Heading
+                        fontSize="4xl"
+                        fontStyle="italic"
+                        color="fg.default"
+                        lineHeight="0.95"
+                      >
                         {project.title}
                       </Heading>
 
-                      <Flex gap="2" fontSize="sm" color="fg.muted" align="center">
+                      <Flex
+                        gap="2"
+                        fontSize="xs"
+                        color="fg.muted"
+                        align="center"
+                        fontFamily="JetBrains Mono, monospace"
+                      >
                         {project.category?.name && <Box>{project.category.name}</Box>}
                       </Flex>
 
@@ -217,20 +334,18 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
               </Box>
             ))
           }
-        </Flex>
+        </Grid>
       </Stack>
     </Container>
   </Box>
 
-  <!-- About Section (Bento Grid) -->
   <Container maxW="breakpoint-xl" py="24">
     <Stack gap="12">
       <Heading
         fontSize={{ base: '4xl', lg: '6xl' }}
-        fontWeight="black"
         color="fg.default"
         textAlign="center"
-        letterSpacing="-0.03em"
+        fontStyle="italic"
       >
         {t('home.about-me')}
       </Heading>

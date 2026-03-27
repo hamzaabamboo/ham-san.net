@@ -19,9 +19,9 @@ export const getOutlineSettings = async () => {
 
   const settings = Object.fromEntries(
     tree.children
-      ?.find((c): c is Table => c.type === 'table')
+      ?.find((c: (typeof tree.children)[number]): c is Table => c.type === 'table')
       ?.children.slice(1)
-      .map((c) => [
+      .map((c: Table['children'][number]) => [
         (c.children[0].children[0] as Text)?.value,
         (c.children[1].children[0] as Link)?.url ?? (c.children[1].children[0] as Text)?.value
       ]) as [string, string][]

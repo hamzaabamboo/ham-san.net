@@ -17,12 +17,16 @@ export default defineConfig({
   presets: ['@pandacss/preset-base', '@pandacss/preset-panda'],
 
   // Where to look for your css declarations
-  include: ['./src/**/*.{js,jsx,ts,tsx,astro}'],
+  include: ['./src/**/*.{jsx,tsx,astro}'],
 
   // Files to exclude
   exclude: [
     process.env.ENVIRONMENT === 'ssr' && '**/static/**',
-    process.env.ENVIRONMENT === 'static' && '**/*non-static*/**'
+    process.env.ENVIRONMENT === 'static' && '**/*non-static*/**',
+    './src/graphql/**/*',
+    './src/i18n/**/*',
+    './src/theme/**/*',
+    './src/utils/**/*'
   ].filter((a) => !!a) as string[],
 
   globalCss,

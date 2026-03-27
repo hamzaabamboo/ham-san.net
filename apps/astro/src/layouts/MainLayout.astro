@@ -5,9 +5,11 @@ import { SmoothScroll } from '~/components/common/SmoothScroll';
 import Footer from '~/components/layout/Footer.astro';
 import Navigation from '~/components/layout/Navigation.astro';
 import BaseLayout from './BaseLayout.astro';
+
+const { title } = Astro.props;
 ---
 
-<BaseLayout>
+<BaseLayout title={title}>
   <Fragment slot="head">
     <ClientRouter />
     <slot name="head" />
@@ -26,7 +28,9 @@ import BaseLayout from './BaseLayout.astro';
   <SmoothScroll client:only="react" />
   <Stack gap="0" minH="100dvh" bg="bg.canvas" color="fg.default" overflowX="hidden">
     <Navigation transition:persist="navbar" />
-    <Stack flex={1} position="relative" pt="24"><slot /></Stack>
+    <Stack flex={1} position="relative" pt={{ base: '20', md: '24' }}>
+      <slot />
+    </Stack>
     <Footer transition:persist="footer" />
   </Stack>
 </BaseLayout>
