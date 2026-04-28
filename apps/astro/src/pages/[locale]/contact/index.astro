@@ -3,6 +3,7 @@ import { Box, Container, Grid, Stack, Wrap } from 'styled-system/jsx';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
+import { InteractiveNamecard } from '~/components/namecard/InteractiveNamecard';
 import { NAMECARDS } from '~/constants/namecard';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
@@ -17,7 +18,6 @@ if (!validateLocale(locale)) {
 
 const t = useTranslations(locale);
 const pageTitle = `${t('common.contact')} | ${t('common.name')}`;
-const showcaseNamecards = NAMECARDS.slice(0, 3);
 const currentUtcTime = new Intl.DateTimeFormat('en-GB', {
   timeZone: 'UTC',
   hour: '2-digit',
@@ -156,153 +156,17 @@ const items = [
                 {t('contact.namecards')}
               </Heading>
             </Wrap>
-            <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap="6">
+            <Box maxW="full" className="contact-namecard-preview">
               <Link
-                href={`/${locale}/namecard/${showcaseNamecards[0]?.variant ?? 'default'}`}
-                style={{ textDecoration: 'none' }}
+                href={`/${locale}/namecard/default`}
+                display="block"
+                w="91mm"
+                h="55mm"
+                className="contact-namecard-link"
               >
-                <Box
-                  bg="#1c1b1b"
-                  border="1px solid"
-                  borderColor="#524533"
-                  p="6"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                  aspectRatio="1.6 / 1"
-                  className="blocky-shadow"
-                  transition="all 0.15s ease"
-                  _hover={{
-                    transform: 'translateY(-4px)',
-                    boxShadow: '8px 8px 0px 0px rgba(255,176,0,0.2)'
-                  }}
-                >
-                  <Box>
-                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1">Ham</Text>
-                    <Text
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="9px"
-                      color="#ffd597"
-                      textTransform="uppercase"
-                      letterSpacing="widest">Frontend / Web</Text
-                    >
-                  </Box>
-                  <Wrap justifyContent="space-between" alignItems="flex-end">
-                    <Text
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="10px"
-                      color="#9f8e78"
-                      lineHeight="tight"
-                    >
-                      Tokyo / Bangkok<br />Remote OK
-                    </Text>
-                    <span class="material-symbols-outlined" style="color: #ffb000;">qr_code_2</span>
-                  </Wrap>
-                </Box>
+                <InteractiveNamecard data={NAMECARDS[0]} />
               </Link>
-
-              <Link
-                href={`/${locale}/namecard/${showcaseNamecards[1]?.variant ?? 'default'}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <Box
-                  position="relative"
-                  overflow="hidden"
-                  bg="#353534"
-                  border="1px solid"
-                  borderColor="#ffb000"
-                  p="6"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                  aspectRatio="1.6 / 1"
-                  boxShadow="4px 4px 0px 0px rgba(255,176,0,0.5)"
-                  transition="all 0.15s ease"
-                  _hover={{ transform: 'translateY(-4px)' }}
-                  className="group"
-                >
-                  <Box
-                    position="absolute"
-                    inset="0"
-                    className="holographic-sheen group-hover-holographic-sheen"
-                    opacity="0.3"
-                    transition="opacity 0.15s ease"
-                  />
-                  <Box position="relative" zIndex="10">
-                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1" color="#ffb000"
-                      >Digital card</Text
-                    >
-                    <Text
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="9px"
-                      color="#d7c4ac"
-                      textTransform="uppercase"
-                      letterSpacing="widest">Namecard</Text
-                    >
-                  </Box>
-                  <Wrap
-                    position="relative"
-                    zIndex="10"
-                    justifyContent="space-between"
-                    alignItems="flex-end"
-                  >
-                    <Text
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="10px"
-                      color="#d7c4ac"
-                      lineHeight="tight"
-                    >
-                      Web / UI<br />Contact links
-                    </Text>
-                    <span
-                      class="material-symbols-outlined"
-                      style="color: #ffb000; font-variation-settings: 'FILL' 1;">dataset</span
-                    >
-                  </Wrap>
-                </Box>
-              </Link>
-
-              <Link
-                href={`/${locale}/namecard/${showcaseNamecards[2]?.variant ?? 'default'}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <Box
-                  bg="#dbdbdb"
-                  color="#0e0e0e"
-                  p="6"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
-                  aspectRatio="1.6 / 1"
-                  className="blocky-shadow"
-                  transition="all 0.15s ease"
-                  _hover={{ transform: 'translateY(-4px)' }}
-                >
-                  <Box>
-                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1">Print card</Text
-                    >
-                    <Text
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="9px"
-                      opacity="0.6"
-                      textTransform="uppercase"
-                      letterSpacing="widest">Simple layout</Text
-                    >
-                  </Box>
-                  <Wrap justifyContent="space-between" alignItems="flex-end">
-                    <Text
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="10px"
-                      opacity="0.6"
-                      lineHeight="tight"
-                    >
-                      Name / Links<br />Printable
-                    </Text>
-                    <span class="material-symbols-outlined">print</span>
-                  </Wrap>
-                </Box>
-              </Link>
-            </Grid>
+            </Box>
           </Stack>
 
           <Stack border="1px solid" borderColor="#524533" bg="#0e0e0e" overflow="hidden">
@@ -427,3 +291,22 @@ const items = [
     </Stack>
   </Container>
 </MainLayout>
+
+<style>
+  .contact-namecard-preview {
+    --namecard-scale: min(1, calc((100vw - 32px) / 91mm));
+    width: calc(91mm * var(--namecard-scale));
+    height: calc(55mm * var(--namecard-scale));
+    margin-inline: auto;
+  }
+
+  .contact-namecard-link {
+    text-decoration: none;
+    transform: scale(var(--namecard-scale));
+    transform-origin: top left;
+  }
+
+  .contact-namecard-preview :global(.card) {
+    animation: none;
+  }
+</style>

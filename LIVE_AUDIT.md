@@ -46,6 +46,7 @@ Locked on 2026-04-28 JST.
 | D-017 | Base-regression audit | jank/feature regression | Events disappeared from global navigation, and Contact lost direct Email/Facebook/Discord/Eventernote links compared with `main`. | The routes still existed, but discoverability and direct contact channels regressed during the redesign/copy cleanup. | Fixed: Events restored in top nav, desktop sidebar, and mobile drawer; Contact direct links restored with grounded labels. |
 | D-018 | Namecard detail | jank/design mistake | `/en/namecard/default` expanded mobile document width to `408px` on a `375px` viewport. | The fixed 91mm printable card is legitimate, but it must not force page-level horizontal scroll on phones. | Fixed: printable card is contained in a horizontal scroll wrapper; card dimensions remain unchanged. |
 | D-019 | Implementation lock | deliberate baseline | Current implementation is locked as the accepted baseline after final route, copy, regression, and namecard checks. | Future work needs a fresh audit note before changing route IA, contact channels, namecard dimensions, or the grounded copy direction. | Locked on 2026-04-28 JST with build, diff, live browser, and namecard-flow evidence. |
+| D-020 | Contact namecard preview | fixed regression + deliberate presentation | Contact must preview the real default namecard, not fabricated mini cards. The preview is frozen on the front face and scaled on narrow screens. | `main` used the real `InteractiveNamecard`; the redesign's `Digital card`/`Print card` tiles were invented content. The dedicated `/namecard/default` route keeps the interactive/spinning behavior, while contact needs a stable, inspectable preview that does not overflow mobile. | Fixed: Contact uses `InteractiveNamecard data={NAMECARDS[0]}`, links to `/[locale]/namecard/default`, removes fake preview text, scales to `343px` at 375px viewport, and disables preview animation only inside Contact. |
 
 ## Screen Matrix
 
@@ -61,7 +62,7 @@ Locked on 2026-04-28 JST.
 | `/en/notes/2ed18204-56d0-4631-a884-d5f17b52bcc8` | product route | live route checked | `dogfood-output/stitch-live/screenshots/note-real-mobile-clean-final.png`; final 375px overflow check passed | en checked | F-013 | clean |
 | `/en/hobbies` | `05`, `11` | `dogfood-output/stitch-live/screenshots/hobbies-desktop-clean-pass-6.png` | `dogfood-output/stitch-live/screenshots/hobbies-mobile-clean-final-2.png`; final card width `341px`, overflow check passed | en checked | F-007 | clean |
 | `/en/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284` | product route | `dogfood-output/stitch-live/screenshots/hobby-detail-desktop-clean-pass-3.png` | `dogfood-output/stitch-live/screenshots/hobby-detail-mobile-clean-final.png`; final 375px overflow check passed | en checked | F-008 | clean |
-| `/en/contact` | `12` | `dogfood-output/stitch-live/screenshots/contact-desktop.png` | final 375px overflow check passed; form validation checked | en checked | F-014 | clean |
+| `/en/contact` | `12` | `/tmp/ham-san-contact-desktop-final.png` | `/tmp/ham-san-contact-mobile-final.png`; final 375px overflow check passed; real namecard preview restored | en checked | F-014, F-020 | clean |
 | `/en/namecard/default` | product route | live route checked | final 375px overflow check passed | en checked | F-017 | clean |
 | `/en/tags` | product route | `dogfood-output/stitch-live/screenshots/tags-desktop-final.png` | final card width `343px`, overflow check passed | en checked | F-009 | clean |
 | `/en/tags/react` | product route | `dogfood-output/stitch-live/screenshots/tag-react-desktop.png` | final 375px overflow check passed; back link points to `/en/tags` | en checked | F-010 | clean |
@@ -146,11 +147,18 @@ Namecard feature remains intact after the overflow fix. `/en/namecard` redirects
 
 Removed the remaining visible fake/status/version framing from Contact, About, Home, and navigation: no `v2.0.4-stable`, `transport: mailto`, `Inventory_Tools`, `Subject_Reference`, `AXONOMETRIC_VIEW_01`, `Homepage V3`, or fake site-online copy remains in the rendered UI. Contact direct channels stayed intact, the namecard feature stayed linked, footer links gained larger tap areas, focus states were restored on contact fields, and mobile Events table content now wraps instead of clipping or expanding the page. Project listing cards now surface fetched tags and link metadata, so the project backend fields are not silently discarded on the listing surface.
 
+### F-020 `/en/contact` namecard preview
+
+The contact page had replaced the real namecard preview with fabricated cards labeled `Digital card` and `Print card`. That was a feature regression from `main`, not a deliberate design choice. Contact now renders `InteractiveNamecard` with `NAMECARDS[0]`, links to `/en/namecard/default`, scales the 91mm card to fit a 375px viewport, and freezes the contact preview on the front face so visual verification is stable. The dedicated namecard route remains interactive.
+
 ## Final Verification
 
 - `cd apps/astro && bun run build` completed on 2026-04-28 JST at 15:11 JST with `0 errors`, `0 warnings`, `0 hints`, and server build complete.
 - `cd apps/astro && bun run lint` completed on 2026-04-28 JST at 16:00 JST with exit code 0.
 - `cd apps/astro && bun run build` completed on 2026-04-28 JST at 16:02 JST with `0 errors`, `0 warnings`, `0 hints`, and server build complete.
+- `cd apps/astro && bun run lint` completed on 2026-04-28 JST at 16:18 JST with exit code 0.
+- `cd apps/astro && bun run build` completed on 2026-04-28 JST at 16:21 JST with `0 errors`, `0 warnings`, `0 hints`, and server build complete.
+- Contact namecard restore check on 2026-04-28 JST: `agent-browser` opened `/en/contact` at 375px and verified no `Digital card`/`Print card` text, real `@HamP_punipuni` content, link to `/en/namecard/default`, and no page-level overflow. Playwright visual/DOM check captured `/tmp/ham-san-contact-mobile-final.png` and `/tmp/ham-san-contact-desktop-final.png`; contact preview width was `343px` on a `375px` viewport, preview animation was `none`, console errors were empty, and `/en/namecard/default` still exposed 13 links with Twitter/Discord content.
 - Final Playwright visual/DOM sweep checked `/en`, `/en/projects`, `/en/hobbies`, `/en/about`, `/en/contact`, `/en/notes`, `/en/events`, `/en/namecard/default`, `/ja`, and `/th` at `1440x1000` and `375x812`; all returned matching document/client widths, no console warnings/errors, and no targeted cringe/status copy. A follow-up mobile `/en/events` check after table wrapping returned no offscreen interactive elements.
 - Final `agent-browser` snapshots checked `/en/events`, `/en/contact`, `/en/namecard/default`, and `/en/projects`; route titles rendered correctly, contact fields/channels were present, namecard links were present, and project cards exposed tags/link metadata.
 - `git diff --check` completed cleanly after the copy cleanup.
