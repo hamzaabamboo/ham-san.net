@@ -52,13 +52,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           <Text>{t('hobbies.back-to-hobbies')}</Text>
         </Wrap>
       </Link>
-      <Stack
-        gap="4"
-        borderLeftWidth="2px"
-        borderLeftStyle="solid"
-        borderLeftColor="#ffb000"
-        pl="6"
-      >
+      <Stack gap="4" borderLeftWidth="2px" borderLeftStyle="solid" borderLeftColor="#ffb000" pl="6">
         <Text
           fontFamily="JetBrains Mono, monospace"
           fontSize="10px"
@@ -74,12 +68,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           </Heading>
         </Stack>
       </Stack>
-      <Box
-        border="1px solid"
-        borderColor="#524533"
-        bg="#1c1b1b"
-        p={{ base: '6', md: '8' }}
-      >
+      <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '6', md: '8' }}>
         {text && <Markdown content={text} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
       </Box>
     </Stack>

@@ -46,7 +46,10 @@ const extractFirstParagraph = (md: string): string => {
   for (const line of lines) {
     if (/^#{1,6}\s/.test(line)) break;
     if (line.trim() === '') {
-      if (current) { paragraphs.push(current.trim()); current = ''; }
+      if (current) {
+        paragraphs.push(current.trim());
+        current = '';
+      }
       if (paragraphs.length >= 1) break;
       continue;
     }
@@ -97,16 +100,40 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
   <Container maxW="breakpoint-xl" w="full" className="page-shell">
     <Stack py="10" gap="12">
       <Stack borderLeft="4px solid" borderLeftColor="#ffb000" pl="8" py="4">
-        <Box px="2" py="1" bg="#353534" border="1px solid" borderColor="#524533" mb="4" w="fit-content">
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" color="#dbdbdb" letterSpacing="0.1em">
+        <Box
+          px="2"
+          py="1"
+          bg="#353534"
+          border="1px solid"
+          borderColor="#524533"
+          mb="4"
+          w="fit-content"
+        >
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#dbdbdb"
+            letterSpacing="0.1em"
+          >
             Profile
           </Text>
         </Box>
-        <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic" lineHeight="0.95" mb="4">
+        <Heading
+          as="h1"
+          fontSize={{ base: '5xl', md: '7xl' }}
+          fontStyle="italic"
+          lineHeight="0.95"
+          mb="4"
+        >
           {t('about-me.hero-title')}
         </Heading>
         <Text maxW="2xl" fontSize="lg" color="#c7c6c6" lineHeight="1.8">
-          {locale === cmsLocale ? (aboutMe?.introduction ?? t('about-me.hero-summary')) : t('about-me.hero-summary')}
+          {
+            locale === cmsLocale
+              ? (aboutMe?.introduction ?? t('about-me.hero-summary'))
+              : t('about-me.hero-summary')
+          }
         </Text>
       </Stack>
 
@@ -114,107 +141,230 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
         <Stack gap="16" order={{ base: 2, xl: 2 }}>
           <Stack gap="8">
             <Wrap alignItems="center" gap="4">
-              <span class="material-symbols-outlined" style="color: #ffb000; font-size: 1.25rem;">timeline</span>
-              <Heading as="h2" fontSize="sm" fontStyle="normal" fontWeight="black" textTransform="uppercase" letterSpacing="0.3em">Experience</Heading>
+              <span class="material-symbols-outlined" style="color: #ffb000; font-size: 1.25rem;"
+                >timeline</span
+              >
+              <Heading
+                as="h2"
+                fontSize="sm"
+                fontStyle="normal"
+                fontWeight="black"
+                textTransform="uppercase"
+                letterSpacing="0.3em">Experience</Heading
+              >
               <Box h="1px" flex="1" bg="#524533" />
             </Wrap>
-            {experiences && experiences.length > 0 ? (
-              <Box position="relative" pl={{ base: '6', md: '12' }}>
-                <Box position="absolute" left="0" top="0" bottom="0" w="1px" className="spine-gradient" />
-                <Stack gap="12">
-                {experiences.map((d, idx) => {
-                  const exp = pickLocale(d, locale);
-                  if (!exp) return null;
-                  const { title, content, position, tags: expTags } = exp;
-                  const dateRange = formatDateRange(exp.start as string, exp.end as string);
-                  const duration = formatDuration(exp.start as string, exp.end as string);
-                  return (
-                    <Box position="relative">
-                      <Box position="absolute" left={{ base: '-30px', md: '-52px' }} top="2rem" w="10px" h="10px" bg={idx === 0 ? '#ffb000' : '#131313'} border="2px solid" borderColor={idx === 0 ? '#ffb000' : '#9f8e78'} />
-                    <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="8" className="blocky-shadow blocky-shadow-hover exp-card-hover">
-                      <Wrap justifyContent="space-between" alignItems="start" gap="4" mb="6">
-                        <Stack gap="1">
-                          <Heading as="h3" fontSize="xl" fontWeight="bold" fontStyle="normal" textTransform="uppercase" letterSpacing="-0.02em">{position}</Heading>
-                          <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#ffb000">
-                            {(title ?? '').toUpperCase()} // {dateRange}{duration && ` (${duration})`}
-                          </Text>
-                        </Stack>
-                        <Wrap gap="2">
-                          {expTags &&
-                            sortTags(nonNullTags(expTags)).slice(0, 3).map(
-                              (s) =>
-                                s.slug && (
-                                  <Link href={`/${locale}/tags/${s.slug}`} display="inline-flex">
-                                    <Box px="2" py="1" border="1px solid" borderColor="#524533" fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" color="#dbdbdb">
-                                      {s.title}
-                                    </Box>
-                                  </Link>
-                                )
+            {
+              experiences && experiences.length > 0 ? (
+                <Box position="relative" pl={{ base: '6', md: '12' }}>
+                  <Box
+                    position="absolute"
+                    left="0"
+                    top="0"
+                    bottom="0"
+                    w="1px"
+                    className="spine-gradient"
+                  />
+                  <Stack gap="12">
+                    {experiences.map((d, idx) => {
+                      const exp = pickLocale(d, locale);
+                      if (!exp) return null;
+                      const { title, content, position, tags: expTags } = exp;
+                      const dateRange = formatDateRange(exp.start as string, exp.end as string);
+                      const duration = formatDuration(exp.start as string, exp.end as string);
+                      return (
+                        <Box position="relative">
+                          <Box
+                            className={
+                              idx === 0 ? 'timeline-node timeline-node-active' : 'timeline-node'
+                            }
+                            position="absolute"
+                            left={{ base: '-30px', md: '-52px' }}
+                            top="2rem"
+                            w="10px"
+                            h="10px"
+                            border="2px solid"
+                          />
+                          <Stack
+                            border="1px solid"
+                            borderColor="#524533"
+                            bg="#1c1b1b"
+                            p="8"
+                            className="blocky-shadow blocky-shadow-hover exp-card-hover"
+                          >
+                            <Wrap justifyContent="space-between" alignItems="start" gap="4" mb="6">
+                              <Stack gap="1">
+                                <Heading
+                                  as="h3"
+                                  fontSize="xl"
+                                  fontWeight="bold"
+                                  fontStyle="normal"
+                                  textTransform="uppercase"
+                                  letterSpacing="-0.02em"
+                                >
+                                  {position}
+                                </Heading>
+                                <Text
+                                  fontFamily="JetBrains Mono, monospace"
+                                  fontSize="xs"
+                                  color="#ffb000"
+                                >
+                                  {(title ?? '').toUpperCase()} // {dateRange}
+                                  {duration && ` (${duration})`}
+                                </Text>
+                              </Stack>
+                              <Wrap gap="2">
+                                {expTags &&
+                                  sortTags(nonNullTags(expTags))
+                                    .slice(0, 3)
+                                    .map(
+                                      (s) =>
+                                        s.slug && (
+                                          <Link
+                                            href={`/${locale}/tags/${s.slug}`}
+                                            display="inline-flex"
+                                          >
+                                            <Box
+                                              px="2"
+                                              py="1"
+                                              border="1px solid"
+                                              borderColor="#524533"
+                                              fontFamily="JetBrains Mono, monospace"
+                                              fontSize="10px"
+                                              textTransform="uppercase"
+                                              color="#dbdbdb"
+                                            >
+                                              {s.title}
+                                            </Box>
+                                          </Link>
+                                        )
+                                    )}
+                              </Wrap>
+                            </Wrap>
+                            {content && (
+                              <Text color="#c7c6c6" fontSize="md" lineHeight="1.8">
+                                {extractFirstParagraph(content)}
+                              </Text>
                             )}
-                        </Wrap>
-                      </Wrap>
-                      {content && (
-                        <Text color="#c7c6c6" fontSize="md" lineHeight="1.8">
-                          {extractFirstParagraph(content)}
-                        </Text>
-                      )}
-                    </Stack>
-                    </Box>
-                  );
-                })}
-                </Stack>
-              </Box>
-            ) : (
-              <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '6', md: '8' }}>
-                <Stack alignItems="center" textAlign="center" py="8" gap="4">
-                  <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="0.15em" color="#9f8e78">
-                    status: unavailable
-                  </Text>
-                  <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic">
-                    {t('about-me.timeline-empty-title')}
-                  </Heading>
-                  <Text color="#c7c6c6" maxW="sm" lineHeight="1.7" fontSize="sm">
-                    {t('about-me.timeline-empty-description')}
-                  </Text>
-                </Stack>
-              </Box>
-            )}
+                          </Stack>
+                        </Box>
+                      );
+                    })}
+                  </Stack>
+                </Box>
+              ) : (
+                <Box
+                  border="1px solid"
+                  borderColor="#524533"
+                  bg="#1c1b1b"
+                  p={{ base: '6', md: '8' }}
+                >
+                  <Stack alignItems="center" textAlign="center" py="8" gap="4">
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      letterSpacing="0.15em"
+                      color="#9f8e78"
+                    >
+                      status: unavailable
+                    </Text>
+                    <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic">
+                      {t('about-me.timeline-empty-title')}
+                    </Heading>
+                    <Text color="#c7c6c6" maxW="sm" lineHeight="1.7" fontSize="sm">
+                      {t('about-me.timeline-empty-description')}
+                    </Text>
+                  </Stack>
+                </Box>
+              )
+            }
           </Stack>
 
-          {Object.keys(skills).slice(0, 2).map((key) => {
-            const sorted = skills[key].sort((a, b) => (b.projects?.length ?? 0) - (a.projects?.length ?? 0)).slice(0, 4);
-            return (
-              <Stack gap="6">
-                <Wrap alignItems="center" gap="4" mb="2">
-                  <Heading as="h3" fontSize="xs" fontStyle="normal" fontWeight="bold" textTransform="uppercase" letterSpacing="0.2em" color="#c7c6c6">Material: {t(`common.${toKebabCase(key) as 'frontend'}`)}</Heading>
-                  <Box h="1px" flex="1" bg="#524533" />
-                </Wrap>
-                <Stack gap="3">
-                  {sorted.map((s, i) => (
-                    <Wrap justifyContent="space-between" alignItems="center" fontFamily="JetBrains Mono, monospace" fontSize="sm">
-                      <Link href={s.slug ? `/${locale}/tags/${s.slug}` : '#'} color={i < 2 ? '#e5e2e1' : '#d7c4ac'}>
-                        {s.title}
-                      </Link>
-                      {i < 2 ? (
-                        <Text color="#ffb000" fontWeight="bold">[CORE]</Text>
-                      ) : (
-                        <Text color="#9f8e78">{(0.95 - i * 0.07).toFixed(2)}</Text>
-                      )}
+          {
+            Object.keys(skills)
+              .slice(0, 2)
+              .map((key) => {
+                const sorted = skills[key]
+                  .sort((a, b) => (b.projects?.length ?? 0) - (a.projects?.length ?? 0))
+                  .slice(0, 4);
+                return (
+                  <Stack gap="6">
+                    <Wrap alignItems="center" gap="4" mb="2">
+                      <Heading
+                        as="h3"
+                        fontSize="xs"
+                        fontStyle="normal"
+                        fontWeight="bold"
+                        textTransform="uppercase"
+                        letterSpacing="0.2em"
+                        color="#c7c6c6"
+                      >
+                        {t(`common.${toKebabCase(key) as 'frontend'}`)}
+                      </Heading>
+                      <Box h="1px" flex="1" bg="#524533" />
                     </Wrap>
-                  ))}
-                </Stack>
-              </Stack>
-            );
-          })}
+                    <Stack gap="3">
+                      {sorted.map((s, i) => (
+                        <Wrap
+                          justifyContent="space-between"
+                          alignItems="center"
+                          fontFamily="JetBrains Mono, monospace"
+                          fontSize="sm"
+                        >
+                          <Link
+                            href={s.slug ? `/${locale}/tags/${s.slug}` : '#'}
+                            color={i < 2 ? '#e5e2e1' : '#d7c4ac'}
+                          >
+                            {s.title}
+                          </Link>
+                          {i < 2 ? (
+                            <Text color="#ffb000" fontWeight="bold">
+                              Main
+                            </Text>
+                          ) : (
+                            <Text color="#9f8e78">{(0.95 - i * 0.07).toFixed(2)}</Text>
+                          )}
+                        </Wrap>
+                      ))}
+                    </Stack>
+                  </Stack>
+                );
+              })
+          }
 
-          <Box border="1px solid" borderColor="#524533" bg="#131313" p="6" className="blocky-shadow">
-            <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" color="#ffb000" letterSpacing="0.1em" mb="4">Inventory_Tools</Text>
+          <Box
+            border="1px solid"
+            borderColor="#524533"
+            bg="#131313"
+            p="6"
+            className="blocky-shadow"
+          >
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              color="#ffb000"
+              letterSpacing="0.1em"
+              mb="4">Tools</Text
+            >
             <Wrap gap="2">
-              {['VS_CODE', 'FIGMA', 'GIT_CLI', 'DOCKER', 'NODE_V20', 'BLENDER'].map((tool) => (
-                <Box px="2" py="1" border="1px solid" borderColor="#524533" fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" color="#dbdbdb">
-                  {tool}
-                </Box>
-              ))}
+              {
+                ['VS Code', 'Figma', 'Git', 'Docker', 'Node.js', 'Blender'].map((tool) => (
+                  <Box
+                    px="2"
+                    py="1"
+                    border="1px solid"
+                    borderColor="#524533"
+                    fontFamily="JetBrains Mono, monospace"
+                    fontSize="10px"
+                    textTransform="uppercase"
+                    color="#dbdbdb"
+                  >
+                    {tool}
+                  </Box>
+                ))
+              }
             </Wrap>
           </Box>
 
@@ -231,8 +381,16 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
         </Stack>
 
         <Stack gap="8" order={{ base: 1, xl: 1 }}>
-          <Box position="relative" border="2px solid" borderColor="#524533" bg="#0e0e0e" aspectRatio="1 / 1" overflow="hidden" className="blocky-shadow">
-            <SpecLabel>Subject_Reference // B-04</SpecLabel>
+          <Box
+            position="relative"
+            border="2px solid"
+            borderColor="#524533"
+            bg="#0e0e0e"
+            aspectRatio="1 / 1"
+            overflow="hidden"
+            className="blocky-shadow"
+          >
+            <SpecLabel>Profile</SpecLabel>
             <div class="wireframe-container">
               <div class="wireframe-cube wireframe-outer">
                 <div class="wireframe-offset-tl wireframe-inner"></div>
@@ -245,37 +403,83 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
               </div>
             </div>
             <Box position="absolute" bottom="4" right="4">
-              <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#9f8e78" opacity="0.5" textTransform="uppercase" letterSpacing="0.12em">
-                AXONOMETRIC_VIEW_01
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                color="#9f8e78"
+                opacity="0.5"
+                textTransform="uppercase"
+                letterSpacing="0.12em"
+              >
+                Frontend / UI
               </Text>
             </Box>
           </Box>
           <Stack border="1px solid" borderColor="#524533" bg="#2a2a2a" p="8">
             <Heading as="h3" fontSize="2xl" fontStyle="italic" mb="8">Institutional</Heading>
             <Stack gap="0">
-              {educations && educations.length > 0 ? educations.map((d, i) => {
-                const edu = pickLocale(d, locale);
-                if (!edu) return null;
-                return (
-                  <Box pt={i > 0 ? '6' : '0'} pb="6" borderTop={i > 0 ? '1px solid' : 'none'} borderColor="#524533">
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#ffb000" mb="1">
-                      {formatDateRange(edu.start as string, edu.end as string)}
+              {
+                educations && educations.length > 0 ? (
+                  educations.map((d, i) => {
+                    const edu = pickLocale(d, locale);
+                    if (!edu) return null;
+                    return (
+                      <Box
+                        className={
+                          i > 0 ? 'education-entry education-entry-separated' : 'education-entry'
+                        }
+                        pb="6"
+                        borderColor="#524533"
+                      >
+                        <Text
+                          fontFamily="JetBrains Mono, monospace"
+                          fontSize="xs"
+                          color="#ffb000"
+                          mb="1"
+                        >
+                          {formatDateRange(edu.start as string, edu.end as string)}
+                        </Text>
+                        <Heading
+                          as="h4"
+                          fontSize="sm"
+                          fontStyle="normal"
+                          fontWeight="bold"
+                          textTransform="uppercase"
+                          letterSpacing="-0.02em"
+                        >
+                          {edu.title}
+                        </Heading>
+                        <Text color="#c7c6c6" fontSize="sm" mt="1">
+                          {edu.description}
+                        </Text>
+                      </Box>
+                    );
+                  })
+                ) : (
+                  <Box py="4">
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      letterSpacing="0.15em"
+                      color="#9f8e78"
+                    >
+                      records // pending
                     </Text>
-                    <Heading as="h4" fontSize="sm" fontStyle="normal" fontWeight="bold" textTransform="uppercase" letterSpacing="-0.02em">{edu.title}</Heading>
-                    <Text color="#c7c6c6" fontSize="sm" mt="1">{edu.description}</Text>
                   </Box>
-                );
-              }) : (
-                <Box py="4">
-                  <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="0.15em" color="#9f8e78">
-                    records // pending
-                  </Text>
-                </Box>
-              )}
+                )
+              }
             </Stack>
           </Stack>
           <Stack bg="#ffb000" p="8">
-            <Heading as="h3" fontSize="3xl" fontWeight="bold" fontStyle="italic" color="#432c00" mb="6">
+            <Heading
+              as="h3"
+              fontSize="3xl"
+              fontWeight="bold"
+              fontStyle="italic"
+              color="#432c00"
+              mb="6"
+            >
               {t('about-me.methodology')}
             </Heading>
             <Text color="#432c00" lineHeight="1.8" mb="4">
@@ -304,7 +508,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
       </div>
       <div class="credentials-cell">
         <span>{t('about-me.credentials-signal')}</span>
-        <a href={`/${locale}/contact`} class="credentials-signal">{t('about-me.credentials-signal-value')}</a>
+        <a href={`/${locale}/contact`} class="credentials-signal"
+          >{t('about-me.credentials-signal-value')}</a
+        >
       </div>
     </section>
   </Container>

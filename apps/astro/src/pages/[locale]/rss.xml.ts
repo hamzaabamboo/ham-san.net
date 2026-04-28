@@ -15,9 +15,8 @@ export const GET: APIRoute = async () => {
     });
 
     const articles = shareRequest.data?.data ?? [];
-    const esc = (s: string) => s.replace(/[<>&]/g, (c) =>
-      c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&amp;'
-    );
+    const esc = (s: string) =>
+      s.replace(/[<>&]/g, (c) => (c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&amp;'));
 
     items = articles
       .map((share) => {

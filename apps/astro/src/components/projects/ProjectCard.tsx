@@ -55,7 +55,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
   const ghLink = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Github);
 
   return (
-    <Stack border="1px solid" borderColor="#524533" h="full" bg="#131313" className="group">
+    <Stack className="group" border="1px solid" borderColor="#524533" h="full" bg="#131313">
       <Link
         href={`/${locale}/projects/${slug}`}
         data-astro-prefetch="hover"
@@ -95,17 +95,22 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                 _groupHover={{ transform: 'scale(1.03)', filter: 'grayscale(0.2)' }}
               />
             ) : (
-              <Box position="relative" aspectRatio="4 / 3" overflow="hidden" className="fallback-grid-lines">
-                <Center position="absolute" inset="0">
+              <Box
+                className="fallback-grid-lines"
+                position="relative"
+                aspectRatio="4 / 3"
+                overflow="hidden"
+              >
+                <Center inset="0" position="absolute">
                   <Text
+                    color="#e5e2e1"
                     fontFamily="Newsreader, serif"
-                    fontStyle="italic"
                     fontSize="120px"
                     lineHeight="1"
-                    color="#e5e2e1"
                     opacity="0.06"
                     userSelect="none"
                     transition="opacity 0.3s ease"
+                    fontStyle="italic"
                     _groupHover={{ opacity: 0.1 }}
                   >
                     {title?.charAt(0)?.toUpperCase() ?? 'P'}
@@ -113,9 +118,9 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                 </Center>
                 <Box
                   position="absolute"
-                  bottom="0"
                   left="0"
                   right="0"
+                  bottom="0"
                   h="2px"
                   bg="#ffb000"
                   opacity="0.4"
@@ -152,11 +157,11 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             <Wrap
               gap="2"
               alignItems="center"
+              color="#ffb000"
               fontFamily="JetBrains Mono, monospace"
               fontSize="10px"
               letterSpacing="0.12em"
               textTransform="uppercase"
-              color="#ffb000"
             >
               <Text>Open project</Text>
               <FaArrowRight />

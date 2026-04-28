@@ -60,13 +60,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 <MainLayout title={pageTitle} description={t('note.description')}>
   <Container maxW="breakpoint-xl" w="full" className="page-shell">
     <Stack py="8" gap="10">
-      <Stack
-        gap="4"
-        borderLeftWidth="2px"
-        borderLeftStyle="solid"
-        borderLeftColor="#ffb000"
-        pl="6"
-      >
+      <Stack gap="4" borderLeftWidth="2px" borderLeftStyle="solid" borderLeftColor="#ffb000" pl="6">
         <Text
           fontFamily="JetBrains Mono, monospace"
           fontSize="10px"
@@ -83,167 +77,185 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           {t('note.description')}
         </Text>
       </Stack>
-      {!sharedArticlesList || sharedArticlesList.length === 0 ? (
-        <Box
-          border="1px solid"
-          borderColor="#524533"
-          bg="#1c1b1b"
-          p={{ base: '8', md: '12' }}
-        >
-          <Stack gap="4" alignItems="center" textAlign="center" py="12">
-            <Text
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              textTransform="uppercase"
-              letterSpacing="0.12em"
-              color="#9f8e78"
-            >
-              status: unavailable
-            </Text>
-            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
-              {t('note.empty-title')}
-            </Heading>
-            <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
-              {t('note.empty-description')}
-            </Text>
-          </Stack>
-        </Box>
-      ) : (
-      <>
-      <Stack gap="4">
-        {
-          sharedArticlesList?.map((data, index) => {
-            if (!data) return null;
-            const { id, documentTitle, collectionName, documentSummary, createdAt } =
-              data as typeof data & {
-                collectionName: string;
-                documentSummary: string;
-                documentCreatedAt: string;
-              };
+      {
+        !sharedArticlesList || sharedArticlesList.length === 0 ? (
+          <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '8', md: '12' }}>
+            <Stack gap="4" alignItems="center" textAlign="center" py="12">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                letterSpacing="0.12em"
+                color="#9f8e78"
+              >
+                status: unavailable
+              </Text>
+              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+                {t('note.empty-title')}
+              </Heading>
+              <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
+                {t('note.empty-description')}
+              </Text>
+            </Stack>
+          </Box>
+        ) : (
+          <>
+            <Stack gap="4">
+              {sharedArticlesList?.map((data, index) => {
+                if (!data) return null;
+                const { id, documentTitle, collectionName, documentSummary, createdAt } =
+                  data as typeof data & {
+                    collectionName: string;
+                    documentSummary: string;
+                    documentCreatedAt: string;
+                  };
 
-            const isHero = index === 0;
+                const isHero = index === 0;
 
-            if (isHero) {
-              return (
-                <Link href={`/${locale}/notes/${id}`}>
-                  <Box
-                    border="1px solid"
-                    borderColor="#524533"
-                    bg="#1c1b1b"
-                    p={{ base: '6', md: '10' }}
-                    _hover={{ transform: 'translate(-2px, -2px)' }}
-                    transition="transform 0.2s ease"
-                    className="card-hover-amber"
-                  >
-                    <Stack gap={4}>
-                      <Text
-                        fontFamily="JetBrains Mono, monospace"
-                        fontSize="10px"
-                        textTransform="uppercase"
-                        letterSpacing="0.12em"
-                        color="#ffd597"
+                if (isHero) {
+                  return (
+                    <Link href={`/${locale}/notes/${id}`}>
+                      <Box
+                        border="1px solid"
+                        borderColor="#524533"
+                        bg="#1c1b1b"
+                        p={{ base: '6', md: '10' }}
+                        _hover={{ transform: 'translate(-2px, -2px)' }}
+                        transition="transform 0.2s ease"
+                        className="card-hover-amber"
                       >
-                        Latest note
-                      </Text>
-                      <Heading as="h2" fontSize={{ base: '4xl', md: '5xl' }} fontStyle="italic">
-                        {documentTitle}
-                      </Heading>
-                      <Wrap fontSize="sm" color="#9f8e78" fontFamily="JetBrains Mono, monospace">
-                        <Text>{collectionName}</Text> |{' '}
-                        <Text>{createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}</Text>
-                      </Wrap>
-                      <Text color="#c7c6c6" maxW="3xl" fontSize="md" lineHeight="1.7">
-                        {documentSummary.substring(0, 220) + '...'}
-                      </Text>
-                    </Stack>
-                  </Box>
-                </Link>
-              );
-            }
-            return null;
-          })
-        }
-        <Grid gap="4" gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}>
-          {
-            sharedArticlesList?.slice(1).map((data) => {
-              if (!data) return null;
-              const { id, documentTitle, collectionName, documentSummary, createdAt } =
-                data as typeof data & {
-                  collectionName: string;
-                  documentSummary: string;
-                  documentCreatedAt: string;
-                };
+                        <Stack gap={4}>
+                          <Text
+                            fontFamily="JetBrains Mono, monospace"
+                            fontSize="10px"
+                            textTransform="uppercase"
+                            letterSpacing="0.12em"
+                            color="#ffd597"
+                          >
+                            Latest note
+                          </Text>
+                          <Heading as="h2" fontSize={{ base: '4xl', md: '5xl' }} fontStyle="italic">
+                            {documentTitle}
+                          </Heading>
+                          <Wrap
+                            fontSize="sm"
+                            color="#9f8e78"
+                            fontFamily="JetBrains Mono, monospace"
+                          >
+                            <Text>{collectionName}</Text> |{' '}
+                            <Text>
+                              {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
+                            </Text>
+                          </Wrap>
+                          <Text color="#c7c6c6" maxW="3xl" fontSize="md" lineHeight="1.7">
+                            {documentSummary.substring(0, 220) + '...'}
+                          </Text>
+                        </Stack>
+                      </Box>
+                    </Link>
+                  );
+                }
+                return null;
+              })}
+              <Grid gap="4" gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}>
+                {sharedArticlesList?.slice(1).map((data) => {
+                  if (!data) return null;
+                  const { id, documentTitle, collectionName, documentSummary, createdAt } =
+                    data as typeof data & {
+                      collectionName: string;
+                      documentSummary: string;
+                      documentCreatedAt: string;
+                    };
 
-              return (
-                <Link href={`/${locale}/notes/${id}`} style={{ minWidth: 0 }}>
-                  <Box
-                    border="1px solid"
-                    borderColor="#524533"
-                    bg="#1c1b1b"
-                    p="6"
-                    h="full"
-                    _hover={{ transform: 'translate(-2px, -2px)' }}
-                    transition="transform 0.2s ease"
-                    className="card-hover-amber"
-                  >
-                    <Stack gap={3}>
-                      <Text
-                        fontFamily="JetBrains Mono, monospace"
-                        fontSize="10px"
-                        textTransform="uppercase"
-                        letterSpacing="0.12em"
-                        color="#ffd597"
+                  return (
+                    <Link href={`/${locale}/notes/${id}`} style={{ minWidth: 0 }}>
+                      <Box
+                        border="1px solid"
+                        borderColor="#524533"
+                        bg="#1c1b1b"
+                        p="6"
+                        h="full"
+                        _hover={{ transform: 'translate(-2px, -2px)' }}
+                        transition="transform 0.2s ease"
+                        className="card-hover-amber"
                       >
-                        Note
-                      </Text>
-                      <Heading as="h4" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic" overflowWrap="anywhere">
-                        {documentTitle}
-                      </Heading>
-                      <Wrap fontSize="sm" color="#9f8e78" fontFamily="JetBrains Mono, monospace">
-                        <Text>{collectionName}</Text> |{' '}
-                        <Text>{createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}</Text>
-                      </Wrap>
-                      <Text color="#c7c6c6" fontSize="sm">{documentSummary.substring(0, 100) + '...'}</Text>
-                    </Stack>
-                  </Box>
-                </Link>
-              );
-            })
-          }
-        </Grid>
-      </Stack>
-      {(hasPrevPage || hasNextPage) && (
-        <Box
-          display="flex"
-          justifyContent={hasPrevPage && hasNextPage ? 'space-between' : hasNextPage ? 'flex-end' : 'flex-start'}
-          alignItems="center"
-          pt="4"
-          borderTopWidth="1px"
-          borderTopStyle="solid"
-          borderTopColor="#524533"
-        >
-          {hasPrevPage && (
-            <a
-              href={page === 2 ? `/${locale}/notes` : `/${locale}/notes?page=${page - 1}`}
-              style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid #524533;background:#1c1b1b;color:#ffd597;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;text-decoration:none;transition:border-color 0.25s ease"
-              class="card-hover-amber"
-            >
-              ← {t('note.previous-entry')}
-            </a>
-          )}
-          {hasNextPage && (
-            <a
-              href={`/${locale}/notes?page=${page + 1}`}
-              style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid #524533;background:#1c1b1b;color:#ffd597;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;text-decoration:none;transition:border-color 0.25s ease"
-              class="card-hover-amber"
-            >
-              {t('note.next-entry')} →
-            </a>
-          )}
-        </Box>
-      )}
-      </>
-      )}
+                        <Stack gap={3}>
+                          <Text
+                            fontFamily="JetBrains Mono, monospace"
+                            fontSize="10px"
+                            textTransform="uppercase"
+                            letterSpacing="0.12em"
+                            color="#ffd597"
+                          >
+                            Note
+                          </Text>
+                          <Heading
+                            as="h4"
+                            fontSize={{ base: '2xl', md: '3xl' }}
+                            fontStyle="italic"
+                            overflowWrap="anywhere"
+                          >
+                            {documentTitle}
+                          </Heading>
+                          <Wrap
+                            fontSize="sm"
+                            color="#9f8e78"
+                            fontFamily="JetBrains Mono, monospace"
+                          >
+                            <Text>{collectionName}</Text> |{' '}
+                            <Text>
+                              {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
+                            </Text>
+                          </Wrap>
+                          <Text color="#c7c6c6" fontSize="sm">
+                            {documentSummary.substring(0, 100) + '...'}
+                          </Text>
+                        </Stack>
+                      </Box>
+                    </Link>
+                  );
+                })}
+              </Grid>
+            </Stack>
+            {(hasPrevPage || hasNextPage) && (
+              <Box
+                className={
+                  hasPrevPage && hasNextPage
+                    ? 'notes-pagination notes-pagination-between'
+                    : hasNextPage
+                      ? 'notes-pagination notes-pagination-end'
+                      : 'notes-pagination notes-pagination-start'
+                }
+                display="flex"
+                alignItems="center"
+                pt="4"
+                borderTopWidth="1px"
+                borderTopStyle="solid"
+                borderTopColor="#524533"
+              >
+                {hasPrevPage && (
+                  <a
+                    href={page === 2 ? `/${locale}/notes` : `/${locale}/notes?page=${page - 1}`}
+                    style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid #524533;background:#1c1b1b;color:#ffd597;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;text-decoration:none;transition:border-color 0.25s ease"
+                    class="card-hover-amber"
+                  >
+                    ← {t('note.previous-entry')}
+                  </a>
+                )}
+                {hasNextPage && (
+                  <a
+                    href={`/${locale}/notes?page=${page + 1}`}
+                    style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid #524533;background:#1c1b1b;color:#ffd597;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;text-decoration:none;transition:border-color 0.25s ease"
+                    class="card-hover-amber"
+                  >
+                    {t('note.next-entry')} →
+                  </a>
+                )}
+              </Box>
+            )}
+          </>
+        )
+      }
     </Stack>
   </Container>
 </MainLayout>

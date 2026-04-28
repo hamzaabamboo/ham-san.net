@@ -40,7 +40,8 @@ export const Markdown = ({
     .map((line) =>
       line.replace(
         /^(\s*(?:[-*]\s+)?)((?:https?:\/\/|www\.)\S+)\s*$/,
-        (_, prefix: string, url: string) => `${prefix}[${formatBareUrlLabel(url)}](${url.startsWith('www.') ? `https://${url}` : url})`
+        (_, prefix: string, url: string) =>
+          `${prefix}[${formatBareUrlLabel(url)}](${url.startsWith('www.') ? `https://${url}` : url})`
       )
     )
     .join('\n');
@@ -65,18 +66,32 @@ export const Markdown = ({
   };
 
   return (
-    <Stack gap="5" lineHeight="1.8" minW="0" maxW="full">
+    <Stack gap="5" minW="0" maxW="full" lineHeight="1.8">
       <ReactMarkdown
         remarkPlugins={[remarkTextr, remarkGfm]}
         components={{
           h1: ({ ref: __, node: _, ...props }) => (
-            <Heading as="h1" fontSize="5xl" lineHeight="0.95" fontStyle="italic" overflowWrap="anywhere" {...props} />
+            <Heading
+              as="h1"
+              fontSize="5xl"
+              lineHeight="0.95"
+              overflowWrap="anywhere"
+              fontStyle="italic"
+              {...props}
+            />
           ),
           h2: ({ ref: __, node: _, ...props }) => (
-            <Heading as="h2" fontSize="4xl" pt="6" fontStyle="italic" overflowWrap="anywhere" {...props} />
+            <Heading
+              as="h2"
+              pt="6"
+              fontSize="4xl"
+              overflowWrap="anywhere"
+              fontStyle="italic"
+              {...props}
+            />
           ),
           h3: ({ ref: __, node: _, ...props }) => (
-            <Heading as="h3" fontSize="3xl" fontStyle="italic" overflowWrap="anywhere" {...props} />
+            <Heading as="h3" fontSize="3xl" overflowWrap="anywhere" fontStyle="italic" {...props} />
           ),
           h4: ({ ref: __, node: _, ...props }) => <Heading as="h4" fontSize="2xl" {...props} />,
           h5: ({ ref: __, node: _, ...props }) => (
@@ -84,7 +99,14 @@ export const Markdown = ({
           ),
           h6: ({ ref: __, node: _, ...props }) => <Heading as="h6" fontSize="xl" {...props} />,
           p: ({ ref: _ref, node: _, ...props }) => (
-            <Text as="p" color="#c7c6c6" fontSize="lg" lineHeight="1.8" overflowWrap="anywhere" {...props} />
+            <Text
+              as="p"
+              color="#c7c6c6"
+              fontSize="lg"
+              lineHeight="1.8"
+              overflowWrap="anywhere"
+              {...props}
+            />
           ),
           strong: ({ ref: _, node: __, ...props }) => (
             <Text as="span" fontWeight="bold" {...props} />
@@ -92,10 +114,15 @@ export const Markdown = ({
           a: ({ ref: _, node: __, ...props }) => {
             const { href, children, ...rest } = props;
             const dest = linksPrefix && href?.startsWith('/') ? join(linksPrefix, href) : href;
-            const childText = Array.isArray(children) ? children.join('') : typeof children === 'string' ? children : null;
-            const displayChildren = childText && /^(?:https?:\/\/|www\.)/.test(childText.trim())
-              ? formatBareUrlLabel(childText.trim())
-              : children;
+            const childText = Array.isArray(children)
+              ? children.join('')
+              : typeof children === 'string'
+                ? children
+                : null;
+            const displayChildren =
+              childText && /^(?:https?:\/\/|www\.)/.test(childText.trim())
+                ? formatBareUrlLabel(childText.trim())
+                : children;
             if (disableLinks || (disableInternalLinks && href?.startsWith('/'))) {
               return <Text as="p">{props.children}</Text>;
             }
@@ -137,9 +164,7 @@ export const Markdown = ({
               {...props}
             />
           ),
-          li: ({ ref: _, node: __, ...props }) => (
-            <styled.li lineHeight="1.7" {...props} />
-          ),
+          li: ({ ref: _, node: __, ...props }) => <styled.li lineHeight="1.7" {...props} />,
           code: ({ ref: _, node: __, className, children, ...props }) => {
             const language = className?.replace('language-', '');
             const content = children?.toString() ?? '';
@@ -159,21 +184,21 @@ export const Markdown = ({
             );
           },
           table: ({ ref: _, node: __, ...props }) => (
-            <styled.div overflowX="auto" w="full" css={{ '& table': { minW: 'max-content' } }}>
+            <styled.div w="full" overflowX="auto" css={{ '& table': { minW: 'max-content' } }}>
               <Table.Root {...props} />
             </styled.div>
           ),
           thead: ({ ref: _, node: __, ...props }) => <Table.Head {...props} />,
           th: ({ ref: _, node: __, ...props }) => (
             <Table.Header
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="xs"
-              textTransform="uppercase"
-              letterSpacing="0.08em"
-              color="#9f8e78"
               borderBottomColor="#524533"
               py="2"
               px="3"
+              color="#9f8e78"
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="xs"
+              letterSpacing="0.08em"
+              textTransform="uppercase"
               {...props}
             />
           ),
@@ -186,16 +211,26 @@ export const Markdown = ({
             />
           ),
           td: ({ ref: _, node: __, ...props }) => (
-            <Table.Cell color="#c7c6c6" py="2" px="3" fontSize="sm" {...props} />
+            <Table.Cell py="2" px="3" color="#c7c6c6" fontSize="sm" {...props} />
           ),
           img: ({ ref: _, node: __, ...props }) => {
             const url = resolveImageUrl(props.src);
             return (
-              <styled.div border="1px solid" borderColor="#524533" p="1" overflow="hidden" maxW="full">
+              <styled.div
+                border="1px solid"
+                borderColor="#524533"
+                maxW="full"
+                p="1"
+                overflow="hidden"
+              >
                 <img
                   src={url}
                   alt={props.alt}
-                  style={{ width: '100%', filter: 'grayscale(1) contrast(1.25)', mixBlendMode: 'luminosity' }}
+                  style={{
+                    width: '100%',
+                    filter: 'grayscale(1) contrast(1.25)',
+                    mixBlendMode: 'luminosity'
+                  }}
                 />
               </styled.div>
             );

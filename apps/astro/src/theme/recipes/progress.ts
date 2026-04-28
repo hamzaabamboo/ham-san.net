@@ -24,9 +24,9 @@ export const progress = defineSlotRecipe({
       _indeterminate: {
         position: 'absolute',
         minWidth: '50%',
+        backgroundImage: `linear-gradient(to right, transparent 0%, var(--track-color) 50%, transparent 100%)`,
         willChange: 'left',
         animation: 'position 1s ease infinite normal none running',
-        backgroundImage: `linear-gradient(to right, transparent 0%, var(--track-color) 50%, transparent 100%)`,
         '--animate-from-x': '-40%',
         '--animate-to-x': '100%'
       }

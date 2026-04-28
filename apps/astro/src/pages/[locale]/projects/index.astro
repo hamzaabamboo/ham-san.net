@@ -1,5 +1,5 @@
 ---
-import { Box, Container, Flex, Grid, Stack } from 'styled-system/jsx';
+import { Box, Container, Flex, Grid, Stack, Wrap } from 'styled-system/jsx';
 import { getMediaUrl } from 'utils/media';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
@@ -22,7 +22,10 @@ let projects: any[] = [];
 
 try {
   const data = await graphQLSdk.fetchProjects({ limit: 75 });
-  projects = (data?.projects ?? []).map((p) => pickLocale(p, locale)).filter((p: any) => !!p).map((p) => cleanProjectCopy(p as any));
+  projects = (data?.projects ?? [])
+    .map((p) => pickLocale(p, locale))
+    .filter((p: any) => !!p)
+    .map((p) => cleanProjectCopy(p as any));
 } catch {
   // CMS unavailable — render with empty data
 }
@@ -53,191 +56,443 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           border="1px solid"
           borderColor="#524533"
         >
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" color="#ffd597">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#ffd597"
+          >
             projects
           </Text>
         </Box>
         <Heading as="h1" fontSize={{ base: '5xl', md: '8xl' }} fontStyle="italic" lineHeight="0.92">
           {t('project.page-heading')}
         </Heading>
-        <Text maxW="2xl" color="#c7c6c6" fontSize="lg" borderLeft="1px solid" borderLeftColor="#ffb000" pl="6" py="2">
+        <Text
+          maxW="2xl"
+          color="#c7c6c6"
+          fontSize="lg"
+          borderLeft="1px solid"
+          borderLeftColor="#ffb000"
+          pl="6"
+          py="2"
+        >
           {t('project.intro')}
         </Text>
       </Stack>
 
-      {projects.length === 0 ? (
-        <Box
-          border="1px solid"
-          borderColor="#524533"
-          bg="#1c1b1b"
-          p={{ base: '8', md: '12' }}
-        >
-          <Stack gap="4" alignItems="center" textAlign="center" py="12">
-            <Text
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              textTransform="uppercase"
-              letterSpacing="0.12em"
-              color="#9f8e78"
-            >
-              status: unavailable
-            </Text>
-            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
-              {t('project.empty-title')}
-            </Heading>
-            <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
-              {t('project.empty-description')}
-            </Text>
-          </Stack>
-        </Box>
-      ) : (
-      <>
-      <Stack gap="10">
-        <Flex align="center" gap="4" overflow="hidden">
-          <Text fontSize="2xl" fontWeight="black" textTransform="uppercase" letterSpacing="-0.05em" flexShrink="0">
-            {t('project.active')}
-          </Text>
-          <Box h="1px" w="full" bg="#524533" />
-        </Flex>
-        <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="1px" bg="#524533" border="1px solid" borderColor="#524533">
-          {featuredProjects.map((project) => {
-            const imageUrl =
-              getMediaUrl(project.media?.[0]?.url, { height: 480 }, import.meta.env.PUBLIC_API_URL) ??
-              '/images/placeholder-project.jpg';
-            return (
-              <Link href={`/${locale}/projects/${project.slug}`} display="block" w="full" bg="#131313" className="group">
-                <Stack p="6" h="full" _hover={{ bg: '#0e0e0e' }} transition="background-color 0.2s ease">
-                  <Box position="relative" aspectRatio="16 / 9" border="1px solid" borderColor="#524533" overflow="hidden" className="image-archival" mb="6">
-                    {project.media?.[0]?.url ? (
-                      <img src={imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : (
-                      <Box position="absolute" inset="0" bgGradient="to-br" gradientFrom="#1c1b1b" gradientVia="#232323" gradientTo="#1a1a1a" className="fallback-grid-lines">
-                        <Box position="absolute" right="-10" bottom="-8">
-                          <Text fontFamily="Newsreader, serif" fontStyle="italic" fontSize="200px" lineHeight="1" color="#e5e2e1" opacity="0.04" userSelect="none" transition="opacity 0.5s ease" className="group-hover-watermark-strong" aria-hidden="true">
-                            {project.title?.charAt(0)?.toUpperCase() ?? 'P'}
-                          </Text>
-                        </Box>
-                        <Box position="absolute" top="50%" left="0" right="0" h="1px" bg="#524533" opacity="0.5" />
-                        <Box position="absolute" bottom="0" left="0" right="0" h="2px" bg="#ffb000" opacity="0.35" transition="opacity 0.3s ease" className="group-hover-amber-bar" />
-                      </Box>
-                    )}
-                    <Box
-                      position="absolute"
-                      top="0"
-                      right="0"
-                      p="4"
-                      opacity="0"
-                      transition="opacity 0.2s ease"
-                      className="group-hover-reveal"
-                    >
-                      <Box bg="#ffb000" color="#432c00" px="3" py="1" fontFamily="JetBrains Mono, monospace" fontSize="10px" fontWeight="bold">
-                        {t('project.case-study').toUpperCase()}
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Flex justifyContent="space-between" alignItems="start" mb="2">
-                    <Heading as="h2" fontSize="2xl" fontWeight="extrabold" fontStyle="normal" fontFamily="Manrope, sans-serif" transition="color 0.2s ease" className="group-hover-amber">
-                      {project.title}
-                    </Heading>
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="sm" color="#9f8e78">
-                      {project.date?.slice(0, 4)}
-                    </Text>
-                  </Flex>
-                  {project.category?.name && (
-                    <Flex gap="2" mb="4">
-                      <Box bg="#2a2a2a" border="1px solid" borderColor="#524533" px="2" py="0.5">
-                        <Text fontFamily="JetBrains Mono, monospace" fontSize="9px" textTransform="uppercase">
-                          {project.category.name}
-                        </Text>
-                      </Box>
-                    </Flex>
-                  )}
-                  <Text color="#c7c6c6" fontSize="sm" lineHeight="1.7" mb="6">
-                    {project.description}
-                  </Text>
-                  <Flex gap="2" alignItems="center" mt="auto" className="view-execution-link">
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="11px" textTransform="uppercase" letterSpacing="0.08em" color="#ffb000">
-                      {t('project.view-execution')}
-                    </Text>
-                    <Text color="#ffb000" fontSize="sm" transition="margin-left 0.2s ease" className="arrow-icon">→</Text>
-                  </Flex>
-                </Stack>
-              </Link>
-            );
-          })}
-        </Grid>
-      </Stack>
-
-      <Stack gap="10">
-        <Flex align="center" gap="4" overflow="hidden">
-          <Text fontSize="2xl" fontWeight="black" textTransform="uppercase" letterSpacing="-0.05em" flexShrink="0">
-            {t('project.inactive')}
-          </Text>
-          <Box h="1px" w="full" bg="#524533" />
-        </Flex>
-        <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap="8">
-          {archiveProjects.slice(0, 9).map((project, index) => {
-            const imageUrl =
-              getMediaUrl(project.media?.[0]?.url, { height: 360 }, import.meta.env.PUBLIC_API_URL) ??
-              '/images/placeholder-project.jpg';
-            return (
-              <Link href={`/${locale}/projects/${project.slug}`} display="block" w="full" position="relative" bg="#1c1b1b" border="1px solid" borderColor="#524533" p="6" className="group blocky-shadow blocky-shadow-hover">
-                <Box
-                  position="absolute"
-                  top="-3"
-                  left="-3"
-                  px="2"
-                  py="1"
-                  bg="#353534"
-                  border="1px solid"
-                  borderColor="#524533"
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="9px"
-                  color="#ffd597"
-                >
-                  Project {String(index + 1).padStart(3, '0')}
-                </Box>
-                <Box position="relative" aspectRatio="1 / 1" border="1px solid" borderColor="#524533" overflow="hidden" className="image-lab" mb="6">
-                  {project.media?.[0]?.url ? (
-                    <img src={imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  ) : (
-                    <Box position="absolute" inset="0" bgGradient="to-br" gradientFrom="#1c1b1b" gradientVia="#222" gradientTo="#191919" className="fallback-grid-lines">
-                      <Box position="absolute" right="-6" bottom="-4">
-                        <Text fontFamily="Newsreader, serif" fontStyle="italic" fontSize="140px" lineHeight="1" color="#e5e2e1" opacity="0.04" userSelect="none" transition="opacity 0.5s ease" className="group-hover-watermark-strong" aria-hidden="true">
-                          {project.title?.charAt(0)?.toUpperCase() ?? 'P'}
-                        </Text>
-                      </Box>
-                      <Box position="absolute" left="50%" top="0" bottom="0" w="1px" bg="#524533" opacity="0.4" />
-                      <Box position="absolute" bottom="0" left="0" right="0" h="2px" bg="#ffb000" opacity="0.35" transition="opacity 0.3s ease" className="group-hover-amber-bar" />
-                    </Box>
-                  )}
-                </Box>
-                <Flex justifyContent="space-between" alignItems="center" mb="2">
-                  <Heading as="h3" fontSize="lg" fontWeight="bold" fontStyle="normal" fontFamily="Manrope, sans-serif">{project.title}</Heading>
-                  <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#9f8e78">
-                    {project.date?.slice(0, 4)}
-                  </Text>
-                </Flex>
-                <Text color="#c7c6c6" fontSize="xs" lineHeight="1.7" mb="4">
-                  {project.description}
-                </Text>
+      {
+        projects.length === 0 ? (
+          <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '8', md: '12' }}>
+            <Stack gap="4" alignItems="center" textAlign="center" py="12">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                letterSpacing="0.12em"
+                color="#9f8e78"
+              >
+                status: unavailable
+              </Text>
+              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+                {t('project.empty-title')}
+              </Heading>
+              <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
+                {t('project.empty-description')}
+              </Text>
+            </Stack>
+          </Box>
+        ) : (
+          <>
+            <Stack gap="10">
+              <Flex align="center" gap="4" overflow="hidden">
                 <Text
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="9px"
-                  color="#ffb000"
-                  opacity="0"
-                  transition="opacity 0.2s ease"
-                  className="group-hover-reveal"
+                  fontSize="2xl"
+                  fontWeight="black"
+                  textTransform="uppercase"
+                  letterSpacing="-0.05em"
+                  flexShrink="0"
                 >
-                  {t('project.view-execution')}
+                  {t('project.active')}
                 </Text>
-              </Link>
-            );
-          })}
-        </Grid>
-      </Stack>
-      </>
-      )}
+                <Box h="1px" w="full" bg="#524533" />
+              </Flex>
+              <Grid
+                gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
+                gap="1px"
+                bg="#524533"
+                border="1px solid"
+                borderColor="#524533"
+              >
+                {featuredProjects.map((project) => {
+                  const imageUrl =
+                    getMediaUrl(
+                      project.media?.[0]?.url,
+                      { height: 480 },
+                      import.meta.env.PUBLIC_API_URL
+                    ) ?? '/images/placeholder-project.jpg';
+                  return (
+                    <Link
+                      href={`/${locale}/projects/${project.slug}`}
+                      display="block"
+                      w="full"
+                      bg="#131313"
+                      className="group"
+                    >
+                      <Stack
+                        p="6"
+                        h="full"
+                        _hover={{ bg: '#0e0e0e' }}
+                        transition="background-color 0.2s ease"
+                      >
+                        <Box
+                          position="relative"
+                          aspectRatio="16 / 9"
+                          border="1px solid"
+                          borderColor="#524533"
+                          overflow="hidden"
+                          className="image-archival"
+                          mb="6"
+                        >
+                          {project.media?.[0]?.url ? (
+                            <img
+                              src={imageUrl}
+                              alt=""
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          ) : (
+                            <Box
+                              position="absolute"
+                              inset="0"
+                              bgGradient="to-br"
+                              gradientFrom="#1c1b1b"
+                              gradientVia="#232323"
+                              gradientTo="#1a1a1a"
+                              className="fallback-grid-lines"
+                            >
+                              <Box position="absolute" right="-10" bottom="-8">
+                                <Text
+                                  fontFamily="Newsreader, serif"
+                                  fontStyle="italic"
+                                  fontSize="200px"
+                                  lineHeight="1"
+                                  color="#e5e2e1"
+                                  opacity="0.04"
+                                  userSelect="none"
+                                  transition="opacity 0.5s ease"
+                                  className="group-hover-watermark-strong"
+                                  aria-hidden="true"
+                                >
+                                  {project.title?.charAt(0)?.toUpperCase() ?? 'P'}
+                                </Text>
+                              </Box>
+                              <Box
+                                position="absolute"
+                                top="50%"
+                                left="0"
+                                right="0"
+                                h="1px"
+                                bg="#524533"
+                                opacity="0.5"
+                              />
+                              <Box
+                                position="absolute"
+                                bottom="0"
+                                left="0"
+                                right="0"
+                                h="2px"
+                                bg="#ffb000"
+                                opacity="0.35"
+                                transition="opacity 0.3s ease"
+                                className="group-hover-amber-bar"
+                              />
+                            </Box>
+                          )}
+                          <Box
+                            position="absolute"
+                            top="0"
+                            right="0"
+                            p="4"
+                            opacity="0"
+                            transition="opacity 0.2s ease"
+                            className="group-hover-reveal"
+                          >
+                            <Box
+                              bg="#ffb000"
+                              color="#432c00"
+                              px="3"
+                              py="1"
+                              fontFamily="JetBrains Mono, monospace"
+                              fontSize="10px"
+                              fontWeight="bold"
+                            >
+                              {t('project.case-study').toUpperCase()}
+                            </Box>
+                          </Box>
+                        </Box>
+                        <Flex justifyContent="space-between" alignItems="start" mb="2">
+                          <Heading
+                            as="h2"
+                            fontSize="2xl"
+                            fontWeight="extrabold"
+                            fontStyle="normal"
+                            fontFamily="Manrope, sans-serif"
+                            transition="color 0.2s ease"
+                            className="group-hover-amber"
+                          >
+                            {project.title}
+                          </Heading>
+                          <Text
+                            fontFamily="JetBrains Mono, monospace"
+                            fontSize="sm"
+                            color="#9f8e78"
+                          >
+                            {project.date?.slice(0, 4)}
+                          </Text>
+                        </Flex>
+                        {project.category?.name && (
+                          <Flex gap="2" mb="4">
+                            <Box
+                              bg="#2a2a2a"
+                              border="1px solid"
+                              borderColor="#524533"
+                              px="2"
+                              py="0.5"
+                            >
+                              <Text
+                                fontFamily="JetBrains Mono, monospace"
+                                fontSize="9px"
+                                textTransform="uppercase"
+                              >
+                                {project.category.name}
+                              </Text>
+                            </Box>
+                          </Flex>
+                        )}
+                        {project.tags?.length > 0 && (
+                          <Wrap gap="2" mb="4">
+                            {project.tags
+                              .filter(Boolean)
+                              .slice(0, 3)
+                              .map((tag: any) => (
+                                <Box
+                                  bg="#1c1b1b"
+                                  border="1px solid"
+                                  borderColor="#524533"
+                                  px="2"
+                                  py="0.5"
+                                >
+                                  <Text
+                                    fontFamily="JetBrains Mono, monospace"
+                                    fontSize="9px"
+                                    textTransform="uppercase"
+                                    color="#9f8e78"
+                                  >
+                                    {tag.title}
+                                  </Text>
+                                </Box>
+                              ))}
+                          </Wrap>
+                        )}
+                        <Text color="#c7c6c6" fontSize="sm" lineHeight="1.7" mb="6">
+                          {project.description}
+                        </Text>
+                        <Flex gap="2" alignItems="center" mt="auto" className="view-execution-link">
+                          <Text
+                            fontFamily="JetBrains Mono, monospace"
+                            fontSize="11px"
+                            textTransform="uppercase"
+                            letterSpacing="0.08em"
+                            color="#ffb000"
+                          >
+                            {t('project.view-execution')}
+                          </Text>
+                          <Text
+                            color="#ffb000"
+                            fontSize="sm"
+                            transition="margin-left 0.2s ease"
+                            className="arrow-icon"
+                          >
+                            →
+                          </Text>
+                        </Flex>
+                      </Stack>
+                    </Link>
+                  );
+                })}
+              </Grid>
+            </Stack>
+
+            <Stack gap="10">
+              <Flex align="center" gap="4" overflow="hidden">
+                <Text
+                  fontSize="2xl"
+                  fontWeight="black"
+                  textTransform="uppercase"
+                  letterSpacing="-0.05em"
+                  flexShrink="0"
+                >
+                  {t('project.inactive')}
+                </Text>
+                <Box h="1px" w="full" bg="#524533" />
+              </Flex>
+              <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap="8">
+                {archiveProjects.slice(0, 9).map((project, index) => {
+                  const imageUrl =
+                    getMediaUrl(
+                      project.media?.[0]?.url,
+                      { height: 360 },
+                      import.meta.env.PUBLIC_API_URL
+                    ) ?? '/images/placeholder-project.jpg';
+                  return (
+                    <Link
+                      href={`/${locale}/projects/${project.slug}`}
+                      display="block"
+                      w="full"
+                      position="relative"
+                      bg="#1c1b1b"
+                      border="1px solid"
+                      borderColor="#524533"
+                      p="6"
+                      className="group blocky-shadow blocky-shadow-hover"
+                    >
+                      <Box
+                        position="absolute"
+                        top="-3"
+                        left="-3"
+                        px="2"
+                        py="1"
+                        bg="#353534"
+                        border="1px solid"
+                        borderColor="#524533"
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="9px"
+                        color="#ffd597"
+                      >
+                        Project {String(index + 1).padStart(3, '0')}
+                      </Box>
+                      <Box
+                        position="relative"
+                        aspectRatio="1 / 1"
+                        border="1px solid"
+                        borderColor="#524533"
+                        overflow="hidden"
+                        className="image-muted-soft"
+                        mb="6"
+                      >
+                        {project.media?.[0]?.url ? (
+                          <img
+                            src={imageUrl}
+                            alt=""
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        ) : (
+                          <Box
+                            position="absolute"
+                            inset="0"
+                            bgGradient="to-br"
+                            gradientFrom="#1c1b1b"
+                            gradientVia="#222"
+                            gradientTo="#191919"
+                            className="fallback-grid-lines"
+                          >
+                            <Box position="absolute" right="-6" bottom="-4">
+                              <Text
+                                fontFamily="Newsreader, serif"
+                                fontStyle="italic"
+                                fontSize="140px"
+                                lineHeight="1"
+                                color="#e5e2e1"
+                                opacity="0.04"
+                                userSelect="none"
+                                transition="opacity 0.5s ease"
+                                className="group-hover-watermark-strong"
+                                aria-hidden="true"
+                              >
+                                {project.title?.charAt(0)?.toUpperCase() ?? 'P'}
+                              </Text>
+                            </Box>
+                            <Box
+                              position="absolute"
+                              left="50%"
+                              top="0"
+                              bottom="0"
+                              w="1px"
+                              bg="#524533"
+                              opacity="0.4"
+                            />
+                            <Box
+                              position="absolute"
+                              bottom="0"
+                              left="0"
+                              right="0"
+                              h="2px"
+                              bg="#ffb000"
+                              opacity="0.35"
+                              transition="opacity 0.3s ease"
+                              className="group-hover-amber-bar"
+                            />
+                          </Box>
+                        )}
+                      </Box>
+                      <Flex justifyContent="space-between" alignItems="center" mb="2">
+                        <Heading
+                          as="h3"
+                          fontSize="lg"
+                          fontWeight="bold"
+                          fontStyle="normal"
+                          fontFamily="Manrope, sans-serif"
+                        >
+                          {project.title}
+                        </Heading>
+                        <Text
+                          fontFamily="JetBrains Mono, monospace"
+                          fontSize="10px"
+                          color="#9f8e78"
+                        >
+                          {project.date?.slice(0, 4)}
+                        </Text>
+                      </Flex>
+                      <Text color="#c7c6c6" fontSize="xs" lineHeight="1.7" mb="4">
+                        {project.description}
+                      </Text>
+                      {project.links?.length > 0 && (
+                        <Wrap gap="2" mb="4">
+                          {project.links
+                            .filter((link: any) => link?.url)
+                            .slice(0, 2)
+                            .map((link: any) => (
+                              <Box border="1px solid" borderColor="#524533" px="2" py="0.5">
+                                <Text
+                                  fontFamily="JetBrains Mono, monospace"
+                                  fontSize="9px"
+                                  textTransform="uppercase"
+                                  color="#9f8e78"
+                                >
+                                  {link.title ?? link.type}
+                                </Text>
+                              </Box>
+                            ))}
+                        </Wrap>
+                      )}
+                      <Text
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="9px"
+                        color="#ffb000"
+                        opacity="0"
+                        transition="opacity 0.2s ease"
+                        className="group-hover-reveal"
+                      >
+                        {t('project.view-execution')}
+                      </Text>
+                    </Link>
+                  );
+                })}
+              </Grid>
+            </Stack>
+          </>
+        )
+      }
     </Stack>
   </Container>
 </MainLayout>

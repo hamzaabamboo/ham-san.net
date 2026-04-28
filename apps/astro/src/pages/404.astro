@@ -9,12 +9,7 @@ const lang = getLangFromUrl(Astro.url);
 
 <MainLayout title="404 | Not Found">
   <Container maxW="breakpoint-xl" className="page-shell">
-    <Flex
-      minH="70vh"
-      alignItems="center"
-      justifyContent="center"
-      px={{ base: '6', md: '10' }}
-    >
+    <Flex minH="70vh" alignItems="center" justifyContent="center" px={{ base: '6', md: '10' }}>
       <Stack gap="0" alignItems="center" textAlign="center" maxW="520px">
         <Text
           fontFamily="JetBrains Mono, monospace"
@@ -61,37 +56,13 @@ const lang = getLangFromUrl(Astro.url);
           The requested route does not exist or has been relocated.
         </Text>
 
-        <Flex
-          gap="3"
-          flexWrap="wrap"
-          justifyContent="center"
-        >
-          <a
-            href={`/${lang}/`}
-            class="not-found-cta"
-          >
-            Return home
-          </a>
-          <a
-            href={`/${lang}/projects`}
-            class="not-found-link"
-          >
-            Projects
-          </a>
-          <a
-            href={`/${lang}/contact`}
-            class="not-found-link"
-          >
-            Contact
-          </a>
+        <Flex gap="3" flexWrap="wrap" justifyContent="center">
+          <a href={`/${lang}/`} class="not-found-cta"> Return home </a>
+          <a href={`/${lang}/projects`} class="not-found-link"> Projects </a>
+          <a href={`/${lang}/contact`} class="not-found-link"> Contact </a>
         </Flex>
 
-        <Box
-          mt="12"
-          pt="8"
-          borderTop="1px solid #524533"
-          w="full"
-        >
+        <Box mt="12" pt="8" borderTop="1px solid #524533" w="full">
           <Text
             fontFamily="JetBrains Mono, monospace"
             fontSize="10px"
@@ -131,7 +102,9 @@ const lang = getLangFromUrl(Astro.url);
     border: 1px solid #524533;
     padding: 10px 20px;
     text-decoration: none;
-    transition: border-color 0.15s ease, color 0.15s ease;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease;
   }
   .not-found-link:hover {
     border-color: #9f8e78;

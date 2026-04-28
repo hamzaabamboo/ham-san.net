@@ -29,8 +29,7 @@ const t = useTranslations(locale);
 const BentoCard = styled(Box, {
   base: {
     bg: '#1c1b1b',
-    background:
-      'linear-gradient(145deg, #1c1b1b 0%, #2a2a2a 100%)',
+    background: 'linear-gradient(145deg, #1c1b1b 0%, #2a2a2a 100%)',
     border: '1px solid',
     borderColor: '#524533',
     borderRadius: '3xl',
@@ -136,7 +135,13 @@ const IconBox = styled(Box, {
         >
           <FaMapMarkerAlt color="white" size={20} />
         </Box>
-        <Box style={{ backgroundColor: 'rgba(28, 27, 27, 0.8)' }} backdropFilter="blur(4px)" px="4" py="2" borderRadius="full">
+        <Box
+          style={{ backgroundColor: 'rgba(28, 27, 27, 0.8)' }}
+          backdropFilter="blur(4px)"
+          px="4"
+          py="2"
+          borderRadius="full"
+        >
           <Text fontWeight="bold" fontSize="sm">Bangkok, TH</Text>
         </Box>
       </Stack>

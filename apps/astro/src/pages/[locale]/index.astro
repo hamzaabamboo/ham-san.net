@@ -96,10 +96,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
               {t('home.hero-heading-emphasis')}
             </Box>
           </Heading>
-          <p
-            class="hero-subtitle"
-            set:html={t('home.hero-subtitle')}
-          />
+          <p class="hero-subtitle" set:html={t('home.hero-subtitle')} />
           <Flex gap="4" wrap="wrap" pt="2">
             <a
               href={`/${locale}/projects`}
@@ -126,40 +123,64 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
           overflow="hidden"
           minH={{ base: '360px', lg: '100%' }}
         >
-          <SpecLabel>Profile photo</SpecLabel>
+          <SpecLabel>Profile</SpecLabel>
           <Box aspectRatio="1 / 1" overflow="hidden" position="relative">
-            {introImage ? (
-              <img src={introImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(1)', opacity: 0.8, mixBlendMode: 'luminosity' }} />
-            ) : (
-              <Box position="relative" w="100%" h="100%" bg="#0e0e0e" className="fallback-grid-lines" overflow="hidden">
+            {
+              introImage ? (
+                <img
+                  src={introImage}
+                  alt="Profile"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    filter: 'grayscale(1)',
+                    opacity: 0.8,
+                    mixBlendMode: 'luminosity'
+                  }}
+                />
+              ) : (
                 <Box
-                  position="absolute"
-                  bottom="-20px"
-                  right="-10px"
-                  fontFamily="Newsreader, serif"
-                  fontStyle="italic"
-                  fontSize="280px"
-                  lineHeight="1"
-                  color="#e5e2e1"
-                  opacity="0.04"
-                  userSelect="none"
-                  pointerEvents="none"
-                  aria-hidden="true"
-                >H</Box>
-                <Box
-                  position="absolute"
-                  top="50%"
-                  left="50%"
-                  transform="translate(-50%, -50%)"
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  letterSpacing="0.15em"
-                  color="#524533"
-                  textAlign="center"
-                >No photo yet</Box>
-              </Box>
-            )}
+                  position="relative"
+                  w="100%"
+                  h="100%"
+                  bg="#0e0e0e"
+                  className="fallback-grid-lines"
+                  overflow="hidden"
+                >
+                  <Box
+                    position="absolute"
+                    bottom="-20px"
+                    right="-10px"
+                    fontFamily="Newsreader, serif"
+                    fontStyle="italic"
+                    fontSize="280px"
+                    lineHeight="1"
+                    color="#e5e2e1"
+                    opacity="0.04"
+                    userSelect="none"
+                    pointerEvents="none"
+                    aria-hidden="true"
+                  >
+                    H
+                  </Box>
+                  <Box
+                    position="absolute"
+                    top="50%"
+                    left="50%"
+                    transform="translate(-50%, -50%)"
+                    fontFamily="JetBrains Mono, monospace"
+                    fontSize="10px"
+                    textTransform="uppercase"
+                    letterSpacing="0.15em"
+                    color="#524533"
+                    textAlign="center"
+                  >
+                    No photo yet
+                  </Box>
+                </Box>
+              )
+            }
           </Box>
           <Box
             position="absolute"
@@ -182,16 +203,23 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
         <StatusRow locale={locale} />
       </Box>
 
-      <Box px={{ base: '0', lg: '6' }} py={{ base: '8', lg: '16' }} borderBottom="1px solid" borderColor="#524533">
+      <Box
+        px={{ base: '0', lg: '6' }}
+        py={{ base: '8', lg: '16' }}
+        borderBottom="1px solid"
+        borderColor="#524533"
+      >
         <Flex justify="space-between" align="end" mb="12">
           <Stack gap="2">
-            <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#ffd597">02 // PROFILE</Text>
+            <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#ffd597"
+              >02 // PROFILE</Text
+            >
             <Heading as="h2" fontSize="5xl" fontStyle="italic">{t('home.bench-heading')}</Heading>
           </Stack>
           <Text
             fontFamily="JetBrains Mono, monospace"
             fontSize="10px"
-            color="#4c4e4e"
+            color="#9f8e78"
             maxW="xs"
             textAlign="right"
             display={{ base: 'none', md: 'block' }}
@@ -200,10 +228,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             {t('home.bench-subtitle')}
           </Text>
         </Flex>
-        <Grid
-          gridTemplateColumns={{ base: '1fr', md: 'repeat(12, 1fr)' }}
-          gap="6"
-        >
+        <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(12, 1fr)' }} gap="6">
           <Box
             gridColumn={{ base: 'span 1', md: 'span 7' }}
             position="relative"
@@ -223,9 +248,33 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                 {t('home.bench-manifesto-body')}
               </Text>
               <Flex gap="2" wrap="wrap">
-                <Box px="3" py="1" bg="#353534" border="1px solid" borderColor="#524533" fontFamily="JetBrains Mono, monospace" fontSize="10px">CLEAR</Box>
-                <Box px="3" py="1" bg="#353534" border="1px solid" borderColor="#524533" fontFamily="JetBrains Mono, monospace" fontSize="10px">USEFUL</Box>
-                <Box px="3" py="1" bg="#353534" border="1px solid" borderColor="#524533" fontFamily="JetBrains Mono, monospace" fontSize="10px">MAINTAINABLE</Box>
+                <Box
+                  px="3"
+                  py="1"
+                  bg="#353534"
+                  border="1px solid"
+                  borderColor="#524533"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px">CLEAR</Box
+                >
+                <Box
+                  px="3"
+                  py="1"
+                  bg="#353534"
+                  border="1px solid"
+                  borderColor="#524533"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px">USEFUL</Box
+                >
+                <Box
+                  px="3"
+                  py="1"
+                  bg="#353534"
+                  border="1px solid"
+                  borderColor="#524533"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px">MAINTAINABLE</Box
+                >
               </Flex>
             </Stack>
           </Box>
@@ -242,20 +291,36 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             <SpecLabel>Tools</SpecLabel>
             <Grid mt="6" gridTemplateColumns="1fr 1fr" gap="4">
               <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e">Frontend</Text>
-                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg">React / Next.js</Text>
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e"
+                  >Frontend</Text
+                >
+                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg"
+                  >React / Next.js</Text
+                >
               </Stack>
               <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e">Styling</Text>
-                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg">Tailwind CSS</Text>
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e"
+                  >Styling</Text
+                >
+                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg"
+                  >Tailwind CSS</Text
+                >
               </Stack>
               <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e">Design</Text>
-                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg">Figma / WebGL</Text>
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e"
+                  >Design</Text
+                >
+                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg"
+                  >Figma / WebGL</Text
+                >
               </Stack>
               <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e">Scripting</Text>
-                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg">Node.js / Python</Text>
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e"
+                  >Scripting</Text
+                >
+                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg"
+                  >Node.js / Python</Text
+                >
               </Stack>
             </Grid>
           </Box>
@@ -271,10 +336,21 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
           >
             <SpecLabel inverted>Projects</SpecLabel>
             <Stack mt="6" h="full" justify="space-between">
-              <Text fontFamily="Newsreader, serif" fontSize="6xl" fontWeight="black" color="#432c00">
+              <Text
+                fontFamily="Newsreader, serif"
+                fontSize="6xl"
+                fontWeight="black"
+                color="#432c00"
+              >
                 {projects.length > 0 ? projects.length : 42}
               </Text>
-              <Text fontFamily="Manrope, sans-serif" fontWeight="bold" textTransform="uppercase" letterSpacing="tighter" color="#432c00">
+              <Text
+                fontFamily="Manrope, sans-serif"
+                fontWeight="bold"
+                textTransform="uppercase"
+                letterSpacing="tighter"
+                color="#432c00"
+              >
                 {t('home.bench-logs-caption')}
               </Text>
             </Stack>
@@ -289,41 +365,71 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             overflow="hidden"
             className="group"
           >
-            <SpecLabel>Photo</SpecLabel>
-            {introImage ? (
-              <>
-                <img
-                  src={introImage}
-                  alt="Profile visual"
-                  style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(0.5);transition:transform 700ms"
-                  class="bench-render-img"
-                />
-                <Box position="absolute" inset="0" bg="#ffb000" mixBlendMode="multiply" opacity="0.2" />
-              </>
-            ) : (
-              <Box position="relative" w="100%" h="100%" bg="#0e0e0e" className="fallback-grid-lines" overflow="hidden">
+            <SpecLabel>Image</SpecLabel>
+            {
+              introImage ? (
+                <>
+                  <img
+                    src={introImage}
+                    alt="Profile visual"
+                    style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(0.5);transition:transform 700ms"
+                    class="bench-render-img"
+                  />
+                  <Box
+                    position="absolute"
+                    inset="0"
+                    bg="#ffb000"
+                    mixBlendMode="multiply"
+                    opacity="0.2"
+                  />
+                </>
+              ) : (
                 <Box
-                  position="absolute"
-                  bottom="-15px"
-                  right="20px"
-                  fontFamily="Newsreader, serif"
-                  fontStyle="italic"
-                  fontSize="200px"
-                  lineHeight="1"
-                  color="#e5e2e1"
-                  opacity="0.03"
-                  userSelect="none"
-                  pointerEvents="none"
-                  aria-hidden="true"
-                >V</Box>
-                <Box position="absolute" bottom="0" left="0" right="0" h="2px" bg="#ffb000" opacity="0.2" />
-              </Box>
-            )}
+                  position="relative"
+                  w="100%"
+                  h="100%"
+                  bg="#0e0e0e"
+                  className="fallback-grid-lines"
+                  overflow="hidden"
+                >
+                  <Box
+                    position="absolute"
+                    bottom="-15px"
+                    right="20px"
+                    fontFamily="Newsreader, serif"
+                    fontStyle="italic"
+                    fontSize="200px"
+                    lineHeight="1"
+                    color="#e5e2e1"
+                    opacity="0.03"
+                    userSelect="none"
+                    pointerEvents="none"
+                    aria-hidden="true"
+                  >
+                    V
+                  </Box>
+                  <Box
+                    position="absolute"
+                    bottom="0"
+                    left="0"
+                    right="0"
+                    h="2px"
+                    bg="#ffb000"
+                    opacity="0.2"
+                  />
+                </Box>
+              )
+            }
           </Box>
         </Grid>
       </Box>
 
-      <Box px={{ base: '0', lg: '6' }} py={{ base: '16', lg: '20' }} borderTop="1px solid" borderColor="#524533">
+      <Box
+        px={{ base: '0', lg: '6' }}
+        py={{ base: '16', lg: '20' }}
+        borderTop="1px solid"
+        borderColor="#524533"
+      >
         <Flex
           direction={{ base: 'column', md: 'row' }}
           justify="space-between"
@@ -334,181 +440,199 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
           pb="6"
         >
           <Heading as="h2" fontSize="5xl" fontStyle="italic">
-            {t('home.featured-specimens')}
+            {t('home.featured-projects')}
           </Heading>
-          <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="xs"
-            mt={{ base: '4', md: '0' }}
-          >
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" mt={{ base: '4', md: '0' }}>
             Sorted by date
           </Text>
         </Flex>
-        {heroProjects.length > 0 ? (
-          <Grid
-            gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
-            gap="0"
-            borderTop="1px solid"
-            borderLeft="1px solid"
-            borderColor="#524533"
-            mb="20"
-          >
-            {heroProjects.map((project, i) => {
-              const imgSrc = project.banner?.url
-                ? getMediaUrl(project.banner.url, { height: 600 }, import.meta.env.PUBLIC_API_URL)
-                : project.media?.[0]?.url
-                  ? getMediaUrl(project.media[0].url, { height: 600 }, import.meta.env.PUBLIC_API_URL)
-                  : null;
-              const buildId = String(1000 + i * 411).padStart(4, '0');
-              return (
-                <a
-                  href={`/${locale}/projects/${project.slug}`}
-                  class="specimen-card"
-                  style="display:block;border-right:1px solid #524533;border-bottom:1px solid #524533;overflow:hidden;background:#131313;cursor:pointer;text-decoration:none;color:inherit"
-                >
-                  <Box position="relative" aspectRatio="1 / 1" overflow="hidden" className="group">
-                    {imgSrc ? (
-                      <>
-                        <img
-                          src={imgSrc}
-                          alt=""
-                          style="width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter 500ms, transform 500ms"
-                          class="specimen-img"
-                        />
-                        <Box
-                          position="absolute"
-                          inset="0"
-                          bg="rgba(14,14,14,0.4)"
-                          className="specimen-overlay"
-                          style={{ transition: 'opacity 300ms' }}
-                        />
-                      </>
-                    ) : (
-                      <Box position="relative" w="100%" h="100%" bg="#0e0e0e" className="fallback-grid-lines">
-                        <Box
-                          position="absolute"
-                          bottom="-10px"
-                          right="0"
-                          fontFamily="Newsreader, serif"
-                          fontStyle="italic"
-                          fontSize="180px"
-                          lineHeight="1"
-                          color="#e5e2e1"
-                          opacity="0.05"
-                          userSelect="none"
-                          pointerEvents="none"
-                          aria-hidden="true"
-                        >{(project.title || 'P')[0]}</Box>
-                        <Box
-                          position="absolute"
-                          bottom="0"
-                          left="0"
-                          right="0"
-                          h="2px"
-                          bg="#ffb000"
-                          opacity="0.3"
-                        />
-                      </Box>
-                    )}
+        {
+          heroProjects.length > 0 ? (
+            <Grid
+              gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+              gap="0"
+              borderTop="1px solid"
+              borderLeft="1px solid"
+              borderColor="#524533"
+              mb="20"
+            >
+              {heroProjects.map((project) => {
+                const imgSrc = project.banner?.url
+                  ? getMediaUrl(project.banner.url, { height: 600 }, import.meta.env.PUBLIC_API_URL)
+                  : project.media?.[0]?.url
+                    ? getMediaUrl(
+                        project.media[0].url,
+                        { height: 600 },
+                        import.meta.env.PUBLIC_API_URL
+                      )
+                    : null;
+                return (
+                  <a
+                    href={`/${locale}/projects/${project.slug}`}
+                    class="project-card"
+                    style="display:block;border-right:1px solid #524533;border-bottom:1px solid #524533;overflow:hidden;background:#131313;cursor:pointer;text-decoration:none;color:inherit"
+                  >
                     <Box
-                      position="absolute"
-                      top="3"
-                      left="3"
-                      px="2"
-                      py="0.5"
-                      bg="#353534"
-                      border="1px solid"
-                      borderColor="#524533"
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="10px"
-                      textTransform="uppercase"
-                      color="#ffd597"
-                      opacity="0"
-                      className="specimen-build-id"
-                      style={{ transition: 'opacity 300ms' }}
-                      aria-hidden="true"
+                      position="relative"
+                      aspectRatio="1 / 1"
+                      overflow="hidden"
+                      className="group"
                     >
-                      Project {buildId}
-                    </Box>
-                  </Box>
-                  <Box p="6">
-                    <Flex justify="space-between" align="start" mb="2">
-                      <Text
-                        fontFamily="Manrope, sans-serif"
-                        fontWeight="bold"
-                        fontSize="xl"
-                        textTransform="uppercase"
-                        letterSpacing="tighter"
-                      >
-                        {project.title}
-                      </Text>
+                      {imgSrc ? (
+                        <>
+                          <img
+                            src={imgSrc}
+                            alt=""
+                            style="width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter 500ms, transform 500ms"
+                            class="project-card-img"
+                          />
+                          <Box
+                            position="absolute"
+                            inset="0"
+                            bg="rgba(14,14,14,0.4)"
+                            className="project-card-overlay"
+                            style={{ transition: 'opacity 300ms' }}
+                          />
+                        </>
+                      ) : (
+                        <Box
+                          position="relative"
+                          w="100%"
+                          h="100%"
+                          bg="#0e0e0e"
+                          className="fallback-grid-lines"
+                        >
+                          <Box
+                            position="absolute"
+                            bottom="-10px"
+                            right="0"
+                            fontFamily="Newsreader, serif"
+                            fontStyle="italic"
+                            fontSize="180px"
+                            lineHeight="1"
+                            color="#e5e2e1"
+                            opacity="0.05"
+                            userSelect="none"
+                            pointerEvents="none"
+                            aria-hidden="true"
+                          >
+                            {(project.title || 'P')[0]}
+                          </Box>
+                          <Box
+                            position="absolute"
+                            bottom="0"
+                            left="0"
+                            right="0"
+                            h="2px"
+                            bg="#ffb000"
+                            opacity="0.3"
+                          />
+                        </Box>
+                      )}
                       <Box
+                        position="absolute"
+                        top="3"
+                        left="3"
                         px="2"
+                        py="0.5"
+                        bg="#353534"
+                        border="1px solid"
+                        borderColor="#524533"
                         fontFamily="JetBrains Mono, monospace"
                         fontSize="10px"
-                        color="#ffb000"
-                        border="1px solid"
-                        borderColor="#ffb000"
-                        flexShrink="0"
-                        ml="2"
+                        textTransform="uppercase"
+                        color="#ffd597"
+                        opacity="0"
+                        className="project-card-label"
+                        style={{ transition: 'opacity 300ms' }}
+                        aria-hidden="true"
                       >
-                        {(project.category?.name ?? 'PROJECT').toUpperCase()}
+                        Featured
                       </Box>
-                    </Flex>
-                    <Text
-                      color="#c7c6c6"
-                      fontSize="sm"
-                      fontFamily="Newsreader, serif"
-                      fontStyle="italic"
-                    >
-                      {project.description}
-                    </Text>
-                    <Flex
-                      mt="6"
-                      pt="4"
-                      borderTop="1px solid"
-                      borderColor="#524533"
-                      justify="space-between"
-                      align="center"
-                      opacity="0.5"
-                      className="specimen-footer"
-                      style={{ transition: 'opacity 300ms' }}
-                    >
-                      <Text fontFamily="JetBrains Mono, monospace" fontSize="10px">
-                        {project.date?.slice(0, 4) ?? 'Project'}
+                    </Box>
+                    <Box p="6">
+                      <Flex justify="space-between" align="start" mb="2">
+                        <Text
+                          fontFamily="Manrope, sans-serif"
+                          fontWeight="bold"
+                          fontSize="xl"
+                          textTransform="uppercase"
+                          letterSpacing="tighter"
+                        >
+                          {project.title}
+                        </Text>
+                        <Box
+                          px="2"
+                          fontFamily="JetBrains Mono, monospace"
+                          fontSize="10px"
+                          color="#ffb000"
+                          border="1px solid"
+                          borderColor="#ffb000"
+                          flexShrink="0"
+                          ml="2"
+                        >
+                          {(project.category?.name ?? 'PROJECT').toUpperCase()}
+                        </Box>
+                      </Flex>
+                      <Text
+                        color="#c7c6c6"
+                        fontSize="sm"
+                        fontFamily="Newsreader, serif"
+                        fontStyle="italic"
+                      >
+                        {project.description}
                       </Text>
-                      <span class="material-symbols-outlined" style="font-size:14px">north_east</span>
-                    </Flex>
-                  </Box>
-                </a>
-              );
-            })}
-          </Grid>
-        ) : (
-          <Box
-            border="1px solid"
-            borderColor="#524533"
-            bg="#1c1b1b"
-            p={{ base: '8', md: '12' }}
-            mb="20"
-            textAlign="center"
-          >
-            <Text
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              textTransform="uppercase"
-              letterSpacing="0.15em"
-              color="#9f8e78"
-              mb="4"
-            >status: unavailable</Text>
-            <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic" mb="3">
-              {t('home.specimens-empty-title')}
-            </Heading>
-            <Text color="#524533" fontSize="sm">
-              {t('home.specimens-empty-description')}
-            </Text>
-          </Box>
-        )}
+                      <Flex
+                        mt="6"
+                        pt="4"
+                        borderTop="1px solid"
+                        borderColor="#524533"
+                        justify="space-between"
+                        align="center"
+                        opacity="0.5"
+                        className="project-card-footer"
+                        style={{ transition: 'opacity 300ms' }}
+                      >
+                        <Text fontFamily="JetBrains Mono, monospace" fontSize="10px">
+                          {project.date?.slice(0, 4) ?? 'Project'}
+                        </Text>
+                        <span class="material-symbols-outlined" style="font-size:14px">
+                          north_east
+                        </span>
+                      </Flex>
+                    </Box>
+                  </a>
+                );
+              })}
+            </Grid>
+          ) : (
+            <Box
+              border="1px solid"
+              borderColor="#524533"
+              bg="#1c1b1b"
+              p={{ base: '8', md: '12' }}
+              mb="20"
+              textAlign="center"
+            >
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                letterSpacing="0.15em"
+                color="#9f8e78"
+                mb="4"
+              >
+                status: unavailable
+              </Text>
+              <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic" mb="3">
+                {t('home.projects-empty-title')}
+              </Heading>
+              <Text color="#524533" fontSize="sm">
+                {t('home.projects-empty-description')}
+              </Text>
+            </Box>
+          )
+        }
         <Grid gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap="24">
           <Stack gap="8">
             <Flex align="center" gap="4">
@@ -517,37 +641,63 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
               </Heading>
               <Box h="1px" flex="1" bg="#524533" />
             </Flex>
-            {workProjects.length > 0 ? (
-              <Stack gap="8">
-                {workProjects.map((project) => (
-                  <Stack borderLeft="4px solid" borderLeftColor="#ffb000" pl="6" py="2">
-                    <Heading as="h3" fontFamily="Manrope, sans-serif" fontWeight="extrabold" fontSize="xl" textTransform="uppercase" letterSpacing="wider" fontStyle="normal">
-                      {project.title}
-                    </Heading>
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" color="#ffd597">
-                      {project.category?.name ?? 'project'}
+            {
+              workProjects.length > 0 ? (
+                <Stack gap="8">
+                  {workProjects.map((project) => (
+                    <Stack borderLeft="4px solid" borderLeftColor="#ffb000" pl="6" py="2">
+                      <Heading
+                        as="h3"
+                        fontFamily="Manrope, sans-serif"
+                        fontWeight="extrabold"
+                        fontSize="xl"
+                        textTransform="uppercase"
+                        letterSpacing="wider"
+                        fontStyle="normal"
+                      >
+                        {project.title}
+                      </Heading>
+                      <Text
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="10px"
+                        textTransform="uppercase"
+                        color="#ffd597"
+                      >
+                        {project.category?.name ?? 'project'}
+                      </Text>
+                      <Text color="#c7c6c6" lineHeight="1.8">
+                        {project.description}
+                      </Text>
+                    </Stack>
+                  ))}
+                </Stack>
+              ) : (
+                <Box
+                  border="1px solid"
+                  borderColor="#524533"
+                  bg="#1c1b1b"
+                  p={{ base: '6', md: '8' }}
+                >
+                  <Stack gap="3" alignItems="center" textAlign="center" py="6">
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      letterSpacing="0.15em"
+                      color="#9f8e78"
+                    >
+                      status: unavailable
                     </Text>
-                    <Text color="#c7c6c6" lineHeight="1.8">
-                      {project.description}
+                    <Heading as="h3" fontSize={{ base: 'xl', md: '2xl' }} fontStyle="italic">
+                      {t('home.work-empty-title')}
+                    </Heading>
+                    <Text color="#c7c6c6" fontSize="sm" lineHeight="1.7" maxW="sm">
+                      {t('home.work-empty-description')}
                     </Text>
                   </Stack>
-                ))}
-              </Stack>
-            ) : (
-              <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '6', md: '8' }}>
-                <Stack gap="3" alignItems="center" textAlign="center" py="6">
-                  <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="0.15em" color="#9f8e78">
-                    status: unavailable
-                  </Text>
-                  <Heading as="h3" fontSize={{ base: 'xl', md: '2xl' }} fontStyle="italic">
-                    {t('home.work-empty-title')}
-                  </Heading>
-                  <Text color="#c7c6c6" fontSize="sm" lineHeight="1.7" maxW="sm">
-                    {t('home.work-empty-description')}
-                  </Text>
-                </Stack>
-              </Box>
-            )}
+                </Box>
+              )
+            }
           </Stack>
           <Stack gap="8">
             <Flex align="center" gap="4">
@@ -557,15 +707,45 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
               <Box h="1px" flex="1" bg="#524533" />
             </Flex>
             <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="6">
-              <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="4" aspectRatio="1 / 1" justifyContent="space-between" className="card-hover-amber">
-                <span class="material-symbols-outlined" style="color: #FFB000; font-size: 2.25rem;">dark_mode</span>
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="tight">
+              <Stack
+                border="1px solid"
+                borderColor="#524533"
+                bg="#1c1b1b"
+                p="4"
+                aspectRatio="1 / 1"
+                justifyContent="space-between"
+                className="card-hover-amber"
+              >
+                <span class="material-symbols-outlined" style="color: #FFB000; font-size: 2.25rem;"
+                  >dark_mode</span
+                >
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  letterSpacing="tight"
+                >
                   {t('home.life-darkroom')}
                 </Text>
               </Stack>
-              <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="4" aspectRatio="1 / 1" justifyContent="space-between" className="card-hover-amber">
-                <span class="material-symbols-outlined" style="color: #FFB000; font-size: 2.25rem;">category</span>
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="tight">
+              <Stack
+                border="1px solid"
+                borderColor="#524533"
+                bg="#1c1b1b"
+                p="4"
+                aspectRatio="1 / 1"
+                justifyContent="space-between"
+                className="card-hover-amber"
+              >
+                <span class="material-symbols-outlined" style="color: #FFB000; font-size: 2.25rem;"
+                  >category</span
+                >
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  letterSpacing="tight"
+                >
                   {t('home.life-skill-toys')}
                 </Text>
               </Stack>

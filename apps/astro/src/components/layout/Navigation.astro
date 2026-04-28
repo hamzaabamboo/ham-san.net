@@ -51,16 +51,10 @@ const NAVIGATION_LINKS = [
       NAVIGATION_LINKS.map(({ label, value }) => {
         const fullPath = getURLWithLanguage(value);
         const isCurrent =
-          value === '/'
-            ? Astro.url.pathname === fullPath
-            : Astro.url.pathname.startsWith(fullPath);
+          value === '/' ? Astro.url.pathname === fullPath : Astro.url.pathname.startsWith(fullPath);
 
         return (
-          <a
-            href={fullPath}
-            class="shell-nav-link"
-            aria-current={isCurrent ? 'page' : undefined}
-          >
+          <a href={fullPath} class="shell-nav-link" aria-current={isCurrent ? 'page' : undefined}>
             {label}
           </a>
         );
@@ -80,11 +74,6 @@ const NAVIGATION_LINKS = [
           ))
       }
     </div>
-    <Sidebar
-      links={NAVIGATION_LINKS}
-      locale={lang}
-      pathname={Astro.url.pathname}
-      client:visible
-    />
+    <Sidebar links={NAVIGATION_LINKS} locale={lang} pathname={Astro.url.pathname} client:visible />
   </div>
 </nav>

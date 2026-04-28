@@ -4,7 +4,12 @@ type ProjectCopy = {
 };
 
 export const cleanProjectCopy = <T extends ProjectCopy>(project: T): T => {
-  const title = project.title === 'Receipt Parcer' ? 'Receipt Parser' : project.title;
+  const title =
+    project.title === 'Receipt Parcer'
+      ? 'Receipt Parser'
+      : project.title === 'Vibe Code Creations'
+        ? 'Small Utility Apps'
+        : project.title;
   const rawDescription = project.description?.trim();
   const description = (() => {
     if (project.title === 'ham-san.net') {
@@ -37,8 +42,11 @@ export const cleanProjectCopy = <T extends ProjectCopy>(project: T): T => {
     if (project.title === 'Ijigen Day N') {
       return 'Small event day counter with timezone-safe day boundaries and light maintenance.';
     }
-    if (project.title === 'Homepage V4' && rawDescription === 'Brand new homepage (again) !\nComing soon...') {
-      return 'Brand new homepage iteration, currently in planning.';
+    if (
+      project.title === 'Homepage V4' &&
+      rawDescription === 'Brand new homepage (again) !\nComing soon...'
+    ) {
+      return 'Homepage redesign, currently in planning.';
     }
     if (project.title === 'Kanji Phonetics Component Explorer') {
       return 'Tool for studying kanji phonetic components.';

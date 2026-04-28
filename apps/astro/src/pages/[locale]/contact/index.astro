@@ -25,24 +25,38 @@ const currentUtcTime = new Intl.DateTimeFormat('en-GB', {
   second: '2-digit',
   hour12: false
 }).format(new Date());
-const officeHoursBody = `${t('contact.office-hours-body')}\n${t('contact.current-time-label')} // ${currentUtcTime} UTC`;
+const officeHoursBody = `${t('contact.office-hours-body')}\n${t('contact.current-time-label')}: ${currentUtcTime} UTC`;
 
 const items = [
   { label: 'EMAIL', value: 'hello@ham-san.net', url: 'mailto:hello@ham-san.net' },
   { label: 'GITHUB', value: 'hamzaabamboo', url: 'https://github.com/hamzaabamboo' },
-  { label: 'LINKEDIN', value: 'tvittayapalotai', url: 'https://www.linkedin.com/in/tvittayapalotai/' },
+  {
+    label: 'LINKEDIN',
+    value: 'tvittayapalotai',
+    url: 'https://www.linkedin.com/in/tvittayapalotai/'
+  },
   { label: 'TWITTER', value: '@HamP_punipuni', url: 'https://twitter.com/HamP_punipuni' },
   { label: 'FACEBOOK', value: 'hamPpunipuni', url: 'https://www.facebook.com/hamPpunipuni' },
   { label: 'DISCORD', value: 'hamp', url: 'https://discordapp.com/users/260776161032798208' },
-  { label: 'EVENTERNOTE', value: 'HamP_punipuni', url: 'https://www.eventernote.com/users/HamP_punipuni' }
+  {
+    label: 'EVENTERNOTE',
+    value: 'HamP_punipuni',
+    url: 'https://www.eventernote.com/users/HamP_punipuni'
+  }
 ];
-
 ---
 
 <MainLayout title={pageTitle} description={t('contact.intro')}>
   <Container w="full" maxW="breakpoint-xl" py="8" className="page-shell">
     <Stack gap="12">
-      <Stack gap="4" borderLeftWidth="2px" borderLeftStyle="solid" borderLeftColor="#ffb000" pl="8" py="4">
+      <Stack
+        gap="4"
+        borderLeftWidth="2px"
+        borderLeftStyle="solid"
+        borderLeftColor="#ffb000"
+        pl="8"
+        py="4"
+      >
         <Text
           fontFamily="JetBrains Mono, monospace"
           fontSize="10px"
@@ -52,8 +66,16 @@ const items = [
         >
           contact
         </Text>
-        <Heading as="h1" fontSize={{ base: '5xl', md: '8xl' }} fontStyle="italic" lineHeight="tight" letterSpacing="tighter">
-          {t('contact.hero-prefix') + ' '}<Box as="span" color="#ffb000">{t('contact.hero-highlight')}</Box>.
+        <Heading
+          as="h1"
+          fontSize={{ base: '5xl', md: '8xl' }}
+          fontStyle="italic"
+          lineHeight="tight"
+          letterSpacing="tighter"
+        >
+          {t('contact.hero-prefix') + ' '}<Box as="span" color="#ffb000"
+            >{t('contact.hero-highlight')}</Box
+          >.
         </Heading>
         <Text color="#c7c6c6" fontSize="xl" maxW="2xl" lineHeight="relaxed" mt="2">
           {t('contact.intro')}
@@ -62,85 +84,83 @@ const items = [
 
       <Grid gridTemplateColumns={{ base: '1fr', lg: '3fr 9fr' }} gap="12">
         <Stack gap="12" minW="0">
-          <Stack border="1px solid" borderColor="#524533" bg="#0e0e0e" p="6" position="relative">
-            <Box
-              position="absolute"
-              top="-3"
-              left="4"
-              px="2"
-              py="0.5"
-              bg="#353534"
+          <Stack gap="4">
+            <Text
               fontFamily="JetBrains Mono, monospace"
               fontSize="10px"
               textTransform="uppercase"
-              color="#ffd597"
+              letterSpacing="0.2em"
+              color="#9f8e78"
             >
-              status
-            </Box>
-            <Wrap alignItems="center" gap="3" mb="6">
-              <Box w="2" h="2" bg="#ffb000" />
-              <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" textTransform="uppercase" letterSpacing="tighter">
-                v2.0.4-stable
-              </Text>
-            </Wrap>
-            <Stack gap="4">
-              <Wrap gap="3" alignItems="center" color="#ffb000" cursor="pointer">
-                <span class="material-symbols-outlined" style="font-size: 14px;">info</span>
-                <Text fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">Start</Text>
-              </Wrap>
-              <Wrap gap="3" alignItems="center" color="#c7c6c6" cursor="pointer" className="contact-nav-item">
-                <span class="material-symbols-outlined" style="font-size: 14px;">architecture</span>
-                <Text fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">Details</Text>
-              </Wrap>
-              <Wrap gap="3" alignItems="center" color="#c7c6c6" cursor="pointer" className="contact-nav-item">
-                <span class="material-symbols-outlined" style="font-size: 14px;">history</span>
-                <Text fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">History</Text>
-              </Wrap>
-            </Stack>
-          </Stack>
-
-          <Stack gap="4">
-            <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="0.2em" color="#9f8e78">
               {t('contact.social-connectors')}
             </Text>
             <Grid gridTemplateColumns="1fr" gap="2">
-              {items.map((item, index) => (
-                <Link
-                  href={item.url}
-                  target={item.url.startsWith('mailto:') ? undefined : '_blank'}
-                  rel={item.url.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-                  display="flex"
-                  flexDirection="column"
-                  border="1px solid"
-                  borderColor="#524533"
-                  p="4"
-                  className="group contact-social-card"
-                >
-                  <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#9f8e78" className="group-hover-amber" mb="2">
-                    {String(index + 1).padStart(2, '0')}/
-                  </Text>
-                  <Text fontWeight="bold" fontSize="sm">{item.label}</Text>
-                  <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#9f8e78" mt="1" overflowWrap="anywhere">
-                    {item.value}
-                  </Text>
-                </Link>
-              ))}
+              {
+                items.map((item, index) => (
+                  <Link
+                    href={item.url}
+                    target={item.url.startsWith('mailto:') ? undefined : '_blank'}
+                    rel={item.url.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                    display="flex"
+                    flexDirection="column"
+                    border="1px solid"
+                    borderColor="#524533"
+                    p="4"
+                    className="group contact-social-card"
+                  >
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      color="#9f8e78"
+                      className="group-hover-amber"
+                      mb="2"
+                    >
+                      {String(index + 1).padStart(2, '0')}/
+                    </Text>
+                    <Text fontWeight="bold" fontSize="sm">
+                      {item.label}
+                    </Text>
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      color="#9f8e78"
+                      mt="1"
+                      overflowWrap="anywhere"
+                    >
+                      {item.value}
+                    </Text>
+                  </Link>
+                ))
+              }
             </Grid>
           </Stack>
         </Stack>
 
         <Stack gap="16" minW="0">
           <Stack gap="6">
-            <Wrap justifyContent="space-between" alignItems="center" borderBottom="1px solid" borderColor="#524533" pb="4">
-              <Heading as="h2" fontSize="2xl" fontWeight="extrabold" textTransform="uppercase" letterSpacing="tighter" fontStyle="normal">
+            <Wrap
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom="1px solid"
+              borderColor="#524533"
+              pb="4"
+            >
+              <Heading
+                as="h2"
+                fontSize="2xl"
+                fontWeight="extrabold"
+                textTransform="uppercase"
+                letterSpacing="tighter"
+                fontStyle="normal"
+              >
                 {t('contact.namecards')}
               </Heading>
-              <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" textTransform="uppercase" color="#9f8e78">
-                choices: {showcaseNamecards.length}
-              </Text>
             </Wrap>
             <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap="6">
-              <Link href={`/${locale}/namecard/${showcaseNamecards[0]?.variant ?? 'default'}`} style={{ textDecoration: 'none' }}>
+              <Link
+                href={`/${locale}/namecard/${showcaseNamecards[0]?.variant ?? 'default'}`}
+                style={{ textDecoration: 'none' }}
+              >
                 <Box
                   bg="#1c1b1b"
                   border="1px solid"
@@ -152,14 +172,28 @@ const items = [
                   aspectRatio="1.6 / 1"
                   className="blocky-shadow"
                   transition="all 0.15s ease"
-                  _hover={{ transform: 'translateY(-4px)', boxShadow: '8px 8px 0px 0px rgba(255,176,0,0.2)' }}
+                  _hover={{
+                    transform: 'translateY(-4px)',
+                    boxShadow: '8px 8px 0px 0px rgba(255,176,0,0.2)'
+                  }}
                 >
                   <Box>
                     <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1">Ham</Text>
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="9px" color="#ffd597" textTransform="uppercase" letterSpacing="widest">Frontend / Web</Text>
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="9px"
+                      color="#ffd597"
+                      textTransform="uppercase"
+                      letterSpacing="widest">Frontend / Web</Text
+                    >
                   </Box>
                   <Wrap justifyContent="space-between" alignItems="flex-end">
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#9f8e78" lineHeight="tight">
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      color="#9f8e78"
+                      lineHeight="tight"
+                    >
                       Tokyo / Bangkok<br />Remote OK
                     </Text>
                     <span class="material-symbols-outlined" style="color: #ffb000;">qr_code_2</span>
@@ -167,7 +201,10 @@ const items = [
                 </Box>
               </Link>
 
-              <Link href={`/${locale}/namecard/${showcaseNamecards[1]?.variant ?? 'default'}`} style={{ textDecoration: 'none' }}>
+              <Link
+                href={`/${locale}/namecard/${showcaseNamecards[1]?.variant ?? 'default'}`}
+                style={{ textDecoration: 'none' }}
+              >
                 <Box
                   position="relative"
                   overflow="hidden"
@@ -184,21 +221,51 @@ const items = [
                   _hover={{ transform: 'translateY(-4px)' }}
                   className="group"
                 >
-                  <Box position="absolute" inset="0" className="holographic-sheen group-hover-holographic-sheen" opacity="0.3" transition="opacity 0.15s ease" />
+                  <Box
+                    position="absolute"
+                    inset="0"
+                    className="holographic-sheen group-hover-holographic-sheen"
+                    opacity="0.3"
+                    transition="opacity 0.15s ease"
+                  />
                   <Box position="relative" zIndex="10">
-                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1" color="#ffb000">Alt card</Text>
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="9px" color="#d7c4ac" textTransform="uppercase" letterSpacing="widest">Digital namecard</Text>
+                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1" color="#ffb000"
+                      >Digital card</Text
+                    >
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="9px"
+                      color="#d7c4ac"
+                      textTransform="uppercase"
+                      letterSpacing="widest">Namecard</Text
+                    >
                   </Box>
-                  <Wrap position="relative" zIndex="10" justifyContent="space-between" alignItems="flex-end">
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#d7c4ac" lineHeight="tight">
-                      Web / UI<br />Open to chat
+                  <Wrap
+                    position="relative"
+                    zIndex="10"
+                    justifyContent="space-between"
+                    alignItems="flex-end"
+                  >
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      color="#d7c4ac"
+                      lineHeight="tight"
+                    >
+                      Web / UI<br />Contact links
                     </Text>
-                    <span class="material-symbols-outlined" style="color: #ffb000; font-variation-settings: 'FILL' 1;">dataset</span>
+                    <span
+                      class="material-symbols-outlined"
+                      style="color: #ffb000; font-variation-settings: 'FILL' 1;">dataset</span
+                    >
                   </Wrap>
                 </Box>
               </Link>
 
-              <Link href={`/${locale}/namecard/${showcaseNamecards[2]?.variant ?? 'default'}`} style={{ textDecoration: 'none' }}>
+              <Link
+                href={`/${locale}/namecard/${showcaseNamecards[2]?.variant ?? 'default'}`}
+                style={{ textDecoration: 'none' }}
+              >
                 <Box
                   bg="#dbdbdb"
                   color="#0e0e0e"
@@ -212,12 +279,24 @@ const items = [
                   _hover={{ transform: 'translateY(-4px)' }}
                 >
                   <Box>
-                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1">Simple card</Text>
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="9px" opacity="0.6" textTransform="uppercase" letterSpacing="widest">Printable version</Text>
+                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1">Print card</Text
+                    >
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="9px"
+                      opacity="0.6"
+                      textTransform="uppercase"
+                      letterSpacing="widest">Simple layout</Text
+                    >
                   </Box>
                   <Wrap justifyContent="space-between" alignItems="flex-end">
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" opacity="0.6" lineHeight="tight">
-                      Name / Links<br />PDF ready
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      opacity="0.6"
+                      lineHeight="tight"
+                    >
+                      Name / Links<br />Printable
                     </Text>
                     <span class="material-symbols-outlined">print</span>
                   </Wrap>
@@ -227,27 +306,51 @@ const items = [
           </Stack>
 
           <Stack border="1px solid" borderColor="#524533" bg="#0e0e0e" overflow="hidden">
-            <Wrap justifyContent="space-between" alignItems="center" px="8" py="3" bg="#353534" borderBottom="1px solid" borderColor="#524533">
+            <Wrap
+              justifyContent="space-between"
+              alignItems="center"
+              px="8"
+              py="3"
+              bg="#353534"
+              borderBottom="1px solid"
+              borderColor="#524533"
+            >
               <Text fontWeight="bold" fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">
                 {t('contact.form-heading')}
               </Text>
-              <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" color="#9f8e78">
-                transport: mailto
-              </Text>
             </Wrap>
-            <form class="contact-form" action="mailto:hello@ham-san.net" method="post" enctype="text/plain">
+            <form
+              class="contact-form"
+              action="mailto:hello@ham-san.net"
+              method="post"
+              enctype="text/plain"
+            >
               <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
                 <Stack gap="2">
                   <label for="contact-name" class="contact-label">
                     {t('contact.field-name')}
                   </label>
-                  <input id="contact-name" name="name" type="text" class="contact-input" placeholder="Name" required />
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    class="contact-input"
+                    placeholder="Name"
+                    required
+                  />
                 </Stack>
                 <Stack gap="2">
                   <label for="contact-email" class="contact-label">
                     {t('contact.field-email')}
                   </label>
-                  <input id="contact-email" name="email" type="email" class="contact-input" placeholder="Email address" required />
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    class="contact-input"
+                    placeholder="Email address"
+                    required
+                  />
                 </Stack>
               </Grid>
               <Stack gap="2">
@@ -265,7 +368,14 @@ const items = [
                 <label for="contact-message" class="contact-label">
                   {t('contact.field-message')}
                 </label>
-                <textarea id="contact-message" name="message" class="contact-input" rows="5" placeholder="Write your message" style="min-height: 180px; resize: vertical;" required></textarea>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  class="contact-input"
+                  rows="5"
+                  placeholder="Write your message"
+                  style="min-height: 180px; resize: vertical;"
+                  required></textarea>
               </Stack>
               <button class="contact-submit-btn">
                 {t('contact.execute-transmission')}
@@ -276,7 +386,14 @@ const items = [
 
           <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
             <Stack border="1px solid" borderColor="#524533" p="6">
-              <Text fontWeight="bold" fontSize="sm" textTransform="uppercase" letterSpacing="0.2em" color="#ffd597" mb="4">
+              <Text
+                fontWeight="bold"
+                fontSize="sm"
+                textTransform="uppercase"
+                letterSpacing="0.2em"
+                color="#ffd597"
+                mb="4"
+              >
                 {t('contact.security-brief')}
               </Text>
               <Text color="#c7c6c6" fontSize="sm" lineHeight="relaxed">
@@ -284,10 +401,23 @@ const items = [
               </Text>
             </Stack>
             <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6">
-              <Text fontWeight="bold" fontSize="sm" textTransform="uppercase" letterSpacing="0.2em" color="#ffd597" mb="4">
+              <Text
+                fontWeight="bold"
+                fontSize="sm"
+                textTransform="uppercase"
+                letterSpacing="0.2em"
+                color="#ffd597"
+                mb="4"
+              >
                 {t('contact.office-hours')}
               </Text>
-              <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#c7c6c6" lineHeight="2.2" whiteSpace="pre-line">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                color="#c7c6c6"
+                lineHeight="2.2"
+                whiteSpace="pre-line"
+              >
                 {officeHoursBody}
               </Text>
             </Stack>

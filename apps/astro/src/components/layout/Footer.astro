@@ -6,15 +6,17 @@ const t = useTranslations(locale);
 ---
 
 <footer class="shell-footer">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;color:#FFB000;opacity:0.8">
+  <div
+    style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;color:#FFB000;opacity:0.8"
+  >
     {t('common.copyright')}
   </div>
-  <div style="display:flex;gap:2rem;align-items:center">
+  <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;justify-content:center">
     <a
       target="_blank"
       rel="noreferrer"
       href="https://github.com/hamzaabamboo/ham-san.net"
-      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease"
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease;padding:0.75rem"
       class="shell-footer-link"
     >
       GitHub
@@ -23,21 +25,21 @@ const t = useTranslations(locale);
       target="_blank"
       rel="noreferrer"
       href="https://www.linkedin.com/in/tvittayapalotai/"
-      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease"
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease;padding:0.75rem"
       class="shell-footer-link"
     >
       LinkedIn
     </a>
     <a
       href={`/${locale}/rss.xml`}
-      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease"
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease;padding:0.75rem"
       class="shell-footer-link"
     >
       RSS
     </a>
     <a
       href={`/${locale}/sitemap.xml`}
-      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease"
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease;padding:0.75rem"
       class="shell-footer-link"
     >
       Sitemap

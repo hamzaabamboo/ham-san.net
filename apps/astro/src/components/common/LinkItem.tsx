@@ -68,10 +68,10 @@ export const LinkItem = ({
             {data.title}
           </Text>
           <Link
+            className="amber-link"
             href={data.url ?? ''}
             target="_blank"
             fontFamily="JetBrains Mono, monospace"
-            className="amber-link"
             overflowWrap="anywhere"
           >
             {text}

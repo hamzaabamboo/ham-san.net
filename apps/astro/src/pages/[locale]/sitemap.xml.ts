@@ -6,7 +6,16 @@ export const prerender = false;
 const SITE_URL = 'https://ham-san.net';
 const LOCALES = ['en', 'ja', 'th'];
 
-const STATIC_ROUTES = ['/', '/projects', '/notes', '/hobbies', '/about', '/contact', '/tags', '/events'];
+const STATIC_ROUTES = [
+  '/',
+  '/projects',
+  '/notes',
+  '/hobbies',
+  '/about',
+  '/contact',
+  '/tags',
+  '/events'
+];
 
 export const GET: APIRoute = async () => {
   const urls: string[] = [];

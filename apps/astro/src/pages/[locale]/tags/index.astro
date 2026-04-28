@@ -49,7 +49,12 @@ const secondaryGroups = secondaryTags.reduce<Record<string, typeof tags>>((acc, 
 const getProjectCount = (tag: (typeof tags)[number]) => {
   const projects = tag.projects;
   if (Array.isArray(projects)) return projects.filter(Boolean).length;
-  if (projects && typeof projects === 'object' && 'data' in projects && Array.isArray((projects as { data?: unknown[] }).data))
+  if (
+    projects &&
+    typeof projects === 'object' &&
+    'data' in projects &&
+    Array.isArray((projects as { data?: unknown[] }).data)
+  )
     return (projects as { data?: unknown[] }).data?.length ?? 0;
   return 0;
 };
@@ -60,13 +65,7 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
 <MainLayout title={pageTitle} description={t('common.tags-description')}>
   <Container maxW="breakpoint-xl" py="8">
     <Stack gap="12">
-      <Stack
-        gap="4"
-        borderLeftWidth="2px"
-        borderLeftStyle="solid"
-        borderLeftColor="#ffb000"
-        pl="6"
-      >
+      <Stack gap="4" borderLeftWidth="2px" borderLeftStyle="solid" borderLeftColor="#ffb000" pl="6">
         <Text
           fontFamily="JetBrains Mono, monospace"
           fontSize="10px"
@@ -84,138 +83,135 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
         </Text>
       </Stack>
 
-      {tags.length === 0 ? (
-        <Box
-          border="1px solid"
-          borderColor="#524533"
-          bg="#1c1b1b"
-          borderRadius="0"
-          p={{ base: '8', md: '12' }}
-        >
-          <Stack gap="4" alignItems="center" textAlign="center" py="12">
-            <Text
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              textTransform="uppercase"
-              letterSpacing="0.12em"
-              color="#9f8e78"
-            >
-              status: unavailable
-            </Text>
-            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
-              {t('common.tags-empty-title')}
-            </Heading>
-            <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
-              {t('common.tags-empty-description')}
-            </Text>
-          </Stack>
-        </Box>
-      ) : (
-      <>
-      {primaryTags.length > 0 && (
-        <Stack gap="6">
-          <Flex alignItems="center" gap="4">
-            <Text
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              textTransform="uppercase"
-              letterSpacing="0.12em"
-              color="#ffd597"
-              flexShrink="0"
-            >
-              primary skills
-            </Text>
-            <div style="flex:1;height:1px;background:#524533" />
-          </Flex>
-          <Grid
-            gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
-            gap="4"
+      {
+        tags.length === 0 ? (
+          <Box
+            border="1px solid"
+            borderColor="#524533"
+            bg="#1c1b1b"
+            borderRadius="0"
+            p={{ base: '8', md: '12' }}
           >
-            {primaryTags.map((tag) => {
-              const count = getProjectCount(tag);
-              return (
-                <Link href={`/${locale}/tags/${tag.slug}`} display="block" w="full">
-                  <Stack
-                    border="1px solid"
-                    borderColor="#524533"
-                    bg="#1c1b1b"
-                    p="6"
-                    h="full"
-                    className="group"
-                    _hover={{ transform: 'translate(-2px, -2px)', borderColor: '#ffb000' }}
-                    transition="all 0.2s ease"
+            <Stack gap="4" alignItems="center" textAlign="center" py="12">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                letterSpacing="0.12em"
+                color="#9f8e78"
+              >
+                status: unavailable
+              </Text>
+              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+                {t('common.tags-empty-title')}
+              </Heading>
+              <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
+                {t('common.tags-empty-description')}
+              </Text>
+            </Stack>
+          </Box>
+        ) : (
+          <>
+            {primaryTags.length > 0 && (
+              <Stack gap="6">
+                <Flex alignItems="center" gap="4">
+                  <Text
+                    fontFamily="JetBrains Mono, monospace"
+                    fontSize="10px"
+                    textTransform="uppercase"
+                    letterSpacing="0.12em"
+                    color="#ffd597"
+                    flexShrink="0"
                   >
-                    <Flex justifyContent="space-between" alignItems="flex-start">
-                      <Text
-                        fontFamily="JetBrains Mono, monospace"
-                        fontSize="10px"
-                        textTransform="uppercase"
-                        letterSpacing="0.12em"
-                        color="#9f8e78"
-                      >
-                        {t(
-                          `common.${String(tag.type).replaceAll('_', '-').toLowerCase()}` as 'common.frontend'
-                        )}
-                      </Text>
-                      {count > 0 && (
-                        <Text
-                          fontFamily="JetBrains Mono, monospace"
-                          fontSize="10px"
-                          color="#9f8e78"
+                    primary skills
+                  </Text>
+                  <div style="flex:1;height:1px;background:#524533" />
+                </Flex>
+                <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="4">
+                  {primaryTags.map((tag) => {
+                    const count = getProjectCount(tag);
+                    return (
+                      <Link href={`/${locale}/tags/${tag.slug}`} display="block" w="full">
+                        <Stack
+                          border="1px solid"
+                          borderColor="#524533"
+                          bg="#1c1b1b"
+                          p="6"
+                          h="full"
+                          className="group"
+                          _hover={{ transform: 'translate(-2px, -2px)', borderColor: '#ffb000' }}
+                          transition="all 0.2s ease"
                         >
-                          {`${count} ${count === 1 ? 'project' : 'projects'}`}
-                        </Text>
-                      )}
-                    </Flex>
-                    <TagBadge tag={tag} showCount size="md" />
-                  </Stack>
-                </Link>
-              );
-            })}
-          </Grid>
-        </Stack>
-      )}
+                          <Flex justifyContent="space-between" alignItems="flex-start">
+                            <Text
+                              fontFamily="JetBrains Mono, monospace"
+                              fontSize="10px"
+                              textTransform="uppercase"
+                              letterSpacing="0.12em"
+                              color="#9f8e78"
+                            >
+                              {t(
+                                `common.${String(tag.type).replaceAll('_', '-').toLowerCase()}` as 'common.frontend'
+                              )}
+                            </Text>
+                            {count > 0 && (
+                              <Text
+                                fontFamily="JetBrains Mono, monospace"
+                                fontSize="10px"
+                                color="#9f8e78"
+                              >
+                                {`${count} ${count === 1 ? 'project' : 'projects'}`}
+                              </Text>
+                            )}
+                          </Flex>
+                          <TagBadge tag={tag} showCount size="md" />
+                        </Stack>
+                      </Link>
+                    );
+                  })}
+                </Grid>
+              </Stack>
+            )}
 
-      {Object.entries(secondaryGroups).map(([type, groupTags]) => (
-        <Stack gap="6">
-          <Flex alignItems="center" gap="4">
-            <Text
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              textTransform="uppercase"
-              letterSpacing="0.12em"
-              color="#9f8e78"
-              flexShrink="0"
-            >
-              {t(
-                `common.${type.replaceAll('_', '-').toLowerCase()}` as 'common.frontend'
-              )}
-            </Text>
-            <div style="flex:1;height:1px;background:#524533" />
-          </Flex>
-          <Grid
-            gridTemplateColumns={{ base: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
-            gap="3"
-          >
-            {groupTags.map((tag) => (
-              <Link href={`/${locale}/tags/${tag.slug}`} display="block" w="full">
-                <Stack
-                  border="1px solid"
-                  borderColor="#524533"
-                  bg="#1c1b1b"
-                  p="4"
-                  _hover={{ transform: 'translate(-2px, -2px)', borderColor: '#9f8e78' }}
-                  transition="all 0.2s ease"
+            {Object.entries(secondaryGroups).map(([type, groupTags]) => (
+              <Stack gap="6">
+                <Flex alignItems="center" gap="4">
+                  <Text
+                    fontFamily="JetBrains Mono, monospace"
+                    fontSize="10px"
+                    textTransform="uppercase"
+                    letterSpacing="0.12em"
+                    color="#9f8e78"
+                    flexShrink="0"
+                  >
+                    {t(`common.${type.replaceAll('_', '-').toLowerCase()}` as 'common.frontend')}
+                  </Text>
+                  <div style="flex:1;height:1px;background:#524533" />
+                </Flex>
+                <Grid
+                  gridTemplateColumns={{ base: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+                  gap="3"
                 >
-                  <TagBadge tag={tag} showCount size="md" />
-                </Stack>
-              </Link>
+                  {groupTags.map((tag) => (
+                    <Link href={`/${locale}/tags/${tag.slug}`} display="block" w="full">
+                      <Stack
+                        border="1px solid"
+                        borderColor="#524533"
+                        bg="#1c1b1b"
+                        p="4"
+                        _hover={{ transform: 'translate(-2px, -2px)', borderColor: '#9f8e78' }}
+                        transition="all 0.2s ease"
+                      >
+                        <TagBadge tag={tag} showCount size="md" />
+                      </Stack>
+                    </Link>
+                  ))}
+                </Grid>
+              </Stack>
             ))}
-          </Grid>
-        </Stack>
-      ))}
-      </>
-      )}
+          </>
+        )
+      }
     </Stack>
   </Container>
 </MainLayout>

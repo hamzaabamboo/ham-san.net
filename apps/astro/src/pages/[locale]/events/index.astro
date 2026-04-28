@@ -41,13 +41,7 @@ try {
 <MainLayout title={pageTitle} description={t('common.events-description')}>
   <Container maxW="breakpoint-xl" w="full" py="8">
     <Stack gap="8">
-      <Stack
-        gap="4"
-        borderLeftWidth="2px"
-        borderLeftStyle="solid"
-        borderLeftColor="#ffb000"
-        pl="6"
-      >
+      <Stack gap="4" borderLeftWidth="2px" borderLeftStyle="solid" borderLeftColor="#ffb000" pl="6">
         <Text
           fontFamily="JetBrains Mono, monospace"
           fontSize="10px"
@@ -64,69 +58,56 @@ try {
           {t('common.events-description')}
         </Text>
       </Stack>
-      {!content ? (
-        <Box
-          border="1px solid"
-          borderColor="#524533"
-          bg="#1c1b1b"
-          p={{ base: '8', md: '12' }}
-        >
-          <Stack gap="4" alignItems="center" textAlign="center" py="12">
-            <Text
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              textTransform="uppercase"
-              letterSpacing="0.12em"
-              color="#9f8e78"
+      {
+        !content ? (
+          <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '8', md: '12' }}>
+            <Stack gap="4" alignItems="center" textAlign="center" py="12">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                letterSpacing="0.12em"
+                color="#9f8e78"
+              >
+                status: unavailable
+              </Text>
+              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+                {t('common.events-empty-title')}
+              </Heading>
+              <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
+                {t('common.events-empty-description')}
+              </Text>
+            </Stack>
+          </Box>
+        ) : (
+          <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" overflow="hidden">
+            <Box borderBottom="1px solid" borderColor="#524533" px={{ base: '4', md: '8' }} py="4">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                letterSpacing="0.12em"
+                color="#ffb000"
+              >
+                {t('common.events-source-note')}
+              </Text>
+            </Box>
+            <Box
+              className="events-content-wrapper"
+              p={{ base: '4', md: '8' }}
+              maxH={{ base: 'none', md: '80vh' }}
+              overflowY={{ base: 'visible', md: 'auto' }}
             >
-              status: unavailable
-            </Text>
-            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
-              {t('common.events-empty-title')}
-            </Heading>
-            <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
-              {t('common.events-empty-description')}
-            </Text>
-          </Stack>
-        </Box>
-      ) : (
-      <Box
-        border="1px solid"
-        borderColor="#524533"
-        bg="#1c1b1b"
-        overflow="hidden"
-      >
-        <Box
-          borderBottom="1px solid"
-          borderColor="#524533"
-          px={{ base: '4', md: '8' }}
-          py="4"
-        >
-          <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
-            letterSpacing="0.12em"
-            color="#ffb000"
-          >
-            {t('common.events-source-note')}
-          </Text>
-        </Box>
-        <Box
-          className="events-content-wrapper"
-          p={{ base: '4', md: '8' }}
-          maxH={{ base: 'none', md: '80vh' }}
-          overflowY={{ base: 'visible', md: 'auto' }}
-        >
-          <Markdown
-            content={content}
-            linksPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
-            assetsPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
-            disableInternalLinks
-          />
-        </Box>
-      </Box>
-      )}
+              <Markdown
+                content={content}
+                linksPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
+                assetsPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
+                disableInternalLinks
+              />
+            </Box>
+          </Box>
+        )
+      }
     </Stack>
   </Container>
 </MainLayout>
@@ -154,11 +135,9 @@ try {
     text-decoration: underline;
   }
 
-  @media (min-width: 768px) {
-    .events-content-wrapper .ov-x_auto {
-      overflow-x: visible !important;
-      overflow: visible !important;
-    }
+  .events-content-wrapper .ov-x_auto {
+    overflow-x: visible !important;
+    overflow: visible !important;
   }
 
   .events-content-wrapper table {
@@ -166,6 +145,7 @@ try {
     border-collapse: collapse;
     width: 100%;
     min-width: 0 !important;
+    table-layout: fixed;
   }
 
   .events-content-wrapper thead {
@@ -194,6 +174,18 @@ try {
     width: 3.5rem;
   }
 
+  .events-content-wrapper tbody td {
+    overflow: visible !important;
+    overflow-wrap: anywhere;
+    text-overflow: initial !important;
+    white-space: normal !important;
+    word-break: normal;
+  }
+
+  .events-content-wrapper tbody td a {
+    white-space: normal !important;
+  }
+
   .events-content-wrapper tbody td:last-child {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.6875rem;
@@ -206,5 +198,12 @@ try {
     font-size: inherit;
     letter-spacing: inherit;
     color: inherit;
+  }
+
+  @media (max-width: 480px) {
+    .events-content-wrapper th:nth-child(3),
+    .events-content-wrapper td:nth-child(3) {
+      display: none;
+    }
   }
 </style>

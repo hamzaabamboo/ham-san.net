@@ -142,9 +142,17 @@ Namecard detail had mobile page-level overflow: `408px` document width on a `375
 
 Namecard feature remains intact after the overflow fix. `/en/namecard` redirects to `/en/namecard/default`; variants `default`, `kaho`, `ktk`, `polka`, `polka-new`, and `Honoshi` load; `/ja/namecard/default` and `/th/namecard/default` load with localized titles; `/en/namecard/all` renders 12 card links, front and back for all 6 variants. The physical card dimensions remain `91mm x 55mm`; only the detail-page container changed to prevent page-level mobile overflow.
 
+### F-019 full UI consistency pass
+
+Removed the remaining visible fake/status/version framing from Contact, About, Home, and navigation: no `v2.0.4-stable`, `transport: mailto`, `Inventory_Tools`, `Subject_Reference`, `AXONOMETRIC_VIEW_01`, `Homepage V3`, or fake site-online copy remains in the rendered UI. Contact direct channels stayed intact, the namecard feature stayed linked, footer links gained larger tap areas, focus states were restored on contact fields, and mobile Events table content now wraps instead of clipping or expanding the page. Project listing cards now surface fetched tags and link metadata, so the project backend fields are not silently discarded on the listing surface.
+
 ## Final Verification
 
 - `cd apps/astro && bun run build` completed on 2026-04-28 JST at 15:11 JST with `0 errors`, `0 warnings`, `0 hints`, and server build complete.
+- `cd apps/astro && bun run lint` completed on 2026-04-28 JST at 16:00 JST with exit code 0.
+- `cd apps/astro && bun run build` completed on 2026-04-28 JST at 16:02 JST with `0 errors`, `0 warnings`, `0 hints`, and server build complete.
+- Final Playwright visual/DOM sweep checked `/en`, `/en/projects`, `/en/hobbies`, `/en/about`, `/en/contact`, `/en/notes`, `/en/events`, `/en/namecard/default`, `/ja`, and `/th` at `1440x1000` and `375x812`; all returned matching document/client widths, no console warnings/errors, and no targeted cringe/status copy. A follow-up mobile `/en/events` check after table wrapping returned no offscreen interactive elements.
+- Final `agent-browser` snapshots checked `/en/events`, `/en/contact`, `/en/namecard/default`, and `/en/projects`; route titles rendered correctly, contact fields/channels were present, namecard links were present, and project cards exposed tags/link metadata.
 - `git diff --check` completed cleanly after the copy cleanup.
 - Live `agent-browser` snapshots checked `/en/`, `/en/projects`, `/en/contact`, `/en/about`, `/en/hobbies`, `/en/notes`, `/en/tags`, and `/en/nope` after the cleanup.
 - Text scan after cleanup found no matches for the targeted fake-console vocabulary (`ATELIER`, `NAV_INDEX`, `ENV_STAT`, `Protocol`, `Transmission`, `Payload`, `RUNNING_SIMULATION`, `taxonomy_index`, `cutting edge`, fake encrypted/security copy, and related terms).

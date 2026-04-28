@@ -13,34 +13,81 @@ const { locale } = Astro.props as Props;
 const t = useTranslations(locale);
 ---
 
-<Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} borderTop="1px solid" borderColor="#524533">
-  <Stack p="8" gap="3" borderRight={{ md: '1px solid' }} borderBottom={{ base: '1px solid', md: 'none' }} borderColor="#524533">
-    <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" textTransform="uppercase" letterSpacing="widest" color="#4c4e4e">{t('home.status-current-phase')}</Text>
+<Grid
+  gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+  borderTop="1px solid"
+  borderColor="#524533"
+>
+  <Stack
+    p="8"
+    gap="3"
+    borderRight={{ md: '1px solid' }}
+    borderBottom={{ base: '1px solid', md: 'none' }}
+    borderColor="#524533"
+  >
+    <Text
+      fontFamily="JetBrains Mono, monospace"
+      fontSize="xs"
+      textTransform="uppercase"
+      letterSpacing="widest"
+      color="#4c4e4e">{t('home.status-current-phase')}</Text
+    >
     <HStack justifyContent="space-between" alignItems="end">
       <Heading fontSize="2xl">{t('home.status-phase-title')}</Heading>
       <Text fontFamily="JetBrains Mono, monospace" color="#ffb000">01</Text>
     </HStack>
   </Stack>
 
-  <Stack p="8" gap="3" borderRight={{ md: '1px solid' }} borderBottom={{ base: '1px solid', md: 'none' }} borderColor="#524533" bg="#1c1b1b">
-    <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" textTransform="uppercase" letterSpacing="widest" color="#4c4e4e">{t('home.status-availability')}</Text>
+  <Stack
+    p="8"
+    gap="3"
+    borderRight={{ md: '1px solid' }}
+    borderBottom={{ base: '1px solid', md: 'none' }}
+    borderColor="#524533"
+    bg="#1c1b1b"
+  >
+    <Text
+      fontFamily="JetBrains Mono, monospace"
+      fontSize="xs"
+      textTransform="uppercase"
+      letterSpacing="widest"
+      color="#4c4e4e">{t('home.status-availability')}</Text
+    >
     <HStack gap="3" alignItems="center">
       <Box position="relative" w="3" h="3">
         <Box w="3" h="3" bg="emerald.500" />
-        <Box position="absolute" inset="0" w="3" h="3" bg="emerald.500" className="animate-ping" opacity="0.5" />
+        <Box
+          position="absolute"
+          inset="0"
+          w="3"
+          h="3"
+          bg="emerald.500"
+          className="animate-ping"
+          opacity="0.5"
+        />
       </Box>
       <Heading fontSize="2xl">{t('home.status-availability-title')}</Heading>
     </HStack>
   </Stack>
 
   <Stack p="8" gap="3">
-    <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" textTransform="uppercase" letterSpacing="widest" color="#4c4e4e">{t('home.status-workshop-load')}</Text>
+    <Text
+      fontFamily="JetBrains Mono, monospace"
+      fontSize="xs"
+      textTransform="uppercase"
+      letterSpacing="widest"
+      color="#4c4e4e">{t('home.status-workshop-load')}</Text
+    >
     <Box w="full" bg="#524533" h="2">
       <Box w="65%" h="2" bg="#ffb000" />
     </Box>
     <HStack justifyContent="space-between">
-      <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#c7c6c6">{t('home.status-capacity')}</Text>
-      <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#c7c6c6">{t('home.status-queue')}</Text>
+      <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#c7c6c6"
+        >{t('home.status-capacity')}</Text
+      >
+      <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#c7c6c6"
+        >{t('home.status-queue')}</Text
+      >
     </HStack>
   </Stack>
 </Grid>
