@@ -1,0 +1,89 @@
+---
+import { getLangFromUrl } from '../i18n/utils';
+import '../index.css';
+
+const lang = getLangFromUrl(Astro.url);
+const { title = 'Ham San', description, image } = Astro.props;
+const canonicalUrl = Astro.url.href;
+const siteName = 'Ham San';
+---
+
+<html lang={lang} class="namecard-document">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:site_name" content={siteName} />
+    {image && <meta property="og:image" content={image} />}
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    {image && <meta name="twitter:image" content={image} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;500;700;800&family=M+PLUS+1p:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+Thai:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  html.namecard-document {
+    color-scheme: light;
+    scroll-behavior: auto;
+    background: #fff;
+  }
+
+  html.namecard-document body {
+    margin: 0;
+    min-height: 100dvh;
+    background: #fff;
+    color: #111;
+    font-family:
+      'M PLUS 1p', 'Yu Gothic Medium', '游ゴシック Medium', YuGothic, '游ゴシック体',
+      'ヒラギノ角ゴ Pro', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, sans-serif;
+    text-rendering: auto;
+  }
+
+  html.namecard-document body::before,
+  html.namecard-document body::after {
+    content: none;
+    display: none;
+  }
+
+  html.namecard-document a {
+    color: inherit;
+    text-decoration: none;
+    text-underline-offset: initial;
+  }
+
+  html.namecard-document h1,
+  html.namecard-document h2,
+  html.namecard-document h3,
+  html.namecard-document h4,
+  html.namecard-document h5,
+  html.namecard-document h6 {
+    font-family: inherit;
+    letter-spacing: 0;
+    text-wrap: initial;
+  }
+
+  @media print {
+    html.namecard-document astro-dev-toolbar {
+      display: none !important;
+    }
+  }
+</style>

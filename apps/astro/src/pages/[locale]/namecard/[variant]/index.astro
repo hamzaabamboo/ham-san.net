@@ -20,7 +20,7 @@ import { Text } from '~/components/ui/text';
 import { NAMECARDS } from '~/constants/namecard';
 import { languages } from '~/i18n/ui';
 import { useTranslations, validateLocale } from '~/i18n/utils';
-import BaseLayout from '~/layouts/BaseLayout.astro';
+import NamecardLayout from '~/layouts/NamecardLayout.astro';
 import { NAMECARD_PAGE_LINKS } from 'utils/namecard-page';
 
 const { locale, variant } = Astro.params;
@@ -60,7 +60,7 @@ const { color } = namecard;
 const Image = styled.img;
 ---
 
-<BaseLayout title={pageTitle}>
+<NamecardLayout title={pageTitle}>
   <Fragment name="head">
     <ClientRouter />
   </Fragment>
@@ -83,18 +83,8 @@ const Image = styled.img;
       backgroundPosition="center"
       blur="8px"
     />
-    <Container w="full" maxW="breakpoint-md" px="4" position="relative" zIndex="1">
-      <Stack
-        p="4"
-        rounded="l1"
-        bgColor="rgba(8, 10, 24, 0.82)"
-        color="white"
-        alignItems="stretch"
-        textAlign="center"
-        border="1px solid rgba(255, 255, 255, 0.18)"
-        boxShadow="0 20px 80px rgba(0, 0, 0, 0.35)"
-        style={{ backdropFilter: 'blur(10px)' }}
-      >
+    <Container w="full" maxW="breakpoint-md" px="4">
+      <Stack p="4" rounded="l1" bgColor="white.a6" alignItems="stretch" textAlign="center">
         <HStack justifyContent="flex-end" gap="2" w="full">
           {
             Object.entries(languages).map((t) => {
@@ -161,7 +151,7 @@ const Image = styled.img;
       <Box position="absolute" top="0" right="0" animation={'pyon'}>
         <Image w="400px" translateX="15%" src={kaho1.src} alt="日野下花帆" />
       </Box>
-      <Box position="fixed" bottom="0" left="0" overflow="hidden" zIndex="0">
+      <Box position="fixed" bottom="0" left="0" overflow="hidden">
         <Image
           animation="kanatapeek"
           transform="scaleX(-100%)"
@@ -171,4 +161,4 @@ const Image = styled.img;
       </Box>
     </Box>
   </Stack>
-</BaseLayout>
+</NamecardLayout>
