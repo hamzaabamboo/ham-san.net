@@ -199,7 +199,7 @@ const items = [
                     name="name"
                     type="text"
                     class="contact-input"
-                    placeholder="Name"
+                    placeholder={t('contact.placeholder-name')}
                     required
                   />
                 </Stack>
@@ -212,7 +212,7 @@ const items = [
                     name="email"
                     type="email"
                     class="contact-input"
-                    placeholder="Email address"
+                    placeholder={t('contact.placeholder-email')}
                     required
                   />
                 </Stack>
@@ -222,10 +222,10 @@ const items = [
                   {t('contact.field-subject')}
                 </label>
                 <select id="contact-subject" name="subject" class="contact-select">
-                  <option>Project inquiry</option>
-                  <option>Collaboration</option>
-                  <option>Technical question</option>
-                  <option>Other</option>
+                  <option>{t('contact.subject-project')}</option>
+                  <option>{t('contact.subject-collaboration')}</option>
+                  <option>{t('contact.subject-technical')}</option>
+                  <option>{t('contact.subject-other')}</option>
                 </select>
               </Stack>
               <Stack gap="2">
@@ -237,7 +237,7 @@ const items = [
                   name="message"
                   class="contact-input"
                   rows="5"
-                  placeholder="Write your message"
+                  placeholder={t('contact.placeholder-message')}
                   style="min-height: 180px; resize: vertical;"
                   required></textarea>
               </Stack>

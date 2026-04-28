@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Languages, languages } from '~/i18n/ui';
 
@@ -21,6 +21,52 @@ export const Sidebar = ({
   links: { label: string; value: string }[];
 }) => {
   const [open, setOpen] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const scrollY = window.scrollY;
+    const bodyChildren = Array.from(document.body.children);
+    const hiddenState = bodyChildren.map((element) => ({
+      element,
+      ariaHidden: element.getAttribute('aria-hidden'),
+      inert: element.hasAttribute('inert')
+    }));
+
+    document.documentElement.classList.add('shell-drawer-open');
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+
+    bodyChildren.forEach((element) => {
+      if (element.classList.contains('shell-drawer-portal')) return;
+      element.setAttribute('aria-hidden', 'true');
+      element.setAttribute('inert', '');
+    });
+
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.documentElement.classList.remove('shell-drawer-open');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, scrollY);
+
+      hiddenState.forEach(({ element, ariaHidden, inert }) => {
+        if (ariaHidden === null) {
+          element.removeAttribute('aria-hidden');
+        } else {
+          element.setAttribute('aria-hidden', ariaHidden);
+        }
+
+        if (!inert) {
+          element.removeAttribute('inert');
+        }
+      });
+    };
+  }, [open]);
 
   const getURLWithLanguage = (value: string) => {
     return `/${locale}${value}`;
@@ -41,7 +87,7 @@ export const Sidebar = ({
 
       {open &&
         createPortal(
-          <>
+          <div className="shell-drawer-portal" role="dialog" aria-modal="true" aria-label="Menu">
             <div className="shell-drawer-overlay" onClick={() => setOpen(false)} />
             <div className="shell-drawer">
               <div className="shell-drawer-header">
@@ -58,6 +104,7 @@ export const Sidebar = ({
                   Menu
                 </span>
                 <button
+                  ref={closeButtonRef}
                   onClick={() => setOpen(false)}
                   className="shell-drawer-close"
                   aria-label="Close menu"
@@ -106,7 +153,7 @@ export const Sidebar = ({
                 </div>
               </div>
             </div>
-          </>,
+          </div>,
           document.body
         )}
     </>

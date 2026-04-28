@@ -47,6 +47,10 @@
     text-rendering: optimizeLegibility;
   }
 
+  html.shell-drawer-open {
+    overflow: hidden;
+  }
+
   ::selection {
     background: #ffb000;
     color: #131313;
