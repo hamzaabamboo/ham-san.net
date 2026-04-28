@@ -1,7 +1,21 @@
 {
-  "notes": "日記一覧",
-  "back-to-posts": "日記一覧へ",
+  "notes": "ノート一覧",
+  "back-to-posts": "ノート一覧へ",
   "back": "戻る",
   "read-in-outline": "Outlineで読む",
-  "description": "個人用のノートサーバーから公開された日記・記事・ノートです、主に雑なトピックや趣味。たまにタイ語で書かれていますが。"
+  "description": "個人の知識ベースから公開しているノートです。調べ物の断片、長めのメモ、あとで参照したい記録を中心に置いています。",
+  "note-label": "ノート",
+  "related": "関連ドキュメント",
+  "published": "公開日",
+  "reading-time": "読了時間",
+  "collection": "コレクション",
+  "archive-ref": "元ノート",
+  "previous-entry": "前のエントリー",
+  "next-entry": "次のエントリー",
+  "min-read": "分",
+  "words": "語",
+  "contents": "目次",
+  "tags": "タグ",
+  "empty-title": "ノートは現在利用できません",
+  "empty-description": "接続が戻ると、ノートが再表示されます。"
 }

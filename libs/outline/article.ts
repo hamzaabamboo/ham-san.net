@@ -19,11 +19,13 @@ export const getArticleDescription = (content?: string) => {
     .replaceAll(/^>\s+/gm, '')
     .replaceAll(/^#+\s+/gm, '')
     .replaceAll(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
+    .replaceAll(/<https?:\/\/[^>]+>/g, '')
+    .replaceAll(/https?:\/\/\S+/g, '')
     .replaceAll(/[*_~]/g, '')
     .replaceAll(/\s+/g, ' ')
     .trim();
 
-  return (
-    plainText.substring(0, 100) + '...'
-  );
+  const truncated = plainText.substring(0, 160);
+  const lastSpace = truncated.lastIndexOf(' ');
+  return (lastSpace > 80 ? truncated.substring(0, lastSpace) : truncated) + '...';
 };

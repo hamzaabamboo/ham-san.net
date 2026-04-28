@@ -14,6 +14,7 @@ import { graphQLSdk } from '~/graphql';
 import type { ProjectFragment, TagFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import { cleanProjectCopy } from '~/utils/project-copy';
 
 export const prerender = false;
 
@@ -23,8 +24,14 @@ if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
-const data = await graphQLSdk.getProjectBySlug({ slug });
-const project = data?.projects?.[0] as (ProjectFragment & { id: string }) | undefined;
+let project: (ProjectFragment & { id: string }) | undefined;
+try {
+  const data = await graphQLSdk.getProjectBySlug({ slug });
+  const rawProject = data?.projects?.[0] as (ProjectFragment & { id: string }) | undefined;
+  project = rawProject ? cleanProjectCopy(rawProject) : undefined;
+} catch {
+  project = undefined;
+}
 const { content, title, banner, links, media, category, date, finishedDate, tags } = project ?? {};
 const bannerUrl = getMediaUrl(banner?.url, {}, import.meta.env.PUBLIC_API_URL);
 const bannerName = banner?.name;
@@ -41,110 +48,141 @@ const pageTitle = `${title ?? t('common.projects')} | ${t('common.name')}`;
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
 
-<MainLayout title={pageTitle}>
+<MainLayout title={pageTitle} description={project?.description || project?.title || t('project.page-heading')}>
   <Container maxW="breakpoint-xl" py="8" w="full">
-    <Box bg="bg.default" p={{ base: '6', md: '10' }} border="1px solid" borderColor="border.subtle">
+    <Box bg="#1c1b1b" p={{ base: '6', md: '10' }} border="1px solid" borderColor="#524533">
       <Stack gap="8">
         <Link href={`/${locale}/projects`}>
           <Wrap
             fontFamily="JetBrains Mono, monospace"
             fontSize="xs"
             alignItems="center"
-            color="fg.muted"
-            _hover={{ color: 'amber.400' }}
+            color="#c7c6c6"
+            _hover={{ color: '#ffd597' }}
             transition="colors"
           >
             <FaArrowLeft />
             <Text>{t('project.back-to-projects')}</Text>
           </Wrap>
         </Link>
-        {
-          bannerUrl && (
-            <Box overflow="hidden" border="1px solid" borderColor="border.subtle">
-              <styled.img
-                src={bannerUrl}
-                alt={bannerName ?? title ?? undefined}
-                objectFit="cover"
-                objectPosition="center"
-                width="full"
-                aspectRatio="16 / 9"
-                backgroundColor="bg.muted"
-                filter="grayscale(1)"
-              />
-            </Box>
-          )
-        }
-        <Stack gap="4">
-          <Stack gap="2">
+        {project ? (
+          <>
+            {
+              bannerUrl && (
+                <Box overflow="hidden" border="1px solid" borderColor="#524533">
+                  <styled.img
+                    src={bannerUrl}
+                    alt={bannerName ?? title ?? undefined}
+                    objectFit="cover"
+                    objectPosition="center"
+                    width="full"
+                    aspectRatio="16 / 9"
+                    backgroundColor="#353534"
+                    filter="grayscale(1)"
+                  />
+                </Box>
+              )
+            }
+            <Stack gap="4">
+              <Stack gap="2">
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  letterSpacing="0.12em"
+                  color="#ffb000"
+                >
+                  {t('common.projects')}
+                </Text>
+                <Heading
+                  as="h1"
+                  fontSize={{ base: '5xl', md: '7xl' }}
+                  fontStyle="italic"
+                  lineHeight="0.95"
+                >
+                  {title}
+                </Heading>
+                <Wrap fontSize="sm" color="#9f8e78" fontFamily="JetBrains Mono, monospace">
+                  {category?.name && <Text fontWeight="bold" color="#ffb000">{category.name}</Text>}
+                  {category?.name && date && <Text color="#524533">|</Text>}
+                  {date && (
+                    <Text>
+                      {formatMonthYear(parseDate(date as string), locale)} -{' '}
+                      {
+                        finishedDate
+                          ? formatMonthYear(parseDate(finishedDate as string), locale)
+                          : t('common.present')
+                      }
+                    </Text>
+                  )}
+                </Wrap>
+              </Stack>
+              {
+                tags && (
+                  <HStack>
+                    <Text fontWeight="bold" fontSize="sm" color="#c7c6c6">
+                      {t('common.tags')}:
+                    </Text>
+                    <Wrap>
+                      {nonNullTags(tags).map((tag) => (
+                        <Link href={`/${locale}/tags/${tag.slug}`}>
+                          <TagBadge tag={tag} showCount size="sm" />
+                        </Link>
+                      ))}
+                    </Wrap>
+                  </HStack>
+                )
+              }
+              {
+                links && (
+                  <Stack gap="2">
+                    {nonNullLinks.map((l) => {
+                      return <LinkItem data={l} />;
+                    })}
+                  </Stack>
+                )
+              }
+            </Stack>
+
+            <Divider borderColor="#524533" />
+            {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
+            {
+              images.length > 0 && (
+                <Stack gap="6">
+                  <Heading as="h2" fontSize="4xl" fontStyle="italic">
+                    {t('project.screenshots')}
+                  </Heading>
+                  <Carousel client:visible images={images} />
+                </Stack>
+              )
+            }
+          </>
+        ) : (
+          <Box border="1px solid" borderColor="#524533" p={{ base: '8', md: '12' }} textAlign="center">
             <Text
               fontFamily="JetBrains Mono, monospace"
               fontSize="10px"
               textTransform="uppercase"
-              letterSpacing="0.12em"
-              color="amber.500"
+              letterSpacing="0.2em"
+              color="#9f8e78"
+              mb="4"
             >
-              project_dossier
+              status: unavailable
             </Text>
             <Heading
               as="h1"
-              fontSize={{ base: '5xl', md: '7xl' }}
+              fontFamily="Newsreader, serif"
+              fontSize={{ base: '4xl', md: '5xl' }}
               fontStyle="italic"
-              lineHeight="0.95"
+              mb="4"
             >
-              {title}
+              {t('project.detail-empty-title')}
             </Heading>
-            <Wrap fontSize="sm" color="fg.subtle" fontFamily="JetBrains Mono, monospace">
-              <Text fontWeight="bold" color="amber.500">{category?.name}</Text>
-              <Text color="border.default">|</Text>
-              <Text>
-                {formatMonthYear(parseDate(date as string), locale)} -{' '}
-                {
-                  finishedDate
-                    ? formatMonthYear(parseDate(finishedDate as string), locale)
-                    : t('common.present')
-                }
-              </Text>
-            </Wrap>
-          </Stack>
-          {
-            tags && (
-              <HStack>
-                <Text fontWeight="bold" fontSize="sm" color="fg.muted">
-                  {t('common.tags')}:
-                </Text>
-                <Wrap>
-                  {nonNullTags(tags).map((tag) => (
-                    <Link href={`/${locale}/tags/${tag.slug}`}>
-                      <TagBadge tag={tag} showCount size="sm" />
-                    </Link>
-                  ))}
-                </Wrap>
-              </HStack>
-            )
-          }
-          {
-            links && (
-              <Stack gap="2">
-                {nonNullLinks.map((l) => {
-                  return <LinkItem data={l} />;
-                })}
-              </Stack>
-            )
-          }
-        </Stack>
-
-        <Divider borderColor="border.subtle" />
-        {content && <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />}
-        {
-          images.length > 0 && (
-            <Stack gap="6">
-              <Heading as="h2" fontSize="4xl" fontStyle="italic">
-                {t('project.screenshots')}
-              </Heading>
-              <Carousel client:visible images={images} />
-            </Stack>
-          )
-        }
+            <Text color="#c7c6c6" maxW="md" mx="auto">
+              {t('project.detail-empty-description')}
+            </Text>
+          </Box>
+        )}
       </Stack>
     </Box>
   </Container>

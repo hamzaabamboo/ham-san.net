@@ -1,4 +1,20 @@
 {
   "back-to-hobbies": "趣味一覧へ",
-  "description": "趣味、興味があったもの、過去の趣味など。"
+  "page-heading": "興味と情熱。",
+  "description": "キーボードから離れたとき、好奇心を刺激し続けてくれるものたちの記録。",
+  "featured": "注目",
+  "explore": "見る",
+  "browse-gallery": "ギャラリーを見る",
+  "status-learning": "ステータス: 学習中",
+  "finding-flow": "フロー探求",
+  "daily-momentum": "日々の推進力",
+  "view-progress": "学習の進捗を見る",
+  "process-notes": "プロセスとメモ",
+  "share-vibe": "シェアする",
+  "learning-resources": "学習リソース",
+  "collaboration-heading": "一緒に何か作りませんか？",
+  "collaboration-body": "写真、音楽、語学についてはいつでも話したいです。共通の趣味があれば、ぜひ声をかけてください。",
+  "send-message": "メッセージを送る",
+  "empty-title": "ギャラリーはオフラインです",
+  "empty-description": "コンテンツシステムとの接続が切れています。接続が回復次第、趣味と興味が再表示されます。"
 }

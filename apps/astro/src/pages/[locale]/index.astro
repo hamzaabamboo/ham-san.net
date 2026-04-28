@@ -1,21 +1,16 @@
 ---
-import { FaArrowRight, FaGithub } from 'react-icons/fa';
-import { Box, Container, Flex, Grid, GridItem, Stack, Wrap } from 'styled-system/jsx';
+import { Box, Container, Flex, Grid, Stack } from 'styled-system/jsx';
 import { getMediaUrl } from 'utils/media';
-import { Marquee } from '~/components/common/Marquee';
-import BentoGrid from '~/components/home/BentoGrid.astro';
-import { BrandMark } from '~/components/brand/BrandMark';
-import { TagBadge } from '~/components/tags/TagBadge';
-import { Button } from '~/components/ui/button';
+import SpecLabel from '~/components/common/SpecLabel';
 import { Heading } from '~/components/ui/heading';
-import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
-import { HeroBackground } from '~/components/home/HeroBackground';
 import { graphQLSdk } from '~/graphql';
-import type { ProjectPreviewFragment, TagFragment } from '~/graphql/generated/client';
-import { pickLocale } from '~/utils/fallbackLocale';
+import type { ProjectPreviewFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import StatusRow from '~/components/home/StatusRow.astro';
+import { pickLocale } from '~/utils/fallbackLocale';
+import { cleanProjectCopy } from '~/utils/project-copy';
 
 export const prerender = false;
 
@@ -28,329 +23,556 @@ if (!validateLocale(locale)) {
 const t = useTranslations(locale);
 const pageTitle = `${t('common.home')} | ${t('common.name')}`;
 
-const data = await graphQLSdk.fetchHomePage({
-  locale: locale === 'ja' ? 'ja' : 'en'
-});
+const cmsLocale = locale === 'ja' ? 'ja' : 'en';
 
-const homepageData = data?.homepage;
-const rawProjects = data?.projects ?? [];
-const projects = rawProjects
-  .map((p) => pickLocale(p, locale))
-  .filter((p): p is ProjectPreviewFragment => !!p);
+let homepageData: any = null;
+let projects: ProjectPreviewFragment[] = [];
+
+try {
+  const data = await graphQLSdk.fetchHomePage({
+    locale: cmsLocale
+  });
+  homepageData = data?.homepage;
+  const rawProjects = data?.projects ?? [];
+  projects = rawProjects
+    .map((p) => pickLocale(p, locale))
+    .filter((p): p is ProjectPreviewFragment => !!p)
+    .map((p) => cleanProjectCopy(p));
+} catch {
+  // CMS unavailable — render with empty data
+}
 
 const introImage =
   getMediaUrl(
     homepageData?.introductionImage?.url,
-    { height: 600 },
+    { height: 700 },
     import.meta.env.PUBLIC_API_URL
-  ) || '/images/placeholder-project.jpg';
+  ) || null;
+
+const heroProjects = projects.slice(0, 3);
+const workProjects = heroProjects.slice(0, 2);
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
 ---
 
-<MainLayout title={pageTitle}>
-  <Box position="relative" minH="100dvh" overflow="hidden" display="flex" alignItems="center">
-    <HeroBackground client:idle />
-    <Container maxW="breakpoint-xl" position="relative" zIndex={1}>
+<MainLayout title={pageTitle} description={t('home.hero-subtitle').replace(/<[^>]*>/g, '')}>
+  <Container maxW="breakpoint-xl" className="page-shell">
+    <Stack py={{ base: '8', md: '10' }} gap="0">
       <Grid
-        gap="8"
-        gridTemplateColumns={{ base: '1fr', lg: 'minmax(0, 1.4fr) minmax(320px, 0.8fr)' }}
+        gridTemplateColumns={{ base: '1fr', lg: 'minmax(0, 1.2fr) 420px' }}
+        gap="12"
+        px={{ base: '0', lg: '6' }}
+        py={{ base: '20', lg: '32' }}
+        borderBottom="1px solid"
+        borderColor="#524533"
       >
-        <Stack gap="8" maxW="4xl">
-          <Wrap
+        <Stack gap="8">
+          <Box
             display="inline-flex"
             alignItems="center"
-            gap="3"
             px="3"
-            py="2"
-            bg="bg.default/70"
+            py="1"
+            bg="#353534"
             border="1px solid"
-            borderColor="border.subtle"
+            borderColor="#524533"
             fontFamily="JetBrains Mono, monospace"
             fontSize="10px"
             textTransform="uppercase"
             letterSpacing="0.12em"
-            color="amber.500"
+            color="#ffd597"
+            w="fit-content"
           >
-            <BrandMark size={18} />
-            atelier.exe
-          </Wrap>
+            {t('home.operational-status')}
+          </Box>
           <Heading
             as="h1"
             fontSize={{ base: '5xl', md: '7xl', lg: '8xl' }}
-            fontWeight="bold"
-            letterSpacing="-0.04em"
-            color="fg.default"
             lineHeight="0.9"
             fontStyle="italic"
+            maxW="4xl"
           >
-            {t('home.hero-heading-prefix')} <br />
-            <Box color="amber.500" display="inline-block">{t('home.hero-heading-emphasis')}</Box>
+            {t('home.hero-heading-prefix')}{' '}
+            <Box as="span" color="#ffb000">
+              {t('home.hero-heading-emphasis')}
+            </Box>
           </Heading>
-
-          <Text fontSize={{ base: 'xl', md: '2xl' }} color="fg.muted" lineHeight="1.7" maxW="2xl">
-            {homepageData?.heroSubtitle ?? t('home.hero-subtitle')}
-          </Text>
-
-          <Flex gap="4" pt="6" wrap="wrap">
-            <Button
-              asChild
-              size="2xl"
-              colorPalette="amber"
-              variant="solid"
-              fontWeight="bold"
-              borderRadius="none"
+          <p
+            class="hero-subtitle"
+            set:html={t('home.hero-subtitle')}
+          />
+          <Flex gap="4" wrap="wrap" pt="2">
+            <a
+              href={`/${locale}/projects`}
+              class="blocky-shadow blocky-shadow-hover"
+              style="display:inline-flex;align-items:center;padding:1rem 2rem;background-color:#FFB000;color:#432c00;font-family:'Manrope',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-size:0.875rem;border:1px solid #524533;text-decoration:none"
             >
-              <Link href={`/${locale}/projects`}>
-                {t('home.view-my-work')}
-              </Link>
-            </Button>
-            <Button asChild size="2xl" variant="outline" fontWeight="bold" borderRadius="none">
-              <Link href="https://github.com/hamzaabamboo" target="_blank">
-                <FaGithub /> GitHub
-              </Link>
-            </Button>
+              {t('home.view-my-work')}
+            </a>
+            <a
+              href={`/${locale}/hobbies`}
+              class="cta-secondary"
+              style="display:inline-flex;align-items:center;padding:1rem 2rem;background-color:transparent;color:#c7c6c6;font-family:'Manrope',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;font-size:0.875rem;border:1px solid #524533;text-decoration:none"
+            >
+              {t('home.explore-hobbies')}
+            </a>
           </Flex>
         </Stack>
-        <GridItem>
-          <Stack
-            h="full"
-            minH={{ base: '340px', lg: '100%' }}
-            border="1px solid"
-            borderColor="border.subtle"
-            bg="bg.default/85"
-            p="6"
-            justifyContent="space-between"
-            backdropFilter="blur(8px)"
-          >
-            <Stack gap="4">
-              <Text
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                textTransform="uppercase"
-                letterSpacing="0.14em"
-                color="amber.500"
-              >
-                hardware_manifest
-              </Text>
-              <Box
-                border="1px solid"
-                borderColor="border.subtle"
-                bg="bg.muted"
-                overflow="hidden"
-                aspectRatio="1 / 1"
-              >
-                <img
-                  src={introImage}
-                  alt="Profile"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    filter: 'grayscale(1)'
-                  }}
-                />
+        <Box
+          position="relative"
+          border="1px solid"
+          borderColor="#524533"
+          p="4"
+          bg="#0e0e0e"
+          overflow="hidden"
+          minH={{ base: '360px', lg: '100%' }}
+        >
+          <SpecLabel>Profile photo</SpecLabel>
+          <Box aspectRatio="1 / 1" overflow="hidden" position="relative">
+            {introImage ? (
+              <img src={introImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(1)', opacity: 0.8, mixBlendMode: 'luminosity' }} />
+            ) : (
+              <Box position="relative" w="100%" h="100%" bg="#0e0e0e" className="fallback-grid-lines" overflow="hidden">
+                <Box
+                  position="absolute"
+                  bottom="-20px"
+                  right="-10px"
+                  fontFamily="Newsreader, serif"
+                  fontStyle="italic"
+                  fontSize="280px"
+                  lineHeight="1"
+                  color="#e5e2e1"
+                  opacity="0.04"
+                  userSelect="none"
+                  pointerEvents="none"
+                  aria-hidden="true"
+                >H</Box>
+                <Box
+                  position="absolute"
+                  top="50%"
+                  left="50%"
+                  transform="translate(-50%, -50%)"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  letterSpacing="0.15em"
+                  color="#524533"
+                  textAlign="center"
+                >No photo yet</Box>
               </Box>
-            </Stack>
-            <Stack gap="3">
-              <Wrap gap="2">
-                <Box
-                  border="1px solid"
-                  borderColor="border.subtle"
-                  px="2"
-                  py="1"
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  color="fg.muted"
-                >
-                  Frontend
-                </Box>
-                <Box
-                  border="1px solid"
-                  borderColor="border.subtle"
-                  px="2"
-                  py="1"
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  color="fg.muted"
-                >
-                  Design Systems
-                </Box>
-                <Box
-                  border="1px solid"
-                  borderColor="border.subtle"
-                  px="2"
-                  py="1"
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  color="fg.muted"
-                >
-                  Curiosity
-                </Box>
-              </Wrap>
-              <Text
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                color="fg.subtle"
-                textTransform="uppercase"
-                letterSpacing="0.12em"
-              >
-                Tokyo / Bangkok / Remote
-              </Text>
-            </Stack>
-          </Stack>
-        </GridItem>
-      </Grid>
-    </Container>
-
-    <Box
-      position="absolute"
-      bottom="10"
-      left="50%"
-      transform="translateX(-50%)"
-      animation="bounce 2s infinite"
-      color="fg.muted"
-    >
-      <Box w="1px" h="12" bg="currentColor" />
-    </Box>
-  </Box>
-
-  <Marquee client:load />
-
-  <Box py="24" borderTop="1px solid" borderColor="border.subtle">
-    <Container maxW="breakpoint-xl">
-      <Stack gap="16">
-        <Flex justify="space-between" align="center">
-          <Heading fontSize={{ base: '4xl', md: '6xl' }} fontStyle="italic" color="fg.default"
-            >{t('home.featured-projects')}</Heading
+            )}
+          </Box>
+          <Box
+            position="absolute"
+            bottom="4"
+            right="4"
+            px="2"
+            py="1"
+            bg="#ffb000"
+            color="black"
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
           >
-          <Button asChild variant="link" colorPalette="gray" borderRadius="none">
-            <Link href={`/${locale}/projects`}>
-              {t('home.find-out-more')}
-              <FaArrowRight />
-            </Link>
-          </Button>
-        </Flex>
+            35mm / film / photo
+          </Box>
+        </Box>
+      </Grid>
 
+      <Box px={{ base: '0', lg: '6' }}>
+        <StatusRow locale={locale} />
+      </Box>
+
+      <Box px={{ base: '0', lg: '6' }} py={{ base: '8', lg: '16' }} borderBottom="1px solid" borderColor="#524533">
+        <Flex justify="space-between" align="end" mb="12">
+          <Stack gap="2">
+            <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#ffd597">02 // PROFILE</Text>
+            <Heading as="h2" fontSize="5xl" fontStyle="italic">{t('home.bench-heading')}</Heading>
+          </Stack>
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            color="#4c4e4e"
+            maxW="xs"
+            textAlign="right"
+            display={{ base: 'none', md: 'block' }}
+            textTransform="uppercase"
+          >
+            {t('home.bench-subtitle')}
+          </Text>
+        </Flex>
         <Grid
-          gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' }}
+          gridTemplateColumns={{ base: '1fr', md: 'repeat(12, 1fr)' }}
           gap="6"
         >
-          {
-            projects.map((project, idx) => (
-              <Box key={idx}>
-                <Link
-                  href={`/${locale}/projects/${project.slug}`}
-                  display="block"
-                  transition="all 0.3s"
-                  _hover={{ transform: 'translate(-2px, -2px)' }}
-                  h="full"
-                >
-                  <Box
-                    bg="bg.default"
-                    borderRadius="md"
-                    overflow="hidden"
-                    h="full"
-                    display="flex"
-                    flexDirection="column"
-                    border="1px solid"
-                    borderColor="border.subtle"
-                  >
-                    <Box
-                      h="64"
-                      bg="bg.muted"
-                      style={{
-                        backgroundImage: `url(${(() => {
-                          const url = project.media?.[0]?.url;
-                          if (url)
-                            return getMediaUrl(
-                              url,
-                              { height: 400 },
-                              import.meta.env.PUBLIC_API_URL
-                            );
-                          return '/images/placeholder-project.jpg';
-                        })()})`
-                      }}
-                      bgSize="cover"
-                      bgPosition="center"
-                      borderBottom="1px solid"
-                      borderColor="border.subtle"
-                      filter="grayscale(1)"
-                    />
+          <Box
+            gridColumn={{ base: 'span 1', md: 'span 7' }}
+            position="relative"
+            border="1px solid"
+            borderColor="#524533"
+            bg="#1c1b1b"
+            p="8"
+            className="blocky-shadow-sm"
+          >
+            <SpecLabel>How I work</SpecLabel>
+            <Stack mt="6" gap="6">
+              <Heading as="h3" fontSize="4xl" fontStyle="italic">
+                {t('home.bench-manifesto-heading')}{' '}
+                <Box as="span" fontStyle="italic">{t('home.bench-manifesto-emphasis')}.</Box>
+              </Heading>
+              <Text color="#c7c6c6" lineHeight="relaxed">
+                {t('home.bench-manifesto-body')}
+              </Text>
+              <Flex gap="2" wrap="wrap">
+                <Box px="3" py="1" bg="#353534" border="1px solid" borderColor="#524533" fontFamily="JetBrains Mono, monospace" fontSize="10px">CLEAR</Box>
+                <Box px="3" py="1" bg="#353534" border="1px solid" borderColor="#524533" fontFamily="JetBrains Mono, monospace" fontSize="10px">USEFUL</Box>
+                <Box px="3" py="1" bg="#353534" border="1px solid" borderColor="#524533" fontFamily="JetBrains Mono, monospace" fontSize="10px">MAINTAINABLE</Box>
+              </Flex>
+            </Stack>
+          </Box>
 
-                    <Stack p="4" gap="2" flex="1">
+          <Box
+            gridColumn={{ base: 'span 1', md: 'span 5' }}
+            position="relative"
+            border="1px solid"
+            borderColor="#524533"
+            bg="#1c1b1b"
+            p="8"
+            className="blocky-shadow-sm"
+          >
+            <SpecLabel>Tools</SpecLabel>
+            <Grid mt="6" gridTemplateColumns="1fr 1fr" gap="4">
+              <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e">Frontend</Text>
+                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg">React / Next.js</Text>
+              </Stack>
+              <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e">Styling</Text>
+                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg">Tailwind CSS</Text>
+              </Stack>
+              <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e">Design</Text>
+                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg">Figma / WebGL</Text>
+              </Stack>
+              <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e">Scripting</Text>
+                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg">Node.js / Python</Text>
+              </Stack>
+            </Grid>
+          </Box>
+
+          <Box
+            gridColumn={{ base: 'span 1', md: 'span 4' }}
+            position="relative"
+            bg="#ffb000"
+            border="1px solid"
+            borderColor="#9f8e78"
+            p="8"
+            className="blocky-shadow-sm"
+          >
+            <SpecLabel inverted>Projects</SpecLabel>
+            <Stack mt="6" h="full" justify="space-between">
+              <Text fontFamily="Newsreader, serif" fontSize="6xl" fontWeight="black" color="#432c00">
+                {projects.length > 0 ? projects.length : 42}
+              </Text>
+              <Text fontFamily="Manrope, sans-serif" fontWeight="bold" textTransform="uppercase" letterSpacing="tighter" color="#432c00">
+                {t('home.bench-logs-caption')}
+              </Text>
+            </Stack>
+          </Box>
+
+          <Box
+            gridColumn={{ base: 'span 1', md: 'span 8' }}
+            position="relative"
+            h="64"
+            border="1px solid"
+            borderColor="#524533"
+            overflow="hidden"
+            className="group"
+          >
+            <SpecLabel>Photo</SpecLabel>
+            {introImage ? (
+              <>
+                <img
+                  src={introImage}
+                  alt="Profile visual"
+                  style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(0.5);transition:transform 700ms"
+                  class="bench-render-img"
+                />
+                <Box position="absolute" inset="0" bg="#ffb000" mixBlendMode="multiply" opacity="0.2" />
+              </>
+            ) : (
+              <Box position="relative" w="100%" h="100%" bg="#0e0e0e" className="fallback-grid-lines" overflow="hidden">
+                <Box
+                  position="absolute"
+                  bottom="-15px"
+                  right="20px"
+                  fontFamily="Newsreader, serif"
+                  fontStyle="italic"
+                  fontSize="200px"
+                  lineHeight="1"
+                  color="#e5e2e1"
+                  opacity="0.03"
+                  userSelect="none"
+                  pointerEvents="none"
+                  aria-hidden="true"
+                >V</Box>
+                <Box position="absolute" bottom="0" left="0" right="0" h="2px" bg="#ffb000" opacity="0.2" />
+              </Box>
+            )}
+          </Box>
+        </Grid>
+      </Box>
+
+      <Box px={{ base: '0', lg: '6' }} py={{ base: '16', lg: '20' }} borderTop="1px solid" borderColor="#524533">
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          justify="space-between"
+          align={{ base: 'start', md: 'baseline' }}
+          mb="12"
+          borderBottom="1px solid"
+          borderColor="#524533"
+          pb="6"
+        >
+          <Heading as="h2" fontSize="5xl" fontStyle="italic">
+            {t('home.featured-specimens')}
+          </Heading>
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="xs"
+            mt={{ base: '4', md: '0' }}
+          >
+            Sorted by date
+          </Text>
+        </Flex>
+        {heroProjects.length > 0 ? (
+          <Grid
+            gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+            gap="0"
+            borderTop="1px solid"
+            borderLeft="1px solid"
+            borderColor="#524533"
+            mb="20"
+          >
+            {heroProjects.map((project, i) => {
+              const imgSrc = project.banner?.url
+                ? getMediaUrl(project.banner.url, { height: 600 }, import.meta.env.PUBLIC_API_URL)
+                : project.media?.[0]?.url
+                  ? getMediaUrl(project.media[0].url, { height: 600 }, import.meta.env.PUBLIC_API_URL)
+                  : null;
+              const buildId = String(1000 + i * 411).padStart(4, '0');
+              return (
+                <a
+                  href={`/${locale}/projects/${project.slug}`}
+                  class="specimen-card"
+                  style="display:block;border-right:1px solid #524533;border-bottom:1px solid #524533;overflow:hidden;background:#131313;cursor:pointer;text-decoration:none;color:inherit"
+                >
+                  <Box position="relative" aspectRatio="1 / 1" overflow="hidden" className="group">
+                    {imgSrc ? (
+                      <>
+                        <img
+                          src={imgSrc}
+                          alt=""
+                          style="width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter 500ms, transform 500ms"
+                          class="specimen-img"
+                        />
+                        <Box
+                          position="absolute"
+                          inset="0"
+                          bg="rgba(14,14,14,0.4)"
+                          className="specimen-overlay"
+                          style={{ transition: 'opacity 300ms' }}
+                        />
+                      </>
+                    ) : (
+                      <Box position="relative" w="100%" h="100%" bg="#0e0e0e" className="fallback-grid-lines">
+                        <Box
+                          position="absolute"
+                          bottom="-10px"
+                          right="0"
+                          fontFamily="Newsreader, serif"
+                          fontStyle="italic"
+                          fontSize="180px"
+                          lineHeight="1"
+                          color="#e5e2e1"
+                          opacity="0.05"
+                          userSelect="none"
+                          pointerEvents="none"
+                          aria-hidden="true"
+                        >{(project.title || 'P')[0]}</Box>
+                        <Box
+                          position="absolute"
+                          bottom="0"
+                          left="0"
+                          right="0"
+                          h="2px"
+                          bg="#ffb000"
+                          opacity="0.3"
+                        />
+                      </Box>
+                    )}
+                    <Box
+                      position="absolute"
+                      top="3"
+                      left="3"
+                      px="2"
+                      py="0.5"
+                      bg="#353534"
+                      border="1px solid"
+                      borderColor="#524533"
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      color="#ffd597"
+                      opacity="0"
+                      className="specimen-build-id"
+                      style={{ transition: 'opacity 300ms' }}
+                      aria-hidden="true"
+                    >
+                      Project {buildId}
+                    </Box>
+                  </Box>
+                  <Box p="6">
+                    <Flex justify="space-between" align="start" mb="2">
                       <Text
-                        fontFamily="JetBrains Mono, monospace"
-                        fontSize="10px"
-                        color="amber.500"
+                        fontFamily="Manrope, sans-serif"
+                        fontWeight="bold"
+                        fontSize="xl"
                         textTransform="uppercase"
-                        letterSpacing="0.12em"
-                      >
-                        project_{String(idx + 1).padStart(2, '0')}
-                      </Text>
-                      <Heading
-                        fontSize="4xl"
-                        fontStyle="italic"
-                        color="fg.default"
-                        lineHeight="0.95"
+                        letterSpacing="tighter"
                       >
                         {project.title}
-                      </Heading>
-
-                      <Flex
-                        gap="2"
-                        fontSize="xs"
-                        color="fg.muted"
-                        align="center"
+                      </Text>
+                      <Box
+                        px="2"
                         fontFamily="JetBrains Mono, monospace"
+                        fontSize="10px"
+                        color="#ffb000"
+                        border="1px solid"
+                        borderColor="#ffb000"
+                        flexShrink="0"
+                        ml="2"
                       >
-                        {project.category?.name && <Box>{project.category.name}</Box>}
-                      </Flex>
-
-                      {project.tags && project.tags.length > 0 && (
-                        <Flex align="center" gap="2" wrap="wrap">
-                          <Text fontSize="xs" fontWeight="bold" color="fg.muted">
-                            {t('common.tags')}:
-                          </Text>
-                          {project.tags
-                            .filter((tag): tag is TagFragment => !!tag)
-                            .map((tag) => (
-                              <TagBadge tag={tag} size="sm" />
-                            ))}
-                        </Flex>
-                      )}
-
-                      {project.description && (
-                        <Text color="fg.muted" lineClamp={3} fontSize="sm" mt="2">
-                          {project.description}
-                        </Text>
-                      )}
-                    </Stack>
+                        {(project.category?.name ?? 'PROJECT').toUpperCase()}
+                      </Box>
+                    </Flex>
+                    <Text
+                      color="#c7c6c6"
+                      fontSize="sm"
+                      fontFamily="Newsreader, serif"
+                      fontStyle="italic"
+                    >
+                      {project.description}
+                    </Text>
+                    <Flex
+                      mt="6"
+                      pt="4"
+                      borderTop="1px solid"
+                      borderColor="#524533"
+                      justify="space-between"
+                      align="center"
+                      opacity="0.5"
+                      className="specimen-footer"
+                      style={{ transition: 'opacity 300ms' }}
+                    >
+                      <Text fontFamily="JetBrains Mono, monospace" fontSize="10px">
+                        {project.date?.slice(0, 4) ?? 'Project'}
+                      </Text>
+                      <span class="material-symbols-outlined" style="font-size:14px">north_east</span>
+                    </Flex>
                   </Box>
-                </Link>
+                </a>
+              );
+            })}
+          </Grid>
+        ) : (
+          <Box
+            border="1px solid"
+            borderColor="#524533"
+            bg="#1c1b1b"
+            p={{ base: '8', md: '12' }}
+            mb="20"
+            textAlign="center"
+          >
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              letterSpacing="0.15em"
+              color="#9f8e78"
+              mb="4"
+            >status: unavailable</Text>
+            <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic" mb="3">
+              {t('home.specimens-empty-title')}
+            </Heading>
+            <Text color="#524533" fontSize="sm">
+              {t('home.specimens-empty-description')}
+            </Text>
+          </Box>
+        )}
+        <Grid gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap="24">
+          <Stack gap="8">
+            <Flex align="center" gap="4">
+              <Heading as="h2" fontSize="4xl" fontStyle="italic">
+                {t('home.work-heading')}
+              </Heading>
+              <Box h="1px" flex="1" bg="#524533" />
+            </Flex>
+            {workProjects.length > 0 ? (
+              <Stack gap="8">
+                {workProjects.map((project) => (
+                  <Stack borderLeft="4px solid" borderLeftColor="#ffb000" pl="6" py="2">
+                    <Heading as="h3" fontFamily="Manrope, sans-serif" fontWeight="extrabold" fontSize="xl" textTransform="uppercase" letterSpacing="wider" fontStyle="normal">
+                      {project.title}
+                    </Heading>
+                    <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" color="#ffd597">
+                      {project.category?.name ?? 'project'}
+                    </Text>
+                    <Text color="#c7c6c6" lineHeight="1.8">
+                      {project.description}
+                    </Text>
+                  </Stack>
+                ))}
+              </Stack>
+            ) : (
+              <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '6', md: '8' }}>
+                <Stack gap="3" alignItems="center" textAlign="center" py="6">
+                  <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="0.15em" color="#9f8e78">
+                    status: unavailable
+                  </Text>
+                  <Heading as="h3" fontSize={{ base: 'xl', md: '2xl' }} fontStyle="italic">
+                    {t('home.work-empty-title')}
+                  </Heading>
+                  <Text color="#c7c6c6" fontSize="sm" lineHeight="1.7" maxW="sm">
+                    {t('home.work-empty-description')}
+                  </Text>
+                </Stack>
               </Box>
-            ))
-          }
+            )}
+          </Stack>
+          <Stack gap="8">
+            <Flex align="center" gap="4">
+              <Heading as="h2" fontSize="4xl" fontStyle="italic">
+                {t('home.life-heading')}
+              </Heading>
+              <Box h="1px" flex="1" bg="#524533" />
+            </Flex>
+            <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="6">
+              <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="4" aspectRatio="1 / 1" justifyContent="space-between" className="card-hover-amber">
+                <span class="material-symbols-outlined" style="color: #FFB000; font-size: 2.25rem;">dark_mode</span>
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="tight">
+                  {t('home.life-darkroom')}
+                </Text>
+              </Stack>
+              <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="4" aspectRatio="1 / 1" justifyContent="space-between" className="card-hover-amber">
+                <span class="material-symbols-outlined" style="color: #FFB000; font-size: 2.25rem;">category</span>
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="tight">
+                  {t('home.life-skill-toys')}
+                </Text>
+              </Stack>
+            </Grid>
+          </Stack>
         </Grid>
-      </Stack>
-    </Container>
-  </Box>
-
-  <Container maxW="breakpoint-xl" py="24">
-    <Stack gap="12">
-      <Heading
-        fontSize={{ base: '4xl', lg: '6xl' }}
-        color="fg.default"
-        textAlign="center"
-        fontStyle="italic"
-      >
-        {t('home.about-me')}
-      </Heading>
-
-      <BentoGrid introImage={introImage} locale={locale} />
+      </Box>
     </Stack>
   </Container>
 </MainLayout>

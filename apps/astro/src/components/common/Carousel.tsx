@@ -64,9 +64,9 @@ export const AppCarousel = (props: Omit<RootProps, 'slideCount'> & { images: str
               aria-selected={idx === index}
               cursor="pointer"
               border="1px solid"
-              borderColor="border.default"
-              rounded="l1"
-              backgroundColor={{ _selected: 'bg.subtle' }}
+              borderColor="#524533"
+              rounded="none"
+              backgroundColor={{ _selected: '#353534' }}
             >
               <styled.img
                 src={image}

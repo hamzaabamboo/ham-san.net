@@ -19,8 +19,8 @@ export const BrandMark = ({
       justifyContent="center"
       alignItems="center"
       border="1px solid"
-      borderColor="border.subtle"
-      bg="bg.default"
+      borderColor="#524533"
+      bg="#1c1b1b"
     >
       <styled.svg
         style={{ width: `${size - 8}px`, height: `${size - 8}px` }}
@@ -28,12 +28,13 @@ export const BrandMark = ({
         aria-hidden="true"
         fill="none"
       >
-        <path d="M12 52L26 12H30L20 52H12Z" stroke={color} strokeWidth="3" />
-        <path d="M52 52L38 12H34L44 52H52Z" stroke={color} strokeWidth="3" />
-        <path d="M24 33H40" stroke={accent} strokeWidth="4" />
-        <path d="M30 12L40 12" stroke={accent} strokeWidth="3" />
-        <path d="M22 52H42" stroke={color} strokeWidth="3" />
-        <circle cx="32" cy="12" r="3" fill={accent} />
+        <path d="M18 54L22 12" stroke={color} strokeWidth="3.2" />
+        <path d="M46 54L42 12" stroke={color} strokeWidth="3.2" />
+        <path d="M22 31H42" stroke={accent} strokeWidth="4" />
+        <path d="M26 16H38" stroke={color} strokeWidth="3" />
+        <path d="M20 54H44" stroke={color} strokeWidth="3" />
+        <path d="M32 8V18" stroke={accent} strokeWidth="3" />
+        <circle cx="32" cy="8" r="3" fill={accent} />
       </styled.svg>
     </Box>
   );

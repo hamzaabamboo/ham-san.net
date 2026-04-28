@@ -1,0 +1,60 @@
+---
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const getURLWithLanguage = (value: string) => {
+  return `/${lang}${value}`;
+};
+
+const SIDEBAR_LINKS = [
+  { label: t('common.projects'), value: '/projects', icon: 'terminal' },
+  { label: t('common.note'), value: '/notes', icon: 'description' },
+  { label: t('common.hobbies'), value: '/hobbies', icon: 'photo_camera' },
+  { label: t('common.event'), value: '/events', icon: 'event' },
+  { label: t('common.about-me'), value: '/about', icon: 'person' },
+  { label: t('common.contact'), value: '/contact', icon: 'mail' }
+];
+---
+
+<aside class="shell-sidebar">
+  <div class="shell-sidebar-header">
+    <h2 style="font-family:'Manrope',sans-serif;font-weight:700;color:#FFB000;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase">Menu</h2>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9f8e78;margin-top:0.25rem">Homepage V3</p>
+  </div>
+
+  <nav class="shell-sidebar-nav">
+    {
+      SIDEBAR_LINKS.map(({ label, value, icon }) => {
+        const fullPath = getURLWithLanguage(value);
+        const isCurrent =
+          value === '/'
+            ? Astro.url.pathname === fullPath
+            : Astro.url.pathname.startsWith(fullPath);
+
+        return (
+          <a
+            href={fullPath}
+            class="shell-sidebar-link"
+            aria-current={isCurrent ? 'page' : undefined}
+          >
+            <span class="material-symbols-outlined shell-sidebar-link-icon">{icon}</span>
+            <span class="shell-sidebar-link-label">{label}</span>
+          </a>
+        );
+      })
+    }
+  </nav>
+
+  <div class="shell-sidebar-footer">
+    <div class="shell-sidebar-env">
+      <span class="shell-sidebar-env-label">Status</span>
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.75rem">
+        <span style="width:0.5rem;height:0.5rem;background-color:#10b981;display:block"></span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#e5e2e1">Site ready</span>
+      </div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:10px;margin-top:0.5rem;color:#9f8e78">LANG: {lang.toUpperCase()}</p>
+    </div>
+  </div>
+</aside>

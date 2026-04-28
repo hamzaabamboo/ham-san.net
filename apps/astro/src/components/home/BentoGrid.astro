@@ -28,11 +28,11 @@ const t = useTranslations(locale);
 
 const BentoCard = styled(Box, {
   base: {
-    bg: 'bg.default',
+    bg: '#1c1b1b',
     background:
-      'linear-gradient(145deg, token(colors.bg.default) 0%, token(colors.bg.subtle) 100%)',
+      'linear-gradient(145deg, #1c1b1b 0%, #2a2a2a 100%)',
     border: '1px solid',
-    borderColor: 'border.subtle',
+    borderColor: '#524533',
     borderRadius: '3xl',
     overflow: 'hidden',
     position: 'relative',
@@ -40,7 +40,7 @@ const BentoCard = styled(Box, {
     _hover: {
       transform: 'translateY(-4px) scale(1.01)',
       shadow: '2xl',
-      borderColor: 'amber.400',
+      borderColor: '#ffb000',
       zIndex: 10
     }
   }
@@ -49,12 +49,12 @@ const BentoCard = styled(Box, {
 const IconBox = styled(Box, {
   base: {
     p: '3',
-    bg: 'bg.subtle',
+    bg: '#2a2a2a',
     borderRadius: 'xl',
     fontSize: '2xl',
-    color: 'fg.default',
+    color: '#e5e2e1',
     transition: 'color 0.3s',
-    _hover: { color: 'amber.500', bg: 'bg.muted' }
+    _hover: { color: '#ffb000', bg: '#353534' }
   }
 });
 ---
@@ -98,7 +98,7 @@ const IconBox = styled(Box, {
         >
           {t('home.bento-headline')}
         </Heading>
-        <Text color="fg.muted" fontSize="lg" lineHeight="relaxed">
+        <Text color="#c7c6c6" fontSize="lg" lineHeight="relaxed">
           {t('home.bento-description')}
         </Text>
       </Stack>
@@ -126,7 +126,7 @@ const IconBox = styled(Box, {
         <Box
           w="12"
           h="12"
-          bg="amber.500"
+          bg="#ffb000"
           borderRadius="full"
           display="flex"
           alignItems="center"
@@ -136,7 +136,7 @@ const IconBox = styled(Box, {
         >
           <FaMapMarkerAlt color="white" size={20} />
         </Box>
-        <Box bg="bg.default/80" backdropFilter="blur(4px)" px="4" py="2" borderRadius="full">
+        <Box style={{ backgroundColor: 'rgba(28, 27, 27, 0.8)' }} backdropFilter="blur(4px)" px="4" py="2" borderRadius="full">
           <Text fontWeight="bold" fontSize="sm">Bangkok, TH</Text>
         </Box>
       </Stack>
@@ -150,7 +150,7 @@ const IconBox = styled(Box, {
           textTransform="uppercase"
           fontSize="xs"
           letterSpacing="widest"
-          color="fg.subtle">{t('home.bento-toolbox')}</Text
+          color="#9f8e78">{t('home.bento-toolbox')}</Text
         >
         <Grid gridTemplateColumns="repeat(3, 1fr)" gap="3">
           <IconBox><FaReact /></IconBox>

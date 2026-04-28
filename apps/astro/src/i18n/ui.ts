@@ -2,7 +2,8 @@ import ui from 'i18n/index';
 
 export const languages = {
   en: 'English',
-  ja: '日本語'
+  ja: '日本語',
+  th: 'ไทย'
 };
 
 export type Languages = keyof typeof languages;

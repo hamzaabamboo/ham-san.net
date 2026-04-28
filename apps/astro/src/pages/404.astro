@@ -1,0 +1,140 @@
+---
+import { Box, Container, Flex, Stack } from 'styled-system/jsx';
+import { Text } from '~/components/ui/text';
+import { getLangFromUrl } from '~/i18n/utils';
+import MainLayout from '~/layouts/MainLayout.astro';
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<MainLayout title="404 | Not Found">
+  <Container maxW="breakpoint-xl" className="page-shell">
+    <Flex
+      minH="70vh"
+      alignItems="center"
+      justifyContent="center"
+      px={{ base: '6', md: '10' }}
+    >
+      <Stack gap="0" alignItems="center" textAlign="center" maxW="520px">
+        <Text
+          fontFamily="JetBrains Mono, monospace"
+          fontSize="11px"
+          textTransform="uppercase"
+          letterSpacing="0.15em"
+          color="#9f8e78"
+          mb="6"
+        >
+          Page not found
+        </Text>
+
+        <Text
+          fontFamily="Newsreader, serif"
+          fontWeight="400"
+          fontStyle="italic"
+          lineHeight="1"
+          fontSize={{ base: '7xl', md: '8xl' }}
+          color="#e5e2e1"
+          mb="4"
+        >
+          404
+        </Text>
+
+        <Text
+          fontFamily="Newsreader, serif"
+          fontWeight="400"
+          fontStyle="italic"
+          lineHeight="1.2"
+          fontSize={{ base: '2xl', md: '3xl' }}
+          color="#e5e2e1"
+          mb="6"
+        >
+          Path not found.
+        </Text>
+
+        <Text
+          fontFamily="Manrope, sans-serif"
+          fontSize="14px"
+          lineHeight="1.7"
+          color="#c7c6c6"
+          mb="10"
+        >
+          The requested route does not exist or has been relocated.
+        </Text>
+
+        <Flex
+          gap="3"
+          flexWrap="wrap"
+          justifyContent="center"
+        >
+          <a
+            href={`/${lang}/`}
+            class="not-found-cta"
+          >
+            Return home
+          </a>
+          <a
+            href={`/${lang}/projects`}
+            class="not-found-link"
+          >
+            Projects
+          </a>
+          <a
+            href={`/${lang}/contact`}
+            class="not-found-link"
+          >
+            Contact
+          </a>
+        </Flex>
+
+        <Box
+          mt="12"
+          pt="8"
+          borderTop="1px solid #524533"
+          w="full"
+        >
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            letterSpacing="0.1em"
+            color="#4c4e4e"
+          >
+            404
+          </Text>
+        </Box>
+      </Stack>
+    </Flex>
+  </Container>
+</MainLayout>
+
+<style>
+  .not-found-cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #432c00;
+    background: #ffb000;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+  .not-found-cta:hover {
+    opacity: 0.85;
+  }
+  .not-found-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #c7c6c6;
+    border: 1px solid #524533;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .not-found-link:hover {
+    border-color: #9f8e78;
+    color: #e5e2e1;
+  }
+</style>

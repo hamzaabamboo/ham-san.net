@@ -1,51 +1,46 @@
 ---
-import { HStack, Stack, Wrap } from 'styled-system/jsx';
 import { useTranslations, validateLocale } from '~/i18n/utils';
-import { BrandMark } from '../brand/BrandMark';
-import { Link } from '../ui/link';
-import { Text } from '../ui/text';
 
 const locale = validateLocale(Astro.params.locale) ? Astro.params.locale : 'en';
 const t = useTranslations(locale);
 ---
 
-<Wrap
-  _print={{ display: 'none' }}
-  w="full"
-  py="6"
-  px={{ base: '4', md: '8' }}
-  justifyContent="space-between"
-  alignItems="center"
-  bg="bg.default"
-  color="fg.muted"
-  borderTop="1px solid"
-  borderColor="border.subtle"
-  fontSize="sm"
->
-  <Stack gap="2">
-    <HStack gap="3" alignItems="center">
-      <BrandMark size={22} />
-      <Text textTransform="uppercase" letterSpacing="0.18em" fontWeight="bold" fontSize="xs">
-        atelier log
-      </Text>
-    </HStack>
-    <Text fontFamily="JetBrains Mono, monospace" fontSize="xs">
-      {t('common.copyright')}
-    </Text>
-  </Stack>
-  <HStack gap="6">
-    <Link
+<footer class="shell-footer">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;color:#FFB000;opacity:0.8">
+    {t('common.copyright')}
+  </div>
+  <div style="display:flex;gap:2rem;align-items:center">
+    <a
       target="_blank"
       rel="noreferrer"
       href="https://github.com/hamzaabamboo/ham-san.net"
-      fontFamily="JetBrains Mono, monospace"
-      textTransform="uppercase"
-      fontSize="xs"
-      letterSpacing="0.12em"
-      _hover={{ color: 'amber.500' }}
-      transition="colors"
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease"
+      class="shell-footer-link"
     >
-      {t('common.view-source')}
-    </Link>
-  </HStack>
-</Wrap>
+      GitHub
+    </a>
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href="https://www.linkedin.com/in/tvittayapalotai/"
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease"
+      class="shell-footer-link"
+    >
+      LinkedIn
+    </a>
+    <a
+      href={`/${locale}/rss.xml`}
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease"
+      class="shell-footer-link"
+    >
+      RSS
+    </a>
+    <a
+      href={`/${locale}/sitemap.xml`}
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease"
+      class="shell-footer-link"
+    >
+      Sitemap
+    </a>
+  </div>
+</footer>

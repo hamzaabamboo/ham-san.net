@@ -15,7 +15,7 @@
   "under-construction": "Under Construction",
   "page-not-found": "Page not found",
   "something-went-wrong": "Something went wrong",
-  "copyright": "© 2023-2026 HamP, Assets used in the site belongs to respective owner",
+  "copyright": "©2023–2026 Ham",
   "programming-language": "Programming Languages",
   "frontend": "Frontend",
   "backend": "Backend",
@@ -25,5 +25,12 @@
   "present": "Present",
   "used-since": "Used Since {{usedSince}}",
   "view-source": "View Source",
-  "name-card": "Name Card"
+  "name-card": "Name Card",
+  "tags-description": "Skills, domains, and recurring themes connected across projects and experience.",
+  "events-description": "A running log of events, meetups, and live shows I attended.",
+  "events-source-note": "source notes / mixed-language record",
+  "events-empty-title": "Event Log Offline",
+  "events-empty-description": "Events will show up again when the content connection is back.",
+  "tags-empty-title": "Tags unavailable",
+  "tags-empty-description": "Tags will show up again when the content connection is back."
 }

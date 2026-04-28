@@ -83,7 +83,7 @@ const Image = styled.img;
       backgroundPosition="center"
       blur="8px"
     />
-    <Container>
+    <Container w="full" maxW="breakpoint-md" px="4">
       <Stack p="4" rounded="l1" bgColor="white.a6" alignItems="stretch" textAlign="center">
         <HStack justifyContent="flex-end" gap="2" w="full">
           {
@@ -139,7 +139,7 @@ const Image = styled.img;
             })
           }
         </Grid>
-        <Box mx="auto" textAlign="start">
+        <Box mx="auto" textAlign="start" maxW="full" overflowX="auto" pb="2">
           <a href={`/${locale}/namecard/all`}>
             <Namecard side="front" data={namecard} />
           </a>

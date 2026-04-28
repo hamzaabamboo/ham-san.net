@@ -31,9 +31,9 @@ export const Marquee = () => {
     <Box
       position="relative"
       borderY="1px solid"
-      borderColor="border.subtle"
+      borderColor="#524533"
       py="8"
-      bg="bg.subtle"
+      bg="#2a2a2a"
       overflow="hidden"
     >
       <Box
@@ -47,7 +47,7 @@ export const Marquee = () => {
         {[...Array(2)].map((_, i) => (
           <Flex key={i} gap="16" px="8">
             {icons.map((Item, idx) => (
-              <Flex key={idx} gap="3" flexShrink={0} align="center" color="fg.muted">
+              <Flex key={idx} gap="3" flexShrink={0} align="center" color="#c7c6c6">
                 <Item.icon size={32} />
                 <Box fontSize="xl" fontWeight="bold" whiteSpace="nowrap">
                   {Item.name}
@@ -65,7 +65,7 @@ export const Marquee = () => {
         w="24"
         h="full"
         bgGradient="to-r"
-        gradientFrom="bg.subtle"
+        gradientFrom="#2a2a2a"
         gradientTo="transparent"
         zIndex="1"
       />
@@ -76,7 +76,7 @@ export const Marquee = () => {
         w="24"
         h="full"
         bgGradient="to-l"
-        gradientFrom="bg.subtle"
+        gradientFrom="#2a2a2a"
         gradientTo="transparent"
         zIndex="1"
       />

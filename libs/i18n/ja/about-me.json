@@ -1,5 +1,24 @@
 {
   "title": "プロフィール",
   "skills": "スキル",
-  "return-to": "プロフィールに戻る"
+  "return-to": "プロフィールに戻る",
+  "eyebrow": "Profile",
+  "hero-title": "Webを作るジェネラリスト。",
+  "hero-summary": "主にフロントエンド、プロダクトUI、日々の作業を少し楽にするツールを作っています。",
+  "methodology": "作り方",
+  "methodology-body": "コード、写真、語学など、違う分野でも仕組みを理解して組み立てるのが好きです。",
+  "methodology-coda": "分かりやすく、使いやすく、後から直しやすいものを作ることを大事にしています。",
+  "selected-projects": "関連するプロジェクト",
+  "bio-integrity": "良いUIは、何が起きているかを自然に伝えるものだと思っています。",
+  "bio-subtractive": "まず余計なものを減らして、使う人が前に進める部分を残します。",
+  "credentials-certification": "得意分野",
+  "credentials-certification-value": "フロントエンド",
+  "credentials-location": "所在地",
+  "credentials-location-value": "東京 / リモート",
+  "credentials-availability": "稼働状況",
+  "credentials-availability-value": "内容を見て対応",
+  "credentials-signal": "連絡",
+  "credentials-signal-value": "メール",
+  "timeline-empty-title": "タイムラインは現在利用できません",
+  "timeline-empty-description": "接続が戻ると、経歴が再表示されます。"
 }

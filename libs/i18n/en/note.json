@@ -3,5 +3,19 @@
   "back-to-posts": "Back to Notes",
   "back": "Back",
   "read-in-outline": "Read in Outline",
-  "description": "Collection of public notes written in personal notes server. Mostly random stuff I write that's worth publishing."
+  "description": "Public notes from my personal knowledge base. Drafts, references, and longer thoughts worth keeping in the open.",
+  "note-label": "Note",
+  "related": "Related documents",
+  "published": "Published",
+  "reading-time": "Reading Time",
+  "collection": "Collection",
+  "archive-ref": "Source note",
+  "previous-entry": "Previous Entry",
+  "next-entry": "Next Entry",
+  "min-read": "MIN",
+  "words": "WORDS",
+  "contents": "Contents",
+  "tags": "Tags",
+  "empty-title": "Notes Unavailable",
+  "empty-description": "Notes will show up again when the content connection is back."
 }

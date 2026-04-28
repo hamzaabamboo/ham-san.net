@@ -35,9 +35,9 @@ export const ThemeToggle = () => {
       size="sm"
       colorPalette="gray"
       border="1px solid"
-      borderColor="border.subtle"
-      bg="bg.default/80"
-      _hover={{ bg: 'bg.subtle', color: 'amber.500' }}
+      borderColor="#524533"
+      bg="#131313"
+      _hover={{ bg: '#2a2a2a', color: '#ffb000', borderColor: '#ffb000' }}
     >
       {isDark ? <FaSun /> : <FaMoon />}
     </IconButton>

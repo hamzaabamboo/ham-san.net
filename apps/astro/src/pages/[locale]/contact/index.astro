@@ -1,23 +1,12 @@
 ---
-import {
-  FaDiscord,
-  FaEnvelope,
-  FaFacebook,
-  FaGithub,
-  FaLink,
-  FaLinkedin,
-  FaPrint,
-  FaTwitter
-} from 'react-icons/fa';
 import { Box, Container, Grid, Stack, Wrap } from 'styled-system/jsx';
-import { LinkItem } from '~/components/common/LinkItem';
-import { InteractiveNamecard } from '~/components/namecard/InteractiveNamecard';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { NAMECARDS } from '~/constants/namecard';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+
 export const prerender = false;
 
 const { locale } = Astro.params;
@@ -28,182 +17,281 @@ if (!validateLocale(locale)) {
 
 const t = useTranslations(locale);
 const pageTitle = `${t('common.contact')} | ${t('common.name')}`;
+const showcaseNamecards = NAMECARDS.slice(0, 3);
+const currentUtcTime = new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'UTC',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false
+}).format(new Date());
+const officeHoursBody = `${t('contact.office-hours-body')}\n${t('contact.current-time-label')} // ${currentUtcTime} UTC`;
 
 const items = [
-  {
-    label: t('contact.email'),
-    value: 'hamzaabamboo@gmail.com',
-    url: 'mailto:hamzaabamboo@gmail.com',
-    icon: FaEnvelope
-  },
-  {
-    label: t('contact.twitter'),
-    value: '@HamP_punipuni',
-    url: 'https://twitter.com/HamP_punipuni',
-    icon: FaTwitter
-  },
-  {
-    label: t('contact.github'),
-    value: 'hamzaabamboo',
-    url: 'https://github.com/hamzaabamboo',
-    icon: FaGithub
-  },
-  {
-    label: t('contact.linkedin'),
-    value: 'tvittayapalotai',
-    url: 'https://www.linkedin.com/in/tvittayapalotai/',
-    icon: FaLinkedin
-  },
-  {
-    label: t('contact.facebook'),
-    value: 'hamPpunipuni',
-    url: 'https://www.facebook.com/hamPpunipuni',
-    icon: FaFacebook
-  },
-  {
-    label: 'Discord',
-    value: 'hamp',
-    url: 'https://discordapp.com/users/260776161032798208',
-    icon: FaDiscord
-  },
-  {
-    label: 'Eventernote',
-    value: 'HamP_punipuni',
-    url: 'https://www.eventernote.com/users/HamP_punipuni',
-    icon: FaLink
-  }
+  { label: 'EMAIL', value: 'hello@ham-san.net', url: 'mailto:hello@ham-san.net' },
+  { label: 'GITHUB', value: 'hamzaabamboo', url: 'https://github.com/hamzaabamboo' },
+  { label: 'LINKEDIN', value: 'tvittayapalotai', url: 'https://www.linkedin.com/in/tvittayapalotai/' },
+  { label: 'TWITTER', value: '@HamP_punipuni', url: 'https://twitter.com/HamP_punipuni' },
+  { label: 'FACEBOOK', value: 'hamPpunipuni', url: 'https://www.facebook.com/hamPpunipuni' },
+  { label: 'DISCORD', value: 'hamp', url: 'https://discordapp.com/users/260776161032798208' },
+  { label: 'EVENTERNOTE', value: 'HamP_punipuni', url: 'https://www.eventernote.com/users/HamP_punipuni' }
 ];
+
 ---
 
-<MainLayout title={pageTitle}>
-  <Container w="full" maxW="breakpoint-xl" py="8">
-    <Stack gap="10">
-      <Stack
-        gap="4"
-        borderLeftWidth="2px"
-        borderLeftStyle="solid"
-        borderLeftColor="amber.500"
-        pl="6"
-      >
+<MainLayout title={pageTitle} description={t('contact.intro')}>
+  <Container w="full" maxW="breakpoint-xl" py="8" className="page-shell">
+    <Stack gap="12">
+      <Stack gap="4" borderLeftWidth="2px" borderLeftStyle="solid" borderLeftColor="#ffb000" pl="8" py="4">
         <Text
           fontFamily="JetBrains Mono, monospace"
           fontSize="10px"
           textTransform="uppercase"
-          letterSpacing="0.12em"
-          color="amber.500"
+          letterSpacing="0.2em"
+          color="#ffb000"
         >
-          signal_intercept
+          contact
         </Text>
-        <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic">
-          Initiate contact.
+        <Heading as="h1" fontSize={{ base: '5xl', md: '8xl' }} fontStyle="italic" lineHeight="tight" letterSpacing="tighter">
+          {t('contact.hero-prefix') + ' '}<Box as="span" color="#ffb000">{t('contact.hero-highlight')}</Box>.
         </Heading>
-        <Text color="fg.muted" fontSize="lg" maxW="2xl">
-          The workshop is open for thoughtful collaboration, frontend systems work, and interesting
-          side paths.
+        <Text color="#c7c6c6" fontSize="xl" maxW="2xl" lineHeight="relaxed" mt="2">
+          {t('contact.intro')}
         </Text>
       </Stack>
-      <Grid gridTemplateColumns={{ base: '1fr', lg: '320px minmax(0, 1fr)' }} gap="8">
-        <Stack gap="6">
-          <Box border="1px solid" borderColor="border.subtle" bg="bg.subtle" p="6">
-            <Text
+
+      <Grid gridTemplateColumns={{ base: '1fr', lg: '3fr 9fr' }} gap="12">
+        <Stack gap="12" minW="0">
+          <Stack border="1px solid" borderColor="#524533" bg="#0e0e0e" p="6" position="relative">
+            <Box
+              position="absolute"
+              top="-3"
+              left="4"
+              px="2"
+              py="0.5"
+              bg="#353534"
               fontFamily="JetBrains Mono, monospace"
               fontSize="10px"
               textTransform="uppercase"
-              letterSpacing="0.12em"
-              color="amber.500"
-              mb="4"
+              color="#ffd597"
             >
-              node_status
-            </Text>
-            <Stack gap="3">
-              <Text fontFamily="JetBrains Mono, monospace" fontSize="xs">v2.0.4-stable</Text>
-              <Text color="fg.muted" fontSize="sm"
-                >Digital namecards, direct channels, and public profiles.</Text
-              >
-            </Stack>
-          </Box>
-          <Grid gridTemplateColumns="repeat(2, 1fr)" gap="3">
-            <Link href={`/${locale}/namecard/default`}>
-              <Box border="1px solid" borderColor="border.subtle" p="4" bg="bg.default">
-                <Text
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  color="fg.subtle"
-                >
-                  01/
-                </Text>
-                <Text mt="2" fontWeight="bold">Standard</Text>
-              </Box>
-            </Link>
-            <Link href={`/${locale}/namecard/all`}>
-              <Box border="1px solid" borderColor="border.subtle" p="4" bg="bg.default">
-                <Text
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  color="fg.subtle"
-                >
-                  02/
-                </Text>
-                <Text mt="2" fontWeight="bold">All Variants</Text>
-              </Box>
-            </Link>
-          </Grid>
-        </Stack>
-        <Stack gap="8">
-          <Stack gap="4">
-            <Text
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              textTransform="uppercase"
-              letterSpacing="0.12em"
-              color="fg.subtle"
-            >
-              social_connectors
-            </Text>
-            <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="3">
-              {
-                items.map(({ icon, label, value, url }) => {
-                  return (
-                    <LinkItem
-                      data={{
-                        title: label,
-                        url: url
-                      }}
-                      Icon={icon}
-                      linkText={value}
-                    />
-                  );
-                })
-              }
-            </Grid>
-          </Stack>
-          <Stack gap="4">
-            <Wrap justifyContent="space-between" alignItems="center">
-              <Heading as="h2" fontSize="4xl" fontStyle="italic">{t('contact.name-card')}</Heading>
-              <Link
-                href={`/${locale}/namecard/all`}
-                display="inline-flex"
-                alignItems="center"
-                gap="2"
-              >
-                <FaPrint />
-                <Text>View all</Text>
-              </Link>
+              status
+            </Box>
+            <Wrap alignItems="center" gap="3" mb="6">
+              <Box w="2" h="2" bg="#ffb000" />
+              <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" textTransform="uppercase" letterSpacing="tighter">
+                v2.0.4-stable
+              </Text>
             </Wrap>
-            <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="6">
-              {
-                NAMECARDS.slice(0, 2).map((card) => (
-                  <Link href={`/${locale}/namecard/${card.variant}`}>
-                    <Box border="1px solid" borderColor="border.subtle" bg="bg.default" p="4">
-                      <InteractiveNamecard data={card} />
-                    </Box>
-                  </Link>
-                ))
-              }
+            <Stack gap="4">
+              <Wrap gap="3" alignItems="center" color="#ffb000" cursor="pointer">
+                <span class="material-symbols-outlined" style="font-size: 14px;">info</span>
+                <Text fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">Start</Text>
+              </Wrap>
+              <Wrap gap="3" alignItems="center" color="#c7c6c6" cursor="pointer" className="contact-nav-item">
+                <span class="material-symbols-outlined" style="font-size: 14px;">architecture</span>
+                <Text fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">Details</Text>
+              </Wrap>
+              <Wrap gap="3" alignItems="center" color="#c7c6c6" cursor="pointer" className="contact-nav-item">
+                <span class="material-symbols-outlined" style="font-size: 14px;">history</span>
+                <Text fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">History</Text>
+              </Wrap>
+            </Stack>
+          </Stack>
+
+          <Stack gap="4">
+            <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" letterSpacing="0.2em" color="#9f8e78">
+              {t('contact.social-connectors')}
+            </Text>
+            <Grid gridTemplateColumns="1fr" gap="2">
+              {items.map((item, index) => (
+                <Link
+                  href={item.url}
+                  target={item.url.startsWith('mailto:') ? undefined : '_blank'}
+                  rel={item.url.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                  display="flex"
+                  flexDirection="column"
+                  border="1px solid"
+                  borderColor="#524533"
+                  p="4"
+                  className="group contact-social-card"
+                >
+                  <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#9f8e78" className="group-hover-amber" mb="2">
+                    {String(index + 1).padStart(2, '0')}/
+                  </Text>
+                  <Text fontWeight="bold" fontSize="sm">{item.label}</Text>
+                  <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#9f8e78" mt="1" overflowWrap="anywhere">
+                    {item.value}
+                  </Text>
+                </Link>
+              ))}
             </Grid>
           </Stack>
+        </Stack>
+
+        <Stack gap="16" minW="0">
+          <Stack gap="6">
+            <Wrap justifyContent="space-between" alignItems="center" borderBottom="1px solid" borderColor="#524533" pb="4">
+              <Heading as="h2" fontSize="2xl" fontWeight="extrabold" textTransform="uppercase" letterSpacing="tighter" fontStyle="normal">
+                {t('contact.namecards')}
+              </Heading>
+              <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" textTransform="uppercase" color="#9f8e78">
+                choices: {showcaseNamecards.length}
+              </Text>
+            </Wrap>
+            <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap="6">
+              <Link href={`/${locale}/namecard/${showcaseNamecards[0]?.variant ?? 'default'}`} style={{ textDecoration: 'none' }}>
+                <Box
+                  bg="#1c1b1b"
+                  border="1px solid"
+                  borderColor="#524533"
+                  p="6"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="space-between"
+                  aspectRatio="1.6 / 1"
+                  className="blocky-shadow"
+                  transition="all 0.15s ease"
+                  _hover={{ transform: 'translateY(-4px)', boxShadow: '8px 8px 0px 0px rgba(255,176,0,0.2)' }}
+                >
+                  <Box>
+                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1">Ham</Text>
+                    <Text fontFamily="JetBrains Mono, monospace" fontSize="9px" color="#ffd597" textTransform="uppercase" letterSpacing="widest">Frontend / Web</Text>
+                  </Box>
+                  <Wrap justifyContent="space-between" alignItems="flex-end">
+                    <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#9f8e78" lineHeight="tight">
+                      Tokyo / Bangkok<br />Remote OK
+                    </Text>
+                    <span class="material-symbols-outlined" style="color: #ffb000;">qr_code_2</span>
+                  </Wrap>
+                </Box>
+              </Link>
+
+              <Link href={`/${locale}/namecard/${showcaseNamecards[1]?.variant ?? 'default'}`} style={{ textDecoration: 'none' }}>
+                <Box
+                  position="relative"
+                  overflow="hidden"
+                  bg="#353534"
+                  border="1px solid"
+                  borderColor="#ffb000"
+                  p="6"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="space-between"
+                  aspectRatio="1.6 / 1"
+                  boxShadow="4px 4px 0px 0px rgba(255,176,0,0.5)"
+                  transition="all 0.15s ease"
+                  _hover={{ transform: 'translateY(-4px)' }}
+                  className="group"
+                >
+                  <Box position="absolute" inset="0" className="holographic-sheen group-hover-holographic-sheen" opacity="0.3" transition="opacity 0.15s ease" />
+                  <Box position="relative" zIndex="10">
+                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1" color="#ffb000">Alt card</Text>
+                    <Text fontFamily="JetBrains Mono, monospace" fontSize="9px" color="#d7c4ac" textTransform="uppercase" letterSpacing="widest">Digital namecard</Text>
+                  </Box>
+                  <Wrap position="relative" zIndex="10" justifyContent="space-between" alignItems="flex-end">
+                    <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#d7c4ac" lineHeight="tight">
+                      Web / UI<br />Open to chat
+                    </Text>
+                    <span class="material-symbols-outlined" style="color: #ffb000; font-variation-settings: 'FILL' 1;">dataset</span>
+                  </Wrap>
+                </Box>
+              </Link>
+
+              <Link href={`/${locale}/namecard/${showcaseNamecards[2]?.variant ?? 'default'}`} style={{ textDecoration: 'none' }}>
+                <Box
+                  bg="#dbdbdb"
+                  color="#0e0e0e"
+                  p="6"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="space-between"
+                  aspectRatio="1.6 / 1"
+                  className="blocky-shadow"
+                  transition="all 0.15s ease"
+                  _hover={{ transform: 'translateY(-4px)' }}
+                >
+                  <Box>
+                    <Text fontWeight="black" fontSize="xl" lineHeight="none" mb="1">Simple card</Text>
+                    <Text fontFamily="JetBrains Mono, monospace" fontSize="9px" opacity="0.6" textTransform="uppercase" letterSpacing="widest">Printable version</Text>
+                  </Box>
+                  <Wrap justifyContent="space-between" alignItems="flex-end">
+                    <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" opacity="0.6" lineHeight="tight">
+                      Name / Links<br />PDF ready
+                    </Text>
+                    <span class="material-symbols-outlined">print</span>
+                  </Wrap>
+                </Box>
+              </Link>
+            </Grid>
+          </Stack>
+
+          <Stack border="1px solid" borderColor="#524533" bg="#0e0e0e" overflow="hidden">
+            <Wrap justifyContent="space-between" alignItems="center" px="8" py="3" bg="#353534" borderBottom="1px solid" borderColor="#524533">
+              <Text fontWeight="bold" fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">
+                {t('contact.form-heading')}
+              </Text>
+              <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" textTransform="uppercase" color="#9f8e78">
+                transport: mailto
+              </Text>
+            </Wrap>
+            <form class="contact-form" action="mailto:hello@ham-san.net" method="post" enctype="text/plain">
+              <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
+                <Stack gap="2">
+                  <label for="contact-name" class="contact-label">
+                    {t('contact.field-name')}
+                  </label>
+                  <input id="contact-name" name="name" type="text" class="contact-input" placeholder="Name" required />
+                </Stack>
+                <Stack gap="2">
+                  <label for="contact-email" class="contact-label">
+                    {t('contact.field-email')}
+                  </label>
+                  <input id="contact-email" name="email" type="email" class="contact-input" placeholder="Email address" required />
+                </Stack>
+              </Grid>
+              <Stack gap="2">
+                <label for="contact-subject" class="contact-label">
+                  {t('contact.field-subject')}
+                </label>
+                <select id="contact-subject" name="subject" class="contact-select">
+                  <option>Project inquiry</option>
+                  <option>Collaboration</option>
+                  <option>Technical question</option>
+                  <option>Other</option>
+                </select>
+              </Stack>
+              <Stack gap="2">
+                <label for="contact-message" class="contact-label">
+                  {t('contact.field-message')}
+                </label>
+                <textarea id="contact-message" name="message" class="contact-input" rows="5" placeholder="Write your message" style="min-height: 180px; resize: vertical;" required></textarea>
+              </Stack>
+              <button class="contact-submit-btn">
+                {t('contact.execute-transmission')}
+                <span class="material-symbols-outlined" style="font-size: 16px;">send</span>
+              </button>
+            </form>
+          </Stack>
+
+          <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
+            <Stack border="1px solid" borderColor="#524533" p="6">
+              <Text fontWeight="bold" fontSize="sm" textTransform="uppercase" letterSpacing="0.2em" color="#ffd597" mb="4">
+                {t('contact.security-brief')}
+              </Text>
+              <Text color="#c7c6c6" fontSize="sm" lineHeight="relaxed">
+                {t('contact.security-brief-body')}
+              </Text>
+            </Stack>
+            <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6">
+              <Text fontWeight="bold" fontSize="sm" textTransform="uppercase" letterSpacing="0.2em" color="#ffd597" mb="4">
+                {t('contact.office-hours')}
+              </Text>
+              <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#c7c6c6" lineHeight="2.2" whiteSpace="pre-line">
+                {officeHoursBody}
+              </Text>
+            </Stack>
+          </Grid>
         </Stack>
       </Grid>
     </Stack>

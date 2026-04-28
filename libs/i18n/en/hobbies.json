@@ -1,4 +1,20 @@
 {
   "back-to-hobbies": "Back to hobbies",
-  "description": "Collection of my hobbies, things I'm interested in, or my past hobbies."
+  "page-heading": "Interests & Passions.",
+  "description": "A personal gallery of the things that keep me curious and inspired when I'm away from the keyboard.",
+  "featured": "Featured",
+  "explore": "Open",
+  "browse-gallery": "BROWSE MY GALLERY",
+  "status-learning": "Status: Learning",
+  "finding-flow": "Finding Flow",
+  "daily-momentum": "Daily Momentum",
+  "view-progress": "View my learning progress",
+  "process-notes": "PROCESS & NOTES",
+  "share-vibe": "SHARE THE VIBE",
+  "learning-resources": "Learning Resources",
+  "collaboration-heading": "Let's build something together?",
+  "collaboration-body": "Always excited to chat about photography, music, or language learning. If you share any of these passions or want to collaborate on a creative project, please reach out.",
+  "send-message": "SEND A MESSAGE",
+  "empty-title": "Gallery Offline",
+  "empty-description": "The content system is currently unavailable. Hobbies and interests will reappear when the connection is restored."
 }

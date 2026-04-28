@@ -2,6 +2,16 @@
   "projects": "プロジェクト一覧",
   "screenshots": "スクリーンショット",
   "back-to-projects": "プロジェクト一覧へ",
-  "active": "活動中プロジェクト",
-  "inactive": "他のプロジェクト"
+  "active": "主要プロジェクト",
+  "inactive": "アーカイブ",
+  "page-heading": "制作と実験。",
+  "intro": "これまでに作ったWebプロジェクト、小さなツール、実験の記録。",
+  "view-execution": "詳細を見る",
+  "case-study": "事例",
+  "visit-site": "サイトを見る",
+  "source-code": "ソースを見る",
+  "empty-title": "プロジェクトは現在利用できません",
+  "empty-description": "接続が戻ると、プロジェクトが再表示されます。",
+  "detail-empty-title": "プロジェクトを取得できません",
+  "detail-empty-description": "このプロジェクトは今読み込めません。接続が戻ると再表示されます。"
 }

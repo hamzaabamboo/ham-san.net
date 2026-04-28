@@ -1,4 +1,4 @@
-import { FaGithub, FaGlobe, FaPhotoVideo } from 'react-icons/fa';
+import { FaArrowRight, FaGithub, FaGlobe } from 'react-icons/fa';
 import { Box, Center, Stack, styled, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { getMediaUrl } from 'utils/media';
@@ -55,7 +55,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
   const ghLink = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Github);
 
   return (
-    <Stack border="1px solid" borderColor="border.subtle" h="full" bg="bg.default">
+    <Stack border="1px solid" borderColor="#524533" h="full" bg="#131313" className="group">
       <Link
         href={`/${locale}/projects/${slug}`}
         data-astro-prefetch="hover"
@@ -64,22 +64,22 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
       >
         <Stack gap="0" h="full">
           <Box
-            borderColor="border.subtle"
+            borderColor="#524533"
             borderBottom="1px solid"
             py="2"
             px="3"
-            color="amber.500"
+            color="#ffd597"
             fontFamily="JetBrains Mono, monospace"
             fontSize="10px"
             letterSpacing="0.12em"
             textTransform="uppercase"
           >
-            {data.isActive ? 'active archive' : 'lab archive'}
+            {data.isActive ? 'selected work' : 'personal work'}
           </Box>
           <Box
-            borderColor="border.subtle"
+            borderColor="#524533"
             borderBottom="1px solid"
-            backgroundColor="bg.muted"
+            backgroundColor="#353534"
             overflow="hidden"
           >
             {image ? (
@@ -92,19 +92,44 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                 width="full"
                 transition="transform 0.3s ease, filter 0.3s ease"
                 filter="grayscale(1)"
-                _groupHover={{ transform: 'scale(1.03)', filter: 'grayscale(0)' }}
+                _groupHover={{ transform: 'scale(1.03)', filter: 'grayscale(0.2)' }}
               />
             ) : (
-              <Center aspectRatio="4 / 3" color="fg.subtle" fontSize="xl">
-                <FaPhotoVideo />
-              </Center>
+              <Box position="relative" aspectRatio="4 / 3" overflow="hidden" className="fallback-grid-lines">
+                <Center position="absolute" inset="0">
+                  <Text
+                    fontFamily="Newsreader, serif"
+                    fontStyle="italic"
+                    fontSize="120px"
+                    lineHeight="1"
+                    color="#e5e2e1"
+                    opacity="0.06"
+                    userSelect="none"
+                    transition="opacity 0.3s ease"
+                    _groupHover={{ opacity: 0.1 }}
+                  >
+                    {title?.charAt(0)?.toUpperCase() ?? 'P'}
+                  </Text>
+                </Center>
+                <Box
+                  position="absolute"
+                  bottom="0"
+                  left="0"
+                  right="0"
+                  h="2px"
+                  bg="#ffb000"
+                  opacity="0.4"
+                  transition="opacity 0.3s ease"
+                  _groupHover={{ opacity: 0.7 }}
+                />
+              </Box>
             )}
           </Box>
           <Stack gap="3" h="full" p="5">
             <Wrap
               gap="2"
               rowGap="0.5"
-              color="fg.subtle"
+              color="#9f8e78"
               fontFamily="JetBrains Mono, monospace"
               fontSize="xs"
             >
@@ -121,23 +146,35 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             >
               {title}
             </Text>
-            <Text color="fg.muted" fontSize="sm" lineHeight="1.7">
+            <Text color="#c7c6c6" fontSize="sm" lineHeight="1.7">
               {description}
             </Text>
+            <Wrap
+              gap="2"
+              alignItems="center"
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              letterSpacing="0.12em"
+              textTransform="uppercase"
+              color="#ffb000"
+            >
+              <Text>Open project</Text>
+              <FaArrowRight />
+            </Wrap>
           </Stack>
         </Stack>
       </Link>
       <Wrap w="full" p="4" pt="0">
         {link?.url && (
           <Link href={link?.url} target="_blank">
-            <IconButton size="xs" variant="subtle" border="1px solid" borderColor="border.subtle">
+            <IconButton size="xs" variant="subtle" border="1px solid" borderColor="#524533">
               <FaGlobe />
             </IconButton>
           </Link>
         )}
         {ghLink?.url && (
           <Link href={ghLink.url} target="_blank">
-            <IconButton size="xs" variant="subtle" border="1px solid" borderColor="border.subtle">
+            <IconButton size="xs" variant="subtle" border="1px solid" borderColor="#524533">
               <FaGithub />
             </IconButton>
           </Link>

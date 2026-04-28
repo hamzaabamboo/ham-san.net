@@ -17,32 +17,35 @@ if (!validateLocale(locale)) {
 }
 
 const t = useTranslations(locale);
+const pageTitle = `${t('common.event')} | ${t('common.name')}`;
 
-const settings = await getOutlineSettings();
+let content: string | undefined = undefined;
 
-if (!settings?.events) {
-  return Astro.redirect('/404');
-}
-
-const eventData = await outlineClient.POST('/documents.info', {
-  body: { id: settings.events.replace('/doc/', '') }
-});
-
-const content = cleanArticleContent(eventData.data?.data?.text);
-
-if (!content) {
-  return Astro.redirect('/404');
+try {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+  const settings = await getOutlineSettings();
+  if (settings?.events) {
+    const eventData = await outlineClient.POST('/documents.info', {
+      body: { id: settings.events.replace('/doc/', '') },
+      signal: controller.signal
+    });
+    content = cleanArticleContent(eventData.data?.data?.text) ?? undefined;
+  }
+  clearTimeout(timeout);
+} catch {
+  // CMS unavailable or timeout — render fallback
 }
 ---
 
-<MainLayout>
+<MainLayout title={pageTitle} description={t('common.events-description')}>
   <Container maxW="breakpoint-xl" w="full" py="8">
     <Stack gap="8">
       <Stack
         gap="4"
         borderLeftWidth="2px"
         borderLeftStyle="solid"
-        borderLeftColor="amber.500"
+        borderLeftColor="#ffb000"
         pl="6"
       >
         <Text
@@ -50,34 +53,158 @@ if (!content) {
           fontSize="10px"
           textTransform="uppercase"
           letterSpacing="0.12em"
-          color="amber.500"
+          color="#ffd597"
         >
-          event_manifest
+          events
         </Text>
         <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic">
           {t('common.event')}
         </Heading>
+        <Text color="#c7c6c6" fontSize="lg" maxW="2xl">
+          {t('common.events-description')}
+        </Text>
       </Stack>
+      {!content ? (
+        <Box
+          border="1px solid"
+          borderColor="#524533"
+          bg="#1c1b1b"
+          p={{ base: '8', md: '12' }}
+        >
+          <Stack gap="4" alignItems="center" textAlign="center" py="12">
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              letterSpacing="0.12em"
+              color="#9f8e78"
+            >
+              status: unavailable
+            </Text>
+            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+              {t('common.events-empty-title')}
+            </Heading>
+            <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
+              {t('common.events-empty-description')}
+            </Text>
+          </Stack>
+        </Box>
+      ) : (
       <Box
         border="1px solid"
-        borderColor="border.subtle"
-        bg="bg.default"
-        p={{ base: '6', md: '8' }}
+        borderColor="#524533"
+        bg="#1c1b1b"
+        overflow="hidden"
       >
-        <Markdown
-          content={content}
-          linksPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
-          assetsPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
-          disableInternalLinks
-        />
+        <Box
+          borderBottom="1px solid"
+          borderColor="#524533"
+          px={{ base: '4', md: '8' }}
+          py="4"
+        >
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            letterSpacing="0.12em"
+            color="#ffb000"
+          >
+            {t('common.events-source-note')}
+          </Text>
+        </Box>
+        <Box
+          className="events-content-wrapper"
+          p={{ base: '4', md: '8' }}
+          maxH={{ base: 'none', md: '80vh' }}
+          overflowY={{ base: 'visible', md: 'auto' }}
+        >
+          <Markdown
+            content={content}
+            linksPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
+            assetsPrefix={import.meta.env.PUBLIC_OUTLINE_URL}
+            disableInternalLinks
+          />
+        </Box>
       </Box>
+      )}
     </Stack>
   </Container>
 </MainLayout>
 
-<style>
-  @page {
-    margin: 0;
-    size: 91mm 55mm;
+<style is:global>
+  .events-content-wrapper p {
+    font-size: 0.8125rem;
+    color: #9f8e78;
+    line-height: 1.5;
+  }
+
+  .events-content-wrapper p:has(> a:only-child) {
+    font-size: 0.6875rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
+  }
+
+  .events-content-wrapper a {
+    color: #ffb000;
+    text-decoration: none;
+  }
+
+  .events-content-wrapper a:hover {
+    text-decoration: underline;
+  }
+
+  @media (min-width: 768px) {
+    .events-content-wrapper .ov-x_auto {
+      overflow-x: visible !important;
+      overflow: visible !important;
+    }
+  }
+
+  .events-content-wrapper table {
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 0 !important;
+  }
+
+  .events-content-wrapper thead {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1;
+    background: #1c1b1b;
+  }
+
+  .events-content-wrapper thead th {
+    border-bottom: 2px solid #524533 !important;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+  }
+
+  .events-content-wrapper tbody tr:nth-child(even) {
+    background: rgba(42, 42, 42, 0.25);
+  }
+
+  .events-content-wrapper tbody td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    color: #9f8e78;
+    white-space: nowrap;
+    width: 3.5rem;
+  }
+
+  .events-content-wrapper tbody td:last-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    color: #524533;
+  }
+
+  .events-content-wrapper tbody td:last-child p {
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+    color: inherit;
   }
 </style>

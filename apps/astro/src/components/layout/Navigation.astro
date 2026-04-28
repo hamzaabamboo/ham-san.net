@@ -1,11 +1,8 @@
 ---
 import { languages } from '~/i18n/ui';
 import { getLangFromUrl, useTranslations } from '~/i18n/utils';
-import { HStack } from '../../../styled-system/jsx';
 import { BrandMark } from '~/components/brand/BrandMark';
-import { Link } from '../ui/link';
 import { Sidebar } from './Sidebar';
-import { ThemeToggle } from '~/components/theme/ThemeToggle';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -23,6 +20,7 @@ const NAVIGATION_LINKS = [
   { label: t('common.projects'), value: '/projects' },
   { label: t('common.note'), value: '/notes' },
   { label: t('common.hobbies'), value: '/hobbies' },
+  { label: t('common.event'), value: '/events' },
   { label: t('common.about-me'), value: '/about' },
   { label: t('common.contact'), value: '/contact' }
 ];
@@ -39,127 +37,54 @@ const NAVIGATION_LINKS = [
     }
   };
   window.addEventListener('scroll', updateNav);
-  updateNav(); // Init
+  updateNav();
 </script>
 
-<HStack
-  id="main-nav"
-  _print={{ display: 'none' }}
-  py="3"
-  px={{ base: '4', md: '8' }}
-  w="full"
-  justifyContent="center"
-  position="fixed"
-  top="0"
-  left="0"
-  zIndex="banner"
-  transition="all 0.3s"
-  bg="transparent"
-  borderBottom="1px solid"
-  borderColor="transparent"
->
-  <HStack w="full" maxW="breakpoint-xl" justify="space-between" minH="14">
-    <HStack gap="3">
-      <Link
-        href={getURLWithLanguage('/')}
-        display="inline-flex"
-        alignItems="center"
-        gap="3"
-        fontWeight="black"
-        fontSize="sm"
-        letterSpacing="0.18em"
-        textTransform="uppercase"
-        color="amber.500"
-        _hover={{ color: 'amber.400' }}
-      >
-        <BrandMark />
-        <HStack gap="2" hideBelow="sm">
-          <span>atelier</span>
-          <span style="color: var(--colors-fg-subtle)">/</span>
-          <span>{t('common.ham')}</span>
-        </HStack>
-      </Link>
-    </HStack>
+<nav id="main-nav" class="shell-nav">
+  <a href={getURLWithLanguage('/')} class="shell-nav-brand">
+    <BrandMark />
+    <span class="shell-nav-brand-text">Ham</span>
+  </a>
 
-    <HStack gap="6" hideBelow="md">
+  <div class="shell-nav-links">
+    {
+      NAVIGATION_LINKS.map(({ label, value }) => {
+        const fullPath = getURLWithLanguage(value);
+        const isCurrent =
+          value === '/'
+            ? Astro.url.pathname === fullPath
+            : Astro.url.pathname.startsWith(fullPath);
+
+        return (
+          <a
+            href={fullPath}
+            class="shell-nav-link"
+            aria-current={isCurrent ? 'page' : undefined}
+          >
+            {label}
+          </a>
+        );
+      })
+    }
+  </div>
+
+  <div class="shell-nav-actions">
+    <div class="shell-nav-lang-group">
       {
-        NAVIGATION_LINKS.map(({ label, value }) => {
-          const fullPath = getURLWithLanguage(value);
-          const isCurrent =
-            value === '/'
-              ? Astro.url.pathname === fullPath
-              : Astro.url.pathname.startsWith(fullPath);
-
-          return (
-            isCurrent ? (
-              <Link
-                href={fullPath}
-                color="amber.500"
-                fontFamily="Newsreader, serif"
-                fontSize="xl"
-                fontStyle="italic"
-                transition="colors"
-                _hover={{ color: 'amber.400' }}
-                aria-current="page"
-                borderBottomWidth="2px"
-                borderBottomStyle="solid"
-                borderBottomColor="amber.500"
-                pb="1"
-              >
-                {label}
-              </Link>
-            ) : (
-              <Link
-                href={fullPath}
-                color="fg.muted"
-                fontFamily="Newsreader, serif"
-                fontSize="xl"
-                fontStyle="italic"
-                transition="colors"
-                _hover={{ color: 'amber.400' }}
-                pb="1"
-              >
-                {label}
-              </Link>
-            )
-          );
-        })
+        Object.entries(languages)
+          .filter((entry) => entry[0] !== lang)
+          .map((entry) => (
+            <a href={getCurrentURLWithLanguage(entry[0])} class="shell-nav-lang">
+              {entry[0]}
+            </a>
+          ))
       }
-    </HStack>
-
-    <HStack gap="4">
-      <HStack gap="2" hideBelow="sm">
-        {
-          Object.entries(languages)
-            .filter((t) => t[0] !== lang)
-            .map((t) => {
-              return (
-                <Link
-                  href={getCurrentURLWithLanguage(t[0])}
-                  fontSize="xs"
-                  color="fg.subtle"
-                  border="1px solid"
-                  borderColor="border.subtle"
-                  px="2"
-                  py="1"
-                  textTransform="uppercase"
-                  fontWeight="bold"
-                  letterSpacing="0.12em"
-                  _hover={{ color: 'amber.400' }}
-                >
-                  {t[1]}
-                </Link>
-              );
-            })
-        }
-      </HStack>
-      <Sidebar
-        links={NAVIGATION_LINKS}
-        locale={lang}
-        pathname={Astro.url.pathname}
-        client:visible
-      />
-      <ThemeToggle client:load />
-    </HStack>
-  </HStack>
-</HStack>
+    </div>
+    <Sidebar
+      links={NAVIGATION_LINKS}
+      locale={lang}
+      pathname={Astro.url.pathname}
+      client:visible
+    />
+  </div>
+</nav>

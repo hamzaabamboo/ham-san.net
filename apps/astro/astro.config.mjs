@@ -7,7 +7,7 @@ import netlify from '@astrojs/netlify';
 export default defineConfig({
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'ja'],
+    locales: ['en', 'ja', 'th'],
     routing: {
       prefixDefaultLocale: true,
       redirectToDefaultLocale: false

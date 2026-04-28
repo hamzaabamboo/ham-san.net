@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 type Theme = 'light' | 'dark';
 
 export const ThemeProvider = () => {
-  const [, setTheme] = useState<Theme>('light');
+  const [, setTheme] = useState<Theme>('dark');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (savedTheme === 'light') {
+      setTheme('light');
+      document.documentElement.classList.remove('dark');
+    } else {
       setTheme('dark');
       document.documentElement.classList.add('dark');
     }

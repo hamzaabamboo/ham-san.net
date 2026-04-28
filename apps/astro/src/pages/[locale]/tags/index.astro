@@ -1,5 +1,5 @@
 ---
-import { Container, Grid, Stack } from 'styled-system/jsx';
+import { Box, Container, Flex, Grid, Stack } from 'styled-system/jsx';
 import { TagBadge } from '~/components/tags/TagBadge';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
@@ -19,23 +19,52 @@ if (!validateLocale(locale)) {
 }
 
 const t = useTranslations(locale);
-const data = await graphQLSdk.fetchAboutMe({ locale: locale === 'ja' ? 'ja' : 'en' });
-const tags = sortTags(
-  (data.tags ?? []).filter(
-    (tag): tag is NonNullable<(typeof data.tags)[number]> =>
-      !!tag?.slug && !!tag?.title && tag.type !== Enum_Tag_Type.NonDev
-  )
-);
+
+let tags: any[] = [];
+
+try {
+  const data = await graphQLSdk.fetchAboutMe({ locale: locale === 'ja' ? 'ja' : 'en' });
+  tags = sortTags(
+    (data.tags ?? []).filter(
+      (tag: any): tag is NonNullable<(typeof data.tags)[number]> =>
+        !!tag?.slug && !!tag?.title && tag.type !== Enum_Tag_Type.NonDev
+    )
+  );
+} catch {
+  // CMS unavailable — render with empty data
+}
+
+const PRIMARY_TYPES = [Enum_Tag_Type.Frontend, Enum_Tag_Type.ProgrammingLanguage];
+
+const primaryTags = tags.filter((tag) => PRIMARY_TYPES.includes(tag.type as Enum_Tag_Type));
+const secondaryTags = tags.filter((tag) => !PRIMARY_TYPES.includes(tag.type as Enum_Tag_Type));
+
+const secondaryGroups = secondaryTags.reduce<Record<string, typeof tags>>((acc, tag) => {
+  const type = String(tag.type ?? 'Others');
+  if (!acc[type]) acc[type] = [];
+  acc[type].push(tag);
+  return acc;
+}, {});
+
+const getProjectCount = (tag: (typeof tags)[number]) => {
+  const projects = tag.projects;
+  if (Array.isArray(projects)) return projects.filter(Boolean).length;
+  if (projects && typeof projects === 'object' && 'data' in projects && Array.isArray((projects as { data?: unknown[] }).data))
+    return (projects as { data?: unknown[] }).data?.length ?? 0;
+  return 0;
+};
+
+const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
 ---
 
-<MainLayout>
+<MainLayout title={pageTitle} description={t('common.tags-description')}>
   <Container maxW="breakpoint-xl" py="8">
-    <Stack gap="10">
+    <Stack gap="12">
       <Stack
         gap="4"
         borderLeftWidth="2px"
         borderLeftStyle="solid"
-        borderLeftColor="amber.500"
+        borderLeftColor="#ffb000"
         pl="6"
       >
         <Text
@@ -43,49 +72,150 @@ const tags = sortTags(
           fontSize="10px"
           textTransform="uppercase"
           letterSpacing="0.12em"
-          color="amber.500"
+          color="#ffd597"
         >
-          taxonomy_index
+          tags
         </Text>
         <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic">
           {t('common.tags')}
         </Heading>
-        <Text color="fg.muted" fontSize="lg" maxW="2xl">
-          Skills, domains, and recurring themes connected across projects and experience.
+        <Text color="#c7c6c6" fontSize="lg" maxW="2xl">
+          {t('common.tags-description')}
         </Text>
       </Stack>
-      <Grid
-        gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' }}
-        gap="4"
-      >
-        {
-          tags.map((tag) => (
-            <Link href={`/${locale}/tags/${tag.slug}`}>
-              <Stack
-                border="1px solid"
-                borderColor="border.subtle"
-                bg="bg.default"
-                p="5"
-                _hover={{ transform: 'translate(-2px, -2px)' }}
-                transition="transform 0.2s ease"
-              >
-                <Text
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  letterSpacing="0.12em"
-                  color="fg.subtle"
+
+      {tags.length === 0 ? (
+        <Box
+          border="1px solid"
+          borderColor="#524533"
+          bg="#1c1b1b"
+          borderRadius="0"
+          p={{ base: '8', md: '12' }}
+        >
+          <Stack gap="4" alignItems="center" textAlign="center" py="12">
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              letterSpacing="0.12em"
+              color="#9f8e78"
+            >
+              status: unavailable
+            </Text>
+            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+              {t('common.tags-empty-title')}
+            </Heading>
+            <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
+              {t('common.tags-empty-description')}
+            </Text>
+          </Stack>
+        </Box>
+      ) : (
+      <>
+      {primaryTags.length > 0 && (
+        <Stack gap="6">
+          <Flex alignItems="center" gap="4">
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              letterSpacing="0.12em"
+              color="#ffd597"
+              flexShrink="0"
+            >
+              primary skills
+            </Text>
+            <div style="flex:1;height:1px;background:#524533" />
+          </Flex>
+          <Grid
+            gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
+            gap="4"
+          >
+            {primaryTags.map((tag) => {
+              const count = getProjectCount(tag);
+              return (
+                <Link href={`/${locale}/tags/${tag.slug}`} display="block" w="full">
+                  <Stack
+                    border="1px solid"
+                    borderColor="#524533"
+                    bg="#1c1b1b"
+                    p="6"
+                    h="full"
+                    className="group"
+                    _hover={{ transform: 'translate(-2px, -2px)', borderColor: '#ffb000' }}
+                    transition="all 0.2s ease"
+                  >
+                    <Flex justifyContent="space-between" alignItems="flex-start">
+                      <Text
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="10px"
+                        textTransform="uppercase"
+                        letterSpacing="0.12em"
+                        color="#9f8e78"
+                      >
+                        {t(
+                          `common.${String(tag.type).replaceAll('_', '-').toLowerCase()}` as 'common.frontend'
+                        )}
+                      </Text>
+                      {count > 0 && (
+                        <Text
+                          fontFamily="JetBrains Mono, monospace"
+                          fontSize="10px"
+                          color="#9f8e78"
+                        >
+                          {`${count} ${count === 1 ? 'project' : 'projects'}`}
+                        </Text>
+                      )}
+                    </Flex>
+                    <TagBadge tag={tag} showCount size="md" />
+                  </Stack>
+                </Link>
+              );
+            })}
+          </Grid>
+        </Stack>
+      )}
+
+      {Object.entries(secondaryGroups).map(([type, groupTags]) => (
+        <Stack gap="6">
+          <Flex alignItems="center" gap="4">
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              letterSpacing="0.12em"
+              color="#9f8e78"
+              flexShrink="0"
+            >
+              {t(
+                `common.${type.replaceAll('_', '-').toLowerCase()}` as 'common.frontend'
+              )}
+            </Text>
+            <div style="flex:1;height:1px;background:#524533" />
+          </Flex>
+          <Grid
+            gridTemplateColumns={{ base: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+            gap="3"
+          >
+            {groupTags.map((tag) => (
+              <Link href={`/${locale}/tags/${tag.slug}`} display="block" w="full">
+                <Stack
+                  border="1px solid"
+                  borderColor="#524533"
+                  bg="#1c1b1b"
+                  p="4"
+                  _hover={{ transform: 'translate(-2px, -2px)', borderColor: '#9f8e78' }}
+                  transition="all 0.2s ease"
                 >
-                  {t(
-                    `common.${String(tag.type).replaceAll('_', '-').toLowerCase()}` as 'common.frontend'
-                  )}
-                </Text>
-                <TagBadge tag={tag} showCount size="md" />
-              </Stack>
-            </Link>
-          ))
-        }
-      </Grid>
+                  <TagBadge tag={tag} showCount size="md" />
+                </Stack>
+              </Link>
+            ))}
+          </Grid>
+        </Stack>
+      ))}
+      </>
+      )}
     </Stack>
   </Container>
 </MainLayout>

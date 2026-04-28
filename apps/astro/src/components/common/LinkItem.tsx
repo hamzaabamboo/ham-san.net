@@ -16,7 +16,13 @@ const processUrl = (link: Pick<LinkData, 'url' | 'type'>) => {
     case Enum_Componentutilslink_Type.Github:
       return link.url?.split('github.com/').splice(-1)[0];
     default:
-      return link.url;
+      if (!link.url) return link.url;
+      try {
+        const url = new URL(link.url);
+        return `Open ${url.hostname.replace(/^www\./, '')}`;
+      } catch {
+        return link.url;
+      }
   }
 };
 
@@ -48,20 +54,26 @@ export const LinkItem = ({
       justifyContent="space-between"
       alignItems="center"
       border="1px solid"
-      borderColor="border.subtle"
+      borderColor="#524533"
       py="3"
       px="4"
-      bg="bg.default"
+      bg="#131313"
     >
-      <Wrap gap="3" alignItems="center">
-        <Text as="span" color="amber.500" fontSize="lg">
+      <Wrap gap="3" alignItems="center" minW="0">
+        <Text as="span" color="#ffb000" fontSize="lg">
           {Icon && <Icon />}
         </Text>
-        <Stack gap="0">
-          <Text color="fg.subtle" fontSize="10px" letterSpacing="0.12em" textTransform="uppercase">
+        <Stack gap="0" minW="0">
+          <Text color="#9f8e78" fontSize="10px" letterSpacing="0.12em" textTransform="uppercase">
             {data.title}
           </Text>
-          <Link href={data.url ?? ''} target="_blank" fontFamily="JetBrains Mono, monospace">
+          <Link
+            href={data.url ?? ''}
+            target="_blank"
+            fontFamily="JetBrains Mono, monospace"
+            className="amber-link"
+            overflowWrap="anywhere"
+          >
             {text}
           </Link>
         </Stack>
