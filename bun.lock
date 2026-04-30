@@ -17,6 +17,7 @@
       },
       "devDependencies": {
         "@eslint/eslintrc": "^3.1.0",
+        "@eslint/js": "9.1.1",
         "@nrwl/devkit": "18.3.3",
         "@nrwl/linter": "18.3.3",
         "@nx-tools/nx-container": "^5.3.1",
@@ -25,12 +26,14 @@
         "@nx/jest": "18.3.3",
         "@nx/js": "18.3.3",
         "@nxext/sveltekit": "18.0.0",
+        "@pandabox/prettier-plugin": "^0.1.3",
         "@types/jest": "^29.5.12",
         "@types/node": "20.12.7",
         "@typescript-eslint/eslint-plugin": "^7.15.0",
         "@typescript-eslint/parser": "^7.15.0",
         "eslint": "~9.1.1",
         "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.5.5",
         "husky": "^9.0.11",
         "jest": "^29.7.0",
         "jest-environment-node": "^29.7.0",
@@ -40,6 +43,8 @@
         "nx-cloud": "18.0.0",
         "openapi-typescript": "^7.0.2",
         "prettier": "^3.3.2",
+        "prettier-plugin-astro": "^0.14.1",
+        "prettier-plugin-svelte": "^3.5.1",
         "ts-jest": "^29.1.5",
         "ts-node": "10.9.2",
         "typescript": "^5.5.3",
@@ -100,6 +105,7 @@
         "mdast-util-from-markdown": "^2.0.2",
         "mdast-util-gfm": "^3.1.0",
         "micromark-extension-gfm": "^3.0.0",
+        "openapi-fetch": "^0.10.2",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
         "react-icons": "^5.5.0",
@@ -1221,7 +1227,7 @@
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 
-    "@pkgr/core": ["@pkgr/core@0.1.2", "", {}, "sha512-fdDH1LSGfZdTH2sxdpVMw31BanV28K/Gry0cVFxaNP77neJSkd82mM8ErPNYs9e+0O7SdHBLTDzDgwUuy18RnQ=="],
+    "@pkgr/core": ["@pkgr/core@0.2.9", "", {}, "sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA=="],
 
     "@playwright/test": ["@playwright/test@1.51.1", "", { "dependencies": { "playwright": "1.51.1" }, "bin": { "playwright": "cli.js" } }, "sha512-nM+kEaTSAoVlXmMPH10017vn3FSiFqr/bh4fKg9vmAdMfd9SDqRZNvPSiAHADc/itWak+qPvMPZQOPwCBW7k7Q=="],
 
@@ -4571,7 +4577,7 @@
 
     "prettier-plugin-astro": ["prettier-plugin-astro@0.14.1", "", { "dependencies": { "@astrojs/compiler": "2.13.1", "prettier": "3.8.1", "sass-formatter": "0.7.9" } }, "sha512-RiBETaaP9veVstE4vUwSIcdATj6dKmXljouXc/DDNwBSPTp8FRkLGDSGFClKsAFeeg+13SB0Z1JZvbD76bigJw=="],
 
-    "prettier-plugin-svelte": ["prettier-plugin-svelte@3.3.3", "", { "peerDependencies": { "prettier": "3.5.3", "svelte": "4.2.19" } }, "sha512-yViK9zqQ+H2qZD1w/bH7W8i+bVfKrD8GIFjkFe4Thl6kCT9SlAsXVNmt3jCvQOCsnOhcvYgsoVlRV/Eu6x5nNw=="],
+    "prettier-plugin-svelte": ["prettier-plugin-svelte@3.5.1", "", { "peerDependencies": { "prettier": "^3.0.0", "svelte": "^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0" } }, "sha512-65+fr5+cgIKWKiqM1Doum4uX6bY8iFCdztvvp2RcF+AJoieaw9kJOFMNcJo/bkmKYsxFaM9OsVZK/gWauG/5mg=="],
 
     "pretty-bytes": ["pretty-bytes@6.1.1", "", {}, "sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ=="],
 
@@ -5165,7 +5171,7 @@
 
     "symbol-observable": ["symbol-observable@4.0.0", "", {}, "sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ=="],
 
-    "synckit": ["synckit@0.9.3", "", { "dependencies": { "@pkgr/core": "0.1.2", "tslib": "2.8.1" } }, "sha512-JJoOEKTfL1urb1mDoEblhD9NhEbWmq9jHEMEnxoC4ujUaZ4itA8vKgwkFAyNClgxplLi9tsUKX+EduK0p/l7sg=="],
+    "synckit": ["synckit@0.11.12", "", { "dependencies": { "@pkgr/core": "0.2.9" } }, "sha512-Bh7QjT8/SuKUIfObSXNHNSK6WHo6J1tHCqJsuaFDP7gP0fkzSfTxI8y85JrppZ0h8l0maIgc2tfuZQ6/t3GtnQ=="],
 
     "system-architecture": ["system-architecture@0.1.0", "", {}, "sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA=="],
 
@@ -6277,6 +6283,8 @@
 
     "@pandacss/eslint-plugin/@typescript-eslint/utils": ["@typescript-eslint/utils@8.56.0", "", { "dependencies": { "@eslint-community/eslint-utils": "4.9.1", "@typescript-eslint/scope-manager": "8.56.0", "@typescript-eslint/types": "8.56.0", "@typescript-eslint/typescript-estree": "8.56.0" }, "peerDependencies": { "eslint": "9.1.1", "typescript": "5.9.3" } }, "sha512-RZ3Qsmi2nFGsS+n+kjLAYDPVlrzf7UhTffrDIKr+h2yzAlYP/y5ZulU0yeDEPItos2Ph46JAL5P/On3pe7kDIQ=="],
 
+    "@pandacss/eslint-plugin/synckit": ["synckit@0.9.3", "", { "dependencies": { "@pkgr/core": "0.1.2", "tslib": "2.8.1" } }, "sha512-JJoOEKTfL1urb1mDoEblhD9NhEbWmq9jHEMEnxoC4ujUaZ4itA8vKgwkFAyNClgxplLi9tsUKX+EduK0p/l7sg=="],
+
     "@pandacss/generator/@pandacss/core": ["@pandacss/core@0.53.7", "", { "dependencies": { "@csstools/postcss-cascade-layers": "4.0.6", "@pandacss/is-valid-prop": "0.53.7", "@pandacss/logger": "0.53.7", "@pandacss/shared": "0.53.7", "@pandacss/token-dictionary": "0.53.7", "@pandacss/types": "0.53.7", "browserslist": "4.23.3", "hookable": "5.5.3", "lightningcss": "1.25.1", "lodash.merge": "4.6.2", "outdent": "0.8.0", "postcss": "8.4.49", "postcss-discard-duplicates": "7.0.1", "postcss-discard-empty": "7.0.0", "postcss-merge-rules": "7.0.4", "postcss-minify-selectors": "7.0.4", "postcss-nested": "6.0.1", "postcss-normalize-whitespace": "7.0.0", "postcss-selector-parser": "6.1.2", "ts-pattern": "5.0.8" } }, "sha512-IFeIvGLkfYVUyyg3AzB8XU4Ox2Z3SK4iYoVXZHZRvAxnunX7GqAUPbnMfB7YW/rW/IcE6AQdWEi91Lb3rxs2Kg=="],
 
     "@pandacss/generator/@pandacss/is-valid-prop": ["@pandacss/is-valid-prop@0.53.7", "", {}, "sha512-cJX4ss3ALqlcLsvKygOG1eEIG3kuAv5dld96OXoBFoIXIz2IKLLzZmNnrFpt5Z3TiN/hG/Lj++6fmYPKbGE88w=="],
@@ -6961,8 +6969,6 @@
 
     "astro-eslint-parser/semver": ["semver@7.7.4", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA=="],
 
-    "astrojs-compiler-sync/synckit": ["synckit@0.11.12", "", { "dependencies": { "@pkgr/core": "0.2.9" } }, "sha512-Bh7QjT8/SuKUIfObSXNHNSK6WHo6J1tHCqJsuaFDP7gP0fkzSfTxI8y85JrppZ0h8l0maIgc2tfuZQ6/t3GtnQ=="],
-
     "async-retry/retry": ["retry@0.13.1", "", {}, "sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg=="],
 
     "autoprefixer/browserslist": ["browserslist@4.24.4", "", { "dependencies": { "caniuse-lite": "1.0.30001712", "electron-to-chromium": "1.5.134", "node-releases": "2.0.19", "update-browserslist-db": "1.1.3" }, "bin": { "browserslist": "cli.js" } }, "sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A=="],
@@ -7042,6 +7048,8 @@
     "client/graphql-request": ["graphql-request@6.1.0", "", { "dependencies": { "@graphql-typed-document-node/core": "3.2.0", "cross-fetch": "3.1.8" }, "peerDependencies": { "graphql": "16.12.0" } }, "sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw=="],
 
     "client/prettier": ["prettier@3.8.1", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg=="],
+
+    "client/prettier-plugin-svelte": ["prettier-plugin-svelte@3.3.3", "", { "peerDependencies": { "prettier": "3.5.3", "svelte": "4.2.19" } }, "sha512-yViK9zqQ+H2qZD1w/bH7W8i+bVfKrD8GIFjkFe4Thl6kCT9SlAsXVNmt3jCvQOCsnOhcvYgsoVlRV/Eu6x5nNw=="],
 
     "client/three": ["three@0.163.0", "", {}, "sha512-HlMgCb2TF/dTLRtknBnjUTsR8FsDqBY43itYop2+Zg822I+Kd0Ua2vs8CvfBVefXkBdNDrLMoRTGCIIpfCuDew=="],
 
@@ -7152,8 +7160,6 @@
     "eslint-plugin-astro/globals": ["globals@16.5.0", "", {}, "sha512-c/c15i26VrJ4IRt5Z89DnIzCGDn9EcebibhAOjw5ibqEHsE1wLUgkPn9RDmNcUKyU87GeaL633nyJ+pplFR2ZQ=="],
 
     "eslint-plugin-prettier/eslint-config-prettier": ["eslint-config-prettier@10.1.1", "", { "peerDependencies": { "eslint": "9.1.1" }, "bin": { "eslint-config-prettier": "bin/cli.js" } }, "sha512-4EQQr6wXwS+ZJSzaR5ZCrYgLxqvUjdXctaEtBqHcbkW944B1NQyO4qpdHQbXBONfwxXdkAY81HH4+LUfrg+zPw=="],
-
-    "eslint-plugin-prettier/synckit": ["synckit@0.11.12", "", { "dependencies": { "@pkgr/core": "0.2.9" } }, "sha512-Bh7QjT8/SuKUIfObSXNHNSK6WHo6J1tHCqJsuaFDP7gP0fkzSfTxI8y85JrppZ0h8l0maIgc2tfuZQ6/t3GtnQ=="],
 
     "eslint-plugin-react/resolve": ["resolve@2.0.0-next.6", "", { "dependencies": { "es-errors": "1.3.0", "is-core-module": "2.16.1", "node-exports-info": "1.6.0", "object-keys": "1.1.1", "path-parse": "1.0.7", "supports-preserve-symlinks-flag": "1.0.0" }, "bin": { "resolve": "bin/resolve" } }, "sha512-3JmVl5hMGtJ3kMmB3zi3DL25KfkCEyy3Tw7Gmw7z5w8M9WlwoPFnIvwChzu1+cF3iaK3sp18hhPz8ANeimdJfA=="],
 
@@ -8867,6 +8873,8 @@
 
     "@pandacss/eslint-plugin/@typescript-eslint/utils/@typescript-eslint/typescript-estree": ["@typescript-eslint/typescript-estree@8.56.0", "", { "dependencies": { "@typescript-eslint/project-service": "8.56.0", "@typescript-eslint/tsconfig-utils": "8.56.0", "@typescript-eslint/types": "8.56.0", "@typescript-eslint/visitor-keys": "8.56.0", "debug": "4.4.3", "minimatch": "9.0.5", "semver": "7.7.4", "tinyglobby": "0.2.15", "ts-api-utils": "2.4.0" }, "peerDependencies": { "typescript": "5.9.3" } }, "sha512-ex1nTUMWrseMltXUHmR2GAQ4d+WjkZCT4f+4bVsps8QEdh0vlBsaCokKTPlnqBFqqGaxilDNJG7b8dolW2m43Q=="],
 
+    "@pandacss/eslint-plugin/synckit/@pkgr/core": ["@pkgr/core@0.1.2", "", {}, "sha512-fdDH1LSGfZdTH2sxdpVMw31BanV28K/Gry0cVFxaNP77neJSkd82mM8ErPNYs9e+0O7SdHBLTDzDgwUuy18RnQ=="],
+
     "@pandacss/generator/@pandacss/core/@csstools/postcss-cascade-layers": ["@csstools/postcss-cascade-layers@4.0.6", "", { "dependencies": { "@csstools/selector-specificity": "3.1.1", "postcss-selector-parser": "6.1.2" }, "peerDependencies": { "postcss": "8.4.49" } }, "sha512-Xt00qGAQyqAODFiFEJNkTpSUz5VfYqnDLECdlA/Vv17nl/OIV5QfTRHGAXrBGG5YcJyHpJ+GF9gF/RZvOQz4oA=="],
 
     "@pandacss/generator/@pandacss/core/browserslist": ["browserslist@4.23.3", "", { "dependencies": { "caniuse-lite": "1.0.30001770", "electron-to-chromium": "1.5.286", "node-releases": "2.0.27", "update-browserslist-db": "1.2.3" }, "bin": { "browserslist": "cli.js" } }, "sha512-btwCFJVjI4YWDNfau8RhZ+B1Q/VLoUITrm3RlP6y1tYGWIOa+InuYiRGXUBXo8nA1qKmHMyLB/iVQg5TT4eFoA=="],
@@ -9395,8 +9403,6 @@
 
     "astro/react-dom/scheduler": ["scheduler@0.27.0", "", {}, "sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q=="],
 
-    "astrojs-compiler-sync/synckit/@pkgr/core": ["@pkgr/core@0.2.9", "", {}, "sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA=="],
-
     "autoprefixer/browserslist/electron-to-chromium": ["electron-to-chromium@1.5.134", "", {}, "sha512-zSwzrLg3jNP3bwsLqWHmS5z2nIOQ5ngMnfMZOWWtXnqqQkPVyOipxK98w+1beLw1TB+EImPNcG8wVP/cLVs2Og=="],
 
     "autoprefixer/browserslist/node-releases": ["node-releases@2.0.19", "", {}, "sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw=="],
@@ -9498,6 +9504,8 @@
     "cli-truncate/string-width/emoji-regex": ["emoji-regex@10.4.0", "", {}, "sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw=="],
 
     "cli-truncate/string-width/strip-ansi": ["strip-ansi@7.1.2", "", { "dependencies": { "ansi-regex": "6.1.0" } }, "sha512-gmBGslpoQJtgnMAvOVqGZpEz9dyoKTCzy2nfz/n8aIFhN/jCE/rCmcxabB6jOOHV+0WNnylOxaxBQPSvcWklhA=="],
+
+    "client/prettier-plugin-svelte/prettier": ["prettier@3.5.3", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw=="],
 
     "client/vite/rollup": ["rollup@4.57.1", "", { "dependencies": { "@types/estree": "1.0.8" }, "optionalDependencies": { "@rollup/rollup-android-arm-eabi": "4.57.1", "@rollup/rollup-android-arm64": "4.57.1", "@rollup/rollup-darwin-arm64": "4.57.1", "@rollup/rollup-darwin-x64": "4.57.1", "@rollup/rollup-freebsd-arm64": "4.57.1", "@rollup/rollup-freebsd-x64": "4.57.1", "@rollup/rollup-linux-arm-gnueabihf": "4.57.1", "@rollup/rollup-linux-arm-musleabihf": "4.57.1", "@rollup/rollup-linux-arm64-gnu": "4.57.1", "@rollup/rollup-linux-arm64-musl": "4.57.1", "@rollup/rollup-linux-loong64-gnu": "4.57.1", "@rollup/rollup-linux-loong64-musl": "4.57.1", "@rollup/rollup-linux-ppc64-gnu": "4.57.1", "@rollup/rollup-linux-ppc64-musl": "4.57.1", "@rollup/rollup-linux-riscv64-gnu": "4.57.1", "@rollup/rollup-linux-riscv64-musl": "4.57.1", "@rollup/rollup-linux-s390x-gnu": "4.57.1", "@rollup/rollup-linux-x64-gnu": "4.57.1", "@rollup/rollup-linux-x64-musl": "4.57.1", "@rollup/rollup-openbsd-x64": "4.57.1", "@rollup/rollup-openharmony-arm64": "4.57.1", "@rollup/rollup-win32-arm64-msvc": "4.57.1", "@rollup/rollup-win32-ia32-msvc": "4.57.1", "@rollup/rollup-win32-x64-gnu": "4.57.1", "@rollup/rollup-win32-x64-msvc": "4.57.1", "fsevents": "2.3.3" }, "bin": { "rollup": "dist/bin/rollup" } }, "sha512-oQL6lgK3e2QZeQ7gcgIkS2YZPg5slw37hYufJ3edKlfQSGGm8ICoxswK15ntSzF/a8+h7ekRy7k7oWc3BQ7y8A=="],
 
@@ -9690,8 +9698,6 @@
     "esbuild-register/esbuild/@esbuild/win32-x64": ["@esbuild/win32-x64@0.27.3", "", { "os": "win32", "cpu": "x64" }, "sha512-4uJGhsxuptu3OcpVAzli+/gWusVGwZZHTlS63hh++ehExkVT8SgiEf7/uC/PclrPPkLhZqGgCTjd0VWLo6xMqA=="],
 
     "eslint-plugin-astro/@eslint-community/eslint-utils/eslint-visitor-keys": ["eslint-visitor-keys@3.4.3", "", {}, "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag=="],
-
-    "eslint-plugin-prettier/synckit/@pkgr/core": ["@pkgr/core@0.2.9", "", {}, "sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA=="],
 
     "express-rate-limit/express/accepts": ["accepts@2.0.0", "", { "dependencies": { "mime-types": "3.0.2", "negotiator": "1.0.0" } }, "sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng=="],
 

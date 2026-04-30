@@ -1,33 +1,22 @@
 name: 'Install'
-description: 'Sets up Node.js and runs install'
+description: 'Sets up Bun and runs install'
 
 runs:
   using: composite
   steps:
-    - name: Install Node.js
-      uses: actions/setup-node@v3
+    - name: Install Bun
+      uses: oven-sh/setup-bun@v2
       with:
-        node-version: 20
+        bun-version: 1.3.10
 
-    - uses: pnpm/action-setup@v4
-      name: Install pnpm
+    - name: Setup Bun cache
+      uses: actions/cache@v4
       with:
-        version: 9.12.3
-        run_install: false
-
-    - name: Get pnpm store directory
-      shell: bash
-      run: |
-        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-    - uses: actions/cache@v3
-      name: Setup pnpm cache
-      with:
-        path: ${{ env.STORE_PATH }}
-        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        path: ~/.bun/install/cache
+        key: ${{ runner.os }}-bun-store-${{ hashFiles('bun.lock') }}
         restore-keys: |
-          ${{ runner.os }}-pnpm-store-
+          ${{ runner.os }}-bun-store-
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install
+      run: bun install --frozen-lockfile

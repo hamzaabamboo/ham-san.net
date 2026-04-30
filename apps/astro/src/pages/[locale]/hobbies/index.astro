@@ -6,7 +6,7 @@ import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { BrandMark } from '~/components/brand/BrandMark';
 import { useTranslations, validateLocale } from '~/i18n/utils';
-import { outlineClient } from '~/utils/outline-api';
+import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
 import { getOutlineSettings } from '~/utils/outline-settings';
 import { getArticleBanner } from 'outline/article';
@@ -40,7 +40,7 @@ try {
   // CMS unavailable or timeout — render fallback
 }
 
-const outlineAssetPrefix = import.meta.env.PRIVATE_OUTLINE_SERVER?.replace('/api', '') ?? '';
+const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = `/${locale}/api/outline-asset`;
 const resolveOutlineAssetUrl = (rawUrl?: string) => {
   if (!rawUrl) return rawUrl;

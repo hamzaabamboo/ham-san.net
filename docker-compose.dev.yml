@@ -40,6 +40,10 @@ services:
       context: .
       dockerfile: Dockerfile
       target: astro
+      args:
+        PUBLIC_API_URL: ${PUBLIC_API_URL}
+        PUBLIC_URL: ${PUBLIC_URL:-http://127.0.0.1:4125}
+        PUBLIC_OUTLINE_URL: ${PUBLIC_OUTLINE_URL:-}
     environment:
       PRIVATE_BACKEND_API_URL: http://api:1337
       PORT: 4125

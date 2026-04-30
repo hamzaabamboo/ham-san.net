@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { outlineApiToken, outlineServerUrl } from '~/utils/outline-api';
 
 export const prerender = false;
 
@@ -8,11 +9,11 @@ export const GET: APIRoute = async ({ url }) => {
     return new Response('Missing asset id', { status: 400 });
   }
 
-  const outlineBaseUrl = import.meta.env.PRIVATE_OUTLINE_SERVER.replace(/\/api$/, '');
+  const outlineBaseUrl = outlineServerUrl.replace(/\/api$/, '');
   const upstreamUrl = `${outlineBaseUrl}/api/attachments.redirect?${url.searchParams.toString()}`;
   const upstreamResponse = await fetch(upstreamUrl, {
     headers: {
-      Authorization: `Bearer ${import.meta.env.PRIVATE_OUTLINE_API_TOKEN}`
+      Authorization: `Bearer ${outlineApiToken}`
     }
   });
 

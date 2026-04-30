@@ -1,5 +1,5 @@
-import { purple } from "~/theme/colors/purple";
-import { orange } from "~/theme/colors/orange";
+import { purple } from '~/theme/colors/purple';
+import { orange } from '~/theme/colors/orange';
 import { defineConfig } from '@pandacss/dev';
 import { theme } from './src/theme';
 import { globalCss } from './src/theme/global-css';

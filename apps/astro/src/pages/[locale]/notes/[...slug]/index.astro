@@ -6,7 +6,7 @@ import { Markdown } from '~/components/lib/Markdown';
 import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
-import { outlineClient } from '~/utils/outline-api';
+import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 
 export const prerender = false;
 
@@ -19,7 +19,7 @@ if (!validateLocale(locale)) {
 
 const t = useTranslations(locale);
 const [shareId, maybeDocSegment, maybeDocId] = slugParts;
-const outlineAssetPrefix = import.meta.env.PRIVATE_OUTLINE_SERVER.replace('/api', '');
+const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = `/${locale}/api/outline-asset`;
 const resolveOutlineAssetUrl = (rawUrl?: string) => {
   if (!rawUrl) return rawUrl;

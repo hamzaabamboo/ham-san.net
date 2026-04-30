@@ -3,7 +3,7 @@ services:
     container_name: strapi
     restart: unless-stopped
     env_file: .env
-    image: localhost:5000/ham-san-net-api
+    image: registry.ham-san.net/ham-san-net-api:latest
     environment:
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
@@ -26,7 +26,7 @@ services:
     container_name: astro
     env_file: .env
     restart: unless-stopped
-    image: localhost:5000/ham-san-net-astro
+    image: registry.ham-san.net/ham-san-net-astro:latest
     environment:
       PRIVATE_BACKEND_API_URL: http://api:1337
       PORT: 4125

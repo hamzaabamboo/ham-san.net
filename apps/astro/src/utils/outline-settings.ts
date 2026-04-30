@@ -1,12 +1,12 @@
 import { cleanArticleContent } from 'outline/article';
 import { parseMarkdown } from 'utils/markdown';
-import { outlineClient } from './outline-api';
+import { outlineClient, outlineSettingsDocumentId } from './outline-api';
 
 import type { Link, Table, Text } from 'mdast';
 
 export const getOutlineSettings = async () => {
   const events = await outlineClient.POST('/documents.info', {
-    body: { id: import.meta.env.PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID }
+    body: { id: outlineSettingsDocumentId }
   });
 
   const settingsContent = cleanArticleContent(events.data?.data?.text);

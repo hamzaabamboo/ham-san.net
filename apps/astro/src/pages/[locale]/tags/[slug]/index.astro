@@ -12,6 +12,7 @@ import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
 import type {
   ExperienceFragment,
+  GetTagBySlugQuery,
   ProjectPreviewFragment,
   TagFragment
 } from '~/graphql/generated/client';
@@ -22,14 +23,24 @@ import { sortTags } from '~/utils/tags';
 export const prerender = false;
 
 const { locale, slug } = Astro.params;
-
-const data = await graphQLSdk.getTagBySlug({ slug });
+type TagData = NonNullable<GetTagBySlugQuery['tags'][number]>;
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
-const tagData = data?.tags?.[0];
+let tagData: TagData | undefined;
+try {
+  const data = await graphQLSdk.getTagBySlug({ slug });
+  tagData = data?.tags?.[0] ?? undefined;
+} catch {
+  return Astro.redirect('/404');
+}
+
+if (!tagData) {
+  return Astro.redirect('/404');
+}
+
 const title = tagData?.title;
 const type = tagData?.type;
 const experienceItems = (tagData?.experiences ?? []).filter(

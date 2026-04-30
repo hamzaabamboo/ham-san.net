@@ -1,4 +1,4 @@
-name: Continous Integration
+name: Continuous Integration
 
 on:
   - push
@@ -10,14 +10,16 @@ jobs:
     env:
       PRIVATE_OUTLINE_SERVER: ${{ secrets.PRIVATE_OUTLINE_SERVER }}
       PRIVATE_OUTLINE_API_TOKEN: ${{ secrets.PRIVATE_OUTLINE_API_TOKEN }}
+      PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID: ${{ secrets.PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID }}
       PUBLIC_API_URL: ${{ secrets.PUBLIC_API_URL }}
       PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+      PUBLIC_OUTLINE_URL: ${{ secrets.PUBLIC_OUTLINE_URL }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Dependencies
         uses: ./.github/composite-actions/setup
       - name: codegen
-        run: pnpm codegen:prod
+        run: bun run codegen:prod
       - name: Run Lint All
-        run: pnpm check
+        run: bun run check
