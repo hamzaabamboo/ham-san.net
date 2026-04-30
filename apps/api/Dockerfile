@@ -1,3 +1,6 @@
+# Deprecated: the active API container is built from the root Dockerfile target `api`.
+# Keep this file temporarily for rollback only; do not wire new compose or Nx targets to it.
+
 FROM node:20-bookworm-slim
 
 RUN npm install -g bun@1.3.10

@@ -7,21 +7,41 @@ FROM base AS install
 COPY . /usr/src/app
 RUN bun install --frozen-lockfile
 
-FROM install AS build
-RUN bunx nx run-many -p api,client -t build
+FROM install AS build-api
+RUN bunx nx run api:build
+
+FROM install AS build-astro
+ENV ASTRO_ADAPTER=node
+WORKDIR /usr/src/app/apps/astro
+RUN bun run build
+
+FROM install AS build-legacy-client
+RUN bunx nx run client:build
 
 FROM base AS api
 WORKDIR /opt/app
-COPY --from=build /usr/src/app/dist/apps/api ./
-RUN bun install --production
+COPY --from=build-api /usr/src/app/dist/apps/api ./
+RUN bun install --production --ignore-scripts
 EXPOSE 1337
 CMD ["bun", "run", "start"]
 
-FROM base AS client
+FROM base AS astro
 WORKDIR /opt/app
-COPY --from=build /usr/src/app/dist/apps/client ./
-COPY --from=build /usr/src/app/apps/client/scripts ./scripts
-COPY --from=build /usr/src/app/apps/client/package.json ./package.json
-RUN bun install --production
+ENV NODE_ENV=production
+ENV HOST=0.0.0.0
+ENV PORT=4321
+COPY --from=build-astro /usr/src/app/apps/astro ./
+RUN bun install --production --ignore-scripts
+EXPOSE 4321
+CMD ["node", "./dist/server/entry.mjs"]
+
+FROM base AS legacy-client
+WORKDIR /opt/app
+COPY --from=build-legacy-client /usr/src/app/dist/apps/client ./
+COPY --from=build-legacy-client /usr/src/app/apps/client/scripts ./scripts
+COPY --from=build-legacy-client /usr/src/app/apps/client/package.json ./package.json
+RUN bun install --production --ignore-scripts
 EXPOSE 1337
 CMD ["bun", "run", "start:prod"]
+
+FROM legacy-client AS client

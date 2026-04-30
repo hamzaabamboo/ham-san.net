@@ -2,6 +2,14 @@ import react from '@astrojs/react';
 import { defineConfig } from 'astro/config';
 
 import netlify from '@astrojs/netlify';
+import node from '@astrojs/node';
+
+const adapter =
+  process.env.ASTRO_ADAPTER === 'node'
+    ? node({ mode: 'standalone' })
+    : netlify({
+        imageCDN: false
+      });
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,10 +23,7 @@ export default defineConfig({
   },
   integrations: [react()],
   output: 'server',
-  adapter: netlify({
-    imageCDN: false
-    // cacheOnDemandPages: true
-  }),
+  adapter,
   vite: {
     resolve: {
       dedupe: ['react', 'react-dom']

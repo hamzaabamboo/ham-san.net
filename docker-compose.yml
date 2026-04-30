@@ -23,10 +23,10 @@ services:
     networks:
       - internal-services
   client:
-    container_name: sveltekit
+    container_name: astro
     env_file: .env
     restart: unless-stopped
-    image: localhost:5000/ham-san-net-client
+    image: localhost:5000/ham-san-net-astro
     environment:
       PRIVATE_BACKEND_API_URL: http://api:1337
       PORT: 4125

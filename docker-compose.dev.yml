@@ -4,8 +4,9 @@ services:
     restart: unless-stopped
     env_file: .env
     build:
+      context: .
       dockerfile: Dockerfile
-      context: ./apps/api
+      target: api
       args:
         PUBLIC_API_URL: ${PUBLIC_API_URL}
     environment:
@@ -32,12 +33,13 @@ services:
     depends_on:
       - db
   client:
-    container_name: sveltekit
+    container_name: astro
     env_file: .env
     restart: unless-stopped
     build:
-      dockerfile: ./apps/client/Dockerfile
       context: .
+      dockerfile: Dockerfile
+      target: astro
     environment:
       PRIVATE_BACKEND_API_URL: http://api:1337
       PORT: 4125
