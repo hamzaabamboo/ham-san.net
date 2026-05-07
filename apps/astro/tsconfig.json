@@ -15,7 +15,7 @@
     "verbatimModuleSyntax": false,
     "disableSizeLimit": true
   },
-  "include": ["src", "styled-system", "./panda.config.ts"],
+  "include": ["src", "styled-system/**/*.d.ts", "./panda.config.ts"],
   "exclude": [
     "src/components/ui/styled/**/*",
     "src/components/ui/qr-code.tsx",

@@ -33,7 +33,8 @@
       "options": {
         "engine": "docker",
         "context": "{workspaceRoot}",
-        "file": "{projectRoot}/Dockerfile"
+        "file": "Dockerfile",
+        "target": "legacy-client"
       },
       "configurations": {
         "local": {

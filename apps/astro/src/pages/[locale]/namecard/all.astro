@@ -2,26 +2,18 @@
 import { Center, Grid } from 'styled-system/jsx';
 import { NAMECARDS } from '../../../constants/namecard';
 
-import { localePaths } from '~/i18n/paths';
-
 import { Namecard } from '~/components/namecard/Namecard';
-import MainLayout from '~/layouts/MainLayout.astro';
-
-export function getStaticPaths() {
-  return localePaths;
-}
+import { useTranslations, validateLocale } from '~/i18n/utils';
+import NamecardLayout from '~/layouts/NamecardLayout.astro';
 const { locale } = Astro.params;
-// <styled.p fontSize="xs" textAlign="center" fontStyle="italic">
-//   Pと書いてあるけどプロデューサーじゃないからね。
-//   <br /> ただただ「ぴー」の響きがいいだけ。
-// </styled.p>
-
-//`https://api.qrserver.com/v1/create-qr-code/?size=500x500&color=${encodeURIComponent('#1F1F5A')}&data=${encodeURIComponent('https://ham-san.net/namecard')}`
-// https://qrcode-monkey.p.rapidapi.com/qr/custom?size=500&config=${encodeURIComponent(JSON.stringify({ bodyColor: '#1F1F5A', body: "dot", eye: "frame3", eyeball: "ball3"}))}&data=${encodeURIComponent('https://ham-san.net/namecard')}
-// <Box width="64px" height="64px" objectPosition="0 -1350px" backgroundImage="url('https://kitoakari.com/wp/wp-content/themes/kitoakari/assets/images/common/sprite_loading.png')" backgroundPosition="0 -576px" backgroundSize="64px 640px" backgroundRepeat='no-repeat'/>
+if (!validateLocale(locale)) {
+  return Astro.redirect('/404');
+}
+const t = useTranslations(locale);
+const pageTitle = `${t('common.name-card')} | ${t('common.name')}`;
 ---
 
-<MainLayout>
+<NamecardLayout title={pageTitle}>
   <Center
     flex={1}
     h={{
@@ -46,11 +38,14 @@ const { locale } = Astro.params;
             <>
               <a
                 href={`/${locale}/namecard/${namecard.variant}`}
-                style={{ viewTransitionName: `namecard-${namecard.variant}-front` }}
+                aria-label={`${namecard.variant} front namecard`}
               >
                 <Namecard side="front" data={namecard} />
               </a>
-              <a href={`/${locale}/namecard/${namecard.variant}`}>
+              <a
+                href={`/${locale}/namecard/${namecard.variant}`}
+                aria-label={`${namecard.variant} back namecard`}
+              >
                 <Namecard side="back" data={namecard} />
               </a>
             </>
@@ -59,7 +54,7 @@ const { locale } = Astro.params;
       }
     </Grid>
   </Center>
-</MainLayout>
+</NamecardLayout>
 
 <style>
   @page {

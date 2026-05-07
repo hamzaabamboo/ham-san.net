@@ -32,5 +32,18 @@ export const colors = defineTokens.colors({
     a11: { value: 'rgba(255, 255, 255, 0.9)' },
     a12: { value: 'rgba(255, 255, 255, 0.95)' }
   },
-  transparent: { value: 'rgb(0 0 0 / 0)' }
+  transparent: { value: 'rgb(0 0 0 / 0)' },
+  amber: {
+    50: { value: '#fffbeb' },
+    100: { value: '#fef3c7' },
+    200: { value: '#fde68a' },
+    300: { value: '#fcd34d' },
+    400: { value: '#ffc233' },
+    500: { value: '#ffb000' },
+    600: { value: '#d97706' },
+    700: { value: '#b45309' },
+    800: { value: '#92400e' },
+    900: { value: '#78350f' },
+    950: { value: '#451a03' }
+  }
 });

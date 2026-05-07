@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ATELIER | Dossier &amp; Specifications</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#d7c4ac",
+              "surface-container-lowest": "#0e0e0e",
+              "on-secondary-container": "#b6b5b5",
+              "on-tertiary-container": "#4c4e4e",
+              "background": "#131313",
+              "primary-container": "#ffb000",
+              "tertiary-fixed": "#e3e2e2",
+              "outline": "#9f8e78",
+              "on-error": "#690005",
+              "on-background": "#e5e2e1",
+              "surface-tint": "#ffba43",
+              "tertiary": "#dbdbdb",
+              "on-primary-container": "#6a4700",
+              "on-tertiary-fixed-variant": "#464747",
+              "on-secondary-fixed-variant": "#464747",
+              "inverse-surface": "#e5e2e1",
+              "tertiary-container": "#bfbfbf",
+              "error": "#ffb4ab",
+              "surface": "#131313",
+              "on-secondary-fixed": "#1b1c1c",
+              "on-tertiary": "#2f3131",
+              "on-primary-fixed-variant": "#614000",
+              "secondary-container": "#464747",
+              "on-tertiary-fixed": "#1a1c1c",
+              "surface-container-high": "#2a2a2a",
+              "surface-variant": "#353534",
+              "surface-dim": "#131313",
+              "surface-container-low": "#1c1b1b",
+              "primary-fixed": "#ffddaf",
+              "primary": "#ffd597",
+              "surface-container-highest": "#353534",
+              "on-primary-fixed": "#281800",
+              "inverse-primary": "#805600",
+              "inverse-on-surface": "#313030",
+              "primary-fixed-dim": "#ffba43",
+              "on-secondary": "#303031",
+              "on-primary": "#432c00",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "outline-variant": "#524533",
+              "secondary": "#c7c6c6",
+              "secondary-fixed": "#e3e2e2",
+              "secondary-fixed-dim": "#c7c6c6",
+              "surface-container": "#201f1f",
+              "surface-bright": "#393939",
+              "on-surface": "#e5e2e1",
+              "error-container": "#93000a",
+              "on-error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Manrope"],
+              "mono": ["JetBrains Mono"]
+            },
+            borderRadius: {"none": "0px", "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "0px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .blocky-shadow { box-shadow: 4px 4px 0px 0px #0e0e0e; }
+        .blocky-shadow-active:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px 0px #0e0e0e; }
+        .spine-gradient { background: linear-gradient(180deg, #524533 0%, #ffb000 15%, #ffb000 85%, #524533 100%); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="bg-[#131313] docked full-width top-0 z-50 border-b border-[#524533] fixed w-full">
+<nav class="flex justify-between items-center w-full px-6 h-16">
+<div class="text-2xl font-black tracking-tighter text-[#dbdbdb] uppercase font-sans"><img alt="ATELIER" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU_zi_ExOarn-m7hXjdUPuFAOtj2mF16LB5bU6tkMyUNxeELuUQUDSh93DppbDeOzZKGWxSf598F6_4Fc_KK-MTHEKmeJAbZ9QHepWuc8jLJdpmC82eXmzm684XITr2ApGXAKd2KGEP0W95EiBueRiw8Mp7Je3jH2pEHDFXP0nYF8HoGUwd2aP1eHfh5ds92q8Tjit7RsiRGZiFyeXxnN4IvyveKlr4dkobzVBl4ChDEtM1r3kA5e61PzjGQdSULgHJN22372rGvM"/></div>
+<div class="hidden md:flex space-x-8 font-label font-medium uppercase text-xs tracking-widest">
+<a class="text-[#c7c6c6] hover:text-[#dbdbdb] transition-colors duration-100 hover:bg-[#353534] px-2 py-1" href="#">Specimens</a>
+<a class="text-[#c7c6c6] hover:text-[#dbdbdb] transition-colors duration-100 hover:bg-[#353534] px-2 py-1" href="#">Logs</a>
+<a class="text-[#c7c6c6] hover:text-[#dbdbdb] transition-colors duration-100 hover:bg-[#353534] px-2 py-1" href="#">Garden</a>
+<a class="text-[#FFB000] border-b-2 border-[#FFB000] pb-1" href="#">Index</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="material-symbols-outlined text-[#c7c6c6] hover:text-[#dbdbdb]">language</button>
+<button class="material-symbols-outlined text-[#c7c6c6] hover:text-[#dbdbdb]">contrast</button>
+</div>
+</nav>
+</header>
+<!-- SideNavBar (Project Spec) -->
+<aside class="bg-[#0e0e0e] fixed left-0 top-16 bottom-0 flex flex-col border-r border-[#524533] w-64 hidden xl:flex shadow-[4px_0_0_0_#0e0e0e] z-40">
+<div class="p-6 border-b border-[#524533]">
+<div class="text-lg font-bold text-[#dbdbdb] font-sans">PROJECT_SPEC</div>
+<div class="font-mono text-[10px] text-primary-container tracking-tighter">V2.04_BUILD</div>
+</div>
+<div class="flex-grow py-4">
+<div class="px-6 py-3 bg-[#FFB000] text-[#432c00] font-bold flex items-center space-x-3 mb-2">
+<span class="material-symbols-outlined text-sm">info</span>
+<span class="font-label text-xs uppercase tracking-widest">Metadata</span>
+</div>
+<a class="px-6 py-3 text-[#c7c6c6] opacity-70 hover:bg-[#353534] hover:text-[#FFB000] hover:opacity-100 flex items-center space-x-3 transition-all" href="#">
+<span class="material-symbols-outlined text-sm">straighten</span>
+<span class="font-label text-xs uppercase tracking-widest">Dimensions</span>
+</a>
+<a class="px-6 py-3 text-[#c7c6c6] opacity-70 hover:bg-[#353534] hover:text-[#FFB000] hover:opacity-100 flex items-center space-x-3 transition-all" href="#">
+<span class="material-symbols-outlined text-sm">history</span>
+<span class="font-label text-xs uppercase tracking-widest">Version</span>
+</a>
+<a class="px-6 py-3 text-[#c7c6c6] opacity-70 hover:bg-[#353534] hover:text-[#FFB000] hover:opacity-100 flex items-center space-x-3 transition-all" href="#">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span class="font-label text-xs uppercase tracking-widest">Status</span>
+</a>
+</div>
+<div class="p-6 border-t border-[#524533]">
+<div class="font-mono text-[10px] text-[#524533] uppercase">System Integrity: Nominal</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="xl:ml-64 pt-16 min-h-screen pb-16">
+<!-- Hero Section -->
+<section class="relative border-b border-outline-variant grid grid-cols-1 md:grid-cols-12">
+<div class="md:col-span-8 p-8 md:p-16 border-r border-outline-variant">
+<div class="inline-block bg-surface-container-highest px-2 py-0.5 font-mono text-[10px] text-primary-container border border-outline-variant mb-6">
+                    DOSSIER_ID: 9942-X
+                </div>
+<h1 class="font-headline text-5xl md:text-7xl lg:text-8xl tracking-tight text-on-background leading-none mb-8">
+                    The Archive of <span class="italic text-tertiary">Construction</span>.
+                </h1>
+<p class="font-headline text-xl md:text-2xl text-on-surface-variant max-w-2xl leading-relaxed">
+                    A multi-disciplinary lead focused on the intersection of industrial precision and digital interface. Engineering systems that bridge the gap between abstract code and physical utility.
+                </p>
+</div>
+<div class="md:col-span-4 bg-surface-container-lowest relative overflow-hidden flex items-center justify-center p-12 min-h-[300px]">
+<!-- Geometric 3D Element (Wireframe Cube) -->
+<div class="relative w-48 h-48 border border-primary-container opacity-20 rotate-12">
+<div class="absolute inset-0 border border-primary-container -translate-x-4 -translate-y-4"></div>
+<div class="absolute inset-0 border border-primary-container translate-x-4 translate-y-4"></div>
+<div class="absolute top-0 left-0 w-full h-full border-t border-l border-primary-container -rotate-45 scale-150 origin-top-left opacity-10"></div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-32 h-32 bg-primary-container/10 border border-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container text-6xl">architecture</span>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 font-mono text-[10px] text-outline opacity-50 uppercase vertical-text tracking-widest">
+                    AXONOMETRIC_VIEW_01
+                </div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12">
+<!-- Left Column: Skills & Specs -->
+<aside class="lg:col-span-4 p-8 border-r border-outline-variant space-y-12 bg-surface-container-low">
+<!-- Skill Group: Frontend -->
+<div>
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-label font-bold uppercase tracking-[0.2em] text-xs text-secondary">Material: Frontend</h3>
+<div class="h-px bg-outline-variant flex-grow ml-4"></div>
+</div>
+<ul class="space-y-3 font-mono text-sm">
+<li class="flex items-center justify-between">
+<span class="text-on-surface">TypeScript / React</span>
+<span class="text-primary-container font-bold">[CORE]</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="text-on-surface">Tailwind CSS</span>
+<span class="text-primary-container font-bold">[CORE]</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="text-on-surface-variant">Next.js Framework</span>
+<span class="text-outline">0.92</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="text-on-surface-variant">WebGL / Three.js</span>
+<span class="text-outline">0.75</span>
+</li>
+</ul>
+</div>
+<!-- Skill Group: Design -->
+<div>
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-label font-bold uppercase tracking-[0.2em] text-xs text-secondary">Material: Design</h3>
+<div class="h-px bg-outline-variant flex-grow ml-4"></div>
+</div>
+<ul class="space-y-3 font-mono text-sm">
+<li class="flex items-center justify-between">
+<span class="text-on-surface">System Architecture</span>
+<span class="text-primary-container font-bold">[CORE]</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="text-on-surface">Typography Design</span>
+<span class="text-primary-container font-bold">[CORE]</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="text-on-surface-variant">CAD / Wireframing</span>
+<span class="text-outline">0.88</span>
+</li>
+<li class="flex items-center justify-between">
+<span class="text-on-surface-variant">Technical Drawing</span>
+<span class="text-outline">0.82</span>
+</li>
+</ul>
+</div>
+<!-- Tooling Inventory -->
+<div class="bg-surface p-6 border border-outline-variant blocky-shadow">
+<h3 class="font-label font-bold uppercase tracking-widest text-[10px] text-primary-container mb-4">Inventory_Tools</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">VS_CODE</span>
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">FIGMA</span>
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">GIT_CLI</span>
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">DOCKER</span>
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">NODE_V20</span>
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">BLENDER</span>
+</div>
+</div>
+<!-- Bio / Markdown Content -->
+<div class="pt-8 border-t border-outline-variant">
+<div class="font-headline text-lg leading-relaxed text-on-surface space-y-4">
+<p>
+                            I believe in the **integrity of the interface**. A screen is not a mask; it is a mechanical control surface that should inform the user of its internal logic.
+                        </p>
+<p>
+                            My approach is subtractive. I remove the decorative until only the functional remains, then I polish the functional until it becomes beautiful.
+                        </p>
+</div>
+</div>
+</aside>
+<!-- Right Column: Timeline / Experience -->
+<section class="lg:col-span-8 p-8 md:p-16 relative">
+<div class="flex items-center space-x-4 mb-12">
+<span class="material-symbols-outlined text-primary-container">timeline</span>
+<h2 class="font-label font-black uppercase tracking-[0.3em] text-sm text-on-surface">Deployment_History</h2>
+</div>
+<!-- The Vertical Spine -->
+<div class="relative pl-8 md:pl-16">
+<div class="absolute left-0 top-0 bottom-0 w-px spine-gradient"></div>
+<!-- Experience Block 01 -->
+<div class="relative mb-20 group">
+<!-- Spine Node -->
+<div class="absolute -left-8 md:-left-16 top-0 w-4 h-4 bg-background border-2 border-primary-container z-10"></div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="md:col-span-1">
+<div class="font-mono text-xs text-outline mb-1 uppercase">2021 — PRESENT</div>
+<div class="font-label font-bold text-on-surface leading-tight">LEAD SYSTEMS ARCHITECT</div>
+<div class="font-mono text-[10px] text-primary-container mt-2">ID: CT-904</div>
+</div>
+<div class="md:col-span-3">
+<div class="border border-outline-variant p-8 bg-surface-container blocky-shadow transition-all group-hover:border-primary-container">
+<h4 class="font-headline text-2xl mb-4 text-tertiary">Construct Industries</h4>
+<div class="font-headline text-lg text-on-surface-variant leading-relaxed space-y-4">
+<p>Spearheaded the design and implementation of a centralized design system across four separate engineering verticals. Reduced front-end debt by 40% in the first fiscal year.</p>
+<ul class="font-mono text-xs space-y-2 list-none text-secondary">
+<li class="flex items-start"><span class="text-primary-container mr-2">+</span> Scaling React architectures for high-load technical dashboards.</li>
+<li class="flex items-start"><span class="text-primary-container mr-2">+</span> Mentoring junior builders in Constructivist design principles.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Experience Block 02 -->
+<div class="relative mb-20 group">
+<!-- Spine Node -->
+<div class="absolute -left-8 md:-left-16 top-0 w-4 h-4 bg-background border-2 border-outline z-10"></div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="md:col-span-1">
+<div class="font-mono text-xs text-outline mb-1 uppercase">2018 — 2021</div>
+<div class="font-label font-bold text-on-surface leading-tight">SENIOR INTERFACE ENGINEER</div>
+<div class="font-mono text-[10px] text-outline mt-2">ID: CT-882</div>
+</div>
+<div class="md:col-span-3">
+<div class="border border-outline-variant p-8 bg-surface-container-low transition-all group-hover:border-outline group-hover:bg-surface-container">
+<h4 class="font-headline text-2xl mb-4 text-tertiary">Foundry Technical</h4>
+<div class="font-headline text-lg text-on-surface-variant leading-relaxed">
+<p>Developed complex data visualization tools for industrial logistics. Focused on high-density information display and low-latency user interactions in constrained environments.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Experience Block 03 -->
+<div class="relative group">
+<!-- Spine Node -->
+<div class="absolute -left-8 md:-left-16 top-0 w-4 h-4 bg-background border-2 border-outline z-10"></div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="md:col-span-1">
+<div class="font-mono text-xs text-outline mb-1 uppercase">2015 — 2018</div>
+<div class="font-label font-bold text-on-surface leading-tight">JUNIOR DRAFTSMAN</div>
+<div class="font-mono text-[10px] text-outline mt-2">ID: CT-710</div>
+</div>
+<div class="md:col-span-3">
+<div class="border border-outline-variant p-8 bg-surface-container-low transition-all">
+<h4 class="font-headline text-2xl mb-4 text-tertiary">Atelier Digital</h4>
+<div class="font-headline text-lg text-on-surface-variant leading-relaxed">
+<p>Initial deployment into commercial web development. Focused on semantic HTML, early-stage CSS frameworks, and the fundamentals of grid systems.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Credentials / Footer-like section -->
+<section class="border-t border-outline-variant grid grid-cols-2 md:grid-cols-4 font-mono text-[10px] uppercase tracking-widest text-secondary">
+<div class="p-8 border-r border-outline-variant flex flex-col justify-between h-48">
+<span>Certification</span>
+<span class="text-primary-container">OSHA_Interface_v4</span>
+</div>
+<div class="p-8 border-r border-outline-variant flex flex-col justify-between h-48">
+<span>Location</span>
+<span class="text-tertiary">Sector_7G / Remote</span>
+</div>
+<div class="p-8 border-r border-outline-variant flex flex-col justify-between h-48">
+<span>Availability</span>
+<span class="text-primary-container">Selective_Deployment</span>
+</div>
+<div class="p-8 flex flex-col justify-between h-48">
+<span>Signal</span>
+<a class="text-tertiary hover:text-primary-container transition-colors" href="#">Encrypted_Mail</a>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="bg-[#131313] docked full-width bottom-0 border-t border-[#524533] z-50 xl:ml-64">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<div class="text-sm font-bold text-[#c7c6c6] font-mono uppercase text-[10px]">©2024 CONSTRUCT_SYS</div>
+<div class="flex space-x-6">
+<span class="text-[#FFB000] font-mono text-[10px] uppercase tracking-tighter">Status: Built</span>
+<span class="text-[#524533] font-mono text-[10px] uppercase tracking-tighter">Last Sync: 14:02:11</span>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#131313] border-t border-[#524533] flex justify-around items-center h-16 z-[60]">
+<button class="flex flex-col items-center justify-center text-[#c7c6c6]">
+<span class="material-symbols-outlined">info</span>
+<span class="text-[8px] uppercase font-bold mt-1">Meta</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#FFB000]">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[8px] uppercase font-bold mt-1">Logs</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#c7c6c6]">
+<span class="material-symbols-outlined">straighten</span>
+<span class="text-[8px] uppercase font-bold mt-1">Spec</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#c7c6c6]">
+<span class="material-symbols-outlined">memory</span>
+<span class="text-[8px] uppercase font-bold mt-1">Sys</span>
+</button>
+</nav>
+</body></html>

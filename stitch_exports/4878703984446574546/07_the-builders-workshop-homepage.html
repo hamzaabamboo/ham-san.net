@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ATELIER // DIGITAL WORKSHOP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#d7c4ac",
+              "surface-container-lowest": "#0e0e0e",
+              "on-secondary-container": "#b6b5b5",
+              "on-tertiary-container": "#4c4e4e",
+              "background": "#131313",
+              "primary-container": "#ffb000",
+              "tertiary-fixed": "#e3e2e2",
+              "outline": "#9f8e78",
+              "on-error": "#690005",
+              "on-background": "#e5e2e1",
+              "surface-tint": "#ffba43",
+              "tertiary": "#dbdbdb",
+              "on-primary-container": "#6a4700",
+              "on-tertiary-fixed-variant": "#464747",
+              "on-secondary-fixed-variant": "#464747",
+              "inverse-surface": "#e5e2e1",
+              "tertiary-container": "#bfbfbf",
+              "error": "#ffb4ab",
+              "surface": "#131313",
+              "on-secondary-fixed": "#1b1c1c",
+              "on-tertiary": "#2f3131",
+              "on-primary-fixed-variant": "#614000",
+              "secondary-container": "#464747",
+              "on-tertiary-fixed": "#1a1c1c",
+              "surface-container-high": "#2a2a2a",
+              "surface-variant": "#353534",
+              "surface-dim": "#131313",
+              "surface-container-low": "#1c1b1b",
+              "primary-fixed": "#ffddaf",
+              "primary": "#ffd597",
+              "surface-container-highest": "#353534",
+              "on-primary-fixed": "#281800",
+              "inverse-primary": "#805600",
+              "inverse-on-surface": "#313030",
+              "primary-fixed-dim": "#ffba43",
+              "on-secondary": "#303031",
+              "on-primary": "#432c00",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "outline-variant": "#524533",
+              "secondary": "#c7c6c6",
+              "secondary-fixed": "#e3e2e2",
+              "secondary-fixed-dim": "#c7c6c6",
+              "surface-container": "#201f1f",
+              "surface-bright": "#393939",
+              "on-surface": "#e5e2e1",
+              "error-container": "#93000a",
+              "on-error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Newsreader", "serif"],
+              "body": ["Manrope", "sans-serif"],
+              "label": ["Manrope", "sans-serif"],
+              "mono": ["JetBrains Mono", "monospace"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .block-shadow-sm {
+            box-shadow: 4px 4px 0px 0px #0e0e0e;
+        }
+        .block-shadow-md {
+            box-shadow: 8px 8px 0px 0px #0e0e0e;
+        }
+        .spec-label {
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            background: #353534;
+            color: #dbdbdb;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border: 1px solid #524533;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="bg-[#131313] border-b border-[#524533] fixed top-0 z-50 flex justify-between items-center w-full px-6 h-16">
+<div class="text-2xl font-black tracking-tighter text-[#dbdbdb] uppercase font-sans"><div class="flex items-center space-x-3"><img alt="Atelier Logo" class="h-8 w-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU_zi_ExOarn-m7hXjdUPuFAOtj2mF16LB5bU6tkMyUNxeELuUQUDSh93DppbDeOzZKGWxSf598F6_4Fc_KK-MTHEKmeJAbZ9QHepWuc8jLJdpmC82eXmzm684XITr2ApGXAKd2KGEP0W95EiBueRiw8Mp7Je3jH2pEHDFXP0nYF8HoGUwd2aP1eHfh5ds92q8Tjit7RsiRGZiFyeXxnN4IvyveKlr4dkobzVBl4ChDEtM1r3kA5e61PzjGQdSULgHJN22372rGvM"/><span>ATELIER</span></div></div>
+<div class="hidden md:flex items-center space-x-8 h-full">
+<a class="font-label text-sm font-medium h-full flex items-center transition-colors duration-100 text-[#FFB000] border-b-2 border-[#FFB000] pb-1" href="#">Specimens</a>
+<a class="font-label text-sm font-medium h-full flex items-center transition-colors duration-100 text-[#c7c6c6] hover:text-[#dbdbdb] hover:bg-[#353534] px-2" href="#">Logs</a>
+<a class="font-label text-sm font-medium h-full flex items-center transition-colors duration-100 text-[#c7c6c6] hover:text-[#dbdbdb] hover:bg-[#353534] px-2" href="#">Garden</a>
+<a class="font-label text-sm font-medium h-full flex items-center transition-colors duration-100 text-[#c7c6c6] hover:text-[#dbdbdb] hover:bg-[#353534] px-2" href="#">Index</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="material-symbols-outlined text-[#c7c6c6] hover:bg-[#353534] p-2 transition-colors">language</button>
+<button class="material-symbols-outlined text-[#c7c6c6] hover:bg-[#353534] p-2 transition-colors">contrast</button>
+</div>
+</nav>
+<!-- SideNavBar (Contextual Specs) -->
+<aside class="fixed left-0 top-16 bottom-0 hidden lg:flex flex-col bg-[#0e0e0e] border-r border-[#524533] w-64 shadow-[4px_0_0_0_#0e0e0e] z-40">
+<div class="p-6 border-b border-[#524533]">
+<h2 class="text-lg font-bold text-[#dbdbdb] font-sans">PROJECT_SPEC</h2>
+<p class="font-mono text-[10px] text-[#FFB000]">V2.04_BUILD</p>
+</div>
+<div class="flex-1 py-4">
+<div class="flex items-center px-6 py-3 bg-[#FFB000] text-[#432c00] font-bold">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">info</span>
+<span class="font-label text-sm uppercase tracking-wider">Metadata</span>
+</div>
+<div class="flex items-center px-6 py-3 text-[#c7c6c6] opacity-70 hover:bg-[#353534] hover:text-[#FFB000] transition-colors cursor-pointer">
+<span class="material-symbols-outlined mr-3">straighten</span>
+<span class="font-label text-sm uppercase tracking-wider">Dimensions</span>
+</div>
+<div class="flex items-center px-6 py-3 text-[#c7c6c6] opacity-70 hover:bg-[#353534] hover:text-[#FFB000] transition-colors cursor-pointer">
+<span class="material-symbols-outlined mr-3">history</span>
+<span class="font-label text-sm uppercase tracking-wider">Version</span>
+</div>
+<div class="flex items-center px-6 py-3 text-[#c7c6c6] opacity-70 hover:bg-[#353534] hover:text-[#FFB000] transition-colors cursor-pointer">
+<span class="material-symbols-outlined mr-3">memory</span>
+<span class="font-label text-sm uppercase tracking-wider">Status</span>
+</div>
+</div>
+<div class="p-6 border-t border-[#524533]">
+<div class="bg-surface-container-highest p-4 border border-outline-variant relative">
+<div class="spec-label">ENV_STAT</div>
+<div class="flex items-center space-x-2 mt-2">
+<span class="w-2 h-2 bg-emerald-500"></span>
+<span class="font-mono text-[10px] uppercase text-on-background">System_Online</span>
+</div>
+<p class="font-mono text-[10px] mt-2 text-on-surface-variant">LOC: 35.6895° N, 139.6917° E</p>
+</div>
+</div>
+</aside>
+<main class="lg:ml-64 pt-16 min-h-screen pb-16">
+<!-- Hero Section -->
+<section class="relative h-[819px] flex flex-col justify-center px-8 md:px-16 overflow-hidden border-b border-outline-variant">
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+<div class="h-full w-full bg-[url('https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?q=80&amp;w=2000')] bg-cover bg-center grayscale mix-blend-overlay" data-alt="Abstract 3D technical wireframe of a complex geometric obsidian shape with sharp edges and dark matte finish"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-4xl">
+<p class="font-mono text-primary-container text-xs tracking-[0.3em] uppercase mb-4">Constructing Digital Realities</p>
+<h1 class="font-headline text-6xl md:text-8xl leading-none mb-8">The workshop of a <span class="italic">digital machinist</span>.</h1>
+<p class="font-headline text-2xl md:text-3xl text-secondary max-w-2xl mb-12">Building high-fidelity systems at the intersection of architectural rigor and otaku precision.</p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-primary-container text-on-primary font-label font-bold px-8 py-4 flex items-center justify-center border border-outline block-shadow-md active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
+                        INITIATE_PROJECT
+                        <span class="material-symbols-outlined ml-2">arrow_forward</span>
+</button>
+<button class="border border-outline text-on-background font-label font-medium px-8 py-4 hover:bg-surface-container-highest transition-colors">
+                        VIEW_SPECIMENS
+                    </button>
+</div>
+</div>
+</section>
+<!-- Status & Stats Row -->
+<section class="grid grid-cols-1 md:grid-cols-3 border-b border-outline-variant">
+<div class="p-8 border-r border-outline-variant flex flex-col justify-between group cursor-default">
+<span class="font-mono text-[10px] text-on-tertiary-container uppercase tracking-widest mb-4">Current_Phase</span>
+<div class="flex items-end justify-between">
+<h3 class="font-headline text-3xl">Architecting V3</h3>
+<span class="font-mono text-primary-container text-lg">01</span>
+</div>
+</div>
+<div class="p-8 border-r border-outline-variant flex flex-col justify-between bg-surface-container-low">
+<span class="font-mono text-[10px] text-on-tertiary-container uppercase tracking-widest mb-4">Availability</span>
+<div class="flex items-center space-x-3">
+<div class="relative">
+<div class="w-3 h-3 bg-emerald-500"></div>
+<div class="absolute inset-0 w-3 h-3 bg-emerald-500 animate-ping opacity-50"></div>
+</div>
+<h3 class="font-headline text-3xl">Accepting Labs</h3>
+</div>
+</div>
+<div class="p-8 flex flex-col justify-between group hover:bg-surface-container-highest transition-colors">
+<span class="font-mono text-[10px] text-on-tertiary-container uppercase tracking-widest mb-4">Workshop_Load</span>
+<div class="w-full bg-outline-variant h-2 mt-4">
+<div class="bg-primary-container h-full w-[65%]"></div>
+</div>
+<div class="flex justify-between mt-2">
+<span class="font-mono text-[10px] text-secondary">CAP_65%</span>
+<span class="font-mono text-[10px] text-secondary">QUEUE_02</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Workshop Benches -->
+<section class="p-8 md:p-16 border-b border-outline-variant">
+<div class="flex justify-between items-end mb-12">
+<div>
+<span class="font-mono text-xs text-primary-container">02 // PROFILE</span>
+<h2 class="font-headline text-5xl mt-2">Workshop Benches</h2>
+</div>
+<p class="font-mono text-[10px] text-on-tertiary-container max-w-xs text-right hidden md:block">
+                    A SYNOPSIS OF THE MAKER'S PHILOSOPHY AND TECHNICAL CAPABILITIES.
+                </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Bench 01: Manifesto -->
+<div class="md:col-span-7 bg-surface-container-low border border-outline-variant p-8 relative block-shadow-sm group">
+<div class="spec-label">BENCH_01 // MANIFESTO</div>
+<div class="mt-6">
+<h3 class="font-headline text-4xl mb-6">Design is a technical <span class="italic">calculation</span>.</h3>
+<p class="text-secondary leading-relaxed font-body mb-6">
+                            I treat every interface as a structural blueprint. No fluff, no unnecessary shadows, just pure functional aesthetics derived from industrial design principles and constructivist art.
+                        </p>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-highest px-3 py-1 font-mono text-[10px] border border-outline-variant">PRECISION</span>
+<span class="bg-surface-container-highest px-3 py-1 font-mono text-[10px] border border-outline-variant">DURABILITY</span>
+<span class="bg-surface-container-highest px-3 py-1 font-mono text-[10px] border border-outline-variant">INTENT</span>
+</div>
+</div>
+</div>
+<!-- Bench 02: Tools -->
+<div class="md:col-span-5 bg-surface-container-low border border-outline-variant p-8 relative block-shadow-sm flex flex-col justify-between">
+<div class="spec-label">BENCH_02 // MATERIALS</div>
+<div class="mt-6 grid grid-cols-2 gap-4">
+<div class="border-l border-primary-container pl-4">
+<p class="font-mono text-[10px] text-on-tertiary-container">CORE_LOGIC</p>
+<p class="font-label font-bold text-lg">React / Next.js</p>
+</div>
+<div class="border-l border-primary-container pl-4">
+<p class="font-mono text-[10px] text-on-tertiary-container">STRUCTURAL</p>
+<p class="font-label font-bold text-lg">Tailwind CSS</p>
+</div>
+<div class="border-l border-primary-container pl-4">
+<div class="font-mono text-[10px] text-on-tertiary-container">FORGE</div>
+<p class="font-label font-bold text-lg">Figma / WebGL</p>
+</div>
+<div class="border-l border-primary-container pl-4">
+<p class="font-mono text-[10px] text-on-tertiary-container">AUTOMATA</p>
+<p class="font-label font-bold text-lg">Node.js / Python</p>
+</div>
+</div>
+</div>
+<!-- Bench 03: Specimen Counter -->
+<div class="md:col-span-4 bg-[#FFB000] border border-outline p-8 relative block-shadow-sm text-[#432c00]">
+<div class="spec-label !bg-[#432c00] !text-[#FFB000] !border-[#432c00]">BENCH_03 // LOGS</div>
+<div class="mt-6 flex flex-col h-full justify-between">
+<div class="font-headline text-6xl font-black">42</div>
+<p class="font-label font-bold uppercase tracking-tighter">Specimens successfully deployed into production environments.</p>
+</div>
+</div>
+<!-- Bench 04: Visuals -->
+<div class="md:col-span-8 h-64 border border-outline-variant relative overflow-hidden group">
+<div class="spec-label">BENCH_04 // V_RENDER</div>
+<img class="w-full h-full object-cover grayscale brightness-50 group-hover:scale-105 transition-transform duration-700" data-alt="Close-up of high-tech server racks with flickering green and blue lights in a dark data center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVc16wSyMi0zRUwoyl0WAWvk-0YapgyvJpu9Rp2Tz5fib0yvr6ob9kR1HC1QPpkdLn0bg3pSnWxyN5FgNPxLm7UudJOPuL0CcwQogXxQMRZDDABuaUFZO9oJ1V1XqRd20K3iliRV3xmnoRjbTG_S8afj2WFkIW1bzZMLoLCEcSh-rWN_vW4Dp5VRygaXrAo9VQ6kNQrCh7_g22X_pHswDNzvdbh_HaaW6I-K238pc9YVsooaxHqOYKNMhblXZM9MeuhIqeS0FpZrw"/>
+<div class="absolute inset-0 bg-primary-container mix-blend-multiply opacity-20"></div>
+</div>
+</div>
+</section>
+<!-- Featured Specimens Grid -->
+<section class="p-8 md:p-16">
+<div class="flex flex-col md:flex-row justify-between items-baseline mb-12 border-b border-outline-variant pb-6">
+<h2 class="font-headline text-5xl">Featured Specimens</h2>
+<div class="font-mono text-xs mt-4 md:mt-0">SORT: [CHRONOLOGICAL_BUILD]</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-outline-variant">
+<!-- Specimen 01 -->
+<div class="border-r border-b border-outline-variant group cursor-pointer overflow-hidden bg-surface">
+<div class="aspect-square relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Technical macro photography of a high-end computer motherboard with gold traces and obsidian components" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSDTW_-73MsLzMtgH5QICiae5DJ1-JaOCU9ZdAq6pbiMfQbhSASZIsQo3fbJo0qZQYefEeUb5NtHknzoGgNqQNftbrBH7uT3GW4xh3eJiEo-XYx7L_piCUkbjd4bcqENxZp9rpAbwXpQnKMRkSCPRU-QYwPPNMlIO_e6lsLgcWUrIgS4Cqb2K090uvMe11O6R101DejwYyjWVHt1m9iGLn2m732yaFMi0E8kBjaw0P8uDhMpbaMRFuEmsKRchCLlhTbrzUlS1vT-4"/>
+<div class="absolute inset-0 bg-surface-container-lowest opacity-40 group-hover:opacity-0 transition-opacity"></div>
+<div class="spec-label m-4 opacity-0 group-hover:opacity-100 transition-opacity">BUILD_ID: 9821</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-label font-bold text-xl uppercase tracking-tighter">Obsidian_OS</h3>
+<span class="font-mono text-[10px] text-primary-container border border-primary-container px-2">SYSTEM</span>
+</div>
+<p class="text-secondary text-sm font-headline italic">A headless kernel interface for high-throughput automation.</p>
+<div class="mt-6 pt-4 border-t border-outline-variant flex justify-between items-center opacity-50 group-hover:opacity-100 transition-opacity">
+<span class="font-mono text-[10px]">V1.0.4</span>
+<span class="material-symbols-outlined text-sm">north_east</span>
+</div>
+</div>
+</div>
+<!-- Specimen 02 -->
+<div class="border-r border-b border-outline-variant group cursor-pointer overflow-hidden bg-surface">
+<div class="aspect-square relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="3D render of a minimalist concrete building with sharp geometric shadows and high contrast lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChyW7fcJqz0Tbslme4Bqo92T2K1uvn2PUZruy0LnSTbPEK5NLP697lbKHAf2mpn3L22BYFEQXohNz0bBhH07fD6xiIyM-iEHO0oWWQ05QDtH8M7Y0Ma02iNdCExBacDA8owvMEJN7a3fZ8Ou40bb4I1sZUMgzjuJCBWJYzs7qOWN5st93iLalV1uFcqlx8ybzLKSF5XDlerWof4T2QaAxVa0woO397leTNhYrYjobuKFK49q3f_EvX66T7ZZkJfIx74_duSMaRSAo"/>
+<div class="absolute inset-0 bg-surface-container-lowest opacity-40 group-hover:opacity-0 transition-opacity"></div>
+<div class="spec-label m-4 opacity-0 group-hover:opacity-100 transition-opacity">BUILD_ID: 4402</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-label font-bold text-xl uppercase tracking-tighter">Concrete_UI</h3>
+<span class="font-mono text-[10px] text-primary-container border border-primary-container px-2">INTERFACE</span>
+</div>
+<p class="text-secondary text-sm font-headline italic">Design system documentation for brutalist architectural firms.</p>
+<div class="mt-6 pt-4 border-t border-outline-variant flex justify-between items-center opacity-50 group-hover:opacity-100 transition-opacity">
+<span class="font-mono text-[10px]">V2.1.0</span>
+<span class="material-symbols-outlined text-sm">north_east</span>
+</div>
+</div>
+</div>
+<!-- Specimen 03 -->
+<div class="border-r border-b border-outline-variant group cursor-pointer overflow-hidden bg-surface">
+<div class="aspect-square relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Satellite visualization of global data networks as glowing amber lines on a dark obsidian earth sphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdh1HFyFLsO_LQ2Epq8vSs9_at-zNM4NRb2g-gQtPsx0NpGqK34wSoRxCAnwAG_9rKdzNuHe5ugUA9724ujtMWauOKHnMXL-_XISXFYCE0lLRblJEkHyDc8DaDIiewiGFZVsa6rvN7vskw4A6A0jJlOcKJNTzDuvCeBxytCYe-V1ZYLGRyTGAhwLGI2TIMXTP4TCk5pCwc7E0DpudNtG_Bht77T0_xiVV-lA8hU3XEV1wfI5CBPjRsyTAvHCi0CZC8hG1aoiPL13U"/>
+<div class="absolute inset-0 bg-surface-container-lowest opacity-40 group-hover:opacity-0 transition-opacity"></div>
+<div class="spec-label m-4 opacity-0 group-hover:opacity-100 transition-opacity">BUILD_ID: 1109</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-label font-bold text-xl uppercase tracking-tighter">Amber_Net</h3>
+<span class="font-mono text-[10px] text-primary-container border border-primary-container px-2">NETWORK</span>
+</div>
+<p class="text-secondary text-sm font-headline italic">Real-time data visualization layer for smart-grid monitoring.</p>
+<div class="mt-6 pt-4 border-t border-outline-variant flex justify-between items-center opacity-50 group-hover:opacity-100 transition-opacity">
+<span class="font-mono text-[10px]">V0.8.2</span>
+<span class="material-symbols-outlined text-sm">north_east</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#131313] border-t border-[#524533] flex justify-between items-center px-6 py-4 w-full relative z-50">
+<div class="text-sm font-bold text-[#c7c6c6]">©2024 CONSTRUCT_SYS</div>
+<div class="flex space-x-6 items-center">
+<a class="font-mono text-[10px] uppercase text-[#524533] hover:text-[#dbdbdb] transition-colors" href="#">Status: Built</a>
+<a class="font-mono text-[10px] uppercase text-[#524533] hover:text-[#dbdbdb] transition-colors" href="#">Last Sync: 14:02:11</a>
+<div class="h-4 w-px bg-[#524533]"></div>
+<div class="flex space-x-4">
+<a class="text-[#524533] hover:text-[#FFB000] transition-colors" href="#">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.041-1.416-4.041-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+</a>
+</div>
+</div>
+</footer>
+</body></html>

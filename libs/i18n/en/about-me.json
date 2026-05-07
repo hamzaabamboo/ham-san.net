@@ -1,5 +1,24 @@
 {
   "title": "About me",
   "skills": "Skills",
-  "return-to": "Return to About me"
+  "return-to": "Return to About me",
+  "eyebrow": "Profile",
+  "hero-title": "A generalist who builds for the web.",
+  "hero-summary": "I work mostly on frontend systems, product interfaces, and tools that make daily work easier.",
+  "methodology": "How I work",
+  "methodology-body": "I like understanding how things fit together, whether I am working on code, photos, or language learning.",
+  "methodology-coda": "The goal is simple: make things that are clear, useful, and maintainable.",
+  "selected-projects": "Selected projects",
+  "bio-integrity": "A good interface should explain itself. People should not have to fight the screen to understand what is happening.",
+  "bio-subtractive": "I usually start by removing noise, then keep what helps the user move forward.",
+  "credentials-certification": "Focus",
+  "credentials-certification-value": "Frontend",
+  "credentials-location": "Location",
+  "credentials-location-value": "Tokyo / Remote",
+  "credentials-availability": "Availability",
+  "credentials-availability-value": "Selective freelance",
+  "credentials-signal": "Contact",
+  "credentials-signal-value": "Email",
+  "timeline-empty-title": "Timeline unavailable",
+  "timeline-empty-description": "Experience entries will show up again when the content connection is back."
 }

@@ -18,9 +18,12 @@ export const ProfileText = ({
   style?: CSSProperties;
 }) => (
   <Box
-    style={{ ...profileBackTextStyle, ...style }}
-    color={color ?? 'var(--main-color)'}
-    fontSize={fontSize ?? '2mm'}
+    style={{
+      ...profileBackTextStyle,
+      color: color ?? 'var(--main-color)',
+      fontSize: fontSize ?? '2mm',
+      ...style
+    }}
     fontWeight="bold"
     whiteSpace="nowrap"
   >

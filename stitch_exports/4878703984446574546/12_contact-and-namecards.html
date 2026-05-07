@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400&amp;family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#dbdbdb",
+              "surface-container-low": "#1c1b1b",
+              "surface-container-high": "#2a2a2a",
+              "on-primary-fixed-variant": "#614000",
+              "inverse-primary": "#805600",
+              "secondary": "#c7c6c6",
+              "primary": "#ffd597",
+              "on-secondary-fixed": "#1b1c1c",
+              "on-primary-container": "#6a4700",
+              "on-tertiary-fixed-variant": "#464747",
+              "primary-fixed": "#ffddaf",
+              "on-primary-fixed": "#281800",
+              "surface-dim": "#131313",
+              "on-tertiary-container": "#4c4e4e",
+              "on-primary": "#432c00",
+              "on-tertiary-fixed": "#1a1c1c",
+              "on-error-container": "#ffdad6",
+              "on-background": "#e5e2e1",
+              "primary-fixed-dim": "#ffba43",
+              "outline-variant": "#524533",
+              "inverse-surface": "#e5e2e1",
+              "secondary-fixed-dim": "#c7c6c6",
+              "outline": "#9f8e78",
+              "surface-container": "#201f1f",
+              "on-secondary": "#303031",
+              "surface-tint": "#ffba43",
+              "on-surface-variant": "#d7c4ac",
+              "error": "#ffb4ab",
+              "surface-container-highest": "#353534",
+              "on-error": "#690005",
+              "secondary-fixed": "#e3e2e2",
+              "secondary-container": "#464747",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "surface": "#131313",
+              "background": "#131313",
+              "surface-container-lowest": "#0e0e0e",
+              "on-tertiary": "#2f3131",
+              "inverse-on-surface": "#313030",
+              "surface-bright": "#393939",
+              "on-secondary-container": "#b6b5b5",
+              "primary-container": "#ffb000",
+              "on-surface": "#e5e2e1",
+              "surface-variant": "#353534",
+              "error-container": "#93000a",
+              "tertiary-container": "#bfbfbf",
+              "on-secondary-fixed-variant": "#464747",
+              "tertiary-fixed": "#e3e2e2"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"none": "0px", "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .holographic-sheen {
+            background: linear-gradient(135deg, rgba(255,176,0,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,176,0,0) 100%);
+            background-size: 200% 200%;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#131313] border-b border-[#524533] shadow-[4px_4px_0px_0px_rgba(14,14,14,1)]">
+<div class="font-['Manrope'] flex items-center">
+            ATELIER_LOG
+        </div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#c7c6c6] font-['Manrope'] font-medium hover:text-[#FFB000] transition-colors duration-75" href="#">Projects</a>
+<a class="text-[#c7c6c6] font-['Manrope'] font-medium hover:text-[#FFB000] transition-colors duration-75" href="#">Garden</a>
+<a class="text-[#c7c6c6] font-['Manrope'] font-medium hover:text-[#FFB000] transition-colors duration-75" href="#">Journal</a>
+<a class="text-[#FFB000] border-b-2 border-[#FFB000] pb-1 font-['Manrope'] font-medium" href="#">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#c7c6c6] hover:bg-[#353534] transition-colors duration-75 active:translate-x-[2px] active:translate-y-[2px]">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-2 text-[#c7c6c6] hover:bg-[#353534] transition-colors duration-75 active:translate-x-[2px] active:translate-y-[2px]">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-16 px-6 max-w-7xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-20 border-l-2 border-primary-container pl-8 py-4">
+<span class="font-mono text-[10px] text-primary-container uppercase tracking-widest mb-2 block">SIGNAL_INTERCEPT</span>
+<h1 class="font-headline italic text-6xl md:text-8xl text-on-surface leading-tight tracking-tighter">
+                Initiate <span class="text-primary-container">Contact</span>.
+            </h1>
+<p class="mt-6 font-body text-xl text-secondary max-w-2xl leading-relaxed">
+                Our workshop is a secure node for architectural precision. Connect via high-fidelity namecards or encrypted channels below.
+            </p>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Sidebar Navigation / Metadata -->
+<aside class="lg:col-span-3 space-y-12">
+<div class="border border-outline-variant p-6 bg-surface-container-lowest relative">
+<div class="absolute -top-3 left-4 bg-surface-container-highest px-2 py-0.5 font-mono text-[10px] text-primary">NODE_STATUS</div>
+<div class="flex items-center gap-3 mb-6">
+<div class="w-2 h-2 bg-primary-container"></div>
+<span class="font-mono text-xs uppercase tracking-tighter">V2.0.4-STABLE</span>
+</div>
+<ul class="space-y-4 font-label uppercase text-xs tracking-widest">
+<li class="flex items-center gap-3 text-primary-container">
+<span class="material-symbols-outlined text-sm">info</span>
+                            OVERVIEW
+                        </li>
+<li class="flex items-center gap-3 text-secondary hover:text-primary-container cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm">architecture</span>
+                            SPECS
+                        </li>
+<li class="flex items-center gap-3 text-secondary hover:text-primary-container cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm">history</span>
+                            TIMELINE
+                        </li>
+</ul>
+</div>
+<div class="space-y-4">
+<h3 class="font-mono text-[10px] text-outline uppercase tracking-[0.2em]">Social Connectors</h3>
+<div class="grid grid-cols-2 gap-2">
+<a class="flex flex-col p-4 border border-outline-variant hover:border-primary-container group transition-all" href="#">
+<span class="font-mono text-[10px] text-outline group-hover:text-primary mb-2">01/</span>
+<span class="font-label font-bold text-sm">GITHUB</span>
+</a>
+<a class="flex flex-col p-4 border border-outline-variant hover:border-primary-container group transition-all" href="#">
+<span class="font-mono text-[10px] text-outline group-hover:text-primary mb-2">02/</span>
+<span class="font-label font-bold text-sm">LINKEDIN</span>
+</a>
+<a class="flex flex-col p-4 border border-outline-variant hover:border-primary-container group transition-all" href="#">
+<span class="font-mono text-[10px] text-outline group-hover:text-primary mb-2">03/</span>
+<span class="font-label font-bold text-sm">TWITTER</span>
+</a>
+<a class="flex flex-col p-4 border border-outline-variant hover:border-primary-container group transition-all" href="#">
+<span class="font-mono text-[10px] text-outline group-hover:text-primary mb-2">04/</span>
+<span class="font-label font-bold text-sm">RSS</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="lg:col-span-9 space-y-16">
+<!-- Digital Namecards Section -->
+<section>
+<div class="flex items-center justify-between mb-8 border-b border-outline-variant pb-4">
+<h2 class="font-label font-extrabold text-2xl tracking-tighter uppercase">Digital Namecards</h2>
+<span class="font-mono text-xs text-outline">SELECT_VARIANT // [3]</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Variant: Standard -->
+<div class="bg-surface-container-low border border-outline-variant p-6 flex flex-col justify-between aspect-[1.6/1] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(255,176,0,0.2)] transition-all">
+<div>
+<div class="font-label font-black text-xl leading-none mb-1">ATELIER_LOG</div>
+<div class="font-mono text-[9px] text-primary-container uppercase tracking-widest">Constructivist Design Systems</div>
+</div>
+<div class="flex justify-between items-end">
+<div class="font-mono text-[10px] text-outline leading-tight">
+                                    COORD: 40.7128 N<br/>
+                                    LOC: NYC_NODE
+                                </div>
+<span class="material-symbols-outlined text-primary-container">qr_code_2</span>
+</div>
+</div>
+<!-- Variant: Holographic -->
+<div class="relative overflow-hidden bg-surface-container-highest border border-primary-container p-6 flex flex-col justify-between aspect-[1.6/1] shadow-[4px_4px_0px_0px_rgba(255,176,0,0.5)] hover:-translate-y-1 transition-all group">
+<div class="absolute inset-0 holographic-sheen opacity-30 group-hover:opacity-60 transition-opacity"></div>
+<div class="relative z-10">
+<div class="font-label font-black text-xl leading-none mb-1 text-primary-container">EXP_HOLO_01</div>
+<div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest">Interactive Metadata</div>
+</div>
+<div class="relative z-10 flex justify-between items-end">
+<div class="font-mono text-[10px] text-on-surface-variant leading-tight">
+                                    V_ID: 992-ALPHA<br/>
+                                    STK: #FFB000
+                                </div>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">dataset</span>
+</div>
+</div>
+<!-- Variant: Print-Ready -->
+<div class="bg-tertiary text-surface-container-lowest p-6 flex flex-col justify-between aspect-[1.6/1] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all">
+<div>
+<div class="font-label font-black text-xl leading-none mb-1">ARCH_SPEC</div>
+<div class="font-mono text-[9px] opacity-60 uppercase tracking-widest">350GSM Matte Uncoated</div>
+</div>
+<div class="flex justify-between items-end">
+<div class="font-mono text-[10px] opacity-60 leading-tight">
+                                    TYPE: NEUE_MANROPE<br/>
+                                    INK: K_100_SILK
+                                </div>
+<span class="material-symbols-outlined">print</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Initiate Contact Form -->
+<section class="border border-outline-variant bg-surface-container-lowest overflow-hidden">
+<div class="bg-surface-container-highest px-8 py-3 border-b border-outline-variant flex justify-between items-center">
+<span class="font-label font-bold text-xs uppercase tracking-widest">Initiate_Contact_Protocol</span>
+<span class="font-mono text-[10px] text-outline">ENCRYPTION: AES-256</span>
+</div>
+<form action="#" class="p-8 space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="font-mono text-[10px] text-outline uppercase tracking-widest block">Primary_Identity</label>
+<input class="w-full bg-surface border border-outline-variant p-4 font-label text-sm focus:border-primary-container focus:ring-0 transition-colors placeholder:opacity-30" placeholder="NAME / ALIAS" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-mono text-[10px] text-outline uppercase tracking-widest block">Communication_Node</label>
+<input class="w-full bg-surface border border-outline-variant p-4 font-label text-sm focus:border-primary-container focus:ring-0 transition-colors placeholder:opacity-30" placeholder="EMAIL_ADDRESS" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-mono text-[10px] text-outline uppercase tracking-widest block">Subject_Classification</label>
+<select class="w-full bg-surface border border-outline-variant p-4 font-label text-sm focus:border-primary-container focus:ring-0 transition-colors appearance-none">
+<option>PROJECT_INQUIRY</option>
+<option>COLLABORATION_PROPOSAL</option>
+<option>TECHNICAL_SUPPORT</option>
+<option>OTHER_MISC</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="font-mono text-[10px] text-outline uppercase tracking-widest block">Transmission_Payload</label>
+<textarea class="w-full bg-surface border border-outline-variant p-4 font-label text-sm focus:border-primary-container focus:ring-0 transition-colors placeholder:opacity-30" placeholder="ENTER MESSAGE CONTENT..." rows="5"></textarea>
+</div>
+<button class="w-full md:w-auto bg-primary-container text-on-primary font-label font-extrabold uppercase text-sm px-12 py-5 flex items-center justify-center gap-3 hover:shadow-[8px_8px_0px_0px_rgba(255,176,0,0.2)] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all" type="submit">
+                            EXECUTE_TRANSMISSION
+                            <span class="material-symbols-outlined text-base">send</span>
+</button>
+</form>
+</section>
+<!-- Informational Block -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="p-6 border border-outline-variant">
+<h4 class="font-label font-bold text-sm mb-4 uppercase tracking-widest text-primary">Security_Brief</h4>
+<p class="font-body text-sm text-secondary leading-relaxed">
+                            All incoming communications are routed through our private atelier server. Response times vary based on project density, typically within 48 technical hours.
+                        </p>
+</div>
+<div class="p-6 border border-outline-variant bg-surface-container-low">
+<h4 class="font-label font-bold text-sm mb-4 uppercase tracking-widest text-primary">Office_Hours</h4>
+<p class="font-mono text-[10px] text-secondary leading-loose">
+                            MON-FRI // 08:00 - 18:00 EST<br/>
+                            SAT-SUN // ASYNC_ONLY<br/>
+                            CURRENT_TIME // 14:32:05 UTC
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full py-8 px-6 flex justify-between items-center mt-auto border-t border-[#524533] bg-[#131313]">
+<div class="font-mono text-[10px] uppercase opacity-70 text-[#c7c6c6]">
+            © 2024 CONSTRUCTIVIST_ATELIER // BUILT_TO_SPEC
+        </div>
+<div class="flex gap-6">
+<a class="font-mono text-[10px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-opacity" href="#">GitHub</a>
+<a class="font-mono text-[10px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-opacity" href="#">LinkedIn</a>
+<a class="font-mono text-[10px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-opacity" href="#">RSS</a>
+<a class="font-mono text-[10px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-opacity" href="#">Sitemap</a>
+</div>
+</footer>
+</body></html>

@@ -3,6 +3,6 @@
   "packages": ["apps/*", "libs/*"],
   "useNx": true,
   "useWorkspaces": true,
-  "npmClient": "pnpm",
+  "npmClient": "bun",
   "version": "independent"
 }

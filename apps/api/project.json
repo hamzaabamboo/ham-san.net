@@ -24,8 +24,9 @@
       "defaultConfiguration": "local",
       "options": {
         "engine": "docker",
-        "context": "dist/apps/api",
-        "file": "{projectRoot}/Dockerfile"
+        "context": "{workspaceRoot}",
+        "file": "Dockerfile",
+        "target": "api"
       },
       "configurations": {
         "local": {

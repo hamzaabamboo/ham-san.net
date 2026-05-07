@@ -29,7 +29,7 @@ jobs:
       frontend: ${{ steps.resolve.outputs.frontend }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # For pull requests it's not necessary to checkout the code
       - name: Check Paths
         if: ${{ github.event_name == 'push' }}
@@ -39,11 +39,17 @@ jobs:
           filters: |
             backend:
               - 'apps/api/**'
-              - 'pnpm-lock.yaml'
+              - 'Dockerfile'
+              - 'bun.lock'
+              - 'docker-compose.yml'
+              - 'deploy-backend.sh'
               - '.github/workflows/**'
             frontend:
-              - 'apps/client/**'
-              - 'pnpm-lock.yaml'
+              - 'apps/astro/**'
+              - 'Dockerfile'
+              - 'bun.lock'
+              - 'docker-compose.yml'
+              - 'deploy-frontend.sh'
               - '.github/workflows/**'
       - name: Resolve targets
         id: resolve
@@ -66,11 +72,13 @@ jobs:
     env:
       PRIVATE_OUTLINE_SERVER: ${{ secrets.PRIVATE_OUTLINE_SERVER }}
       PRIVATE_OUTLINE_API_TOKEN: ${{ secrets.PRIVATE_OUTLINE_API_TOKEN }}
+      PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID: ${{ secrets.PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID }}
       PUBLIC_API_URL: ${{ secrets.PUBLIC_API_URL }}
       PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+      PUBLIC_OUTLINE_URL: ${{ secrets.PUBLIC_OUTLINE_URL }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -78,7 +86,7 @@ jobs:
       - name: Setup Dependencies
         uses: ./.github/composite-actions/setup
       - name: Build Frontend
-        run: echo $PUBLIC_URL && echo $PUBLIC_API_URL && pnpm nx codegen:prod client && pnpm nx build client
+        run: bunx nx run astro:build
       - name: Login to Registry
         uses: docker/login-action@v3
         with:
@@ -88,10 +96,15 @@ jobs:
       - name: Build and Push frontend image
         uses: docker/build-push-action@v5
         with:
-          file: ./apps/client/Dockerfile
+          file: ./Dockerfile
           context: .
+          target: astro
+          build-args: |
+            PUBLIC_API_URL=${{ secrets.PUBLIC_API_URL }}
+            PUBLIC_URL=${{ secrets.PUBLIC_URL }}
+            PUBLIC_OUTLINE_URL=${{ secrets.PUBLIC_OUTLINE_URL }}
           push: true
-          tags: registry.ham-san.net/ham-san-net-client:latest
+          tags: registry.ham-san.net/ham-san-net-astro:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
@@ -104,7 +117,7 @@ jobs:
     if: ${{ (github.event_name == 'workflow_dispatch' && inputs.backend) || (github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.backend == 'true') }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -112,7 +125,7 @@ jobs:
       - name: Setup Dependencies
         uses: ./.github/composite-actions/setup
       - name: Build Backend
-        run: pnpm nx build api
+        run: bunx nx run api:build
       - name: Login to Registry (Again just in case)
         uses: docker/login-action@v3
         with:
@@ -122,8 +135,9 @@ jobs:
       - name: Build and push backend image
         uses: docker/build-push-action@v5
         with:
-          file: ./apps/api/Dockerfile
-          context: ./dist/apps/api
+          file: ./Dockerfile
+          context: .
+          target: api
           push: true
           tags: registry.ham-san.net/ham-san-net-api:latest
           cache-from: type=gha
@@ -136,7 +150,7 @@ jobs:
       - build-push-backend
       - detect-changes
     runs-on: ubuntu-latest
-    if: ${{ (github.event_name == 'workflow_dispatch' && (inputs.backend || inputs.frontend)) || (github.event_name != 'workflow_dispatch' && (needs.detect-changes.outputs.backend == 'true' || needs.detect-changes.outputs.frontend == 'true')) }}
+    if: ${{ always() && (github.event_name == 'workflow_dispatch' && (inputs.backend || inputs.frontend) || github.event_name != 'workflow_dispatch' && (needs.detect-changes.outputs.backend == 'true' || needs.detect-changes.outputs.frontend == 'true')) && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
     environment:
       name: prod
       url: https://ham-san.net

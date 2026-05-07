@@ -1,8 +1,8 @@
 import { PRIVATE_OUTLINE_SERVER } from '$env/static/private';
 import { error } from '@sveltejs/kit';
+import sortBy from 'lodash/sortBy';
 import { cleanArticleContent, getArticleBanner, getArticleDescription } from 'outline/article';
 import { outlineClient } from '@utils/outline-api';
-import sortBy from 'lodash/sortBy';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {

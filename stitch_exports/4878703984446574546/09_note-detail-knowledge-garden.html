@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Hauntology of Abandoned Interfaces // ATELIER_LOG</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#dbdbdb",
+              "surface-container-low": "#1c1b1b",
+              "surface-container-high": "#2a2a2a",
+              "on-primary-fixed-variant": "#614000",
+              "inverse-primary": "#805600",
+              "secondary": "#c7c6c6",
+              "primary": "#ffd597",
+              "on-secondary-fixed": "#1b1c1c",
+              "on-primary-container": "#6a4700",
+              "on-tertiary-fixed-variant": "#464747",
+              "primary-fixed": "#ffddaf",
+              "on-primary-fixed": "#281800",
+              "surface-dim": "#131313",
+              "on-tertiary-container": "#4c4e4e",
+              "on-primary": "#432c00",
+              "on-tertiary-fixed": "#1a1c1c",
+              "on-error-container": "#ffdad6",
+              "on-background": "#e5e2e1",
+              "primary-fixed-dim": "#ffba43",
+              "outline-variant": "#524533",
+              "inverse-surface": "#e5e2e1",
+              "secondary-fixed-dim": "#c7c6c6",
+              "outline": "#9f8e78",
+              "surface-container": "#201f1f",
+              "on-secondary": "#303031",
+              "surface-tint": "#ffba43",
+              "on-surface-variant": "#d7c4ac",
+              "error": "#ffb4ab",
+              "surface-container-highest": "#353534",
+              "on-error": "#690005",
+              "secondary-fixed": "#e3e2e2",
+              "secondary-container": "#464747",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "surface": "#131313",
+              "background": "#131313",
+              "surface-container-lowest": "#0e0e0e",
+              "on-tertiary": "#2f3131",
+              "inverse-on-surface": "#313030",
+              "surface-bright": "#393939",
+              "on-secondary-container": "#b6b5b5",
+              "primary-container": "#ffb000",
+              "on-surface": "#e5e2e1",
+              "surface-variant": "#353534",
+              "error-container": "#93000a",
+              "tertiary-container": "#bfbfbf",
+              "on-secondary-fixed-variant": "#464747",
+              "tertiary-fixed": "#e3e2e2"
+            },
+            fontFamily: {
+              "headline": ["Newsreader", "serif"],
+              "body": ["Manrope", "sans-serif"],
+              "label": ["Manrope", "sans-serif"],
+              "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "0px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        ::selection {
+            background: #FFB000;
+            color: #131313;
+        }
+        /* Custom scrollbar for industrial feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #524533; }
+        ::-webkit-scrollbar-thumb:hover { background: #FFB000; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#131313] dark:bg-[#131313] border-b-2 border-[#524533] shadow-[4px_4px_0px_0px_rgba(14,14,14,1)]">
+<div class="flex items-center gap-8">
+<span class="font-['Manrope'] font-bold uppercase tracking-widest text-[#FFB000]">ATELIER_LOG</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#c7c6c6] font-['Manrope'] font-medium hover:bg-[#353534] transition-colors duration-75 px-2 py-1" href="#">Projects</a>
+<a class="text-[#FFB000] border-b-2 border-[#FFB000] pb-1 hover:bg-[#353534] transition-colors duration-75 px-2" href="#">Garden</a>
+<a class="text-[#c7c6c6] font-['Manrope'] font-medium hover:bg-[#353534] transition-colors duration-75 px-2 py-1" href="#">Journal</a>
+<a class="text-[#c7c6c6] font-['Manrope'] font-medium hover:bg-[#353534] transition-colors duration-75 px-2 py-1" href="#">About</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#c7c6c6] hover:text-[#FFB000] transition-colors">settings</button>
+<button class="material-symbols-outlined text-[#c7c6c6] hover:text-[#FFB000] transition-colors">menu</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col pt-20 bg-[#0e0e0e] dark:bg-[#0e0e0e] border-r border-[#524533] hidden lg:flex">
+<div class="px-6 py-4 border-b border-[#524533]/30">
+<p class="font-['Manrope'] uppercase text-xs tracking-tighter text-[#FFB000]">METADATA</p>
+<p class="font-mono text-[10px] text-[#dbdbdb] opacity-50">V2.0.4-STABLE</p>
+</div>
+<nav class="flex-1 flex flex-col">
+<a class="flex items-center gap-3 text-[#dbdbdb] p-3 border-b border-[#524533]/30 hover:text-[#FFB000] hover:bg-[#131313] cursor-crosshair transition-all font-['Manrope'] uppercase text-xs tracking-tighter" href="#">
+<span class="material-symbols-outlined text-sm">info</span> Overview
+            </a>
+<a class="flex items-center gap-3 bg-[#FFB000] text-[#131313] font-bold p-3 cursor-crosshair transition-all font-['Manrope'] uppercase text-xs tracking-tighter" href="#">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">architecture</span> Specs
+            </a>
+<a class="flex items-center gap-3 text-[#dbdbdb] p-3 border-b border-[#524533]/30 hover:text-[#FFB000] hover:bg-[#131313] cursor-crosshair transition-all font-['Manrope'] uppercase text-xs tracking-tighter" href="#">
+<span class="material-symbols-outlined text-sm">history</span> Timeline
+            </a>
+<a class="flex items-center gap-3 text-[#dbdbdb] p-3 border-b border-[#524533]/30 hover:text-[#FFB000] hover:bg-[#131313] cursor-crosshair transition-all font-['Manrope'] uppercase text-xs tracking-tighter" href="#">
+<span class="material-symbols-outlined text-sm">account_tree</span> Dependencies
+            </a>
+<a class="flex items-center gap-3 text-[#dbdbdb] p-3 border-b border-[#524533]/30 hover:text-[#FFB000] hover:bg-[#131313] cursor-crosshair transition-all font-['Manrope'] uppercase text-xs tracking-tighter" href="#">
+<span class="material-symbols-outlined text-sm">code</span> Source
+            </a>
+</nav>
+<div class="p-6">
+<button class="w-full bg-[#FFB000] text-[#131313] font-bold py-3 text-xs tracking-widest font-['Manrope'] uppercase shadow-[4px_4px_0px_0px_rgba(14,14,14,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
+                CONTACT_MAKER
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-24 pb-12 px-6">
+<div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Sidebar: TOC (Sticky) -->
+<nav class="hidden lg:block lg:col-span-2 relative">
+<div class="sticky top-32 space-y-8">
+<div class="relative border-l border-outline-variant pl-4">
+<div class="absolute top-0 left-[-1px] w-[1px] h-8 bg-primary-container"></div>
+<h4 class="font-mono text-[10px] uppercase text-outline mb-4">Contents</h4>
+<ul class="space-y-4 font-label text-xs uppercase tracking-tighter">
+<li><a class="text-primary-container hover:text-primary transition-colors" href="#intro">01 // The Void</a></li>
+<li><a class="text-on-surface-variant hover:text-primary-container transition-colors" href="#skeuomorphism">02 // Digital Decay</a></li>
+<li><a class="text-on-surface-variant hover:text-primary-container transition-colors" href="#hauntology">03 // Lost Futures</a></li>
+<li><a class="text-on-surface-variant hover:text-primary-container transition-colors" href="#archaeology">04 // Data Ruins</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<!-- Center: Article Body -->
+<article class="lg:col-span-7">
+<header class="mb-16">
+<div class="inline-block bg-surface-container-highest px-2 py-1 mb-6 border border-outline-variant">
+<span class="font-mono text-[10px] text-primary-container uppercase tracking-widest">Archive Ref: DP-99-INTERFACES</span>
+</div>
+<h1 class="font-headline italic text-5xl md:text-7xl text-on-surface leading-tight tracking-tighter mb-8">
+                        The Hauntology of <br/> Abandoned Interfaces
+                    </h1>
+<p class="font-headline text-xl text-on-surface-variant leading-relaxed italic max-w-xl">
+                        Exploring the spectral remnants of dead software, broken links, and the aesthetic of the "non-existent" web.
+                    </p>
+</header>
+<div class="aspect-video w-full bg-surface-container-low border border-outline-variant mb-16 overflow-hidden relative">
+<img alt="Cyberpunk laboratory" class="w-full h-full object-cover grayscale opacity-40 mix-blend-luminosity" data-alt="Abstract macro shot of a dusty vintage computer circuit board with glowing green and amber indicator lights in a dark room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCpZmu_bwdBmqEgADxqfkbo7kKXAmBAzIbpp4bc-6V10W7Vuoo5p9AGIUo3uXEWVoaSG7paxuAU8rnGZWp0Ojsa8Ep3U_nDHHtye83EyiHvKT6ZUpkEkIK7A_PlBZrJi_EukahOLTylTAoyUI39fZPSSNiYlMOBLMNWVFIUvpiyCu836M17ptEFs5cuK5B9JRBeCG9_AQstI_mTqCMe52jZNEMqx0KkcBrceBI4nBCA_L5HWKebRah0dzcUDeTmd2zCEr9WMxufvM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-60"></div>
+</div>
+<!-- Markdown Content Simulation -->
+<div class="font-headline text-lg md:text-xl leading-relaxed text-on-surface space-y-8 prose prose-invert prose-amber max-w-none">
+<p id="intro">
+                        To look at a <span class="text-primary-container italic">404 Page Not Found</span> is to witness a digital cemetery. It is the moment where the seamless illusion of the global network fractures, revealing the scaffolding beneath. These abandoned interfaces—be they dead forums, archived Geocities pages, or deprecated API endpoints—exist in a state of hauntology.
+                    </p>
+<blockquote class="border-l-2 border-primary-container pl-8 py-4 my-12 bg-surface-container-low/30 italic text-2xl text-on-surface-variant">
+                        "The past is not dead; it is not even past. It merely requires a different browser version to be seen."
+                    </blockquote>
+<h2 class="font-headline text-3xl italic mt-16 mb-6" id="skeuomorphism">The Ghost in the Skeuomorph</h2>
+<p>
+                        In the early 2000s, interfaces were built to mirror the physical world. Faux-leather calendars, brushed aluminum windows, and glass buttons provided a sense of tactile reality. As we moved toward the flat minimalism of the present, these textures didn't simply vanish; they became specters. 
+                    </p>
+<p>
+                        When we encounter an old Aqua-styled button today, it feels like a relic of a future that never arrived—a "lost future," to use Mark Fisher's terminology.
+                    </p>
+<div class="grid grid-cols-2 gap-4 my-12">
+<div class="border border-outline-variant p-1">
+<img alt="Tech" class="grayscale contrast-125" data-alt="Close up of an old monochrome CRT monitor displaying distorted lines of green code in a dark environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZjf3YGaqkCn9sVi6QcQbXTSU_tqNhmqjsq_YAdzMfATCHoLVBL2YnG9tY2YE6l3H9C3DKUCQlMFwFYhWekC4KK8FY1BVCm0Pnilj2yzZlljxk-v2Cvk-PkEf-_WVRd569QnM-3hljmuyek--c1aJxWrh0VtujdTMvNyIc_Zacl6WLyG31eOo2hjAyEi9RJoDc_x9mg-17RRi6njgZ0DYksGy3QRnmd6au1e-4Yf45yoLDjQxwv6skB5uj_PFsN1wAI-Sis1kyltU"/>
+</div>
+<div class="border border-outline-variant p-1">
+<img alt="Hardware" class="grayscale brightness-75" data-alt="Industrial electronic components and glowing vacuum tubes on a metal workbench with sharp shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5u3rtiteDkrPe0Kq9Cfbby-UtDZNY_uNsqzC2pHDLrgafrXXMqT3jXGFD1Ts1I7FW_H_dYS7ko4tgGisz3_wvO6ZrLaF9X3xJaOCWLoannGwyNoctwEJwVMFPCLEdNuxdhwUqCPdwDi0vRi2aC0Cdcbn5HGKfu11aXUyBOpyDLHrKsYiLDON42mEK1jt0oDyDAETxdfDo2o2IaKeZXU7jly8sMleKXz_SsDex55yJtAFsyOOOXuNfe7ux52N8JKmscAJSwkwJKNY"/>
+</div>
+</div>
+<h2 class="font-headline text-3xl italic mt-16 mb-6" id="hauntology">Digital Decay as Aesthetic</h2>
+<p>
+                        Unlike physical decay, which is organic and slow, digital decay is binary. It is the <span class="bg-surface-container-highest px-1 font-mono text-sm">[Object object]</span> error that replaces a person's name. It is the broken image icon that sits where a memory once resided. 
+                    </p>
+</div>
+<!-- Next/Prev Navigation -->
+<div class="mt-24 pt-12 border-t border-outline-variant grid grid-cols-1 md:grid-cols-2 gap-8">
+<a class="group p-6 border border-outline-variant hover:bg-surface-container-low transition-all shadow-[4px_4px_0px_0px_rgba(14,14,14,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none" href="#">
+<p class="font-mono text-[10px] text-outline uppercase mb-2">Previous Entry</p>
+<h4 class="font-headline text-xl group-hover:text-primary-container transition-colors italic">Procedural Generation of Brutalist Architectures</h4>
+</a>
+<a class="group p-6 border border-outline-variant hover:bg-surface-container-low transition-all shadow-[4px_4px_0px_0px_rgba(14,14,14,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none text-right" href="#">
+<p class="font-mono text-[10px] text-outline uppercase mb-2">Next Entry</p>
+<h4 class="font-headline text-xl group-hover:text-primary-container transition-colors italic">The Ethics of AI-Synthesized Voices</h4>
+</a>
+</div>
+</article>
+<!-- Right Sidebar: Metadata -->
+<aside class="lg:col-span-3">
+<div class="sticky top-32 space-y-12">
+<!-- Spec Label Pattern -->
+<div class="border border-outline-variant bg-surface-container-low p-6 relative">
+<div class="absolute -top-3 -left-1 bg-surface-container-highest border border-outline-variant px-2 py-0.5">
+<span class="font-mono text-[9px] text-primary-container uppercase">SPEC_SHEET</span>
+</div>
+<ul class="space-y-6">
+<li>
+<p class="font-label text-[10px] uppercase text-outline tracking-widest mb-1">Published</p>
+<p class="font-mono text-xs text-on-surface">2024-10-12 // 09:44 GMT</p>
+</li>
+<li>
+<p class="font-label text-[10px] uppercase text-outline tracking-widest mb-1">Collection</p>
+<p class="font-label text-sm text-primary-container font-bold uppercase tracking-tighter underline underline-offset-4">Digital Physics</p>
+</li>
+<li>
+<p class="font-label text-[10px] uppercase text-outline tracking-widest mb-1">Reading Time</p>
+<p class="font-mono text-xs text-on-surface">12 MIN / 3400 WORDS</p>
+</li>
+<li>
+<p class="font-label text-[10px] uppercase text-outline tracking-widest mb-1">Tags</p>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="bg-surface-container-highest px-2 py-1 text-[9px] font-mono border border-outline-variant text-tertiary">#DECAY</span>
+<span class="bg-surface-container-highest px-2 py-1 text-[9px] font-mono border border-outline-variant text-tertiary">#INTERFACE</span>
+<span class="bg-surface-container-highest px-2 py-1 text-[9px] font-mono border border-outline-variant text-tertiary">#THEORY</span>
+</div>
+</li>
+</ul>
+</div>
+<!-- CTA / Interaction -->
+<div class="space-y-4">
+<button class="w-full flex items-center justify-between border border-outline-variant p-4 font-label text-xs uppercase tracking-widest hover:bg-surface-container-highest transition-all group">
+<span>Cite this article</span>
+<span class="material-symbols-outlined text-sm group-hover:text-primary-container">format_quote</span>
+</button>
+<button class="w-full flex items-center justify-between border border-outline-variant p-4 font-label text-xs uppercase tracking-widest hover:bg-surface-container-highest transition-all group">
+<span>Download PDF</span>
+<span class="material-symbols-outlined text-sm group-hover:text-primary-container">download</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-8 px-6 flex flex-col md:flex-row justify-between items-center mt-auto bg-[#131313] border-t border-[#524533]">
+<span class="font-mono text-[10px] uppercase opacity-70 text-[#c7c6c6] mb-4 md:mb-0">© 2024 CONSTRUCTIVIST_ATELIER // BUILT_TO_SPEC</span>
+<div class="flex gap-8">
+<a class="font-mono text-[10px] uppercase opacity-70 text-[#c7c6c6] hover:text-[#FFB000] transition-opacity hover:opacity-100" href="#">GitHub</a>
+<a class="font-mono text-[10px] uppercase opacity-70 text-[#c7c6c6] hover:text-[#FFB000] transition-opacity hover:opacity-100" href="#">LinkedIn</a>
+<a class="font-mono text-[10px] uppercase opacity-70 text-[#c7c6c6] hover:text-[#FFB000] transition-opacity hover:opacity-100" href="#">RSS</a>
+<a class="font-mono text-[10px] uppercase opacity-70 text-[#c7c6c6] hover:text-[#FFB000] transition-opacity hover:opacity-100" href="#">Sitemap</a>
+</div>
+</footer>
+</body></html>

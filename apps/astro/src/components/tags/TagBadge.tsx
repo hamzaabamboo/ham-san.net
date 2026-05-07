@@ -16,34 +16,17 @@ export const TagBadge = ({
   showCount?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }) => {
-  const { title, type } = tag;
+  const { title } = tag;
   const projectsCount = Array.isArray(tag?.projects)
     ? tag.projects.filter(Boolean).length
     : Array.isArray((tag.projects as { data?: unknown[] } | null)?.data)
       ? ((tag.projects as { data?: unknown[] }).data?.length ?? 0)
       : 0;
 
-  const colorPalette = (() => {
-    switch (type) {
-      case Enum_Tag_Type.Frontend:
-        return 'blue';
-      case Enum_Tag_Type.Backend:
-        return 'red';
-      case Enum_Tag_Type.Database:
-        return 'orange';
-      case Enum_Tag_Type.ProgrammingLanguage:
-        return 'green';
-      case Enum_Tag_Type.DevOps:
-        return 'purple';
-      case Enum_Tag_Type.Others:
-        return 'gray';
-      case Enum_Tag_Type.NonDev:
-        return 'gray';
-    }
-  })();
+  const colorPalette = 'amber';
 
   return (
-    <Badge variant="solid" size={size} colorPalette={colorPalette}>
+    <Badge variant="outline" size={size} colorPalette={colorPalette} textTransform="uppercase">
       {title} {showCount && !!projectsCount && `(${projectsCount})`}
     </Badge>
   );

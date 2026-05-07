@@ -1,106 +1,312 @@
 ---
-import {
-  FaDiscord,
-  FaEnvelope,
-  FaFacebook,
-  FaGithub,
-  FaLink,
-  FaLinkedin,
-  FaTwitter
-} from 'react-icons/fa';
-import { Container, Stack } from 'styled-system/jsx';
-import { LinkItem } from '~/components/common/LinkItem';
-import { InteractiveNamecard } from '~/components/namecard/InteractiveNamecard';
+import { Box, Container, Grid, Stack, Wrap } from 'styled-system/jsx';
 import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
+import { Text } from '~/components/ui/text';
+import { InteractiveNamecard } from '~/components/namecard/InteractiveNamecard';
 import { NAMECARDS } from '~/constants/namecard';
-import { localePaths } from '~/i18n/paths';
-import { useTranslations } from '~/i18n/utils';
+import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
-//TODO:
 export const prerender = false;
 
-export function getStaticPaths() {
-  return localePaths;
+const { locale } = Astro.params;
+
+if (!validateLocale(locale)) {
+  return Astro.redirect('/404');
 }
 
-const { locale } = Astro.params;
 const t = useTranslations(locale);
+const pageTitle = `${t('common.contact')} | ${t('common.name')}`;
+const currentUtcTime = new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'UTC',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false
+}).format(new Date());
+const officeHoursBody = `${t('contact.office-hours-body')}\n${t('contact.current-time-label')}: ${currentUtcTime} UTC`;
 
 const items = [
+  { label: 'EMAIL', value: 'hello@ham-san.net', url: 'mailto:hello@ham-san.net' },
+  { label: 'GITHUB', value: 'hamzaabamboo', url: 'https://github.com/hamzaabamboo' },
   {
-    label: t('contact.email'),
-    value: 'hamzaabamboo@gmail.com',
-    url: 'mailto:hamzaabamboo@gmail.com',
-    icon: FaEnvelope
-  },
-  {
-    label: t('contact.twitter'),
-    value: '@HamP_punipuni',
-    url: 'https://twitter.com/HamP_punipuni',
-    icon: FaTwitter
-  },
-  {
-    label: t('contact.github'),
-    value: 'hamzaabamboo',
-    url: 'https://github.com/hamzaabamboo',
-    icon: FaGithub
-  },
-  {
-    label: t('contact.linkedin'),
+    label: 'LINKEDIN',
     value: 'tvittayapalotai',
-    url: 'https://www.linkedin.com/in/tvittayapalotai/',
-    icon: FaLinkedin
+    url: 'https://www.linkedin.com/in/tvittayapalotai/'
   },
+  { label: 'TWITTER', value: '@HamP_punipuni', url: 'https://twitter.com/HamP_punipuni' },
+  { label: 'FACEBOOK', value: 'hamPpunipuni', url: 'https://www.facebook.com/hamPpunipuni' },
+  { label: 'DISCORD', value: 'hamp', url: 'https://discordapp.com/users/260776161032798208' },
   {
-    label: t('contact.facebook'),
-    value: 'hamPpunipuni',
-    url: 'https://www.facebook.com/hamPpunipuni',
-    icon: FaFacebook
-  },
-  {
-    label: 'Discord',
-    value: 'hamp',
-    url: 'https://discordapp.com/users/260776161032798208',
-    icon: FaDiscord
-  },
-  {
-    label: 'Eventernote',
+    label: 'EVENTERNOTE',
     value: 'HamP_punipuni',
-    url: 'https://www.eventernote.com/users/HamP_punipuni',
-    icon: FaLink
+    url: 'https://www.eventernote.com/users/HamP_punipuni'
   }
 ];
 ---
 
-<MainLayout>
-  <Container w="full" maxW="breakpoint-xl" pt="8">
-    <Stack w="full" gap="8" p="4" alignItems="center">
-      <Stack>
-        <Heading as="h1" size="2xl" fontWeight="bold">{t('common.contact')}</Heading>
-        <Stack>
-          {
-            items.map(({ icon, label, value, url }) => {
-              return (
-                <LinkItem
-                  data={{
-                    title: label,
-                    url: url
-                  }}
-                  Icon={icon}
-                  linkText={value}
-                />
-              );
-            })
-          }
+<MainLayout title={pageTitle} description={t('contact.intro')}>
+  <Container w="full" maxW="breakpoint-xl" py="8" className="page-shell">
+    <Stack gap="12">
+      <Stack
+        gap="4"
+        borderLeftWidth="2px"
+        borderLeftStyle="solid"
+        borderLeftColor="#ffb000"
+        pl="8"
+        py="4"
+      >
+        <Text
+          fontFamily="JetBrains Mono, monospace"
+          fontSize="10px"
+          textTransform="uppercase"
+          letterSpacing="0.2em"
+          color="#ffb000"
+        >
+          contact
+        </Text>
+        <Heading
+          as="h1"
+          fontSize={{ base: '5xl', md: '8xl' }}
+          fontStyle="italic"
+          lineHeight="tight"
+          letterSpacing="tighter"
+        >
+          {t('contact.hero-prefix') + ' '}<Box as="span" color="#ffb000"
+            >{t('contact.hero-highlight')}</Box
+          >.
+        </Heading>
+        <Text color="#c7c6c6" fontSize="xl" maxW="2xl" lineHeight="relaxed" mt="2">
+          {t('contact.intro')}
+        </Text>
+      </Stack>
+
+      <Grid gridTemplateColumns={{ base: '1fr', lg: '3fr 9fr' }} gap="12">
+        <Stack gap="12" minW="0">
+          <Stack gap="4">
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              letterSpacing="0.2em"
+              color="#9f8e78"
+            >
+              {t('contact.social-connectors')}
+            </Text>
+            <Grid gridTemplateColumns="1fr" gap="2">
+              {
+                items.map((item, index) => (
+                  <Link
+                    href={item.url}
+                    target={item.url.startsWith('mailto:') ? undefined : '_blank'}
+                    rel={item.url.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                    display="flex"
+                    flexDirection="column"
+                    border="1px solid"
+                    borderColor="#524533"
+                    p="4"
+                    className="group contact-social-card"
+                  >
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      color="#9f8e78"
+                      className="group-hover-amber"
+                      mb="2"
+                    >
+                      {String(index + 1).padStart(2, '0')}/
+                    </Text>
+                    <Text fontWeight="bold" fontSize="sm">
+                      {item.label}
+                    </Text>
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      color="#9f8e78"
+                      mt="1"
+                      overflowWrap="anywhere"
+                    >
+                      {item.value}
+                    </Text>
+                  </Link>
+                ))
+              }
+            </Grid>
+          </Stack>
         </Stack>
-      </Stack>
-      <Stack>
-        <Heading as="h2" size="xl" fontWeight="bold" mb="8">{t('contact.name-card')}</Heading>
-        <a href={`/${locale}/namecard/default`}>
-          <InteractiveNamecard data={NAMECARDS[0]} />
-        </a>
-      </Stack>
+
+        <Stack gap="16" minW="0">
+          <Stack gap="6">
+            <Wrap
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom="1px solid"
+              borderColor="#524533"
+              pb="4"
+            >
+              <Heading
+                as="h2"
+                fontSize="2xl"
+                fontWeight="extrabold"
+                textTransform="uppercase"
+                letterSpacing="tighter"
+                fontStyle="normal"
+              >
+                {t('contact.namecards')}
+              </Heading>
+            </Wrap>
+            <Box maxW="full" className="contact-namecard-preview">
+              <Link
+                href={`/${locale}/namecard/default`}
+                display="block"
+                w="91mm"
+                h="55mm"
+                className="contact-namecard-link"
+              >
+                <InteractiveNamecard data={NAMECARDS[0]} />
+              </Link>
+            </Box>
+          </Stack>
+
+          <Stack border="1px solid" borderColor="#524533" bg="#0e0e0e" overflow="hidden">
+            <Wrap
+              justifyContent="space-between"
+              alignItems="center"
+              px="8"
+              py="3"
+              bg="#353534"
+              borderBottom="1px solid"
+              borderColor="#524533"
+            >
+              <Text fontWeight="bold" fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">
+                {t('contact.form-heading')}
+              </Text>
+            </Wrap>
+            <form
+              class="contact-form"
+              action="mailto:hello@ham-san.net"
+              method="post"
+              enctype="text/plain"
+            >
+              <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
+                <Stack gap="2">
+                  <label for="contact-name" class="contact-label">
+                    {t('contact.field-name')}
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    class="contact-input"
+                    placeholder={t('contact.placeholder-name')}
+                    required
+                  />
+                </Stack>
+                <Stack gap="2">
+                  <label for="contact-email" class="contact-label">
+                    {t('contact.field-email')}
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    class="contact-input"
+                    placeholder={t('contact.placeholder-email')}
+                    required
+                  />
+                </Stack>
+              </Grid>
+              <Stack gap="2">
+                <label for="contact-subject" class="contact-label">
+                  {t('contact.field-subject')}
+                </label>
+                <select id="contact-subject" name="subject" class="contact-select">
+                  <option>{t('contact.subject-project')}</option>
+                  <option>{t('contact.subject-collaboration')}</option>
+                  <option>{t('contact.subject-technical')}</option>
+                  <option>{t('contact.subject-other')}</option>
+                </select>
+              </Stack>
+              <Stack gap="2">
+                <label for="contact-message" class="contact-label">
+                  {t('contact.field-message')}
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  class="contact-input"
+                  rows="5"
+                  placeholder={t('contact.placeholder-message')}
+                  style="min-height: 180px; resize: vertical;"
+                  required></textarea>
+              </Stack>
+              <button class="contact-submit-btn">
+                {t('contact.execute-transmission')}
+                <span class="material-symbols-outlined" style="font-size: 16px;">send</span>
+              </button>
+            </form>
+          </Stack>
+
+          <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
+            <Stack border="1px solid" borderColor="#524533" p="6">
+              <Text
+                fontWeight="bold"
+                fontSize="sm"
+                textTransform="uppercase"
+                letterSpacing="0.2em"
+                color="#ffd597"
+                mb="4"
+              >
+                {t('contact.security-brief')}
+              </Text>
+              <Text color="#c7c6c6" fontSize="sm" lineHeight="relaxed">
+                {t('contact.security-brief-body')}
+              </Text>
+            </Stack>
+            <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6">
+              <Text
+                fontWeight="bold"
+                fontSize="sm"
+                textTransform="uppercase"
+                letterSpacing="0.2em"
+                color="#ffd597"
+                mb="4"
+              >
+                {t('contact.office-hours')}
+              </Text>
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                color="#c7c6c6"
+                lineHeight="2.2"
+                whiteSpace="pre-line"
+              >
+                {officeHoursBody}
+              </Text>
+            </Stack>
+          </Grid>
+        </Stack>
+      </Grid>
     </Stack>
   </Container>
 </MainLayout>
+
+<style>
+  .contact-namecard-preview {
+    --namecard-scale: min(1, calc((100vw - 32px) / 91mm));
+    width: calc(91mm * var(--namecard-scale));
+    height: calc(55mm * var(--namecard-scale));
+    margin-inline: auto;
+  }
+
+  .contact-namecard-link {
+    text-decoration: none;
+    transform: scale(var(--namecard-scale));
+    transform-origin: top left;
+  }
+
+  .contact-namecard-preview :global(.card) {
+    animation: none;
+  }
+</style>

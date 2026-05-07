@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Manrope:wght@400;500;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#464747",
+              "surface": "#131313",
+              "tertiary-container": "#bfbfbf",
+              "on-tertiary-fixed-variant": "#464747",
+              "primary-fixed-dim": "#ffba43",
+              "error": "#ffb4ab",
+              "secondary-fixed": "#e3e2e2",
+              "surface-container-highest": "#353534",
+              "secondary-container": "#464747",
+              "surface-dim": "#131313",
+              "primary-fixed": "#ffddaf",
+              "on-secondary-container": "#b6b5b5",
+              "on-tertiary": "#2f3131",
+              "surface-container-high": "#2a2a2a",
+              "on-tertiary-fixed": "#1a1c1c",
+              "on-primary": "#432c00",
+              "on-tertiary-container": "#4c4e4e",
+              "primary": "#ffd597",
+              "surface-container-low": "#1c1b1b",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "on-primary-fixed": "#281800",
+              "surface-container-lowest": "#0e0e0e",
+              "on-primary-fixed-variant": "#614000",
+              "on-secondary-fixed": "#1b1c1c",
+              "tertiary-fixed": "#e3e2e2",
+              "surface-variant": "#353534",
+              "primary-container": "#ffb000",
+              "background": "#131313",
+              "secondary-fixed-dim": "#c7c6c6",
+              "outline-variant": "#524533",
+              "on-surface-variant": "#d7c4ac",
+              "on-secondary": "#303031",
+              "inverse-on-surface": "#313030",
+              "surface-container": "#201f1f",
+              "on-background": "#e5e2e1",
+              "inverse-primary": "#805600",
+              "on-error": "#690005",
+              "surface-bright": "#393939",
+              "secondary": "#c7c6c6",
+              "on-surface": "#e5e2e1",
+              "on-error-container": "#ffdad6",
+              "surface-tint": "#ffba43",
+              "tertiary": "#dbdbdb",
+              "on-primary-container": "#6a4700",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "outline": "#9f8e78"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Manrope"],
+              "mono": ["JetBrains Mono"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+        .blocky-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(14, 14, 14, 1);
+        }
+        .active-shadow {
+            box-shadow: none;
+            transform: translate(2px, 2px);
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313] border-b border-[#524533] shadow-[4px_4px_0px_0px_rgba(14,14,14,1)]">
+<div class="font-['Manrope'] font-black uppercase tracking-widest text-[#FFB000] text-lg">ATELIER.EXE</div>
+<div class="hidden md:flex space-x-8">
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] transition-colors duration-100" href="#">Projects</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] transition-colors duration-100" href="#">Notes</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] transition-colors duration-100" href="#">Hobbies</a>
+<a class="text-[#FFB000] border-b-2 border-[#FFB000] pb-1 font-bold" href="#">About</a>
+</div>
+<div class="font-['Newsreader'] italic text-xl tracking-tight text-[#FFB000] cursor-pointer hover:bg-[#353534] px-2 transition-colors">EN/JA</div>
+</nav>
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-[#0e0e0e] border-r border-[#524533] flex flex-col pt-8 hidden lg:flex">
+<div class="px-6 mb-12">
+<h2 class="font-mono text-[10px] uppercase tracking-tighter text-[#FFB000]">STRUC_DATA</h2>
+<p class="font-mono text-[10px] uppercase tracking-tighter text-[#dbdbdb] opacity-50">v2.0.48</p>
+</div>
+<nav class="flex flex-col space-y-1">
+<a class="group flex items-center px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75" href="#engineering">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="terminal">terminal</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-widest">Engineering</span>
+</a>
+<a class="group flex items-center px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75" href="#photography">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="photo_camera">photo_camera</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-widest">Photography</span>
+</a>
+<a class="group flex items-center px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75" href="#philosophy">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="auto_stories">auto_stories</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-widest">Philosophy</span>
+</a>
+<a class="group flex items-center px-6 py-3 bg-[#FFB000] text-[#432c00] font-bold italic transition-all duration-75" href="#resume">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="description">description</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-widest">Resume</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="lg:ml-64 pt-24 pb-20 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
+<!-- Hero Section -->
+<header class="mb-20 border-l-4 border-primary-container pl-8 py-4">
+<div class="inline-block bg-surface-container-highest px-2 py-1 mb-4">
+<span class="font-mono text-[10px] uppercase text-tertiary tracking-widest">Dossier // 001</span>
+</div>
+<h1 class="font-headline text-5xl md:text-7xl font-bold italic text-on-background leading-tight mb-6">
+                The Dossier of a Generalist.
+            </h1>
+<p class="max-w-2xl text-lg text-secondary font-body leading-relaxed">
+                An interdisciplinary practice focused on the intersection of robust systems engineering and digital humanities. Specializing in high-performance interfaces and structural logic.
+            </p>
+</header>
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-12">
+<!-- Left Column: Professional/Engineering -->
+<div class="xl:col-span-7 space-y-16">
+<!-- Engineering Section -->
+<section class="relative" id="engineering">
+<div class="flex items-center mb-10">
+<h2 class="font-headline text-3xl italic font-semibold">Engineering</h2>
+<div class="ml-6 h-px flex-grow bg-outline-variant"></div>
+</div>
+<div class="space-y-12">
+<!-- Job 1 -->
+<div class="group border border-outline-variant bg-surface-container-low p-8 blocky-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+<div>
+<h3 class="font-body text-xl font-bold uppercase tracking-tight">Lead Systems Architect</h3>
+<p class="font-mono text-primary-container text-xs mt-1">CONSTRUCT_LABS // 2021 — PRESENT</p>
+</div>
+<div class="mt-4 md:mt-0 flex flex-wrap gap-2">
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">REACT</span>
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">TYPESCRIPT</span>
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">RUST</span>
+</div>
+</div>
+<p class="text-secondary body-md leading-relaxed mb-6">
+                                Orchestrating large-scale frontend infrastructures with a focus on type safety and architectural modularity. Leading a team of 12 engineers in building next-generation industrial dashboards.
+                            </p>
+<ul class="space-y-2 font-mono text-[11px] text-on-surface-variant opacity-80">
+<li class="flex items-start"><span class="text-primary-container mr-2">/</span> Redesigned core component library, reducing bundle size by 42%.</li>
+<li class="flex items-start"><span class="text-primary-container mr-2">/</span> Implemented micro-frontend architecture for global logistics suite.</li>
+</ul>
+</div>
+<!-- Job 2 -->
+<div class="group border border-outline-variant bg-surface-container-low p-8 blocky-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+<div>
+<h3 class="font-body text-xl font-bold uppercase tracking-tight">Senior Interface Engineer</h3>
+<p class="font-mono text-primary-container text-xs mt-1">KINETIC_FLOW // 2018 — 2021</p>
+</div>
+<div class="mt-4 md:mt-0 flex flex-wrap gap-2">
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">TAILWIND</span>
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">NEXTJS</span>
+<span class="px-2 py-1 border border-outline-variant font-mono text-[10px] text-tertiary">WEBGL</span>
+</div>
+</div>
+<p class="text-secondary body-md leading-relaxed mb-6">
+                                Focused on high-fidelity interaction design and performant data visualizations. Bridged the gap between generative design and production-ready code.
+                            </p>
+<ul class="space-y-2 font-mono text-[11px] text-on-surface-variant opacity-80">
+<li class="flex items-start"><span class="text-primary-container mr-2">/</span> Developed real-time telemetry visualization using Three.js.</li>
+<li class="flex items-start"><span class="text-primary-container mr-2">/</span> Authored internal design system documentation and UI kits.</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Serious Hobbies -->
+<section id="hobbies">
+<div class="flex items-center mb-10">
+<h2 class="font-headline text-3xl italic font-semibold">The Side Projects</h2>
+<div class="ml-6 h-px flex-grow bg-outline-variant"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Music -->
+<div class="border border-outline-variant p-6 bg-surface-container-lowest">
+<div class="flex items-center mb-4">
+<span class="material-symbols-outlined text-primary-container mr-3">graphic_eq</span>
+<h4 class="font-body font-bold uppercase tracking-widest text-xs">Audio Synthesis</h4>
+</div>
+<p class="text-sm text-secondary leading-relaxed">
+                                Explorations in modular synthesis and generative ambient compositions. Using sound as a medium for understanding mathematical sequence and physical resonance.
+                            </p>
+</div>
+<!-- Language -->
+<div class="border border-outline-variant p-6 bg-surface-container-lowest">
+<div class="flex items-center mb-4">
+<span class="material-symbols-outlined text-primary-container mr-3">language</span>
+<h4 class="font-body font-bold uppercase tracking-widest text-xs">JA Linguistics</h4>
+</div>
+<p class="text-sm text-secondary leading-relaxed">
+                                Intensive study of Japanese (JLPT N2 level focus). Analysis of kanji as a structured system of visual semantics and cultural logic.
+                            </p>
+</div>
+<!-- Skill Toys -->
+<div class="border border-outline-variant p-6 bg-surface-container-lowest">
+<div class="flex items-center mb-4">
+<span class="material-symbols-outlined text-primary-container mr-3">gesture</span>
+<h4 class="font-body font-bold uppercase tracking-widest text-xs">Kinetic Skill Toys</h4>
+</div>
+<p class="text-sm text-secondary leading-relaxed">
+                                Practice of Begleri and Penspinning as methods for meditative focus and motor skill refinement. Engineering the "flow state" through tactile objects.
+                            </p>
+</div>
+<!-- Photography -->
+<div class="border border-outline-variant p-6 bg-surface-container-lowest">
+<div class="flex items-center mb-4">
+<span class="material-symbols-outlined text-primary-container mr-3">filter_tilt_shift</span>
+<h4 class="font-body font-bold uppercase tracking-widest text-xs">Archived Visions</h4>
+</div>
+<p class="text-sm text-secondary leading-relaxed">
+                                Street and architectural photography captured on 35mm film. Documenting the decay and endurance of urban structural systems.
+                            </p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Context/Education/Imagery -->
+<div class="xl:col-span-5 space-y-12">
+<!-- Visual Anchor -->
+<div class="relative border-2 border-outline-variant blocky-shadow aspect-square overflow-hidden">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Monochrome close-up of complex mechanical internals, gears, and circuitry with sharp metallic highlights and deep dramatic shadows in a brutalist studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2dahRkOkAvjrA6c_sKYl3U5X3k5qLi3zyjKVmiRo33wuKwEZlcQbGrjbGsmLAJc-WvOsGcS4_kyI2NNKuZisEi_i-Jp6yk5zg11Yo8t49-v0JNJXLNhZHrhaCfPxWftGjlcm-WtNSCYEJpU156djbPgsI0tt2aYKR1P7QJG8hOwoiWTKFZjuuu6wK4KrBwewD82ALvwhoOvcHQt3uVZFPslkLRA2mXRjqE_yZnPSiR3ez78mKAoaeizc2WgpmQuMt6rpmTfrsmu8"/>
+<div class="absolute top-0 left-0 bg-surface-container-highest px-3 py-1 border-b border-r border-outline-variant">
+<span class="font-mono text-[9px] text-primary-container tracking-tighter uppercase">Subject_Reference // B-04</span>
+</div>
+</div>
+<!-- Education Section -->
+<section class="border border-outline-variant bg-surface-container-high p-8">
+<div class="flex items-center mb-8">
+<h3 class="font-headline text-2xl italic font-semibold">Institutional</h3>
+</div>
+<div class="space-y-8">
+<div>
+<p class="font-mono text-xs text-primary-container mb-1">2016 — 2018</p>
+<h4 class="font-body font-bold uppercase text-sm tracking-tight">MFA in Digital Media</h4>
+<p class="text-secondary text-sm">Pratt Institute, Brooklyn NY</p>
+<p class="font-mono text-[10px] mt-2 opacity-60 italic">Thesis: "The Semantics of the Glitch: Reclaiming Error in Digital Systems."</p>
+</div>
+<div class="pt-6 border-t border-outline-variant">
+<p class="font-mono text-xs text-primary-container mb-1">2012 — 2016</p>
+<h4 class="font-body font-bold uppercase text-sm tracking-tight">BS in Computer Science</h4>
+<p class="text-secondary text-sm">University of Michigan, Ann Arbor MI</p>
+<p class="font-mono text-[10px] mt-2 opacity-60 italic">Focus: Distributed Systems &amp; Logic Design.</p>
+</div>
+</div>
+</section>
+<!-- Philosophy/Statement -->
+<section class="bg-primary-container text-on-primary p-8" id="philosophy">
+<h3 class="font-headline text-3xl font-bold italic mb-6">The Methodology</h3>
+<p class="font-body leading-relaxed mb-4">
+                        Everything is a system. Whether it is a line of code, a captured frame on film, or the syntax of a spoken language, there is an underlying logic that governs its behavior.
+                    </p>
+<p class="font-body leading-relaxed font-bold">
+                        My work is the pursuit of revealing that logic through precise execution and brutalist aesthetics.
+                    </p>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-8 px-6 flex flex-col md:flex-row justify-between items-center bg-[#131313] border-t-2 border-[#524533] cursor-crosshair">
+<div class="font-mono text-[11px] uppercase opacity-80 text-[#c7c6c6] mb-4 md:mb-0">
+            ©2024 CONSTRUCT_SYSTEMS // STATUS: SELECTIVE_OPEN_FOR_COLLAB
+        </div>
+<div class="flex space-x-6">
+<a class="font-mono text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">Github</a>
+<a class="font-mono text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">LinkedIn</a>
+<a class="font-mono text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">RSS</a>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-[#131313] border-t border-[#524533] flex justify-around items-center h-16 z-50">
+<a class="flex flex-col items-center text-[#c7c6c6] hover:text-[#FFB000]" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="terminal">terminal</span>
+</a>
+<a class="flex flex-col items-center text-[#c7c6c6] hover:text-[#FFB000]" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="photo_camera">photo_camera</span>
+</a>
+<a class="flex flex-col items-center text-[#FFB000]" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="description">description</span>
+</a>
+</nav>
+</body></html>

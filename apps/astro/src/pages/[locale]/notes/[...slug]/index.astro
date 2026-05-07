@@ -1,23 +1,490 @@
 ---
-import { Container } from 'styled-system/jsx';
+import { Box, Container, Grid, Stack } from 'styled-system/jsx';
+import { cleanArticleContent, getArticleBanner } from 'outline/article';
 import { Heading } from '~/components/ui/heading';
+import { Markdown } from '~/components/lib/Markdown';
+import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 
-//TODO:
 export const prerender = false;
 
 const { locale } = Astro.params;
+const slugParts = Astro.params.slug?.split('/') ?? [];
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
 const t = useTranslations(locale);
+const [shareId, maybeDocSegment, maybeDocId] = slugParts;
+const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
+const outlineAssetProxyPath = `/${locale}/api/outline-asset`;
+const resolveOutlineAssetUrl = (rawUrl?: string) => {
+  if (!rawUrl) return rawUrl;
+  if (/^(?:[a-z]+:)?\/\//i.test(rawUrl) || rawUrl.startsWith('data:')) return rawUrl;
+  if (rawUrl.includes('attachments.redirect')) {
+    const query = rawUrl.split('?')[1];
+    return query ? `${outlineAssetProxyPath}?${query}` : outlineAssetProxyPath;
+  }
+  const normalizedUrl = rawUrl.startsWith('/') ? rawUrl : `/${rawUrl.replace(/^\.?\/*/, '')}`;
+  return `${outlineAssetPrefix}${normalizedUrl}`;
+};
+
+if (!shareId) {
+  return Astro.redirect(`/${locale}/notes`);
+}
+
+let note: any = null;
+
+try {
+  const noteRequest = await outlineClient.POST('/documents.info', {
+    body: maybeDocSegment === 'doc' && maybeDocId ? { shareId, id: maybeDocId } : { shareId }
+  });
+
+  if (noteRequest.response.ok && noteRequest.data?.data) {
+    note = noteRequest.data.data;
+  }
+} catch {
+  note = null;
+}
+
+const pageTitle = `${note?.title ?? t('common.note')} | ${t('common.name')}`;
+const content = note ? cleanArticleContent(note.text) : '';
+const banner = resolveOutlineAssetUrl(getArticleBanner(content) ?? undefined);
+
+const siblingsRequest = note
+  ? await outlineClient.POST('/documents.list', {
+      body: {
+        parentDocumentId: maybeDocSegment === 'doc' && maybeDocId ? note.parentDocumentId : note.id
+      }
+    })
+  : null;
+
+const siblings = siblingsRequest?.data?.data ?? [];
+const outlineUrl = `${outlineAssetPrefix}/s/${shareId}${maybeDocSegment === 'doc' && maybeDocId ? `/doc/${maybeDocId}` : ''}`;
+
+const wordCount = content ? content.split(/\s+/).length : 0;
+const readingMinutes = Math.max(1, Math.round(wordCount / 200));
+const publishedDate = note?.publishedAt ?? note?.createdAt;
+const formattedDate = publishedDate
+  ? new Date(publishedDate).toISOString().slice(0, 10) +
+    ' // ' +
+    new Date(publishedDate).toISOString().slice(11, 16) +
+    ' GMT'
+  : null;
+
+const currentIndex = note ? siblings.findIndex((s) => s.id === note.id) : -1;
+const prevSibling = currentIndex > 0 ? siblings[currentIndex - 1] : null;
+const nextSibling =
+  currentIndex >= 0 && currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : null;
+
+const headings = (content ?? '')
+  .split('\n')
+  .filter((line) => /^#{1,3}\s+/.test(line))
+  .map((line, idx) => {
+    const match = line.match(/^(#{1,3})\s+(.+)/);
+    if (!match) return null;
+    const text = match[2].replace(/[*_`\[\]]/g, '').trim();
+    const id = text
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+    return { level: match[1].length, text, id, idx };
+  })
+  .filter(Boolean) as { level: number; text: string; id: string; idx: number }[];
+
+const rawLede = (content ?? '')
+  .split('\n')
+  .find(
+    (line) => line.trim().length > 30 && !/^[#!\[|>*-]/.test(line.trim()) && !/^`/.test(line.trim())
+  );
+const lede = rawLede?.replace(/[*_`\[\]]/g, '').trim() ?? null;
+
+const tags = (note as any)?.tags ?? [];
 ---
 
-<MainLayout>
-  <Container>
-    <Heading as="h1" size="2xl" fontWeight="bold">{t('note.notes')}</Heading>
+<MainLayout title={pageTitle} description={lede || note?.title || t('note.description')}>
+  <Container maxW="breakpoint-xl" py="8" className="page-shell">
+    {
+      !note ? (
+        <Stack gap="8">
+          <Stack
+            gap="4"
+            borderLeftWidth="2px"
+            borderLeftStyle="solid"
+            borderLeftColor="#ffb000"
+            pl="6"
+          >
+            <Text
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              textTransform="uppercase"
+              letterSpacing="0.12em"
+              color="#ffd597"
+            >
+              {t('note.archive-ref')}: unavailable
+            </Text>
+            <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic">
+              {t('note.empty-title')}
+            </Heading>
+            <Text color="#c7c6c6" fontSize="lg" maxW="2xl" lineHeight="1.7">
+              {t('note.empty-description')}
+            </Text>
+          </Stack>
+          <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '8', md: '12' }}>
+            <Stack gap="4" alignItems="center" textAlign="center" py="12">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                letterSpacing="0.12em"
+                color="#9f8e78"
+              >
+                status: unavailable
+              </Text>
+              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+                {t('note.empty-title')}
+              </Heading>
+              <a href={`/${locale}/notes`} class="note-cta-button group">
+                <span>{t('note.back-to-posts')}</span>
+                <span class="material-symbols-outlined note-cta-icon">arrow_back</span>
+              </a>
+            </Stack>
+          </Box>
+        </Stack>
+      ) : (
+        <Grid
+          gridTemplateColumns={{ base: 'minmax(0, 1fr)', xl: '220px minmax(0, 1fr) 280px' }}
+          gap="10"
+          minW="0"
+        >
+          <Stack gap="8" hideBelow="xl">
+            <Box position="sticky" top="32">
+              <Box borderLeft="1px solid" borderLeftColor="#524533" pl="4" position="relative">
+                <Box position="absolute" top="0" left="-1px" w="1px" h="8" bg="#ffb000" />
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  color="#9f8e78"
+                  mb="4"
+                >
+                  {t('note.contents')}
+                </Text>
+                <Stack gap="4">
+                  {headings.length > 0 ? (
+                    headings.map((h, idx) => (
+                      <a href={`#${h.id}`}>
+                        <Text
+                          fontFamily="JetBrains Mono, monospace"
+                          fontSize="11px"
+                          color={idx === 0 ? '#ffb000' : '#d7c4ac'}
+                          _hover={{ color: '#ffb000' }}
+                          transition="colors"
+                          transitionDuration="fast"
+                          textTransform="uppercase"
+                          letterSpacing="-0.02em"
+                        >
+                          {String(idx + 1).padStart(2, '0')} // {h.text}
+                        </Text>
+                      </a>
+                    ))
+                  ) : (
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="11px"
+                      color="#ffb000"
+                      textTransform="uppercase"
+                    >
+                      01 // {note.title}
+                    </Text>
+                  )}
+                </Stack>
+              </Box>
+            </Box>
+          </Stack>
+
+          <Stack gap="10" minW="0">
+            <Stack gap="6" mb="4">
+              <Box
+                px="2"
+                py="1"
+                bg="#353534"
+                border="1px solid"
+                borderColor="#524533"
+                w="fit-content"
+              >
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  color="#ffb000"
+                  letterSpacing="0.12em"
+                >
+                  {t('note.archive-ref')}: {(note.id ?? '').slice(0, 8).toUpperCase()}
+                </Text>
+              </Box>
+              <Heading
+                as="h1"
+                fontSize={{ base: '5xl', md: '7xl' }}
+                fontStyle="italic"
+                lineHeight="tight"
+                letterSpacing="-0.04em"
+                overflowWrap="anywhere"
+              >
+                {note.title}
+              </Heading>
+              {lede && (
+                <Text
+                  fontFamily="Newsreader, serif"
+                  fontSize="xl"
+                  color="#d7c4ac"
+                  fontStyle="italic"
+                  lineHeight="relaxed"
+                  maxW="xl"
+                >
+                  {lede}
+                </Text>
+              )}
+            </Stack>
+
+            {banner && (
+              <Box
+                position="relative"
+                w="full"
+                maxW="full"
+                border="1px solid"
+                borderColor="#524533"
+                overflow="hidden"
+                className="note-hero-frame"
+                mb="4"
+              >
+                <img src={banner} alt={note.title ?? undefined} class="note-hero-image" />
+                <Box
+                  position="absolute"
+                  inset="0"
+                  bgGradient="to-t"
+                  gradientFrom="#131313"
+                  gradientTo="transparent"
+                  opacity="0.6"
+                />
+              </Box>
+            )}
+
+            {content && (
+              <Markdown
+                content={content}
+                assetsPrefix={outlineAssetPrefix}
+                assetProxyBasePath={outlineAssetProxyPath}
+              />
+            )}
+
+            {(prevSibling || nextSibling) && (
+              <Grid
+                gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
+                gap="8"
+                pt="12"
+                borderTop="1px solid"
+                borderColor="#524533"
+              >
+                {prevSibling ? (
+                  <a href={`/${locale}/notes/${shareId}/doc/${prevSibling.id}`} class="group">
+                    <Box
+                      border="1px solid"
+                      borderColor="#524533"
+                      p="6"
+                      className="blocky-shadow blocky-shadow-hover"
+                    >
+                      <Text
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="10px"
+                        textTransform="uppercase"
+                        color="#9f8e78"
+                        mb="2"
+                      >
+                        {t('note.previous-entry')}
+                      </Text>
+                      <Text
+                        fontSize="xl"
+                        fontStyle="italic"
+                        className="group-hover-amber"
+                        transition="colors"
+                        transitionDuration="fast"
+                      >
+                        {prevSibling.title}
+                      </Text>
+                    </Box>
+                  </a>
+                ) : (
+                  <Box />
+                )}
+                {nextSibling ? (
+                  <a href={`/${locale}/notes/${shareId}/doc/${nextSibling.id}`} class="group">
+                    <Box
+                      border="1px solid"
+                      borderColor="#524533"
+                      p="6"
+                      textAlign="right"
+                      className="blocky-shadow blocky-shadow-hover"
+                    >
+                      <Text
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="10px"
+                        textTransform="uppercase"
+                        color="#9f8e78"
+                        mb="2"
+                      >
+                        {t('note.next-entry')}
+                      </Text>
+                      <Text
+                        fontSize="xl"
+                        fontStyle="italic"
+                        className="group-hover-amber"
+                        transition="colors"
+                        transitionDuration="fast"
+                      >
+                        {nextSibling.title}
+                      </Text>
+                    </Box>
+                  </a>
+                ) : (
+                  <Box />
+                )}
+              </Grid>
+            )}
+          </Stack>
+
+          <Stack gap="6" position="sticky" top="32">
+            <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6" position="relative">
+              <Box
+                position="absolute"
+                top="-12px"
+                left="-4px"
+                bg="#353534"
+                border="1px solid"
+                borderColor="#524533"
+                px="2"
+                py="0.5"
+              >
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="9px"
+                  textTransform="uppercase"
+                  color="#ffb000"
+                >
+                  SPEC_SHEET
+                </Text>
+              </Box>
+              <Stack gap="6" mt="2">
+                {formattedDate && (
+                  <Box>
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      color="#9f8e78"
+                      letterSpacing="0.12em"
+                      mb="1"
+                    >
+                      {t('note.published')}
+                    </Text>
+                    <Text fontFamily="JetBrains Mono, monospace" fontSize="xs">
+                      {formattedDate}
+                    </Text>
+                  </Box>
+                )}
+                <Box>
+                  <Text
+                    fontFamily="JetBrains Mono, monospace"
+                    fontSize="10px"
+                    textTransform="uppercase"
+                    color="#9f8e78"
+                    letterSpacing="0.12em"
+                    mb="1"
+                  >
+                    {t('note.collection')}
+                  </Text>
+                  <Text
+                    color="#ffb000"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                    letterSpacing="-0.04em"
+                    textDecoration="underline"
+                    textUnderlineOffset="4px"
+                    fontSize="sm"
+                  >
+                    {t('note.note-label')}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text
+                    fontFamily="JetBrains Mono, monospace"
+                    fontSize="10px"
+                    textTransform="uppercase"
+                    color="#9f8e78"
+                    letterSpacing="0.12em"
+                    mb="1"
+                  >
+                    {t('note.reading-time')}
+                  </Text>
+                  <Text
+                    fontFamily="JetBrains Mono, monospace"
+                    fontSize="xs"
+                    textTransform="uppercase"
+                  >
+                    {`${readingMinutes} ${t('note.min-read')} / ${wordCount} ${t('note.words')}`}
+                  </Text>
+                </Box>
+                {tags.length > 0 && (
+                  <Box>
+                    <Text
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      color="#9f8e78"
+                      letterSpacing="0.12em"
+                      mb="2"
+                    >
+                      {t('note.tags')}
+                    </Text>
+                    <Box display="flex" flexWrap="wrap" gap="2">
+                      {tags.map((tag: string) => (
+                        <Box bg="#353534" px="2" py="1" border="1px solid" borderColor="#524533">
+                          <Text
+                            fontFamily="JetBrains Mono, monospace"
+                            fontSize="9px"
+                            color="#dbdbdb"
+                          >
+                            #{tag.toUpperCase()}
+                          </Text>
+                        </Box>
+                      ))}
+                    </Box>
+                  </Box>
+                )}
+              </Stack>
+            </Box>
+
+            <Stack gap="4">
+              <a href={`/${locale}/notes`} class="note-cta-button group">
+                <span>{t('note.back-to-posts')}</span>
+                <span class="material-symbols-outlined note-cta-icon">arrow_back</span>
+              </a>
+              <a
+                href={outlineUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="note-cta-button group"
+              >
+                <span>{t('note.read-in-outline')}</span>
+                <span class="material-symbols-outlined note-cta-icon">open_in_new</span>
+              </a>
+            </Stack>
+          </Stack>
+        </Grid>
+      )
+    }
   </Container>
 </MainLayout>

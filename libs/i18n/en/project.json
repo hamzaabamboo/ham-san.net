@@ -2,6 +2,16 @@
   "projects": "Projects",
   "screenshots": "Screenshots",
   "back-to-projects": "Back to projects",
-  "active": "Active Projects",
-  "inactive": "Other Projects"
+  "active": "Featured Work",
+  "inactive": "Archive",
+  "page-heading": "Work & Experiments.",
+  "intro": "Web projects, small tools, and experiments I have worked on.",
+  "view-execution": "View project",
+  "case-study": "Case Study",
+  "visit-site": "Visit site",
+  "source-code": "Source code",
+  "empty-title": "Projects Unavailable",
+  "empty-description": "Projects will show up again when the content connection is back.",
+  "detail-empty-title": "Project Unavailable",
+  "detail-empty-description": "This project could not be loaded right now. It will show up again when the content connection is back."
 }

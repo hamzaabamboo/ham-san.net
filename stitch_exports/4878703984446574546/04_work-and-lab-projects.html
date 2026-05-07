@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#464747",
+              "surface": "#131313",
+              "tertiary-container": "#bfbfbf",
+              "on-tertiary-fixed-variant": "#464747",
+              "primary-fixed-dim": "#ffba43",
+              "error": "#ffb4ab",
+              "secondary-fixed": "#e3e2e2",
+              "surface-container-highest": "#353534",
+              "secondary-container": "#464747",
+              "surface-dim": "#131313",
+              "primary-fixed": "#ffddaf",
+              "on-secondary-container": "#b6b5b5",
+              "on-tertiary": "#2f3131",
+              "surface-container-high": "#2a2a2a",
+              "on-tertiary-fixed": "#1a1c1c",
+              "on-primary": "#432c00",
+              "on-tertiary-container": "#4c4e4e",
+              "primary": "#ffd597",
+              "surface-container-low": "#1c1b1b",
+              "error-container": "#93000a",
+              "inverse-surface": "#e5e2e1",
+              "on-primary-fixed": "#281800",
+              "surface-container-lowest": "#0e0e0e",
+              "on-primary-fixed-variant": "#614000",
+              "on-secondary-fixed": "#1b1c1c",
+              "tertiary-fixed": "#e3e2e2",
+              "surface-variant": "#353534",
+              "primary-container": "#ffb000",
+              "background": "#131313",
+              "secondary-fixed-dim": "#c7c6c6",
+              "outline-variant": "#524533",
+              "on-surface-variant": "#d7c4ac",
+              "on-secondary": "#303031",
+              "inverse-on-surface": "#313030",
+              "surface-container": "#201f1f",
+              "on-background": "#e5e2e1",
+              "inverse-primary": "#805600",
+              "on-error": "#690005",
+              "surface-bright": "#393939",
+              "secondary": "#c7c6c6",
+              "on-surface": "#e5e2e1",
+              "on-error-container": "#ffdad6",
+              "surface-tint": "#ffba43",
+              "tertiary": "#dbdbdb",
+              "on-primary-container": "#6a4700",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "outline": "#9f8e78"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+        .block-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(14, 14, 14, 1);
+        }
+        .block-shadow-hover:hover {
+            box-shadow: none;
+            transform: translate(2px, 2px);
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313] border-b border-[#524533] shadow-[4px_4px_0px_0px_rgba(14,14,14,1)]">
+<div class="font-['Manrope'] font-black uppercase tracking-widest text-[#FFB000] text-lg">ATELIER.EXE</div>
+<div class="hidden md:flex gap-8">
+<a class="text-[#FFB000] border-b-2 border-[#FFB000] pb-1 font-bold font-['Newsreader'] italic text-xl tracking-tight" href="#">Projects</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] transition-colors duration-100 font-['Newsreader'] italic text-xl tracking-tight" href="#">Notes</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] transition-colors duration-100 font-['Newsreader'] italic text-xl tracking-tight" href="#">Hobbies</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] transition-colors duration-100 font-['Newsreader'] italic text-xl tracking-tight" href="#">About</a>
+</div>
+<div class="text-[#FFB000] font-['Manrope'] uppercase text-[10px] tracking-widest font-bold">EN/JA</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] hidden lg:flex flex-col pt-8 w-64 bg-[#0e0e0e] border-r border-[#524533]">
+<div class="px-6 mb-8">
+<div class="font-['Manrope'] font-black text-[#FFB000] text-xs tracking-tighter uppercase">STRUC_DATA</div>
+<div class="font-mono text-[9px] text-outline opacity-50">v2.0.48</div>
+</div>
+<nav class="flex flex-col">
+<a class="flex items-center gap-3 px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75 group" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Engineering</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75 group" href="#">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Photography</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75 group" href="#">
+<span class="material-symbols-outlined text-sm">auto_stories</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Philosophy</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75 group" href="#">
+<span class="material-symbols-outlined text-sm">description</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Resume</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="pt-32 pb-24 px-6 lg:ml-64 max-w-7xl mx-auto">
+<!-- Header Section -->
+<header class="mb-20 relative">
+<div class="absolute -top-6 left-0 bg-surface-container-highest px-2 py-1 border border-outline-variant">
+<span class="font-mono text-[10px] uppercase text-primary">Index / Main_Archive</span>
+</div>
+<h1 class="font-headline italic text-6xl md:text-8xl text-on-surface mb-6 leading-none">Work &amp; Experiments.</h1>
+<p class="font-body text-xl text-secondary max-w-2xl border-l border-primary-container pl-6 py-2">
+                Frontend systems, interaction prototypes, and digital tools. A curation of commercial impact and lab-grown explorations.
+            </p>
+</header>
+<!-- Commercial Work Section -->
+<section class="mb-24">
+<div class="flex items-center gap-4 mb-10 overflow-hidden">
+<h2 class="font-['Manrope'] font-black uppercase text-2xl tracking-tighter flex-shrink-0">Commercial Work</h2>
+<div class="h-px w-full bg-outline-variant"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-outline-variant border border-outline-variant">
+<!-- Project Card 1 -->
+<article class="bg-surface group">
+<div class="p-6 h-full flex flex-col hover:bg-surface-container-lowest transition-colors duration-200">
+<div class="aspect-video bg-surface-container-highest mb-6 relative overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 scale-100 group-hover:scale-105" data-alt="clean minimal dark ui dashboard with complex data visualization charts and golden amber accents on charcoal background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Kro4U71f08eCKPnbO8zxbL6ynaRyWTnokF9BLTMPHHZOIYH5s5UbUAixOAiWvoEt5Kwln-FFmw-h6FSEgcJnaWk2_kNQcumfF14EJ54SfrtZbr7KpU4DTEfnlsztJ2tkgkCa4VglwMStIE5D_eC6Dsl4B5a1WpR5wyxnBF8YfkCsihBbqVI17gytC5PaywKVtMQ4rfZHB3IgiIZvoFrdtqbPapmBH5VL62yDt5cN0E8DeZFEyeCgo6w5BSWiYNfrvNE7iSxRBM0"/>
+<div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="bg-primary-container text-on-primary px-3 py-1 font-mono text-[10px] font-bold">CASE_STUDY</div>
+</div>
+</div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-['Manrope'] font-extrabold text-2xl text-on-surface group-hover:text-primary-container transition-colors">Omni_Node CMS</h3>
+<span class="font-mono text-sm text-outline">2023</span>
+</div>
+<div class="flex gap-2 mb-4">
+<span class="bg-surface-container-high border border-outline-variant px-2 py-0.5 font-mono text-[9px] uppercase">React / WebGL</span>
+</div>
+<p class="font-body text-secondary text-sm leading-relaxed mb-6">A high-performance content infrastructure for architectural visualization studios.</p>
+<div class="mt-auto">
+<button class="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-primary-container group-hover:gap-4 transition-all">
+<span>VIEW_EXECUTION</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Project Card 2 -->
+<article class="bg-surface group">
+<div class="p-6 h-full flex flex-col hover:bg-surface-container-lowest transition-colors duration-200">
+<div class="aspect-video bg-surface-container-highest mb-6 relative overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 scale-100 group-hover:scale-105" data-alt="macro photograph of industrial circuit board with illuminated copper traces and precision component layout in warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnfUSIWI8zO7z4e22dj17XSF6fZmMtl0l_v6Uujt79gJS6vMk0II0Wt06S7G-MFt6aWUBACa_ql-MLtGvGepLeWasPTW69YLRfQjUku8BPPuYIXUEhGPFkYGdGCb3FDgBIh3CLt2v3q9OQ3doas5mRGPAfdSCo1BSC0Tht_DWJHWbd5Rkydsg3JRj3UVnwepTAqQXfszdJ9Gp2r6JLjSfveC1sg9ouna7DR-GngzPye_aLC571BEuMedBapd66n0Cn04e3_pk4gs8"/>
+</div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-['Manrope'] font-extrabold text-2xl text-on-surface group-hover:text-primary-container transition-colors">Flux.Design System</h3>
+<span class="font-mono text-sm text-outline">2022</span>
+</div>
+<div class="flex gap-2 mb-4">
+<span class="bg-surface-container-high border border-outline-variant px-2 py-0.5 font-mono text-[9px] uppercase">Tailwind / Figma</span>
+</div>
+<p class="font-body text-secondary text-sm leading-relaxed mb-6">Comprehensive token system and component library for a fintech logistics platform.</p>
+<div class="mt-auto">
+<button class="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-primary-container group-hover:gap-4 transition-all">
+<span>VIEW_EXECUTION</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Personal Lab Section -->
+<section>
+<div class="flex items-center gap-4 mb-10 overflow-hidden">
+<h2 class="font-['Manrope'] font-black uppercase text-2xl tracking-tighter flex-shrink-0">Personal Lab</h2>
+<div class="h-px w-full bg-outline-variant"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Lab Card 1 -->
+<article class="relative bg-surface-container-low border border-outline-variant p-6 block-shadow-hover transition-all duration-100 group">
+<div class="absolute -top-3 -left-3 bg-surface-container-highest px-2 py-1 border border-outline-variant font-mono text-[9px] text-primary">EXP_048</div>
+<div class="aspect-square bg-surface-container-lowest mb-6 border border-outline-variant relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" data-alt="abstract procedural 3d geometry with sharp metallic edges and orange light refractions on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARtQtFI5h19fomQyrTTN-CyVd1IyxqfuIRNV9RFCBf5kZpzhtELj4tAlrBQ0i83TG6I_p-Ts5ajzqFW2alm9esBebvhiIl1FBPeguOF-KXYIxkkaFVQ3Ec3GhohtPDx57G8IVR-V0Ny-L8ZjjYe9IHC3cjhaYrI1dU225Oh3zFoEm1T6DDhcSFHXhfBXxh2nv6t86-DK2hiaFIv9dvyD2Grl1Do1oU_JYFa8Dq2m9Vluz6fICQlY7r3aItPyaMgxqS5BlDcrxaMlw"/>
+</div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-['Manrope'] font-bold text-lg text-on-surface">Kinetic_Typo</h4>
+<span class="font-mono text-[10px] text-outline">2024</span>
+</div>
+<p class="font-body text-xs text-secondary leading-relaxed mb-4">Variable font manipulations using cursor proximity sensors.</p>
+<div class="font-mono text-[9px] text-primary-container opacity-0 group-hover:opacity-100 transition-opacity">RUNNING_SIMULATION...</div>
+</article>
+<!-- Lab Card 2 -->
+<article class="relative bg-surface-container-low border border-outline-variant p-6 block-shadow-hover transition-all duration-100 group">
+<div class="absolute -top-3 -left-3 bg-surface-container-highest px-2 py-1 border border-outline-variant font-mono text-[9px] text-primary">EXP_032</div>
+<div class="aspect-square bg-surface-container-lowest mb-6 border border-outline-variant relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" data-alt="digital blueprint of a computer interface with technical measurement lines and grid background in emerald and black" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJ14nAPTCoQxjcYMHgInep6GYuMaVRLk91Tais82vQ-T9QkZuPmu-NwLM8CG6ry1e7voTn4Y1pCr-TDnENC9dFqD4_MSJnQztt4TKVWOSQVKgxcOb9YUWujqE5W14pnrMxniBjtCoLoZ8_2N6MLhcmGUv10xj_N_yTTXMfbkiyy-fh-awTVtPfIHsfejdOXelhiXcC_XDPKMS9tEOuGVajuPftbG-7nVSCQM5GkQup8THdoC0ax2w0mjp6sxOepdt9Fmzow3fnAe0"/>
+</div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-['Manrope'] font-bold text-lg text-on-surface">Voxel_Grid</h4>
+<span class="font-mono text-[10px] text-outline">2023</span>
+</div>
+<p class="font-body text-xs text-secondary leading-relaxed mb-4">Three.js experiment exploring spatial UI layouts in isometric viewports.</p>
+</article>
+<!-- Lab Card 3 -->
+<article class="relative bg-surface-container-low border border-outline-variant p-6 block-shadow-hover transition-all duration-100 group">
+<div class="absolute -top-3 -left-3 bg-surface-container-highest px-2 py-1 border border-outline-variant font-mono text-[9px] text-primary">EXP_019</div>
+<div class="aspect-square bg-surface-container-lowest mb-6 border border-outline-variant relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" data-alt="abstract noise texture with gritty film grain and sharp vertical light streaks in high contrast black and white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsiobpvcZXvTZAgSUyCLgv6iQ_XUyAuMi7lFFlG0hHhSwpXOEFpyYK6imtzp_VoYnh3iwVgCzLO5vtaZNuxk0n52zvZQTdKeAxbM_StxVr9uvrn6r8BiAiaTeD6mnyFyfgzxqSbx8mYNIVgS7wJSuSRL5XhVv0G31m47fTYpDXgeJ9jRacwBjpk2ys9e0aKvgZrY2LRz7mNYol_6HcFm325hUVSB0JI7brVjBeSXjqwFFDOl6fgsLoMv44e7fpcCGTu0AuLhXohKw"/>
+</div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-['Manrope'] font-bold text-lg text-on-surface">Grain_Shader</h4>
+<span class="font-mono text-[10px] text-outline">2023</span>
+</div>
+<p class="font-body text-xs text-secondary leading-relaxed mb-4">Custom GLSL noise functions for simulating organic film grain on web surfaces.</p>
+</article>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-4 px-6 flex flex-col md:flex-row justify-between items-center bg-[#131313] border-t-2 border-[#524533] cursor-crosshair">
+<div class="font-['Monospace'] text-[11px] uppercase opacity-80 text-[#c7c6c6] mb-4 md:mb-0">
+            ©2024 CONSTRUCT_SYSTEMS // STATUS: SELECTIVE_OPEN_FOR_COLLAB
+        </div>
+<div class="flex gap-6">
+<a class="font-['Monospace'] text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">Github</a>
+<a class="font-['Monospace'] text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">LinkedIn</a>
+<a class="font-['Monospace'] text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">RSS</a>
+</div>
+</footer>
+</body></html>

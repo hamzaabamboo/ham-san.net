@@ -22,7 +22,45 @@ export const theme = {
   },
   tokens,
   semanticTokens,
-  keyframes,
+  keyframes: {
+    ...keyframes,
+    pyon: {
+      '0%, 25%, 50%, 100%': {
+        transform: 'translateY(0%)',
+        animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)'
+      },
+      '12.5%, 37.5%': {
+        transform: 'translateY(-5%)',
+        animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)'
+      }
+    },
+    'fade-in-up': {
+      '0%': {
+        opacity: '0',
+        transform: 'translateY(20px)'
+      },
+      '100%': {
+        opacity: '1',
+        transform: 'translateY(0)'
+      }
+    },
+    spin: {
+      '0%': {
+        transform: 'rotateY(0deg)'
+      },
+      '100%': {
+        transform: 'rotateY(360deg)'
+      }
+    },
+    marquee: {
+      '0%': {
+        transform: 'translateX(0)'
+      },
+      '100%': {
+        transform: 'translateX(-50%)'
+      }
+    }
+  },
   recipes: {
     ...recipes,
     formLabel: {

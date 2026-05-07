@@ -1,5 +1,3 @@
-import removeMarkdown from 'remove-markdown';
-
 export const cleanArticleContent = (content?: string) => {
   return content?.replaceAll('\\\n', '')?.replaceAll('\\n', '\n\n');
 };
@@ -13,10 +11,21 @@ export const getArticleBanner = (content?: string) => {
   );
 };
 export const getArticleDescription = (content?: string) => {
-  return (
-    removeMarkdown(content?.replaceAll(/!\[(.*)\]\((.+)\)/g, '') ?? '')
-      ?.replaceAll(/\s+/g, ' ')
-      .trim()
-      .substring(0, 100) + '...'
-  );
+  const plainText = (content ?? '')
+    .replaceAll(/!\[(.*)\]\((.+)\)/g, '')
+    .replaceAll(/`{1,3}([^`]*)`{1,3}/g, '$1')
+    .replaceAll(/(\*\*|__)(.*?)\1/g, '$2')
+    .replaceAll(/(\*|_)(.*?)\1/g, '$2')
+    .replaceAll(/^>\s+/gm, '')
+    .replaceAll(/^#+\s+/gm, '')
+    .replaceAll(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
+    .replaceAll(/<https?:\/\/[^>]+>/g, '')
+    .replaceAll(/https?:\/\/\S+/g, '')
+    .replaceAll(/[*_~]/g, '')
+    .replaceAll(/\s+/g, ' ')
+    .trim();
+
+  const truncated = plainText.substring(0, 160);
+  const lastSpace = truncated.lastIndexOf(' ');
+  return (lastSpace > 80 ? truncated.substring(0, lastSpace) : truncated) + '...';
 };

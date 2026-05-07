@@ -1,11 +1,9 @@
 const { FlatCompat } = require('@eslint/eslintrc');
 const nxEslintPlugin = require('@nx/eslint-plugin');
-const js = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended
+  baseDirectory: __dirname
 });
 
 module.exports = tseslint.config(

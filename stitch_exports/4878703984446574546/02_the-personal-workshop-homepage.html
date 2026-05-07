@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ATELIER.EXE // Building for the web, driven by curiosity.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;1,400;1,700&amp;family=Manrope:wght@400;500;700;800&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#464747",
+                        "surface": "#131313",
+                        "tertiary-container": "#bfbfbf",
+                        "on-tertiary-fixed-variant": "#464747",
+                        "primary-fixed-dim": "#ffba43",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#e3e2e2",
+                        "surface-container-highest": "#353534",
+                        "secondary-container": "#464747",
+                        "surface-dim": "#131313",
+                        "primary-fixed": "#ffddaf",
+                        "on-secondary-container": "#b6b5b5",
+                        "on-tertiary": "#2f3131",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-primary": "#432c00",
+                        "on-tertiary-container": "#4c4e4e",
+                        "primary": "#ffd597",
+                        "surface-container-low": "#1c1b1b",
+                        "error-container": "#93000a",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-fixed": "#281800",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#614000",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "tertiary-fixed": "#e3e2e2",
+                        "surface-variant": "#353534",
+                        "primary-container": "#ffb000",
+                        "background": "#131313",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "outline-variant": "#524533",
+                        "on-surface-variant": "#d7c4ac",
+                        "on-secondary": "#303031",
+                        "inverse-on-surface": "#313030",
+                        "surface-container": "#201f1f",
+                        "on-background": "#e5e2e1",
+                        "inverse-primary": "#805600",
+                        "on-error": "#690005",
+                        "surface-bright": "#393939",
+                        "secondary": "#c7c6c6",
+                        "on-surface": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#ffba43",
+                        "tertiary": "#dbdbdb",
+                        "on-primary-container": "#6a4700",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "outline": "#9f8e78"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+        .block-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(14, 14, 14, 1);
+        }
+        .block-shadow-hover:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .spec-label {
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            padding: 2px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            background-color: #353534;
+            color: #ffb000;
+            border: 1px solid #524533;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313] border-b border-[#524533] shadow-[4px_4px_0px_0px_rgba(14,14,14,1)]">
+<div class="font-['Manrope'] font-black uppercase tracking-widest text-[#FFB000] text-lg">
+            ATELIER.EXE
+        </div>
+<div class="hidden md:flex space-x-8">
+<a class="text-[#FFB000] border-b-2 border-[#FFB000] pb-1 font-bold font-['Newsreader'] italic text-xl tracking-tight transition-colors duration-100" href="#">Projects</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] font-['Newsreader'] italic text-xl tracking-tight hover:bg-[#353534] transition-colors duration-100" href="#">Notes</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] font-['Newsreader'] italic text-xl tracking-tight hover:bg-[#353534] transition-colors duration-100" href="#">Hobbies</a>
+<a class="text-[#c7c6c6] font-medium hover:text-[#FFB000] font-['Newsreader'] italic text-xl tracking-tight hover:bg-[#353534] transition-colors duration-100" href="#">About</a>
+</div>
+<div class="text-[#FFB000] font-mono text-sm font-bold cursor-crosshair">
+            EN/JA
+        </div>
+</nav>
+<!-- SideNavBar (Desktop Only) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] hidden lg:flex flex-col pt-8 w-64 bg-[#0e0e0e] border-r border-[#524533]">
+<div class="px-6 mb-8">
+<h3 class="font-['Manrope'] font-bold text-[#FFB000] text-xs tracking-widest">STRUC_DATA</h3>
+<p class="font-mono text-[10px] text-on-secondary-container">v2.0.48</p>
+</div>
+<div class="flex flex-col space-y-1">
+<a class="flex items-center px-6 py-3 space-x-3 bg-[#FFB000] text-[#432c00] font-bold italic transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Engineering</span>
+</a>
+<a class="flex items-center px-6 py-3 space-x-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Photography</span>
+</a>
+<a class="flex items-center px-6 py-3 space-x-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-sm">auto_stories</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Philosophy</span>
+</a>
+<a class="flex items-center px-6 py-3 space-x-3 text-[#dbdbdb] hover:bg-[#353534] hover:border-l-4 hover:border-[#FFB000] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-sm">description</span>
+<span class="font-['Manrope'] uppercase text-[10px] tracking-tighter">Resume</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="lg:ml-64 pt-16 min-h-screen bg-surface">
+<!-- Hero Section -->
+<section class="px-6 py-20 lg:py-32 border-b border-outline-variant grid md:grid-cols-2 gap-12 items-center">
+<div class="space-y-8">
+<div class="inline-block px-3 py-1 bg-surface-container-highest border border-outline-variant font-mono text-[10px] text-primary-container uppercase tracking-widest">
+                    Operational Status: Online
+                </div>
+<h1 class="font-headline text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-on-surface italic">
+                    Building for the web, <span class="text-primary-container">driven by curiosity.</span>
+</h1>
+<p class="font-body text-xl md:text-2xl text-secondary max-w-xl leading-relaxed">
+                    A frontend engineer who spends as much time in a <span class="underline decoration-outline-variant underline-offset-4">darkroom</span> or practicing <span class="underline decoration-outline-variant underline-offset-4">Japanese</span> as I do in VS Code.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 pt-4">
+<button class="px-8 py-4 bg-primary-container text-on-primary font-bold uppercase tracking-widest text-sm border border-outline block-shadow transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
+                        View my work
+                    </button>
+<button class="px-8 py-4 bg-transparent text-secondary font-bold uppercase tracking-widest text-sm border border-outline hover:bg-surface-container-highest transition-all">
+                        Explore my hobbies
+                    </button>
+</div>
+</div>
+<div class="relative aspect-square border border-outline-variant p-4 bg-surface-container-lowest overflow-hidden">
+<div class="spec-label">Hardware_Manifest</div>
+<img alt="Vintage rangefinder camera on a dark concrete desk" class="w-full h-full object-cover grayscale opacity-80 mix-blend-luminosity" data-alt="Close-up of a vintage Leica rangefinder camera on a dark textured concrete desk with industrial warm spot lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfnpSu_xqv4DRPFsPcmBzE0oQXJCQilCq4bb92xcWlJDwNcK2B-Zoo2DTQcYaV6U-4VXRuHEThAMuRTKviYQzcq8q1gRZ-py-4wv6LtjWwIMDjW3mu0WW-9kpbOSo1bdo-Gfzj6EiaQOFmCqQWu8goUSjMQ3XutW8DlJYy5MEQNEfoNtnWisisMF0wIagperfqyFZTBjkddV30lTCDpaXaV7AJfAz5nR5VGuz-NmJFFdu9aqsTeMJbG1kahG9qJMPauExXL0Vk0KA"/>
+<div class="absolute bottom-4 right-4 bg-primary-container p-2 text-on-primary font-mono text-[10px] font-bold">
+                    35MM / ANALOG / OPTICS
+                </div>
+</div>
+</section>
+<!-- Bento Grid Section -->
+<section class="p-6 md:p-12">
+<div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 gap-6 auto-rows-[200px]">
+<!-- Current Project -->
+<div class="md:col-span-2 md:row-span-2 relative border border-outline-variant bg-surface-container-low group overflow-hidden">
+<div class="spec-label">ACTIVE_BUILD</div>
+<div class="p-8 h-full flex flex-col justify-between">
+<div>
+<h3 class="font-headline text-3xl italic mb-2">Synthetic.OS</h3>
+<p class="font-body text-sm text-secondary">A highly-fidelity web workspace built with Next.js and Framer Motion.</p>
+</div>
+<div class="relative aspect-video border border-outline-variant bg-surface-container-lowest mt-4 overflow-hidden">
+<img alt="Clean code interface" class="w-full h-full object-cover grayscale brightness-50" data-alt="Minimalist dark mode IDE showing complex React code with amber syntax highlighting on a black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDunYUzirX0pT73s-bZaqBnbK76GqX9UYBXrWRKeb0ChUJxgIv5eWi_X90ncL0tV2estGei0OmFJ-LIyE2G53SKC-keWswMHo2ia10LkO9Onh5KQ2s3sdT20Gfa7jkc27E6_uoqy7L40I8ZpexZVwKGfwwq_w6Fwr28HkcV2qO0MmnejrRl5Pn7lRP-Ig99K6fM4WJGP4i7fmeQIxdfiufJTVaBMHqBvieasht9w_LOCi6Y81-bzgK0EQRCHDHKmZzTcnqvQWagbmQ"/>
+</div>
+</div>
+</div>
+<!-- Current Obsession -->
+<div class="md:col-span-2 md:row-span-1 relative border border-outline-variant bg-surface-container-low p-6 flex items-center gap-6">
+<div class="spec-label">OBSESSION_METRIC</div>
+<div class="w-16 h-16 flex-shrink-0 bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl">translate</span>
+</div>
+<div>
+<h4 class="font-['Manrope'] font-bold text-xs text-primary-container uppercase tracking-widest">Language Study</h4>
+<p class="font-headline text-2xl italic">JLPT N1 Kanji Mastery</p>
+<div class="mt-2 w-full bg-surface-container-highest h-1">
+<div class="bg-primary-container h-full w-[65%]"></div>
+</div>
+<p class="font-mono text-[10px] mt-1 opacity-60">PROGRESS: 65% // TARGET: DEC 2024</p>
+</div>
+</div>
+<!-- Through the Lens -->
+<div class="md:col-span-1 md:row-span-2 relative border border-outline-variant bg-surface-container-low overflow-hidden group">
+<div class="spec-label">LENS_ARCHIVE</div>
+<img alt="Mountain landscape" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 grayscale" data-alt="Moody black and white long exposure of a jagged mountain peak piercing through heavy morning fog" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0BUfoSHNjJ0gXUvZl6UskpQobhkIEpMcu-r5qGvFnwyKwPn3Z4JaIlvOFE8ZT2hT9JtY4kHRSKHc0vQt-a902SPWZQZKTckq_ifSzmEUSxfVKbXe_7A9EzqRo1LkdlC3ytuIPxmWx9zCtE14Us5XhiB7yiJh4mZPghZ3p4zRZHzfUShj3rqwzd_l9SkHa27gdmteCntrDon8HnC3qQmUomfqlFzCmqfauuQ49VCPU-wtI4_tHR9sFy93HpnC0Dq1IX3IHHWkN9EA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-60"></div>
+<div class="absolute bottom-4 left-4">
+<p class="font-mono text-[10px] text-primary-container uppercase">Mt. Fuji / 05:42 AM</p>
+</div>
+</div>
+<!-- Now Playing -->
+<div class="md:col-span-1 md:row-span-1 relative border border-outline-variant bg-surface-container-low p-6 flex flex-col justify-between">
+<div class="spec-label">AUDIO_FEED</div>
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+<div class="text-right">
+<p class="font-mono text-[9px] uppercase opacity-50">Live Sync</p>
+</div>
+</div>
+<div>
+<p class="font-headline text-xl italic leading-tight">Weightless</p>
+<p class="font-body text-xs text-secondary">Marconi Union</p>
+</div>
+</div>
+<!-- Status -->
+<div class="md:col-span-2 md:row-span-1 relative border border-outline-variant bg-primary-container p-8 flex flex-col justify-center">
+<div class="spec-label !bg-on-primary !text-primary-container !border-on-primary">AVAILABILITY</div>
+<p class="text-on-primary font-headline text-3xl font-bold leading-tight">
+                        Accepting selective freelance work &amp; studying N1 Kanji.
+                    </p>
+<div class="mt-4 flex gap-4">
+<span class="font-mono text-[10px] text-on-primary-container px-2 py-1 border border-on-primary-container">OPEN FOR COLLAB</span>
+<span class="font-mono text-[10px] text-on-primary-container px-2 py-1 border border-on-primary-container">TOKYO (GMT+9)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Work & Life Filter Sections -->
+<section class="px-6 py-20 border-t border-outline-variant">
+<div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24">
+<!-- Engineering Column -->
+<div class="space-y-12">
+<div class="flex items-center gap-4">
+<h2 class="font-headline text-4xl italic">Work</h2>
+<div class="h-px flex-grow bg-outline-variant"></div>
+</div>
+<div class="space-y-8">
+<div class="border-l-4 border-primary-container pl-6 py-2">
+<p class="font-mono text-[10px] text-primary-container mb-2">2022 — PRESENT</p>
+<h3 class="font-['Manrope'] font-extrabold text-xl uppercase tracking-wider">Senior Frontend Engineer</h3>
+<p class="text-secondary text-sm mt-2">Developing design systems and high-performance React architectures for decentralized finance platforms.</p>
+</div>
+<div class="border-l-4 border-outline-variant pl-6 py-2">
+<p class="font-mono text-[10px] text-secondary mb-2">2020 — 2022</p>
+<h3 class="font-['Manrope'] font-extrabold text-xl uppercase tracking-wider">UI Engineer</h3>
+<p class="text-secondary text-sm mt-2">Specializing in interactive visualizations and complex data dashboards for logistics enterprise.</p>
+</div>
+</div>
+</div>
+<!-- Life Column -->
+<div class="space-y-12">
+<div class="flex items-center gap-4">
+<h2 class="font-headline text-4xl italic">Life</h2>
+<div class="h-px flex-grow bg-outline-variant"></div>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<div class="aspect-square bg-surface-container-low border border-outline-variant p-4 flex flex-col justify-between">
+<span class="material-symbols-outlined text-primary-container text-4xl">dark_mode</span>
+<p class="font-mono text-[10px] uppercase tracking-tighter">Darkroom Printing / 400 ISO</p>
+</div>
+<div class="aspect-square bg-surface-container-low border border-outline-variant p-4 flex flex-col justify-between">
+<span class="material-symbols-outlined text-primary-container text-4xl">category</span>
+<p class="font-mono text-[10px] uppercase tracking-tighter">Skill Toys / Kendama / Flow</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="lg:ml-64 w-full py-4 px-6 flex flex-col md:flex-row justify-between items-center bg-[#131313] border-t-2 border-[#524533] cursor-crosshair">
+<div class="font-mono text-[11px] uppercase opacity-80 text-[#FFB000] mb-4 md:mb-0">
+            ©2024 CONSTRUCT_SYSTEMS // STATUS: SELECTIVE_OPEN_FOR_COLLAB
+        </div>
+<div class="flex space-x-8">
+<a class="font-mono text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">Github</a>
+<a class="font-mono text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">LinkedIn</a>
+<a class="font-mono text-[11px] uppercase text-[#c7c6c6] hover:text-[#FFB000] transition-colors" href="#">RSS</a>
+</div>
+</footer>
+</body></html>

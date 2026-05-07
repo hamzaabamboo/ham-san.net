@@ -1,3 +1,5 @@
+import { purple } from '~/theme/colors/purple';
+import { orange } from '~/theme/colors/orange';
 import { defineConfig } from '@pandacss/dev';
 import { theme } from './src/theme';
 import { globalCss } from './src/theme/global-css';
@@ -15,12 +17,16 @@ export default defineConfig({
   presets: ['@pandacss/preset-base', '@pandacss/preset-panda'],
 
   // Where to look for your css declarations
-  include: ['./src/**/*.{js,jsx,ts,tsx,astro}'],
+  include: ['./src/**/*.{jsx,tsx,astro}'],
 
   // Files to exclude
   exclude: [
     process.env.ENVIRONMENT === 'ssr' && '**/static/**',
-    process.env.ENVIRONMENT === 'static' && '**/*non-static*/**'
+    process.env.ENVIRONMENT === 'static' && '**/*non-static*/**',
+    './src/graphql/**/*',
+    './src/i18n/**/*',
+    './src/theme/**/*',
+    './src/utils/**/*'
   ].filter((a) => !!a) as string[],
 
   globalCss,
@@ -52,7 +58,9 @@ export default defineConfig({
           mauve: mauve,
           red: red,
           green: green,
-          amber: amber
+          amber: amber,
+          orange: orange,
+          purple: purple
         },
         radii: {
           l1: { value: '{radii.md}' },

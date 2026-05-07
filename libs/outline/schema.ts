@@ -55,7 +55,7 @@ export interface paths {
         put?: never;
         /**
          * Delete an attachment
-         * @description Deleting an attachment is permanant. It will not delete references or links to the attachment that may exist in your documents.
+         * @description Deleting an attachment is permanent. It will not delete references or links to the attachment that may exist in your documents.
          */
         post: operations["attachmentsDelete"];
         delete?: never;
@@ -604,6 +604,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/documents.insights": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve insights for a document
+         * @description Retrieve a chronologically sorted array of daily activity rollups (views, comments, reactions, revisions, editors) for a document. Insights must be enabled on the document. Defaults to the last 30 days when no date range is provided.
+         */
+        post: operations["documentsInsights"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/documents.import": {
         parameters: {
             query?: never;
@@ -835,7 +855,7 @@ export interface paths {
         put?: never;
         /**
          * Create a template from a document
-         * @description This method allows you to createa new template using an existing document as the basis
+         * @description This method allows you to create a new template using an existing document as the basis
          */
         post: operations["documentsTemplatize"];
         delete?: never;
@@ -935,7 +955,7 @@ export interface paths {
         put?: never;
         /**
          * Delete a document
-         * @description Deleting a document moves it to the trash. If not restored within 30 days it is permenantly deleted.
+         * @description Deleting a document moves it to the trash. If not restored within 30 days it is permanently deleted.
          */
         post: operations["documentsDelete"];
         delete?: never;
@@ -1675,7 +1695,7 @@ export interface paths {
         put?: never;
         /**
          * Create a share
-         * @description Creates a new share link that can be used by to access a document. If you request multiple shares for the same document with the same API key, the same share object will be returned. By default all shares are unpublished.
+         * @description Creates a new share link that can be used by to access a document or collection. If you request multiple shares for the same resource with the same API key, the same share object will be returned. By default all shares are unpublished. Exactly one of `documentId` or `collectionId` must be provided.
          */
         post: operations["sharesCreate"];
         delete?: never;
@@ -2004,6 +2024,146 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/templates.create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a template
+         * @description Create a new template that can be used as a starting point for new documents. Templates can optionally be scoped to a specific collection.
+         */
+        post: operations["templatesCreate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List all templates
+         * @description List all templates available to the current user. Optionally filter by collection. Templates not associated with a collection are workspace-wide.
+         */
+        post: operations["templatesList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve a template
+         * @description Retrieve a template by its unique identifier.
+         */
+        post: operations["templatesInfo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update a template
+         * @description Update an existing template by its unique identifier.
+         */
+        post: operations["templatesUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete a template
+         * @description Delete a template by its unique identifier. This will soft-delete the template, it can be restored later.
+         */
+        post: operations["templatesDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Restore a template
+         * @description Restore a previously deleted template by its unique identifier.
+         */
+        post: operations["templatesRestore"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.duplicate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Duplicate a template
+         * @description Create a copy of an existing template. Optionally override the title and target collection.
+         */
+        post: operations["templatesDuplicate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2011,10 +2171,10 @@ export interface components {
         /** @enum {string} */
         Permission: "read" | "read_write";
         /**
-         * @description The editing mode for text updates to a document.
+         * @description The editing mode for text updates to a document. When set to `patch`, the `findText` parameter is required and the existing occurrence of `findText` will be replaced with the value of `text`.
          * @enum {string}
          */
-        TextEditMode: "append" | "prepend" | "replace";
+        TextEditMode: "append" | "prepend" | "replace" | "patch";
         Attachment: {
             /** @example image/png */
             contentType?: string;
@@ -2271,8 +2431,6 @@ export interface components {
             collaborators?: components["schemas"]["User"][];
             /** @description Whether this document is pinned in the collection */
             pinned?: boolean;
-            /** @description Whether this document is a template */
-            template?: boolean;
             /**
              * Format: uuid
              * @description Unique identifier for the template this document was created from, if any
@@ -2308,6 +2466,26 @@ export interface components {
              * @description The date and time that this object was deleted
              */
             readonly deletedAt?: string | null;
+        };
+        /** @description A daily rollup of activity counts for a document. */
+        DocumentInsight: {
+            /**
+             * Format: date
+             * @description The UTC day the rollup represents.
+             */
+            date?: string;
+            /** @description Total number of document views on this day. */
+            viewCount?: number;
+            /** @description Number of unique viewers on this day. */
+            viewerCount?: number;
+            /** @description Total comments made on this day. */
+            commentCount?: number;
+            /** @description Total reactions added on this day. */
+            reactionCount?: number;
+            /** @description Number of document revisions on this day. */
+            revisionCount?: number;
+            /** @description Number of unique editors on this day. */
+            editorCount?: number;
         };
         Event: {
             /**
@@ -2549,6 +2727,13 @@ export interface components {
              * @description URL of the publicly shared document.
              */
             readonly url?: string;
+            /** @description Override title displayed on the publicly shared page. If not set the source document or collection title is used. */
+            title?: string | null;
+            /**
+             * Format: uri
+             * @description URL of an icon displayed on the publicly shared page, overriding the workspace branding.
+             */
+            iconUrl?: string | null;
             /**
              * @description If true the share can be loaded without a user account.
              * @example false
@@ -2559,6 +2744,11 @@ export interface components {
              * @example true
              */
             includeChildDocuments?: boolean;
+            /**
+             * @description Whether visitors to the public share can subscribe to receive email notifications when the document is updated. Requires SMTP to be configured on the workspace.
+             * @example true
+             */
+            allowSubscriptions?: boolean;
             /**
              * Format: date-time
              * @description Date and time when this share was created
@@ -2611,7 +2801,7 @@ export interface components {
              * @description Unique identifier for the object.
              */
             readonly id?: string;
-            /** @description The name of this workspace, it is usually auto-generated when the first SSO connection is made but can be changed if neccessary. */
+            /** @description The name of this workspace, it is usually auto-generated when the first SSO connection is made but can be changed if necessary. */
             name?: string;
             /**
              * Format: uri
@@ -2652,7 +2842,7 @@ export interface components {
              */
             readonly id?: string;
             /**
-             * @description The name of this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary.
+             * @description The name of this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if necessary.
              * @example Jane Doe
              */
             name?: string;
@@ -2663,7 +2853,7 @@ export interface components {
             avatarUrl?: string;
             /**
              * Format: email
-             * @description The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if neccessary.
+             * @description The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if necessary.
              */
             readonly email?: string;
             role?: components["schemas"]["UserRole"];
@@ -2784,6 +2974,54 @@ export interface components {
             readonly collectionId?: string;
             permission?: components["schemas"]["Permission"];
         };
+        Template: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /** @description A URL path to access the template. */
+            readonly url?: string;
+            /** @description A short unique identifier for the template used in URLs. */
+            readonly urlId?: string;
+            /** @description The title of the template. */
+            title?: string;
+            /** @description The body of the template as a Prosemirror document. */
+            data?: Record<string, never>;
+            /** @description An emoji to use as the template icon. */
+            icon?: string | null;
+            /** @description The color of the template icon in hex format. */
+            color?: string | null;
+            /** @description Whether the template should be displayed full width. */
+            fullWidth?: boolean;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated collection, if any.
+             */
+            collectionId?: string | null;
+            /**
+             * Format: date-time
+             * @description The date and time that the template was created.
+             */
+            readonly createdAt?: string;
+            createdBy?: components["schemas"]["User"];
+            /**
+             * Format: date-time
+             * @description The date and time that the template was last changed.
+             */
+            readonly updatedAt?: string;
+            updatedBy?: components["schemas"]["User"];
+            /**
+             * Format: date-time
+             * @description The date and time that the template was deleted.
+             */
+            readonly deletedAt?: string | null;
+            /**
+             * Format: date-time
+             * @description The date and time that the template was published.
+             */
+            readonly publishedAt?: string;
+        };
         View: {
             /** @description Unique identifier for the object. */
             readonly id?: string;
@@ -2894,14 +3132,20 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** @example image.png */
+                    /**
+                     * @description Name of the file attachment.
+                     * @example image.png
+                     */
                     name: string;
                     /**
                      * Format: uuid
                      * @description Identifier for the associated document, if any.
                      */
                     documentId?: string;
-                    /** @example image/png */
+                    /**
+                     * @description MIME type of the file attachment.
+                     * @example image/png
+                     */
                     contentType: string;
                     /** @description Size of the file attachment in bytes. */
                     size: number;
@@ -2951,13 +3195,17 @@ export interface operations {
             };
         };
         responses: {
-            /** @description The url for the attachment */
+            /** @description Redirect to the attachment URL */
             302: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content?: never;
             };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
         };
     };
     attachmentsDelete: {
@@ -3285,9 +3533,15 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** Format: uuid */
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection
+                     */
                     id: string;
-                    /** Format: uuid */
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the user to add to the collection
+                     */
                     userId: string;
                     permission?: components["schemas"]["Permission"];
                 };
@@ -3330,7 +3584,10 @@ export interface operations {
                      * @description Identifier for the collection
                      */
                     id: string;
-                    /** Format: uuid */
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the user to remove from the collection
+                     */
                     userId: string;
                 };
             };
@@ -3880,20 +4137,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Pagination"] & {
-                    /**
-                     * @description Specifies the attributes by which data attributes will be sorted in the list.
-                     * @default createdAt
-                     * @enum {string}
-                     */
-                    sort?: "createdAt" | "updatedAt";
-                    /**
-                     * @description Specifies the sort order with respect to sort field.
-                     * @default DESC
-                     * @enum {string}
-                     */
-                    direction?: "ASC" | "DESC";
-                };
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"];
             };
         };
         responses: {
@@ -4085,6 +4329,53 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    documentsInsights: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the document.
+                     */
+                    id: string;
+                    /**
+                     * Format: date-time
+                     * @description Start of the insights window (inclusive). Defaults to 30 days ago.
+                     */
+                    startDate?: string;
+                    /**
+                     * Format: date-time
+                     * @description End of the insights window (inclusive). Defaults to today.
+                     */
+                    endDate?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["DocumentInsight"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     documentsImport: {
         parameters: {
             query?: never;
@@ -4189,14 +4480,15 @@ export interface operations {
                      * @description Optionally filter to a specific collection
                      */
                     collectionId?: string;
-                    /** Format: uuid */
+                    /**
+                     * Format: uuid
+                     * @description Optionally filter to documents created by a specific user
+                     */
                     userId?: string;
                     /** Format: uuid */
                     backlinkDocumentId?: string;
                     /** Format: uuid */
                     parentDocumentId?: string;
-                    /** @description Optionally filter to only templates */
-                    template?: boolean;
                     /** @description Document statuses to include in results */
                     statusFilter?: ("draft" | "archived" | "published")[];
                 };
@@ -4582,8 +4874,6 @@ export interface operations {
                     parentDocumentId?: string | null;
                     /** Format: uuid */
                     templateId?: string;
-                    /** @description Whether this document should be considered to be a template. */
-                    template?: boolean;
                     /** @description Whether this document should be immediately published and made visible to other workspace members. */
                     publish?: boolean;
                     /** @description Whether the document should be displayed in full width */
@@ -4666,6 +4956,8 @@ export interface operations {
                     /** @description Whether insights should be visible on the document */
                     insightsEnabled?: boolean;
                     editMode?: components["schemas"]["TextEditMode"];
+                    /** @description The text to find within the document when using `patch` editMode. This text will be replaced with the value of `text`. Required when `editMode` is `patch`. */
+                    findText?: string;
                     /** @description Whether this document should be published and made visible to other workspace members, if a draft */
                     publish?: boolean;
                     /** @description Data attributes to be updated. Attributes not included will be removed from the document. */
@@ -4734,7 +5026,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Document"];
+                        data?: components["schemas"]["Template"];
                         policies?: components["schemas"]["Policy"][];
                     };
                 };
@@ -5838,9 +6130,15 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** Format: uuid */
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the group
+                     */
                     id: string;
-                    /** Format: uuid */
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the user to add to the group
+                     */
                     userId: string;
                 };
             };
@@ -5880,10 +6178,13 @@ export interface operations {
                 "application/json": {
                     /**
                      * Format: uuid
-                     * @description Identifier for the collection
+                     * @description Identifier for the group
                      */
                     id: string;
-                    /** Format: uuid */
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the user to remove from the group
+                     */
                     userId: string;
                 };
             };
@@ -5958,7 +6259,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"];
+            };
+        };
         responses: {
             /** @description OK */
             200: {
@@ -5966,7 +6271,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    "application/json": {
                         data?: components["schemas"]["OAuthClient"][];
                         policies?: components["schemas"]["Policy"][];
                         pagination?: components["schemas"]["Pagination"];
@@ -5975,7 +6280,6 @@ export interface operations {
             };
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
             429: components["responses"]["RateLimited"];
         };
     };
@@ -6193,7 +6497,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"];
+            };
+        };
         responses: {
             /** @description OK */
             200: {
@@ -6201,7 +6509,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    "application/json": {
                         data?: components["schemas"]["OAuthAuthentication"][];
                         policies?: components["schemas"]["Policy"][];
                         pagination?: components["schemas"]["Pagination"];
@@ -6210,7 +6518,6 @@ export interface operations {
             };
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
             429: components["responses"]["RateLimited"];
         };
     };
@@ -6374,10 +6681,7 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
-                    /**
-                     * Format: uuid
-                     * @description Filter to shared documents matching a search query
-                     */
+                    /** @description Filter to shared documents matching a search query */
                     query?: string;
                 };
             };
@@ -6411,9 +6715,17 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** Format: uuid */
-                    documentId: string;
-                };
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the document to share. Mutually exclusive with `collectionId`.
+                     */
+                    documentId?: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to share. Mutually exclusive with `documentId`.
+                     */
+                    collectionId?: string;
+                } & (unknown | unknown);
             };
         };
         responses: {
@@ -6448,6 +6760,13 @@ export interface operations {
                     /** Format: uuid */
                     id: string;
                     published: boolean;
+                    /** @description Override title displayed on the publicly shared page. If not set the source document or collection title is used. */
+                    title?: string | null;
+                    /**
+                     * Format: uri
+                     * @description URL of an icon to display on the publicly shared page, overriding the workspace branding.
+                     */
+                    iconUrl?: string | null;
                 };
             };
         };
@@ -6659,6 +6978,8 @@ export interface operations {
             content: {
                 "application/json": {
                     invites: components["schemas"]["Invite"][];
+                    /** @description If true, the invitation emails will not be sent to the invited users. Defaults to false. */
+                    suppressEmail?: boolean;
                 };
             };
         };
@@ -6968,6 +7289,11 @@ export interface operations {
                      * @description The document ID to retrieve views for
                      */
                     documentId: string;
+                    /**
+                     * @description Whether to include views from suspended users
+                     * @default false
+                     */
+                    includeSuspended?: boolean;
                 };
             };
         };
@@ -7017,6 +7343,291 @@ export interface operations {
             };
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesCreate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Optionally provide a specific UUID for the template.
+                     */
+                    id?: string;
+                    /** @description The title of the template. */
+                    title: string;
+                    /** @description The body of the template as a Prosemirror document. */
+                    data: Record<string, never>;
+                    /** @description An emoji to use as the template icon. */
+                    icon?: string | null;
+                    /** @description The color of the template icon in hex format. */
+                    color?: string | null;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to which the template belongs.
+                     */
+                    collectionId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /**
+                     * Format: uuid
+                     * @description Optionally filter to a specific collection
+                     */
+                    collectionId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"][];
+                        policies?: components["schemas"]["Policy"][];
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesUpdate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                    /** @description The title of the template. */
+                    title?: string;
+                    /** @description The body of the template as a Prosemirror document. */
+                    data?: Record<string, never>;
+                    /** @description An emoji to use as the template icon. */
+                    icon?: string | null;
+                    /** @description The color of the template icon in hex format. */
+                    color?: string | null;
+                    /** @description Whether the template should be displayed full width. */
+                    fullWidth?: boolean;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to which the template belongs. Set to null for a workspace-wide template.
+                     */
+                    collectionId?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesRestore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesDuplicate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template to duplicate. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                    /** @description Override the title of the duplicated template. */
+                    title?: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to place the duplicated template in. If not provided, uses the original template's collection.
+                     */
+                    collectionId?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
         };
     };
 }

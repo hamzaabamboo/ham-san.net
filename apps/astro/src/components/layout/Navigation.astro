@@ -1,9 +1,7 @@
 ---
 import { languages } from '~/i18n/ui';
 import { getLangFromUrl, useTranslations } from '~/i18n/utils';
-import { HStack } from '../../../styled-system/jsx';
-import { Link } from '../ui/link';
-import { Text } from '../ui/text';
+import { BrandMark } from '~/components/brand/BrandMark';
 import { Sidebar } from './Sidebar';
 
 const lang = getLangFromUrl(Astro.url);
@@ -19,48 +17,63 @@ const getCurrentURLWithLanguage = (language: string) => {
 };
 
 const NAVIGATION_LINKS = [
-  // { label: t('common.home'), value: '/' },
-  { label: t('common.about-me'), value: '/about' },
   { label: t('common.projects'), value: '/projects' },
-  { label: t('common.event'), value: '/events' },
-  { label: t('common.hobbies'), value: '/hobbies' },
   { label: t('common.note'), value: '/notes' },
+  { label: t('common.hobbies'), value: '/hobbies' },
+  { label: t('common.event'), value: '/events' },
+  { label: t('common.about-me'), value: '/about' },
   { label: t('common.contact'), value: '/contact' }
 ];
 ---
 
-<HStack
-  _print={{ display: 'none' }}
-  p={2}
-  bgColor="bg.default"
-  borderBottom="1px solid"
-  borderBottomColor="border.subtle"
-  justifyContent="space-between"
-  position="sticky"
-  top="0"
-  zIndex="banner"
->
-  <HStack>
-    <Link href={getURLWithLanguage('/')}>{t('common.ham')}</Link>
-  </HStack>
-  <HStack gap="2" hideBelow="sm">
+<script>
+  const nav = document.getElementById('main-nav');
+  const updateNav = () => {
+    if (!nav) return;
+    if (window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  };
+  window.addEventListener('scroll', updateNav);
+  updateNav();
+</script>
+
+<nav id="main-nav" class="shell-nav">
+  <a href={getURLWithLanguage('/')} class="shell-nav-brand">
+    <BrandMark />
+    <span class="shell-nav-brand-text">Ham</span>
+  </a>
+
+  <div class="shell-nav-links">
     {
       NAVIGATION_LINKS.map(({ label, value }) => {
+        const fullPath = getURLWithLanguage(value);
+        const isCurrent =
+          value === '/' ? Astro.url.pathname === fullPath : Astro.url.pathname.startsWith(fullPath);
+
         return (
-          <Link href={getURLWithLanguage(value)} data-astro-reload>
+          <a href={fullPath} class="shell-nav-link" aria-current={isCurrent ? 'page' : undefined}>
             {label}
-          </Link>
+          </a>
         );
       })
     }
-    <Text> | </Text>
-    {
-      Object.entries(languages)
-        .filter((t) => t[0] !== lang)
-        .map((t) => {
-          return <Link href={getCurrentURLWithLanguage(t[0])}>{t[1]}</Link>;
-        })
-    }
-  </HStack>
-  <Sidebar links={NAVIGATION_LINKS} locale={lang} pathname={Astro.url.pathname} client:visible />
-</HStack>
+  </div>
+
+  <div class="shell-nav-actions">
+    <div class="shell-nav-lang-group">
+      {
+        Object.entries(languages)
+          .filter((entry) => entry[0] !== lang)
+          .map((entry) => (
+            <a href={getCurrentURLWithLanguage(entry[0])} class="shell-nav-lang">
+              {entry[0]}
+            </a>
+          ))
+      }
+    </div>
+    <Sidebar links={NAVIGATION_LINKS} locale={lang} pathname={Astro.url.pathname} client:visible />
+  </div>
+</nav>

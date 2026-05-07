@@ -1,19 +1,34 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { Stack } from 'styled-system/jsx';
+import { SmoothScroll } from '~/components/common/SmoothScroll';
+import DesktopSidebar from '~/components/layout/DesktopSidebar.astro';
 import Footer from '~/components/layout/Footer.astro';
 import Navigation from '~/components/layout/Navigation.astro';
 import BaseLayout from './BaseLayout.astro';
+
+const { title, description, image } = Astro.props;
 ---
 
-<BaseLayout>
+<BaseLayout title={title} description={description} image={image}>
   <Fragment slot="head">
     <ClientRouter />
     <slot name="head" />
+    <script is:inline>
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </Fragment>
-  <Stack gap="0" minH="100dvh">
-    <Navigation transition:persist="navbar" />
-    <Stack flex={1}><slot /></Stack>
+  <SmoothScroll client:only="react" />
+  <Navigation transition:persist="navbar" />
+  <DesktopSidebar transition:persist="sidebar" />
+  <div class="shell-content">
+    <main class="flex-1 relative">
+      <slot />
+    </main>
     <Footer transition:persist="footer" />
-  </Stack>
+  </div>
 </BaseLayout>

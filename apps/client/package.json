@@ -16,10 +16,11 @@
     "start:prod": "node --experimental-loader ./scripts/loader.js -r dotenv/config index.js",
     "codegen": "graphql-codegen",
     "codegen:prod": "graphql-codegen -c codegen.prod.yml",
-    "build:prod": "pnpm codegen:prod && pnpm build"
+    "build:prod": "bun codegen:prod && bun build"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.1.6",
     "@graphql-codegen/typescript-graphql-request": "^6.2.0",
     "@graphql-codegen/typescript-operations": "^4.2.0",
     "@playwright/test": "^1.43.0",
@@ -50,7 +51,7 @@
     "tslib": "^2.6.2",
     "typescript": "^5.4.4",
     "vite": "^5.2.8",
-    "vite-imagetools": "^5.1.2",
+    "vite-imagetools": "^8.0.0",
     "vitest": "^1.4.0",
     "vite-plugin-pwa": "^0.19.8"
   },

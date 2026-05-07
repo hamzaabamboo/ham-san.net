@@ -1,4 +1,5 @@
 import { Box, HStack, Stack } from 'styled-system/jsx';
+import type { CSSProperties } from 'react';
 import type { NamecardData, NamecardRenderable } from '~/constants/namecard';
 import { ProfileNamecard } from './ProfileNamecard';
 
@@ -29,10 +30,12 @@ export const Namecard = ({
   if (side === 'front') {
     return (
       <HStack
-        style={{
-          WebkitPrintColorAdjust: 'exact',
-          ['--main-color' as 'color']: data.color
-        }}
+        style={
+          {
+            WebkitPrintColorAdjust: 'exact',
+            '--main-color': data.color
+          } as CSSProperties
+        }
         gap="0"
         width="91mm"
         height="55mm"
@@ -53,10 +56,12 @@ export const Namecard = ({
 
   return (
     <HStack
-      style={{
-        WebkitPrintColorAdjust: 'exact',
-        ['--main-color' as 'color']: data.color
-      }}
+      style={
+        {
+          WebkitPrintColorAdjust: 'exact',
+          '--main-color': data.color
+        } as CSSProperties
+      }
       gap="0"
       width="91mm"
       height="55mm"

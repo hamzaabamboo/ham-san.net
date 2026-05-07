@@ -1,26 +1,48 @@
 ---
-import { Wrap } from 'styled-system/jsx';
 import { useTranslations, validateLocale } from '~/i18n/utils';
-import { Link } from '../ui/link';
-import { Text } from '../ui/text';
 
 const locale = validateLocale(Astro.params.locale) ? Astro.params.locale : 'en';
 const t = useTranslations(locale);
 ---
 
-<Wrap
-  _print={{ display: 'none' }}
-  w="full"
-  py="2"
-  px="2"
-  justifyContent="center"
-  borderTop="1px solid"
-  borderTopColor="border.subtle"
-  _print={{ display: 'none' }}
->
-  <Text>{t('common.copyright')}</Text>
-  <Text>|</Text>
-  <Link target="_blank" rel="noreferrer" href="https://github.com/hamzaabamboo/ham-san.net"
-    >{t('common.view-source')}</Link
+<footer class="shell-footer">
+  <div
+    style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;color:#FFB000;opacity:0.8"
   >
-</Wrap>
+    {t('common.copyright')}
+  </div>
+  <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;justify-content:center">
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href="https://github.com/hamzaabamboo/ham-san.net"
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease;padding:0.75rem"
+      class="shell-footer-link"
+    >
+      GitHub
+    </a>
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href="https://www.linkedin.com/in/tvittayapalotai/"
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease;padding:0.75rem"
+      class="shell-footer-link"
+    >
+      LinkedIn
+    </a>
+    <a
+      href={`/${locale}/rss.xml`}
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease;padding:0.75rem"
+      class="shell-footer-link"
+    >
+      RSS
+    </a>
+    <a
+      href={`/${locale}/sitemap.xml`}
+      style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#c7c6c6;text-decoration:none;transition:color 0.15s ease;padding:0.75rem"
+      class="shell-footer-link"
+    >
+      Sitemap
+    </a>
+  </div>
+</footer>
