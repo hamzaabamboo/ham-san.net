@@ -604,6 +604,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/documents.insights": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve insights for a document
+         * @description Retrieve a chronologically sorted array of daily activity rollups (views, comments, reactions, revisions, editors) for a document. Insights must be enabled on the document. Defaults to the last 30 days when no date range is provided.
+         */
+        post: operations["documentsInsights"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/documents.import": {
         parameters: {
             query?: never;
@@ -1675,7 +1695,7 @@ export interface paths {
         put?: never;
         /**
          * Create a share
-         * @description Creates a new share link that can be used by to access a document. If you request multiple shares for the same document with the same API key, the same share object will be returned. By default all shares are unpublished.
+         * @description Creates a new share link that can be used by to access a document or collection. If you request multiple shares for the same resource with the same API key, the same share object will be returned. By default all shares are unpublished. Exactly one of `documentId` or `collectionId` must be provided.
          */
         post: operations["sharesCreate"];
         delete?: never;
@@ -2151,10 +2171,10 @@ export interface components {
         /** @enum {string} */
         Permission: "read" | "read_write";
         /**
-         * @description The editing mode for text updates to a document.
+         * @description The editing mode for text updates to a document. When set to `patch`, the `findText` parameter is required and the existing occurrence of `findText` will be replaced with the value of `text`.
          * @enum {string}
          */
-        TextEditMode: "append" | "prepend" | "replace";
+        TextEditMode: "append" | "prepend" | "replace" | "patch";
         Attachment: {
             /** @example image/png */
             contentType?: string;
@@ -2447,6 +2467,26 @@ export interface components {
              */
             readonly deletedAt?: string | null;
         };
+        /** @description A daily rollup of activity counts for a document. */
+        DocumentInsight: {
+            /**
+             * Format: date
+             * @description The UTC day the rollup represents.
+             */
+            date?: string;
+            /** @description Total number of document views on this day. */
+            viewCount?: number;
+            /** @description Number of unique viewers on this day. */
+            viewerCount?: number;
+            /** @description Total comments made on this day. */
+            commentCount?: number;
+            /** @description Total reactions added on this day. */
+            reactionCount?: number;
+            /** @description Number of document revisions on this day. */
+            revisionCount?: number;
+            /** @description Number of unique editors on this day. */
+            editorCount?: number;
+        };
         Event: {
             /**
              * Format: uuid
@@ -2687,6 +2727,13 @@ export interface components {
              * @description URL of the publicly shared document.
              */
             readonly url?: string;
+            /** @description Override title displayed on the publicly shared page. If not set the source document or collection title is used. */
+            title?: string | null;
+            /**
+             * Format: uri
+             * @description URL of an icon displayed on the publicly shared page, overriding the workspace branding.
+             */
+            iconUrl?: string | null;
             /**
              * @description If true the share can be loaded without a user account.
              * @example false
@@ -2697,6 +2744,11 @@ export interface components {
              * @example true
              */
             includeChildDocuments?: boolean;
+            /**
+             * @description Whether visitors to the public share can subscribe to receive email notifications when the document is updated. Requires SMTP to be configured on the workspace.
+             * @example true
+             */
+            allowSubscriptions?: boolean;
             /**
              * Format: date-time
              * @description Date and time when this share was created
@@ -4277,6 +4329,53 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    documentsInsights: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the document.
+                     */
+                    id: string;
+                    /**
+                     * Format: date-time
+                     * @description Start of the insights window (inclusive). Defaults to 30 days ago.
+                     */
+                    startDate?: string;
+                    /**
+                     * Format: date-time
+                     * @description End of the insights window (inclusive). Defaults to today.
+                     */
+                    endDate?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["DocumentInsight"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     documentsImport: {
         parameters: {
             query?: never;
@@ -4857,6 +4956,8 @@ export interface operations {
                     /** @description Whether insights should be visible on the document */
                     insightsEnabled?: boolean;
                     editMode?: components["schemas"]["TextEditMode"];
+                    /** @description The text to find within the document when using `patch` editMode. This text will be replaced with the value of `text`. Required when `editMode` is `patch`. */
+                    findText?: string;
                     /** @description Whether this document should be published and made visible to other workspace members, if a draft */
                     publish?: boolean;
                     /** @description Data attributes to be updated. Attributes not included will be removed from the document. */
@@ -6614,9 +6715,17 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** Format: uuid */
-                    documentId: string;
-                };
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the document to share. Mutually exclusive with `collectionId`.
+                     */
+                    documentId?: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to share. Mutually exclusive with `documentId`.
+                     */
+                    collectionId?: string;
+                } & (unknown | unknown);
             };
         };
         responses: {
@@ -6651,6 +6760,13 @@ export interface operations {
                     /** Format: uuid */
                     id: string;
                     published: boolean;
+                    /** @description Override title displayed on the publicly shared page. If not set the source document or collection title is used. */
+                    title?: string | null;
+                    /**
+                     * Format: uri
+                     * @description URL of an icon to display on the publicly shared page, overriding the workspace branding.
+                     */
+                    iconUrl?: string | null;
                 };
             };
         };
@@ -6862,6 +6978,8 @@ export interface operations {
             content: {
                 "application/json": {
                     invites: components["schemas"]["Invite"][];
+                    /** @description If true, the invitation emails will not be sent to the invited users. Defaults to false. */
+                    suppressEmail?: boolean;
                 };
             };
         };

@@ -151,7 +151,11 @@ describe('eventernote report', () => {
         ...profile,
         favoriteArtists: profile.favoriteArtists.map((artist) =>
           artist.name === 'Aqours'
-            ? { ...artist, totalEvents: 4, eventDates: ['2026-05-01', '2026-05-02', '2026-05-04', '2026-05-05'] }
+            ? {
+                ...artist,
+                totalEvents: 4,
+                eventDates: ['2026-05-01', '2026-05-02', '2026-05-04', '2026-05-05']
+              }
             : { ...artist, totalEvents: 2, eventDates: ['2026-05-03', '2026-05-05'] }
         )
       },
