@@ -10,11 +10,11 @@ services:
       APP_KEYS: ${APP_KEYS}
       NODE_ENV: ${NODE_ENV}
     volumes:
-      - ./.env:/opt/app/.env
-      - ./public/uploads:/opt/app/public/uploads
-      - ./data:/opt/app/data
-      # - ./api/config:/opt/app/config
-      # - ./api/src:/opt/app/src
+      - ./.env:/usr/src/app/dist/apps/api/.env
+      - ./public/uploads:/usr/src/app/dist/apps/api/public/uploads
+      - ./data:/usr/src/app/dist/apps/api/data
+      # - ./api/config:/usr/src/app/dist/apps/api/config
+      # - ./api/src:/usr/src/app/dist/apps/api/src
     ports:
       - 1337:1337
     command: ['bun', 'run', 'start']
