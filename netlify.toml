@@ -1,0 +1,8 @@
+[build]
+  command = "cd apps/astro && bun run build"
+  publish = "apps/astro/dist"
+  functions = "apps/astro/.netlify/v1/functions"
+
+[build.environment]
+  NODE_VERSION = "20.19.5"
+  BUN_VERSION = "1.3.10"
