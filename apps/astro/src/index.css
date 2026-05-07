@@ -609,7 +609,13 @@
 
 .credentials-value { color: #ffb000; }
 .credentials-value-alt { color: #dbdbdb; }
-.credentials-signal { color: #dbdbdb; transition: color 0.15s ease; }
+.credentials-signal {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: #dbdbdb;
+  transition: color 0.15s ease;
+}
 .credentials-signal:hover { color: #ffb000; }
 
 .wireframe-container {
@@ -700,6 +706,14 @@
   color: #FFB000;
 }
 
+.shell-footer-link {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
 .holographic-sheen {
   background: linear-gradient(135deg, rgba(255,176,0,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,176,0,0) 100%);
   background-size: 200% 200%;
@@ -729,6 +743,8 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  min-width: 44px;
+  min-height: 44px;
   font-family: 'Manrope', sans-serif;
   font-weight: 900;
   text-transform: uppercase;
@@ -754,7 +770,7 @@
   font-family: 'Newsreader', serif;
   font-style: italic;
   font-size: 1.25rem;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   height: 100%;
   display: flex;
   align-items: center;
@@ -791,6 +807,11 @@
 @media (min-width: 640px) { .shell-nav-lang-group { display: flex; } }
 
 .shell-nav-lang {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
   font-weight: 700;
@@ -833,8 +854,9 @@
 
 .shell-sidebar-link {
   display: flex;
+  min-height: 44px;
   align-items: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.625rem 1.5rem;
   gap: 0.75rem;
   text-decoration: none;
   transition: background-color 0.15s ease, border-left-color 0.15s ease, color 0.15s ease;
@@ -917,8 +939,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   border: 1px solid #524533;
   color: #c7c6c6;
   background: none;
@@ -964,8 +986,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   color: #c7c6c6;
   background: none;
   border: none;
@@ -984,8 +1006,9 @@
 
 .shell-drawer-link {
   display: flex;
+  min-height: 44px;
   align-items: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.625rem 1.5rem;
   gap: 0.75rem;
   text-decoration: none;
   transition: background-color 0.15s ease;
@@ -1026,6 +1049,11 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
   text-transform: uppercase;
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
   padding: 0.5rem 0.75rem;
   text-decoration: none;
   transition: color 0.15s ease, border-color 0.15s ease;

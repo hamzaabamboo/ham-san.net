@@ -238,7 +238,7 @@ const Header = ({ title, logos }: { title: Renderable; logos: ProfileLogos }) =>
   return (
     <HStack justifyContent="space-between" alignItems="center" h="8mm">
       <HStack gap="1.5mm" alignItems="center">
-        <styled.img src={logos.top} objectFit="contain" width="9mm" height="9mm" />
+        <styled.img src={logos.top} alt="" objectFit="contain" width="9mm" height="9mm" />
         <Box
           style={textStrokeStyle}
           color="var(--main-color)"
@@ -251,7 +251,7 @@ const Header = ({ title, logos }: { title: Renderable; logos: ProfileLogos }) =>
         </Box>
       </HStack>
       <HStack gap="1.5mm" justifyContent="flex-end" alignItems="center">
-        {logos.middle && <styled.img src={logos.middle} objectFit="contain" height="8mm" />}
+        {logos.middle && <styled.img src={logos.middle} alt="" objectFit="contain" height="8mm" />}
       </HStack>
     </HStack>
   );
@@ -334,6 +334,7 @@ export const ProfileNamecardFront = ({
       {illustration && (
         <styled.img
           src={illustration.src}
+          alt=""
           zIndex="1"
           position="absolute"
           right="4.5mm"

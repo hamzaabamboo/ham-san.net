@@ -223,6 +223,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                                           <Link
                                             href={`/${locale}/tags/${s.slug}`}
                                             display="inline-flex"
+                                            minW="44px"
+                                            minH="44px"
+                                            alignItems="center"
                                           >
                                             <Box
                                               px="2"
@@ -314,6 +317,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                         >
                           <Link
                             href={s.slug ? `/${locale}/tags/${s.slug}` : '#'}
+                            display="inline-flex"
+                            minW="44px"
+                            minH="44px"
+                            alignItems="center"
                             color={i < 2 ? '#e5e2e1' : '#d7c4ac'}
                           >
                             {s.title}

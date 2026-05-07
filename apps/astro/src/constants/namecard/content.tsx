@@ -59,10 +59,16 @@ export const createDefaultFrontRailContent = ({
 }: DefaultFrontRailContentProps) => (
   <Stack justifyContent="space-between" alignItems="flex-end" w="84px" h="full" py="4" pr="4">
     {topLogo && (
-      <styled.img src={topLogo} aspectRatio="square" objectPosition="center" objectFit="contain" />
+      <styled.img
+        src={topLogo}
+        alt=""
+        aspectRatio="square"
+        objectPosition="center"
+        objectFit="contain"
+      />
     )}
-    {middleLogo && <styled.img src={middleLogo} />}
-    {bottomLogo && <styled.img src={bottomLogo} />}
+    {middleLogo && <styled.img src={middleLogo} alt="" />}
+    {bottomLogo && <styled.img src={bottomLogo} alt="" />}
   </Stack>
 );
 
@@ -74,7 +80,7 @@ type DefaultBackMainContentProps = {
 export const createDefaultBackMainContent = ({ qrCode, quote }: DefaultBackMainContentProps) => (
   <>
     <Center>
-      <styled.img src={qrCode} maxW="100px" />
+      <styled.img src={qrCode} alt="Namecard QR code" maxW="100px" />
     </Center>
     <HStack alignItems="center">{resolveRenderable(quote)}</HStack>
   </>

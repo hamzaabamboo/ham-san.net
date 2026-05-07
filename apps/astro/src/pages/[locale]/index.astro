@@ -39,7 +39,8 @@ try {
     .filter((p): p is ProjectPreviewFragment => !!p)
     .map((p) => cleanProjectCopy(p));
 } catch {
-  // CMS unavailable — render with empty data
+  homepageData = null;
+  projects = [];
 }
 
 const introImage =
@@ -348,8 +349,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                 fontFamily="Manrope, sans-serif"
                 fontWeight="bold"
                 textTransform="uppercase"
-                letterSpacing="tighter"
+                letterSpacing="0"
                 color="#432c00"
+                lineHeight="1.35"
               >
                 {t('home.bench-logs-caption')}
               </Text>
@@ -557,7 +559,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                           fontWeight="bold"
                           fontSize="xl"
                           textTransform="uppercase"
-                          letterSpacing="tighter"
+                          letterSpacing="0"
                         >
                           {project.title}
                         </Text>
@@ -723,7 +725,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                   fontFamily="JetBrains Mono, monospace"
                   fontSize="10px"
                   textTransform="uppercase"
-                  letterSpacing="tight"
+                  letterSpacing="0"
                 >
                   {t('home.life-darkroom')}
                 </Text>
@@ -744,7 +746,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                   fontFamily="JetBrains Mono, monospace"
                   fontSize="10px"
                   textTransform="uppercase"
-                  letterSpacing="tight"
+                  letterSpacing="0"
                 >
                   {t('home.life-skill-toys')}
                 </Text>
