@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/astro",
-        "command": "bun run build"
+        "command": "bun run codegen:prod && bun run build"
       }
     },
     "container": {

@@ -19,7 +19,7 @@ ENV PUBLIC_API_URL=$PUBLIC_API_URL
 ENV PUBLIC_URL=$PUBLIC_URL
 ENV PUBLIC_OUTLINE_URL=$PUBLIC_OUTLINE_URL
 WORKDIR /usr/src/app/apps/astro
-RUN bun run build
+RUN bun run codegen:prod && bun run build
 
 FROM install AS build-legacy-client
 RUN bunx nx run client:build
