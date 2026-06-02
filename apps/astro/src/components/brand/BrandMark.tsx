@@ -1,4 +1,5 @@
-import { Box, styled } from 'styled-system/jsx';
+import type { CSSProperties } from 'react';
+import { Box } from 'styled-system/jsx';
 
 type BrandMarkProps = {
   size?: number;
@@ -14,28 +15,51 @@ export const BrandMark = ({
   return (
     <Box
       as="span"
-      style={{ width: `${size}px`, height: `${size}px` }}
-      display="inline-flex"
-      justifyContent="center"
-      alignItems="center"
+      style={
+        {
+          width: `${size}px`,
+          height: `${size}px`,
+          '--brand-mark-size': `${size}px`,
+          '--brand-mark-color': color,
+          '--brand-mark-accent': accent
+        } as CSSProperties
+      }
+      aria-hidden="true"
+      display="inline-grid"
+      position="relative"
       border="1px solid"
       borderColor="#524533"
       bg="#1c1b1b"
+      overflow="hidden"
+      placeItems="center"
     >
-      <styled.svg
-        style={{ width: `${size - 8}px`, height: `${size - 8}px` }}
-        viewBox="0 0 64 64"
-        aria-hidden="true"
-        fill="none"
+      <Box
+        as="span"
+        inset="3px"
+        position="absolute"
+        borderLeft="2px solid var(--brand-mark-accent)"
+        borderRight="2px solid var(--brand-mark-color)"
+        opacity="0.8"
+      />
+      <Box
+        as="span"
+        position="absolute"
+        left="6px"
+        right="6px"
+        bottom="5px"
+        h="2px"
+        bg="var(--brand-mark-accent)"
+      />
+      <Box
+        as="span"
+        color="var(--brand-mark-accent)"
+        fontFamily="Manrope, sans-serif"
+        fontSize="max(11px, calc(var(--brand-mark-size) * 0.46))"
+        fontWeight="900"
+        lineHeight="1"
       >
-        <path d="M18 54L22 12" stroke={color} strokeWidth="3.2" />
-        <path d="M46 54L42 12" stroke={color} strokeWidth="3.2" />
-        <path d="M22 31H42" stroke={accent} strokeWidth="4" />
-        <path d="M26 16H38" stroke={color} strokeWidth="3" />
-        <path d="M20 54H44" stroke={color} strokeWidth="3" />
-        <path d="M32 8V18" stroke={accent} strokeWidth="3" />
-        <circle cx="32" cy="8" r="3" fill={accent} />
-      </styled.svg>
+        H
+      </Box>
     </Box>
   );
 };
