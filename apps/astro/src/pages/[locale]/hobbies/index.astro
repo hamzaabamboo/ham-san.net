@@ -9,7 +9,7 @@ import { useTranslations, validateLocale } from '~/i18n/utils';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
 import { getOutlineSettings } from '~/utils/outline-settings';
-import { getArticleBanner } from 'outline/article';
+import { parseHobbyContent } from '~/utils/hobby-content';
 
 export const prerender = false;
 
@@ -53,49 +53,38 @@ const resolveOutlineAssetUrl = (rawUrl?: string) => {
   return `${outlineAssetPrefix}${normalizedUrl}`;
 };
 
-const getHobbyDescription = (content?: string) => {
-  const lines = (content ?? '')
-    .split('\n')
-    .map((l) => l.trim())
-    .filter(Boolean)
-    .filter((l) => !/^!\[/.test(l))
-    .filter((l) => !/^#{1,6}\s/.test(l))
-    .filter((l) => !/^[-*]\s/.test(l))
-    .filter((l) => !/^>\s/.test(l))
-    .filter((l) => !/^```/.test(l))
-    .filter((l) => !/^https?:\/\//.test(l))
-    .filter((l) => !/^<https?:\/\//.test(l))
-    .filter((l) => !/^\|/.test(l))
-    .filter((l) => !/^\\$/.test(l))
-    .map((l) =>
-      l
-        .replaceAll(/`{1,3}([^`]*)`{1,3}/g, '$1')
-        .replaceAll(/(\*\*|__)(.*?)\1/g, '$2')
-        .replaceAll(/(\*|_)(.*?)\1/g, '$2')
-        .replaceAll(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
-        .replaceAll(/<https?:\/\/[^>]+>/g, '')
-        .replaceAll(/https?:\/\/\S+/g, '')
-        .replaceAll(/[*_~\\]/g, '')
-        .trim()
-    )
-    .filter((l) => l.length > 20);
-
-  const prose = lines[0] ?? '';
-  if (!prose) return '';
-  const truncated = prose.substring(0, 140);
-  const lastSpace = truncated.lastIndexOf(' ');
-  return lastSpace > 40 ? truncated.substring(0, lastSpace) + '…' : truncated + '…';
-};
+const formatUpdated = (date?: string | null) =>
+  date
+    ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
+        new Date(date)
+      )
+    : 'No date';
 
 const hobbies = hobbiesList
   ? orderHobbyCards(
-      hobbiesList.map((h) => ({
-        ...h,
-        banner: resolveOutlineAssetUrl(getArticleBanner(h.text) ?? undefined),
-        description: getHobbyDescription(h.text)
-      }))
-    ).slice(0, 4)
+      hobbiesList.map((h) => {
+        const content = parseHobbyContent({
+          title: h.title,
+          text: h.text,
+          fallbackUpdatedAt: h.updatedAt ?? h.createdAt
+        });
+        return {
+          ...h,
+          ...content,
+          banner: resolveOutlineAssetUrl(content.banner ?? content.images[0]),
+          images: content.images
+            .map(resolveOutlineAssetUrl)
+            .filter((image): image is string => !!image),
+          updatedLabel: formatUpdated(content.updatedAt)
+        };
+      })
+    )
   : [];
+const activeHobbies = hobbies.filter((hobby) => hobby.status === 'active');
+const inactiveHobbies = hobbies.filter((hobby) => hobby.status === 'inactive');
+const componentCount = new Set(
+  hobbies.flatMap((hobby) => hobby.embeds.map((embed: { type: string }) => embed.type))
+).size;
 ---
 
 <MainLayout title={pageTitle} description={t('hobbies.description')}>
@@ -115,6 +104,54 @@ const hobbies = hobbiesList
           {t('hobbies.description')}
         </Text>
       </Box>
+
+      <Grid
+        gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+        gap="1px"
+        bg="#524533"
+        border="1px solid"
+        borderColor="#524533"
+      >
+        <Stack bg="#131313" p="5" gap="2">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#9f8e78"
+          >
+            Active
+          </Text>
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+            {String(activeHobbies.length).padStart(2, '0')}
+          </Text>
+        </Stack>
+        <Stack className="note-signal-card" p="5" gap="2">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#9f8e78"
+          >
+            Components
+          </Text>
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#2dd4bf">
+            {String(componentCount).padStart(2, '0')}
+          </Text>
+        </Stack>
+        <Stack bg="#131313" p="5" gap="2">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#9f8e78"
+          >
+            Inactive
+          </Text>
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffd597">
+            {String(inactiveHobbies.length).padStart(2, '0')}
+          </Text>
+        </Stack>
+      </Grid>
 
       {
         hobbies.length === 0 ? (
@@ -273,7 +310,7 @@ const hobbies = hobbiesList
                             color="#ffb000"
                             fontWeight="bold"
                           >
-                            Photo
+                            {hobby.embeds[0]?.type ?? 'hobby'}
                           </Text>
                         </Box>
                         {hobby.banner && <img src={hobby.banner} alt="" class="hobby-image-hero" />}
@@ -304,6 +341,22 @@ const hobbies = hobbiesList
                           >
                             photo_camera
                           </span>
+                        </Box>
+                        <Box
+                          display="flex"
+                          flexWrap="wrap"
+                          gap="2"
+                          mb="4"
+                          fontFamily="JetBrains Mono, monospace"
+                          fontSize="10px"
+                          textTransform="uppercase"
+                          color="#9f8e78"
+                        >
+                          <Text>{hobby.status}</Text>
+                          <Text>/</Text>
+                          <Text>{hobby.embeds[0]?.type}</Text>
+                          <Text>/</Text>
+                          <Text>{hobby.updatedLabel}</Text>
                         </Box>
                         <Text
                           color="#c7c6c6"
@@ -380,6 +433,20 @@ const hobbies = hobbiesList
                             mb="8"
                           >
                             {t('hobbies.status-learning')}
+                          </Box>
+                          <Box
+                            display="flex"
+                            flexWrap="wrap"
+                            gap="2"
+                            fontFamily="JetBrains Mono, monospace"
+                            fontSize="10px"
+                            textTransform="uppercase"
+                            color="#9f8e78"
+                            mb="4"
+                          >
+                            <Text>{hobby.status}</Text>
+                            <Text>/</Text>
+                            <Text>{hobby.embeds[0]?.type}</Text>
                           </Box>
                           <Heading as="h2" fontSize="3xl" fontStyle="italic" mb="4">
                             {hobby.title}
@@ -482,6 +549,22 @@ const hobbies = hobbiesList
                           {hobby.description}
                         </Text>
                         <Box
+                          display="flex"
+                          flexWrap="wrap"
+                          gap="2"
+                          mb="5"
+                          fontFamily="JetBrains Mono, monospace"
+                          fontSize="10px"
+                          textTransform="uppercase"
+                          color="#9f8e78"
+                        >
+                          <Text>{hobby.status}</Text>
+                          <Text>/</Text>
+                          <Text>{hobby.embeds[0]?.type}</Text>
+                          <Text>/</Text>
+                          <Text>{hobby.updatedLabel}</Text>
+                        </Box>
+                        <Box
                           display="grid"
                           gridTemplateColumns="repeat(2, 1fr)"
                           gap="2"
@@ -566,7 +649,7 @@ const hobbies = hobbiesList
                                 letterSpacing="0.2em"
                                 color="#ffb000"
                               >
-                                Sound
+                                {hobby.embeds[0]?.type ?? 'hobby'}
                               </Text>
                             </Box>
                           </Box>
@@ -670,6 +753,22 @@ const hobbies = hobbiesList
                         <Text color="#c7c6c6" maxW="md" className="line-clamp-2">
                           {hobby.description}
                         </Text>
+                        <Box
+                          display="flex"
+                          flexWrap="wrap"
+                          gap="2"
+                          mt="3"
+                          fontFamily="JetBrains Mono, monospace"
+                          fontSize="10px"
+                          textTransform="uppercase"
+                          color="#9f8e78"
+                        >
+                          <Text>{hobby.status}</Text>
+                          <Text>/</Text>
+                          <Text>{hobby.embeds[0]?.type}</Text>
+                          <Text>/</Text>
+                          <Text>{hobby.updatedLabel}</Text>
+                        </Box>
                       </Box>
                     </Box>
                     <Box

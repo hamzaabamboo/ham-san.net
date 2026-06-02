@@ -1,0 +1,169 @@
+---
+import { HobbyInteractiveEmbed } from '~/components/hobbies/HobbyInteractiveEmbed';
+import { Markdown } from '~/components/lib/Markdown';
+import { useTranslations, validateLocale } from '~/i18n/utils';
+import MainLayout from '~/layouts/MainLayout.astro';
+import { parseHobbyContent } from '~/utils/hobby-content';
+import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
+import { getOutlineSettings } from '~/utils/outline-settings';
+
+export const prerender = false;
+
+const { locale, slug } = Astro.params;
+const slugParts = slug?.split('/') ?? [];
+const [rootId, maybeDocSegment, childId] = slugParts;
+
+if (!validateLocale(locale) || !rootId || (maybeDocSegment && maybeDocSegment !== 'doc')) {
+  return Astro.redirect('/404');
+}
+
+const t = useTranslations(locale);
+const settings = await getOutlineSettings();
+
+if (!settings?.['hobbies-collection']) {
+  return Astro.redirect('/404');
+}
+
+const documentId = childId ?? rootId;
+const documentRequest = await outlineClient.POST('/documents.info', {
+  body: { collectionId: settings['hobbies-collection'], id: documentId }
+});
+const data = documentRequest.data?.data;
+
+if (!data) {
+  return Astro.redirect('/404');
+}
+
+const childDocumentsParentId = childId && data.parentDocumentId ? data.parentDocumentId : data.id;
+const childDocumentsRequest = await outlineClient.POST('/documents.list', {
+  body: { parentDocumentId: childDocumentsParentId }
+});
+const childDocuments = (childDocumentsRequest.data?.data ?? []).filter(Boolean);
+const content = parseHobbyContent({
+  title: data.title,
+  text: data.text,
+  fallbackUpdatedAt: data.updatedAt ?? data.createdAt
+});
+const pageTitle = `${data.title ?? t('common.hobbies')} | ${t('common.name')}`;
+const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
+const outlineAssetProxyPath = `/${locale}/api/outline-asset`;
+const resolveOutlineAssetUrl = (rawUrl?: string) => {
+  if (!rawUrl) return rawUrl;
+  if (/^(?:[a-z]+:)?\/\//i.test(rawUrl) || rawUrl.startsWith('data:')) return rawUrl;
+  if (rawUrl.includes('attachments.redirect')) {
+    const query = rawUrl.split('?')[1];
+    return query ? `${outlineAssetProxyPath}?${query}` : outlineAssetProxyPath;
+  }
+  const normalizedUrl = rawUrl.startsWith('/') ? rawUrl : `/${rawUrl.replace(/^\.?\/*/, '')}`;
+  return `${outlineAssetPrefix}${normalizedUrl}`;
+};
+const banner = resolveOutlineAssetUrl(content.banner);
+const images = content.images
+  .map(resolveOutlineAssetUrl)
+  .filter((image): image is string => !!image);
+const updatedLabel = content.updatedAt
+  ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
+      new Date(content.updatedAt)
+    )
+  : 'No date';
+
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+---
+
+<MainLayout title={pageTitle} description={content.description || data.title}>
+  <div class="hobby-detail page-shell">
+    <a class="hobby-detail__back" href={`/${locale}/hobbies`}>
+      <span aria-hidden="true">←</span>
+      <span>{t('hobbies.back-to-hobbies')}</span>
+    </a>
+
+    <section class="hobby-detail__hero">
+      <div class="hobby-detail__headline">
+        <p class="hobby-detail__eyebrow">{content.status} hobby / {content.embeds[0]?.type}</p>
+        <h1>{data.title}</h1>
+        {content.description && <p class="hobby-detail__description">{content.description}</p>}
+        <p class="hobby-detail__updated">
+          <span>Last updated</span>
+          <span>/</span>
+          <span>{updatedLabel}</span>
+        </p>
+      </div>
+
+      <div class="hobby-detail__visual">
+        {
+          banner ? (
+            <img src={banner} alt="" class="hobby-detail-banner" />
+          ) : (
+            <div class="hobby-detail__fallback fallback-grid-lines">
+              <span aria-hidden="true">{data.title?.charAt(0).toUpperCase() ?? 'H'}</span>
+            </div>
+          )
+        }
+        <p class="hobby-detail__visual-label">Markdown powered / local components</p>
+      </div>
+    </section>
+
+    <section class="hobby-detail__body">
+      <div class="hobby-detail__main">
+        {
+          content.embeds.map((embed) => (
+            <HobbyInteractiveEmbed
+              client:load
+              type={embed.type}
+              title={data.title}
+              description={content.description}
+              images={images}
+              updatedAt={updatedLabel}
+              status={content.status}
+            />
+          ))
+        }
+
+        <div class="hobby-detail__markdown">
+          {
+            content.body && (
+              <Markdown
+                content={content.body}
+                assetsPrefix={outlineAssetPrefix}
+                assetProxyBasePath={outlineAssetProxyPath}
+              />
+            )
+          }
+        </div>
+      </div>
+
+      <aside class="hobby-detail__aside">
+        <div class="hobby-detail__panel">
+          <p class="hobby-detail__panel-title">Nested pages</p>
+          {
+            childDocuments.length > 0 ? (
+              <div class="hobby-detail__nested">
+                {childDocuments.map((child) => (
+                  <a
+                    href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}
+                    aria-current={child.id === data.id ? 'page' : undefined}
+                  >
+                    <span>{child.title}</span>
+                    <span>DOC</span>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <p class="hobby-detail__muted">
+                Add child pages in Outline and they will appear here.
+              </p>
+            )
+          }
+        </div>
+
+        <div class="hobby-detail__panel note-signal-card">
+          <p class="hobby-detail__panel-title hobby-detail__panel-title--cyan">Authoring</p>
+          <p class="hobby-detail__muted">
+            Use frontmatter like <code>embed: typing</code>, <code>status: inactive</code>, or{' '}
+            <code>banner: /path.png</code>. Inline slots also work: <code>::hobby[rubik]</code>.
+          </p>
+        </div>
+      </aside>
+    </section>
+  </div>
+</MainLayout>

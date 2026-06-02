@@ -290,6 +290,201 @@
   background-size: 40px 40px;
 }
 
+.hobby-detail {
+  width: min(100%, 1280px);
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.hobby-detail__back {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c7c6c6;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.hobby-detail__back:hover {
+  color: #ffb000;
+}
+
+.hobby-detail__hero,
+.hobby-detail__body {
+  display: grid;
+  gap: 2rem;
+}
+
+.hobby-detail__hero {
+  grid-template-columns: minmax(0, 7fr) minmax(20rem, 5fr);
+  align-items: stretch;
+  margin-top: 2.5rem;
+}
+
+.hobby-detail__headline {
+  display: grid;
+  align-content: start;
+  gap: 1.5rem;
+  border-left: 4px solid #ffb000;
+  padding: 1rem 0 1rem clamp(1.5rem, 4vw, 2rem);
+}
+
+.hobby-detail__eyebrow,
+.hobby-detail__updated,
+.hobby-detail__visual-label,
+.hobby-detail__panel-title,
+.hobby-detail__nested a span:last-child {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.hobby-detail__eyebrow {
+  margin: 0;
+  color: #2dd4bf;
+}
+
+.hobby-detail h1 {
+  max-width: 11ch;
+  margin: 0;
+  font-family: 'Newsreader', serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-style: italic;
+  line-height: 0.95;
+}
+
+.hobby-detail__description {
+  max-width: 42rem;
+  margin: 0;
+  color: #c7c6c6;
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  line-height: 1.7;
+}
+
+.hobby-detail__updated {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  color: #9f8e78;
+}
+
+.hobby-detail__visual {
+  position: relative;
+  min-height: 16rem;
+  overflow: hidden;
+  border: 1px solid #524533;
+  background: #131313;
+}
+
+.hobby-detail__fallback {
+  position: absolute;
+  inset: 0;
+}
+
+.hobby-detail__fallback span {
+  position: absolute;
+  right: 1rem;
+  bottom: -2rem;
+  color: #e5e2e1;
+  font-family: 'Newsreader', serif;
+  font-size: 11.25rem;
+  font-style: italic;
+  line-height: 1;
+  opacity: 0.08;
+}
+
+.hobby-detail__visual-label {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: 1rem;
+  color: #ffb000;
+  background: linear-gradient(180deg, transparent, rgba(14, 14, 14, 0.92));
+}
+
+.hobby-detail__body {
+  grid-template-columns: minmax(0, 8fr) minmax(18rem, 4fr);
+  margin-top: 2rem;
+}
+
+.hobby-detail__main,
+.hobby-detail__aside,
+.hobby-detail__nested {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.hobby-detail__main {
+  gap: 2rem;
+  min-width: 0;
+}
+
+.hobby-detail__aside {
+  align-content: start;
+  min-width: 0;
+}
+
+.hobby-detail__markdown,
+.hobby-detail__panel {
+  border: 1px solid #524533;
+  background: #1c1b1b;
+  padding: clamp(1.5rem, 3vw, 2rem);
+}
+
+.hobby-detail__panel {
+  background: #131313;
+}
+
+.hobby-detail__panel-title {
+  margin: 0 0 1rem;
+  color: #ffb000;
+}
+
+.hobby-detail__panel-title--cyan {
+  color: #2dd4bf;
+}
+
+.hobby-detail__nested {
+  gap: 0.75rem;
+}
+
+.hobby-detail__nested a {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid #524533;
+  color: #c7c6c6;
+  text-decoration: none;
+}
+
+.hobby-detail__nested a:hover,
+.hobby-detail__nested a[aria-current='page'] {
+  color: #ffb000;
+}
+
+.hobby-detail__nested a span:first-child {
+  overflow-wrap: anywhere;
+}
+
+.hobby-detail__nested a span:last-child {
+  color: #9f8e78;
+}
+
+.hobby-detail__muted {
+  margin: 0;
+  color: #9f8e78;
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
 .hobby-camera-mark::before,
 .hobby-camera-mark::after {
   content: '';
@@ -336,6 +531,286 @@
       transparent 57%
     ),
     radial-gradient(circle, rgba(255, 176, 0, 0.12), transparent 62%);
+}
+
+.hobby-detail-banner {
+  width: 100%;
+  height: 100%;
+  min-height: 26rem;
+  object-fit: cover;
+  filter: saturate(1.12) contrast(1.04) brightness(0.74);
+}
+
+.hobby-embed {
+  border: 1px solid #524533;
+  background:
+    linear-gradient(135deg, rgba(45, 212, 191, 0.08), transparent 42%),
+    linear-gradient(315deg, rgba(255, 176, 0, 0.08), transparent 46%), #131313;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  color: #e5e2e1;
+}
+
+.hobby-embed__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-bottom: 1px solid #524533;
+  padding-bottom: 1rem;
+}
+
+.hobby-embed__header h2 {
+  margin: 0;
+  font-family: 'Newsreader', serif;
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  font-style: italic;
+  line-height: 0.95;
+}
+
+.hobby-embed__eyebrow,
+.hobby-embed__meta,
+.hobby-gallery__rail button,
+.hobby-algorithm__tabs button,
+.hobby-feed span,
+.hobby-stats span,
+.hobby-piano__controls button,
+.hobby-piano p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.hobby-embed__eyebrow {
+  margin: 0 0 0.75rem;
+  color: #2dd4bf;
+}
+
+.hobby-embed__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  color: #9f8e78;
+  text-align: right;
+}
+
+.hobby-embed__summary {
+  max-width: 52rem;
+  margin: 1.5rem 0;
+  color: #c7c6c6;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.hobby-gallery {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 7rem;
+  gap: 1rem;
+}
+
+.hobby-gallery__stage {
+  min-height: 22rem;
+  border: 1px solid #524533;
+  background: #0e0e0e;
+  overflow: hidden;
+}
+
+.hobby-gallery__stage img {
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  object-fit: cover;
+  filter: saturate(1.12) contrast(1.04);
+}
+
+.hobby-gallery__fallback,
+.hobby-field-notes {
+  min-height: 22rem;
+  display: grid;
+  place-items: center;
+  gap: 0.75rem;
+  color: #ffb000;
+  text-align: center;
+}
+
+.hobby-gallery__fallback .material-symbols-outlined,
+.hobby-field-notes .material-symbols-outlined {
+  font-size: 4rem;
+}
+
+.hobby-gallery__rail {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.hobby-gallery__rail button,
+.hobby-algorithm__tabs button,
+.hobby-piano__controls button {
+  min-height: 44px;
+  border: 1px solid #524533;
+  background: #131313;
+  color: #c7c6c6;
+  cursor: pointer;
+}
+
+.hobby-gallery__rail button[data-active='true'],
+.hobby-algorithm__tabs button[data-active='true'],
+.hobby-piano__controls button:hover {
+  border-color: #ffb000;
+  color: #ffb000;
+}
+
+.hobby-gallery__rail img {
+  width: 100%;
+  height: 5rem;
+  object-fit: cover;
+}
+
+.hobby-feed {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: #524533;
+  border: 1px solid #524533;
+}
+
+.hobby-feed article,
+.hobby-stats div {
+  background: #131313;
+  padding: 1.25rem;
+}
+
+.hobby-feed span,
+.hobby-stats span {
+  color: #9f8e78;
+}
+
+.hobby-feed p {
+  margin: 1rem 0 0;
+  color: #c7c6c6;
+  line-height: 1.65;
+}
+
+.hobby-algorithm {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.hobby-algorithm__tabs {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.hobby-algorithm__viewer {
+  border: 1px solid #524533;
+  background: #0e0e0e;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.hobby-algorithm__viewer p {
+  margin: 0 0 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  color: #ffb000;
+  overflow-wrap: anywhere;
+}
+
+.hobby-algorithm__viewer span {
+  color: #9f8e78;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.hobby-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: #524533;
+  border: 1px solid #524533;
+}
+
+.hobby-stats strong {
+  display: block;
+  margin-top: 0.75rem;
+  color: #2dd4bf;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.hobby-piano__keys {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  height: 10rem;
+  border: 1px solid #524533;
+  background: #e5e2e1;
+  overflow: hidden;
+}
+
+.hobby-piano__keys span {
+  position: relative;
+  border-right: 1px solid #c7c6c6;
+}
+
+.hobby-piano__keys span[data-black='true']::before {
+  content: '';
+  position: absolute;
+  inset: 0 18% 44%;
+  background: #131313;
+}
+
+.hobby-piano__controls {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.hobby-piano p {
+  color: #9f8e78;
+}
+
+@media (max-width: 767px) {
+  .hobby-detail {
+    padding: 1.5rem 1rem;
+  }
+
+  .hobby-detail__hero,
+  .hobby-detail__body {
+    grid-template-columns: 1fr;
+  }
+
+  .hobby-detail__hero {
+    margin-top: 1.5rem;
+  }
+
+  .hobby-detail h1 {
+    max-width: none;
+  }
+
+  .hobby-embed__header,
+  .hobby-gallery,
+  .hobby-algorithm {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .hobby-embed__meta {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hobby-feed,
+  .hobby-stats,
+  .hobby-piano__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .hobby-gallery__rail {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .group-hover-watermark-strong {

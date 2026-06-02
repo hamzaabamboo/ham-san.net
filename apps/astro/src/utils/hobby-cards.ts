@@ -69,5 +69,5 @@ export const orderHobbyCards = <T extends HobbyCard>(hobbies: T[]) => {
     }
   });
 
-  return ordered;
+  return [...ordered, ...remaining];
 };

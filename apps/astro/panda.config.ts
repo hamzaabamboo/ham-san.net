@@ -23,6 +23,7 @@ export default defineConfig({
   exclude: [
     process.env.ENVIRONMENT === 'ssr' && '**/static/**',
     process.env.ENVIRONMENT === 'static' && '**/*non-static*/**',
+    './src/pages/\\[locale\\]/hobbies/\\[...slug\\]/index.astro',
     './src/graphql/**/*',
     './src/i18n/**/*',
     './src/theme/**/*',
