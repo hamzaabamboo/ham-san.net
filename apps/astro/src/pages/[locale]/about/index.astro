@@ -92,6 +92,12 @@ const skillTags = (tags?.filter(
 ) ?? []) as Array<NonNullable<NonNullable<typeof tags>[number]> & { type: Enum_Tag_Type }>;
 
 const skills = groupByType(skillTags);
+const profileMetrics = [
+  { label: 'Experience', value: String(experiences?.length ?? 0).padStart(2, '0') },
+  { label: 'Skill tags', value: String(skillTags.length).padStart(2, '0') },
+  { label: 'Groups', value: String(Object.keys(skills).length).padStart(2, '0') }
+];
+const profileFocus = skillTags.slice(0, 4);
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
 ---
@@ -396,31 +402,130 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             aspectRatio="1 / 1"
             overflow="hidden"
             className="blocky-shadow"
+            p="6"
           >
             <SpecLabel>Profile</SpecLabel>
-            <div class="wireframe-container">
-              <div class="wireframe-cube wireframe-outer">
-                <div class="wireframe-offset-tl wireframe-inner"></div>
-                <div class="wireframe-offset-br wireframe-inner"></div>
-              </div>
-            </div>
-            <div class="wireframe-icon-container">
-              <div class="wireframe-icon-box">
-                <span class="material-symbols-outlined wireframe-icon">architecture</span>
-              </div>
-            </div>
-            <Box position="absolute" bottom="4" right="4">
-              <Text
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                color="#9f8e78"
-                opacity="0.5"
-                textTransform="uppercase"
-                letterSpacing="0.12em"
+            <Stack h="full" justifyContent="space-between" pt="8">
+              <Grid gridTemplateColumns="repeat(3, 1fr)" gap="1px" bg="#524533">
+                {
+                  profileMetrics.map((metric) => (
+                    <Stack
+                      className="profile-metric-card"
+                      bg="#131313"
+                      p="4"
+                      minH="24"
+                      justifyContent="space-between"
+                    >
+                      <Text
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="9px"
+                        textTransform="uppercase"
+                        color="#9f8e78"
+                      >
+                        {metric.label}
+                      </Text>
+                      <Text
+                        className="profile-metric-value"
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="3xl"
+                      >
+                        {metric.value}
+                      </Text>
+                    </Stack>
+                  ))
+                }
+              </Grid>
+              <Stack
+                border="1px solid"
+                borderColor="#524533"
+                bg="linear-gradient(135deg, rgba(45, 212, 191, 0.08), transparent 42%), #131313"
+                p="5"
+                gap="4"
               >
-                Frontend / UI
-              </Text>
-            </Box>
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  letterSpacing="0.12em"
+                  color="#2dd4bf"
+                >
+                  Current stack
+                </Text>
+                <Wrap gap="2">
+                  {
+                    profileFocus.length > 0 ? (
+                      profileFocus.map((tag) => (
+                        <Link
+                          href={tag.slug ? `/${locale}/tags/${tag.slug}` : '#'}
+                          display="inline-flex"
+                          minH="36px"
+                          alignItems="center"
+                        >
+                          <Box
+                            px="2"
+                            py="1"
+                            border="1px solid"
+                            borderColor="#524533"
+                            fontFamily="JetBrains Mono, monospace"
+                            fontSize="10px"
+                            textTransform="uppercase"
+                            color="#dbdbdb"
+                          >
+                            {tag.title}
+                          </Box>
+                        </Link>
+                      ))
+                    ) : (
+                      <Text
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="10px"
+                        textTransform="uppercase"
+                        color="#9f8e78"
+                      >
+                        Records pending
+                      </Text>
+                    )
+                  }
+                </Wrap>
+              </Stack>
+              <Box
+                position="relative"
+                border="1px solid"
+                borderColor="#ffb000"
+                minH="28"
+                overflow="hidden"
+                className="fallback-grid-lines"
+              >
+                <Box
+                  position="absolute"
+                  inset="4"
+                  border="1px solid"
+                  borderColor="#2dd4bf"
+                  opacity="0.5"
+                />
+                <Text
+                  position="absolute"
+                  left="4"
+                  bottom="3"
+                  fontFamily="Newsreader, serif"
+                  fontSize="5xl"
+                  fontStyle="italic"
+                  lineHeight="1"
+                >
+                  Ham
+                </Text>
+                <Text
+                  position="absolute"
+                  right="4"
+                  top="4"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  color="#ffb000"
+                >
+                  WEB / UI
+                </Text>
+              </Box>
+            </Stack>
           </Box>
           <Stack border="1px solid" borderColor="#524533" bg="#2a2a2a" p="8">
             <Heading as="h3" fontSize="2xl" fontStyle="italic" mb="8">Institutional</Heading>

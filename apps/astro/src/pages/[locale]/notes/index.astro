@@ -53,6 +53,13 @@ try {
 
 const hasNextPage = (sharedArticlesList?.length ?? 0) >= PAGE_SIZE;
 const hasPrevPage = page > 1;
+const visibleArticles = (sharedArticlesList ?? []).filter(Boolean);
+const collectionCount = new Set(
+  visibleArticles.map((article) => article.collectionName).filter(Boolean)
+).size;
+const latestNoteDate = visibleArticles[0]?.createdAt
+  ? formatMonthYear(parseISO(visibleArticles[0].createdAt), locale)
+  : '----';
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
@@ -100,6 +107,53 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           </Box>
         ) : (
           <>
+            <Grid
+              gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+              gap="1px"
+              bg="#524533"
+              border="1px solid"
+              borderColor="#524533"
+            >
+              <Stack bg="#131313" p="5" gap="2">
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  color="#9f8e78"
+                >
+                  Page
+                </Text>
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+                  {String(page).padStart(2, '0')}
+                </Text>
+              </Stack>
+              <Stack className="note-signal-card" p="5" gap="2">
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  color="#9f8e78"
+                >
+                  Collections
+                </Text>
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#2dd4bf">
+                  {String(collectionCount).padStart(2, '0')}
+                </Text>
+              </Stack>
+              <Stack bg="#131313" p="5" gap="2">
+                <Text
+                  fontFamily="JetBrains Mono, monospace"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  color="#9f8e78"
+                >
+                  Latest
+                </Text>
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="lg" color="#ffd597">
+                  {latestNoteDate}
+                </Text>
+              </Stack>
+            </Grid>
             <Stack gap="4">
               {sharedArticlesList?.map((data, index) => {
                 if (!data) return null;
@@ -118,39 +172,69 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                       <Box
                         border="1px solid"
                         borderColor="#524533"
-                        bg="#1c1b1b"
                         p={{ base: '6', md: '10' }}
                         _hover={{ transform: 'translate(-2px, -2px)' }}
                         transition="transform 0.2s ease"
-                        className="card-hover-amber"
+                        className="card-hover-amber note-feature-card"
                       >
-                        <Stack gap={4}>
-                          <Text
-                            fontFamily="JetBrains Mono, monospace"
-                            fontSize="10px"
-                            textTransform="uppercase"
-                            letterSpacing="0.12em"
-                            color="#ffd597"
-                          >
-                            Latest note
-                          </Text>
-                          <Heading as="h2" fontSize={{ base: '4xl', md: '5xl' }} fontStyle="italic">
-                            {documentTitle}
-                          </Heading>
-                          <Wrap
-                            fontSize="sm"
-                            color="#9f8e78"
-                            fontFamily="JetBrains Mono, monospace"
-                          >
-                            <Text>{collectionName}</Text> |{' '}
-                            <Text>
-                              {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
+                        <Grid gridTemplateColumns={{ base: '1fr', lg: '8fr 3fr' }} gap="8">
+                          <Stack gap={4}>
+                            <Text
+                              fontFamily="JetBrains Mono, monospace"
+                              fontSize="10px"
+                              textTransform="uppercase"
+                              letterSpacing="0.12em"
+                              color="#2dd4bf"
+                            >
+                              Latest note
                             </Text>
-                          </Wrap>
-                          <Text color="#c7c6c6" maxW="3xl" fontSize="md" lineHeight="1.7">
-                            {documentSummary.substring(0, 220) + '...'}
-                          </Text>
-                        </Stack>
+                            <Heading
+                              as="h2"
+                              fontSize={{ base: '4xl', md: '5xl' }}
+                              fontStyle="italic"
+                              lineHeight="0.95"
+                            >
+                              {documentTitle}
+                            </Heading>
+                            <Wrap
+                              fontSize="sm"
+                              color="#9f8e78"
+                              fontFamily="JetBrains Mono, monospace"
+                            >
+                              <Text>{collectionName}</Text> |{' '}
+                              <Text>
+                                {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
+                              </Text>
+                            </Wrap>
+                            <Text color="#c7c6c6" maxW="3xl" fontSize="md" lineHeight="1.7">
+                              {documentSummary.substring(0, 220) + '...'}
+                            </Text>
+                          </Stack>
+                          <Stack
+                            borderLeft={{ base: '0', lg: '1px solid' }}
+                            borderTop={{ base: '1px solid', lg: '0' }}
+                            borderColor="#524533"
+                            pl={{ base: '0', lg: '6' }}
+                            pt={{ base: '6', lg: '0' }}
+                            justifyContent="space-between"
+                          >
+                            <Text
+                              fontFamily="JetBrains Mono, monospace"
+                              fontSize="10px"
+                              textTransform="uppercase"
+                              color="#9f8e78"
+                            >
+                              Archive ref
+                            </Text>
+                            <Text
+                              fontFamily="JetBrains Mono, monospace"
+                              fontSize="2xl"
+                              color="#ffb000"
+                            >
+                              {(id ?? '').slice(0, 6).toUpperCase()}
+                            </Text>
+                          </Stack>
+                        </Grid>
                       </Box>
                     </Link>
                   );
@@ -172,12 +256,11 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                       <Box
                         border="1px solid"
                         borderColor="#524533"
-                        bg="#1c1b1b"
                         p="6"
                         h="full"
                         _hover={{ transform: 'translate(-2px, -2px)' }}
                         transition="transform 0.2s ease"
-                        className="card-hover-amber"
+                        className="card-hover-amber note-signal-card"
                       >
                         <Stack gap={3}>
                           <Text

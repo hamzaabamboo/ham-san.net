@@ -91,8 +91,8 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                 objectFit="cover"
                 width="full"
                 transition="transform 0.3s ease, filter 0.3s ease"
-                filter="grayscale(1)"
-                _groupHover={{ transform: 'scale(1.03)', filter: 'grayscale(0.2)' }}
+                filter="saturate(1.12) contrast(1.04)"
+                _groupHover={{ transform: 'scale(1.03)', filter: 'saturate(1.26) contrast(1.08)' }}
               />
             ) : (
               <Box

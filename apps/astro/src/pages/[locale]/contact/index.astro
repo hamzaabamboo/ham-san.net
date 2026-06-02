@@ -82,6 +82,54 @@ const items = [
         </Text>
       </Stack>
 
+      <Grid
+        gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+        gap="1px"
+        bg="#524533"
+        border="1px solid"
+        borderColor="#524533"
+      >
+        <Stack bg="#131313" p="5" gap="2">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#9f8e78"
+          >
+            Direct
+          </Text>
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="sm" color="#ffb000">
+            hello@ham-san.net
+          </Text>
+        </Stack>
+        <Stack className="contact-panel" p="5" gap="2">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#9f8e78"
+          >
+            Namecards
+          </Text>
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#2dd4bf">
+            {String(NAMECARDS.length).padStart(2, '0')}
+          </Text>
+        </Stack>
+        <Stack bg="#131313" p="5" gap="2">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#9f8e78"
+          >
+            UTC
+          </Text>
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffd597">
+            {currentUtcTime.slice(0, 5)}
+          </Text>
+        </Stack>
+      </Grid>
+
       <Grid gridTemplateColumns={{ base: '1fr', lg: '3fr 9fr' }} gap="12">
         <Stack gap="12" minW="0">
           <Stack gap="4">
@@ -156,17 +204,41 @@ const items = [
                 {t('contact.namecards')}
               </Heading>
             </Wrap>
-            <Box maxW="full" className="contact-namecard-preview">
-              <Link
-                href={`/${locale}/namecard/default`}
-                display="block"
-                w="91mm"
-                h="55mm"
-                className="contact-namecard-link"
+            <Stack
+              className="contact-namecard-stage"
+              border="1px solid"
+              borderColor="#524533"
+              p={{ base: '6', md: '8' }}
+              alignItems="center"
+              overflow="hidden"
+            >
+              <Box maxW="full" className="contact-namecard-preview">
+                <Link
+                  href={`/${locale}/namecard/default`}
+                  display="block"
+                  w="91mm"
+                  h="55mm"
+                  className="contact-namecard-link"
+                >
+                  <InteractiveNamecard data={NAMECARDS[0]} />
+                </Link>
+              </Box>
+              <Wrap
+                w="full"
+                pt="5"
+                mt="2"
+                borderTop="1px solid"
+                borderColor="#524533"
+                justifyContent="space-between"
+                color="#9f8e78"
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
               >
-                <InteractiveNamecard data={NAMECARDS[0]} />
-              </Link>
-            </Box>
+                <Text>Default card</Text>
+                <Text>{t('contact.namecards')}</Text>
+              </Wrap>
+            </Stack>
           </Stack>
 
           <Stack border="1px solid" borderColor="#524533" bg="#0e0e0e" overflow="hidden">

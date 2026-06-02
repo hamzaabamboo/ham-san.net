@@ -135,9 +135,8 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    filter: 'grayscale(1)',
-                    opacity: 0.8,
-                    mixBlendMode: 'luminosity'
+                    filter: 'saturate(1.12) contrast(1.04)',
+                    opacity: 0.92
                   }}
                 />
               ) : (
@@ -374,15 +373,14 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                   <img
                     src={introImage}
                     alt="Profile visual"
-                    style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(0.5);transition:transform 700ms"
+                    style="width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.04) brightness(0.78);transition:transform 700ms"
                     class="bench-render-img"
                   />
                   <Box
                     position="absolute"
                     inset="0"
-                    bg="#ffb000"
-                    mixBlendMode="multiply"
-                    opacity="0.2"
+                    bg="linear-gradient(90deg, rgba(45,212,191,0.18), transparent 46%), linear-gradient(0deg, rgba(14,14,14,0.34), transparent 48%)"
+                    opacity="1"
                   />
                 </>
               ) : (
@@ -485,13 +483,13 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                           <img
                             src={imgSrc}
                             alt=""
-                            style="width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter 500ms, transform 500ms"
+                            style="width:100%;height:100%;object-fit:cover;filter:saturate(1.08) contrast(1.04);transition:filter 500ms, transform 500ms"
                             class="project-card-img"
                           />
                           <Box
                             position="absolute"
                             inset="0"
-                            bg="rgba(14,14,14,0.4)"
+                            bg="linear-gradient(180deg, rgba(14,14,14,0.06), rgba(14,14,14,0.36))"
                             className="project-card-overlay"
                             style={{ transition: 'opacity 300ms' }}
                           />

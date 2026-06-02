@@ -38,6 +38,10 @@ const featuredProjects = activeProjects.slice(0, 6);
 const overflowProjects = activeProjects.slice(6);
 const inactiveProjects = projects.filter((p) => !p.isActive);
 const archiveProjects = [...overflowProjects, ...inactiveProjects];
+const latestProjectYear = projects.reduce((latest, project) => {
+  const year = project.date?.slice(0, 4);
+  return year && year > latest ? year : latest;
+}, '----');
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
@@ -65,7 +69,13 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
             projects
           </Text>
         </Box>
-        <Heading as="h1" fontSize={{ base: '5xl', md: '8xl' }} fontStyle="italic" lineHeight="0.92">
+        <Heading
+          as="h1"
+          fontSize={{ base: '5xl', md: '8xl' }}
+          fontStyle="italic"
+          lineHeight="0.92"
+          mt="8"
+        >
           {t('project.page-heading')}
         </Heading>
         <Text
@@ -80,6 +90,54 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           {t('project.intro')}
         </Text>
       </Stack>
+
+      <Grid
+        gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+        gap="1px"
+        bg="#524533"
+        border="1px solid"
+        borderColor="#524533"
+      >
+        <Stack bg="#131313" p="5" gap="2">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#9f8e78"
+          >
+            {t('project.active')}
+          </Text>
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+            {String(activeProjects.length).padStart(2, '0')}
+          </Text>
+        </Stack>
+        <Stack className="contact-panel" p="5" gap="2">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#9f8e78"
+          >
+            {t('project.inactive')}
+          </Text>
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#2dd4bf">
+            {String(archiveProjects.length).padStart(2, '0')}
+          </Text>
+        </Stack>
+        <Stack bg="#131313" p="5" gap="2">
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            color="#9f8e78"
+          >
+            Latest
+          </Text>
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffd597">
+            {latestProjectYear}
+          </Text>
+        </Stack>
+      </Grid>
 
       {
         projects.length === 0 ? (
