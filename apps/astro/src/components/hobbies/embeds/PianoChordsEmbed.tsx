@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { hobbyStyles } from '../hobbyStyles';
 
 const chords = [
   { name: 'Cmaj7', notes: [261.63, 329.63, 392, 493.88] },
@@ -54,20 +55,22 @@ export const PianoChordsEmbed = () => {
   };
 
   return (
-    <div className="hobby-piano">
-      <div className="hobby-piano__keys" aria-hidden="true">
+    <div>
+      <div className={hobbyStyles.pianoKeys} aria-hidden="true">
         {pianoKeys.map((isBlack, index) => (
           <span key={index} data-black={isBlack} />
         ))}
       </div>
-      <div className="hobby-piano__controls">
+      <div className={hobbyStyles.pianoControls}>
         {chords.map((chord) => (
           <button key={chord.name} type="button" onClick={() => playChord(chord.name, chord.notes)}>
             {chord.name}
           </button>
         ))}
       </div>
-      <p>{playedChord ? `Played ${playedChord}` : 'Audio starts after a tap.'}</p>
+      <p className={hobbyStyles.pianoStatus}>
+        {playedChord ? `Played ${playedChord}` : 'Audio starts after a tap.'}
+      </p>
     </div>
   );
 };

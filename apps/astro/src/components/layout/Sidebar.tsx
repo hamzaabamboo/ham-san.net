@@ -80,7 +80,11 @@ export const Sidebar = ({
   return (
     <>
       <button onClick={() => setOpen(true)} className="shell-drawer-trigger" aria-label="Open menu">
-        <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>
+        <span
+          className="material-symbols-outlined"
+          style={{ fontSize: '1.25rem' }}
+          aria-hidden="true"
+        >
           menu
         </span>
       </button>
@@ -109,7 +113,9 @@ export const Sidebar = ({
                   className="shell-drawer-close"
                   aria-label="Close menu"
                 >
-                  <span className="material-symbols-outlined">close</span>
+                  <span className="material-symbols-outlined" aria-hidden="true">
+                    close
+                  </span>
                 </button>
               </div>
 
@@ -128,7 +134,10 @@ export const Sidebar = ({
                       data-active={isCurrent ? 'true' : 'false'}
                       data-astro-reload
                     >
-                      <span className="material-symbols-outlined shell-sidebar-link-icon">
+                      <span
+                        className="material-symbols-outlined shell-sidebar-link-icon"
+                        aria-hidden="true"
+                      >
                         {icon}
                       </span>
                       <span className="shell-sidebar-link-label">{label}</span>

@@ -8,6 +8,7 @@ import { Heading } from '../ui/heading';
 import { Link } from '../ui/link';
 import { Table } from '../ui/table';
 import { Text } from '../ui/text';
+import { resolveOutlineAssetUrl } from '~/utils/outline-assets';
 
 // https://github.com/remarkjs/react-markdown
 export const Markdown = ({
@@ -47,22 +48,10 @@ export const Markdown = ({
     .join('\n');
 
   const resolveImageUrl = (rawUrl?: string) => {
-    if (!rawUrl) return rawUrl;
-    if (/^(?:[a-z]+:)?\/\//i.test(rawUrl) || rawUrl.startsWith('data:')) {
-      return rawUrl;
-    }
-    if (rawUrl.includes('attachments.redirect')) {
-      const query = rawUrl.split('?')[1];
-      const proxyBasePath = assetProxyBasePath ?? '/api/outline-asset';
-      return query ? `${proxyBasePath}?${query}` : proxyBasePath;
-    }
-    if (!assetsPrefix) {
-      return rawUrl;
-    }
-
-    const normalizedUrl = rawUrl.startsWith('/') ? rawUrl : `/${rawUrl.replace(/^\.?\/*/, '')}`;
-
-    return `${assetsPrefix}${normalizedUrl}`;
+    return resolveOutlineAssetUrl(rawUrl, {
+      assetsPrefix,
+      assetProxyBasePath
+    });
   };
 
   return (
@@ -228,8 +217,7 @@ export const Markdown = ({
                   alt={props.alt}
                   style={{
                     width: '100%',
-                    filter: 'grayscale(1) contrast(1.25)',
-                    mixBlendMode: 'luminosity'
+                    filter: 'saturate(1.08) contrast(1.04)'
                   }}
                 />
               </styled.div>

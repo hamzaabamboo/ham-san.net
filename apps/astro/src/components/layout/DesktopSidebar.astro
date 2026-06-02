@@ -28,7 +28,7 @@ const SIDEBAR_LINKS = [
     <p
       style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9f8e78;margin-top:0.25rem"
     >
-      Ham's Web
+      Ham
     </p>
   </div>
 
@@ -45,7 +45,9 @@ const SIDEBAR_LINKS = [
             class="shell-sidebar-link"
             aria-current={isCurrent ? 'page' : undefined}
           >
-            <span class="material-symbols-outlined shell-sidebar-link-icon">{icon}</span>
+            <span class="material-symbols-outlined shell-sidebar-link-icon" aria-hidden="true">
+              {icon}
+            </span>
             <span class="shell-sidebar-link-label">{label}</span>
           </a>
         );

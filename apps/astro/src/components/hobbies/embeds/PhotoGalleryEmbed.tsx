@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { hobbyStyles } from '../hobbyStyles';
 import type { HobbyEmbedProps } from './types';
 
 export const PhotoGalleryEmbed = ({ images = [] }: HobbyEmbedProps) => {
@@ -7,18 +8,18 @@ export const PhotoGalleryEmbed = ({ images = [] }: HobbyEmbedProps) => {
   const [activeImage, setActiveImage] = useState(0);
 
   return (
-    <div className="hobby-gallery">
-      <div className="hobby-gallery__stage">
+    <div className={hobbyStyles.gallery}>
+      <div className={hobbyStyles.galleryStage}>
         {galleryImages[activeImage] ? (
           <img src={galleryImages[activeImage]} alt="" />
         ) : (
-          <div className="hobby-gallery__fallback">
-            <span className="material-symbols-outlined">photo_camera</span>
+          <div className={hobbyStyles.galleryFallback}>
+            <span className={hobbyStyles.fallbackMark}>PG</span>
             <strong>Drop Markdown images here</strong>
           </div>
         )}
       </div>
-      <div className="hobby-gallery__rail">
+      <div className={hobbyStyles.galleryRail}>
         {rail.map((image, index) => (
           <button
             key={image}

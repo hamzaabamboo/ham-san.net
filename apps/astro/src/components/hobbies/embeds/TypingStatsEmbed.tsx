@@ -1,12 +1,14 @@
+import { hobbyStyles } from '../hobbyStyles';
+
 const typingStats = [
-  ['best burst', '126 wpm'],
-  ['daily floor', '84 wpm'],
-  ['accuracy', '97.8%'],
-  ['layout', 'JP / EN']
+  ['content', 'practice logs'],
+  ['profiles', 'external links'],
+  ['layout', 'jp / en'],
+  ['source', 'markdown']
 ];
 
 export const TypingStatsEmbed = () => (
-  <div className="hobby-stats">
+  <div className={hobbyStyles.stats}>
     {typingStats.map(([label, value]) => (
       <div key={label}>
         <span>{label}</span>

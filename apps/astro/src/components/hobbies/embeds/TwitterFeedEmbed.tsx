@@ -1,7 +1,8 @@
+import { hobbyStyles } from '../hobbyStyles';
 import type { HobbyEmbedProps } from './types';
 
 export const TwitterFeedEmbed = ({ description }: HobbyEmbedProps) => (
-  <div className="hobby-feed">
+  <div className={hobbyStyles.feed}>
     {['Now', 'Build log', 'Archive'].map((label, index) => (
       <article key={label}>
         <span>{label}</span>

@@ -1,11 +1,14 @@
 ---
 import { HobbyInteractiveEmbed } from '~/components/hobbies/HobbyInteractiveEmbed';
+import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { parseHobbyContent } from '~/utils/hobby-content';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
+import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 import { getOutlineSettings } from '~/utils/outline-settings';
+import { cx } from 'styled-system/css';
 
 export const prerender = false;
 
@@ -46,21 +49,16 @@ const content = parseHobbyContent({
 });
 const pageTitle = `${data.title ?? t('common.hobbies')} | ${t('common.name')}`;
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
-const outlineAssetProxyPath = `/${locale}/api/outline-asset`;
-const resolveOutlineAssetUrl = (rawUrl?: string) => {
-  if (!rawUrl) return rawUrl;
-  if (/^(?:[a-z]+:)?\/\//i.test(rawUrl) || rawUrl.startsWith('data:')) return rawUrl;
-  if (rawUrl.includes('attachments.redirect')) {
-    const query = rawUrl.split('?')[1];
-    return query ? `${outlineAssetProxyPath}?${query}` : outlineAssetProxyPath;
-  }
-  const normalizedUrl = rawUrl.startsWith('/') ? rawUrl : `/${rawUrl.replace(/^\.?\/*/, '')}`;
-  return `${outlineAssetPrefix}${normalizedUrl}`;
-};
-const banner = resolveOutlineAssetUrl(content.banner);
-const images = content.images
-  .map(resolveOutlineAssetUrl)
-  .filter((image): image is string => !!image);
+const outlineAssetProxyPath = getOutlineAssetProxyPath(locale);
+const resolveHobbyAssetUrl = (rawUrl?: string) =>
+  resolveOutlineAssetUrl(rawUrl, {
+    assetsPrefix: outlineAssetPrefix,
+    assetProxyBasePath: outlineAssetProxyPath
+  });
+const embedType = content.embeds[0]?.type ?? 'field-notes';
+const embedLabel = embedType.replace(/-/g, ' ');
+const banner = resolveHobbyAssetUrl(content.banner);
+const images = content.images.map(resolveHobbyAssetUrl).filter((image): image is string => !!image);
 const updatedLabel = content.updatedAt
   ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
       new Date(content.updatedAt)
@@ -71,40 +69,40 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 ---
 
 <MainLayout title={pageTitle} description={content.description || data.title}>
-  <div class="hobby-detail page-shell">
-    <a class="hobby-detail__back" href={`/${locale}/hobbies`}>
+  <div class={cx(hobbyStyles.detail, 'page-shell')}>
+    <a class={hobbyStyles.detailBack} href={`/${locale}/hobbies`}>
       <span aria-hidden="true">←</span>
       <span>{t('hobbies.back-to-hobbies')}</span>
     </a>
 
-    <section class="hobby-detail__hero">
-      <div class="hobby-detail__headline">
-        <p class="hobby-detail__eyebrow">{content.status} hobby / {content.embeds[0]?.type}</p>
-        <h1>{data.title}</h1>
-        {content.description && <p class="hobby-detail__description">{content.description}</p>}
-        <p class="hobby-detail__updated">
+    <section class={hobbyStyles.detailHero}>
+      <div class={hobbyStyles.detailHeadline}>
+        <p class={hobbyStyles.detailEyebrow}>{content.status} hobby / {embedLabel}</p>
+        <h1 class={hobbyStyles.detailTitle}>{data.title}</h1>
+        {content.description && <p class={hobbyStyles.detailDescription}>{content.description}</p>}
+        <p class={hobbyStyles.detailUpdated}>
           <span>Last updated</span>
           <span>/</span>
           <span>{updatedLabel}</span>
         </p>
       </div>
 
-      <div class="hobby-detail__visual">
+      <div class={hobbyStyles.detailVisual}>
         {
           banner ? (
-            <img src={banner} alt="" class="hobby-detail-banner" />
+            <img src={banner} alt="" class={hobbyStyles.detailBanner} />
           ) : (
-            <div class="hobby-detail__fallback fallback-grid-lines">
+            <div class={cx(hobbyStyles.detailFallback, 'fallback-grid-lines')}>
               <span aria-hidden="true">{data.title?.charAt(0).toUpperCase() ?? 'H'}</span>
             </div>
           )
         }
-        <p class="hobby-detail__visual-label">Markdown powered / local components</p>
+        <p class={hobbyStyles.detailVisualLabel}>{embedLabel}</p>
       </div>
     </section>
 
-    <section class="hobby-detail__body">
-      <div class="hobby-detail__main">
+    <section class={hobbyStyles.detailBody}>
+      <div class={hobbyStyles.detailMain}>
         {
           content.embeds.map((embed) => (
             <HobbyInteractiveEmbed
@@ -119,7 +117,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           ))
         }
 
-        <div class="hobby-detail__markdown">
+        <div class={hobbyStyles.detailSurface}>
           {
             content.body && (
               <Markdown
@@ -132,12 +130,12 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
         </div>
       </div>
 
-      <aside class="hobby-detail__aside">
-        <div class="hobby-detail__panel">
-          <p class="hobby-detail__panel-title">Nested pages</p>
+      <aside class={hobbyStyles.detailAside}>
+        <div class={hobbyStyles.detailPanel}>
+          <p class={hobbyStyles.detailPanelTitle}>Related pages</p>
           {
             childDocuments.length > 0 ? (
-              <div class="hobby-detail__nested">
+              <div class={hobbyStyles.detailNested}>
                 {childDocuments.map((child) => (
                   <a
                     href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}
@@ -149,18 +147,15 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 ))}
               </div>
             ) : (
-              <p class="hobby-detail__muted">
-                Add child pages in Outline and they will appear here.
-              </p>
+              <p class={hobbyStyles.detailMuted}>No related pages yet.</p>
             )
           }
         </div>
 
-        <div class="hobby-detail__panel note-signal-card">
-          <p class="hobby-detail__panel-title hobby-detail__panel-title--cyan">Authoring</p>
-          <p class="hobby-detail__muted">
-            Use frontmatter like <code>embed: typing</code>, <code>status: inactive</code>, or{' '}
-            <code>banner: /path.png</code>. Inline slots also work: <code>::hobby[rubik]</code>.
+        <div class={cx(hobbyStyles.detailPanel, 'note-signal-card')}>
+          <p class={cx(hobbyStyles.detailPanelTitle, hobbyStyles.detailPanelTitleCyan)}>Details</p>
+          <p class={hobbyStyles.detailMuted}>
+            {content.status} / {embedLabel} / {updatedLabel}
           </p>
         </div>
       </aside>

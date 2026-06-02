@@ -6,6 +6,7 @@ import { RubikAlgorithmsEmbed } from './embeds/RubikAlgorithmsEmbed';
 import { TwitterFeedEmbed } from './embeds/TwitterFeedEmbed';
 import { TypingStatsEmbed } from './embeds/TypingStatsEmbed';
 import type { HobbyEmbedProps } from './embeds/types';
+import { hobbyStyles } from './hobbyStyles';
 
 type EmbedDefinition = {
   title: string;
@@ -35,7 +36,7 @@ const embedRegistry: Record<string, EmbedDefinition> = {
   },
   'typing-stats': {
     title: 'Typing telemetry',
-    description: 'Speed, accuracy, and daily rhythm.',
+    description: 'Profiles and practice references.',
     className: 'typing-stats',
     Component: TypingStatsEmbed
   },
@@ -67,18 +68,18 @@ export const HobbyInteractiveEmbed = ({
   const Component = embed.Component;
 
   return (
-    <section className={`hobby-embed hobby-embed--${embed.className}`}>
-      <div className="hobby-embed__header">
+    <section className={hobbyStyles.embed}>
+      <div className={hobbyStyles.embedHeader}>
         <div>
-          <p className="hobby-embed__eyebrow">{status} module</p>
+          <p className={hobbyStyles.embedEyebrow}>{status} module</p>
           <h2>{embed.title}</h2>
         </div>
-        <div className="hobby-embed__meta">
+        <div className={hobbyStyles.embedMeta}>
           <span>{title ?? 'Hobby'}</span>
           <span>{updatedAt ? `Updated ${updatedAt}` : 'Live content'}</span>
         </div>
       </div>
-      <p className="hobby-embed__summary">{description || embed.description}</p>
+      <p className={hobbyStyles.embedSummary}>{description || embed.description}</p>
       <Component
         title={title}
         description={description}

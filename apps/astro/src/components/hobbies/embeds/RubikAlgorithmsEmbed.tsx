@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { hobbyStyles } from '../hobbyStyles';
 
 const algorithms = [
   { name: 'Sexy move', notation: "R U R' U'", use: 'fingertrick warmup' },
@@ -10,8 +11,8 @@ export const RubikAlgorithmsEmbed = () => {
   const [activeAlgorithm, setActiveAlgorithm] = useState(0);
 
   return (
-    <div className="hobby-algorithm">
-      <div className="hobby-algorithm__tabs">
+    <div className={hobbyStyles.algorithm}>
+      <div className={hobbyStyles.algorithmTabs}>
         {algorithms.map((algorithm, index) => (
           <button
             key={algorithm.name}
@@ -23,7 +24,7 @@ export const RubikAlgorithmsEmbed = () => {
           </button>
         ))}
       </div>
-      <div className="hobby-algorithm__viewer">
+      <div className={hobbyStyles.algorithmViewer}>
         <p>{algorithms[activeAlgorithm].notation}</p>
         <span>{algorithms[activeAlgorithm].use}</span>
       </div>

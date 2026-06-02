@@ -1,6 +1,7 @@
 ---
 import MainLayout from '~/layouts/MainLayout.astro';
 import { Box, Container, Grid, Stack } from 'styled-system/jsx';
+import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
@@ -10,6 +11,7 @@ import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
 import { getOutlineSettings } from '~/utils/outline-settings';
 import { parseHobbyContent } from '~/utils/hobby-content';
+import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 
 export const prerender = false;
 
@@ -41,17 +43,26 @@ try {
 }
 
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
-const outlineAssetProxyPath = `/${locale}/api/outline-asset`;
-const resolveOutlineAssetUrl = (rawUrl?: string) => {
-  if (!rawUrl) return rawUrl;
-  if (/^(?:[a-z]+:)?\/\//i.test(rawUrl) || rawUrl.startsWith('data:')) return rawUrl;
-  if (rawUrl.includes('attachments.redirect')) {
-    const query = rawUrl.split('?')[1];
-    return query ? `${outlineAssetProxyPath}?${query}` : outlineAssetProxyPath;
-  }
-  const normalizedUrl = rawUrl.startsWith('/') ? rawUrl : `/${rawUrl.replace(/^\.?\/*/, '')}`;
-  return `${outlineAssetPrefix}${normalizedUrl}`;
+const outlineAssetProxyPath = getOutlineAssetProxyPath(locale);
+const resolveHobbyAssetUrl = (rawUrl?: string) =>
+  resolveOutlineAssetUrl(rawUrl, {
+    assetsPrefix: outlineAssetPrefix,
+    assetProxyBasePath: outlineAssetProxyPath
+  });
+
+const embedMeta: Record<string, { label: string; mark: string }> = {
+  'field-notes': { label: 'Notes', mark: 'NT' },
+  'photo-gallery': { label: 'Gallery', mark: 'PG' },
+  'piano-chords': { label: 'Audio', mark: 'AU' },
+  'rubik-algorithms': { label: 'Algorithms', mark: 'RB' },
+  'twitter-feed': { label: 'Feed', mark: 'TW' },
+  'typing-stats': { label: 'Profiles', mark: 'TP' }
 };
+const getEmbedType = (hobby: { embeds: { type: string }[] }) =>
+  hobby.embeds[0]?.type ?? 'field-notes';
+const getEmbedMeta = (hobby: { embeds: { type: string }[] }) =>
+  embedMeta[getEmbedType(hobby)] ?? embedMeta['field-notes'];
+const formatEmbedType = (type?: string) => type?.replace(/-/g, ' ') ?? 'notes';
 
 const formatUpdated = (date?: string | null) =>
   date
@@ -71,9 +82,9 @@ const hobbies = hobbiesList
         return {
           ...h,
           ...content,
-          banner: resolveOutlineAssetUrl(content.banner ?? content.images[0]),
+          banner: resolveHobbyAssetUrl(content.banner ?? content.images[0]),
           images: content.images
-            .map(resolveOutlineAssetUrl)
+            .map(resolveHobbyAssetUrl)
             .filter((image): image is string => !!image),
           updatedLabel: formatUpdated(content.updatedAt)
         };
@@ -179,12 +190,15 @@ const componentCount = new Set(
             <Grid
               gridTemplateColumns={{ base: '1fr', md: 'repeat(12, 1fr)' }}
               gap="0"
-              bg="#524533"
+              bg="transparent"
               border="1px solid"
               borderColor="#524533"
             >
               {hobbies.map((hobby, index) => {
-                const span = index === 0 ? 8 : index === 1 ? 4 : index === 2 ? 5 : 7;
+                const span = index === 0 ? 8 : index === 1 ? 4 : index % 2 === 0 ? 5 : 7;
+                const embedType = getEmbedType(hobby);
+                const meta = getEmbedMeta(hobby);
+                const readableEmbedType = formatEmbedType(embedType);
 
                 if (index === 0)
                   return (
@@ -208,7 +222,6 @@ const componentCount = new Set(
                         h={{ base: '64', md: '96' }}
                         overflow="hidden"
                         bg="#222221"
-                        className="hobby-camera-plate"
                       >
                         <Box
                           position="absolute"
@@ -219,7 +232,7 @@ const componentCount = new Set(
                           gradientTo="#1c1b1b"
                         >
                           <Box position="absolute" inset="0" className="fallback-grid-lines" />
-                          <Box position="absolute" inset="0" className="hobby-camera-mark" />
+                          <Box position="absolute" inset="0" className={hobbyStyles.cameraMark} />
                           <Box
                             position="absolute"
                             insetX={{ base: '8', md: '20' }}
@@ -283,7 +296,7 @@ const componentCount = new Set(
                           borderColor="#ffb000"
                           zIndex="1"
                           opacity="0.78"
-                          className="hobby-camera-panel"
+                          className={hobbyStyles.cameraPanel}
                         />
                         <Box
                           position="absolute"
@@ -294,7 +307,7 @@ const componentCount = new Set(
                           zIndex="2"
                           pointerEvents="none"
                         >
-                          <Box className="hobby-camera-lens" />
+                          <Box className={hobbyStyles.cameraLens} />
                         </Box>
                         <Box
                           position="absolute"
@@ -310,10 +323,12 @@ const componentCount = new Set(
                             color="#ffb000"
                             fontWeight="bold"
                           >
-                            {hobby.embeds[0]?.type ?? 'hobby'}
+                            {readableEmbedType}
                           </Text>
                         </Box>
-                        {hobby.banner && <img src={hobby.banner} alt="" class="hobby-image-hero" />}
+                        {hobby.banner && (
+                          <img src={hobby.banner} alt="" class={hobbyStyles.imageHero} />
+                        )}
                         <Box
                           position="absolute"
                           top="4"
@@ -335,11 +350,8 @@ const componentCount = new Set(
                           <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic">
                             {hobby.title}
                           </Heading>
-                          <span
-                            class="material-symbols-outlined"
-                            style="color: #ffb000; font-size: 24px;"
-                          >
-                            photo_camera
+                          <span class={hobbyStyles.typeMark} aria-label={meta.label}>
+                            {meta.mark}
                           </span>
                         </Box>
                         <Box
@@ -354,7 +366,7 @@ const componentCount = new Set(
                         >
                           <Text>{hobby.status}</Text>
                           <Text>/</Text>
-                          <Text>{hobby.embeds[0]?.type}</Text>
+                          <Text>{readableEmbedType}</Text>
                           <Text>/</Text>
                           <Text>{hobby.updatedLabel}</Text>
                         </Box>
@@ -432,7 +444,7 @@ const componentCount = new Set(
                             letterSpacing="0.12em"
                             mb="8"
                           >
-                            {t('hobbies.status-learning')}
+                            {meta.label}
                           </Box>
                           <Box
                             display="flex"
@@ -446,7 +458,7 @@ const componentCount = new Set(
                           >
                             <Text>{hobby.status}</Text>
                             <Text>/</Text>
-                            <Text>{hobby.embeds[0]?.type}</Text>
+                            <Text>{readableEmbedType}</Text>
                           </Box>
                           <Heading as="h2" fontSize="3xl" fontStyle="italic" mb="4">
                             {hobby.title}
@@ -464,11 +476,11 @@ const componentCount = new Set(
                               textTransform="uppercase"
                               mb="1"
                             >
-                              {t('hobbies.daily-momentum')}
+                              {t('hobbies.last-updated')}
                             </Text>
-                            <Box h="2" w="full" bg="#353534">
-                              <Box h="full" bg="#ffb000" w="85%" />
-                            </Box>
+                            <Text color="#9f8e78" fontSize="sm">
+                              {hobby.updatedLabel}
+                            </Text>
                           </Box>
                           <Box
                             display="flex"
@@ -480,13 +492,10 @@ const componentCount = new Set(
                             fontStyle="italic"
                             className="group-hover-underline"
                           >
-                            <span
-                              class="material-symbols-outlined"
-                              style="margin-right: 8px; font-size: 16px;"
-                            >
-                              translate
+                            <span class={hobbyStyles.inlineMark} aria-hidden="true">
+                              {meta.mark}
                             </span>
-                            {t('hobbies.view-progress')}
+                            {t('hobbies.explore')}
                           </Box>
                         </Box>
                       </Stack>
@@ -502,7 +511,7 @@ const componentCount = new Set(
                         fontFamily="Newsreader, serif"
                         className="group-hover-watermark"
                       >
-                        書
+                        {meta.mark}
                       </Box>
                     </Link>
                   );
@@ -538,11 +547,8 @@ const componentCount = new Set(
                           >
                             {hobby.title}
                           </Heading>
-                          <span
-                            class="material-symbols-outlined"
-                            style="color: #ffb000; font-size: 24px;"
-                          >
-                            graphic_eq
+                          <span class={hobbyStyles.typeMark} aria-label={meta.label}>
+                            {meta.mark}
                           </span>
                         </Box>
                         <Text color="#c7c6c6" mb={{ base: '6', md: '8' }} className="line-clamp-3">
@@ -560,7 +566,7 @@ const componentCount = new Set(
                         >
                           <Text>{hobby.status}</Text>
                           <Text>/</Text>
-                          <Text>{hobby.embeds[0]?.type}</Text>
+                          <Text>{readableEmbedType}</Text>
                           <Text>/</Text>
                           <Text>{hobby.updatedLabel}</Text>
                         </Box>
@@ -605,7 +611,7 @@ const componentCount = new Set(
                         overflow="hidden"
                       >
                         {hobby.banner ? (
-                          <img src={hobby.banner} alt="" class="hobby-image-bottom" />
+                          <img src={hobby.banner} alt="" class={hobbyStyles.imageBottom} />
                         ) : (
                           <Box
                             position="absolute"
@@ -625,12 +631,7 @@ const componentCount = new Set(
                               opacity="0.18"
                               className="group-hover-watermark-strong"
                             >
-                              <span
-                                class="material-symbols-outlined"
-                                style="font-size: 180px; color: #ffb000;"
-                              >
-                                graphic_eq
-                              </span>
+                              <span class={hobbyStyles.fallbackMark}>{meta.mark}</span>
                             </Box>
                             <Box
                               position="absolute"
@@ -649,7 +650,7 @@ const componentCount = new Set(
                                 letterSpacing="0.2em"
                                 color="#ffb000"
                               >
-                                {hobby.embeds[0]?.type ?? 'hobby'}
+                                {readableEmbedType}
                               </Text>
                             </Box>
                           </Box>
@@ -675,7 +676,7 @@ const componentCount = new Set(
                     <Box position="relative" flex="1" minH={{ base: '56', md: '72' }} bg="#222221">
                       {hobby.banner ? (
                         <>
-                          <img src={hobby.banner} alt="" class="hobby-image-overlay" />
+                          <img src={hobby.banner} alt="" class={hobbyStyles.imageOverlay} />
                           <Box
                             position="absolute"
                             inset="0"
@@ -740,7 +741,7 @@ const componentCount = new Set(
                           letterSpacing="0.12em"
                           mb={{ base: '3', md: '4' }}
                         >
-                          {t('hobbies.finding-flow')}
+                          {meta.label}
                         </Box>
                         <Heading
                           as="h2"
@@ -765,7 +766,7 @@ const componentCount = new Set(
                         >
                           <Text>{hobby.status}</Text>
                           <Text>/</Text>
-                          <Text>{hobby.embeds[0]?.type}</Text>
+                          <Text>{readableEmbedType}</Text>
                           <Text>/</Text>
                           <Text>{hobby.updatedLabel}</Text>
                         </Box>
@@ -789,7 +790,7 @@ const componentCount = new Set(
                         textTransform="uppercase"
                         opacity="0.8"
                       >
-                        {t('hobbies.featured')}: {hobby.title}
+                        {meta.label}: {hobby.title}
                       </Text>
                       <Box
                         display="flex"
@@ -803,10 +804,10 @@ const componentCount = new Set(
                         cursor="pointer"
                         _hover={{ color: '#e5e2e1' }}
                       >
-                        <Text mr="2" fontSize="lg" lineHeight="1">
-                          +
-                        </Text>{' '}
-                        {t('hobbies.share-vibe')}
+                        <span class={hobbyStyles.inlineMark} aria-hidden="true">
+                          {meta.mark}
+                        </span>
+                        {t('hobbies.explore')}
                       </Box>
                     </Box>
                   </Link>
@@ -831,17 +832,14 @@ const componentCount = new Set(
                   display="flex"
                   alignItems="center"
                 >
-                  <span
-                    class="material-symbols-outlined"
-                    style="margin-right: 12px; color: #ffb000;"
-                  >
-                    book
+                  <span class={hobbyStyles.inlineMark} aria-hidden="true">
+                    NT
                   </span>
                   {t('hobbies.learning-resources')}
                 </Heading>
                 <Stack as="ul" gap="4">
-                  {hobbies.map((hobby, i) => {
-                    const docLabels = ['MD', 'LOG', 'TXT', 'REF'];
+                  {hobbies.map((hobby) => {
+                    const meta = getEmbedMeta(hobby);
                     return (
                       <Link
                         href={`/${locale}/hobbies/${hobby.id}`}
@@ -863,7 +861,7 @@ const componentCount = new Set(
                           opacity="0.5"
                           textTransform="uppercase"
                         >
-                          {docLabels[i % docLabels.length]}
+                          {meta.mark}
                         </Text>
                       </Link>
                     );

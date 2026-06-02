@@ -1,6 +1,8 @@
+import { hobbyStyles } from '../hobbyStyles';
+
 export const FieldNotesEmbed = () => (
-  <div className="hobby-field-notes">
-    <span className="material-symbols-outlined">dashboard_customize</span>
+  <div className={hobbyStyles.fieldNotes}>
+    <span className={hobbyStyles.fallbackMark}>NT</span>
     <p>A compact workspace for this hobby.</p>
   </div>
 );
