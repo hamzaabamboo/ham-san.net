@@ -4,6 +4,86 @@
  */
 
 export interface paths {
+    "/accessRequests.create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create an access request
+         * @description Request access to a document. The request will be sent to users with permission to share the document for approval or dismissal.
+         */
+        post: operations["accessRequestsCreate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/accessRequests.info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve an access request
+         * @description Retrieve information about an access request by `id`, or the current user's pending request for a document by `documentId`. At least one of these parameters must be provided.
+         */
+        post: operations["accessRequestsInfo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/accessRequests.approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Approve an access request
+         * @description Approve a pending access request, granting the requesting user a membership on the document with the specified permission.
+         */
+        post: operations["accessRequestsApprove"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/accessRequests.dismiss": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Dismiss an access request
+         * @description Dismiss a pending access request without granting the requesting user access to the document.
+         */
+        post: operations["accessRequestsDismiss"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/attachments.create": {
         parameters: {
             query?: never;
@@ -395,7 +475,7 @@ export interface paths {
         put?: never;
         /**
          * Create a comment
-         * @description Add a comment or reply to a document, either `data` or `text` is required.
+         * @description Add a comment or reply to a document, either `data` or `text` is required. Provide `anchorText` to create an inline comment attached to a specific text range in the document.
          */
         post: operations["commentsCreate"];
         delete?: never;
@@ -615,7 +695,7 @@ export interface paths {
         put?: never;
         /**
          * Retrieve insights for a document
-         * @description Retrieve a chronologically sorted array of daily activity rollups (views, comments, reactions, revisions, editors) for a document. Insights must be enabled on the document. Defaults to the last 30 days when no date range is provided.
+         * @description Retrieve a chronologically sorted array of activity rollups (views, comments, reactions, revisions, editors) for a document. Recent activity is returned as daily rollups, while older activity is aggregated into weekly rollups. Insights must be enabled on the document. Defaults to the last 30 days when no date range is provided.
          */
         post: operations["documentsInsights"];
         delete?: never;
@@ -2175,10 +2255,60 @@ export interface components {
          * @enum {string}
          */
         TextEditMode: "append" | "prepend" | "replace" | "patch";
+        AccessRequest: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the document this request is for.
+             */
+            documentId?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the user that made the request.
+             */
+            userId?: string;
+            user?: components["schemas"]["User"];
+            /**
+             * Format: uuid
+             * @description Identifier for the workspace the request belongs to.
+             */
+            teamId?: string;
+            /**
+             * @description The current status of the access request.
+             * @enum {string}
+             */
+            status?: "pending" | "approved" | "dismissed";
+            /**
+             * Format: uuid
+             * @description Identifier for the user that responded to the request, if any.
+             */
+            responderId?: string | null;
+            responder?: components["schemas"]["User"];
+            /**
+             * Format: date-time
+             * @description The date and time the request was responded to, if any.
+             */
+            respondedAt?: string | null;
+            /**
+             * Format: date-time
+             * @description The date and time that this object was created
+             */
+            readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description The date and time that this object was last changed
+             */
+            readonly updatedAt?: string;
+        };
         Attachment: {
             /** @example image/png */
             contentType?: string;
-            size?: number;
+            /** @description The size of the attachment in bytes. Returned as a string as the value may exceed the safe integer range. */
+            size?: string;
             name?: string;
             /** Format: uri */
             url?: string;
@@ -2186,7 +2316,12 @@ export interface components {
              * Format: uuid
              * @description Identifier for the associated document, if any.
              */
-            documentId?: string;
+            documentId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier for the user that created the attachment.
+             */
+            userId?: string;
         };
         Pagination: {
             /** @example 0 */
@@ -2223,6 +2358,8 @@ export interface components {
              * @description Unique identifier for the object.
              */
             readonly id?: string;
+            /** @description The relative URL path at which the collection can be accessed. */
+            readonly url?: string;
             /**
              * @description A short unique identifier that can be used to identify the collection instead of the UUID.
              * @example hDYep1TPAM
@@ -2237,7 +2374,9 @@ export interface components {
              * @description A description of the collection, may contain markdown formatting
              * @example
              */
-            description?: string;
+            description?: string | null;
+            /** @description The collection description as rich-text JSON, when available. */
+            data?: Record<string, never> | null;
             /** @description The sort of documents in the collection. Note that not all API responses respect this and it is left as a frontend concern to implement. */
             sort?: {
                 field?: string;
@@ -2248,20 +2387,23 @@ export interface components {
              * @description The position of the collection in the sidebar
              * @example P
              */
-            index?: string;
+            index?: string | null;
             /**
              * @description A color representing the collection, this is used to help make collections more identifiable in the UI. It should be in HEX format including the #
              * @example #123123
              */
-            color?: string;
+            color?: string | null;
             /** @description A string that represents an icon in the outline-icons package or an emoji */
-            icon?: string;
+            icon?: string | null;
             permission?: components["schemas"]["Permission"];
+            templateManagement?: components["schemas"]["Permission"];
             /**
              * @description Whether public document sharing is enabled in this collection
              * @default false
              */
             sharing: boolean;
+            /** @description Whether commenting is enabled in this collection */
+            commenting?: boolean | null;
             /**
              * Format: date-time
              * @description The date and time that this object was created
@@ -2283,6 +2425,12 @@ export interface components {
              */
             readonly archivedAt?: string | null;
             archivedBy?: components["schemas"]["User"];
+            /** @description Metadata about the external source this collection was imported from, if any. */
+            sourceMetadata?: {
+                externalId?: string;
+                externalName?: string;
+                createdByName?: string;
+            } | null;
         };
         Comment: {
             /**
@@ -2309,11 +2457,28 @@ export interface components {
             readonly createdAt?: string;
             createdBy?: components["schemas"]["User"];
             /**
+             * Format: uuid
+             * @description Identifier for the user who created this comment.
+             */
+            readonly createdById?: string;
+            /**
              * Format: date-time
              * @description The date and time that this object was last changed
              */
             readonly updatedAt?: string;
-            updatedBy?: components["schemas"]["User"];
+            /**
+             * Format: date-time
+             * @description The date and time that this comment was resolved, if it has been.
+             */
+            readonly resolvedAt?: string | null;
+            resolvedBy?: unknown & components["schemas"]["User"];
+            /**
+             * Format: uuid
+             * @description Identifier for the user who resolved this comment, if any.
+             */
+            readonly resolvedById?: string | null;
+            /** @description List of emoji reactions on this comment. */
+            readonly reactions?: Record<string, never>[];
             /** @description The document text that the comment is anchored to, only included if includeAnchorText=true. */
             readonly anchorText?: string;
         };
@@ -2400,12 +2565,12 @@ export interface components {
              * Format: uuid
              * @description Identifier for the associated collection.
              */
-            collectionId?: string;
+            collectionId?: string | null;
             /**
              * Format: uuid
              * @description Identifier for the document this is a child of, if any.
              */
-            parentDocumentId?: string;
+            parentDocumentId?: string | null;
             /**
              * @description The title of the document.
              * @example Welcome to Acme Inc
@@ -2414,23 +2579,33 @@ export interface components {
             /** @description Whether this document should be displayed in a full-width view. */
             fullWidth?: boolean;
             /**
-             * @description An emoji associated with the document.
+             * @description An emoji or icon associated with the document.
              * @example 🎉
              */
-            emoji?: string;
+            icon?: string | null;
+            /** @description The color of the document icon in hex format. */
+            color?: string | null;
             /**
              * @description The text content of the document, contains markdown formatting
              * @example …
              */
             text?: string;
+            /** @description The body of the document as a Prosemirror document, returned in place of text when requested. */
+            data?: Record<string, never> | null;
+            /** @description A URL path to access the document. */
+            readonly url?: string;
             /**
              * @description A short unique ID that can be used to identify the document as an alternative to the UUID
              * @example hDYep1TPAM
              */
             urlId?: string;
-            collaborators?: components["schemas"]["User"][];
-            /** @description Whether this document is pinned in the collection */
-            pinned?: boolean;
+            /** @description Identifiers of users who have edited the document. */
+            collaboratorIds?: string[];
+            /** @description Task completion counts for the document. */
+            tasks?: {
+                completed?: number;
+                total?: number;
+            };
             /**
              * Format: uuid
              * @description Unique identifier for the template this document was created from, if any
@@ -2460,20 +2635,25 @@ export interface components {
              * Format: date-time
              * @description The date and time that this object was archived
              */
-            readonly archivedAt?: string;
+            readonly archivedAt?: string | null;
             /**
              * Format: date-time
              * @description The date and time that this object was deleted
              */
             readonly deletedAt?: string | null;
         };
-        /** @description A daily rollup of activity counts for a document. */
+        /** @description A rollup of activity counts for a document over a daily or weekly period. */
         DocumentInsight: {
             /**
              * Format: date
-             * @description The UTC day the rollup represents.
+             * @description The UTC day the rollup represents. For weekly rollups this is the first day (Monday) of the week.
              */
             date?: string;
+            /**
+             * @description The length of time the rollup covers. Daily rollups are stored for recent activity, older rollups are aggregated into weekly buckets.
+             * @enum {string}
+             */
+            period?: "day" | "week";
             /** @description Total number of document views on this day. */
             viewCount?: number;
             /** @description Number of unique viewers on this day. */
@@ -2500,6 +2680,11 @@ export interface components {
              * @description Identifier for the object this event is associated with when it is not one of document, collection, or user.
              */
             readonly modelId?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the user associated with the event, if any.
+             */
+            readonly userId?: string;
             /**
              * Format: uuid
              * @description The user that performed the action.
@@ -2532,6 +2717,8 @@ export interface components {
              *     }
              */
             readonly data?: Record<string, never>;
+            /** @description The set of changes made by this event. This field is only returned when the `auditLog` boolean is true. */
+            readonly changes?: Record<string, never> | null;
             actor?: components["schemas"]["User"];
         };
         Error: {
@@ -2555,23 +2742,46 @@ export interface components {
              */
             readonly type?: "import" | "export";
             /**
+             * @description The file format of the resulting file.
+             * @example outline-markdown
+             */
+            readonly format?: string;
+            /** @description The name of the file operation, derived from the collection name, document title, or file name. */
+            readonly name?: string;
+            /**
              * @description The state of the file operation.
              * @example complete
              * @enum {string}
              */
             readonly state?: "creating" | "uploading" | "complete" | "error" | "expired";
-            collection?: unknown & components["schemas"]["Collection"];
-            user?: components["schemas"]["User"];
+            /** @description An error message if the file operation failed. */
+            readonly error?: string | null;
             /**
-             * @description The size of the resulting file in bytes
+             * @description The size of the resulting file in bytes. Returned as a string as the value may exceed the safe integer range.
              * @example 2048
              */
-            readonly size?: number;
+            readonly size?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated collection, if the file operation is scoped to a single collection.
+             */
+            readonly collectionId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated document, if the file operation is scoped to a single document.
+             */
+            readonly documentId?: string | null;
+            user?: components["schemas"]["User"];
             /**
              * Format: date-time
              * @description The date and time that this object was created
              */
             readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description The date and time that this object was last changed
+             */
+            readonly updatedAt?: string;
         };
         Group: {
             /**
@@ -2584,6 +2794,14 @@ export interface components {
              * @example Engineering
              */
             name?: string;
+            /** @description A short description of this group. */
+            description?: string | null;
+            /** @description An identifier for this group in an external system, if linked. */
+            externalId?: string | null;
+            /** @description Whether mentioning this group is disabled. */
+            disableMentions?: boolean;
+            /** @description Details of the linked external group, if any. */
+            externalGroup?: Record<string, never> | null;
             /**
              * @description The number of users that are members of the group
              * @example 11
@@ -2615,19 +2833,19 @@ export interface components {
              * @description A short description of this OAuth client.
              * @example Integrate Acme Inc's services into Outline.
              */
-            description?: string;
+            description?: string | null;
             /**
              * @description The name of the developer who created this OAuth client.
              * @example Acme Inc
              */
-            developerName?: string;
+            developerName?: string | null;
             /**
              * @description The URL of the developer who created this OAuth client.
              * @example https://example.com
              */
-            developerUrl?: string;
+            developerUrl?: string | null;
             /** @description A URL pointing to an image representing the OAuth client. */
-            avatarUrl?: string;
+            avatarUrl?: string | null;
             /**
              * @description The client ID for the OAuth client.
              * @example 2bquf8avrpdv31par42a
@@ -2638,6 +2856,11 @@ export interface components {
              * @example ol_sk_rapdv31...
              */
             readonly clientSecret?: string;
+            /**
+             * @description The type of the OAuth client.
+             * @enum {string}
+             */
+            readonly clientType?: "public" | "confidential";
             /**
              * @description The redirect URIs for the OAuth client.
              * @example [
@@ -2650,6 +2873,11 @@ export interface components {
              * @example true
              */
             published?: boolean;
+            /**
+             * Format: date-time
+             * @description Date and time when this OAuth client was last used.
+             */
+            readonly lastActiveAt?: string | null;
             /**
              * Format: date-time
              * @description Date and time when this OAuth client was created
@@ -2672,6 +2900,16 @@ export interface components {
              * @description Identifier for the associated OAuthClient.
              */
             readonly oauthClientId?: string;
+            /** @description A reduced, public representation of the associated OAuth client. */
+            readonly oauthClient?: {
+                name?: string;
+                description?: string | null;
+                developerName?: string | null;
+                developerUrl?: string | null;
+                avatarUrl?: string | null;
+                clientId?: string;
+                published?: boolean;
+            };
             /**
              * Format: uuid
              * @description Identifier for the associated User.
@@ -2683,6 +2921,11 @@ export interface components {
              * @description Date and time when this authentication was last used
              */
             readonly lastActiveAt?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this authentication was created
+             */
+            readonly createdAt?: string;
         };
         Revision: {
             /**
@@ -2697,14 +2940,33 @@ export interface components {
             readonly documentId?: string;
             /** @description Title of the document. */
             readonly title?: string;
+            /** @description The name of the revision, if any. */
+            readonly name?: string | null;
+            /** @description The body of the revision as a Prosemirror document. */
+            readonly data?: Record<string, never>;
             /** @description Body of the document, may contain markdown formatting */
             readonly text?: string;
+            /** @description An emoji or icon associated with the revision. */
+            readonly icon?: string | null;
+            /** @description The color of the revision icon in hex format. */
+            readonly color?: string | null;
+            collaborators?: components["schemas"]["User"][];
             /**
              * Format: date-time
              * @description Date and time when this revision was created
              */
             readonly createdAt?: string;
             createdBy?: components["schemas"]["User"];
+            /**
+             * Format: uuid
+             * @description Identifier for the user who created this revision.
+             */
+            readonly createdById?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this revision was deleted, if applicable.
+             */
+            readonly deletedAt?: string | null;
         };
         Share: {
             /**
@@ -2722,11 +2984,29 @@ export interface components {
              * @description URL of the original document.
              */
             readonly documentUrl?: string;
+            /** @description Title of the shared document or collection. */
+            readonly sourceTitle?: string;
+            /** @description Path of the shared document or collection. */
+            readonly sourcePath?: string;
+            /**
+             * Format: uuid
+             * @description Identifier of the shared document, if any.
+             */
+            readonly documentId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier of the shared collection, if any.
+             */
+            readonly collectionId?: string | null;
+            /** @description Short URL identifier for the share, if set. */
+            readonly urlId?: string | null;
             /**
              * Format: uri
              * @description URL of the publicly shared document.
              */
             readonly url?: string;
+            /** @description Custom domain the share is served on, if any. */
+            domain?: string | null;
             /** @description Override title displayed on the publicly shared page. If not set the source document or collection title is used. */
             title?: string | null;
             /**
@@ -2749,6 +3029,14 @@ export interface components {
              * @example true
              */
             allowSubscriptions?: boolean;
+            /** @description Whether the shared page may be indexed by search engines. */
+            allowIndexing?: boolean;
+            /** @description Whether to show the last-updated time on the shared page. */
+            showLastUpdated?: boolean;
+            /** @description Whether to show a table of contents on the shared page. */
+            showTOC?: boolean;
+            /** @description The number of times the shared page has been viewed. */
+            readonly views?: number;
             /**
              * Format: date-time
              * @description Date and time when this share was created
@@ -2762,9 +3050,9 @@ export interface components {
             readonly updatedAt?: string;
             /**
              * Format: date-time
-             * @description Date and time when this share was last viewed
+             * @description Date and time when this share was last viewed. Only returned to workspace admins.
              */
-            readonly lastAccessedAt?: string;
+            readonly lastAccessedAt?: string | null;
         };
         Star: {
             /**
@@ -2778,22 +3066,22 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for the starred document.
              */
-            readonly documentId?: string;
+            readonly documentId?: string | null;
             /**
              * Format: uuid
              * @description Unique identifier for the starred collection.
              */
-            readonly collectionId?: string;
-            /**
-             * Format: uri
-             * @description URL of the original document.
-             */
-            readonly documentUrl?: string;
+            readonly collectionId?: string | null;
             /**
              * Format: date-time
              * @description Date and time when this star was created
              */
             readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this star was last changed
+             */
+            readonly updatedAt?: string;
         };
         Team: {
             /**
@@ -2803,6 +3091,8 @@ export interface components {
             readonly id?: string;
             /** @description The name of this workspace, it is usually auto-generated when the first SSO connection is made but can be changed if necessary. */
             name?: string;
+            /** @description A short description of this workspace. */
+            description?: string | null;
             /**
              * Format: uri
              * @description The URL for the image associated with this workspace, it will be displayed in the workspace switcher and in the top left of the knowledge base along with the name.
@@ -2818,10 +3108,10 @@ export interface components {
             defaultUserRole?: components["schemas"]["UserRole"];
             /** @description Whether members are allowed to create new collections. If false then only admins can create collections. */
             memberCollectionCreate?: boolean;
+            /** @description Whether members are allowed to create new groups. If false then only admins can create groups. */
+            memberTeamCreate?: boolean;
             /** @description Whether this workspace has embeds in documents globally enabled. It can be disabled to reduce potential data leakage to third parties. */
             documentEmbeds?: boolean;
-            /** @description Whether this workspace has collaborative editing in documents globally enabled. */
-            collaborativeEditing?: boolean;
             /** @description Whether an invite is required to join this workspace, if false users may join with a linked SSO provider. */
             inviteRequired?: boolean;
             allowedDomains?: string[];
@@ -2829,11 +3119,19 @@ export interface components {
             guestSignin?: boolean;
             /** @description Represents the subdomain at which this workspace's knowledge base can be accessed. */
             subdomain?: string;
+            /** @description The custom domain configured for this workspace, if any. */
+            domain?: string | null;
             /**
              * Format: uri
              * @description The fully qualified URL at which this workspace's knowledge base can be accessed.
              */
             readonly url?: string;
+            /** @description Whether passkey authentication is enabled for this workspace. */
+            passkeysEnabled?: boolean;
+            /** @description Workspace-level preference flags. */
+            preferences?: Record<string, never> | null;
+            /** @description Guidance text provided to MCP integrations. */
+            guidanceMCP?: string | null;
         };
         User: {
             /**
@@ -2851,6 +3149,8 @@ export interface components {
              * @description The URL for the image associated with this user, it will be displayed in the application UI and email notifications.
              */
             avatarUrl?: string;
+            /** @description A color representing the user, used in the UI for avatars without an image. */
+            readonly color?: string;
             /**
              * Format: email
              * @description The email associated with this user, it is migrated from Slack or Google Workspace when the SSO connection is made but can be changed if necessary.
@@ -2863,12 +3163,24 @@ export interface components {
              * Format: date-time
              * @description The last time this user made an API request, this value is updated at most every 5 minutes.
              */
-            readonly lastActiveAt?: string;
+            readonly lastActiveAt?: string | null;
+            /** @description The timezone this user has registered. */
+            timezone?: string | null;
             /**
              * Format: date-time
              * @description The date and time that this user first signed in or was invited as a guest.
              */
             readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description The date and time that this user was last updated.
+             */
+            readonly updatedAt?: string;
+            /**
+             * Format: date-time
+             * @description The date and time that this user was deleted, if applicable.
+             */
+            readonly deletedAt?: string | null;
         };
         Invite: {
             /** @description The full name of the user being invited */
@@ -2891,10 +3203,27 @@ export interface components {
             readonly userId?: string;
             /**
              * Format: uuid
-             * @description Identifier for the associated collection.
+             * @description Identifier for the associated document, if any.
              */
-            readonly collectionId?: string;
+            readonly documentId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated collection, if any.
+             */
+            readonly collectionId?: string | null;
             permission?: components["schemas"]["Permission"];
+            /**
+             * Format: uuid
+             * @description Identifier for the user who created this membership.
+             */
+            readonly createdById?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the membership this one was inherited from, if any.
+             */
+            readonly sourceId?: string | null;
+            /** @description The position of the collection in the user's sidebar. */
+            index?: string | null;
         };
         SearchResult: {
             /** Format: uuid */
@@ -2954,10 +3283,20 @@ export interface components {
             readonly groupId?: string;
             /**
              * Format: uuid
-             * @description Identifier for the associated user.
+             * @description Identifier for the associated document, if any.
              */
-            readonly userId?: string;
-            user?: components["schemas"]["User"];
+            readonly documentId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated collection, if any.
+             */
+            readonly collectionId?: string | null;
+            permission?: components["schemas"]["Permission"];
+            /**
+             * Format: uuid
+             * @description Identifier for the membership this one was inherited from, if any.
+             */
+            readonly sourceId?: string | null;
         };
         CollectionGroupMembership: {
             /** @description Unique identifier for the object. */
@@ -2969,10 +3308,20 @@ export interface components {
             readonly groupId?: string;
             /**
              * Format: uuid
-             * @description Identifier for the associated collection.
+             * @description Identifier for the associated document, if any.
              */
-            readonly collectionId?: string;
+            readonly documentId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated collection, if any.
+             */
+            readonly collectionId?: string | null;
             permission?: components["schemas"]["Permission"];
+            /**
+             * Format: uuid
+             * @description Identifier for the membership this one was inherited from, if any.
+             */
+            readonly sourceId?: string | null;
         };
         Template: {
             /**
@@ -3020,7 +3369,7 @@ export interface components {
              * Format: date-time
              * @description The date and time that the template was published.
              */
-            readonly publishedAt?: string;
+            readonly publishedAt?: string | null;
         };
         View: {
             /** @description Unique identifier for the object. */
@@ -3045,6 +3394,11 @@ export interface components {
              * @example 22
              */
             readonly count?: number;
+            /**
+             * Format: uuid
+             * @description Identifier of the user who viewed the document.
+             */
+            readonly userId?: string;
             user?: components["schemas"]["User"];
         };
     };
@@ -3122,6 +3476,169 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    accessRequestsCreate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the document to request access to.
+                     */
+                    documentId: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["AccessRequest"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    accessRequestsInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the access request.
+                     */
+                    id?: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the document to find a pending request for the current user.
+                     */
+                    documentId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["AccessRequest"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    accessRequestsApprove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the access request.
+                     */
+                    id: string;
+                    /**
+                     * @description The permission to grant the requesting user.
+                     * @default read
+                     * @enum {string}
+                     */
+                    permission?: "read" | "read_write" | "admin";
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["AccessRequest"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    accessRequestsDismiss: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the access request.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["AccessRequest"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     attachmentsCreate: {
         parameters: {
             query?: never;
@@ -3922,6 +4439,12 @@ export interface operations {
                      * @example Sounds great
                      */
                     text?: string;
+                    /** @description Plain text substring to anchor the comment to as an inline comment. The first occurrence in the document's plain text is used unless disambiguated by `anchorPrefix` and/or `anchorSuffix`. */
+                    anchorText?: string;
+                    /** @description Text immediately preceding `anchorText`, used to disambiguate between multiple occurrences. Requires `anchorText`. */
+                    anchorPrefix?: string;
+                    /** @description Text immediately following `anchorText`, used to disambiguate between multiple occurrences. Requires `anchorText`. */
+                    anchorSuffix?: string;
                 };
             };
         };

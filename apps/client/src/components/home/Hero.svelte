@@ -16,7 +16,7 @@
     style:transform="translateZ(-1px) scale(1.3)"
     style:background-image="url('{bg}')"
     style:filter="blur(2px)"
-  />
+  ></div>
   <div style:transform="translateZ(1px) scale(0.875)">
     <Container class="relative z-10">
       <div

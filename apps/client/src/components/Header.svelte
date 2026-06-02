@@ -74,9 +74,14 @@
     </div>
 
     <!-- Mobile Menu-->
-    <div class="items-center flex relative z-20 md:hidden" on:click={() => (menuOpen = !menuOpen)}>
+    <button
+      type="button"
+      class="items-center flex relative z-20 md:hidden"
+      aria-label="Menu"
+      on:click={() => (menuOpen = !menuOpen)}
+    >
       <Fa icon={faBars} size="md" />
-    </div>
+    </button>
   </div>
   <div
     class="fixed w-full h-full z-10 transition-all bg-white top-0 pt-16 md:hidden"

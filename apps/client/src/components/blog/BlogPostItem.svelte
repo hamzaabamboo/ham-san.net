@@ -46,6 +46,6 @@
 			style:background-image="url('{getMediaUrl(blogPost.thumbnail?.data?.attributes?.url, {
 				height: 400
 			})}')"
-		/>
+		></div>
 	{/if}
 </a>

@@ -33,7 +33,7 @@
         style:background-image="url('{getMediaUrl(project.media?.data[0]?.attributes?.url, {
           height: 400
         })}')"
-      />
+      ></div>
     {/if}
     <div class="w-full h-full flex-1 p-2">
       <Typography variant="h5" class="mb-1 text-bold">{project.title}</Typography>

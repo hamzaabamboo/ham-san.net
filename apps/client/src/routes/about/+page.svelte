@@ -37,7 +37,7 @@
   style:transform="translateZ(-1px) scale(1.5)"
   style:height="400px"
   style:background-image="url('{aboutMeBanner}')"
-/>
+></div>
 <Container fluid class="w-full bg-white">
   <Container class="pt-12 flex flex-row flex-wrap">
     <div class="px-4 flex flex-col w-full">

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { error, redirect } from '@sveltejs/kit';
 import { outlineClient } from '@utils/outline-api';
 

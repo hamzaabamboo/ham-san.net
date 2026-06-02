@@ -25,8 +25,10 @@
 	</div>
 	<div class="flex flex-row flex-wrap justify-center">
 		{#each media as image, index}
-			<div
+			<button
+				type="button"
 				class="w-24 h-24 border mx-2 px-2 flex align-center transition-transform hover:scale-110"
+				aria-label={image?.attributes?.name ?? `Image ${index + 1}`}
 				on:click={() => carousel.goTo(index)}
 			>
 				<img
@@ -34,7 +36,7 @@
 					alt={image?.attributes?.name}
 					class="max-w-full max-h-full my-auto mx-auto"
 				/>
-			</div>
+			</button>
 		{/each}
 	</div>
 </div>

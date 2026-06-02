@@ -76,7 +76,7 @@
         })}')`
       : null}
     style:transform="translateZ(-2px) scale(1.8)"
-  />
+  ></div>
 {/if}
 <Container fluid class="bg-white flex-1 w-full">
   <Container class="py-8">
@@ -127,4 +127,4 @@
     {/if}
   </Container>
 </Container>
-<Container fluid class="bg-primary-400 bg-opacity-10 h-64" />
+<Container fluid class="bg-primary-400 bg-opacity-10 h-64"></Container>

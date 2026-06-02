@@ -5,7 +5,6 @@
 	// import { key } from '../context'
 	export let depth: number;
 	export let raw: string;
-	export let text: string;
 	// const { slug, getOptions } = getContext(key)
 	// const options = getOptions()
 	// $: id = options.headerIds

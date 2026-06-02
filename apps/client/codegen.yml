@@ -13,6 +13,8 @@ generates:
       - 'typescript-operations'
       - 'graphql-codegen-svelte-apollo'
   src/graphql/generated/server.ts:
+    config:
+      useTypeImports: true
     plugins:
       - 'typescript'
       - 'typescript-operations'

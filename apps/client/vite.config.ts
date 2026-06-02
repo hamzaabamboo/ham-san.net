@@ -13,7 +13,13 @@ const config: UserConfig = {
     imagetools({
       removeMetadata: true
     }),
-    SvelteKitPWA({})
+    SvelteKitPWA({
+      workbox: {
+        globPatterns: ['client/**/*.{js,css,ico,png,svg,webp,webmanifest}', 'client/*.webmanifest'],
+        modifyURLPrefix: {},
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024
+      }
+    })
     // visualizer({
     // 	emitFile: true,
     // 	filename: 'stats.html'
