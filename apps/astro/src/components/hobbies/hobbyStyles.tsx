@@ -165,7 +165,7 @@ export const hobbyStyles = {
   detailTitle: css({
     maxW: { base: 'none', md: '11ch' },
     m: '0',
-    fontFamily: 'Newsreader, serif',
+    fontFamily: 'var(--font-display)',
     fontSize: 'clamp(3rem, 8vw, 7rem)',
     lineHeight: '0.95',
     fontStyle: 'italic'
@@ -203,7 +203,7 @@ export const hobbyStyles = {
       right: '1rem',
       bottom: '-2rem',
       color: '#e5e2e1',
-      fontFamily: 'Newsreader, serif',
+      fontFamily: 'var(--font-display)',
       fontSize: '11.25rem',
       lineHeight: '1',
       opacity: '0.08',
@@ -317,7 +317,7 @@ export const hobbyStyles = {
     pb: '4',
     '& h2': {
       m: '0',
-      fontFamily: 'Newsreader, serif',
+      fontFamily: 'var(--font-display)',
       fontSize: 'clamp(2rem, 5vw, 3.75rem)',
       lineHeight: '0.95',
       fontStyle: 'italic'
