@@ -57,6 +57,17 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
   });
 const embedType = content.embeds[0]?.type ?? 'field-notes';
 const embedLabel = embedType.replace(/-/g, ' ');
+const embedVisualMeta: Record<string, { mark: string; label: string }> = {
+  'photo-gallery': { mark: 'PG', label: 'gallery source' },
+  'rubik-algorithms': { mark: 'RB', label: 'algorithm set' },
+  'typing-stats': { mark: 'TP', label: 'profile telemetry' },
+  'piano-chords': { mark: 'AU', label: 'audio module' },
+  'darts-board': { mark: 'DB', label: 'board log' },
+  'link-library': { mark: 'LK', label: 'reference map' },
+  'twitter-feed': { mark: 'TW', label: 'signal feed' },
+  'field-notes': { mark: 'NT', label: 'source note' }
+};
+const visualMeta = embedVisualMeta[embedType] ?? embedVisualMeta['field-notes'];
 const banner = resolveHobbyAssetUrl(content.banner);
 const images = content.images.map(resolveHobbyAssetUrl).filter((image): image is string => !!image);
 const updatedLabel = content.updatedAt
@@ -92,8 +103,12 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           banner ? (
             <img src={banner} alt="" class={hobbyStyles.detailBanner} />
           ) : (
-            <div class={cx(hobbyStyles.detailFallback, 'fallback-grid-lines')}>
-              <span aria-hidden="true">{data.title?.charAt(0).toUpperCase() ?? 'H'}</span>
+            <div
+              class={cx(hobbyStyles.detailFallback, 'fallback-grid-lines')}
+              data-embed={embedType}
+            >
+              <span aria-hidden="true">{visualMeta.mark}</span>
+              <small>{visualMeta.label}</small>
             </div>
           )
         }

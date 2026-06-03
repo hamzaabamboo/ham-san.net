@@ -198,16 +198,67 @@ export const hobbyStyles = {
   detailFallback: css({
     inset: '0',
     pos: 'absolute',
+    bg: 'linear-gradient(135deg, rgba(255,176,0,0.08), transparent 42%), #131313',
+    '&::before': {
+      inset: '2rem',
+      pos: 'absolute',
+      border: '1px solid rgba(255, 176, 0, 0.34)',
+      content: '""'
+    },
+    '&::after': {
+      inset: '0',
+      pos: 'absolute',
+      opacity: '0.42',
+      content: '""'
+    },
     '& span': {
       pos: 'absolute',
       right: '1rem',
       bottom: '-2rem',
       color: '#e5e2e1',
-      fontFamily: 'var(--font-display)',
-      fontSize: '11.25rem',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: 'clamp(6rem, 14vw, 11rem)',
+      fontWeight: '700',
       lineHeight: '1',
-      opacity: '0.08',
-      fontStyle: 'italic'
+      opacity: '0.1'
+    },
+    '& small': {
+      pos: 'absolute',
+      top: '1rem',
+      left: '1rem',
+      color: '#2dd4bf',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase'
+    },
+    '&[data-embed="photo-gallery"]::before': {
+      inset: '3rem',
+      rounded: 'full',
+      boxShadow:
+        'inset 0 0 0 1rem rgba(255, 176, 0, 0.08), inset 0 0 0 2.75rem #131313, inset 0 0 0 3rem rgba(45, 212, 191, 0.8)'
+    },
+    '&[data-embed="rubik-algorithms"]::after': {
+      bg: 'linear-gradient(90deg, rgba(255,176,0,0.18) 33%, transparent 33% 66%, rgba(45,212,191,0.18) 66%), linear-gradient(0deg, rgba(255,176,0,0.16) 33%, transparent 33% 66%, rgba(229,226,225,0.12) 66%)',
+      backgroundSize: '6rem 6rem'
+    },
+    '&[data-embed="typing-stats"]::after': {
+      bg: 'repeating-linear-gradient(0deg, transparent 0 1.1rem, rgba(45,212,191,0.18) 1.1rem 1.2rem), linear-gradient(90deg, rgba(45,212,191,0.16), transparent)'
+    },
+    '&[data-embed="piano-chords"]::after': {
+      bg: 'repeating-linear-gradient(90deg, rgba(229,226,225,0.16) 0 2.4rem, rgba(14,14,14,0.42) 2.4rem 3rem)'
+    },
+    '&[data-embed="darts-board"]::before': {
+      inset: '3rem',
+      rounded: 'full',
+      boxShadow:
+        'inset 0 0 0 0.35rem #ffb000, inset 0 0 0 2.5rem #131313, inset 0 0 0 2.8rem #2dd4bf, inset 0 0 0 5rem rgba(255,176,0,0.1)'
+    },
+    '&[data-embed="link-library"]::after': {
+      bg: 'radial-gradient(circle at 28% 32%, #ffb000 0 0.22rem, transparent 0.24rem), radial-gradient(circle at 62% 52%, #2dd4bf 0 0.22rem, transparent 0.24rem), radial-gradient(circle at 42% 72%, #e5e2e1 0 0.18rem, transparent 0.2rem), linear-gradient(135deg, transparent 46%, rgba(255,176,0,0.22) 46% 47%, transparent 47%)'
+    },
+    '&[data-embed="field-notes"]::after': {
+      bg: 'repeating-linear-gradient(0deg, transparent 0 1.7rem, rgba(159,142,120,0.18) 1.7rem 1.8rem)'
     }
   }),
   detailVisualLabel: css({
