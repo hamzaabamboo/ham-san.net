@@ -1,8 +1,19 @@
 import { hobbyStyles } from '../hobbyStyles';
+import type { HobbyEmbedProps } from './types';
 
-export const FieldNotesEmbed = () => (
+export const FieldNotesEmbed = ({
+  body = '',
+  links = [],
+  updatedAt,
+  status = 'active'
+}: HobbyEmbedProps) => (
   <div className={hobbyStyles.fieldNotes}>
     <span className={hobbyStyles.fallbackMark}>NT</span>
-    <p>A compact workspace for this hobby.</p>
+    <div>
+      <p>{body ? 'Source note attached' : 'No source note yet'}</p>
+      <span>
+        {status} / {links.length} links / {updatedAt ?? 'live'}
+      </span>
+    </div>
   </div>
 );

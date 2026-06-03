@@ -388,6 +388,7 @@ const componentCount = new Set(
                           color="#c7c6c6"
                           mb={{ base: '4', md: '6' }}
                           maxW="lg"
+                          overflowWrap="anywhere"
                           className="line-clamp-2"
                         >
                           {hobby.description}
@@ -477,7 +478,7 @@ const componentCount = new Set(
                           <Heading as="h2" fontSize="3xl" fontStyle="italic" mb="4">
                             {hobby.title}
                           </Heading>
-                          <Text color="#c7c6c6" mb="8" className="line-clamp-3">
+                          <Text color="#c7c6c6" mb="8" overflowWrap="anywhere" className="line-clamp-3">
                             {hobby.description}
                           </Text>
                         </Box>
@@ -565,7 +566,12 @@ const componentCount = new Set(
                             {meta.mark}
                           </span>
                         </Box>
-                        <Text color="#c7c6c6" mb={{ base: '6', md: '8' }} className="line-clamp-3">
+                        <Text
+                          color="#c7c6c6"
+                          mb={{ base: '6', md: '8' }}
+                          overflowWrap="anywhere"
+                          className="line-clamp-3"
+                        >
                           {hobby.description}
                         </Text>
                         <Box
@@ -765,7 +771,12 @@ const componentCount = new Set(
                         >
                           {hobby.title}
                         </Heading>
-                        <Text color="#c7c6c6" maxW="md" className="line-clamp-2">
+                        <Text
+                          color="#c7c6c6"
+                          maxW="md"
+                          overflowWrap="anywhere"
+                          className="line-clamp-2"
+                        >
                           {hobby.description}
                         </Text>
                         <Box

@@ -458,7 +458,19 @@ export const hobbyStyles = {
       mb: '0',
       color: '#c7c6c6',
       lineHeight: '1.65'
+    },
+    '& a': {
+      color: '#ffb000',
+      textDecoration: 'none',
+      overflowWrap: 'anywhere',
+      _hover: {
+        color: '#e5e2e1'
+      }
     }
+  }),
+  algorithmShell: css({
+    display: 'grid',
+    gap: '4'
   }),
   algorithm: css({
     display: 'grid',
@@ -503,6 +515,38 @@ export const hobbyStyles = {
       textTransform: 'uppercase'
     }
   }),
+  algorithmResources: css({
+    display: 'grid',
+    gap: '1px',
+    gridTemplateColumns: { base: '1fr', md: 'repeat(2, 1fr)' },
+    border: '1px solid #524533',
+    bg: '#524533',
+    '& a': {
+      display: 'grid',
+      gap: '2',
+      minH: '44px',
+      p: '4',
+      color: '#c7c6c6',
+      textDecoration: 'none',
+      bg: '#131313',
+      _hover: {
+        color: '#ffb000',
+        bg: '#1c1b1b'
+      }
+    },
+    '& span': {
+      color: '#ffb000',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase'
+    },
+    '& strong': {
+      fontSize: 'sm',
+      fontWeight: 'normal',
+      overflowWrap: 'anywhere'
+    }
+  }),
   stats: css({
     display: 'grid',
     gap: '1px',
@@ -527,6 +571,83 @@ export const hobbyStyles = {
       fontFamily: 'JetBrains Mono, monospace',
       fontSize: 'clamp(1.5rem, 4vw, 2.5rem)'
     }
+  }),
+  sourceModule: css({
+    display: 'grid',
+    gap: '4'
+  }),
+  sourceStats: css({
+    display: 'grid',
+    gap: '1px',
+    gridTemplateColumns: { base: '1fr', md: 'repeat(4, 1fr)' },
+    border: '1px solid #524533',
+    bg: '#524533',
+    '& div': {
+      minW: '0',
+      p: '4',
+      bg: '#131313'
+    },
+    '& span': {
+      color: '#9f8e78',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase'
+    },
+    '& strong': {
+      display: 'block',
+      mt: '2',
+      color: '#2dd4bf',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+      lineHeight: '1.4',
+      textTransform: 'uppercase',
+      overflowWrap: 'anywhere'
+    }
+  }),
+  sourceLinks: css({
+    display: 'grid',
+    gap: '1px',
+    gridTemplateColumns: { base: '1fr', md: 'repeat(2, 1fr)' },
+    border: '1px solid #524533',
+    bg: '#524533',
+    '& a': {
+      display: 'grid',
+      gap: '2',
+      minH: '44px',
+      p: '4',
+      color: '#c7c6c6',
+      textDecoration: 'none',
+      bg: '#0e0e0e',
+      _hover: {
+        color: '#ffb000',
+        bg: '#1c1b1b'
+      }
+    },
+    '& span': {
+      color: '#ffb000',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      overflowWrap: 'anywhere'
+    },
+    '& strong': {
+      fontSize: 'sm',
+      fontWeight: 'normal',
+      overflowWrap: 'anywhere'
+    }
+  }),
+  sourceEmpty: css({
+    border: '1px solid #524533',
+    m: '0',
+    p: '5',
+    color: '#9f8e78',
+    fontFamily: 'JetBrains Mono, monospace',
+    fontSize: '10px',
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    bg: '#131313'
   }),
   pianoKeys: css({
     display: 'grid',
@@ -580,6 +701,21 @@ export const hobbyStyles = {
     minH: '22rem',
     color: '#ffb000',
     textAlign: 'center',
-    placeItems: 'center'
+    placeItems: 'center',
+    '& p': {
+      m: '0',
+      color: '#e5e2e1',
+      fontSize: 'lg',
+      fontStyle: 'italic'
+    },
+    '& div span': {
+      display: 'block',
+      mt: '2',
+      color: '#9f8e78',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase'
+    }
   })
 };

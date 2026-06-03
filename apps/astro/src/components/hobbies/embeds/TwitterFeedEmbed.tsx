@@ -1,19 +1,39 @@
 import { hobbyStyles } from '../hobbyStyles';
 import type { HobbyEmbedProps } from './types';
 
-export const TwitterFeedEmbed = ({ description }: HobbyEmbedProps) => (
-  <div className={hobbyStyles.feed}>
-    {['Now', 'Build log', 'Archive'].map((label, index) => (
-      <article key={label}>
-        <span>{label}</span>
-        <p>
-          {index === 0
-            ? description || 'Latest public signal gets pinned here.'
-            : index === 1
-              ? 'Use a Markdown link or frontmatter handle to connect the live feed.'
-              : 'Older posts stay readable even when embeds fail.'}
-        </p>
-      </article>
-    ))}
-  </div>
-);
+const getHostLabel = (href: string) => {
+  try {
+    return new URL(href).hostname.replace(/^www\./, '');
+  } catch {
+    return href;
+  }
+};
+
+export const TwitterFeedEmbed = ({ links = [], description }: HobbyEmbedProps) => {
+  const feedLinks = links
+    .filter((link) => /(x\.com|twitter\.com|bsky\.app|threads\.net|mastodon)/i.test(link.href))
+    .slice(0, 3);
+  const visibleLinks = feedLinks.length > 0 ? feedLinks : links.slice(0, 3);
+
+  return (
+    <div className={hobbyStyles.feed}>
+      {visibleLinks.length > 0 ? (
+        visibleLinks.map((link) => (
+          <article key={link.href}>
+            <span>{getHostLabel(link.href)}</span>
+            <p>
+              <a href={link.href} target="_blank" rel="noreferrer">
+                {link.label}
+              </a>
+            </p>
+          </article>
+        ))
+      ) : (
+        <article>
+          <span>source note</span>
+          <p>{description || 'No public feed link is attached to this note.'}</p>
+        </article>
+      )}
+    </div>
+  );
+};

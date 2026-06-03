@@ -110,6 +110,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               type={embed.type}
               title={data.title}
               description={content.description}
+              body={content.body}
               images={images}
               links={content.links}
               updatedAt={updatedLabel}
@@ -118,17 +119,17 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           ))
         }
 
-        <div class={hobbyStyles.detailSurface}>
-          {
-            content.body && (
+        {
+          content.body && (
+            <div class={hobbyStyles.detailSurface}>
               <Markdown
                 content={content.body}
                 assetsPrefix={outlineAssetPrefix}
                 assetProxyBasePath={outlineAssetProxyPath}
               />
-            )
-          }
-        </div>
+            </div>
+          )
+        }
       </div>
 
       <aside class={hobbyStyles.detailAside}>

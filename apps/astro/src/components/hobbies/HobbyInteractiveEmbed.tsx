@@ -60,6 +60,7 @@ export const HobbyInteractiveEmbed = ({
   type,
   title,
   description,
+  body,
   images = [],
   links = [],
   updatedAt,
@@ -84,6 +85,7 @@ export const HobbyInteractiveEmbed = ({
       <Component
         title={title}
         description={description}
+        body={body}
         images={images}
         links={links}
         updatedAt={updatedAt}

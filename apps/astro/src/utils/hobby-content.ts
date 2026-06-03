@@ -1,5 +1,3 @@
-import { getArticleDescription } from 'outline/article';
-
 export type HobbyFrontmatter = Record<string, string | string[] | boolean | undefined>;
 
 export type HobbyEmbedConfig = {
@@ -43,6 +41,54 @@ const normalize = (value?: string | null) => (value ?? '').trim().toLowerCase();
 
 const asString = (value: HobbyFrontmatter[string]) =>
   typeof value === 'string' ? value.trim() : undefined;
+
+const formatList = (items: string[]) => {
+  if (items.length <= 1) return items[0] ?? '';
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')}, and ${items.at(-1)}`;
+};
+
+const cleanDescription = (value?: string) => {
+  const cleaned = value
+    ?.replace(/!\[[^\]]*]\([^)]+\)/g, '')
+    .replace(/\[([^\]]+)]\([^)]+\)/g, '$1')
+    .replace(/[*_`>#]/g, '')
+    .replace(/\\/g, '')
+    .replace(/\\\.\.\.$/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!cleaned || /^[.\s]+$/.test(cleaned)) return undefined;
+  if (cleaned === '...') return undefined;
+  if (/^(https?:\/\/|www\.)/i.test(cleaned)) return undefined;
+  if (!/[a-z0-9]{3}/i.test(cleaned)) return undefined;
+  if (/^[\w\s/-]+:$/.test(cleaned)) return undefined;
+  return cleaned;
+};
+
+const getProseDescription = (content: string) => {
+  const paragraphs = content
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+  const prose = paragraphs.find(
+    (paragraph) => !/^(#|[-*+]\s|!\[|<?https?:\/\/|www\.|::|<!--)/.test(paragraph)
+  );
+
+  return cleanDescription(prose);
+};
+
+const getHeadingDescription = (content: string) => {
+  const headings = Array.from(content.matchAll(/^#{1,3}\s+(.+)$/gm))
+    .map((match) => cleanDescription(match[1]))
+    .filter((heading): heading is string => !!heading)
+    .map((heading, index) => (index === 0 ? heading : heading.toLowerCase()))
+    .slice(0, 3);
+
+  if (headings.length === 0) return undefined;
+  return `${formatList(headings)}.`;
+};
 
 const parseValue = (value: string) => {
   const trimmed = value.trim();
@@ -209,10 +255,11 @@ export const parseHobbyContent = ({
   const images = extractMarkdownImages(body);
   const links = extractMarkdownLinks(body);
   const description =
-    asString(meta.description) ??
-    asString(meta.summary) ??
-    asString(meta.categoryDescription) ??
-    getArticleDescription(body) ??
+    cleanDescription(asString(meta.description)) ??
+    cleanDescription(asString(meta.summary)) ??
+    cleanDescription(asString(meta.categoryDescription)) ??
+    getProseDescription(body) ??
+    getHeadingDescription(body) ??
     '';
   const banner = asString(meta.banner) ?? asString(meta.image) ?? undefined;
 
