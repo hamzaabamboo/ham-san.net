@@ -895,8 +895,9 @@ export const hobbyStyles = {
   }),
   fieldNotes: css({
     display: 'grid',
-    gap: '3',
+    gap: '5',
     minH: '22rem',
+    p: '6',
     color: '#ffb000',
     textAlign: 'center',
     placeItems: 'center',
@@ -906,14 +907,46 @@ export const hobbyStyles = {
       fontSize: 'lg',
       fontStyle: 'italic'
     },
-    '& div span': {
+    '& strong': {
       display: 'block',
       mt: '2',
+      color: '#ffb000',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase'
+    },
+    '& dl': {
+      display: 'grid',
+      gap: '1px',
+      gridTemplateColumns: { base: '1fr', md: 'repeat(4, 1fr)' },
+      border: '1px solid #524533',
+      w: 'full',
+      maxW: '46rem',
+      m: '0',
+      textAlign: 'left',
+      bg: '#524533'
+    },
+    '& dl div': {
+      p: '4',
+      bg: '#131313'
+    },
+    '& dt': {
       color: '#9f8e78',
       fontFamily: 'JetBrains Mono, monospace',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
+    },
+    '& dd': {
+      display: 'block',
+      ml: '0',
+      mt: '2',
+      color: '#2dd4bf',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+      textTransform: 'uppercase',
+      overflowWrap: 'anywhere'
     }
   })
 };

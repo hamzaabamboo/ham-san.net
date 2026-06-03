@@ -62,7 +62,7 @@ const embedRegistry: Record<string, EmbedDefinition> = {
   },
   'field-notes': {
     title: 'Field notes',
-    description: 'A compact workspace for this hobby.',
+    description: 'Source state, links, and archive metadata.',
     className: 'field-notes',
     Component: FieldNotesEmbed
   }
