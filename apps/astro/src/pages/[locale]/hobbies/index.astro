@@ -289,26 +289,43 @@ const componentCount = new Set(
                             </Text>
                           </Box>
                         </Box>
-                        <Box
-                          position="absolute"
-                          inset={{ base: '12', md: '16' }}
-                          border="2px solid"
-                          borderColor="#ffb000"
-                          zIndex="1"
-                          opacity="0.78"
-                          className={hobbyStyles.cameraPanel}
-                        />
-                        <Box
-                          position="absolute"
-                          inset="0"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          zIndex="2"
-                          pointerEvents="none"
-                        >
-                          <Box className={hobbyStyles.cameraLens} />
-                        </Box>
+                        {hobby.banner ? (
+                          <>
+                            <img src={hobby.banner} alt="" class={hobbyStyles.imageHero} />
+                            <Box
+                              position="absolute"
+                              inset="0"
+                              zIndex="1"
+                              bgGradient="to-t"
+                              gradientFrom="rgba(14, 14, 14, 0.72)"
+                              gradientVia="rgba(14, 14, 14, 0.18)"
+                              gradientTo="rgba(14, 14, 14, 0.12)"
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <Box
+                              position="absolute"
+                              inset={{ base: '12', md: '16' }}
+                              border="2px solid"
+                              borderColor="#ffb000"
+                              zIndex="1"
+                              opacity="0.78"
+                              className={hobbyStyles.cameraPanel}
+                            />
+                            <Box
+                              position="absolute"
+                              inset="0"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              zIndex="2"
+                              pointerEvents="none"
+                            >
+                              <Box className={hobbyStyles.cameraLens} />
+                            </Box>
+                          </>
+                        )}
                         <Box
                           position="absolute"
                           top={{ base: '6', md: '8' }}
@@ -326,9 +343,6 @@ const componentCount = new Set(
                             {readableEmbedType}
                           </Text>
                         </Box>
-                        {hobby.banner && (
-                          <img src={hobby.banner} alt="" class={hobbyStyles.imageHero} />
-                        )}
                         <Box
                           position="absolute"
                           top="4"

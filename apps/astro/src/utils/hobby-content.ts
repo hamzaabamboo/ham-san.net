@@ -7,12 +7,18 @@ export type HobbyEmbedConfig = {
   label: string;
 };
 
+export type HobbyLink = {
+  href: string;
+  label: string;
+};
+
 export type HobbyContentModel = {
   body: string;
   meta: HobbyFrontmatter;
   description: string;
   banner?: string;
   images: string[];
+  links: HobbyLink[];
   embeds: HobbyEmbedConfig[];
   status: 'active' | 'inactive';
   updatedAt?: string;
@@ -120,6 +126,50 @@ export const extractMarkdownImages = (content: string) =>
     .map((match) => match[1]?.trim())
     .filter((src): src is string => !!src);
 
+const formatLinkLabel = (href: string, fallback?: string) => {
+  const label = fallback?.trim();
+  if (label && !/^https?:\/\//i.test(label)) return label;
+
+  try {
+    return new URL(href).hostname.replace(/^www\./, '');
+  } catch {
+    return href;
+  }
+};
+
+export const extractMarkdownLinks = (content: string) => {
+  const links = new Map<string, HobbyLink>();
+
+  for (const match of content.matchAll(/(?<!!)\[([^\]]+)]\(([^)]+)\)/g)) {
+    const href = match[2]?.trim();
+    if (!href || href.startsWith('#')) continue;
+    links.set(href, { href, label: formatLinkLabel(href, match[1]) });
+  }
+
+  for (const match of content.matchAll(/<((?:https?:\/\/|www\.)[^>\s]+)>/g)) {
+    const rawHref = match[1]?.trim().replace(/[.,;:!?]+$/, '');
+    if (!rawHref) continue;
+    const href = rawHref.startsWith('www.') ? `https://${rawHref}` : rawHref;
+    if (!links.has(href)) links.set(href, { href, label: formatLinkLabel(href) });
+  }
+
+  for (const match of content.matchAll(/(?:^|\s)((?:https?:\/\/|www\.)[^\s)]+)/g)) {
+    const rawHref = match[1]?.trim().replace(/[.,;:!?]+$/, '');
+    if (!rawHref) continue;
+    const href = rawHref.startsWith('www.') ? `https://${rawHref}` : rawHref;
+    if (!links.has(href)) links.set(href, { href, label: formatLinkLabel(href) });
+  }
+
+  for (const match of content.matchAll(/(?:^|\s)((?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s)]*)?)/gi)) {
+    const rawHref = match[1]?.trim().replace(/[.,;:!?]+$/, '');
+    if (!rawHref || rawHref.includes('@') || rawHref.startsWith('www.')) continue;
+    const href = `https://${rawHref}`;
+    if (!links.has(href)) links.set(href, { href, label: formatLinkLabel(href) });
+  }
+
+  return Array.from(links.values());
+};
+
 export const inferHobbyEmbed = (
   title?: string | null,
   content?: string,
@@ -157,6 +207,7 @@ export const parseHobbyContent = ({
   const inferred = inferHobbyEmbed(title, body, meta);
   const embeds = directedEmbeds.length > 0 ? directedEmbeds : [{ type: inferred, label: inferred }];
   const images = extractMarkdownImages(body);
+  const links = extractMarkdownLinks(body);
   const description =
     asString(meta.description) ??
     asString(meta.summary) ??
@@ -171,6 +222,7 @@ export const parseHobbyContent = ({
     description,
     banner,
     images,
+    links,
     embeds,
     status: getHobbyStatus(meta),
     updatedAt: asString(meta.updated) ?? asString(meta.updatedAt) ?? fallbackUpdatedAt ?? undefined

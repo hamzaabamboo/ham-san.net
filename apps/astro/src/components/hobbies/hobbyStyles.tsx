@@ -2,6 +2,8 @@ import { css } from 'styled-system/css';
 
 export const hobbyStyles = {
   imageHero: css({
+    inset: '0',
+    pos: 'absolute',
     objectFit: 'cover',
     w: 'full',
     h: 'full',
@@ -373,6 +375,41 @@ export const hobbyStyles = {
     color: '#ffb000',
     textAlign: 'center',
     placeItems: 'center'
+  }),
+  gallerySources: css({
+    display: 'grid',
+    gap: '4',
+    alignContent: 'center',
+    minH: '22rem',
+    p: '6',
+    color: '#ffb000',
+    textAlign: 'center',
+    '& strong': {
+      color: '#e5e2e1',
+      fontSize: '1rem'
+    },
+    '& div': {
+      display: 'grid',
+      gap: '2',
+      mt: '2'
+    },
+    '& a': {
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      border: '1px solid #524533',
+      minH: '44px',
+      color: '#ffb000',
+      textDecoration: 'none',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      _hover: {
+        borderColor: '#ffb000',
+        bg: 'rgba(255, 176, 0, 0.08)'
+      }
+    }
   }),
   galleryRail: css({
     display: 'grid',
