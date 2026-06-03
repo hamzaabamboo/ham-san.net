@@ -70,6 +70,10 @@ const embedVisualMeta: Record<string, { mark: string; label: string }> = {
 const visualMeta = embedVisualMeta[embedType] ?? embedVisualMeta['field-notes'];
 const banner = resolveHobbyAssetUrl(content.banner);
 const images = content.images.map(resolveHobbyAssetUrl).filter((image): image is string => !!image);
+const nestedPages = childDocuments.map((child) => ({
+  title: child.title ?? 'Untitled',
+  href: `/${locale}/hobbies/${rootId}/doc/${child.id}`
+}));
 const updatedLabel = content.updatedAt
   ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
       new Date(content.updatedAt)
@@ -128,6 +132,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               body={content.body}
               images={images}
               links={content.links}
+              nestedPages={nestedPages}
               updatedAt={updatedLabel}
               status={content.status}
             />

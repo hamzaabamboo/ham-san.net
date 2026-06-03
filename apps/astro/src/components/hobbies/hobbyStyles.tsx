@@ -564,6 +564,22 @@ export const hobbyStyles = {
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
+    },
+    '& a': {
+      display: 'inline-flex',
+      alignItems: 'center',
+      minH: '44px',
+      mt: '6',
+      color: '#ffb000',
+      textDecoration: 'none',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      fontWeight: '700',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      _hover: {
+        color: '#e5e2e1'
+      }
     }
   }),
   algorithmResources: css({

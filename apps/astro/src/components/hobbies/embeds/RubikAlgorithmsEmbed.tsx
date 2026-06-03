@@ -1,45 +1,79 @@
 import { useState } from 'react';
 import { hobbyStyles } from '../hobbyStyles';
+import { cleanSourceText, getHostLabel, getListItems, getMarkdownSection } from './source';
 import type { HobbyEmbedProps } from './types';
 
-const algorithms = [
-  { name: 'Sexy move', notation: "R U R' U'", use: 'fingertrick warmup' },
-  { name: 'Sune', notation: "R U R' U R U2 R'", use: 'OLL recognition' },
-  { name: 'T perm', notation: "R U R' U' R' F R2 U' R' U' R U R' F'", use: 'PLL baseline' }
-];
-
-const getHostLabel = (href: string) => {
-  try {
-    return new URL(href).hostname.replace(/^www\./, '');
-  } catch {
-    return href;
-  }
+type AlgorithmSet = {
+  name: string;
+  notation: string;
+  use: string;
+  href?: string;
 };
 
-export const RubikAlgorithmsEmbed = ({ links = [] }: HobbyEmbedProps) => {
+const parseSourceAlgorithms = (body: string): AlgorithmSet[] =>
+  getListItems(getMarkdownSection(body, 'Algorithms'))
+    .map((item) => {
+      const [name, ...notationParts] = item.split(':');
+      const notation = cleanSourceText(notationParts.join(':'));
+
+      return {
+        name: cleanSourceText(name ?? item),
+        notation: notation || cleanSourceText(item),
+        use: 'source note'
+      } satisfies AlgorithmSet;
+    })
+    .filter((algorithm) => algorithm.name && algorithm.notation);
+
+export const RubikAlgorithmsEmbed = ({
+  body = '',
+  links = [],
+  nestedPages = []
+}: HobbyEmbedProps) => {
   const [activeAlgorithm, setActiveAlgorithm] = useState(0);
-  const resources = links.slice(0, 4);
+  const sourceAlgorithms = parseSourceAlgorithms(body);
+  const resources = links
+    .filter((link) =>
+      /(cube|cubing|oll|pll|alg|speedcube|jperm|cstimer|cubeskills|bestsiteever)/i.test(
+        `${link.label} ${link.href}`
+      )
+    )
+    .slice(0, 6);
+  const sourceSets: AlgorithmSet[] =
+    sourceAlgorithms.length > 0
+      ? sourceAlgorithms
+      : nestedPages.map((page) => ({
+          name: page.title,
+          notation: page.title,
+          use: 'nested source page',
+          href: page.href
+        }));
+  const activeSet = sourceSets[activeAlgorithm] ?? sourceSets[0];
 
   return (
     <div className={hobbyStyles.algorithmShell}>
-      <div className={hobbyStyles.algorithm}>
-        <div className={hobbyStyles.algorithmTabs}>
-          {algorithms.map((algorithm, index) => (
-            <button
-              key={algorithm.name}
-              type="button"
-              data-active={index === activeAlgorithm}
-              onClick={() => setActiveAlgorithm(index)}
-            >
-              {algorithm.name}
-            </button>
-          ))}
+      {sourceSets.length > 0 ? (
+        <div className={hobbyStyles.algorithm}>
+          <div className={hobbyStyles.algorithmTabs}>
+            {sourceSets.map((algorithm, index) => (
+              <button
+                key={algorithm.name}
+                type="button"
+                data-active={index === activeAlgorithm}
+                onClick={() => setActiveAlgorithm(index)}
+              >
+                {algorithm.name}
+              </button>
+            ))}
+          </div>
+          <div className={hobbyStyles.algorithmViewer}>
+            <p>{activeSet?.notation}</p>
+            <span>{activeSet?.use}</span>
+            {activeSet?.href && <a href={activeSet.href}>Open source page</a>}
+          </div>
         </div>
-        <div className={hobbyStyles.algorithmViewer}>
-          <p>{algorithms[activeAlgorithm].notation}</p>
-          <span>{algorithms[activeAlgorithm].use}</span>
-        </div>
-      </div>
+      ) : (
+        <p className={hobbyStyles.sourceEmpty}>No algorithm sets in the source note.</p>
+      )}
       {resources.length > 0 && (
         <div className={hobbyStyles.algorithmResources}>
           {resources.map((link) => (

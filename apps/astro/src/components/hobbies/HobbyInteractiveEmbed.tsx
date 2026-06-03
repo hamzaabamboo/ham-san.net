@@ -77,6 +77,7 @@ export const HobbyInteractiveEmbed = ({
   body,
   images = [],
   links = [],
+  nestedPages = [],
   updatedAt,
   status = 'active'
 }: HobbyEmbedProps & { type: string }) => {
@@ -102,6 +103,7 @@ export const HobbyInteractiveEmbed = ({
         body={body}
         images={images}
         links={links}
+        nestedPages={nestedPages}
         updatedAt={updatedAt}
         status={status}
       />
