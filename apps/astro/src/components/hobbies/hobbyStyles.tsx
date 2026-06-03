@@ -534,6 +534,9 @@ export const hobbyStyles = {
         bg: '#1c1b1b'
       }
     },
+    '& a:last-of-type:nth-of-type(odd)': {
+      gridColumn: { md: '1 / -1' }
+    },
     '& span': {
       color: '#ffb000',
       fontFamily: 'JetBrains Mono, monospace',
@@ -624,6 +627,9 @@ export const hobbyStyles = {
         bg: '#1c1b1b'
       }
     },
+    '& a:last-of-type:nth-of-type(odd)': {
+      gridColumn: { md: '1 / -1' }
+    },
     '& span': {
       color: '#ffb000',
       fontFamily: 'JetBrains Mono, monospace',
@@ -648,6 +654,147 @@ export const hobbyStyles = {
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
     bg: '#131313'
+  }),
+  dartsBoard: css({
+    display: 'grid',
+    gap: '4',
+    alignItems: 'stretch',
+    gridTemplateColumns: { base: '1fr', lg: '16rem minmax(0, 1fr)' }
+  }),
+  dartsTarget: css({
+    pos: 'relative',
+    border: '1px solid #524533',
+    minH: '16rem',
+    bg: '#0e0e0e',
+    overflow: 'hidden',
+    '&::before': {
+      inset: '1.5rem',
+      pos: 'absolute',
+      border: '2px solid #ffb000',
+      rounded: 'full',
+      boxShadow:
+        'inset 0 0 0 1.5rem rgba(255, 176, 0, 0.08), inset 0 0 0 3rem #131313, inset 0 0 0 3.25rem #2dd4bf',
+      content: '""'
+    },
+    '& span': {
+      pos: 'absolute',
+      top: '50%',
+      left: '50%',
+      transformOrigin: '50% 0',
+      w: '2px',
+      h: '44%',
+      bg: '#524533'
+    },
+    '& span:nth-child(1)': {
+      transform: 'rotate(0deg)'
+    },
+    '& span:nth-child(2)': {
+      transform: 'rotate(60deg)'
+    },
+    '& span:nth-child(3)': {
+      transform: 'rotate(120deg)'
+    }
+  }),
+  dartsStats: css({
+    display: 'grid',
+    gap: '1px',
+    gridTemplateColumns: { base: '1fr', md: 'repeat(3, 1fr)' },
+    border: '1px solid #524533',
+    bg: '#524533',
+    '& div': {
+      p: '5',
+      bg: '#131313'
+    },
+    '& span': {
+      color: '#9f8e78',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase'
+    },
+    '& strong': {
+      display: 'block',
+      mt: '3',
+      color: '#ffb000',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+      whiteSpace: 'nowrap'
+    }
+  }),
+  dartsGear: css({
+    display: 'grid',
+    gap: '1px',
+    gridColumn: { lg: '1 / -1' },
+    gridTemplateColumns: { base: '1fr', md: 'repeat(3, 1fr)' },
+    border: '1px solid #524533',
+    bg: '#524533',
+    '& section': {
+      p: '5',
+      bg: '#0e0e0e'
+    },
+    '& span': {
+      color: '#2dd4bf',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase'
+    },
+    '& p': {
+      m: '0.75rem 0 0',
+      color: '#c7c6c6',
+      lineHeight: '1.5',
+      overflowWrap: 'anywhere'
+    }
+  }),
+  linkLibrary: css({
+    display: 'grid',
+    gap: '1px',
+    gridTemplateColumns: { base: '1fr', md: 'repeat(2, 1fr)' },
+    border: '1px solid #524533',
+    bg: '#524533',
+    '& a': {
+      display: 'grid',
+      gap: '2',
+      minH: '44px',
+      p: '5',
+      color: '#c7c6c6',
+      textDecoration: 'none',
+      bg: '#131313',
+      _hover: {
+        color: '#ffb000',
+        bg: '#1c1b1b'
+      }
+    },
+    '& a:last-of-type:nth-of-type(odd)': {
+      gridColumn: { md: '1 / -1' }
+    },
+    '& span': {
+      color: '#ffb000',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase'
+    },
+    '& strong': {
+      color: '#e5e2e1',
+      fontWeight: 'normal',
+      overflowWrap: 'anywhere'
+    },
+    '& small': {
+      color: '#9f8e78',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      overflowWrap: 'anywhere'
+    },
+    '& p': {
+      gridColumn: '1 / -1',
+      m: '0',
+      p: '5',
+      color: '#9f8e78',
+      bg: '#131313'
+    }
   }),
   pianoKeys: css({
     display: 'grid',

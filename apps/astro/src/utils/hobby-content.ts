@@ -25,7 +25,10 @@ export type HobbyContentModel = {
 const embedAliases: Record<string, string> = {
   camera: 'photo-gallery',
   cube: 'rubik-algorithms',
+  darts: 'darts-board',
   gallery: 'photo-gallery',
+  geoguessr: 'link-library',
+  links: 'link-library',
   photo: 'photo-gallery',
   photos: 'photo-gallery',
   piano: 'piano-chords',
@@ -228,8 +231,11 @@ export const inferHobbyEmbed = (
   if (/(photo|camera|film|gallery|lens|street)/.test(haystack)) return 'photo-gallery';
   if (/(rubik|cube|cfop|oll|pll|algorithm)/.test(haystack)) return 'rubik-algorithms';
   if (/(typing|keyboard|wpm|accuracy|layout)/.test(haystack)) return 'typing-stats';
+  if (/(darts|cricket|701|dartslive|target tor)/.test(haystack)) return 'darts-board';
+  if (/(geoguessr|plonkit|mapillary|google\.com\/document)/.test(haystack)) return 'link-library';
   if (/(piano|chord|music|sound|scale|keys)/.test(haystack)) return 'piano-chords';
   if (/(twitter|tweet|x\.com)/.test(haystack)) return 'twitter-feed';
+  if (extractMarkdownLinks(content ?? '').length > 0) return 'link-library';
   return 'field-notes';
 };
 

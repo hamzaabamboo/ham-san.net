@@ -1,5 +1,7 @@
 import type { ComponentType } from 'react';
+import { DartsBoardEmbed } from './embeds/DartsBoardEmbed';
 import { FieldNotesEmbed } from './embeds/FieldNotesEmbed';
+import { LinkLibraryEmbed } from './embeds/LinkLibraryEmbed';
 import { PhotoGalleryEmbed } from './embeds/PhotoGalleryEmbed';
 import { PianoChordsEmbed } from './embeds/PianoChordsEmbed';
 import { RubikAlgorithmsEmbed } from './embeds/RubikAlgorithmsEmbed';
@@ -39,6 +41,18 @@ const embedRegistry: Record<string, EmbedDefinition> = {
     description: 'Profiles and practice references.',
     className: 'typing-stats',
     Component: TypingStatsEmbed
+  },
+  'darts-board': {
+    title: 'Darts board',
+    description: 'Source-backed stats, loadout, and board notes.',
+    className: 'darts-board',
+    Component: DartsBoardEmbed
+  },
+  'link-library': {
+    title: 'Link library',
+    description: 'External references from the source note.',
+    className: 'link-library',
+    Component: LinkLibraryEmbed
   },
   'piano-chords': {
     title: 'Chord player',
