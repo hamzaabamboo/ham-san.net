@@ -10,7 +10,7 @@ export const FieldNotesEmbed = ({
   updatedAt,
   statusLabel = 'Active',
   liveContentLabel = 'Live',
-  emptySourceLabel = 'No source note yet',
+  emptySourceLabel = 'Waiting for source notes.',
   nestedSourcePagesLabel = 'Nested source pages',
   sourceNoteAttachedLabel = 'Source note attached',
   statusMetricLabel = 'Status',

@@ -14,7 +14,7 @@
   "no-date": "ไม่มีวันที่",
   "live-content": "เนื้อหาสด",
   "source-backed": "อิงจากแหล่งข้อมูล",
-  "empty-source-description": "ยังไม่มีโน้ตต้นทาง",
+  "empty-source-description": "รอโน้ตต้นทาง",
   "source-note-attached": "มีโน้ตต้นทาง",
   "nested-source-pages": "หน้าต้นทางที่เกี่ยวข้อง",
   "metric-status": "สถานะ",
@@ -47,6 +47,7 @@
   "embed-piano-chords": "เครื่องเล่นคอร์ด",
   "embed-field-notes": "ฟิลด์โน้ต",
   "related-pages-empty": "ยังไม่มีหน้าที่เกี่ยวข้อง",
+  "doc-label": "หน้า",
   "details": "รายละเอียด",
   "explore": "เปิดดู",
   "browse-gallery": "ดูแกลเลอรี",
@@ -61,6 +62,6 @@
   "collaboration-heading": "ติดต่อ",
   "collaboration-body": "เรื่องถ่ายภาพ ดนตรี โน้ตภาษา หรือโปรเจกต์เล็ก ๆ ติดต่อได้ที่นี่",
   "send-message": "ส่งข้อความ",
-  "empty-title": "แกลเลอรีออฟไลน์",
-  "empty-description": "ระบบเนื้อหาออฟไลน์อยู่ งานอดิเรกจะกลับมาแสดงเมื่อเชื่อมต่อได้อีกครั้ง"
+  "empty-title": "โหลดสมุดงานอดิเรกไม่ได้",
+  "empty-description": "ตอนนี้เชื่อมต่อโน้ตต้นทางไม่ได้ งานอดิเรกจะกลับมาแสดงเมื่อเชื่อมต่อได้อีกครั้ง"
 }

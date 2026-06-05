@@ -38,28 +38,20 @@ try {
     });
     clearTimeout(timeout);
     const allDocuments = res.data?.data ?? [];
+    const childrenByParent = new Map<string, { id: string; title: string }[]>();
+    allDocuments.forEach((document: any) => {
+      if (!document.parentDocumentId) return;
+      const children = childrenByParent.get(document.parentDocumentId) ?? [];
+      children.push({
+        id: document.id,
+        title: document.title ?? 'Untitled'
+      });
+      childrenByParent.set(document.parentDocumentId, children);
+    });
     const rootDocuments = allDocuments.filter((d: any) => !d.parentDocumentId);
-    const childPages = await Promise.all(
-      rootDocuments.map(async (document: any) => {
-        try {
-          const childRes = await Promise.race([
-            outlineClient.POST('/documents.list', {
-              body: { parentDocumentId: document.id }
-            }),
-            new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 2500))
-          ]);
-          return (childRes?.data?.data ?? []).map((child: any) => ({
-            id: child.id,
-            title: child.title ?? 'Untitled'
-          }));
-        } catch {
-          return [];
-        }
-      })
-    );
-    hobbiesList = rootDocuments.map((document: any, index: number) => ({
+    hobbiesList = rootDocuments.map((document: any) => ({
       ...document,
-      childPages: childPages[index] ?? []
+      childPages: childrenByParent.get(document.id) ?? []
     }));
   } else {
     clearTimeout(timeout);

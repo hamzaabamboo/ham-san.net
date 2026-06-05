@@ -202,6 +202,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 assetsPrefix={outlineAssetPrefix}
                 assetProxyBasePath={outlineAssetProxyPath}
                 openLinkLabel={t('hobbies.open-link')}
+                headingLevelOffset={1}
               />
             </div>
           )
@@ -220,7 +221,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                     aria-current={child.id === data.id ? 'page' : undefined}
                   >
                     <span>{child.title}</span>
-                    <span>DOC</span>
+                    <span>{t('hobbies.doc-label')}</span>
                   </a>
                 ))}
               </div>

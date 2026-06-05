@@ -14,7 +14,7 @@
   "no-date": "日付なし",
   "live-content": "ライブコンテンツ",
   "source-backed": "ソース連動",
-  "empty-source-description": "ソースノートはまだありません。",
+  "empty-source-description": "ソースノート待ちです。",
   "source-note-attached": "ソースノートあり",
   "nested-source-pages": "関連ソースページ",
   "metric-status": "状態",
@@ -47,6 +47,7 @@
   "embed-piano-chords": "コードプレイヤー",
   "embed-field-notes": "フィールドノート",
   "related-pages-empty": "関連ページはまだありません。",
+  "doc-label": "ページ",
   "details": "詳細",
   "explore": "見る",
   "browse-gallery": "ギャラリーを見る",
@@ -61,6 +62,6 @@
   "collaboration-heading": "連絡",
   "collaboration-body": "写真、音楽、語学メモ、小さな制作物についてはこちらから。",
   "send-message": "メッセージを送る",
-  "empty-title": "ギャラリーはオフラインです",
-  "empty-description": "コンテンツシステムとの接続が切れています。接続が回復次第、趣味が再表示されます。"
+  "empty-title": "趣味ノートを取得できません",
+  "empty-description": "ソースノートに接続できません。接続が回復すると、趣味ページが再表示されます。"
 }

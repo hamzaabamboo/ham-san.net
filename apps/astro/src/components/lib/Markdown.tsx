@@ -18,7 +18,8 @@ export const Markdown = ({
   linksPrefix,
   disableLinks,
   disableInternalLinks,
-  openLinkLabel = 'Open'
+  openLinkLabel = 'Open',
+  headingLevelOffset = 0
 }: {
   content: string;
   assetsPrefix?: string;
@@ -27,7 +28,17 @@ export const Markdown = ({
   disableLinks?: string;
   disableInternalLinks?: boolean;
   openLinkLabel?: string;
+  headingLevelOffset?: number;
 }) => {
+  const headingAs = (level: number) =>
+    `h${Math.min(6, Math.max(1, level + headingLevelOffset))}` as
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6';
+
   const formatBareUrlLabel = (rawUrl: string) => {
     const href = rawUrl.startsWith('www.') ? `https://${rawUrl}` : rawUrl;
     try {
@@ -63,8 +74,8 @@ export const Markdown = ({
         components={{
           h1: ({ ref: __, node: _, ...props }) => (
             <Heading
-              as="h1"
-              fontSize="5xl"
+              as={headingAs(1)}
+              fontSize={headingLevelOffset > 0 ? '4xl' : '5xl'}
               lineHeight="0.95"
               overflowWrap="anywhere"
               fontStyle="italic"
@@ -73,22 +84,32 @@ export const Markdown = ({
           ),
           h2: ({ ref: __, node: _, ...props }) => (
             <Heading
-              as="h2"
+              as={headingAs(2)}
               pt="6"
-              fontSize="4xl"
+              fontSize={headingLevelOffset > 0 ? '3xl' : '4xl'}
               overflowWrap="anywhere"
               fontStyle="italic"
               {...props}
             />
           ),
           h3: ({ ref: __, node: _, ...props }) => (
-            <Heading as="h3" fontSize="3xl" overflowWrap="anywhere" fontStyle="italic" {...props} />
+            <Heading
+              as={headingAs(3)}
+              fontSize={headingLevelOffset > 0 ? '2xl' : '3xl'}
+              overflowWrap="anywhere"
+              fontStyle="italic"
+              {...props}
+            />
           ),
-          h4: ({ ref: __, node: _, ...props }) => <Heading as="h4" fontSize="2xl" {...props} />,
+          h4: ({ ref: __, node: _, ...props }) => (
+            <Heading as={headingAs(4)} fontSize="2xl" {...props} />
+          ),
           h5: ({ ref: __, node: _, ...props }) => (
-            <Heading as="h5" fontSize="xl" fontWeight="bold" {...props} />
+            <Heading as={headingAs(5)} fontSize="xl" fontWeight="bold" {...props} />
           ),
-          h6: ({ ref: __, node: _, ...props }) => <Heading as="h6" fontSize="xl" {...props} />,
+          h6: ({ ref: __, node: _, ...props }) => (
+            <Heading as={headingAs(6)} fontSize="xl" {...props} />
+          ),
           p: ({ ref: _ref, node: _, ...props }) => (
             <Text
               as="p"

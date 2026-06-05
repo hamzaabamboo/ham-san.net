@@ -14,7 +14,7 @@
   "no-date": "No date",
   "live-content": "Live content",
   "source-backed": "Source-backed",
-  "empty-source-description": "No source note yet.",
+  "empty-source-description": "Waiting for source notes.",
   "source-note-attached": "Source note attached",
   "nested-source-pages": "Nested source pages",
   "metric-status": "Status",
@@ -47,6 +47,7 @@
   "embed-piano-chords": "Chord player",
   "embed-field-notes": "Field notes",
   "related-pages-empty": "No related pages yet.",
+  "doc-label": "Page",
   "details": "Details",
   "explore": "Open",
   "browse-gallery": "Open gallery",
@@ -61,6 +62,6 @@
   "collaboration-heading": "Contact",
   "collaboration-body": "Photography, music, language notes, and small creative projects fit here.",
   "send-message": "Send a message",
-  "empty-title": "Gallery Offline",
-  "empty-description": "The content system is currently unavailable. Hobbies will reappear when the connection is restored."
+  "empty-title": "Hobby notebook unavailable",
+  "empty-description": "The source notebook could not be reached. Hobbies will reappear when the connection is restored."
 }
