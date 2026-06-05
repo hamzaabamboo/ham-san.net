@@ -886,11 +886,15 @@ export const hobbyStyles = {
     gap: '3',
     gridTemplateColumns: { base: '1fr', md: 'repeat(4, 1fr)' },
     mt: '4',
-    '& button': {
+    '& button, & a': {
       cursor: 'pointer',
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       border: '1px solid #524533',
       minH: '44px',
       color: '#c7c6c6',
+      textDecoration: 'none',
       fontFamily: 'JetBrains Mono, monospace',
       fontSize: '10px',
       letterSpacing: '0.12em',

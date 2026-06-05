@@ -56,7 +56,7 @@ const embedRegistry: Record<string, EmbedDefinition> = {
   },
   'piano-chords': {
     title: 'Chord player',
-    description: 'Tap a voicing to hear the shape.',
+    description: 'Source voicings and music pages.',
     className: 'piano-chords',
     Component: PianoChordsEmbed
   },
