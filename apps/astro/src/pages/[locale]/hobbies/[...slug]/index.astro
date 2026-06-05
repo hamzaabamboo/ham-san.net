@@ -4,7 +4,7 @@ import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
-import { parseHobbyContent } from '~/utils/hobby-content';
+import { parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 import { getOutlineSettings } from '~/utils/outline-settings';
@@ -125,6 +125,45 @@ const updatedLabel = content.updatedAt
       new Date(content.updatedAt)
     )
   : t('hobbies.no-date');
+const bodyParts = splitHobbyBodyParts(content.body, content.embeds.length);
+const embedProps = {
+  title: data.title,
+  description: detailDescription,
+  body: content.body,
+  images,
+  links: content.links,
+  nestedPages,
+  statusLabel,
+  moduleLabel: t('hobbies.module-label'),
+  updatedPrefix: t('hobbies.updated-prefix'),
+  liveContentLabel: t('hobbies.live-content'),
+  emptySourceLabel: t('hobbies.empty-source-description'),
+  emptySourceStateLabel: t('hobbies.empty-source-state'),
+  nestedSourcePagesLabel: t('hobbies.nested-source-pages'),
+  sourceNoteAttachedLabel: t('hobbies.source-note-attached'),
+  statusMetricLabel: t('hobbies.metric-status'),
+  linksMetricLabel: t('hobbies.metric-links'),
+  updatedMetricLabel: t('hobbies.metric-updated'),
+  pagesMetricLabel: t('hobbies.metric-pages'),
+  profilesMetricLabel: t('hobbies.metric-profiles'),
+  sourceMetricLabel: t('hobbies.metric-source'),
+  linkedPhotoSourcesLabel: t('hobbies.linked-photo-sources'),
+  noImagesLabel: t('hobbies.no-images'),
+  noLinksLabel: t('hobbies.no-links'),
+  sourceNoteLabel: t('hobbies.source-note'),
+  noFeedLabel: t('hobbies.no-feed'),
+  noTypingProfilesLabel: t('hobbies.no-typing-profiles'),
+  sourceNoteUseLabel: t('hobbies.source-note-use'),
+  nestedSourcePageUseLabel: t('hobbies.nested-source-page-use'),
+  openSourcePageLabel: t('hobbies.open-source-page'),
+  noAlgorithmSetsLabel: t('hobbies.no-algorithm-sets'),
+  audioUnavailableLabel: t('hobbies.audio-unavailable'),
+  playedLabel: t('hobbies.played'),
+  audioStartsAfterTapLabel: t('hobbies.audio-starts-after-tap'),
+  sourcePagesAttachedLabel: t('hobbies.source-pages-attached'),
+  updatedAt: updatedLabel,
+  status: effectiveStatus
+};
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
@@ -160,64 +199,34 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
     <section class={hobbyStyles.detailBody}>
       <div class={hobbyStyles.detailMain}>
         {
-          content.embeds.map((embed) => (
-            <HobbyInteractiveEmbed
-              client:load
-              type={embed.type}
-              title={data.title}
-              description={detailDescription}
-              body={content.body}
-              images={images}
-              links={content.links}
-              nestedPages={nestedPages}
-              statusLabel={statusLabel}
-              moduleLabel={t('hobbies.module-label')}
-              moduleTitle={embed.label === embed.type ? getEmbedLabel(embed.type) : embed.label}
-              moduleDescription={getEmbedDescription(embed.type)}
-              updatedPrefix={t('hobbies.updated-prefix')}
-              liveContentLabel={t('hobbies.live-content')}
-              emptySourceLabel={t('hobbies.empty-source-description')}
-              emptySourceStateLabel={t('hobbies.empty-source-state')}
-              nestedSourcePagesLabel={t('hobbies.nested-source-pages')}
-              sourceNoteAttachedLabel={t('hobbies.source-note-attached')}
-              statusMetricLabel={t('hobbies.metric-status')}
-              linksMetricLabel={t('hobbies.metric-links')}
-              updatedMetricLabel={t('hobbies.metric-updated')}
-              pagesMetricLabel={t('hobbies.metric-pages')}
-              profilesMetricLabel={t('hobbies.metric-profiles')}
-              sourceMetricLabel={t('hobbies.metric-source')}
-              linkedPhotoSourcesLabel={t('hobbies.linked-photo-sources')}
-              noImagesLabel={t('hobbies.no-images')}
-              noLinksLabel={t('hobbies.no-links')}
-              sourceNoteLabel={t('hobbies.source-note')}
-              noFeedLabel={t('hobbies.no-feed')}
-              noTypingProfilesLabel={t('hobbies.no-typing-profiles')}
-              sourceNoteUseLabel={t('hobbies.source-note-use')}
-              nestedSourcePageUseLabel={t('hobbies.nested-source-page-use')}
-              openSourcePageLabel={t('hobbies.open-source-page')}
-              noAlgorithmSetsLabel={t('hobbies.no-algorithm-sets')}
-              audioUnavailableLabel={t('hobbies.audio-unavailable')}
-              playedLabel={t('hobbies.played')}
-              audioStartsAfterTapLabel={t('hobbies.audio-starts-after-tap')}
-              sourcePagesAttachedLabel={t('hobbies.source-pages-attached')}
-              updatedAt={updatedLabel}
-              status={effectiveStatus}
-            />
-          ))
-        }
+          bodyParts.map((part) => {
+            if (part.type === 'markdown') {
+              return (
+                <div class={hobbyStyles.detailSurface}>
+                  <Markdown
+                    content={part.content}
+                    assetsPrefix={outlineAssetPrefix}
+                    assetProxyBasePath={outlineAssetProxyPath}
+                    openLinkLabel={t('hobbies.open-link')}
+                    headingLevelOffset={1}
+                  />
+                </div>
+              );
+            }
 
-        {
-          content.body && (
-            <div class={hobbyStyles.detailSurface}>
-              <Markdown
-                content={content.body}
-                assetsPrefix={outlineAssetPrefix}
-                assetProxyBasePath={outlineAssetProxyPath}
-                openLinkLabel={t('hobbies.open-link')}
-                headingLevelOffset={1}
+            const embed = content.embeds[part.index];
+            if (!embed) return null;
+
+            return (
+              <HobbyInteractiveEmbed
+                client:load
+                {...embedProps}
+                type={embed.type}
+                moduleTitle={embed.label === embed.type ? getEmbedLabel(embed.type) : embed.label}
+                moduleDescription={getEmbedDescription(embed.type)}
               />
-            </div>
-          )
+            );
+          })
         }
       </div>
 

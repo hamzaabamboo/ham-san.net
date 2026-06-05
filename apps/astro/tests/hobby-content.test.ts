@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { parseHobbyContent } from '../src/utils/hobby-content';
+import { parseHobbyContent, splitHobbyBodyParts } from '../src/utils/hobby-content';
 
 describe('parseHobbyContent', () => {
   test('uses frontmatter labels for inferred embed modules', () => {
@@ -22,7 +22,7 @@ Pictures, gear, and lens references.
     expect(content.updatedAt).toBe('2026-06-05');
   });
 
-  test('extracts labeled slot directives and removes them from body', () => {
+  test('extracts labeled slot directives and leaves an in-content placeholder', () => {
     const content = parseHobbyContent({
       title: 'Rubiks',
       text: `Practice notes.
@@ -35,10 +35,12 @@ More notes.`
     expect(content.embeds).toEqual([{ type: 'rubik-algorithms', label: 'PLL trainer' }]);
     expect(content.body).toBe(`Practice notes.
 
+<!-- hobby-embed:0 -->
+
 More notes.`);
   });
 
-  test('extracts object slot directives with labels', () => {
+  test('extracts object slot directives with labels and leaves an in-content placeholder', () => {
     const content = parseHobbyContent({
       title: 'Typing',
       text: `Layout notes.
@@ -50,6 +52,8 @@ Switch history.`
 
     expect(content.embeds).toEqual([{ type: 'typing-stats', label: 'Profiles and links' }]);
     expect(content.body).toBe(`Layout notes.
+
+<!-- hobby-embed:0 -->
 
 Switch history.`);
   });
@@ -70,5 +74,29 @@ updatedAt: 2026-06-04
     expect(content.banner).toBe('/maps.png');
     expect(content.status).toBe('inactive');
     expect(content.updatedAt).toBe('2026-06-04');
+  });
+
+  test('splits explicit embed placeholders inside markdown body', () => {
+    expect(
+      splitHobbyBodyParts(
+        `Intro.
+
+<!-- hobby-embed:0 -->
+
+After slot.`,
+        1
+      )
+    ).toEqual([
+      { type: 'markdown', content: 'Intro.' },
+      { type: 'embed', index: 0 },
+      { type: 'markdown', content: 'After slot.' }
+    ]);
+  });
+
+  test('places inferred embeds at the start when no explicit slot exists', () => {
+    expect(splitHobbyBodyParts('Plain source note.', 1)).toEqual([
+      { type: 'embed', index: 0 },
+      { type: 'markdown', content: 'Plain source note.' }
+    ]);
   });
 });

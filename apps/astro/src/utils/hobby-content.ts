@@ -10,6 +10,10 @@ export type HobbyLink = {
   label: string;
 };
 
+export type HobbyBodyPart =
+  | { type: 'markdown'; content: string }
+  | { type: 'embed'; index: number };
+
 export type HobbyContentModel = {
   body: string;
   meta: HobbyFrontmatter;
@@ -171,17 +175,38 @@ export const extractHobbyDirectives = (content: string) => {
   const embeds: HobbyEmbedConfig[] = [];
   const body = content
     .split('\n')
-    .filter((line) => {
+    .map((line) => {
       const directive = parseDirective(line.trim());
-      if (!directive) return true;
+      if (!directive) return line;
+      const index = embeds.length;
       embeds.push(directive);
-      return false;
+      return `<!-- hobby-embed:${index} -->`;
     })
     .join('\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 
   return { embeds, body };
+};
+
+export const splitHobbyBodyParts = (body: string, embedCount: number): HobbyBodyPart[] => {
+  const marker = /<!--\s*hobby-embed:(\d+)\s*-->/g;
+  const parts: HobbyBodyPart[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = marker.exec(body))) {
+    const markdown = body.slice(lastIndex, match.index).trim();
+    if (markdown) parts.push({ type: 'markdown', content: markdown });
+    parts.push({ type: 'embed', index: Number(match[1]) });
+    lastIndex = marker.lastIndex;
+  }
+
+  const remaining = body.slice(lastIndex).trim();
+  if (remaining) parts.push({ type: 'markdown', content: remaining });
+
+  if (parts.some((part) => part.type === 'embed') || embedCount === 0) return parts;
+  return [{ type: 'embed', index: 0 }, ...parts];
 };
 
 export const extractMarkdownImages = (content: string) =>
