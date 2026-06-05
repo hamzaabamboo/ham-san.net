@@ -153,4 +153,24 @@ End.`
       { type: 'markdown', content: 'End.' }
     ]);
   });
+
+  test('uses canonical embed labels for unlabeled aliases', () => {
+    const content = parseHobbyContent({
+      title: 'Aliases',
+      text: `Intro.
+
+::photo
+
+Middle.
+
+::rubik
+
+End.`
+    });
+
+    expect(content.embeds).toEqual([
+      { type: 'photo-gallery', label: 'photo-gallery' },
+      { type: 'rubik-algorithms', label: 'rubik-algorithms' }
+    ]);
+  });
 });

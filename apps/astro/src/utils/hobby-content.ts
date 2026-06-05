@@ -175,7 +175,7 @@ const parseDirective = (line: string): HobbyEmbedConfig | undefined => {
     getField(objectMatch?.[1] ?? '', 'title');
   const type = normalizeHobbyEmbedKey(rawType);
   if (!type) return;
-  return { type, label: rawLabel?.trim() || rawType || type };
+  return { type, label: rawLabel?.trim() || type };
 };
 
 export const extractHobbyDirectives = (content: string) => {
