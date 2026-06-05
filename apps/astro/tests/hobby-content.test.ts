@@ -99,4 +99,31 @@ After slot.`,
       { type: 'markdown', content: 'Plain source note.' }
     ]);
   });
+
+  test('keeps multiple explicit embed slots in source order', () => {
+    const content = parseHobbyContent({
+      title: 'Mixed',
+      text: `Start.
+
+::hobby[photo|Gallery]
+
+Middle.
+
+::hobby { type="twitter" label="Feed" }
+
+End.`
+    });
+
+    expect(content.embeds).toEqual([
+      { type: 'photo-gallery', label: 'Gallery' },
+      { type: 'twitter-feed', label: 'Feed' }
+    ]);
+    expect(splitHobbyBodyParts(content.body, content.embeds.length)).toEqual([
+      { type: 'markdown', content: 'Start.' },
+      { type: 'embed', index: 0 },
+      { type: 'markdown', content: 'Middle.' },
+      { type: 'embed', index: 1 },
+      { type: 'markdown', content: 'End.' }
+    ]);
+  });
 });
