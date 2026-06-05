@@ -91,6 +91,22 @@ export const HobbyInteractiveEmbed = ({
   linksMetricLabel,
   updatedMetricLabel,
   pagesMetricLabel,
+  profilesMetricLabel,
+  sourceMetricLabel,
+  linkedPhotoSourcesLabel,
+  noImagesLabel,
+  noLinksLabel,
+  sourceNoteLabel,
+  noFeedLabel,
+  noTypingProfilesLabel,
+  sourceNoteUseLabel,
+  nestedSourcePageUseLabel,
+  openSourcePageLabel,
+  noAlgorithmSetsLabel,
+  audioUnavailableLabel,
+  playedLabel,
+  audioStartsAfterTapLabel,
+  sourcePagesAttachedLabel,
   updatedAt,
   status = 'active'
 }: HobbyEmbedProps & { type: string }) => {
@@ -134,6 +150,22 @@ export const HobbyInteractiveEmbed = ({
         linksMetricLabel={linksMetricLabel}
         updatedMetricLabel={updatedMetricLabel}
         pagesMetricLabel={pagesMetricLabel}
+        profilesMetricLabel={profilesMetricLabel}
+        sourceMetricLabel={sourceMetricLabel}
+        linkedPhotoSourcesLabel={linkedPhotoSourcesLabel}
+        noImagesLabel={noImagesLabel}
+        noLinksLabel={noLinksLabel}
+        sourceNoteLabel={sourceNoteLabel}
+        noFeedLabel={noFeedLabel}
+        noTypingProfilesLabel={noTypingProfilesLabel}
+        sourceNoteUseLabel={sourceNoteUseLabel}
+        nestedSourcePageUseLabel={nestedSourcePageUseLabel}
+        openSourcePageLabel={openSourcePageLabel}
+        noAlgorithmSetsLabel={noAlgorithmSetsLabel}
+        audioUnavailableLabel={audioUnavailableLabel}
+        playedLabel={playedLabel}
+        audioStartsAfterTapLabel={audioStartsAfterTapLabel}
+        sourcePagesAttachedLabel={sourcePagesAttachedLabel}
         updatedAt={updatedAt}
         status={status}
       />

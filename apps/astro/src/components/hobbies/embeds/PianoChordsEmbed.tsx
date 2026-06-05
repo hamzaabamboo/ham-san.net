@@ -85,7 +85,14 @@ const getChordItems = (body: string) => {
     .filter((chord) => chord.name);
 };
 
-export const PianoChordsEmbed = ({ body = '', nestedPages = [] }: HobbyEmbedProps) => {
+export const PianoChordsEmbed = ({
+  body = '',
+  nestedPages = [],
+  audioUnavailableLabel = 'audio unavailable',
+  playedLabel = 'Played',
+  audioStartsAfterTapLabel = 'Audio starts after a tap.',
+  sourcePagesAttachedLabel = 'Source pages attached. Add Chords, Voicings, or Audio lists for playback.'
+}: HobbyEmbedProps) => {
   const [playedChord, setPlayedChord] = useState<string | null>(null);
   const chordItems = getChordItems(body);
   const sourceItems: ChordSource[] =
@@ -99,7 +106,7 @@ export const PianoChordsEmbed = ({ body = '', nestedPages = [] }: HobbyEmbedProp
   const playChord = (name: string, notes: number[]) => {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextClass) {
-      setPlayedChord('audio unavailable');
+      setPlayedChord(audioUnavailableLabel);
       return;
     }
 
@@ -144,10 +151,10 @@ export const PianoChordsEmbed = ({ body = '', nestedPages = [] }: HobbyEmbedProp
       </div>
       <p className={hobbyStyles.pianoStatus}>
         {playedChord
-          ? `Played ${playedChord}`
+          ? `${playedLabel} ${playedChord}`
           : chordItems.length > 0
-            ? 'Audio starts after a tap.'
-            : 'Source pages attached. Add Chords, Voicings, or Audio lists for playback.'}
+            ? audioStartsAfterTapLabel
+            : sourcePagesAttachedLabel}
       </p>
     </div>
   );

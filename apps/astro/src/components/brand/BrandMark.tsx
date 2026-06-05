@@ -31,30 +31,50 @@ export const BrandMark = ({
       <Box
         as="span"
         position="absolute"
-        top="18%"
-        left="8%"
-        w="76%"
-        h="16%"
+        top="10%"
+        left="10%"
+        w="18%"
+        h="80%"
         bg="var(--brand-mark-accent)"
       />
       <Box
         as="span"
         position="absolute"
-        top="42%"
-        left="8%"
-        w="54%"
-        h="16%"
+        top="10%"
+        right="10%"
+        w="18%"
+        h="80%"
         bg="var(--brand-mark-color)"
-        opacity="0.85"
       />
       <Box
         as="span"
         position="absolute"
-        top="66%"
-        left="8%"
-        w="34%"
-        h="16%"
+        top="40%"
+        left="10%"
+        w="80%"
+        h="18%"
         bg="var(--brand-mark-accent)"
+      />
+      <Box
+        as="span"
+        position="absolute"
+        top="10%"
+        left="37%"
+        transform="skewX(-18deg)"
+        w="18%"
+        h="80%"
+        bg="var(--brand-mark-color)"
+        opacity="0.72"
+      />
+      <Box
+        as="span"
+        position="absolute"
+        top="10%"
+        right="10%"
+        w="30%"
+        h="18%"
+        bg="var(--brand-mark-color)"
+        opacity="0.86"
       />
     </Box>
   );

@@ -1,6 +1,8 @@
 ---
 import MainLayout from '~/layouts/MainLayout.astro';
 import { Box, Container, Grid, Stack } from 'styled-system/jsx';
+import { BrandMark } from '~/components/brand/BrandMark';
+import { HobbyTypeGlyph } from '~/components/hobbies/HobbyTypeGlyph';
 import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
@@ -24,7 +26,6 @@ const t = useTranslations(locale);
 const pageTitle = `${t('common.hobbies')} | ${t('common.name')}`;
 
 let hobbiesList: any[] | undefined = undefined;
-let sourceDocumentCount = 0;
 
 try {
   const controller = new AbortController();
@@ -37,7 +38,6 @@ try {
     });
     clearTimeout(timeout);
     const allDocuments = res.data?.data ?? [];
-    sourceDocumentCount = allDocuments.length;
     const rootDocuments = allDocuments.filter((d: any) => !d.parentDocumentId);
     const childPages = await Promise.all(
       rootDocuments.map(async (document: any) => {
@@ -76,20 +76,8 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
     assetProxyBasePath: outlineAssetProxyPath
   });
 
-const embedMeta: Record<string, { label: string; mark: string }> = {
-  'field-notes': { label: 'Notes', mark: 'NT' },
-  'photo-gallery': { label: 'Gallery', mark: 'PG' },
-  'piano-chords': { label: 'Audio', mark: 'AU' },
-  'rubik-algorithms': { label: 'Algorithms', mark: 'RB' },
-  'darts-board': { label: 'Board', mark: 'DB' },
-  'link-library': { label: 'Links', mark: 'LK' },
-  'twitter-feed': { label: 'Feed', mark: 'TW' },
-  'typing-stats': { label: 'Profiles', mark: 'TP' }
-};
 const getEmbedType = (hobby: { embeds: { type: string }[] }) =>
   hobby.embeds[0]?.type ?? 'field-notes';
-const getEmbedMeta = (hobby: { embeds: { type: string }[] }) =>
-  embedMeta[getEmbedType(hobby)] ?? embedMeta['field-notes'];
 const getEmbedLabel = (type?: string) => {
   switch (type) {
     case 'photo-gallery':
@@ -149,7 +137,7 @@ const formatUpdated = (date?: string | null) =>
     ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
         new Date(date)
       )
-    : 'No date';
+    : t('hobbies.no-date');
 const formatNestedDescription = (childPages?: { title: string }[]) => {
   const titles = (childPages ?? [])
     .map((child) => child.title)
@@ -193,79 +181,96 @@ const hobbies = hobbiesList
       })
     )
   : [];
-const activeHobbies = hobbies.filter((hobby) => hobby.status === 'active');
-const inactiveHobbies = hobbies.filter((hobby) => hobby.status === 'inactive');
-const sourcePageCount =
-  sourceDocumentCount ||
-  hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childPages?.length ?? 0), 0);
+const featuredHobbies = hobbies.filter(hasSourceContent).slice(0, 4);
 ---
 
 <MainLayout title={pageTitle} description={t('hobbies.description')}>
   <Container maxW="breakpoint-xl" w="full" py="8" className="page-shell">
     <Stack gap="16">
-      <Box borderLeft="4px solid" borderLeftColor="#ffb000" pl="6" py="2">
-        <Heading
-          as="h1"
-          fontSize={{ base: '5xl', md: '7xl' }}
-          fontStyle="italic"
-          lineHeight="0.95"
-          mb="4"
-        >
-          {t('hobbies.page-heading')}
-        </Heading>
-        <Text color="#c7c6c6" fontSize={{ base: 'lg', md: '2xl' }} maxW="2xl" lineHeight="1.6">
-          {t('hobbies.description')}
-        </Text>
-      </Box>
-
       <Grid
-        gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
-        gap="1px"
-        bg="#524533"
+        gridTemplateColumns={{ base: '1fr', lg: 'minmax(0, 7fr) minmax(22rem, 5fr)' }}
+        gap="0"
         border="1px solid"
         borderColor="#524533"
+        bg="#131313"
       >
-        <Stack bg="#131313" p="5" gap="2">
+        <Stack
+          gap={{ base: '5', md: '7' }}
+          p={{ base: '6', md: '10' }}
+          borderLeft="4px solid"
+          borderLeftColor="#ffb000"
+        >
           <Text
-            fontFamily="var(--font-body)"
-            fontSize={{ base: 'sm', md: 'md' }}
-            fontWeight="700"
-            lineHeight="1.5"
-            color="#9f8e78"
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            letterSpacing="0.16em"
+            color="#2dd4bf"
           >
-            {t('hobbies.stats-active')}
+            {t('hobbies.hero-kicker')}
           </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
-            {String(activeHobbies.length).padStart(2, '0')}
+          <Heading
+            as="h1"
+            fontSize={{ base: '5xl', md: '7xl' }}
+            fontStyle="italic"
+            lineHeight="0.95"
+          >
+            {t('hobbies.page-heading')}
+          </Heading>
+          <Text color="#c7c6c6" fontSize={{ base: 'lg', md: '2xl' }} maxW="3xl" lineHeight="1.55">
+            {t('hobbies.description')}
+          </Text>
+          <Text color="#9f8e78" fontSize={{ base: 'sm', md: 'md' }} lineHeight="1.8" maxW="2xl">
+            {t('hobbies.hero-body')}
           </Text>
         </Stack>
-        <Stack className="note-signal-card" p="5" gap="2">
+        <Stack className="note-signal-card" p={{ base: '6', md: '8' }} gap="5">
           <Text
-            fontFamily="var(--font-body)"
-            fontSize={{ base: 'sm', md: 'md' }}
-            fontWeight="700"
-            lineHeight="1.5"
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            textTransform="uppercase"
+            letterSpacing="0.16em"
             color="#9f8e78"
           >
-            {t('hobbies.stats-pages')}
+            {t('hobbies.hero-rail-title')}
           </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#2dd4bf">
-            {String(sourcePageCount).padStart(2, '0')}
-          </Text>
-        </Stack>
-        <Stack bg="#131313" p="5" gap="2">
-          <Text
-            fontFamily="var(--font-body)"
-            fontSize={{ base: 'sm', md: 'md' }}
-            fontWeight="700"
-            lineHeight="1.5"
-            color="#9f8e78"
-          >
-            {t('hobbies.stats-inactive')}
-          </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffd597">
-            {String(inactiveHobbies.length).padStart(2, '0')}
-          </Text>
+          <Stack gap="3">
+            {
+              featuredHobbies.map((hobby) => {
+                const embedType = getEmbedType(hobby);
+                const readableEmbedType = getEmbedLabel(embedType);
+                return (
+                  <Link
+                    href={`/${locale}/hobbies/${hobby.id}`}
+                    display="grid"
+                    gridTemplateColumns="44px minmax(0, 1fr)"
+                    gap="4"
+                    alignItems="center"
+                    borderBottom="1px solid"
+                    borderColor="#524533"
+                    pb="3"
+                    className="group"
+                  >
+                    <HobbyTypeGlyph type={embedType} label={readableEmbedType} size="badge" />
+                    <Box minW="0">
+                      <Text color="#e5e2e1" fontWeight="700" className="group-hover-amber">
+                        {hobby.title}
+                      </Text>
+                      <Text
+                        color="#9f8e78"
+                        fontSize="sm"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                      >
+                        {readableEmbedType} / {hobby.description}
+                      </Text>
+                    </Box>
+                  </Link>
+                );
+              })
+            }
+          </Stack>
         </Stack>
       </Grid>
 
@@ -302,7 +307,6 @@ const sourcePageCount =
               {hobbies.map((hobby, index) => {
                 const span = index === 0 ? 12 : index === 1 ? 4 : index % 2 === 0 ? 5 : 7;
                 const embedType = getEmbedType(hobby);
-                const meta = getEmbedMeta(hobby);
                 const readableEmbedType = getEmbedLabel(embedType);
                 const previewLinks = getPreviewLinks(hobby);
 
@@ -356,22 +360,11 @@ const sourcePageCount =
                           />
                           <Box
                             position="absolute"
-                            right="-10"
-                            top="-6"
-                            opacity="0.24"
+                            right="-8"
+                            top="-4"
                             className="group-hover-watermark-strong"
                           >
-                            <Text
-                              fontSize={{ base: '180px', md: '240px' }}
-                              fontWeight="black"
-                              fontFamily="var(--font-display)"
-                              fontStyle="italic"
-                              lineHeight="1"
-                              color="#e5e2e1"
-                              aria-hidden="true"
-                            >
-                              {meta.mark}
-                            </Text>
+                            <HobbyTypeGlyph type={getEmbedType(hobby)} size="watermark" />
                           </Box>
                           <Box
                             position="absolute"
@@ -485,16 +478,11 @@ const sourcePageCount =
                               bg="rgba(14, 14, 14, 0.58)"
                               boxShadow="12px 12px 0 rgba(255, 176, 0, 0.12)"
                             >
-                              <Text
-                                fontFamily="JetBrains Mono, monospace"
-                                fontSize={{ base: '5xl', md: '7xl' }}
-                                fontWeight="800"
-                                lineHeight="0.9"
-                                color="#ffb000"
-                                letterSpacing="0.08em"
-                              >
-                                {meta.mark}
-                              </Text>
+                              <HobbyTypeGlyph
+                                type={getEmbedType(hobby)}
+                                label={readableEmbedType}
+                                size="hero"
+                              />
                               <Text
                                 mt="4"
                                 fontFamily="JetBrains Mono, monospace"
@@ -543,9 +531,11 @@ const sourcePageCount =
                           <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic">
                             {hobby.title}
                           </Heading>
-                          <span class={hobbyStyles.typeMark} aria-label={readableEmbedType}>
-                            {meta.mark}
-                          </span>
+                          <HobbyTypeGlyph
+                            type={getEmbedType(hobby)}
+                            label={readableEmbedType}
+                            size="badge"
+                          />
                         </Box>
                         <Box
                           display="flex"
@@ -691,9 +681,7 @@ const sourcePageCount =
                             fontStyle="italic"
                             className="group-hover-underline"
                           >
-                            <span class={hobbyStyles.inlineMark} aria-hidden="true">
-                              {meta.mark}
-                            </span>
+                            <HobbyTypeGlyph type={getEmbedType(hobby)} size="inline" />
                             {t('hobbies.explore')}
                           </Box>
                         </Box>
@@ -710,7 +698,7 @@ const sourcePageCount =
                         fontFamily="var(--font-display)"
                         className="group-hover-watermark"
                       >
-                        {meta.mark}
+                        <HobbyTypeGlyph type={getEmbedType(hobby)} size="watermark" />
                       </Box>
                     </Link>
                   );
@@ -746,9 +734,11 @@ const sourcePageCount =
                           >
                             {hobby.title}
                           </Heading>
-                          <span class={hobbyStyles.typeMark} aria-label={readableEmbedType}>
-                            {meta.mark}
-                          </span>
+                          <HobbyTypeGlyph
+                            type={getEmbedType(hobby)}
+                            label={readableEmbedType}
+                            size="badge"
+                          />
                         </Box>
                         <Text
                           color="#c7c6c6"
@@ -835,7 +825,11 @@ const sourcePageCount =
                               opacity="0.18"
                               className="group-hover-watermark-strong"
                             >
-                              <span class={hobbyStyles.fallbackMark}>{meta.mark}</span>
+                              <HobbyTypeGlyph
+                                type={getEmbedType(hobby)}
+                                label={readableEmbedType}
+                                size="hero"
+                              />
                             </Box>
                             <Box
                               position="absolute"
@@ -1013,9 +1007,7 @@ const sourcePageCount =
                         cursor="pointer"
                         _hover={{ color: '#e5e2e1' }}
                       >
-                        <span class={hobbyStyles.inlineMark} aria-hidden="true">
-                          {meta.mark}
-                        </span>
+                        <HobbyTypeGlyph type={getEmbedType(hobby)} size="inline" />
                         {t('hobbies.explore')}
                       </Box>
                     </Box>
@@ -1041,14 +1033,13 @@ const sourcePageCount =
                   display="flex"
                   alignItems="center"
                 >
-                  <span class={hobbyStyles.inlineMark} aria-hidden="true">
-                    NT
-                  </span>
+                  <HobbyTypeGlyph type="field-notes" size="inline" />
                   {t('hobbies.learning-resources')}
                 </Heading>
                 <Stack as="ul" gap="4">
                   {hobbies.map((hobby) => {
-                    const meta = getEmbedMeta(hobby);
+                    const itemEmbedType = getEmbedType(hobby);
+                    const itemEmbedLabel = getEmbedLabel(itemEmbedType);
                     return (
                       <Link
                         href={`/${locale}/hobbies/${hobby.id}`}
@@ -1064,13 +1055,12 @@ const sourcePageCount =
                         <Text color="#c7c6c6" className="group-hover-amber">
                           {hobby.title}
                         </Text>
-                        <Text
-                          fontFamily="JetBrains Mono, monospace"
-                          fontSize="xs"
-                          opacity="0.5"
-                          textTransform="uppercase"
-                        >
-                          {meta.mark}
+                        <Text opacity="0.5">
+                          <HobbyTypeGlyph
+                            type={itemEmbedType}
+                            label={itemEmbedLabel}
+                            size="inline"
+                          />
                         </Text>
                       </Link>
                     );
@@ -1095,14 +1085,7 @@ const sourcePageCount =
                   pointerEvents="none"
                   transform="rotate(12deg)"
                 >
-                  <Text
-                    fontSize="9xl"
-                    fontWeight="black"
-                    fontFamily="var(--font-body)"
-                    color="#e5e2e1"
-                  >
-                    H
-                  </Text>
+                  <BrandMark size={160} color="#e5e2e1" accent="#ffb000" />
                 </Box>
                 <Heading as="h3" fontSize="2xl" fontStyle="italic" color="#ffb000" mb="4">
                   {t('hobbies.collaboration-heading')}

@@ -1,8 +1,14 @@
 import { useState } from 'react';
+import { HobbyTypeGlyph } from '../HobbyTypeGlyph';
 import { hobbyStyles } from '../hobbyStyles';
 import type { HobbyEmbedProps } from './types';
 
-export const PhotoGalleryEmbed = ({ images = [], links = [] }: HobbyEmbedProps) => {
+export const PhotoGalleryEmbed = ({
+  images = [],
+  links = [],
+  linkedPhotoSourcesLabel = 'Linked photo sources',
+  noImagesLabel = 'No images attached yet'
+}: HobbyEmbedProps) => {
   const galleryImages = images.slice(0, 6);
   const [activeImage, setActiveImage] = useState(0);
   const photoLinks = links
@@ -23,8 +29,8 @@ export const PhotoGalleryEmbed = ({ images = [], links = [] }: HobbyEmbedProps) 
           <img src={galleryImages[activeImage]} alt="" />
         ) : galleryLinks.length > 0 ? (
           <div className={hobbyStyles.gallerySources}>
-            <span className={hobbyStyles.fallbackMark}>PG</span>
-            <strong>Linked photo sources</strong>
+            <HobbyTypeGlyph type="photo-gallery" size="hero" />
+            <strong>{linkedPhotoSourcesLabel}</strong>
             <div>
               {galleryLinks.map((link) => (
                 <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
@@ -35,8 +41,8 @@ export const PhotoGalleryEmbed = ({ images = [], links = [] }: HobbyEmbedProps) 
           </div>
         ) : (
           <div className={hobbyStyles.galleryFallback}>
-            <span className={hobbyStyles.fallbackMark}>PG</span>
-            <strong>No images attached yet</strong>
+            <HobbyTypeGlyph type="photo-gallery" size="hero" />
+            <strong>{noImagesLabel}</strong>
           </div>
         )}
       </div>

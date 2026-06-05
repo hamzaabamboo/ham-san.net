@@ -10,7 +10,7 @@ type AlgorithmSet = {
   href?: string;
 };
 
-const parseSourceAlgorithms = (body: string): AlgorithmSet[] =>
+const parseSourceAlgorithms = (body: string, sourceNoteUseLabel: string): AlgorithmSet[] =>
   getListItems(getMarkdownSection(body, 'Algorithms'))
     .map((item) => {
       const [name, ...notationParts] = item.split(':');
@@ -19,7 +19,7 @@ const parseSourceAlgorithms = (body: string): AlgorithmSet[] =>
       return {
         name: cleanSourceText(name ?? item),
         notation: notation || cleanSourceText(item),
-        use: 'source note'
+        use: sourceNoteUseLabel
       } satisfies AlgorithmSet;
     })
     .filter((algorithm) => algorithm.name && algorithm.notation);
@@ -27,10 +27,14 @@ const parseSourceAlgorithms = (body: string): AlgorithmSet[] =>
 export const RubikAlgorithmsEmbed = ({
   body = '',
   links = [],
-  nestedPages = []
+  nestedPages = [],
+  sourceNoteUseLabel = 'source note',
+  nestedSourcePageUseLabel = 'nested source page',
+  openSourcePageLabel = 'Open source page',
+  noAlgorithmSetsLabel = 'No algorithm sets in the source note.'
 }: HobbyEmbedProps) => {
   const [activeAlgorithm, setActiveAlgorithm] = useState(0);
-  const sourceAlgorithms = parseSourceAlgorithms(body);
+  const sourceAlgorithms = parseSourceAlgorithms(body, sourceNoteUseLabel);
   const resources = links
     .filter((link) =>
       /(cube|cubing|oll|pll|alg|speedcube|jperm|cstimer|cubeskills|bestsiteever)/i.test(
@@ -44,7 +48,7 @@ export const RubikAlgorithmsEmbed = ({
       : nestedPages.map((page) => ({
           name: page.title,
           notation: page.title,
-          use: 'nested source page',
+          use: nestedSourcePageUseLabel,
           href: page.href
         }));
   const activeSet = sourceSets[activeAlgorithm] ?? sourceSets[0];
@@ -68,11 +72,11 @@ export const RubikAlgorithmsEmbed = ({
           <div className={hobbyStyles.algorithmViewer}>
             <p>{activeSet?.notation}</p>
             <span>{activeSet?.use}</span>
-            {activeSet?.href && <a href={activeSet.href}>Open source page</a>}
+            {activeSet?.href && <a href={activeSet.href}>{openSourcePageLabel}</a>}
           </div>
         </div>
       ) : (
-        <p className={hobbyStyles.sourceEmpty}>No algorithm sets in the source note.</p>
+        <p className={hobbyStyles.sourceEmpty}>{noAlgorithmSetsLabel}</p>
       )}
       {resources.length > 0 && (
         <div className={hobbyStyles.algorithmResources}>

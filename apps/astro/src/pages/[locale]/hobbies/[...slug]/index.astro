@@ -1,5 +1,6 @@
 ---
 import { HobbyInteractiveEmbed } from '~/components/hobbies/HobbyInteractiveEmbed';
+import { HobbyTypeGlyph } from '~/components/hobbies/HobbyTypeGlyph';
 import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
@@ -98,24 +99,13 @@ const getEmbedLabel = (type?: string) => {
 const embedLabel = getEmbedLabel(embedType);
 const statusLabel =
   effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
-const embedVisualMeta: Record<string, { mark: string; label: string }> = {
-  'photo-gallery': { mark: 'PG', label: 'gallery source' },
-  'rubik-algorithms': { mark: 'RB', label: 'algorithm set' },
-  'typing-stats': { mark: 'TP', label: 'profile telemetry' },
-  'piano-chords': { mark: 'AU', label: 'audio module' },
-  'darts-board': { mark: 'DB', label: 'board log' },
-  'link-library': { mark: 'LK', label: 'reference map' },
-  'twitter-feed': { mark: 'TW', label: 'signal feed' },
-  'field-notes': { mark: 'NT', label: 'source note' }
-};
-const visualMeta = embedVisualMeta[embedType] ?? embedVisualMeta['field-notes'];
 const banner = resolveHobbyAssetUrl(content.banner);
 const images = content.images.map(resolveHobbyAssetUrl).filter((image): image is string => !!image);
 const updatedLabel = content.updatedAt
   ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
       new Date(content.updatedAt)
     )
-  : 'No date';
+  : t('hobbies.no-date');
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
@@ -148,7 +138,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               class={cx(hobbyStyles.detailFallback, 'fallback-grid-lines')}
               data-embed={embedType}
             >
-              <span aria-hidden="true">{visualMeta.mark}</span>
+              <HobbyTypeGlyph type={embedType} label={embedLabel} size="hero" />
               <small>{embedLabel}</small>
             </div>
           )
@@ -182,6 +172,22 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               linksMetricLabel={t('hobbies.metric-links')}
               updatedMetricLabel={t('hobbies.metric-updated')}
               pagesMetricLabel={t('hobbies.metric-pages')}
+              profilesMetricLabel={t('hobbies.metric-profiles')}
+              sourceMetricLabel={t('hobbies.metric-source')}
+              linkedPhotoSourcesLabel={t('hobbies.linked-photo-sources')}
+              noImagesLabel={t('hobbies.no-images')}
+              noLinksLabel={t('hobbies.no-links')}
+              sourceNoteLabel={t('hobbies.source-note')}
+              noFeedLabel={t('hobbies.no-feed')}
+              noTypingProfilesLabel={t('hobbies.no-typing-profiles')}
+              sourceNoteUseLabel={t('hobbies.source-note-use')}
+              nestedSourcePageUseLabel={t('hobbies.nested-source-page-use')}
+              openSourcePageLabel={t('hobbies.open-source-page')}
+              noAlgorithmSetsLabel={t('hobbies.no-algorithm-sets')}
+              audioUnavailableLabel={t('hobbies.audio-unavailable')}
+              playedLabel={t('hobbies.played')}
+              audioStartsAfterTapLabel={t('hobbies.audio-starts-after-tap')}
+              sourcePagesAttachedLabel={t('hobbies.source-pages-attached')}
               updatedAt={updatedLabel}
               status={effectiveStatus}
             />
@@ -195,6 +201,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 content={content.body}
                 assetsPrefix={outlineAssetPrefix}
                 assetProxyBasePath={outlineAssetProxyPath}
+                openLinkLabel={t('hobbies.open-link')}
               />
             </div>
           )

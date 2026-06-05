@@ -40,53 +40,6 @@ export const hobbyStyles = {
       filter: 'saturate(1.24) contrast(1.08)'
     }
   }),
-  typeMark: css({
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '1px solid #524533',
-    w: '44px',
-    h: '44px',
-    color: '#ffb000',
-    fontFamily: 'JetBrains Mono, monospace',
-    fontSize: '0.72rem',
-    fontWeight: '700',
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-    bg: '#131313'
-  }),
-  inlineMark: css({
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '1px solid #524533',
-    minW: '28px',
-    h: '28px',
-    mr: '2',
-    px: '1.5',
-    color: '#ffb000',
-    fontFamily: 'JetBrains Mono, monospace',
-    fontSize: '0.62rem',
-    fontWeight: '700',
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-    bg: '#131313'
-  }),
-  fallbackMark: css({
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '1px solid #ffb000',
-    w: '28',
-    h: '28',
-    color: '#ffb000',
-    fontFamily: 'JetBrains Mono, monospace',
-    fontSize: '2rem',
-    fontWeight: '700',
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-    bg: 'rgba(255, 176, 0, 0.08)'
-  }),
   detail: css({
     w: 'min(100%, 1280px)',
     mx: 'auto',
@@ -163,9 +116,11 @@ export const hobbyStyles = {
     overflow: 'hidden'
   }),
   detailFallback: css({
+    display: 'grid',
     inset: '0',
     pos: 'absolute',
     bg: 'linear-gradient(135deg, rgba(255,176,0,0.08), transparent 42%), #131313',
+    placeItems: 'center',
     '&::before': {
       inset: '2rem',
       pos: 'absolute',
@@ -177,17 +132,6 @@ export const hobbyStyles = {
       pos: 'absolute',
       opacity: '0.42',
       content: '""'
-    },
-    '& span': {
-      pos: 'absolute',
-      right: '1rem',
-      bottom: '-2rem',
-      color: '#e5e2e1',
-      fontFamily: 'JetBrains Mono, monospace',
-      fontSize: 'clamp(6rem, 14vw, 11rem)',
-      fontWeight: '700',
-      lineHeight: '1',
-      opacity: '0.1'
     },
     '& small': {
       pos: 'absolute',

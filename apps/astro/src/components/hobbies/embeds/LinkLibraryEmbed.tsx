@@ -7,7 +7,11 @@ const formatLabel = (label: string, href: string) => {
   return label;
 };
 
-export const LinkLibraryEmbed = ({ links = [], description }: HobbyEmbedProps) => {
+export const LinkLibraryEmbed = ({
+  links = [],
+  description,
+  noLinksLabel = 'No external links in this source note.'
+}: HobbyEmbedProps) => {
   const visibleLinks = links.slice(0, 8);
 
   return (
@@ -21,7 +25,7 @@ export const LinkLibraryEmbed = ({ links = [], description }: HobbyEmbedProps) =
           </a>
         ))
       ) : (
-        <p>{description || 'No external links in this source note.'}</p>
+        <p>{description || noLinksLabel}</p>
       )}
     </div>
   );

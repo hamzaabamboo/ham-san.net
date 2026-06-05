@@ -1,3 +1,4 @@
+import { HobbyTypeGlyph } from '../HobbyTypeGlyph';
 import { hobbyStyles } from '../hobbyStyles';
 import type { HobbyEmbedProps } from './types';
 
@@ -32,7 +33,7 @@ export const FieldNotesEmbed = ({
 
   return (
     <div className={hobbyStyles.fieldNotes}>
-      <span className={hobbyStyles.fallbackMark}>NT</span>
+      <HobbyTypeGlyph type="field-notes" size="hero" />
       <div>
         <p>{sourceState}</p>
         <strong>{title ?? 'Field notes'}</strong>

@@ -13,7 +13,16 @@ export const TypingStatsEmbed = ({
   body = '',
   links = [],
   updatedAt,
-  status = 'active'
+  status = 'active',
+  statusLabel,
+  liveContentLabel = 'live',
+  profilesMetricLabel = 'profiles',
+  updatedMetricLabel = 'updated',
+  statusMetricLabel = 'status',
+  sourceMetricLabel = 'source',
+  sourceNoteLabel = 'outline',
+  emptySourceLabel = 'empty',
+  noTypingProfilesLabel = 'No external typing profiles in the source note.'
 }: HobbyEmbedProps) => {
   const profileLinks = links
     .filter((link) =>
@@ -22,10 +31,10 @@ export const TypingStatsEmbed = ({
     .slice(0, 6);
   const visibleLinks = profileLinks.length > 0 ? profileLinks : links.slice(0, 6);
   const sourceRows = [
-    ['profiles', String(visibleLinks.length)],
-    ['updated', updatedAt ?? 'live'],
-    ['status', status],
-    ['source', body ? 'outline' : 'empty']
+    [profilesMetricLabel, String(visibleLinks.length)],
+    [updatedMetricLabel, updatedAt ?? liveContentLabel],
+    [statusMetricLabel, statusLabel || status],
+    [sourceMetricLabel, body ? sourceNoteLabel : emptySourceLabel]
   ];
 
   return (
@@ -48,7 +57,7 @@ export const TypingStatsEmbed = ({
           ))}
         </div>
       ) : (
-        <p className={hobbyStyles.sourceEmpty}>No external typing profiles in the source note.</p>
+        <p className={hobbyStyles.sourceEmpty}>{noTypingProfilesLabel}</p>
       )}
     </div>
   );

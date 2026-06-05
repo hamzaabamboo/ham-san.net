@@ -9,7 +9,12 @@ const getHostLabel = (href: string) => {
   }
 };
 
-export const TwitterFeedEmbed = ({ links = [], description }: HobbyEmbedProps) => {
+export const TwitterFeedEmbed = ({
+  links = [],
+  description,
+  sourceNoteLabel = 'source note',
+  noFeedLabel = 'No public feed link is attached to this note.'
+}: HobbyEmbedProps) => {
   const feedLinks = links
     .filter((link) => /(x\.com|twitter\.com|bsky\.app|threads\.net|mastodon)/i.test(link.href))
     .slice(0, 3);
@@ -30,8 +35,8 @@ export const TwitterFeedEmbed = ({ links = [], description }: HobbyEmbedProps) =
         ))
       ) : (
         <article>
-          <span>source note</span>
-          <p>{description || 'No public feed link is attached to this note.'}</p>
+          <span>{sourceNoteLabel}</span>
+          <p>{description || noFeedLabel}</p>
         </article>
       )}
     </div>

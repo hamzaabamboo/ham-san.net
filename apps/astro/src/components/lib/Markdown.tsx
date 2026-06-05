@@ -17,7 +17,8 @@ export const Markdown = ({
   assetProxyBasePath,
   linksPrefix,
   disableLinks,
-  disableInternalLinks
+  disableInternalLinks,
+  openLinkLabel = 'Open'
 }: {
   content: string;
   assetsPrefix?: string;
@@ -25,12 +26,13 @@ export const Markdown = ({
   linksPrefix?: string;
   disableLinks?: string;
   disableInternalLinks?: boolean;
+  openLinkLabel?: string;
 }) => {
   const formatBareUrlLabel = (rawUrl: string) => {
     const href = rawUrl.startsWith('www.') ? `https://${rawUrl}` : rawUrl;
     try {
       const url = new URL(href);
-      return `Open ${url.hostname.replace(/^www\./, '')}`;
+      return `${openLinkLabel} ${url.hostname.replace(/^www\./, '')}`;
     } catch {
       return rawUrl;
     }
