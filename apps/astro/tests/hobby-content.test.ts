@@ -37,4 +37,38 @@ More notes.`
 
 More notes.`);
   });
+
+  test('extracts object slot directives with labels', () => {
+    const content = parseHobbyContent({
+      title: 'Typing',
+      text: `Layout notes.
+
+::hobby { type="typing" label="Profiles and links" }
+
+Switch history.`
+    });
+
+    expect(content.embeds).toEqual([{ type: 'typing-stats', label: 'Profiles and links' }]);
+    expect(content.body).toBe(`Layout notes.
+
+Switch history.`);
+  });
+
+  test('uses source metadata before generated fallbacks', () => {
+    const content = parseHobbyContent({
+      title: 'Maps',
+      text: `---
+categoryDescription: Map references and practice routes.
+image: /maps.png
+active: false
+updatedAt: 2026-06-04
+---
+- [Plonkit](https://www.plonkit.net/)`
+    });
+
+    expect(content.description).toBe('Map references and practice routes.');
+    expect(content.banner).toBe('/maps.png');
+    expect(content.status).toBe('inactive');
+    expect(content.updatedAt).toBe('2026-06-04');
+  });
 });

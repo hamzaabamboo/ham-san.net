@@ -145,13 +145,26 @@ export const normalizeHobbyEmbedKey = (token?: string) => {
 };
 
 const parseDirective = (line: string): HobbyEmbedConfig | undefined => {
-  const match =
-    line.match(/^::hobby(?:-embed)?\s*\[\s*([a-zA-Z0-9_-]+)\s*(?:\|\s*([^\]]+?)\s*)?\]\s*$/) ??
-    line.match(/^::hobby(?:-embed)?\s*\{\s*type=["']?([a-zA-Z0-9_-]+)["']?\s*\}\s*$/) ??
-    line.match(/^<!--\s*hobby:([a-zA-Z0-9_-]+)\s*-->\s*$/);
-  const type = normalizeHobbyEmbedKey(match?.[1]);
+  const bracketMatch = line.match(
+    /^::hobby(?:-embed)?\s*\[\s*([a-zA-Z0-9_-]+)\s*(?:\|\s*([^\]]+?)\s*)?\]\s*$/
+  );
+  const objectMatch = line.match(/^::hobby(?:-embed)?\s*\{\s*(.+?)\s*\}\s*$/);
+  const commentMatch = line.match(/^<!--\s*hobby:([a-zA-Z0-9_-]+)\s*-->\s*$/);
+  const getField = (source: string, key: string) => {
+    const match = source.match(
+      new RegExp(`(?:^|[\\s,])${key}\\s*[:=]\\s*(?:"([^"]+)"|'([^']+)'|([^\\s,}]+))`)
+    );
+    return match?.[1] ?? match?.[2] ?? match?.[3];
+  };
+  const rawType =
+    bracketMatch?.[1] ?? commentMatch?.[1] ?? getField(objectMatch?.[1] ?? '', 'type');
+  const rawLabel =
+    bracketMatch?.[2] ??
+    getField(objectMatch?.[1] ?? '', 'label') ??
+    getField(objectMatch?.[1] ?? '', 'title');
+  const type = normalizeHobbyEmbedKey(rawType);
   if (!type) return;
-  return { type, label: match?.[2]?.trim() || match?.[1] || type };
+  return { type, label: rawLabel?.trim() || rawType || type };
 };
 
 export const extractHobbyDirectives = (content: string) => {
