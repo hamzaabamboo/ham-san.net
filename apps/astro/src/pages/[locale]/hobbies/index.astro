@@ -184,7 +184,7 @@ const featuredHobbies = hobbies.filter(hasSourceContent).slice(0, 4);
         gap="0"
         border="1px solid"
         borderColor="#524533"
-        bg="#131313"
+        bg="#171615"
       >
         <Stack
           gap={{ base: '5', md: '7' }}
@@ -196,8 +196,8 @@ const featuredHobbies = hobbies.filter(hasSourceContent).slice(0, 4);
             fontFamily="JetBrains Mono, monospace"
             fontSize="10px"
             textTransform="uppercase"
-            letterSpacing="0.16em"
-            color="#2dd4bf"
+            letterSpacing="0.08em"
+            color="#9f8e78"
           >
             {t('hobbies.hero-kicker')}
           </Text>
@@ -209,14 +209,14 @@ const featuredHobbies = hobbies.filter(hasSourceContent).slice(0, 4);
           >
             {t('hobbies.page-heading')}
           </Heading>
-          <Text color="#c7c6c6" fontSize={{ base: 'lg', md: '2xl' }} maxW="3xl" lineHeight="1.55">
+          <Text color="#e5e2e1" fontSize={{ base: 'lg', md: '2xl' }} maxW="3xl" lineHeight="1.55">
             {t('hobbies.description')}
           </Text>
           <Text color="#9f8e78" fontSize={{ base: 'sm', md: 'md' }} lineHeight="1.8" maxW="2xl">
             {t('hobbies.hero-body')}
           </Text>
         </Stack>
-        <Stack className="note-signal-card" p={{ base: '6', md: '8' }} gap="5">
+        <Stack bg="#1c1b1b" p={{ base: '6', md: '8' }} gap="5">
           <Text
             fontFamily="JetBrains Mono, monospace"
             fontSize="10px"
@@ -242,6 +242,7 @@ const featuredHobbies = hobbies.filter(hasSourceContent).slice(0, 4);
                     borderColor="#524533"
                     pb="3"
                     className="group"
+                    _hover={{ bg: 'rgba(255, 176, 0, 0.05)' }}
                   >
                     <HobbyTypeGlyph type={embedType} label={readableEmbedType} size="badge" />
                     <Box minW="0">

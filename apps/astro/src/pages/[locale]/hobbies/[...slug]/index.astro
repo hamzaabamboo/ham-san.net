@@ -162,7 +162,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               nestedPages={nestedPages}
               statusLabel={statusLabel}
               moduleLabel={t('hobbies.module-label')}
-              moduleTitle={getEmbedLabel(embed.type)}
+              moduleTitle={embed.label === embed.type ? getEmbedLabel(embed.type) : embed.label}
               updatedPrefix={t('hobbies.updated-prefix')}
               liveContentLabel={t('hobbies.live-content')}
               emptySourceLabel={t('hobbies.empty-source-description')}

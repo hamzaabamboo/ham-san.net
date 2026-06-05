@@ -146,12 +146,12 @@ export const normalizeHobbyEmbedKey = (token?: string) => {
 
 const parseDirective = (line: string): HobbyEmbedConfig | undefined => {
   const match =
-    line.match(/^::hobby(?:-embed)?\s*\[\s*([a-zA-Z0-9_-]+)\s*\]\s*$/) ??
+    line.match(/^::hobby(?:-embed)?\s*\[\s*([a-zA-Z0-9_-]+)\s*(?:\|\s*([^\]]+?)\s*)?\]\s*$/) ??
     line.match(/^::hobby(?:-embed)?\s*\{\s*type=["']?([a-zA-Z0-9_-]+)["']?\s*\}\s*$/) ??
     line.match(/^<!--\s*hobby:([a-zA-Z0-9_-]+)\s*-->\s*$/);
   const type = normalizeHobbyEmbedKey(match?.[1]);
   if (!type) return;
-  return { type, label: match?.[1] ?? type };
+  return { type, label: match?.[2]?.trim() || match?.[1] || type };
 };
 
 export const extractHobbyDirectives = (content: string) => {
@@ -165,6 +165,7 @@ export const extractHobbyDirectives = (content: string) => {
       return false;
     })
     .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 
   return { embeds, body };
@@ -257,7 +258,13 @@ export const parseHobbyContent = ({
   const { meta, body: withoutMeta } = parseHobbyFrontmatter(text ?? '');
   const { embeds: directedEmbeds, body } = extractHobbyDirectives(withoutMeta);
   const inferred = inferHobbyEmbed(title, body, meta);
-  const embeds = directedEmbeds.length > 0 ? directedEmbeds : [{ type: inferred, label: inferred }];
+  const inferredLabel =
+    asString(meta.embedLabel) ??
+    asString(meta.componentLabel) ??
+    asString(meta.moduleTitle) ??
+    inferred;
+  const embeds =
+    directedEmbeds.length > 0 ? directedEmbeds : [{ type: inferred, label: inferredLabel }];
   const images = extractMarkdownImages(body);
   const links = extractMarkdownLinks(body);
   const description =
