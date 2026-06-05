@@ -5,6 +5,7 @@ import { css, cx } from 'styled-system/css';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
+import { HobbyTypeGlyph } from '~/components/hobbies/HobbyTypeGlyph';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
@@ -50,6 +51,71 @@ const hobbyThumbnail = css({
   h: 'full',
   objectFit: 'cover',
   filter: 'saturate(1.06) contrast(1.02)'
+});
+const hobbyRow = css({
+  pos: 'relative',
+  transition: 'background-color 160ms ease, border-color 160ms ease',
+  _hover: {
+    bg: 'rgba(255, 176, 0, 0.035)',
+    borderColor: '#765c2f'
+  }
+});
+const hobbyVisual = css({
+  pos: 'relative',
+  display: 'grid',
+  placeItems: 'center',
+  w: { base: '7.5rem', md: '9rem' },
+  maxW: 'full',
+  aspectRatio: '4 / 3',
+  border: '1px solid #524533',
+  bg: '#131313',
+  overflow: 'hidden',
+  '&::before': {
+    pos: 'absolute',
+    inset: '0',
+    content: '""',
+    opacity: '0.85'
+  },
+  '&[data-embed="photo-gallery"]::before': {
+    bg: 'radial-gradient(circle at 30% 20%, rgba(245, 158, 11, 0.24), transparent 34%), linear-gradient(135deg, rgba(255, 176, 0, 0.13), transparent 58%)'
+  },
+  '&[data-embed="typing-stats"]::before': {
+    bg: 'linear-gradient(135deg, rgba(20, 184, 166, 0.2), transparent 46%), linear-gradient(315deg, rgba(99, 102, 241, 0.14), transparent 52%)'
+  },
+  '&[data-embed="piano-chords"]::before': {
+    bg: 'linear-gradient(135deg, rgba(250, 250, 240, 0.14), transparent 42%), linear-gradient(315deg, rgba(168, 85, 247, 0.18), transparent 58%)'
+  },
+  '&[data-embed="darts-board"]::before': {
+    bg: 'radial-gradient(circle at 72% 18%, rgba(132, 204, 22, 0.18), transparent 34%), linear-gradient(135deg, rgba(220, 38, 38, 0.14), transparent 52%)'
+  },
+  '&[data-embed="rubik-algorithms"]::before': {
+    bg: 'linear-gradient(135deg, rgba(239, 68, 68, 0.18), transparent 38%), linear-gradient(225deg, rgba(34, 197, 94, 0.14), transparent 46%), linear-gradient(315deg, rgba(59, 130, 246, 0.14), transparent 54%)'
+  },
+  '&[data-embed="link-library"]::before': {
+    bg: 'linear-gradient(135deg, rgba(56, 189, 248, 0.16), transparent 44%), linear-gradient(315deg, rgba(250, 204, 21, 0.12), transparent 54%)'
+  },
+  '&[data-embed="field-notes"]::before': {
+    bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.16), transparent 44%), linear-gradient(315deg, rgba(45, 212, 191, 0.09), transparent 54%)'
+  },
+  '&[data-visual="image"]::before': {
+    bg: 'linear-gradient(180deg, transparent 38%, rgba(0, 0, 0, 0.54))'
+  }
+});
+const hobbyVisualGlyph = css({
+  pos: 'relative',
+  zIndex: '1',
+  transform: 'scale(0.72)',
+  opacity: '0.92'
+});
+const hobbyVisualIndex = css({
+  pos: 'absolute',
+  right: '2',
+  bottom: '1',
+  zIndex: '2',
+  color: '#ffcf70',
+  fontFamily: 'JetBrains Mono, monospace',
+  fontSize: '10px',
+  letterSpacing: '0.08em'
 });
 
 let hobbiesList: any[] | undefined = undefined;
@@ -226,7 +292,7 @@ const hobbies = hobbiesList
         ) : (
           <>
             <Stack borderTop="1px solid" borderColor="#524533">
-              {hobbies.map((hobby) => {
+              {hobbies.map((hobby, index) => {
                 const embedType = getEmbedType(hobby);
                 const readableEmbedType = getEmbedLabel(embedType);
                 const cardMetrics = [
@@ -253,22 +319,26 @@ const hobbies = hobbiesList
                     py={{ base: '5', md: '6' }}
                     borderBottom="1px solid"
                     borderColor="#524533"
-                    className="group"
+                    className={cx('group', hobbyRow)}
                   >
                     <Stack gap="2">
-                      {hobby.banner && (
-                        <Box
-                          w="9rem"
-                          maxW="full"
-                          aspectRatio="4 / 3"
-                          border="1px solid"
-                          borderColor="#524533"
-                          overflow="hidden"
-                          bg="#131313"
-                        >
+                      <Box
+                        className={hobbyVisual}
+                        data-embed={embedType}
+                        data-visual={hobby.banner ? 'image' : 'glyph'}
+                      >
+                        {hobby.banner ? (
                           <img src={hobby.banner} alt="" class={hobbyThumbnail} loading="lazy" />
-                        </Box>
-                      )}
+                        ) : (
+                          <HobbyTypeGlyph
+                            type={embedType}
+                            label={readableEmbedType}
+                            size="hero"
+                            className={hobbyVisualGlyph}
+                          />
+                        )}
+                        <span class={hobbyVisualIndex}>{String(index + 1).padStart(2, '0')}</span>
+                      </Box>
                       <Text className={metaTextClass} color="#9f8e78">
                         {readableEmbedType}
                       </Text>
