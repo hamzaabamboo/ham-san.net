@@ -115,7 +115,7 @@ export const HobbyInteractiveEmbed = ({
   const Component = embed.Component;
 
   return (
-    <section className={hobbyStyles.embed}>
+    <section className={hobbyStyles.embed} data-embed={embed.className} data-status={status}>
       <div className={hobbyStyles.embedHeader}>
         <div>
           <p className={`${hobbyStyles.embedEyebrow} hobby-meta`}>

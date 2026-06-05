@@ -157,10 +157,82 @@ export const hobbyStyles = {
     lineHeight: '1.8'
   }),
   embed: css({
+    pos: 'relative',
     border: '1px solid #524533',
     p: 'clamp(1.5rem, 3vw, 2.5rem)',
     color: '#e5e2e1',
-    bg: 'linear-gradient(135deg, rgba(45, 212, 191, 0.08), transparent 42%), linear-gradient(315deg, rgba(255, 176, 0, 0.08), transparent 46%), #131313'
+    bg: 'linear-gradient(135deg, rgba(45, 212, 191, 0.08), transparent 42%), linear-gradient(315deg, rgba(255, 176, 0, 0.08), transparent 46%), #131313',
+    overflow: 'hidden',
+    '&::before': {
+      inset: '0 auto 0 0',
+      pos: 'absolute',
+      w: '4px',
+      bg: '#2dd4bf',
+      content: '""'
+    },
+    '&[data-embed="photo-gallery"]': {
+      borderColor: '#765c2f',
+      bg: 'radial-gradient(circle at 18% 0%, rgba(245, 158, 11, 0.22), transparent 34%), linear-gradient(135deg, rgba(255, 176, 0, 0.1), transparent 48%), #15120d',
+      '&::before': {
+        bg: '#f59e0b'
+      }
+    },
+    '&[data-embed="twitter-feed"]': {
+      borderColor: '#25576a',
+      bg: 'radial-gradient(circle at 82% 8%, rgba(56, 189, 248, 0.18), transparent 32%), linear-gradient(135deg, rgba(14, 165, 233, 0.1), transparent 48%), #0d1417',
+      '&::before': {
+        bg: '#38bdf8'
+      }
+    },
+    '&[data-embed="rubik-algorithms"]': {
+      borderColor: '#5d3348',
+      bg: 'linear-gradient(135deg, rgba(239, 68, 68, 0.16), transparent 36%), linear-gradient(225deg, rgba(34, 197, 94, 0.12), transparent 42%), linear-gradient(315deg, rgba(59, 130, 246, 0.12), transparent 48%), #130f12',
+      '&::before': {
+        bg: '#ef4444'
+      }
+    },
+    '&[data-embed="typing-stats"]': {
+      borderColor: '#275e58',
+      bg: 'linear-gradient(135deg, rgba(20, 184, 166, 0.16), transparent 42%), linear-gradient(315deg, rgba(99, 102, 241, 0.12), transparent 46%), #0c1414',
+      '&::before': {
+        bg: '#14b8a6'
+      }
+    },
+    '&[data-embed="darts-board"]': {
+      borderColor: '#4f5f32',
+      bg: 'radial-gradient(circle at 75% 15%, rgba(132, 204, 22, 0.14), transparent 34%), linear-gradient(135deg, rgba(220, 38, 38, 0.1), transparent 42%), #11140d',
+      '&::before': {
+        bg: '#84cc16'
+      }
+    },
+    '&[data-embed="link-library"]': {
+      borderColor: '#345b6f',
+      bg: 'linear-gradient(135deg, rgba(56, 189, 248, 0.12), transparent 44%), linear-gradient(315deg, rgba(250, 204, 21, 0.1), transparent 46%), #0f1418',
+      '&::before': {
+        bg: '#38bdf8'
+      }
+    },
+    '&[data-embed="piano-chords"]': {
+      borderColor: '#5b526d',
+      bg: 'linear-gradient(135deg, rgba(250, 250, 240, 0.11), transparent 36%), linear-gradient(315deg, rgba(168, 85, 247, 0.14), transparent 48%), #131119',
+      '&::before': {
+        bg: '#c4b5fd'
+      }
+    },
+    '&[data-embed="field-notes"]': {
+      borderColor: '#5d4d34',
+      bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.12), transparent 40%), linear-gradient(315deg, rgba(45, 212, 191, 0.07), transparent 48%), #121110',
+      '&::before': {
+        bg: '#ffb000'
+      }
+    },
+    '&[data-status="inactive"]': {
+      borderColor: '#4b453d',
+      bg: 'linear-gradient(135deg, rgba(159, 142, 120, 0.12), transparent 44%), #111111',
+      '&::before': {
+        bg: '#9f8e78'
+      }
+    }
   }),
   embedHeader: css({
     display: 'flex',
