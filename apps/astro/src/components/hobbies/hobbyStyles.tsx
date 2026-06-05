@@ -906,6 +906,31 @@ export const hobbyStyles = {
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     },
+    '& nav': {
+      display: 'flex',
+      gap: '2',
+      justifyContent: 'center',
+      mt: '5',
+      flexWrap: 'wrap'
+    },
+    '& nav a': {
+      display: 'inline-flex',
+      alignItems: 'center',
+      border: '1px solid #524533',
+      minH: '44px',
+      px: '4',
+      color: '#c7c6c6',
+      textDecoration: 'none',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '10px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      bg: '#131313',
+      _hover: {
+        borderColor: '#ffb000',
+        color: '#ffb000'
+      }
+    },
     '& dl': {
       display: 'grid',
       gap: '1px',

@@ -47,6 +47,25 @@ const content = parseHobbyContent({
   text: data.text,
   fallbackUpdatedAt: data.updatedAt ?? data.createdAt
 });
+const nestedPages = childDocuments.map((child) => ({
+  title: child.title ?? 'Untitled',
+  href: `/${locale}/hobbies/${rootId}/doc/${child.id}`
+}));
+const hasExplicitStatus =
+  typeof content.meta.status === 'string' || typeof content.meta.active === 'boolean';
+const hasSourceContent =
+  !!content.body.trim() ||
+  content.images.length > 0 ||
+  content.links.length > 0 ||
+  nestedPages.length > 0;
+const effectiveStatus = hasExplicitStatus || hasSourceContent ? content.status : 'inactive';
+const nestedDescription = nestedPages
+  .map((child) => child.title)
+  .filter(Boolean)
+  .slice(0, 3)
+  .join(' / ');
+const detailDescription =
+  content.description || nestedDescription || t('hobbies.empty-source-description');
 const pageTitle = `${data.title ?? t('common.hobbies')} | ${t('common.name')}`;
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = getOutlineAssetProxyPath(locale);
@@ -56,9 +75,29 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
     assetProxyBasePath: outlineAssetProxyPath
   });
 const embedType = content.embeds[0]?.type ?? 'field-notes';
-const embedLabel = embedType.replace(/-/g, ' ');
+const getEmbedLabel = (type?: string) => {
+  switch (type) {
+    case 'photo-gallery':
+      return t('hobbies.embed-photo-gallery');
+    case 'twitter-feed':
+      return t('hobbies.embed-twitter-feed');
+    case 'rubik-algorithms':
+      return t('hobbies.embed-rubik-algorithms');
+    case 'typing-stats':
+      return t('hobbies.embed-typing-stats');
+    case 'darts-board':
+      return t('hobbies.embed-darts-board');
+    case 'link-library':
+      return t('hobbies.embed-link-library');
+    case 'piano-chords':
+      return t('hobbies.embed-piano-chords');
+    default:
+      return t('hobbies.embed-field-notes');
+  }
+};
+const embedLabel = getEmbedLabel(embedType);
 const statusLabel =
-  content.status === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
+  effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 const embedVisualMeta: Record<string, { mark: string; label: string }> = {
   'photo-gallery': { mark: 'PG', label: 'gallery source' },
   'rubik-algorithms': { mark: 'RB', label: 'algorithm set' },
@@ -72,10 +111,6 @@ const embedVisualMeta: Record<string, { mark: string; label: string }> = {
 const visualMeta = embedVisualMeta[embedType] ?? embedVisualMeta['field-notes'];
 const banner = resolveHobbyAssetUrl(content.banner);
 const images = content.images.map(resolveHobbyAssetUrl).filter((image): image is string => !!image);
-const nestedPages = childDocuments.map((child) => ({
-  title: child.title ?? 'Untitled',
-  href: `/${locale}/hobbies/${rootId}/doc/${child.id}`
-}));
 const updatedLabel = content.updatedAt
   ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
       new Date(content.updatedAt)
@@ -85,7 +120,7 @@ const updatedLabel = content.updatedAt
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
 
-<MainLayout title={pageTitle} description={content.description || data.title}>
+<MainLayout title={pageTitle} description={detailDescription || data.title}>
   <div class={cx(hobbyStyles.detail, 'page-shell')}>
     <a class={hobbyStyles.detailBack} href={`/${locale}/hobbies`}>
       <span aria-hidden="true">←</span>
@@ -96,7 +131,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
       <div class={hobbyStyles.detailHeadline}>
         <p class={hobbyStyles.detailEyebrow}>{statusLabel} / {embedLabel}</p>
         <h1 class={hobbyStyles.detailTitle}>{data.title}</h1>
-        {content.description && <p class={hobbyStyles.detailDescription}>{content.description}</p>}
+        {detailDescription && <p class={hobbyStyles.detailDescription}>{detailDescription}</p>}
         <p class={hobbyStyles.detailUpdated}>
           <span>{t('hobbies.last-updated')}</span>
           <span>/</span>
@@ -114,7 +149,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               data-embed={embedType}
             >
               <span aria-hidden="true">{visualMeta.mark}</span>
-              <small>{visualMeta.label}</small>
+              <small>{embedLabel}</small>
             </div>
           )
         }
@@ -130,17 +165,25 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               client:load
               type={embed.type}
               title={data.title}
-              description={content.description}
+              description={detailDescription}
               body={content.body}
               images={images}
               links={content.links}
               nestedPages={nestedPages}
               statusLabel={statusLabel}
               moduleLabel={t('hobbies.module-label')}
+              moduleTitle={getEmbedLabel(embed.type)}
               updatedPrefix={t('hobbies.updated-prefix')}
               liveContentLabel={t('hobbies.live-content')}
+              emptySourceLabel={t('hobbies.empty-source-description')}
+              nestedSourcePagesLabel={t('hobbies.nested-source-pages')}
+              sourceNoteAttachedLabel={t('hobbies.source-note-attached')}
+              statusMetricLabel={t('hobbies.metric-status')}
+              linksMetricLabel={t('hobbies.metric-links')}
+              updatedMetricLabel={t('hobbies.metric-updated')}
+              pagesMetricLabel={t('hobbies.metric-pages')}
               updatedAt={updatedLabel}
-              status={content.status}
+              status={effectiveStatus}
             />
           ))
         }

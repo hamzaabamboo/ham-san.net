@@ -24,36 +24,46 @@ const t = useTranslations(locale);
 const pageTitle = `${t('common.hobbies')} | ${t('common.name')}`;
 
 let hobbiesList: any[] | undefined = undefined;
+let sourceDocumentCount = 0;
 
 try {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5000);
+  const timeout = setTimeout(() => controller.abort(), 7000);
   const settings = await getOutlineSettings();
   if (settings?.['hobbies-collection']) {
     const res = await outlineClient.POST('/documents.list', {
       body: { collectionId: settings['hobbies-collection'] },
       signal: controller.signal
     });
-    const rootDocuments = res.data?.data?.filter((d: any) => !d.parentDocumentId) ?? [];
-    const childCounts = await Promise.all(
+    clearTimeout(timeout);
+    const allDocuments = res.data?.data ?? [];
+    sourceDocumentCount = allDocuments.length;
+    const rootDocuments = allDocuments.filter((d: any) => !d.parentDocumentId);
+    const childPages = await Promise.all(
       rootDocuments.map(async (document: any) => {
         try {
-          const childRes = await outlineClient.POST('/documents.list', {
-            body: { parentDocumentId: document.id },
-            signal: controller.signal
-          });
-          return childRes.data?.data?.length ?? 0;
+          const childRes = await Promise.race([
+            outlineClient.POST('/documents.list', {
+              body: { parentDocumentId: document.id }
+            }),
+            new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 2500))
+          ]);
+          return (childRes?.data?.data ?? []).map((child: any) => ({
+            id: child.id,
+            title: child.title ?? 'Untitled'
+          }));
         } catch {
-          return 0;
+          return [];
         }
       })
     );
     hobbiesList = rootDocuments.map((document: any, index: number) => ({
       ...document,
-      childCount: childCounts[index] ?? 0
+      childPages: childPages[index] ?? []
     }));
+  } else {
+    clearTimeout(timeout);
   }
-  clearTimeout(timeout);
 } catch {
   // CMS unavailable or timeout — render fallback
 }
@@ -80,9 +90,51 @@ const getEmbedType = (hobby: { embeds: { type: string }[] }) =>
   hobby.embeds[0]?.type ?? 'field-notes';
 const getEmbedMeta = (hobby: { embeds: { type: string }[] }) =>
   embedMeta[getEmbedType(hobby)] ?? embedMeta['field-notes'];
-const formatEmbedType = (type?: string) => type?.replace(/-/g, ' ') ?? 'notes';
+const getEmbedLabel = (type?: string) => {
+  switch (type) {
+    case 'photo-gallery':
+      return t('hobbies.embed-photo-gallery');
+    case 'twitter-feed':
+      return t('hobbies.embed-twitter-feed');
+    case 'rubik-algorithms':
+      return t('hobbies.embed-rubik-algorithms');
+    case 'typing-stats':
+      return t('hobbies.embed-typing-stats');
+    case 'darts-board':
+      return t('hobbies.embed-darts-board');
+    case 'link-library':
+      return t('hobbies.embed-link-library');
+    case 'piano-chords':
+      return t('hobbies.embed-piano-chords');
+    default:
+      return t('hobbies.embed-field-notes');
+  }
+};
 const getStatusLabel = (status: 'active' | 'inactive') =>
   status === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
+const hasExplicitStatus = (meta: Record<string, unknown>) =>
+  typeof meta.status === 'string' || typeof meta.active === 'boolean';
+const hasSourceContent = (hobby: {
+  body?: string;
+  images?: string[];
+  links?: { href: string; label: string }[];
+  childPages?: { id: string; title: string }[];
+}) =>
+  !!hobby.body?.trim() ||
+  !!hobby.images?.length ||
+  !!hobby.links?.length ||
+  !!hobby.childPages?.length;
+const getEffectiveStatus = (hobby: {
+  status: 'active' | 'inactive';
+  meta: Record<string, unknown>;
+  body?: string;
+  images?: string[];
+  links?: { href: string; label: string }[];
+  childPages?: { id: string; title: string }[];
+}) => {
+  if (hasExplicitStatus(hobby.meta)) return hobby.status;
+  return hasSourceContent(hobby) ? hobby.status : 'inactive';
+};
 const getPreviewLinks = (hobby: { links?: { href: string; label: string }[] }) =>
   (hobby.links ?? [])
     .filter((link) =>
@@ -98,6 +150,16 @@ const formatUpdated = (date?: string | null) =>
         new Date(date)
       )
     : 'No date';
+const formatNestedDescription = (childPages?: { title: string }[]) => {
+  const titles = (childPages ?? [])
+    .map((child) => child.title)
+    .filter(Boolean)
+    .slice(0, 3);
+  if (titles.length === 0) return '';
+  if (titles.length === 1) return titles[0];
+  if (titles.length === 2) return `${titles[0]} / ${titles[1]}`;
+  return `${titles.slice(0, -1).join(' / ')} / ${titles.at(-1)}`;
+};
 
 const hobbies = hobbiesList
   ? orderHobbyCards(
@@ -107,22 +169,35 @@ const hobbies = hobbiesList
           text: h.text,
           fallbackUpdatedAt: h.updatedAt ?? h.createdAt
         });
+        const childPages = h.childPages ?? [];
+        const resolvedImages = content.images
+          .map(resolveHobbyAssetUrl)
+          .filter((image): image is string => !!image);
         return {
           ...h,
           ...content,
           banner: resolveHobbyAssetUrl(content.banner ?? content.images[0]),
-          images: content.images
-            .map(resolveHobbyAssetUrl)
-            .filter((image): image is string => !!image),
+          images: resolvedImages,
+          description:
+            content.description ||
+            formatNestedDescription(childPages) ||
+            t('hobbies.empty-source-description'),
           updatedLabel: formatUpdated(content.updatedAt),
-          childCount: h.childCount ?? 0
+          childPages,
+          status: getEffectiveStatus({
+            ...content,
+            images: resolvedImages,
+            childPages
+          })
         };
       })
     )
   : [];
 const activeHobbies = hobbies.filter((hobby) => hobby.status === 'active');
 const inactiveHobbies = hobbies.filter((hobby) => hobby.status === 'inactive');
-const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCount ?? 0), 0);
+const sourcePageCount =
+  sourceDocumentCount ||
+  hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childPages?.length ?? 0), 0);
 ---
 
 <MainLayout title={pageTitle} description={t('hobbies.description')}>
@@ -228,7 +303,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                 const span = index === 0 ? 12 : index === 1 ? 4 : index % 2 === 0 ? 5 : 7;
                 const embedType = getEmbedType(hobby);
                 const meta = getEmbedMeta(hobby);
-                const readableEmbedType = formatEmbedType(embedType);
+                const readableEmbedType = getEmbedLabel(embedType);
                 const previewLinks = getPreviewLinks(hobby);
 
                 if (index === 0)
@@ -360,7 +435,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                                 color="#ffb000"
                                 mb="4"
                               >
-                                {t('hobbies.source-backed')} / {meta.label}
+                                {t('hobbies.source-backed')} / {readableEmbedType}
                               </Text>
                               <Stack gap="2">
                                 {previewLinks.map((link, linkIndex) => (
@@ -428,7 +503,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                                 letterSpacing="0.18em"
                                 color="#e5e2e1"
                               >
-                                {meta.label} / {readableEmbedType}
+                                {readableEmbedType}
                               </Text>
                             </Box>
                           </Box>
@@ -468,7 +543,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                           <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic">
                             {hobby.title}
                           </Heading>
-                          <span class={hobbyStyles.typeMark} aria-label={meta.label}>
+                          <span class={hobbyStyles.typeMark} aria-label={readableEmbedType}>
                             {meta.mark}
                           </span>
                         </Box>
@@ -563,7 +638,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                             letterSpacing="0.12em"
                             mb="8"
                           >
-                            {meta.label}
+                            {readableEmbedType}
                           </Box>
                           <Box
                             display="flex"
@@ -671,7 +746,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                           >
                             {hobby.title}
                           </Heading>
-                          <span class={hobbyStyles.typeMark} aria-label={meta.label}>
+                          <span class={hobbyStyles.typeMark} aria-label={readableEmbedType}>
                             {meta.mark}
                           </span>
                         </Box>
@@ -870,7 +945,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                           letterSpacing="0.12em"
                           mb={{ base: '3', md: '4' }}
                         >
-                          {meta.label}
+                          {readableEmbedType}
                         </Box>
                         <Heading
                           as="h2"
@@ -924,7 +999,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                         textTransform="uppercase"
                         opacity="0.8"
                       >
-                        {meta.label}: {hobby.title}
+                        {readableEmbedType}: {hobby.title}
                       </Text>
                       <Box
                         display="flex"

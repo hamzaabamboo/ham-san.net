@@ -80,8 +80,17 @@ export const HobbyInteractiveEmbed = ({
   nestedPages = [],
   statusLabel,
   moduleLabel = 'module',
+  moduleTitle,
+  moduleDescription,
   updatedPrefix = 'Updated',
   liveContentLabel = 'Live content',
+  emptySourceLabel,
+  nestedSourcePagesLabel,
+  sourceNoteAttachedLabel,
+  statusMetricLabel,
+  linksMetricLabel,
+  updatedMetricLabel,
+  pagesMetricLabel,
   updatedAt,
   status = 'active'
 }: HobbyEmbedProps & { type: string }) => {
@@ -95,14 +104,16 @@ export const HobbyInteractiveEmbed = ({
           <p className={hobbyStyles.embedEyebrow}>
             {statusLabel ?? status} {moduleLabel}
           </p>
-          <h2>{embed.title}</h2>
+          <h2>{moduleTitle ?? embed.title}</h2>
         </div>
         <div className={hobbyStyles.embedMeta}>
           <span>{title ?? 'Hobby'}</span>
           <span>{updatedAt ? `${updatedPrefix} ${updatedAt}` : liveContentLabel}</span>
         </div>
       </div>
-      <p className={hobbyStyles.embedSummary}>{description || embed.description}</p>
+      <p className={hobbyStyles.embedSummary}>
+        {description || moduleDescription || embed.description}
+      </p>
       <Component
         title={title}
         description={description}
@@ -112,8 +123,17 @@ export const HobbyInteractiveEmbed = ({
         nestedPages={nestedPages}
         statusLabel={statusLabel}
         moduleLabel={moduleLabel}
+        moduleTitle={moduleTitle}
+        moduleDescription={moduleDescription}
         updatedPrefix={updatedPrefix}
         liveContentLabel={liveContentLabel}
+        emptySourceLabel={emptySourceLabel}
+        nestedSourcePagesLabel={nestedSourcePagesLabel}
+        sourceNoteAttachedLabel={sourceNoteAttachedLabel}
+        statusMetricLabel={statusMetricLabel}
+        linksMetricLabel={linksMetricLabel}
+        updatedMetricLabel={updatedMetricLabel}
+        pagesMetricLabel={pagesMetricLabel}
         updatedAt={updatedAt}
         status={status}
       />

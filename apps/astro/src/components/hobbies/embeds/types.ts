@@ -9,8 +9,17 @@ export type HobbyEmbedProps = {
   nestedPages?: Array<{ title: string; href: string }>;
   statusLabel?: string;
   moduleLabel?: string;
+  moduleTitle?: string;
+  moduleDescription?: string;
   updatedPrefix?: string;
   liveContentLabel?: string;
+  emptySourceLabel?: string;
+  nestedSourcePagesLabel?: string;
+  sourceNoteAttachedLabel?: string;
+  statusMetricLabel?: string;
+  linksMetricLabel?: string;
+  updatedMetricLabel?: string;
+  pagesMetricLabel?: string;
   updatedAt?: string;
   status?: 'active' | 'inactive';
 };

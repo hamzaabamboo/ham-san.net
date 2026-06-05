@@ -5,15 +5,29 @@ export const FieldNotesEmbed = ({
   title,
   body = '',
   links = [],
+  nestedPages = [],
   updatedAt,
+  statusLabel = 'Active',
+  liveContentLabel = 'Live',
+  emptySourceLabel = 'No source note yet',
+  nestedSourcePagesLabel = 'Nested source pages',
+  sourceNoteAttachedLabel = 'Source note attached',
+  statusMetricLabel = 'Status',
+  linksMetricLabel = 'Links',
+  updatedMetricLabel = 'Updated',
+  pagesMetricLabel = 'Pages',
   status = 'active'
 }: HobbyEmbedProps) => {
-  const sourceState = body ? 'source note attached' : 'empty source note';
+  const sourceState = body
+    ? sourceNoteAttachedLabel
+    : nestedPages.length > 0
+      ? nestedSourcePagesLabel
+      : emptySourceLabel;
   const lineItems = [
-    ['status', status],
-    ['links', String(links.length)],
-    ['updated', updatedAt ?? 'live'],
-    ['source', body ? 'outline body' : 'no body']
+    [statusMetricLabel, statusLabel || status],
+    [linksMetricLabel, String(links.length)],
+    [updatedMetricLabel, updatedAt ?? liveContentLabel],
+    [pagesMetricLabel, String(nestedPages.length)]
   ];
 
   return (
@@ -22,6 +36,15 @@ export const FieldNotesEmbed = ({
       <div>
         <p>{sourceState}</p>
         <strong>{title ?? 'Field notes'}</strong>
+        {nestedPages.length > 0 && (
+          <nav>
+            {nestedPages.slice(0, 4).map((page) => (
+              <a key={page.href} href={page.href}>
+                {page.title}
+              </a>
+            ))}
+          </nav>
+        )}
       </div>
       <dl>
         {lineItems.map(([label, value]) => (
