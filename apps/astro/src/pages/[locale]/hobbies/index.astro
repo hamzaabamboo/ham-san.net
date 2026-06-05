@@ -83,6 +83,14 @@ const getEmbedMeta = (hobby: { embeds: { type: string }[] }) =>
 const formatEmbedType = (type?: string) => type?.replace(/-/g, ' ') ?? 'notes';
 const getStatusLabel = (status: 'active' | 'inactive') =>
   status === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
+const getPreviewLinks = (hobby: { links?: { href: string; label: string }[] }) =>
+  (hobby.links ?? [])
+    .filter((link) =>
+      /(photo|photos|flickr|instagram|500px|imgur|typingstats|keymash|monkeytype|typeracer|github|docs\.google|plonkit|shopify|manual)/i.test(
+        `${link.label} ${link.href}`
+      )
+    )
+    .slice(0, 4);
 
 const formatUpdated = (date?: string | null) =>
   date
@@ -221,6 +229,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                 const embedType = getEmbedType(hobby);
                 const meta = getEmbedMeta(hobby);
                 const readableEmbedType = formatEmbedType(embedType);
+                const previewLinks = getPreviewLinks(hobby);
 
                 if (index === 0)
                   return (
@@ -241,7 +250,7 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                         position="relative"
                         w="full"
                         h={{ base: '64', md: 'full' }}
-                        minH={{ md: '96' }}
+                        minH={{ md: '80' }}
                         overflow="hidden"
                         bg="#222221"
                       >
@@ -323,6 +332,65 @@ const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCou
                               gradientTo="rgba(14, 14, 14, 0.12)"
                             />
                           </>
+                        ) : previewLinks.length > 0 ? (
+                          <Box
+                            position="absolute"
+                            inset="0"
+                            zIndex="1"
+                            display="flex"
+                            alignItems="center"
+                            px={{ base: '6', md: '12' }}
+                            py={{ base: '8', md: '12' }}
+                            pointerEvents="none"
+                          >
+                            <Box
+                              w="min(100%, 34rem)"
+                              border="2px solid"
+                              borderColor="#ffb000"
+                              bg="rgba(14, 14, 14, 0.72)"
+                              boxShadow="12px 12px 0 rgba(255, 176, 0, 0.12)"
+                              p={{ base: '5', md: '7' }}
+                              textAlign="left"
+                            >
+                              <Text
+                                fontFamily="JetBrains Mono, monospace"
+                                fontSize="10px"
+                                textTransform="uppercase"
+                                letterSpacing="0.18em"
+                                color="#ffb000"
+                                mb="4"
+                              >
+                                {t('hobbies.source-backed')} / {meta.label}
+                              </Text>
+                              <Stack gap="2">
+                                {previewLinks.map((link, linkIndex) => (
+                                  <Box
+                                    key={link.href}
+                                    display="grid"
+                                    gridTemplateColumns="2.5rem minmax(0, 1fr)"
+                                    gap="3"
+                                    alignItems="center"
+                                    color="#e5e2e1"
+                                    fontFamily="JetBrains Mono, monospace"
+                                    fontSize={{ base: '11px', md: '12px' }}
+                                    textTransform="uppercase"
+                                    letterSpacing="0.08em"
+                                  >
+                                    <Text color="#2dd4bf">
+                                      {String(linkIndex + 1).padStart(2, '0')}
+                                    </Text>
+                                    <Text
+                                      overflow="hidden"
+                                      textOverflow="ellipsis"
+                                      whiteSpace="nowrap"
+                                    >
+                                      {link.label}
+                                    </Text>
+                                  </Box>
+                                ))}
+                              </Stack>
+                            </Box>
+                          </Box>
                         ) : (
                           <Box
                             position="absolute"

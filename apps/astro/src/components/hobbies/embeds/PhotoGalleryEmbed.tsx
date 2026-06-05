@@ -4,7 +4,6 @@ import type { HobbyEmbedProps } from './types';
 
 export const PhotoGalleryEmbed = ({ images = [], links = [] }: HobbyEmbedProps) => {
   const galleryImages = images.slice(0, 6);
-  const rail = galleryImages.length > 0 ? galleryImages : ['empty', 'empty-2', 'empty-3'];
   const [activeImage, setActiveImage] = useState(0);
   const photoLinks = links
     .filter((link) =>
@@ -18,7 +17,7 @@ export const PhotoGalleryEmbed = ({ images = [], links = [] }: HobbyEmbedProps) 
   const galleryLinks = (photoLinks.length > 0 ? photoLinks : links).slice(0, 4);
 
   return (
-    <div className={hobbyStyles.gallery}>
+    <div className={hobbyStyles.gallery} data-has-rail={galleryImages.length > 0}>
       <div className={hobbyStyles.galleryStage}>
         {galleryImages[activeImage] ? (
           <img src={galleryImages[activeImage]} alt="" />
@@ -41,22 +40,20 @@ export const PhotoGalleryEmbed = ({ images = [], links = [] }: HobbyEmbedProps) 
           </div>
         )}
       </div>
-      <div className={hobbyStyles.galleryRail}>
-        {rail.map((image, index) => (
-          <button
-            key={image}
-            type="button"
-            data-active={index === activeImage}
-            onClick={() => setActiveImage(index)}
-          >
-            {image.startsWith('empty') ? (
-              String(index + 1).padStart(2, '0')
-            ) : (
+      {galleryImages.length > 0 && (
+        <div className={hobbyStyles.galleryRail}>
+          {galleryImages.map((image, index) => (
+            <button
+              key={image}
+              type="button"
+              data-active={index === activeImage}
+              onClick={() => setActiveImage(index)}
+            >
               <img src={image} alt="" />
-            )}
-          </button>
-        ))}
-      </div>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

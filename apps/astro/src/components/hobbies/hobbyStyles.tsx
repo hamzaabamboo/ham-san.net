@@ -371,7 +371,10 @@ export const hobbyStyles = {
   gallery: css({
     display: 'grid',
     gap: '4',
-    gridTemplateColumns: { base: '1fr', md: 'minmax(0, 1fr) 7rem' }
+    gridTemplateColumns: { base: '1fr', md: 'minmax(0, 1fr) 7rem' },
+    '&[data-has-rail="false"]': {
+      gridTemplateColumns: '1fr'
+    }
   }),
   galleryStage: css({
     border: '1px solid #524533',
