@@ -1,45 +1,6 @@
 import { css } from 'styled-system/css';
 
 export const hobbyStyles = {
-  imageHero: css({
-    inset: '0',
-    pos: 'absolute',
-    objectFit: 'cover',
-    w: 'full',
-    h: 'full',
-    opacity: '0.9',
-    transition: 'filter 0.7s ease, opacity 0.7s ease',
-    filter: 'saturate(1.05) contrast(1.03)',
-    '.group:hover &': {
-      opacity: '1',
-      filter: 'saturate(1.24) contrast(1.08)'
-    }
-  }),
-  imageBottom: css({
-    objectFit: 'cover',
-    w: 'full',
-    h: 'full',
-    opacity: '0.86',
-    transition: 'opacity 0.7s ease',
-    filter: 'saturate(1.08) contrast(1.04)',
-    '.group:hover &': {
-      opacity: '0.98'
-    }
-  }),
-  imageOverlay: css({
-    inset: '0',
-    pos: 'absolute',
-    objectFit: 'cover',
-    w: 'full',
-    h: 'full',
-    opacity: '0.82',
-    transition: 'filter 0.7s ease, opacity 0.7s ease',
-    filter: 'saturate(1.05) contrast(1.03)',
-    '.group:hover &': {
-      opacity: '0.94',
-      filter: 'saturate(1.24) contrast(1.08)'
-    }
-  }),
   detail: css({
     w: 'min(100%, 1280px)',
     mx: 'auto',
@@ -64,7 +25,10 @@ export const hobbyStyles = {
     gap: '8',
     alignItems: 'stretch',
     gridTemplateColumns: { base: '1fr', md: 'minmax(0, 7fr) minmax(20rem, 5fr)' },
-    mt: { base: '6', md: '10' }
+    mt: { base: '6', md: '10' },
+    '&[data-has-visual="false"]': {
+      gridTemplateColumns: '1fr'
+    }
   }),
   detailHeadline: css({
     display: 'grid',
@@ -87,8 +51,7 @@ export const hobbyStyles = {
     m: '0',
     fontFamily: 'var(--font-display)',
     fontSize: 'clamp(3rem, 8vw, 7rem)',
-    lineHeight: '0.95',
-    fontStyle: 'italic'
+    lineHeight: '0.95'
   }),
   detailDescription: css({
     maxW: '42rem',
@@ -114,77 +77,6 @@ export const hobbyStyles = {
     minH: '16rem',
     bg: '#131313',
     overflow: 'hidden'
-  }),
-  detailFallback: css({
-    display: 'grid',
-    inset: '0',
-    pos: 'absolute',
-    bg: 'linear-gradient(135deg, rgba(255,176,0,0.08), transparent 42%), #131313',
-    placeItems: 'center',
-    '&::before': {
-      inset: '2rem',
-      pos: 'absolute',
-      border: '1px solid rgba(255, 176, 0, 0.34)',
-      content: '""'
-    },
-    '&::after': {
-      inset: '0',
-      pos: 'absolute',
-      opacity: '0.42',
-      content: '""'
-    },
-    '& small': {
-      pos: 'absolute',
-      top: '1rem',
-      left: '1rem',
-      color: '#2dd4bf',
-      fontFamily: 'JetBrains Mono, monospace',
-      fontSize: '10px',
-      letterSpacing: '0.12em',
-      textTransform: 'uppercase'
-    },
-    '&[data-embed="photo-gallery"]::before': {
-      inset: '3rem',
-      rounded: 'full',
-      boxShadow:
-        'inset 0 0 0 1rem rgba(255, 176, 0, 0.08), inset 0 0 0 2.75rem #131313, inset 0 0 0 3rem rgba(45, 212, 191, 0.8)'
-    },
-    '&[data-embed="rubik-algorithms"]::after': {
-      bg: 'linear-gradient(90deg, rgba(255,176,0,0.18) 33%, transparent 33% 66%, rgba(45,212,191,0.18) 66%), linear-gradient(0deg, rgba(255,176,0,0.16) 33%, transparent 33% 66%, rgba(229,226,225,0.12) 66%)',
-      backgroundSize: '6rem 6rem'
-    },
-    '&[data-embed="typing-stats"]::after': {
-      bg: 'repeating-linear-gradient(0deg, transparent 0 1.1rem, rgba(45,212,191,0.18) 1.1rem 1.2rem), linear-gradient(90deg, rgba(45,212,191,0.16), transparent)'
-    },
-    '&[data-embed="piano-chords"]::after': {
-      bg: 'repeating-linear-gradient(90deg, rgba(229,226,225,0.16) 0 2.4rem, rgba(14,14,14,0.42) 2.4rem 3rem)'
-    },
-    '&[data-embed="darts-board"]::before': {
-      inset: '3rem',
-      rounded: 'full',
-      boxShadow:
-        'inset 0 0 0 0.35rem #ffb000, inset 0 0 0 2.5rem #131313, inset 0 0 0 2.8rem #2dd4bf, inset 0 0 0 5rem rgba(255,176,0,0.1)'
-    },
-    '&[data-embed="link-library"]::after': {
-      bg: 'radial-gradient(circle at 28% 32%, #ffb000 0 0.22rem, transparent 0.24rem), radial-gradient(circle at 62% 52%, #2dd4bf 0 0.22rem, transparent 0.24rem), radial-gradient(circle at 42% 72%, #e5e2e1 0 0.18rem, transparent 0.2rem), linear-gradient(135deg, transparent 46%, rgba(255,176,0,0.22) 46% 47%, transparent 47%)'
-    },
-    '&[data-embed="field-notes"]::after': {
-      bg: 'repeating-linear-gradient(0deg, transparent 0 1.7rem, rgba(159,142,120,0.18) 1.7rem 1.8rem)'
-    }
-  }),
-  detailVisualLabel: css({
-    pos: 'absolute',
-    left: '0',
-    right: '0',
-    bottom: '0',
-    m: '0',
-    p: '4',
-    color: '#ffb000',
-    fontFamily: 'JetBrains Mono, monospace',
-    fontSize: '10px',
-    letterSpacing: '0.12em',
-    textTransform: 'uppercase',
-    bg: 'linear-gradient(180deg, transparent, rgba(14, 14, 14, 0.92))'
   }),
   detailBanner: css({
     objectFit: 'cover',
@@ -281,8 +173,7 @@ export const hobbyStyles = {
       m: '0',
       fontFamily: 'var(--font-display)',
       fontSize: 'clamp(2rem, 5vw, 3.75rem)',
-      lineHeight: '0.95',
-      fontStyle: 'italic'
+      lineHeight: '0.95'
     }
   }),
   embedEyebrow: css({
@@ -838,8 +729,7 @@ export const hobbyStyles = {
     '& p': {
       m: '0',
       color: '#e5e2e1',
-      fontSize: 'lg',
-      fontStyle: 'italic'
+      fontSize: 'lg'
     },
     '& strong': {
       display: 'block',

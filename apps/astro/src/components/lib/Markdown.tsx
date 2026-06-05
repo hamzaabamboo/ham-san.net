@@ -78,7 +78,6 @@ export const Markdown = ({
               fontSize={headingLevelOffset > 0 ? '4xl' : '5xl'}
               lineHeight="0.95"
               overflowWrap="anywhere"
-              fontStyle="italic"
               {...props}
             />
           ),
@@ -88,7 +87,6 @@ export const Markdown = ({
               pt="6"
               fontSize={headingLevelOffset > 0 ? '3xl' : '4xl'}
               overflowWrap="anywhere"
-              fontStyle="italic"
               {...props}
             />
           ),
@@ -97,7 +95,6 @@ export const Markdown = ({
               as={headingAs(3)}
               fontSize={headingLevelOffset > 0 ? '2xl' : '3xl'}
               overflowWrap="anywhere"
-              fontStyle="italic"
               {...props}
             />
           ),

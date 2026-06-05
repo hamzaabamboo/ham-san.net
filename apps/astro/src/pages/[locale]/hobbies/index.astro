@@ -1,9 +1,7 @@
 ---
 import MainLayout from '~/layouts/MainLayout.astro';
 import { Box, Container, Grid, Stack } from 'styled-system/jsx';
-import { BrandMark } from '~/components/brand/BrandMark';
-import { HobbyTypeGlyph } from '~/components/hobbies/HobbyTypeGlyph';
-import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
+import { css, cx } from 'styled-system/css';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
@@ -24,6 +22,28 @@ if (!validateLocale(locale)) {
 
 const t = useTranslations(locale);
 const pageTitle = `${t('common.hobbies')} | ${t('common.name')}`;
+const monoMetaText = css({
+  fontFamily: 'JetBrains Mono, monospace',
+  fontSize: '10px',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase'
+});
+const thaiMetaText = css({
+  fontFamily: 'var(--font-body)',
+  fontSize: 'xs',
+  letterSpacing: '0',
+  textTransform: 'none'
+});
+const metaTextClass = locale === 'th' ? thaiMetaText : monoMetaText;
+const unavailableMetaTextClass =
+  locale === 'th'
+    ? thaiMetaText
+    : cx(
+        monoMetaText,
+        css({
+          letterSpacing: '0.12em'
+        })
+      );
 
 let hobbiesList: any[] | undefined = undefined;
 
@@ -31,14 +51,17 @@ try {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 7000);
   const settings = await getOutlineSettings();
+
   if (settings?.['hobbies-collection']) {
     const res = await outlineClient.POST('/documents.list', {
       body: { collectionId: settings['hobbies-collection'] },
       signal: controller.signal
     });
     clearTimeout(timeout);
+
     const allDocuments = res.data?.data ?? [];
     const childrenByParent = new Map<string, { id: string; title: string }[]>();
+
     allDocuments.forEach((document: any) => {
       if (!document.parentDocumentId) return;
       const children = childrenByParent.get(document.parentDocumentId) ?? [];
@@ -48,6 +71,7 @@ try {
       });
       childrenByParent.set(document.parentDocumentId, children);
     });
+
     const rootDocuments = allDocuments.filter((d: any) => !d.parentDocumentId);
     hobbiesList = rootDocuments.map((document: any) => ({
       ...document,
@@ -56,9 +80,7 @@ try {
   } else {
     clearTimeout(timeout);
   }
-} catch {
-  // CMS unavailable or timeout — render fallback
-}
+} catch {}
 
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = getOutlineAssetProxyPath(locale);
@@ -115,14 +137,6 @@ const getEffectiveStatus = (hobby: {
   if (hasExplicitStatus(hobby.meta)) return hobby.status;
   return hasSourceContent(hobby) ? hobby.status : 'inactive';
 };
-const getPreviewLinks = (hobby: { links?: { href: string; label: string }[] }) =>
-  (hobby.links ?? [])
-    .filter((link) =>
-      /(photo|photos|flickr|instagram|500px|imgur|typingstats|keymash|monkeytype|typeracer|github|docs\.google|plonkit|shopify|manual)/i.test(
-        `${link.label} ${link.href}`
-      )
-    )
-    .slice(0, 4);
 
 const formatUpdated = (date?: string | null) =>
   date
@@ -173,114 +187,28 @@ const hobbies = hobbiesList
       })
     )
   : [];
-const featuredHobbies = hobbies.filter(hasSourceContent).slice(0, 4);
 ---
 
 <MainLayout title={pageTitle} description={t('hobbies.description')}>
-  <Container maxW="breakpoint-xl" w="full" py="8" className="page-shell">
-    <Stack gap="16">
-      <Grid
-        gridTemplateColumns={{ base: '1fr', lg: 'minmax(0, 7fr) minmax(22rem, 5fr)' }}
-        gap="0"
-        border="1px solid"
-        borderColor="#524533"
-        bg="#171615"
-      >
-        <Stack
-          gap={{ base: '5', md: '7' }}
-          p={{ base: '6', md: '10' }}
-          borderLeft="4px solid"
-          borderLeftColor="#ffb000"
-        >
-          <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
-            letterSpacing="0.08em"
-            color="#9f8e78"
-          >
-            {t('hobbies.hero-kicker')}
-          </Text>
-          <Heading
-            as="h1"
-            fontSize={{ base: '5xl', md: '7xl' }}
-            fontStyle="italic"
-            lineHeight="0.95"
-          >
-            {t('hobbies.page-heading')}
-          </Heading>
-          <Text color="#e5e2e1" fontSize={{ base: 'lg', md: '2xl' }} maxW="3xl" lineHeight="1.55">
-            {t('hobbies.description')}
-          </Text>
-          <Text color="#9f8e78" fontSize={{ base: 'sm', md: 'md' }} lineHeight="1.8" maxW="2xl">
-            {t('hobbies.hero-body')}
-          </Text>
-        </Stack>
-        <Stack bg="#1c1b1b" p={{ base: '6', md: '8' }} gap="5">
-          <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
-            letterSpacing="0.16em"
-            color="#9f8e78"
-          >
-            {t('hobbies.hero-rail-title')}
-          </Text>
-          <Stack gap="3">
-            {
-              featuredHobbies.map((hobby) => {
-                const embedType = getEmbedType(hobby);
-                const readableEmbedType = getEmbedLabel(embedType);
-                return (
-                  <Link
-                    href={`/${locale}/hobbies/${hobby.id}`}
-                    display="grid"
-                    gridTemplateColumns="44px minmax(0, 1fr)"
-                    gap="4"
-                    alignItems="center"
-                    borderBottom="1px solid"
-                    borderColor="#524533"
-                    pb="3"
-                    className="group"
-                    _hover={{ bg: 'rgba(255, 176, 0, 0.05)' }}
-                  >
-                    <HobbyTypeGlyph type={embedType} label={readableEmbedType} size="badge" />
-                    <Box minW="0">
-                      <Text color="#e5e2e1" fontWeight="700" className="group-hover-amber">
-                        {hobby.title}
-                      </Text>
-                      <Text
-                        color="#9f8e78"
-                        fontSize="sm"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        whiteSpace="nowrap"
-                      >
-                        {readableEmbedType} / {hobby.description}
-                      </Text>
-                    </Box>
-                  </Link>
-                );
-              })
-            }
-          </Stack>
-        </Stack>
-      </Grid>
+  <Container maxW="breakpoint-xl" w="full" py={{ base: '6', md: '10' }} className="page-shell">
+    <Stack gap={{ base: '8', md: '10' }}>
+      <Stack gap="4" maxW="4xl">
+        <Heading as="h1" fontSize={{ base: '4xl', md: '6xl' }} lineHeight="1">
+          {t('hobbies.page-heading')}
+        </Heading>
+        <Text color="#c7c6c6" fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.7" maxW="3xl">
+          {t('hobbies.description')}
+        </Text>
+      </Stack>
 
       {
         hobbies.length === 0 ? (
-          <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '8', md: '12' }}>
-            <Stack gap="4" alignItems="center" textAlign="center" py="12">
-              <Text
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                textTransform="uppercase"
-                letterSpacing="0.12em"
-                color="#9f8e78"
-              >
+          <Box border="1px solid" borderColor="#524533" bg="#171615" p={{ base: '6', md: '8' }}>
+            <Stack gap="4" py="8">
+              <Text className={unavailableMetaTextClass} color="#9f8e78">
                 {t('hobbies.status-unavailable')}
               </Text>
-              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+              <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }}>
                 {t('hobbies.empty-title')}
               </Heading>
               <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
@@ -290,749 +218,77 @@ const featuredHobbies = hobbies.filter(hasSourceContent).slice(0, 4);
           </Box>
         ) : (
           <>
-            <Grid
-              gridTemplateColumns={{ base: '1fr', md: 'repeat(12, 1fr)' }}
-              gap="0"
-              bg="transparent"
-              border="1px solid"
-              borderColor="#524533"
-            >
-              {hobbies.map((hobby, index) => {
-                const span = index === 0 ? 12 : index === 1 ? 4 : index % 2 === 0 ? 5 : 7;
+            <Stack borderTop="1px solid" borderColor="#524533">
+              {hobbies.map((hobby) => {
                 const embedType = getEmbedType(hobby);
                 const readableEmbedType = getEmbedLabel(embedType);
-                const previewLinks = getPreviewLinks(hobby);
-
-                if (index === 0)
-                  return (
-                    <Link
-                      href={`/${locale}/hobbies/${hobby.id}`}
-                      gridColumn={{ base: 'span 1', md: '1 / -1' }}
-                      w="full"
-                      minW="0"
-                      bg="#1c1b1b"
-                      display="grid"
-                      gridTemplateColumns={{ base: '1fr', md: 'minmax(0, 7fr) minmax(22rem, 5fr)' }}
-                      overflow="hidden"
-                      className="group card-hover-amber"
-                      border="1px solid"
-                      borderColor="#524533"
-                    >
-                      <Box
-                        position="relative"
-                        w="full"
-                        h={{ base: '64', md: 'full' }}
-                        minH={{ md: '80' }}
-                        overflow="hidden"
-                        bg="#222221"
-                      >
-                        <Box
-                          position="absolute"
-                          inset="0"
-                          bgGradient="to-br"
-                          gradientFrom="#1c1b1b"
-                          gradientVia="#2a2a2a"
-                          gradientTo="#1c1b1b"
-                        >
-                          <Box position="absolute" inset="0" className="fallback-grid-lines" />
-                          <Box
-                            position="absolute"
-                            insetX={{ base: '8', md: '20' }}
-                            top={{ base: '10', md: '14' }}
-                            h="1px"
-                            bg="#e5e2e1"
-                            opacity="0.55"
-                          />
-                          <Box
-                            position="absolute"
-                            insetX={{ base: '8', md: '20' }}
-                            bottom={{ base: '14', md: '18' }}
-                            h="1px"
-                            bg="#e5e2e1"
-                            opacity="0.55"
-                          />
-                          <Box
-                            position="absolute"
-                            right="-8"
-                            top="-4"
-                            className="group-hover-watermark-strong"
-                          >
-                            <HobbyTypeGlyph type={getEmbedType(hobby)} size="watermark" />
-                          </Box>
-                          <Box
-                            position="absolute"
-                            bottom="0"
-                            left="0"
-                            right="0"
-                            h="4px"
-                            bg="#ffb000"
-                            opacity="0.75"
-                          />
-                          <Box position="absolute" bottom="12" left="8" opacity="0.95">
-                            <Text
-                              fontFamily="JetBrains Mono, monospace"
-                              fontSize="10px"
-                              textTransform="uppercase"
-                              letterSpacing="0.2em"
-                              color="#ffb000"
-                            >
-                              {hobby.title}
-                            </Text>
-                          </Box>
-                        </Box>
-                        {hobby.banner ? (
-                          <>
-                            <img src={hobby.banner} alt="" class={hobbyStyles.imageHero} />
-                            <Box
-                              position="absolute"
-                              inset="0"
-                              zIndex="1"
-                              bgGradient="to-t"
-                              gradientFrom="rgba(14, 14, 14, 0.72)"
-                              gradientVia="rgba(14, 14, 14, 0.18)"
-                              gradientTo="rgba(14, 14, 14, 0.12)"
-                            />
-                          </>
-                        ) : previewLinks.length > 0 ? (
-                          <Box
-                            position="absolute"
-                            inset="0"
-                            zIndex="1"
-                            display="flex"
-                            alignItems="center"
-                            px={{ base: '6', md: '12' }}
-                            py={{ base: '8', md: '12' }}
-                            pointerEvents="none"
-                          >
-                            <Box
-                              w="min(100%, 34rem)"
-                              border="2px solid"
-                              borderColor="#ffb000"
-                              bg="rgba(14, 14, 14, 0.72)"
-                              boxShadow="12px 12px 0 rgba(255, 176, 0, 0.12)"
-                              p={{ base: '5', md: '7' }}
-                              textAlign="left"
-                            >
-                              <Text
-                                fontFamily="JetBrains Mono, monospace"
-                                fontSize="10px"
-                                textTransform="uppercase"
-                                letterSpacing="0.18em"
-                                color="#ffb000"
-                                mb="4"
-                              >
-                                {t('hobbies.source-backed')} / {readableEmbedType}
-                              </Text>
-                              <Stack gap="2">
-                                {previewLinks.map((link, linkIndex) => (
-                                  <Box
-                                    key={link.href}
-                                    display="grid"
-                                    gridTemplateColumns="2.5rem minmax(0, 1fr)"
-                                    gap="3"
-                                    alignItems="center"
-                                    color="#e5e2e1"
-                                    fontFamily="JetBrains Mono, monospace"
-                                    fontSize={{ base: '11px', md: '12px' }}
-                                    textTransform="uppercase"
-                                    letterSpacing="0.08em"
-                                  >
-                                    <Text color="#2dd4bf">
-                                      {String(linkIndex + 1).padStart(2, '0')}
-                                    </Text>
-                                    <Text
-                                      overflow="hidden"
-                                      textOverflow="ellipsis"
-                                      whiteSpace="nowrap"
-                                    >
-                                      {link.label}
-                                    </Text>
-                                  </Box>
-                                ))}
-                              </Stack>
-                            </Box>
-                          </Box>
-                        ) : (
-                          <Box
-                            position="absolute"
-                            inset="0"
-                            zIndex="1"
-                            display="grid"
-                            placeItems="center"
-                            px={{ base: '8', md: '12' }}
-                            textAlign="center"
-                            pointerEvents="none"
-                          >
-                            <Box
-                              border="2px solid"
-                              borderColor="#ffb000"
-                              px={{ base: '6', md: '10' }}
-                              py={{ base: '5', md: '7' }}
-                              bg="rgba(14, 14, 14, 0.58)"
-                              boxShadow="12px 12px 0 rgba(255, 176, 0, 0.12)"
-                            >
-                              <HobbyTypeGlyph
-                                type={getEmbedType(hobby)}
-                                label={readableEmbedType}
-                                size="hero"
-                              />
-                              <Text
-                                mt="4"
-                                fontFamily="JetBrains Mono, monospace"
-                                fontSize={{ base: '10px', md: '12px' }}
-                                textTransform="uppercase"
-                                letterSpacing="0.18em"
-                                color="#e5e2e1"
-                              >
-                                {readableEmbedType}
-                              </Text>
-                            </Box>
-                          </Box>
-                        )}
-                        <Box
-                          position="absolute"
-                          top={{ base: '6', md: '8' }}
-                          left={{ base: '6', md: '8' }}
-                          zIndex="2"
-                        >
-                          <Text
-                            fontFamily="JetBrains Mono, monospace"
-                            fontSize={{ base: '8px', md: '10px' }}
-                            textTransform="uppercase"
-                            letterSpacing={{ base: '0.14em', md: '0.2em' }}
-                            color="#ffb000"
-                            fontWeight="bold"
-                          >
-                            {readableEmbedType}
-                          </Text>
-                        </Box>
-                      </Box>
-                      <Box
-                        p={{ base: '6', md: '8' }}
-                        borderTop={{ base: '1px solid', md: '0' }}
-                        borderLeft={{ md: '1px solid' }}
-                        borderColor="#524533"
-                        display="flex"
-                        flexDirection="column"
-                      >
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems="start"
-                          mb={{ base: '3', md: '4' }}
-                        >
-                          <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic">
-                            {hobby.title}
-                          </Heading>
-                          <HobbyTypeGlyph
-                            type={getEmbedType(hobby)}
-                            label={readableEmbedType}
-                            size="badge"
-                          />
-                        </Box>
-                        <Box
-                          display="flex"
-                          flexWrap="wrap"
-                          gap="2"
-                          mb="4"
-                          fontFamily="JetBrains Mono, monospace"
-                          fontSize="10px"
-                          textTransform="uppercase"
-                          color="#9f8e78"
-                        >
-                          <Text>{getStatusLabel(hobby.status)}</Text>
-                          <Text>/</Text>
-                          <Text>{readableEmbedType}</Text>
-                          <Text>/</Text>
-                          <Text>{hobby.updatedLabel}</Text>
-                        </Box>
-                        <Text
-                          color="#c7c6c6"
-                          mb={{ base: '4', md: '6' }}
-                          maxW="lg"
-                          overflowWrap="anywhere"
-                          className="line-clamp-2"
-                        >
-                          {hobby.description}
-                        </Text>
-                        <Box display="flex" flexWrap="wrap" gap={{ base: '3', md: '4' }} mt="auto">
-                          <Box
-                            px="6"
-                            py="2"
-                            bg="#ffb000"
-                            color="#432c00"
-                            fontWeight="bold"
-                            fontSize="sm"
-                            border="1px solid"
-                            borderColor="#9f8e78"
-                            className="blocky-shadow blocky-shadow-hover"
-                            textTransform="uppercase"
-                            letterSpacing="0.08em"
-                            fontFamily="var(--font-body)"
-                          >
-                            {t('hobbies.browse-gallery')}
-                          </Box>
-                          <Box
-                            px="6"
-                            py="2"
-                            border="1px solid"
-                            borderColor="#9f8e78"
-                            color="#c7c6c6"
-                            fontWeight="medium"
-                            fontSize="sm"
-                            textTransform="uppercase"
-                            fontFamily="var(--font-body)"
-                          >
-                            {t('hobbies.process-notes')}
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Link>
-                  );
-
-                if (index === 1)
-                  return (
-                    <Link
-                      href={`/${locale}/hobbies/${hobby.id}`}
-                      gridColumn={{ base: 'span 1', md: `span ${span}` }}
-                      w="full"
-                      minW="0"
-                      bg="#1c1b1b"
-                      display="block"
-                      position="relative"
-                      className="group card-hover-amber"
-                      border="1px solid"
-                      borderColor="#524533"
-                    >
-                      <Stack p={{ base: '6', md: '8' }} h="full" justifyContent="space-between">
-                        <Box>
-                          <Box
-                            alignSelf="start"
-                            display="inline-block"
-                            px="3"
-                            py="1"
-                            bg="#353534"
-                            fontFamily="JetBrains Mono, monospace"
-                            fontSize="10px"
-                            color="#ffd597"
-                            border="1px solid"
-                            borderColor="#524533"
-                            textTransform="uppercase"
-                            letterSpacing="0.12em"
-                            mb="8"
-                          >
-                            {readableEmbedType}
-                          </Box>
-                          <Box
-                            display="flex"
-                            flexWrap="wrap"
-                            gap="2"
-                            fontFamily="JetBrains Mono, monospace"
-                            fontSize="10px"
-                            textTransform="uppercase"
-                            color="#9f8e78"
-                            mb="4"
-                          >
-                            <Text>{getStatusLabel(hobby.status)}</Text>
-                            <Text>/</Text>
-                            <Text>{readableEmbedType}</Text>
-                          </Box>
-                          <Heading as="h2" fontSize="3xl" fontStyle="italic" mb="4">
-                            {hobby.title}
-                          </Heading>
-                          <Text
-                            color="#c7c6c6"
-                            mb="8"
-                            overflowWrap="anywhere"
-                            className="line-clamp-3"
-                          >
-                            {hobby.description}
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Box borderTop="1px solid" borderColor="#524533" pt="4">
-                            <Text
-                              fontFamily="JetBrains Mono, monospace"
-                              fontSize="10px"
-                              color="#dbdbdb"
-                              textTransform="uppercase"
-                              mb="1"
-                            >
-                              {t('hobbies.last-updated')}
-                            </Text>
-                            <Text color="#9f8e78" fontSize="sm">
-                              {hobby.updatedLabel}
-                            </Text>
-                          </Box>
-                          <Box
-                            display="flex"
-                            alignItems="center"
-                            mt="4"
-                            fontSize="sm"
-                            color="#ffb000"
-                            fontWeight="bold"
-                            fontStyle="italic"
-                            className="group-hover-underline"
-                          >
-                            <HobbyTypeGlyph type={getEmbedType(hobby)} size="inline" />
-                            {t('hobbies.explore')}
-                          </Box>
-                        </Box>
-                      </Stack>
-                      <Box
-                        position="absolute"
-                        bottom="0"
-                        right="0"
-                        p="4"
-                        opacity="0.1"
-                        fontSize="8xl"
-                        fontStyle="italic"
-                        fontWeight="black"
-                        fontFamily="var(--font-display)"
-                        className="group-hover-watermark"
-                      >
-                        <HobbyTypeGlyph type={getEmbedType(hobby)} size="watermark" />
-                      </Box>
-                    </Link>
-                  );
-
-                if (index === 2)
-                  return (
-                    <Link
-                      href={`/${locale}/hobbies/${hobby.id}`}
-                      gridColumn={{ base: 'span 1', md: `span ${span}` }}
-                      w="full"
-                      minW="0"
-                      bg="#1c1b1b"
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="stretch"
-                      overflow="hidden"
-                      className="group card-hover-amber"
-                      border="1px solid"
-                      borderColor="#524533"
-                    >
-                      <Box p={{ base: '6', md: '8' }}>
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems="start"
-                          mb={{ base: '4', md: '6' }}
-                        >
-                          <Heading
-                            as="h2"
-                            fontSize={{ base: '2xl', md: '3xl' }}
-                            fontStyle="italic"
-                            lineHeight="tight"
-                          >
-                            {hobby.title}
-                          </Heading>
-                          <HobbyTypeGlyph
-                            type={getEmbedType(hobby)}
-                            label={readableEmbedType}
-                            size="badge"
-                          />
-                        </Box>
-                        <Text
-                          color="#c7c6c6"
-                          mb={{ base: '6', md: '8' }}
-                          overflowWrap="anywhere"
-                          className="line-clamp-3"
-                        >
-                          {hobby.description}
-                        </Text>
-                        <Box
-                          display="flex"
-                          flexWrap="wrap"
-                          gap="2"
-                          mb="5"
-                          fontFamily="JetBrains Mono, monospace"
-                          fontSize="10px"
-                          textTransform="uppercase"
-                          color="#9f8e78"
-                        >
-                          <Text>{getStatusLabel(hobby.status)}</Text>
-                          <Text>/</Text>
-                          <Text>{readableEmbedType}</Text>
-                          <Text>/</Text>
-                          <Text>{hobby.updatedLabel}</Text>
-                        </Box>
-                        <Box
-                          display="grid"
-                          gridTemplateColumns="repeat(2, 1fr)"
-                          gap="2"
-                          fontFamily="JetBrains Mono, monospace"
-                          fontSize="10px"
-                          color="#dbdbdb"
-                          mb={{ base: '6', md: '8' }}
-                        >
-                          <Box
-                            border="1px solid"
-                            borderColor="#524533"
-                            p="2"
-                            textTransform="uppercase"
-                            cursor="pointer"
-                            _hover={{ bg: '#353534' }}
-                          >
-                            {t('hobbies.process-notes')}
-                          </Box>
-                          <Box
-                            border="1px solid"
-                            borderColor="#524533"
-                            p="2"
-                            textTransform="uppercase"
-                            cursor="pointer"
-                            _hover={{ bg: '#353534' }}
-                          >
-                            {t('hobbies.explore')}
-                          </Box>
-                        </Box>
-                      </Box>
-                      <Box
-                        h={{ base: '48', md: '64' }}
-                        mt="auto"
-                        borderTop="1px solid"
-                        borderColor="#524533"
-                        bg="#222221"
-                        position="relative"
-                        overflow="hidden"
-                      >
-                        {hobby.banner ? (
-                          <img src={hobby.banner} alt="" class={hobbyStyles.imageBottom} />
-                        ) : (
-                          <Box
-                            position="absolute"
-                            inset="0"
-                            bgGradient="to-t"
-                            gradientFrom="#0e0e0e"
-                            gradientVia="#1c1b1b"
-                            gradientTo="#2a2a2a"
-                          >
-                            <Box position="absolute" inset="0" className="fallback-grid-lines" />
-                            <Box
-                              position="absolute"
-                              inset="0"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              opacity="0.18"
-                              className="group-hover-watermark-strong"
-                            >
-                              <HobbyTypeGlyph
-                                type={getEmbedType(hobby)}
-                                label={readableEmbedType}
-                                size="hero"
-                              />
-                            </Box>
-                            <Box
-                              position="absolute"
-                              top="0"
-                              left="0"
-                              right="0"
-                              h="2px"
-                              bg="#ffb000"
-                              opacity="0.4"
-                            />
-                            <Box position="absolute" bottom="4" right="6" opacity="0.08">
-                              <Text
-                                fontFamily="JetBrains Mono, monospace"
-                                fontSize="10px"
-                                textTransform="uppercase"
-                                letterSpacing="0.2em"
-                                color="#ffb000"
-                              >
-                                {readableEmbedType}
-                              </Text>
-                            </Box>
-                          </Box>
-                        )}
-                      </Box>
-                    </Link>
-                  );
 
                 return (
                   <Link
                     href={`/${locale}/hobbies/${hobby.id}`}
-                    gridColumn={{ base: 'span 1', md: `span ${span}` }}
-                    w="full"
-                    minW="0"
-                    bg="#1c1b1b"
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="stretch"
-                    className="group card-hover-amber"
-                    border="1px solid"
+                    display="grid"
+                    gridTemplateColumns={{
+                      base: '1fr',
+                      md: 'minmax(10rem, 2fr) minmax(0, 5fr) minmax(10rem, 2fr)'
+                    }}
+                    gap={{ base: '4', md: '8' }}
+                    alignItems={{ md: 'center' }}
+                    py={{ base: '5', md: '6' }}
+                    borderBottom="1px solid"
                     borderColor="#524533"
+                    className="group"
                   >
-                    <Box position="relative" flex="1" minH={{ base: '56', md: '72' }} bg="#222221">
-                      {hobby.banner ? (
-                        <>
-                          <img src={hobby.banner} alt="" class={hobbyStyles.imageOverlay} />
-                          <Box
-                            position="absolute"
-                            inset="0"
-                            bgGradient="to-t"
-                            gradientFrom="#1c1b1b"
-                            gradientVia="transparent"
-                            gradientTo="transparent"
-                            opacity="0.9"
-                          />
-                        </>
-                      ) : (
-                        <Box
-                          position="absolute"
-                          inset="0"
-                          bgGradient="to-t"
-                          gradientFrom="#131313"
-                          gradientVia="#1c1b1b"
-                          gradientTo="#2a2a2a"
-                        >
-                          <Box position="absolute" inset="0" className="fallback-grid-lines" />
-                          <Box
-                            position="absolute"
-                            top="4"
-                            right="6"
-                            opacity="0.14"
-                            className="group-hover-watermark-strong"
-                          >
-                            <Text
-                              fontSize={{ base: '120px', md: '180px' }}
-                              fontWeight="black"
-                              fontFamily="var(--font-display)"
-                              fontStyle="italic"
-                              lineHeight="1"
-                              color="#e5e2e1"
-                              aria-hidden="true"
-                            >
-                              {hobby.title?.charAt(0).toUpperCase()}
-                            </Text>
-                          </Box>
-                          <Box
-                            position="absolute"
-                            inset="0"
-                            bgGradient="to-t"
-                            gradientFrom="#131313"
-                            gradientVia="transparent"
-                            gradientTo="transparent"
-                            opacity="0.8"
-                          />
-                        </Box>
-                      )}
-                      <Box position="absolute" bottom="0" left="0" p={{ base: '6', md: '8' }}>
-                        <Box
-                          display="inline-block"
-                          px="3"
-                          py="1"
-                          bg="#ffb000"
-                          color="#432c00"
-                          fontFamily="JetBrains Mono, monospace"
-                          fontSize="10px"
-                          fontWeight="bold"
-                          textTransform="uppercase"
-                          letterSpacing="0.12em"
-                          mb={{ base: '3', md: '4' }}
-                        >
-                          {readableEmbedType}
-                        </Box>
-                        <Heading
-                          as="h2"
-                          fontSize={{ base: '3xl', md: '4xl' }}
-                          fontStyle="italic"
-                          mb="2"
-                        >
-                          {hobby.title}
-                        </Heading>
-                        <Text
-                          color="#c7c6c6"
-                          maxW="md"
-                          overflowWrap="anywhere"
-                          className="line-clamp-2"
-                        >
-                          {hobby.description}
-                        </Text>
-                        <Box
-                          display="flex"
-                          flexWrap="wrap"
-                          gap="2"
-                          mt="3"
-                          fontFamily="JetBrains Mono, monospace"
-                          fontSize="10px"
-                          textTransform="uppercase"
-                          color="#9f8e78"
-                        >
-                          <Text>{getStatusLabel(hobby.status)}</Text>
-                          <Text>/</Text>
-                          <Text>{readableEmbedType}</Text>
-                          <Text>/</Text>
-                          <Text>{hobby.updatedLabel}</Text>
-                        </Box>
-                      </Box>
-                    </Box>
-                    <Box
-                      borderTop="1px solid"
-                      borderColor="#524533"
-                      p={{ base: '4', md: '6' }}
-                      display="flex"
-                      flexDirection={{ base: 'column', md: 'row' }}
-                      gap={{ base: '3', md: '0' }}
-                      justifyContent="space-between"
-                      alignItems={{ base: 'start', md: 'center' }}
-                      bg="#0e0e0e"
-                    >
-                      <Text
-                        fontFamily="JetBrains Mono, monospace"
-                        fontSize="10px"
-                        color="#9f8e78"
-                        textTransform="uppercase"
-                        opacity="0.8"
-                      >
-                        {readableEmbedType}: {hobby.title}
+                    <Stack gap="2">
+                      <Text className={metaTextClass} color="#9f8e78">
+                        {readableEmbedType}
                       </Text>
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        fontFamily="JetBrains Mono, monospace"
-                        fontSize="10px"
-                        color="#ffb000"
-                        textTransform="uppercase"
-                        fontWeight="bold"
-                        letterSpacing="0.12em"
-                        cursor="pointer"
-                        _hover={{ color: '#e5e2e1' }}
-                      >
-                        <HobbyTypeGlyph type={getEmbedType(hobby)} size="inline" />
-                        {t('hobbies.explore')}
-                      </Box>
-                    </Box>
+                      <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }} lineHeight="1.15">
+                        {hobby.title}
+                      </Heading>
+                    </Stack>
+                    <Text color="#c7c6c6" lineHeight="1.7" overflowWrap="anywhere">
+                      {hobby.description}
+                    </Text>
+                    <Grid
+                      gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+                      gap="3"
+                      color="#9f8e78"
+                      className={metaTextClass}
+                    >
+                      <Stack gap="1">
+                        <Text color="#dbdbdb">{t('hobbies.metric-status')}</Text>
+                        <Text>{getStatusLabel(hobby.status)}</Text>
+                      </Stack>
+                      <Stack gap="1">
+                        <Text color="#dbdbdb">{t('hobbies.metric-updated')}</Text>
+                        <Text>{hobby.updatedLabel}</Text>
+                      </Stack>
+                      <Stack gap="1">
+                        <Text color="#dbdbdb">{t('hobbies.metric-links')}</Text>
+                        <Text>{hobby.links?.length ?? 0}</Text>
+                      </Stack>
+                      <Stack gap="1">
+                        <Text color="#dbdbdb">{t('hobbies.metric-pages')}</Text>
+                        <Text>{hobby.childPages?.length ?? 0}</Text>
+                      </Stack>
+                    </Grid>
                   </Link>
                 );
               })}
-            </Grid>
+            </Stack>
 
             <Grid
               gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
               gap={{ base: '8', md: '12' }}
-              borderTop="1px solid"
-              borderColor="#524533"
-              pt={{ base: '8', md: '12' }}
-              mt={{ base: '12', md: '24' }}
+              pt={{ base: '4', md: '8' }}
             >
               <Stack>
-                <Heading
-                  as="h3"
-                  fontSize="2xl"
-                  fontStyle="italic"
-                  mb="6"
-                  display="flex"
-                  alignItems="center"
-                >
-                  <HobbyTypeGlyph type="field-notes" size="inline" />
+                <Heading as="h3" fontSize="2xl" mb="4">
                   {t('hobbies.learning-resources')}
                 </Heading>
-                <Stack as="ul" gap="4">
+                <Stack as="ul" gap="3">
                   {hobbies.map((hobby) => {
-                    const itemEmbedType = getEmbedType(hobby);
-                    const itemEmbedLabel = getEmbedLabel(itemEmbedType);
+                    const itemEmbedLabel = getEmbedLabel(getEmbedType(hobby));
                     return (
                       <Link
                         href={`/${locale}/hobbies/${hobby.id}`}
@@ -1048,56 +304,30 @@ const featuredHobbies = hobbies.filter(hasSourceContent).slice(0, 4);
                         <Text color="#c7c6c6" className="group-hover-amber">
                           {hobby.title}
                         </Text>
-                        <Text opacity="0.5">
-                          <HobbyTypeGlyph
-                            type={itemEmbedType}
-                            label={itemEmbedLabel}
-                            size="inline"
-                          />
+                        <Text color="#9f8e78" className={metaTextClass}>
+                          {itemEmbedLabel}
                         </Text>
                       </Link>
                     );
                   })}
                 </Stack>
               </Stack>
-              <Stack
-                bg="#2a2a2a"
-                border="1px solid"
-                borderColor="#524533"
-                p={{ base: '6', md: '8' }}
-                position="relative"
-                overflow="hidden"
-              >
-                <Box
-                  position="absolute"
-                  top="-4"
-                  right="-4"
-                  w="40"
-                  h="40"
-                  opacity="0.05"
-                  pointerEvents="none"
-                  transform="rotate(12deg)"
-                >
-                  <BrandMark size={160} color="#e5e2e1" accent="#ffb000" />
-                </Box>
-                <Heading as="h3" fontSize="2xl" fontStyle="italic" color="#ffb000" mb="4">
-                  {t('hobbies.collaboration-heading')}
+              <Stack gap="4">
+                <Heading as="h3" fontSize="2xl" mb="4">
+                  {t('hobbies.source-note')}
                 </Heading>
-                <Text color="#c7c6c6" lineHeight="1.8" mb="6">
-                  {t('hobbies.collaboration-body')}
+                <Text color="#c7c6c6" lineHeight="1.8">
+                  {t('hobbies.source-index-note')}
                 </Text>
                 <Link
                   href={`/${locale}/contact`}
-                  display="inline-block"
-                  px="8"
-                  py="3"
-                  bg="#ffb000"
-                  color="#432c00"
-                  fontWeight="bold"
-                  fontFamily="var(--font-body)"
-                  letterSpacing="0.12em"
-                  fontSize="sm"
-                  className="blocky-shadow blocky-shadow-hover"
+                  display="inline-flex"
+                  alignItems="center"
+                  minH="44px"
+                  alignSelf="start"
+                  color="#ffb000"
+                  fontWeight="700"
+                  className="group-hover-underline"
                 >
                   {t('hobbies.send-message')}
                 </Link>
