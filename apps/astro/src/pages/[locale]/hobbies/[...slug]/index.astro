@@ -5,6 +5,11 @@ import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
+import {
+  getHobbyEmbedDescription,
+  getHobbyEmbedLabel,
+  getLocalizedHobbySummary
+} from '~/utils/hobby-labels';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 import { getOutlineSettings } from '~/utils/outline-settings';
@@ -73,60 +78,21 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
     assetProxyBasePath: outlineAssetProxyPath
   });
 const embedType = content.embeds[0]?.type ?? 'field-notes';
-const getEmbedLabel = (type?: string) => {
-  switch (type) {
-    case 'photo-gallery':
-      return t('hobbies.embed-photo-gallery');
-    case 'twitter-feed':
-      return t('hobbies.embed-twitter-feed');
-    case 'rubik-algorithms':
-      return t('hobbies.embed-rubik-algorithms');
-    case 'typing-stats':
-      return t('hobbies.embed-typing-stats');
-    case 'darts-board':
-      return t('hobbies.embed-darts-board');
-    case 'link-library':
-      return t('hobbies.embed-link-library');
-    case 'piano-chords':
-      return t('hobbies.embed-piano-chords');
-    default:
-      return t('hobbies.embed-field-notes');
-  }
-};
-const getEmbedDescription = (type?: string) => {
-  switch (type) {
-    case 'photo-gallery':
-      return t('hobbies.embed-photo-gallery-description');
-    case 'twitter-feed':
-      return t('hobbies.embed-twitter-feed-description');
-    case 'rubik-algorithms':
-      return t('hobbies.embed-rubik-algorithms-description');
-    case 'typing-stats':
-      return t('hobbies.embed-typing-stats-description');
-    case 'darts-board':
-      return t('hobbies.embed-darts-board-description');
-    case 'link-library':
-      return t('hobbies.embed-link-library-description');
-    case 'piano-chords':
-      return t('hobbies.embed-piano-chords-description');
-    default:
-      return t('hobbies.embed-field-notes-description');
-  }
-};
-const shouldLocalizeSourceSummary = (value?: string) =>
-  locale !== 'en' &&
-  !!value &&
-  /[A-Za-z]{3}/.test(value) &&
-  !/[\u0E00-\u0E7F\u3040-\u30ff\u3400-\u9fff]/.test(value);
-const sourceSummary = shouldLocalizeSourceSummary(content.description)
-  ? getEmbedDescription(embedType)
-  : content.description;
-const localizedNestedDescription = shouldLocalizeSourceSummary(nestedDescription)
-  ? getEmbedDescription(embedType)
-  : nestedDescription;
+const sourceSummary = getLocalizedHobbySummary({
+  locale,
+  value: content.description,
+  type: embedType,
+  t
+});
+const localizedNestedDescription = getLocalizedHobbySummary({
+  locale,
+  value: nestedDescription,
+  type: embedType,
+  t
+});
 const detailDescription =
   sourceSummary || localizedNestedDescription || t('hobbies.empty-source-description');
-const embedLabel = getEmbedLabel(embedType);
+const embedLabel = getHobbyEmbedLabel(t, embedType);
 const statusLabel =
   effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 const banner = resolveHobbyAssetUrl(content.banner);
@@ -233,8 +199,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 client:load
                 {...embedProps}
                 type={embed.type}
-                moduleTitle={embed.label === embed.type ? getEmbedLabel(embed.type) : embed.label}
-                moduleDescription={getEmbedDescription(embed.type)}
+                moduleTitle={
+                  embed.label === embed.type ? getHobbyEmbedLabel(t, embed.type) : embed.label
+                }
+                moduleDescription={getHobbyEmbedDescription(t, embed.type)}
               />
             );
           })

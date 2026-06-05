@@ -11,6 +11,7 @@ import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
 import { getOutlineSettings } from '~/utils/outline-settings';
 import { parseHobbyContent } from '~/utils/hobby-content';
+import { getHobbyEmbedLabel, getLocalizedHobbySummary } from '~/utils/hobby-labels';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 
 export const prerender = false;
@@ -165,51 +166,6 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
 
 const getEmbedType = (hobby: { embeds: { type: string }[] }) =>
   hobby.embeds[0]?.type ?? 'field-notes';
-const getEmbedLabel = (type?: string) => {
-  switch (type) {
-    case 'photo-gallery':
-      return t('hobbies.embed-photo-gallery');
-    case 'twitter-feed':
-      return t('hobbies.embed-twitter-feed');
-    case 'rubik-algorithms':
-      return t('hobbies.embed-rubik-algorithms');
-    case 'typing-stats':
-      return t('hobbies.embed-typing-stats');
-    case 'darts-board':
-      return t('hobbies.embed-darts-board');
-    case 'link-library':
-      return t('hobbies.embed-link-library');
-    case 'piano-chords':
-      return t('hobbies.embed-piano-chords');
-    default:
-      return t('hobbies.embed-field-notes');
-  }
-};
-const getEmbedDescription = (type?: string) => {
-  switch (type) {
-    case 'photo-gallery':
-      return t('hobbies.embed-photo-gallery-description');
-    case 'twitter-feed':
-      return t('hobbies.embed-twitter-feed-description');
-    case 'rubik-algorithms':
-      return t('hobbies.embed-rubik-algorithms-description');
-    case 'typing-stats':
-      return t('hobbies.embed-typing-stats-description');
-    case 'darts-board':
-      return t('hobbies.embed-darts-board-description');
-    case 'link-library':
-      return t('hobbies.embed-link-library-description');
-    case 'piano-chords':
-      return t('hobbies.embed-piano-chords-description');
-    default:
-      return t('hobbies.embed-field-notes-description');
-  }
-};
-const shouldLocalizeSourceSummary = (value?: string) =>
-  locale !== 'en' &&
-  !!value &&
-  /[A-Za-z]{3}/.test(value) &&
-  !/[\u0E00-\u0E7F\u3040-\u30ff\u3400-\u9fff]/.test(value);
 const getStatusLabel = (status: 'active' | 'inactive') =>
   status === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 const hasExplicitStatus = (meta: Record<string, unknown>) =>
@@ -263,13 +219,19 @@ const hobbies = hobbiesList
         });
         const childPages = h.childPages ?? [];
         const embedType = content.embeds[0]?.type ?? 'field-notes';
-        const sourceSummary = shouldLocalizeSourceSummary(content.description)
-          ? getEmbedDescription(embedType)
-          : content.description;
+        const sourceSummary = getLocalizedHobbySummary({
+          locale,
+          value: content.description,
+          type: embedType,
+          t
+        });
         const nestedSummary = formatNestedDescription(childPages);
-        const localizedNestedSummary = shouldLocalizeSourceSummary(nestedSummary)
-          ? getEmbedDescription(embedType)
-          : nestedSummary;
+        const localizedNestedSummary = getLocalizedHobbySummary({
+          locale,
+          value: nestedSummary,
+          type: embedType,
+          t
+        });
         const resolvedImages = content.images
           .map(resolveHobbyAssetUrl)
           .filter((image): image is string => !!image);
@@ -325,7 +287,7 @@ const hobbies = hobbiesList
             <Stack borderTop="1px solid" borderColor="#524533">
               {hobbies.map((hobby, index) => {
                 const embedType = getEmbedType(hobby);
-                const readableEmbedType = getEmbedLabel(embedType);
+                const readableEmbedType = getHobbyEmbedLabel(t, embedType);
                 const cardMetrics = [
                   [t('hobbies.metric-status'), getStatusLabel(hobby.status)],
                   [t('hobbies.metric-updated'), hobby.updatedLabel],
@@ -409,7 +371,7 @@ const hobbies = hobbiesList
                 </Heading>
                 <Stack as="ul" gap="3">
                   {hobbies.map((hobby) => {
-                    const itemEmbedLabel = getEmbedLabel(getEmbedType(hobby));
+                    const itemEmbedLabel = getHobbyEmbedLabel(t, getEmbedType(hobby));
                     return (
                       <Link
                         href={`/${locale}/hobbies/${hobby.id}`}
