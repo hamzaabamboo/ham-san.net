@@ -229,6 +229,16 @@ const hobbies = hobbiesList
               {hobbies.map((hobby) => {
                 const embedType = getEmbedType(hobby);
                 const readableEmbedType = getEmbedLabel(embedType);
+                const cardMetrics = [
+                  [t('hobbies.metric-status'), getStatusLabel(hobby.status)],
+                  [t('hobbies.metric-updated'), hobby.updatedLabel],
+                  ...(hobby.links?.length
+                    ? [[t('hobbies.metric-links'), String(hobby.links.length)]]
+                    : []),
+                  ...(hobby.childPages?.length
+                    ? [[t('hobbies.metric-pages'), String(hobby.childPages.length)]]
+                    : [])
+                ];
 
                 return (
                   <Link
@@ -275,22 +285,12 @@ const hobbies = hobbiesList
                       color="#9f8e78"
                       className={metaTextClass}
                     >
-                      <Stack gap="1">
-                        <Text color="#dbdbdb">{t('hobbies.metric-status')}</Text>
-                        <Text>{getStatusLabel(hobby.status)}</Text>
-                      </Stack>
-                      <Stack gap="1">
-                        <Text color="#dbdbdb">{t('hobbies.metric-updated')}</Text>
-                        <Text>{hobby.updatedLabel}</Text>
-                      </Stack>
-                      <Stack gap="1">
-                        <Text color="#dbdbdb">{t('hobbies.metric-links')}</Text>
-                        <Text>{hobby.links?.length ?? 0}</Text>
-                      </Stack>
-                      <Stack gap="1">
-                        <Text color="#dbdbdb">{t('hobbies.metric-pages')}</Text>
-                        <Text>{hobby.childPages?.length ?? 0}</Text>
-                      </Stack>
+                      {cardMetrics.map(([label, value]) => (
+                        <Stack gap="1">
+                          <Text color="#dbdbdb">{label}</Text>
+                          <Text>{value}</Text>
+                        </Stack>
+                      ))}
                     </Grid>
                   </Link>
                 );

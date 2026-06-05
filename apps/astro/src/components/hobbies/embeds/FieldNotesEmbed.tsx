@@ -27,9 +27,9 @@ export const FieldNotesEmbed = ({
       : (emptySourceStateLabel ?? emptySourceLabel);
   const lineItems = [
     [statusMetricLabel, statusLabel || status],
-    [linksMetricLabel, String(links.length)],
     [updatedMetricLabel, updatedAt ?? liveContentLabel],
-    [pagesMetricLabel, String(nestedPages.length)]
+    ...(links.length > 0 ? [[linksMetricLabel, String(links.length)]] : []),
+    ...(nestedPages.length > 0 ? [[pagesMetricLabel, String(nestedPages.length)]] : [])
   ];
 
   return (
