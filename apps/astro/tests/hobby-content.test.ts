@@ -126,4 +126,31 @@ End.`
       { type: 'markdown', content: 'End.' }
     ]);
   });
+
+  test('supports shorthand component slot directives', () => {
+    const content = parseHobbyContent({
+      title: 'Shorthand',
+      text: `Intro.
+
+::photo[Gallery]
+
+Middle.
+
+::typing[Profiles]
+
+End.`
+    });
+
+    expect(content.embeds).toEqual([
+      { type: 'photo-gallery', label: 'Gallery' },
+      { type: 'typing-stats', label: 'Profiles' }
+    ]);
+    expect(splitHobbyBodyParts(content.body, content.embeds.length)).toEqual([
+      { type: 'markdown', content: 'Intro.' },
+      { type: 'embed', index: 0 },
+      { type: 'markdown', content: 'Middle.' },
+      { type: 'embed', index: 1 },
+      { type: 'markdown', content: 'End.' }
+    ]);
+  });
 });

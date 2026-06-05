@@ -154,6 +154,9 @@ const parseDirective = (line: string): HobbyEmbedConfig | undefined => {
   );
   const objectMatch = line.match(/^::hobby(?:-embed)?\s*\{\s*(.+?)\s*\}\s*$/);
   const commentMatch = line.match(/^<!--\s*hobby:([a-zA-Z0-9_-]+)\s*-->\s*$/);
+  const shorthandMatch = line.match(
+    /^::(?!hobby(?:-embed)?\b)([a-zA-Z0-9_-]+)(?:\s*\[\s*([^\]]+?)\s*\])?\s*$/
+  );
   const getField = (source: string, key: string) => {
     const match = source.match(
       new RegExp(`(?:^|[\\s,])${key}\\s*[:=]\\s*(?:"([^"]+)"|'([^']+)'|([^\\s,}]+))`)
@@ -161,9 +164,13 @@ const parseDirective = (line: string): HobbyEmbedConfig | undefined => {
     return match?.[1] ?? match?.[2] ?? match?.[3];
   };
   const rawType =
-    bracketMatch?.[1] ?? commentMatch?.[1] ?? getField(objectMatch?.[1] ?? '', 'type');
+    bracketMatch?.[1] ??
+    commentMatch?.[1] ??
+    getField(objectMatch?.[1] ?? '', 'type') ??
+    shorthandMatch?.[1];
   const rawLabel =
     bracketMatch?.[2] ??
+    shorthandMatch?.[2] ??
     getField(objectMatch?.[1] ?? '', 'label') ??
     getField(objectMatch?.[1] ?? '', 'title');
   const type = normalizeHobbyEmbedKey(rawType);
