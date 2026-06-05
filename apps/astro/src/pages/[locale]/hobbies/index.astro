@@ -5,7 +5,6 @@ import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
-import { BrandMark } from '~/components/brand/BrandMark';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
@@ -35,7 +34,24 @@ try {
       body: { collectionId: settings['hobbies-collection'] },
       signal: controller.signal
     });
-    hobbiesList = res.data?.data?.filter((d: any) => !d.parentDocumentId);
+    const rootDocuments = res.data?.data?.filter((d: any) => !d.parentDocumentId) ?? [];
+    const childCounts = await Promise.all(
+      rootDocuments.map(async (document: any) => {
+        try {
+          const childRes = await outlineClient.POST('/documents.list', {
+            body: { parentDocumentId: document.id },
+            signal: controller.signal
+          });
+          return childRes.data?.data?.length ?? 0;
+        } catch {
+          return 0;
+        }
+      })
+    );
+    hobbiesList = rootDocuments.map((document: any, index: number) => ({
+      ...document,
+      childCount: childCounts[index] ?? 0
+    }));
   }
   clearTimeout(timeout);
 } catch {
@@ -65,6 +81,8 @@ const getEmbedType = (hobby: { embeds: { type: string }[] }) =>
 const getEmbedMeta = (hobby: { embeds: { type: string }[] }) =>
   embedMeta[getEmbedType(hobby)] ?? embedMeta['field-notes'];
 const formatEmbedType = (type?: string) => type?.replace(/-/g, ' ') ?? 'notes';
+const getStatusLabel = (status: 'active' | 'inactive') =>
+  status === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 
 const formatUpdated = (date?: string | null) =>
   date
@@ -88,16 +106,15 @@ const hobbies = hobbiesList
           images: content.images
             .map(resolveHobbyAssetUrl)
             .filter((image): image is string => !!image),
-          updatedLabel: formatUpdated(content.updatedAt)
+          updatedLabel: formatUpdated(content.updatedAt),
+          childCount: h.childCount ?? 0
         };
       })
     )
   : [];
 const activeHobbies = hobbies.filter((hobby) => hobby.status === 'active');
 const inactiveHobbies = hobbies.filter((hobby) => hobby.status === 'inactive');
-const componentCount = new Set(
-  hobbies.flatMap((hobby) => hobby.embeds.map((embed: { type: string }) => embed.type))
-).size;
+const sourcePageCount = hobbies.reduce((sum, hobby) => sum + 1 + (hobby.childCount ?? 0), 0);
 ---
 
 <MainLayout title={pageTitle} description={t('hobbies.description')}>
@@ -127,12 +144,13 @@ const componentCount = new Set(
       >
         <Stack bg="#131313" p="5" gap="2">
           <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
+            fontFamily="var(--font-body)"
+            fontSize={{ base: 'sm', md: 'md' }}
+            fontWeight="700"
+            lineHeight="1.5"
             color="#9f8e78"
           >
-            Active
+            {t('hobbies.stats-active')}
           </Text>
           <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
             {String(activeHobbies.length).padStart(2, '0')}
@@ -140,25 +158,27 @@ const componentCount = new Set(
         </Stack>
         <Stack className="note-signal-card" p="5" gap="2">
           <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
+            fontFamily="var(--font-body)"
+            fontSize={{ base: 'sm', md: 'md' }}
+            fontWeight="700"
+            lineHeight="1.5"
             color="#9f8e78"
           >
-            Components
+            {t('hobbies.stats-pages')}
           </Text>
           <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#2dd4bf">
-            {String(componentCount).padStart(2, '0')}
+            {String(sourcePageCount).padStart(2, '0')}
           </Text>
         </Stack>
         <Stack bg="#131313" p="5" gap="2">
           <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
+            fontFamily="var(--font-body)"
+            fontSize={{ base: 'sm', md: 'md' }}
+            fontWeight="700"
+            lineHeight="1.5"
             color="#9f8e78"
           >
-            Inactive
+            {t('hobbies.stats-inactive')}
           </Text>
           <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffd597">
             {String(inactiveHobbies.length).padStart(2, '0')}
@@ -177,7 +197,7 @@ const componentCount = new Set(
                 letterSpacing="0.12em"
                 color="#9f8e78"
               >
-                status: unavailable
+                {t('hobbies.status-unavailable')}
               </Text>
               <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
                 {t('hobbies.empty-title')}
@@ -197,7 +217,7 @@ const componentCount = new Set(
               borderColor="#524533"
             >
               {hobbies.map((hobby, index) => {
-                const span = index === 0 ? 8 : index === 1 ? 4 : index % 2 === 0 ? 5 : 7;
+                const span = index === 0 ? 12 : index === 1 ? 4 : index % 2 === 0 ? 5 : 7;
                 const embedType = getEmbedType(hobby);
                 const meta = getEmbedMeta(hobby);
                 const readableEmbedType = formatEmbedType(embedType);
@@ -206,13 +226,12 @@ const componentCount = new Set(
                   return (
                     <Link
                       href={`/${locale}/hobbies/${hobby.id}`}
-                      gridColumn={{ base: 'span 1', md: `span ${span}` }}
+                      gridColumn={{ base: 'span 1', md: '1 / -1' }}
                       w="full"
                       minW="0"
                       bg="#1c1b1b"
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="stretch"
+                      display="grid"
+                      gridTemplateColumns={{ base: '1fr', md: 'minmax(0, 7fr) minmax(22rem, 5fr)' }}
                       overflow="hidden"
                       className="group card-hover-amber"
                       border="1px solid"
@@ -221,7 +240,8 @@ const componentCount = new Set(
                       <Box
                         position="relative"
                         w="full"
-                        h={{ base: '64', md: '96' }}
+                        h={{ base: '64', md: 'full' }}
+                        minH={{ md: '96' }}
                         overflow="hidden"
                         bg="#222221"
                       >
@@ -234,7 +254,6 @@ const componentCount = new Set(
                           gradientTo="#1c1b1b"
                         >
                           <Box position="absolute" inset="0" className="fallback-grid-lines" />
-                          <Box position="absolute" inset="0" className={hobbyStyles.cameraMark} />
                           <Box
                             position="absolute"
                             insetX={{ base: '8', md: '20' }}
@@ -267,7 +286,7 @@ const componentCount = new Set(
                               color="#e5e2e1"
                               aria-hidden="true"
                             >
-                              {hobby.title?.charAt(0).toUpperCase()}
+                              {meta.mark}
                             </Text>
                           </Box>
                           <Box
@@ -305,28 +324,46 @@ const componentCount = new Set(
                             />
                           </>
                         ) : (
-                          <>
+                          <Box
+                            position="absolute"
+                            inset="0"
+                            zIndex="1"
+                            display="grid"
+                            placeItems="center"
+                            px={{ base: '8', md: '12' }}
+                            textAlign="center"
+                            pointerEvents="none"
+                          >
                             <Box
-                              position="absolute"
-                              inset={{ base: '12', md: '16' }}
                               border="2px solid"
                               borderColor="#ffb000"
-                              zIndex="1"
-                              opacity="0.78"
-                              className={hobbyStyles.cameraPanel}
-                            />
-                            <Box
-                              position="absolute"
-                              inset="0"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              zIndex="2"
-                              pointerEvents="none"
+                              px={{ base: '6', md: '10' }}
+                              py={{ base: '5', md: '7' }}
+                              bg="rgba(14, 14, 14, 0.58)"
+                              boxShadow="12px 12px 0 rgba(255, 176, 0, 0.12)"
                             >
-                              <Box className={hobbyStyles.cameraLens} />
+                              <Text
+                                fontFamily="JetBrains Mono, monospace"
+                                fontSize={{ base: '5xl', md: '7xl' }}
+                                fontWeight="800"
+                                lineHeight="0.9"
+                                color="#ffb000"
+                                letterSpacing="0.08em"
+                              >
+                                {meta.mark}
+                              </Text>
+                              <Text
+                                mt="4"
+                                fontFamily="JetBrains Mono, monospace"
+                                fontSize={{ base: '10px', md: '12px' }}
+                                textTransform="uppercase"
+                                letterSpacing="0.18em"
+                                color="#e5e2e1"
+                              >
+                                {meta.label} / {readableEmbedType}
+                              </Text>
                             </Box>
-                          </>
+                          </Box>
                         )}
                         <Box
                           position="absolute"
@@ -345,18 +382,15 @@ const componentCount = new Set(
                             {readableEmbedType}
                           </Text>
                         </Box>
-                        <Box
-                          position="absolute"
-                          top="4"
-                          right="4"
-                          opacity="0.4"
-                          className="group-hover-opacity-full"
-                          transition="opacity 0.3s ease"
-                        >
-                          <BrandMark size={40} color="#e5e2e1" accent="#FFB000" />
-                        </Box>
                       </Box>
-                      <Box p={{ base: '6', md: '8' }} borderTop="1px solid" borderColor="#524533">
+                      <Box
+                        p={{ base: '6', md: '8' }}
+                        borderTop={{ base: '1px solid', md: '0' }}
+                        borderLeft={{ md: '1px solid' }}
+                        borderColor="#524533"
+                        display="flex"
+                        flexDirection="column"
+                      >
                         <Box
                           display="flex"
                           justifyContent="space-between"
@@ -380,7 +414,7 @@ const componentCount = new Set(
                           textTransform="uppercase"
                           color="#9f8e78"
                         >
-                          <Text>{hobby.status}</Text>
+                          <Text>{getStatusLabel(hobby.status)}</Text>
                           <Text>/</Text>
                           <Text>{readableEmbedType}</Text>
                           <Text>/</Text>
@@ -473,14 +507,19 @@ const componentCount = new Set(
                             color="#9f8e78"
                             mb="4"
                           >
-                            <Text>{hobby.status}</Text>
+                            <Text>{getStatusLabel(hobby.status)}</Text>
                             <Text>/</Text>
                             <Text>{readableEmbedType}</Text>
                           </Box>
                           <Heading as="h2" fontSize="3xl" fontStyle="italic" mb="4">
                             {hobby.title}
                           </Heading>
-                          <Text color="#c7c6c6" mb="8" overflowWrap="anywhere" className="line-clamp-3">
+                          <Text
+                            color="#c7c6c6"
+                            mb="8"
+                            overflowWrap="anywhere"
+                            className="line-clamp-3"
+                          >
                             {hobby.description}
                           </Text>
                         </Box>
@@ -586,7 +625,7 @@ const componentCount = new Set(
                           textTransform="uppercase"
                           color="#9f8e78"
                         >
-                          <Text>{hobby.status}</Text>
+                          <Text>{getStatusLabel(hobby.status)}</Text>
                           <Text>/</Text>
                           <Text>{readableEmbedType}</Text>
                           <Text>/</Text>
@@ -791,7 +830,7 @@ const componentCount = new Set(
                           textTransform="uppercase"
                           color="#9f8e78"
                         >
-                          <Text>{hobby.status}</Text>
+                          <Text>{getStatusLabel(hobby.status)}</Text>
                           <Text>/</Text>
                           <Text>{readableEmbedType}</Text>
                           <Text>/</Text>

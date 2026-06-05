@@ -7,6 +7,10 @@ export type HobbyEmbedProps = {
   images?: string[];
   links?: HobbyLink[];
   nestedPages?: Array<{ title: string; href: string }>;
+  statusLabel?: string;
+  moduleLabel?: string;
+  updatedPrefix?: string;
+  liveContentLabel?: string;
   updatedAt?: string;
   status?: 'active' | 'inactive';
 };

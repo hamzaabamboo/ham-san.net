@@ -87,39 +87,6 @@ export const hobbyStyles = {
     textTransform: 'uppercase',
     bg: 'rgba(255, 176, 0, 0.08)'
   }),
-  cameraMark: css({
-    '&::before, &::after': {
-      zIndex: '2',
-      pos: 'absolute',
-      bg: '#ffb000',
-      content: '""'
-    },
-    '&::before': {
-      top: 'calc(50% - 5.5rem)',
-      left: 'calc(50% - 4.5rem)',
-      w: '9rem',
-      h: '2.25rem'
-    },
-    '&::after': {
-      top: 'calc(50% - 6.75rem)',
-      left: 'calc(50% - 2rem)',
-      w: '4rem',
-      h: '1.5rem'
-    }
-  }),
-  cameraPanel: css({
-    inset: '4rem!',
-    bg: 'linear-gradient(90deg, transparent 0 48%, rgba(255, 176, 0, 0.26) 48% 52%, transparent 52%), linear-gradient(0deg, transparent 0 48%, rgba(255, 176, 0, 0.26) 48% 52%, transparent 52%)',
-    boxShadow: '12px 12px 0 rgba(255, 176, 0, 0.12)'
-  }),
-  cameraLens: css({
-    aspectRatio: '1',
-    border: '2px solid rgba(255, 176, 0, 0.82)',
-    rounded: 'full',
-    w: '18rem!',
-    maxW: '54%!',
-    bg: 'radial-gradient(circle, transparent 0 28%, rgba(255, 176, 0, 0.85) 29% 31%, transparent 32% 54%, rgba(255, 176, 0, 0.35) 55% 56%, transparent 57%), radial-gradient(circle, rgba(255, 176, 0, 0.12), transparent 62%)'
-  }),
   detail: css({
     w: 'min(100%, 1280px)',
     mx: 'auto',

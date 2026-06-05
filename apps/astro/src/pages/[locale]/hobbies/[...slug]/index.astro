@@ -57,6 +57,8 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
   });
 const embedType = content.embeds[0]?.type ?? 'field-notes';
 const embedLabel = embedType.replace(/-/g, ' ');
+const statusLabel =
+  content.status === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 const embedVisualMeta: Record<string, { mark: string; label: string }> = {
   'photo-gallery': { mark: 'PG', label: 'gallery source' },
   'rubik-algorithms': { mark: 'RB', label: 'algorithm set' },
@@ -92,11 +94,11 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 
     <section class={hobbyStyles.detailHero}>
       <div class={hobbyStyles.detailHeadline}>
-        <p class={hobbyStyles.detailEyebrow}>{content.status} hobby / {embedLabel}</p>
+        <p class={hobbyStyles.detailEyebrow}>{statusLabel} / {embedLabel}</p>
         <h1 class={hobbyStyles.detailTitle}>{data.title}</h1>
         {content.description && <p class={hobbyStyles.detailDescription}>{content.description}</p>}
         <p class={hobbyStyles.detailUpdated}>
-          <span>Last updated</span>
+          <span>{t('hobbies.last-updated')}</span>
           <span>/</span>
           <span>{updatedLabel}</span>
         </p>
@@ -133,6 +135,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               images={images}
               links={content.links}
               nestedPages={nestedPages}
+              statusLabel={statusLabel}
+              moduleLabel={t('hobbies.module-label')}
+              updatedPrefix={t('hobbies.updated-prefix')}
+              liveContentLabel={t('hobbies.live-content')}
               updatedAt={updatedLabel}
               status={content.status}
             />
@@ -154,7 +160,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 
       <aside class={hobbyStyles.detailAside}>
         <div class={hobbyStyles.detailPanel}>
-          <p class={hobbyStyles.detailPanelTitle}>Related pages</p>
+          <p class={hobbyStyles.detailPanelTitle}>{t('hobbies.learning-resources')}</p>
           {
             childDocuments.length > 0 ? (
               <div class={hobbyStyles.detailNested}>
@@ -169,15 +175,17 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 ))}
               </div>
             ) : (
-              <p class={hobbyStyles.detailMuted}>No related pages yet.</p>
+              <p class={hobbyStyles.detailMuted}>{t('hobbies.related-pages-empty')}</p>
             )
           }
         </div>
 
         <div class={cx(hobbyStyles.detailPanel, 'note-signal-card')}>
-          <p class={cx(hobbyStyles.detailPanelTitle, hobbyStyles.detailPanelTitleCyan)}>Details</p>
+          <p class={cx(hobbyStyles.detailPanelTitle, hobbyStyles.detailPanelTitleCyan)}>
+            {t('hobbies.details')}
+          </p>
           <p class={hobbyStyles.detailMuted}>
-            {content.status} / {embedLabel} / {updatedLabel}
+            {statusLabel} / {embedLabel} / {updatedLabel}
           </p>
         </div>
       </aside>

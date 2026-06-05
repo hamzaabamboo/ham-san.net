@@ -78,6 +78,10 @@ export const HobbyInteractiveEmbed = ({
   images = [],
   links = [],
   nestedPages = [],
+  statusLabel,
+  moduleLabel = 'module',
+  updatedPrefix = 'Updated',
+  liveContentLabel = 'Live content',
   updatedAt,
   status = 'active'
 }: HobbyEmbedProps & { type: string }) => {
@@ -88,12 +92,14 @@ export const HobbyInteractiveEmbed = ({
     <section className={hobbyStyles.embed}>
       <div className={hobbyStyles.embedHeader}>
         <div>
-          <p className={hobbyStyles.embedEyebrow}>{status} module</p>
+          <p className={hobbyStyles.embedEyebrow}>
+            {statusLabel ?? status} {moduleLabel}
+          </p>
           <h2>{embed.title}</h2>
         </div>
         <div className={hobbyStyles.embedMeta}>
           <span>{title ?? 'Hobby'}</span>
-          <span>{updatedAt ? `Updated ${updatedAt}` : 'Live content'}</span>
+          <span>{updatedAt ? `${updatedPrefix} ${updatedAt}` : liveContentLabel}</span>
         </div>
       </div>
       <p className={hobbyStyles.embedSummary}>{description || embed.description}</p>
@@ -104,6 +110,10 @@ export const HobbyInteractiveEmbed = ({
         images={images}
         links={links}
         nestedPages={nestedPages}
+        statusLabel={statusLabel}
+        moduleLabel={moduleLabel}
+        updatedPrefix={updatedPrefix}
+        liveContentLabel={liveContentLabel}
         updatedAt={updatedAt}
         status={status}
       />
