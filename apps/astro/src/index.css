@@ -148,7 +148,6 @@
     font-style: normal;
     letter-spacing: 0;
   }
-
 }
 
 html:lang(ja) .font-style_italic,
@@ -788,14 +787,6 @@ html:lang(th) .shell-nav-link {
 }
 .shell-nav-brand:hover {
   color: #ffd597;
-}
-.shell-nav-brand-text {
-  display: none;
-}
-@media (min-width: 640px) {
-  .shell-nav-brand-text {
-    display: inline;
-  }
 }
 
 .shell-nav-links {
