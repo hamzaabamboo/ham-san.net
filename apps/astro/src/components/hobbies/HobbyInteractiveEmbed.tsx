@@ -20,13 +20,13 @@ type EmbedDefinition = {
 const embedRegistry: Record<string, EmbedDefinition> = {
   'photo-gallery': {
     title: 'Photo lab',
-    description: 'Contact sheet, references, and field feed.',
+    description: 'Images and references from the note.',
     className: 'photo-gallery',
     Component: PhotoGalleryEmbed
   },
   'twitter-feed': {
-    title: 'Signal feed',
-    description: 'External posts and small public updates.',
+    title: 'Social feed',
+    description: 'Public posts and profile links from the note.',
     className: 'twitter-feed',
     Component: TwitterFeedEmbed
   },
@@ -37,32 +37,32 @@ const embedRegistry: Record<string, EmbedDefinition> = {
     Component: RubikAlgorithmsEmbed
   },
   'typing-stats': {
-    title: 'Typing telemetry',
-    description: 'Profiles and practice references.',
+    title: 'Typing profiles',
+    description: 'Typing profiles and practice links.',
     className: 'typing-stats',
     Component: TypingStatsEmbed
   },
   'darts-board': {
     title: 'Darts board',
-    description: 'Source-backed stats, loadout, and board notes.',
+    description: 'Board, gear, and practice notes.',
     className: 'darts-board',
     Component: DartsBoardEmbed
   },
   'link-library': {
     title: 'Link library',
-    description: 'External references from the source note.',
+    description: 'External references from the note.',
     className: 'link-library',
     Component: LinkLibraryEmbed
   },
   'piano-chords': {
     title: 'Chord player',
-    description: 'Source voicings and music pages.',
+    description: 'Chord, voicing, and audio pages.',
     className: 'piano-chords',
     Component: PianoChordsEmbed
   },
   'field-notes': {
-    title: 'Field notes',
-    description: 'Source state, links, and archive metadata.',
+    title: 'Note links',
+    description: 'Links, related pages, and update state.',
     className: 'field-notes',
     Component: FieldNotesEmbed
   }
@@ -79,7 +79,7 @@ export const HobbyInteractiveEmbed = ({
   links = [],
   nestedPages = [],
   statusLabel,
-  moduleLabel = 'module',
+  moduleLabel = 'embed',
   moduleTitle,
   moduleDescription,
   updatedPrefix = 'Updated',
@@ -119,7 +119,7 @@ export const HobbyInteractiveEmbed = ({
       <div className={hobbyStyles.embedHeader}>
         <div>
           <p className={`${hobbyStyles.embedEyebrow} hobby-meta`}>
-            {statusLabel ?? status} {moduleLabel}
+            {statusLabel ?? status} / {moduleLabel}
           </p>
           <h2>{moduleTitle ?? embed.title}</h2>
         </div>

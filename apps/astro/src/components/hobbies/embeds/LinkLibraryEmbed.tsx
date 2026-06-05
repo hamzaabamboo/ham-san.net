@@ -10,7 +10,7 @@ const formatLabel = (label: string, href: string) => {
 export const LinkLibraryEmbed = ({
   links = [],
   description,
-  noLinksLabel = 'No external links in this source note.'
+  noLinksLabel = 'No external links in this note.'
 }: HobbyEmbedProps) => {
   const visibleLinks = links.slice(0, 8);
 

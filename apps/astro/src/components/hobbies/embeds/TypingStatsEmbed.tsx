@@ -17,12 +17,12 @@ export const TypingStatsEmbed = ({
   statusLabel,
   liveContentLabel = 'live',
   profilesMetricLabel = 'profiles',
+  linksMetricLabel = 'links',
   updatedMetricLabel = 'updated',
   statusMetricLabel = 'status',
   sourceMetricLabel = 'source',
   sourceNoteLabel = 'outline',
-  emptySourceLabel = 'empty',
-  noTypingProfilesLabel = 'No external typing profiles in the source note.'
+  noTypingProfilesLabel = 'No typing profiles are linked yet.'
 }: HobbyEmbedProps) => {
   const profileLinks = links
     .filter((link) =>
@@ -30,11 +30,12 @@ export const TypingStatsEmbed = ({
     )
     .slice(0, 6);
   const visibleLinks = profileLinks.length > 0 ? profileLinks : links.slice(0, 6);
+  const linkMetricLabel = profileLinks.length > 0 ? profilesMetricLabel : linksMetricLabel;
   const sourceRows = [
-    [profilesMetricLabel, String(visibleLinks.length)],
+    ...(visibleLinks.length > 0 ? [[linkMetricLabel, String(visibleLinks.length)]] : []),
     [updatedMetricLabel, updatedAt ?? liveContentLabel],
     [statusMetricLabel, statusLabel || status],
-    [sourceMetricLabel, body ? sourceNoteLabel : emptySourceLabel]
+    ...(body ? [[sourceMetricLabel, sourceNoteLabel]] : [])
   ];
 
   return (

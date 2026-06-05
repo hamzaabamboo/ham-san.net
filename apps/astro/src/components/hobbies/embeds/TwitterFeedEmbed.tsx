@@ -12,7 +12,7 @@ const getHostLabel = (href: string) => {
 export const TwitterFeedEmbed = ({
   links = [],
   description,
-  sourceNoteLabel = 'source note',
+  sourceNoteLabel = 'note',
   noFeedLabel = 'No public feed link is attached to this note.'
 }: HobbyEmbedProps) => {
   const feedLinks = links

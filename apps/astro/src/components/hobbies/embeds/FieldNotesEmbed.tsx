@@ -10,10 +10,10 @@ export const FieldNotesEmbed = ({
   updatedAt,
   statusLabel = 'Active',
   liveContentLabel = 'Live',
-  emptySourceLabel = 'Waiting for source notes.',
+  emptySourceLabel = 'Waiting for note content.',
   emptySourceStateLabel,
-  nestedSourcePagesLabel = 'Nested source pages',
-  sourceNoteAttachedLabel = 'Source note attached',
+  nestedSourcePagesLabel = 'Related pages',
+  sourceNoteAttachedLabel = 'Note content available',
   statusMetricLabel = 'Status',
   linksMetricLabel = 'Links',
   updatedMetricLabel = 'Updated',
@@ -37,7 +37,7 @@ export const FieldNotesEmbed = ({
       <HobbyTypeGlyph type="field-notes" size="hero" />
       <div>
         <p>{sourceState}</p>
-        <strong>{title ?? 'Field notes'}</strong>
+        <strong>{title ?? 'Note links'}</strong>
         {nestedPages.length > 0 && (
           <nav>
             {nestedPages.slice(0, 4).map((page) => (
