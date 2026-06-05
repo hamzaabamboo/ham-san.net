@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { HobbyTypeGlyph } from '../HobbyTypeGlyph';
 import { hobbyStyles } from '../hobbyStyles';
 import type { HobbyEmbedProps } from './types';
 
@@ -29,7 +28,6 @@ export const PhotoGalleryEmbed = ({
           <img src={galleryImages[activeImage]} alt="" />
         ) : galleryLinks.length > 0 ? (
           <div className={hobbyStyles.gallerySources}>
-            <HobbyTypeGlyph type="photo-gallery" size="hero" />
             <strong>{linkedPhotoSourcesLabel}</strong>
             <div>
               {galleryLinks.map((link) => (
@@ -41,7 +39,6 @@ export const PhotoGalleryEmbed = ({
           </div>
         ) : (
           <div className={hobbyStyles.galleryFallback}>
-            <HobbyTypeGlyph type="photo-gallery" size="hero" />
             <strong>{noImagesLabel}</strong>
           </div>
         )}

@@ -44,6 +44,13 @@ const unavailableMetaTextClass =
           letterSpacing: '0.12em'
         })
       );
+const hobbyThumbnail = css({
+  display: 'block',
+  w: 'full',
+  h: 'full',
+  objectFit: 'cover',
+  filter: 'saturate(1.06) contrast(1.02)'
+});
 
 let hobbiesList: any[] | undefined = undefined;
 
@@ -239,6 +246,19 @@ const hobbies = hobbiesList
                     className="group"
                   >
                     <Stack gap="2">
+                      {hobby.banner && (
+                        <Box
+                          w="9rem"
+                          maxW="full"
+                          aspectRatio="4 / 3"
+                          border="1px solid"
+                          borderColor="#524533"
+                          overflow="hidden"
+                          bg="#131313"
+                        >
+                          <img src={hobby.banner} alt="" class={hobbyThumbnail} loading="lazy" />
+                        </Box>
+                      )}
                       <Text className={metaTextClass} color="#9f8e78">
                         {readableEmbedType}
                       </Text>
