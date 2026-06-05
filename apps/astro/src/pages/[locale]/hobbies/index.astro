@@ -185,6 +185,31 @@ const getEmbedLabel = (type?: string) => {
       return t('hobbies.embed-field-notes');
   }
 };
+const getEmbedDescription = (type?: string) => {
+  switch (type) {
+    case 'photo-gallery':
+      return t('hobbies.embed-photo-gallery-description');
+    case 'twitter-feed':
+      return t('hobbies.embed-twitter-feed-description');
+    case 'rubik-algorithms':
+      return t('hobbies.embed-rubik-algorithms-description');
+    case 'typing-stats':
+      return t('hobbies.embed-typing-stats-description');
+    case 'darts-board':
+      return t('hobbies.embed-darts-board-description');
+    case 'link-library':
+      return t('hobbies.embed-link-library-description');
+    case 'piano-chords':
+      return t('hobbies.embed-piano-chords-description');
+    default:
+      return t('hobbies.embed-field-notes-description');
+  }
+};
+const shouldLocalizeSourceSummary = (value?: string) =>
+  locale !== 'en' &&
+  !!value &&
+  /[A-Za-z]{3}/.test(value) &&
+  !/[\u0E00-\u0E7F\u3040-\u30ff\u3400-\u9fff]/.test(value);
 const getStatusLabel = (status: 'active' | 'inactive') =>
   status === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 const hasExplicitStatus = (meta: Record<string, unknown>) =>
@@ -237,6 +262,14 @@ const hobbies = hobbiesList
           fallbackUpdatedAt: h.updatedAt ?? h.createdAt
         });
         const childPages = h.childPages ?? [];
+        const embedType = content.embeds[0]?.type ?? 'field-notes';
+        const sourceSummary = shouldLocalizeSourceSummary(content.description)
+          ? getEmbedDescription(embedType)
+          : content.description;
+        const nestedSummary = formatNestedDescription(childPages);
+        const localizedNestedSummary = shouldLocalizeSourceSummary(nestedSummary)
+          ? getEmbedDescription(embedType)
+          : nestedSummary;
         const resolvedImages = content.images
           .map(resolveHobbyAssetUrl)
           .filter((image): image is string => !!image);
@@ -246,9 +279,7 @@ const hobbies = hobbiesList
           banner: resolveHobbyAssetUrl(content.banner ?? content.images[0]),
           images: resolvedImages,
           description:
-            content.description ||
-            formatNestedDescription(childPages) ||
-            t('hobbies.empty-source-description'),
+            sourceSummary || localizedNestedSummary || t('hobbies.empty-source-description'),
           updatedLabel: formatUpdated(content.updatedAt),
           childPages,
           status: getEffectiveStatus({

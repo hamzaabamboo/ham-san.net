@@ -64,8 +64,6 @@ const nestedDescription = nestedPages
   .filter(Boolean)
   .slice(0, 3)
   .join(' / ');
-const detailDescription =
-  content.description || nestedDescription || t('hobbies.empty-source-description');
 const pageTitle = `${data.title ?? t('common.hobbies')} | ${t('common.name')}`;
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = getOutlineAssetProxyPath(locale);
@@ -115,6 +113,19 @@ const getEmbedDescription = (type?: string) => {
       return t('hobbies.embed-field-notes-description');
   }
 };
+const shouldLocalizeSourceSummary = (value?: string) =>
+  locale !== 'en' &&
+  !!value &&
+  /[A-Za-z]{3}/.test(value) &&
+  !/[\u0E00-\u0E7F\u3040-\u30ff\u3400-\u9fff]/.test(value);
+const sourceSummary = shouldLocalizeSourceSummary(content.description)
+  ? getEmbedDescription(embedType)
+  : content.description;
+const localizedNestedDescription = shouldLocalizeSourceSummary(nestedDescription)
+  ? getEmbedDescription(embedType)
+  : nestedDescription;
+const detailDescription =
+  sourceSummary || localizedNestedDescription || t('hobbies.empty-source-description');
 const embedLabel = getEmbedLabel(embedType);
 const statusLabel =
   effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
