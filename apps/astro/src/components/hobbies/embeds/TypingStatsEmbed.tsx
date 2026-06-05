@@ -39,7 +39,7 @@ export const TypingStatsEmbed = ({
 
   return (
     <div className={hobbyStyles.sourceModule}>
-      <div className={hobbyStyles.sourceStats}>
+      <div className={`${hobbyStyles.sourceStats} hobby-meta`}>
         {sourceRows.map(([label, value]) => (
           <div key={label}>
             <span>{label}</span>
@@ -48,7 +48,7 @@ export const TypingStatsEmbed = ({
         ))}
       </div>
       {visibleLinks.length > 0 ? (
-        <div className={hobbyStyles.sourceLinks}>
+        <div className={`${hobbyStyles.sourceLinks} hobby-meta`}>
           {visibleLinks.map((link) => (
             <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
               <span>{link.label}</span>
@@ -57,7 +57,7 @@ export const TypingStatsEmbed = ({
           ))}
         </div>
       ) : (
-        <p className={hobbyStyles.sourceEmpty}>{noTypingProfilesLabel}</p>
+        <p className={`${hobbyStyles.sourceEmpty} hobby-meta`}>{noTypingProfilesLabel}</p>
       )}
     </div>
   );

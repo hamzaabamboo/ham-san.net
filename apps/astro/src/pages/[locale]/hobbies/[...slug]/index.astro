@@ -110,18 +110,18 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 ---
 
 <MainLayout title={pageTitle} description={detailDescription || data.title}>
-  <div class={cx(hobbyStyles.detail, 'page-shell')}>
-    <a class={hobbyStyles.detailBack} href={`/${locale}/hobbies`}>
+  <div class={cx(hobbyStyles.detail, 'page-shell', 'hobby-detail')}>
+    <a class={cx(hobbyStyles.detailBack, 'hobby-meta')} href={`/${locale}/hobbies`}>
       <span aria-hidden="true">←</span>
       <span>{t('hobbies.back-to-hobbies')}</span>
     </a>
 
     <section class={hobbyStyles.detailHero} data-has-visual={banner ? 'true' : 'false'}>
       <div class={hobbyStyles.detailHeadline}>
-        <p class={hobbyStyles.detailEyebrow}>{statusLabel} / {embedLabel}</p>
+        <p class={cx(hobbyStyles.detailEyebrow, 'hobby-meta')}>{statusLabel} / {embedLabel}</p>
         <h1 class={hobbyStyles.detailTitle}>{data.title}</h1>
         {detailDescription && <p class={hobbyStyles.detailDescription}>{detailDescription}</p>}
-        <p class={hobbyStyles.detailUpdated}>
+        <p class={cx(hobbyStyles.detailUpdated, 'hobby-meta')}>
           <span>{t('hobbies.last-updated')}</span>
           <span>/</span>
           <span>{updatedLabel}</span>
@@ -201,7 +201,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 
       <aside class={hobbyStyles.detailAside}>
         <div class={hobbyStyles.detailPanel}>
-          <p class={hobbyStyles.detailPanelTitle}>{t('hobbies.learning-resources')}</p>
+          <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+            {t('hobbies.learning-resources')}
+          </p>
           {
             childDocuments.length > 0 ? (
               <div class={hobbyStyles.detailNested}>
@@ -211,21 +213,25 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                     aria-current={child.id === data.id ? 'page' : undefined}
                   >
                     <span>{child.title}</span>
-                    <span>{t('hobbies.doc-label')}</span>
+                    <span class="hobby-meta">{t('hobbies.doc-label')}</span>
                   </a>
                 ))}
               </div>
             ) : (
-              <p class={hobbyStyles.detailMuted}>{t('hobbies.related-pages-empty')}</p>
+              <p class={cx(hobbyStyles.detailMuted, 'hobby-meta')}>
+                {t('hobbies.related-pages-empty')}
+              </p>
             )
           }
         </div>
 
         <div class={cx(hobbyStyles.detailPanel, 'note-signal-card')}>
-          <p class={cx(hobbyStyles.detailPanelTitle, hobbyStyles.detailPanelTitleCyan)}>
+          <p
+            class={cx(hobbyStyles.detailPanelTitle, hobbyStyles.detailPanelTitleCyan, 'hobby-meta')}
+          >
             {t('hobbies.details')}
           </p>
-          <p class={hobbyStyles.detailMuted}>
+          <p class={cx(hobbyStyles.detailMuted, 'hobby-meta')}>
             {statusLabel} / {embedLabel} / {updatedLabel}
           </p>
         </div>

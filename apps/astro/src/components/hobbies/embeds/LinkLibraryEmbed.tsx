@@ -15,7 +15,7 @@ export const LinkLibraryEmbed = ({
   const visibleLinks = links.slice(0, 8);
 
   return (
-    <div className={hobbyStyles.linkLibrary}>
+    <div className={`${hobbyStyles.linkLibrary} hobby-meta`}>
       {visibleLinks.length > 0 ? (
         visibleLinks.map((link, index) => (
           <a key={`${link.href}-${index}`} href={link.href} target="_blank" rel="noreferrer">

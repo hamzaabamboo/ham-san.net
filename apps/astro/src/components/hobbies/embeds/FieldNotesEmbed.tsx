@@ -47,7 +47,7 @@ export const FieldNotesEmbed = ({
           </nav>
         )}
       </div>
-      <dl>
+      <dl className="hobby-meta">
         {lineItems.map(([label, value]) => (
           <div key={label}>
             <dt>{label}</dt>

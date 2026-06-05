@@ -157,6 +157,13 @@ html:lang(th) .shell-nav-link {
   font-style: normal !important;
 }
 
+html:lang(th) .hobby-meta,
+html:lang(th) .hobby-meta * {
+  font-family: var(--font-body) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
 #main-nav.scrolled {
   background-color: rgba(19, 19, 19, 0.95) !important;
   backdrop-filter: blur(12px);

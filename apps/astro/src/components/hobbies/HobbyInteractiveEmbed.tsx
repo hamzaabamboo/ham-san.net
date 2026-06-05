@@ -117,12 +117,12 @@ export const HobbyInteractiveEmbed = ({
     <section className={hobbyStyles.embed}>
       <div className={hobbyStyles.embedHeader}>
         <div>
-          <p className={hobbyStyles.embedEyebrow}>
+          <p className={`${hobbyStyles.embedEyebrow} hobby-meta`}>
             {statusLabel ?? status} {moduleLabel}
           </p>
           <h2>{moduleTitle ?? embed.title}</h2>
         </div>
-        <div className={hobbyStyles.embedMeta}>
+        <div className={`${hobbyStyles.embedMeta} hobby-meta`}>
           <span>{title ?? 'Hobby'}</span>
           <span>{updatedAt ? `${updatedPrefix} ${updatedAt}` : liveContentLabel}</span>
         </div>
