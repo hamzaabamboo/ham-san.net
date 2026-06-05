@@ -1,6 +1,6 @@
 ---
 import MainLayout from '~/layouts/MainLayout.astro';
-import { Box, Container, Grid, Stack } from 'styled-system/jsx';
+import { Box, Container, Stack } from 'styled-system/jsx';
 import { css, cx } from 'styled-system/css';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
@@ -11,7 +11,7 @@ import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
 import { getOutlineSettings } from '~/utils/outline-settings';
 import { parseHobbyContent } from '~/utils/hobby-content';
-import { getHobbyEmbedLabel, getLocalizedHobbySummary } from '~/utils/hobby-labels';
+import { getHobbyContentLabel, getLocalizedHobbySummary } from '~/utils/hobby-labels';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 
 export const prerender = false;
@@ -118,6 +118,35 @@ const hobbyVisualIndex = css({
   fontSize: '10px',
   letterSpacing: '0.08em'
 });
+const hobbyCardBody = css({
+  display: 'grid',
+  gap: '4',
+  alignContent: 'center',
+  minW: '0'
+});
+const hobbyCardMeta = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '2',
+  color: '#9f8e78'
+});
+const hobbyCardPill = css({
+  display: 'inline-flex',
+  alignItems: 'center',
+  border: '1px solid #524533',
+  minH: '2rem',
+  px: '3',
+  bg: 'rgba(19, 19, 19, 0.72)',
+  color: '#c7c6c6',
+  whiteSpace: 'nowrap',
+  '&[data-status="active"]': {
+    borderColor: 'rgba(45, 212, 191, 0.38)',
+    color: '#2dd4bf'
+  },
+  '&[data-status="inactive"]': {
+    color: '#9f8e78'
+  }
+});
 
 let hobbiesList: any[] | undefined = undefined;
 
@@ -166,6 +195,18 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
 
 const getEmbedType = (hobby: { embeds: { type: string }[] }) =>
   hobby.embeds[0]?.type ?? 'field-notes';
+const getHobbyLabel = (hobby: {
+  embeds: { type: string }[];
+  body?: string;
+  images?: string[];
+  links?: { href: string; label: string }[];
+  childPages?: { id: string; title: string }[];
+}) =>
+  getHobbyContentLabel({
+    hasSource: hasSourceContent(hobby),
+    type: getEmbedType(hobby),
+    t
+  });
 const getStatusLabel = (status: 'active' | 'inactive') =>
   status === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 const hasExplicitStatus = (meta: Record<string, unknown>) =>
@@ -287,15 +328,28 @@ const hobbies = hobbiesList
             <Stack borderTop="1px solid" borderColor="#524533">
               {hobbies.map((hobby, index) => {
                 const embedType = getEmbedType(hobby);
-                const readableEmbedType = getHobbyEmbedLabel(t, embedType);
-                const cardMetrics = [
-                  [t('hobbies.metric-status'), getStatusLabel(hobby.status)],
-                  [t('hobbies.metric-updated'), hobby.updatedLabel],
+                const readableEmbedType = getHobbyLabel(hobby);
+                const metaItems = [
+                  {
+                    label: getStatusLabel(hobby.status),
+                    status: hobby.status
+                  },
+                  {
+                    label: `${t('hobbies.metric-updated')} ${hobby.updatedLabel}`
+                  },
                   ...(hobby.links?.length
-                    ? [[t('hobbies.metric-links'), String(hobby.links.length)]]
+                    ? [
+                        {
+                          label: `${hobby.links.length} ${t('hobbies.metric-links')}`
+                        }
+                      ]
                     : []),
                   ...(hobby.childPages?.length
-                    ? [[t('hobbies.metric-pages'), String(hobby.childPages.length)]]
+                    ? [
+                        {
+                          label: `${hobby.childPages.length} ${t('hobbies.metric-pages')}`
+                        }
+                      ]
                     : [])
                 ];
 
@@ -305,9 +359,9 @@ const hobbies = hobbiesList
                     display="grid"
                     gridTemplateColumns={{
                       base: '1fr',
-                      md: 'minmax(10rem, 2fr) minmax(0, 5fr) minmax(10rem, 2fr)'
+                      md: 'minmax(9rem, 10rem) minmax(0, 1fr)'
                     }}
-                    gap={{ base: '4', md: '8' }}
+                    gap={{ base: '4', md: '7' }}
                     alignItems={{ md: 'center' }}
                     py={{ base: '5', md: '6' }}
                     borderBottom="1px solid"
@@ -339,83 +393,22 @@ const hobbies = hobbiesList
                         {hobby.title}
                       </Heading>
                     </Stack>
-                    <Text color="#c7c6c6" lineHeight="1.7" overflowWrap="anywhere">
-                      {hobby.description}
-                    </Text>
-                    <Grid
-                      gridTemplateColumns="repeat(2, minmax(0, 1fr))"
-                      gap="3"
-                      color="#9f8e78"
-                      className={metaTextClass}
-                    >
-                      {cardMetrics.map(([label, value]) => (
-                        <Stack gap="1">
-                          <Text color="#dbdbdb">{label}</Text>
-                          <Text>{value}</Text>
-                        </Stack>
-                      ))}
-                    </Grid>
+                    <div class={hobbyCardBody}>
+                      <Text color="#c7c6c6" lineHeight="1.7" overflowWrap="anywhere">
+                        {hobby.description}
+                      </Text>
+                      <div class={cx(hobbyCardMeta, metaTextClass)}>
+                        {metaItems.map((item) => (
+                          <span class={hobbyCardPill} data-status={item.status}>
+                            {item.label}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </Link>
                 );
               })}
             </Stack>
-
-            <Grid
-              gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
-              gap={{ base: '8', md: '12' }}
-              pt={{ base: '4', md: '8' }}
-            >
-              <Stack>
-                <Heading as="h3" fontSize="2xl" mb="4">
-                  {t('hobbies.learning-resources')}
-                </Heading>
-                <Stack as="ul" gap="3">
-                  {hobbies.map((hobby) => {
-                    const itemEmbedLabel = getHobbyEmbedLabel(t, getEmbedType(hobby));
-                    return (
-                      <Link
-                        href={`/${locale}/hobbies/${hobby.id}`}
-                        display="flex"
-                        minH="44px"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        borderBottom="1px solid"
-                        borderColor="#524533"
-                        pb="2"
-                        className="group"
-                      >
-                        <Text color="#c7c6c6" className="group-hover-amber">
-                          {hobby.title}
-                        </Text>
-                        <Text color="#9f8e78" className={metaTextClass}>
-                          {itemEmbedLabel}
-                        </Text>
-                      </Link>
-                    );
-                  })}
-                </Stack>
-              </Stack>
-              <Stack gap="4">
-                <Heading as="h3" fontSize="2xl" mb="4">
-                  {t('hobbies.source-note')}
-                </Heading>
-                <Text color="#c7c6c6" lineHeight="1.8">
-                  {t('hobbies.source-index-note')}
-                </Text>
-                <Link
-                  href={`/${locale}/contact`}
-                  display="inline-flex"
-                  alignItems="center"
-                  minH="44px"
-                  alignSelf="start"
-                  color="#ffb000"
-                  fontWeight="700"
-                  className="group-hover-underline"
-                >
-                  {t('hobbies.send-message')}
-                </Link>
-              </Stack>
-            </Grid>
           </>
         )
       }

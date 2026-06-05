@@ -31,14 +31,16 @@ const embedCopyKeys = {
 
 const fallbackCopyKeys = {
   label: 'embed-field-notes',
-  description: 'embed-field-notes-description'
+  description: 'embed-field-notes-description',
+  emptyLabel: 'embed-empty-page'
 } as const;
 
 type EmbedCopyKey =
   | (typeof embedCopyKeys)[keyof typeof embedCopyKeys]['label']
   | (typeof embedCopyKeys)[keyof typeof embedCopyKeys]['description']
   | (typeof fallbackCopyKeys)['label']
-  | (typeof fallbackCopyKeys)['description'];
+  | (typeof fallbackCopyKeys)['description']
+  | (typeof fallbackCopyKeys)['emptyLabel'];
 
 export type HobbyEmbedTranslationKey = `hobbies.${EmbedCopyKey}`;
 
@@ -57,6 +59,16 @@ export const getHobbyEmbedLabel = (t: Translate, type?: string) =>
 
 export const getHobbyEmbedDescription = (t: Translate, type?: string) =>
   translate(t, getCopyKey(type, 'description'));
+
+export const getHobbyContentLabel = ({
+  hasSource,
+  type,
+  t
+}: {
+  hasSource: boolean;
+  type?: string;
+  t: Translate;
+}) => (hasSource ? getHobbyEmbedLabel(t, type) : translate(t, fallbackCopyKeys.emptyLabel));
 
 export const shouldLocalizeHobbySummary = (locale: string | undefined, value?: string) =>
   locale !== 'en' && !!value && hasLatinWords(value) && !hasCjkOrThaiText(value);

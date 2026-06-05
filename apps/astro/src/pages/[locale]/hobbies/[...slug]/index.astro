@@ -6,8 +6,8 @@ import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
 import {
+  getHobbyContentLabel,
   getHobbyEmbedDescription,
-  getHobbyEmbedLabel,
   getLocalizedHobbySummary
 } from '~/utils/hobby-labels';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
@@ -92,7 +92,7 @@ const localizedNestedDescription = getLocalizedHobbySummary({
 });
 const detailDescription =
   sourceSummary || localizedNestedDescription || t('hobbies.empty-source-description');
-const embedLabel = getHobbyEmbedLabel(t, embedType);
+const embedLabel = getHobbyContentLabel({ hasSource: hasSourceContent, type: embedType, t });
 const statusLabel =
   effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 const banner = resolveHobbyAssetUrl(content.banner);
@@ -200,7 +200,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 {...embedProps}
                 type={embed.type}
                 moduleTitle={
-                  embed.label === embed.type ? getHobbyEmbedLabel(t, embed.type) : embed.label
+                  embed.label === embed.type
+                    ? getHobbyContentLabel({ hasSource: hasSourceContent, type: embed.type, t })
+                    : embed.label
                 }
                 moduleDescription={getHobbyEmbedDescription(t, embed.type)}
               />
@@ -233,17 +235,6 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               </p>
             )
           }
-        </div>
-
-        <div class={cx(hobbyStyles.detailPanel, 'note-signal-card')}>
-          <p
-            class={cx(hobbyStyles.detailPanelTitle, hobbyStyles.detailPanelTitleCyan, 'hobby-meta')}
-          >
-            {t('hobbies.details')}
-          </p>
-          <p class={cx(hobbyStyles.detailMuted, 'hobby-meta')}>
-            {statusLabel} / {embedLabel} / {updatedLabel}
-          </p>
         </div>
       </aside>
     </section>

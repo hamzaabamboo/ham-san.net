@@ -50,6 +50,7 @@
   "embed-piano-chords-description": "Chord, voicing, and audio pages.",
   "embed-field-notes": "Note links",
   "embed-field-notes-description": "Links, related pages, and update state.",
+  "embed-empty-page": "Draft page",
   "related-pages-empty": "No related pages yet.",
   "doc-label": "Page",
   "details": "Details",

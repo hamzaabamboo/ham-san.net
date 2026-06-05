@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import {
+  getHobbyContentLabel,
   getHobbyEmbedDescription,
   getHobbyEmbedLabel,
   getLocalizedHobbySummary,
@@ -20,6 +21,15 @@ describe('hobby labels', () => {
   test('falls back to field notes labels for unknown embed types', () => {
     expect(getHobbyEmbedLabel(t, 'unknown')).toBe('hobbies.embed-field-notes');
     expect(getHobbyEmbedDescription(t, undefined)).toBe('hobbies.embed-field-notes-description');
+  });
+
+  test('uses a draft page label when the source note has no usable content', () => {
+    expect(getHobbyContentLabel({ hasSource: false, type: 'field-notes', t })).toBe(
+      'hobbies.embed-empty-page'
+    );
+    expect(getHobbyContentLabel({ hasSource: true, type: 'field-notes', t })).toBe(
+      'hobbies.embed-field-notes'
+    );
   });
 
   test('localizes plain English summaries outside English chrome', () => {
