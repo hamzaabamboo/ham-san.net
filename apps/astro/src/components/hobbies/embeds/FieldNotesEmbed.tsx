@@ -11,6 +11,7 @@ export const FieldNotesEmbed = ({
   statusLabel = 'Active',
   liveContentLabel = 'Live',
   emptySourceLabel = 'Waiting for source notes.',
+  emptySourceStateLabel,
   nestedSourcePagesLabel = 'Nested source pages',
   sourceNoteAttachedLabel = 'Source note attached',
   statusMetricLabel = 'Status',
@@ -23,7 +24,7 @@ export const FieldNotesEmbed = ({
     ? sourceNoteAttachedLabel
     : nestedPages.length > 0
       ? nestedSourcePagesLabel
-      : emptySourceLabel;
+      : (emptySourceStateLabel ?? emptySourceLabel);
   const lineItems = [
     [statusMetricLabel, statusLabel || status],
     [linksMetricLabel, String(links.length)],

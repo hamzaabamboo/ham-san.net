@@ -14,6 +14,7 @@ export type HobbyEmbedProps = {
   updatedPrefix?: string;
   liveContentLabel?: string;
   emptySourceLabel?: string;
+  emptySourceStateLabel?: string;
   nestedSourcePagesLabel?: string;
   sourceNoteAttachedLabel?: string;
   statusMetricLabel?: string;

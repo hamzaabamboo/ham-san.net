@@ -85,6 +85,7 @@ export const HobbyInteractiveEmbed = ({
   updatedPrefix = 'Updated',
   liveContentLabel = 'Live content',
   emptySourceLabel,
+  emptySourceStateLabel,
   nestedSourcePagesLabel,
   sourceNoteAttachedLabel,
   statusMetricLabel,
@@ -128,7 +129,7 @@ export const HobbyInteractiveEmbed = ({
         </div>
       </div>
       <p className={hobbyStyles.embedSummary}>
-        {description || moduleDescription || embed.description}
+        {moduleDescription || description || embed.description}
       </p>
       <Component
         title={title}
@@ -144,6 +145,7 @@ export const HobbyInteractiveEmbed = ({
         updatedPrefix={updatedPrefix}
         liveContentLabel={liveContentLabel}
         emptySourceLabel={emptySourceLabel}
+        emptySourceStateLabel={emptySourceStateLabel}
         nestedSourcePagesLabel={nestedSourcePagesLabel}
         sourceNoteAttachedLabel={sourceNoteAttachedLabel}
         statusMetricLabel={statusMetricLabel}

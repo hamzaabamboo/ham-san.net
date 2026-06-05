@@ -95,6 +95,26 @@ const getEmbedLabel = (type?: string) => {
       return t('hobbies.embed-field-notes');
   }
 };
+const getEmbedDescription = (type?: string) => {
+  switch (type) {
+    case 'photo-gallery':
+      return t('hobbies.embed-photo-gallery-description');
+    case 'twitter-feed':
+      return t('hobbies.embed-twitter-feed-description');
+    case 'rubik-algorithms':
+      return t('hobbies.embed-rubik-algorithms-description');
+    case 'typing-stats':
+      return t('hobbies.embed-typing-stats-description');
+    case 'darts-board':
+      return t('hobbies.embed-darts-board-description');
+    case 'link-library':
+      return t('hobbies.embed-link-library-description');
+    case 'piano-chords':
+      return t('hobbies.embed-piano-chords-description');
+    default:
+      return t('hobbies.embed-field-notes-description');
+  }
+};
 const embedLabel = getEmbedLabel(embedType);
 const statusLabel =
   effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
@@ -153,9 +173,11 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               statusLabel={statusLabel}
               moduleLabel={t('hobbies.module-label')}
               moduleTitle={embed.label === embed.type ? getEmbedLabel(embed.type) : embed.label}
+              moduleDescription={getEmbedDescription(embed.type)}
               updatedPrefix={t('hobbies.updated-prefix')}
               liveContentLabel={t('hobbies.live-content')}
               emptySourceLabel={t('hobbies.empty-source-description')}
+              emptySourceStateLabel={t('hobbies.empty-source-state')}
               nestedSourcePagesLabel={t('hobbies.nested-source-pages')}
               sourceNoteAttachedLabel={t('hobbies.source-note-attached')}
               statusMetricLabel={t('hobbies.metric-status')}

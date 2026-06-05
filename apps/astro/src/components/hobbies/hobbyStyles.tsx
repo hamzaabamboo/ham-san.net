@@ -735,10 +735,11 @@ export const hobbyStyles = {
       display: 'block',
       mt: '2',
       color: '#ffb000',
-      fontFamily: 'JetBrains Mono, monospace',
-      fontSize: '10px',
-      letterSpacing: '0.12em',
-      textTransform: 'uppercase'
+      fontFamily: 'var(--font-display)',
+      fontSize: 'clamp(1.4rem, 4vw, 2.5rem)',
+      letterSpacing: '0',
+      lineHeight: '1',
+      textTransform: 'none'
     },
     '& nav': {
       display: 'flex',
