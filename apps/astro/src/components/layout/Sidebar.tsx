@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { BrandMark } from '~/components/brand/BrandMark';
 import { Languages, languages } from '~/i18n/ui';
 
 const ICONS: Record<string, string> = {
@@ -95,18 +96,7 @@ export const Sidebar = ({
             <div className="shell-drawer-overlay" onClick={() => setOpen(false)} />
             <div className="shell-drawer">
               <div className="shell-drawer-header">
-                <span
-                  style={{
-                    fontFamily: "'Manrope', sans-serif",
-                    fontWeight: 700,
-                    color: '#FFB000',
-                    fontSize: '0.75rem',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase' as const
-                  }}
-                >
-                  Menu
-                </span>
+                <BrandMark />
                 <button
                   ref={closeButtonRef}
                   onClick={() => setOpen(false)}

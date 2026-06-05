@@ -1,4 +1,5 @@
 ---
+import { BrandMark } from '~/components/brand/BrandMark';
 import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -20,15 +21,11 @@ const SIDEBAR_LINKS = [
 
 <aside class="shell-sidebar">
   <div class="shell-sidebar-header">
-    <h2
-      style="font-family:'Manrope',sans-serif;font-weight:700;color:#FFB000;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase"
-    >
-      Menu
-    </h2>
+    <BrandMark />
     <p
       style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9f8e78;margin-top:0.25rem"
     >
-      Ham
+      Menu
     </p>
   </div>
 
