@@ -1,5 +1,6 @@
 ---
 import { HobbyInteractiveEmbed } from '~/components/hobbies/HobbyInteractiveEmbed';
+import { HobbyTypeGlyph } from '~/components/hobbies/HobbyTypeGlyph';
 import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
@@ -141,7 +142,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
       <span>{t('hobbies.back-to-hobbies')}</span>
     </a>
 
-    <section class={hobbyStyles.detailHero} data-has-visual={banner ? 'true' : 'false'}>
+    <section class={hobbyStyles.detailHero}>
       <div class={hobbyStyles.detailHeadline}>
         <p class={cx(hobbyStyles.detailEyebrow, 'hobby-meta')}>{statusLabel} / {embedLabel}</p>
         <h1 class={hobbyStyles.detailTitle}>{data.title}</h1>
@@ -153,13 +154,27 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
         </p>
       </div>
 
-      {
-        banner && (
-          <div class={hobbyStyles.detailVisual}>
+      <div
+        class={hobbyStyles.detailVisual}
+        data-embed={embedType}
+        data-visual={banner ? 'image' : 'glyph'}
+      >
+        {
+          banner ? (
             <img src={banner} alt="" class={hobbyStyles.detailBanner} />
-          </div>
-        )
-      }
+          ) : (
+            <>
+              <HobbyTypeGlyph
+                type={embedType}
+                label={embedLabel}
+                size="watermark"
+                className={hobbyStyles.detailVisualGlyph}
+              />
+              <span class={cx(hobbyStyles.detailVisualLabel, 'hobby-meta')}>{embedLabel}</span>
+            </>
+          )
+        }
+      </div>
     </section>
 
     <section class={hobbyStyles.detailBody}>
