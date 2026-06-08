@@ -194,7 +194,10 @@ export const hobbyStyles = {
     display: 'grid',
     gap: '8',
     gridTemplateColumns: { base: '1fr', md: 'minmax(0, 8fr) minmax(18rem, 4fr)' },
-    mt: '8'
+    mt: '8',
+    '&[data-has-aside="false"]': {
+      gridTemplateColumns: '1fr'
+    }
   }),
   detailMain: css({
     display: 'grid',

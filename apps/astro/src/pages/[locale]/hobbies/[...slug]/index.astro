@@ -177,7 +177,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
       </div>
     </section>
 
-    <section class={hobbyStyles.detailBody}>
+    <section class={hobbyStyles.detailBody} data-has-aside={childDocuments.length > 0}>
       <div class={hobbyStyles.detailMain}>
         {
           bodyParts.map((part) => {
@@ -215,13 +215,13 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
         }
       </div>
 
-      <aside class={hobbyStyles.detailAside}>
-        <div class={hobbyStyles.detailPanel}>
-          <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
-            {t('hobbies.learning-resources')}
-          </p>
-          {
-            childDocuments.length > 0 ? (
+      {
+        childDocuments.length > 0 && (
+          <aside class={hobbyStyles.detailAside}>
+            <div class={hobbyStyles.detailPanel}>
+              <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+                {t('hobbies.learning-resources')}
+              </p>
               <div class={hobbyStyles.detailNested}>
                 {childDocuments.map((child) => (
                   <a
@@ -233,14 +233,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                   </a>
                 ))}
               </div>
-            ) : (
-              <p class={cx(hobbyStyles.detailMuted, 'hobby-meta')}>
-                {t('hobbies.related-pages-empty')}
-              </p>
-            )
-          }
-        </div>
-      </aside>
+            </div>
+          </aside>
+        )
+      }
     </section>
   </div>
 </MainLayout>
