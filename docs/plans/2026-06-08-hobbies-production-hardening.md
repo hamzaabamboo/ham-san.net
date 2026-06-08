@@ -61,7 +61,7 @@
 - Create: `/tmp/ham-hobbies-route-audit.json`
 - Modify: `docs/plans/2026-06-08-hobbies-production-hardening.md`
 
-- [ ] **Step 1: Start the dev server**
+- [x] **Step 1: Start the dev server**
 
 Run:
 ```bash
@@ -73,7 +73,7 @@ Expected:
 Local    http://localhost:4321/
 ```
 
-- [ ] **Step 2: Capture live route inventory from the English overview**
+- [x] **Step 2: Capture live route inventory from the English overview**
 
 Run:
 ```bash
@@ -86,7 +86,7 @@ Expected:
 /tmp/ham-hobbies-route-audit.json contains all root hobby links rendered from live Outline data.
 ```
 
-- [ ] **Step 3: Document route classes**
+- [x] **Step 3: Document route classes**
 
 Append a short `Route Audit` section to this plan with:
 ```markdown
@@ -107,7 +107,7 @@ Append a short `Route Audit` section to this plan with:
   - Research: `/en/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284/doc/afadc37a-c249-44ef-a692-da70b529ce6e`
 ```
 
-- [ ] **Step 4: Stop server and commit audit-only update**
+- [x] **Step 4: Stop server and commit audit-only update**
 
 Run:
 ```bash
@@ -121,6 +121,26 @@ Expected:
 ```text
 Branch is pushed and worktree is clean.
 ```
+
+## Route Audit
+
+Evidence captured on 2026-06-08 from live `http://localhost:4321/en/hobbies` using `agent-browser --session ham-hobbies-audit`.
+
+- Evidence file: `/tmp/ham-hobbies-route-audit.json`
+- Browser errors: none from `agent-browser --session ham-hobbies-audit errors`
+- Overview routes to keep in the QA set: `/en/hobbies`, `/ja/hobbies`, `/th/hobbies`
+- Root detail routes from live Outline data:
+  - Camera: `/en/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284`
+  - Typing: `/en/hobbies/f28e6219-f8ea-4801-bbca-7fd3f0686da5`
+  - Music: `/en/hobbies/db3c4b0f-40a1-4132-9732-442ce3b27236`
+  - Darts: `/en/hobbies/ce3055fa-eff2-487f-bd6f-3860dde96bae`
+  - Rubiks: `/en/hobbies/abdbab31-794f-43c6-bef0-852e1748494e`
+  - Pen Spinning inactive: `/en/hobbies/6ea8f3bd-83ca-40dd-b477-a62291a7f75b`
+  - Kendama inactive: `/en/hobbies/e99d3767-6bc4-4af1-b0be-995633815e85`
+  - Geoguessr: `/en/hobbies/bd49f03c-f554-46af-bcda-33983b677d7e`
+- Nested routes retained from earlier live Camera child-page checks:
+  - Wishlist: `/en/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284/doc/56788e14-b36e-4efd-aaa6-d723a95e3e37`
+  - Research: `/en/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284/doc/afadc37a-c249-44ef-a692-da70b529ce6e`
 
 ---
 
