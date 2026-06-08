@@ -242,7 +242,7 @@ All gates pass and the commit is pushed.
 - Test: `apps/astro/tests/hobby-content.test.ts`
 - Test: `apps/astro/tests/hobby-labels.test.ts`
 
-- [ ] **Step 1: Open each root detail route in English**
+- [x] **Step 1: Open each root detail route in English**
 
 Run Camera:
 ```bash
@@ -313,7 +313,7 @@ Expected for each route:
 No browser errors, no fake metrics, no generic fallback copy, and the correct embed module appears.
 ```
 
-- [ ] **Step 2: Patch concrete embed bugs only**
+- [x] **Step 2: Patch concrete embed bugs only**
 
 Patch only if one of these concrete failures appears in Step 1:
 
@@ -325,7 +325,7 @@ Patch only if one of these concrete failures appears in Step 1:
 
 Do not invent sample data. Empty states must be designed but honest.
 
-- [ ] **Step 3: Add or extend focused tests**
+- [x] **Step 3: Add or extend focused tests**
 
 If parsing or labels change, add tests to:
 ```text
@@ -343,7 +343,7 @@ Expected:
 All focused tests pass.
 ```
 
-- [ ] **Step 4: Full gates and commit**
+- [x] **Step 4: Full gates and commit**
 
 Run:
 ```bash
@@ -359,6 +359,20 @@ Expected:
 ```text
 All gates pass and the commit is pushed.
 ```
+
+### Task 3 Evidence
+
+Captured on 2026-06-08 from live `http://localhost:4321` using `agent-browser --session ham-hobbies-embed-qa` at `1440x1000`.
+
+- Camera: `/tmp/ham-hobby-camera-desktop.json`, `/tmp/ham-hobby-camera-desktop.png`; no browser errors; photo gallery uses source photo/link sections and related pages.
+- Typing: `/tmp/ham-hobby-typing-desktop.json`, `/tmp/ham-hobby-typing-desktop.png`; no browser errors; typing stats uses source profile links and the Steno related page.
+- Music: `/tmp/ham-hobby-music-desktop.json`, `/tmp/ham-hobby-music-desktop.png`; no browser errors; chord player renders the keyboard module and source child pages.
+- Darts: `/tmp/ham-hobby-darts-desktop.json`, `/tmp/ham-hobby-darts-desktop.png`; no browser errors; darts board renders source stats and gear groups from the note body.
+- Rubiks: `/tmp/ham-hobby-rubiks-desktop.json`, `/tmp/ham-hobby-rubiks-desktop.png`; no browser errors; algorithm viewer renders source cube groups, links, and child pages.
+- Pen Spinning: `/tmp/ham-hobby-pen-spinning-desktop.json`, `/tmp/ham-hobby-pen-spinning-desktop.png`; no browser errors; inactive parked state is honest and not a fake content module.
+- Kendama: `/tmp/ham-hobby-kendama-desktop.json`, `/tmp/ham-hobby-kendama-desktop.png`; no browser errors; inactive parked state is honest and not a fake content module.
+- Geoguessr: `/tmp/ham-hobby-geoguessr-desktop.json`, `/tmp/ham-hobby-geoguessr-desktop.png`; no browser errors; link library renders the three source links.
+- No code patch was made for Task 3 because none of the Step 2 failure conditions appeared.
 
 ---
 
