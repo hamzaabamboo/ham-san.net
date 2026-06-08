@@ -173,4 +173,49 @@ End.`
       { type: 'rubik-algorithms', label: 'rubik-algorithms' }
     ]);
   });
+
+  test('keeps raw source sections for embeds but removes duplicate display sections', () => {
+    const content = parseHobbyContent({
+      title: 'Typing',
+      text: `Intro.
+
+::typing[Profiles]
+
+# Profiles
+- Typingstats: https://typingstats.com
+- Monkeytype: https://monkeytype.com
+
+# Links
+- https://typingstats.com
+- https://monkeytype.com
+\\`
+    });
+
+    expect(content.links.map((link) => link.href)).toEqual([
+      'https://typingstats.com',
+      'https://monkeytype.com'
+    ]);
+    expect(content.sourceBody).toContain('# Profiles');
+    expect(content.sourceBody).toContain('# Links');
+    expect(content.body).toBe(`Intro.
+
+<!-- hobby-embed:0 -->`);
+  });
+
+  test('preserves regular prose sections in the display body', () => {
+    const content = parseHobbyContent({
+      title: 'Camera',
+      text: `Intro.
+
+# Notes
+This is actual prose that belongs on the page.
+
+# Links
+- https://photos.example.com`
+    });
+
+    expect(content.body).toContain('# Notes');
+    expect(content.body).toContain('This is actual prose');
+    expect(content.body).not.toContain('# Links');
+  });
 });

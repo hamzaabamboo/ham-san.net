@@ -16,6 +16,7 @@ export type HobbyBodyPart =
 
 export type HobbyContentModel = {
   body: string;
+  sourceBody: string;
   meta: HobbyFrontmatter;
   description: string;
   banner?: string;
@@ -196,6 +197,75 @@ export const extractHobbyDirectives = (content: string) => {
   return { embeds, body };
 };
 
+const sourceOnlyHeadings = new Set([
+  'algorithms',
+  'audio',
+  'chords',
+  'gear',
+  'links',
+  'profiles',
+  'resources',
+  'stats',
+  'voicings'
+]);
+
+const normalizeHeading = (value: string) =>
+  value.replace(/[*_`]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+
+const getEmbedMarkers = (content: string) =>
+  Array.from(content.matchAll(/<!--\s*hobby-embed:\d+\s*-->/g)).map((match) => match[0]);
+
+export const sanitizeHobbyDisplayBody = (body: string) => {
+  const sections: Array<{ start: number; end: number; heading: string }> = [];
+
+  for (const match of body.matchAll(/^#{1,3}\s+(.+)$/gm)) {
+    sections.push({
+      start: match.index ?? 0,
+      end: body.length,
+      heading: normalizeHeading(match[1] ?? '')
+    });
+  }
+
+  sections.forEach((section, index) => {
+    section.end = sections[index + 1]?.start ?? body.length;
+  });
+
+  if (sections.length === 0) {
+    return body
+      .split('\n')
+      .filter((line) => line.trim() !== '\\')
+      .join('\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+
+  let cursor = 0;
+  const chunks: string[] = [];
+
+  sections.forEach((section) => {
+    chunks.push(body.slice(cursor, section.start));
+    const content = body.slice(section.start, section.end);
+
+    if (sourceOnlyHeadings.has(section.heading)) {
+      chunks.push(getEmbedMarkers(content).join('\n\n'));
+    } else {
+      chunks.push(content);
+    }
+
+    cursor = section.end;
+  });
+
+  chunks.push(body.slice(cursor));
+
+  return chunks
+    .join('')
+    .split('\n')
+    .filter((line) => line.trim() !== '\\')
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+};
+
 export const splitHobbyBodyParts = (body: string, embedCount: number): HobbyBodyPart[] => {
   const marker = /<!--\s*hobby-embed:(\d+)\s*-->/g;
   const parts: HobbyBodyPart[] = [];
@@ -301,8 +371,8 @@ export const parseHobbyContent = ({
   fallbackUpdatedAt?: string | null;
 }): HobbyContentModel => {
   const { meta, body: withoutMeta } = parseHobbyFrontmatter(text ?? '');
-  const { embeds: directedEmbeds, body } = extractHobbyDirectives(withoutMeta);
-  const inferred = inferHobbyEmbed(title, body, meta);
+  const { embeds: directedEmbeds, body: sourceBody } = extractHobbyDirectives(withoutMeta);
+  const inferred = inferHobbyEmbed(title, sourceBody, meta);
   const inferredLabel =
     asString(meta.embedLabel) ??
     asString(meta.componentLabel) ??
@@ -310,19 +380,21 @@ export const parseHobbyContent = ({
     inferred;
   const embeds =
     directedEmbeds.length > 0 ? directedEmbeds : [{ type: inferred, label: inferredLabel }];
-  const images = extractMarkdownImages(body);
-  const links = extractMarkdownLinks(body);
+  const body = sanitizeHobbyDisplayBody(sourceBody);
+  const images = extractMarkdownImages(sourceBody);
+  const links = extractMarkdownLinks(sourceBody);
   const description =
     cleanDescription(asString(meta.description)) ??
     cleanDescription(asString(meta.summary)) ??
     cleanDescription(asString(meta.categoryDescription)) ??
-    getProseDescription(body) ??
-    getHeadingDescription(body) ??
+    getProseDescription(sourceBody) ??
+    getHeadingDescription(sourceBody) ??
     '';
   const banner = asString(meta.banner) ?? asString(meta.image) ?? undefined;
 
   return {
     body,
+    sourceBody,
     meta,
     description,
     banner,
