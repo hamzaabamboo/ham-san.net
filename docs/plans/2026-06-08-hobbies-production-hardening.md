@@ -40,7 +40,7 @@
 
 - [x] External Markdown remains the main content source from Outline. Evidence: Task 1 route inventory and Task 3 detail routes loaded from live `http://localhost:4321` through `agent-browser`, with Outline-derived source content in `/tmp/ham-hobby-*-desktop.json`.
 - [x] Markdown slot directives can embed custom components in the main content stream. Evidence: `bun test apps/astro/tests/hobby-content.test.ts apps/astro/tests/hobby-labels.test.ts apps/astro/tests/hobby-cards.test.ts` passed 28 tests, including explicit and shorthand embed slot directive cases.
-- [x] Supported components are present and visually checked: photo gallery, Twitter/feed links, Rubik algorithm viewer, typing stats, piano chord player, darts board, link library, field notes fallback. Evidence: Task 3 screenshots `/tmp/ham-hobby-camera-desktop.png`, `/tmp/ham-hobby-typing-desktop.png`, `/tmp/ham-hobby-music-desktop.png`, `/tmp/ham-hobby-darts-desktop.png`, `/tmp/ham-hobby-rubiks-desktop.png`, `/tmp/ham-hobby-geoguessr-desktop.png`, plus parked field-notes screenshots `/tmp/ham-hobby-pen-spinning-desktop.png` and `/tmp/ham-hobby-kendama-desktop.png`.
+- [x] Supported components are present and visually checked where live source data exercises them: photo gallery, Rubik algorithm viewer, typing stats, piano chord player, darts board, link library, field notes fallback. Evidence: Task 3 screenshots `/tmp/ham-hobby-camera-desktop.png`, `/tmp/ham-hobby-typing-desktop.png`, `/tmp/ham-hobby-music-desktop.png`, `/tmp/ham-hobby-darts-desktop.png`, `/tmp/ham-hobby-rubiks-desktop.png`, `/tmp/ham-hobby-geoguessr-desktop.png`, plus parked field-notes screenshots `/tmp/ham-hobby-pen-spinning-desktop.png` and `/tmp/ham-hobby-kendama-desktop.png`. Twitter/feed has no current live hobby route; it is covered by directive parsing and focused render tests.
 - [x] Frontmatter supports embed selection, embed labels, status, updated date, banner/image, and source descriptions. Evidence: focused tests passed for frontmatter labels, source metadata precedence, canonical embed labels, and localized metrics.
 - [x] Active/inactive pages are derived from real source metadata or actual source presence; no fake activity metrics. Evidence: `/tmp/ham-hobby-pen-spinning-inactive.json` had `hasFakeMetrics:false`; Task 3 showed active routes populated from source body, links, images, or nested pages.
 - [x] Nested hobby pages work for parent and child routes, with correct parent navigation. Evidence: `/tmp/ham-hobby-camera-wishlist-nested.json` had `backText:"Back to parent hobby"` and `slashArtifact:false`.
@@ -501,4 +501,43 @@ Audit is pushed and the worktree is clean.
 Required evidence:
 ```text
 Every requirement checkbox is checked with current evidence, all gates pass, browser sessions closed, dev server stopped, and git status is clean.
+```
+
+---
+
+## Task 6: Feed Component Honesty Pass
+
+**Why this exists:** The final audit overclaimed Twitter/feed live coverage. The current live Outline hobby routes do not include a `twitter-feed` route, so the component needs direct focused coverage and must not display arbitrary links as a social feed.
+
+**Files:**
+- Modify: `apps/astro/src/components/hobbies/embeds/TwitterFeedEmbed.tsx`
+- Add: `apps/astro/tests/hobby-embeds.test.tsx`
+- Modify: `docs/plans/2026-06-08-hobbies-production-hardening.md`
+
+- [x] **Step 1: Patch feed rendering to avoid fake feed content**
+
+Expected:
+```text
+`twitter-feed` renders social/feed links only. If none exist, it renders the honest empty feed label instead of unrelated links.
+```
+
+- [x] **Step 2: Add focused render tests**
+
+Expected:
+```text
+Tests prove social links render, unrelated links are ignored, and empty state text appears when no social/feed link exists.
+```
+
+- [x] **Step 3: Run gates and commit**
+
+Run:
+```bash
+bun test apps/astro/tests/hobby-embeds.test.tsx apps/astro/tests/hobby-content.test.ts apps/astro/tests/hobby-labels.test.ts apps/astro/tests/hobby-cards.test.ts
+cd apps/astro && bun run lint
+cd apps/astro && bun run format
+cd apps/astro && bun run build
+NX_SKIP_NX_CACHE=true bun run check
+git add apps/astro/src/components/hobbies/embeds/TwitterFeedEmbed.tsx apps/astro/tests/hobby-embeds.test.tsx docs/plans/2026-06-08-hobbies-production-hardening.md
+git commit -m "fix: keep hobby feed embeds honest"
+git push
 ```

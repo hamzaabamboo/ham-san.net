@@ -18,12 +18,11 @@ export const TwitterFeedEmbed = ({
   const feedLinks = links
     .filter((link) => /(x\.com|twitter\.com|bsky\.app|threads\.net|mastodon)/i.test(link.href))
     .slice(0, 3);
-  const visibleLinks = feedLinks.length > 0 ? feedLinks : links.slice(0, 3);
 
   return (
     <div className={hobbyStyles.feed}>
-      {visibleLinks.length > 0 ? (
-        visibleLinks.map((link) => (
+      {feedLinks.length > 0 ? (
+        feedLinks.map((link) => (
           <article key={link.href}>
             <span>{getHostLabel(link.href)}</span>
             <p>
