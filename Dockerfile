@@ -1,4 +1,4 @@
-FROM node:20-bookworm-slim AS base
+FROM node:22-bookworm-slim AS base
 WORKDIR /usr/src/app
 RUN npm install -g bun@1.3.10
 RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ curl bash git && rm -rf /var/lib/apt/lists/*
