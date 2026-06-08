@@ -100,13 +100,48 @@ const hobbyVisual = css({
   },
   '&[data-visual="image"]::before': {
     bg: 'linear-gradient(180deg, transparent 38%, rgba(0, 0, 0, 0.54))'
+  },
+  '&[data-visual="glyph"]': {
+    boxShadow: 'inset 0 0 0 1px rgba(255, 176, 0, 0.08)'
+  },
+  '&[data-visual="glyph"]::after': {
+    pos: 'absolute',
+    inset: '0',
+    content: '""',
+    opacity: '0.9',
+    mixBlendMode: 'screen'
+  },
+  '&[data-embed="photo-gallery"][data-visual="glyph"]::after': {
+    bg: 'linear-gradient(90deg, transparent 0 16%, rgba(255, 176, 0, 0.28) 16% 18%, transparent 18% 48%, rgba(255, 176, 0, 0.2) 48% 50%, transparent 50% 80%, rgba(255, 176, 0, 0.2) 80% 82%, transparent 82%), radial-gradient(circle at 48% 50%, transparent 0 13%, rgba(245, 158, 11, 0.34) 14% 15%, transparent 16% 24%, rgba(255, 176, 0, 0.18) 25% 26%, transparent 27%)'
+  },
+  '&[data-embed="typing-stats"][data-visual="glyph"]::after': {
+    bg: 'linear-gradient(90deg, transparent 0 58%, rgba(20, 184, 166, 0.34) 58% 63%, transparent 63% 70%, rgba(99, 102, 241, 0.28) 70% 75%, transparent 75% 82%, rgba(45, 212, 191, 0.24) 82% 87%, transparent 87%), linear-gradient(0deg, rgba(45, 212, 191, 0.2) 0 1px, transparent 1px 25%)'
+  },
+  '&[data-embed="piano-chords"][data-visual="glyph"]::after': {
+    bg: 'linear-gradient(90deg, rgba(250, 250, 240, 0.16) 0 9%, transparent 9% 11%, rgba(250, 250, 240, 0.16) 11% 20%, transparent 20% 22%, rgba(250, 250, 240, 0.16) 22% 31%, transparent 31% 33%, rgba(250, 250, 240, 0.16) 33% 42%, transparent 42% 44%, rgba(250, 250, 240, 0.16) 44% 53%, transparent 53% 55%, rgba(250, 250, 240, 0.16) 55% 64%, transparent 64% 100%), linear-gradient(90deg, transparent 0 17%, rgba(196, 181, 253, 0.42) 17% 23%, transparent 23% 31%, rgba(196, 181, 253, 0.42) 31% 37%, transparent 37% 49%, rgba(196, 181, 253, 0.42) 49% 55%, transparent 55%)',
+    backgroundSize: '100% 58%, 100% 34%',
+    backgroundPosition: '0 100%, 0 0',
+    backgroundRepeat: 'no-repeat'
+  },
+  '&[data-embed="darts-board"][data-visual="glyph"]::after': {
+    bg: 'radial-gradient(circle at 62% 44%, rgba(132, 204, 22, 0.36) 0 4%, transparent 5% 16%, rgba(132, 204, 22, 0.24) 17% 19%, transparent 20% 31%, rgba(220, 38, 38, 0.24) 32% 34%, transparent 35%), linear-gradient(35deg, transparent 0 48%, rgba(255, 176, 0, 0.2) 48% 50%, transparent 50%)'
+  },
+  '&[data-embed="rubik-algorithms"][data-visual="glyph"]::after': {
+    bg: 'linear-gradient(90deg, rgba(239, 68, 68, 0.32) 0 32%, rgba(34, 197, 94, 0.28) 32% 34%, rgba(59, 130, 246, 0.3) 34% 66%, rgba(250, 204, 21, 0.24) 66% 68%, rgba(245, 158, 11, 0.3) 68%), linear-gradient(0deg, transparent 0 31%, rgba(19, 19, 19, 0.78) 31% 34%, transparent 34% 64%, rgba(19, 19, 19, 0.78) 64% 67%, transparent 67%), linear-gradient(90deg, transparent 0 31%, rgba(19, 19, 19, 0.78) 31% 34%, transparent 34% 64%, rgba(19, 19, 19, 0.78) 64% 67%, transparent 67%)',
+    transform: 'scale(0.58) rotate(-8deg)'
+  },
+  '&[data-embed="link-library"][data-visual="glyph"]::after': {
+    bg: 'radial-gradient(circle at 22% 32%, rgba(56, 189, 248, 0.42) 0 5%, transparent 6%), radial-gradient(circle at 70% 24%, rgba(250, 204, 21, 0.34) 0 5%, transparent 6%), radial-gradient(circle at 78% 70%, rgba(45, 212, 191, 0.34) 0 5%, transparent 6%), radial-gradient(circle at 28% 72%, rgba(255, 176, 0, 0.32) 0 5%, transparent 6%), linear-gradient(28deg, transparent 0 48%, rgba(56, 189, 248, 0.24) 48% 50%, transparent 50%), linear-gradient(118deg, transparent 0 48%, rgba(255, 176, 0, 0.2) 48% 50%, transparent 50%)'
+  },
+  '&[data-embed="field-notes"][data-visual="glyph"]::after': {
+    bg: 'linear-gradient(135deg, transparent 0 24%, rgba(255, 176, 0, 0.18) 24% 26%, transparent 26%), linear-gradient(90deg, transparent 0 20%, rgba(255, 176, 0, 0.18) 20% 68%, transparent 68%), linear-gradient(0deg, transparent 0 22%, rgba(45, 212, 191, 0.18) 22% 24%, transparent 24% 36%, rgba(255, 176, 0, 0.14) 36% 38%, transparent 38%)'
   }
 });
 const hobbyVisualGlyph = css({
   pos: 'relative',
   zIndex: '1',
-  transform: 'scale(0.72)',
-  opacity: '0.92'
+  transform: 'scale(0.66)',
+  opacity: '0.82'
 });
 const hobbyVisualIndex = css({
   pos: 'absolute',
