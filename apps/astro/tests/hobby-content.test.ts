@@ -218,4 +218,39 @@ This is actual prose that belongs on the page.
     expect(content.body).toContain('This is actual prose');
     expect(content.body).not.toContain('# Links');
   });
+
+  test('removes picture source sections consumed by gallery embeds without hiding references', () => {
+    const content = parseHobbyContent({
+      title: 'Camera',
+      text: `Intro.
+
+::photo[Photo gallery]
+
+# Pictures
+- https://photos.example.com
+
+# Lens References
+- [Nikon 35mm](https://lens.example.com)
+
+# Rental Shop
+- https://rental.example.com`
+    });
+
+    expect(content.links.map((link) => link.href).sort()).toEqual(
+      [
+        'https://photos.example.com',
+        'https://lens.example.com',
+        'https://rental.example.com'
+      ].sort()
+    );
+    expect(content.body).toBe(`Intro.
+
+<!-- hobby-embed:0 -->
+
+# Lens References
+- [Nikon 35mm](https://lens.example.com)
+
+# Rental Shop
+- https://rental.example.com`);
+  });
 });

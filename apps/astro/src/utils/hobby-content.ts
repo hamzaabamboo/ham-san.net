@@ -203,6 +203,7 @@ const sourceOnlyHeadings = new Set([
   'chords',
   'gear',
   'links',
+  'pictures',
   'profiles',
   'resources',
   'stats',
