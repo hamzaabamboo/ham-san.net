@@ -388,7 +388,7 @@ Captured on 2026-06-08 from live `http://localhost:4321` using `agent-browser --
   - `apps/astro/tests/hobby-content.test.ts`
   - `apps/astro/tests/hobby-labels.test.ts`
 
-- [ ] **Step 1: Verify nested routes**
+- [x] **Step 1: Verify nested routes**
 
 Run:
 ```bash
@@ -402,7 +402,7 @@ Expected:
 Back link returns to the parent hobby, no slash-only list item appears, no browser errors.
 ```
 
-- [ ] **Step 2: Verify inactive pages**
+- [x] **Step 2: Verify inactive pages**
 
 Run:
 ```bash
@@ -416,7 +416,7 @@ Expected:
 Inactive state is honest and designed; no fake 0-metric pills are shown.
 ```
 
-- [ ] **Step 3: Patch, test, gate, commit if failures exist**
+- [x] **Step 3: Patch, test, gate, commit if failures exist**
 
 Run after any patch:
 ```bash
@@ -433,6 +433,14 @@ Expected:
 ```text
 Only commit if there are actual code changes; otherwise document audit evidence in this plan.
 ```
+
+### Task 4 Evidence
+
+Captured on 2026-06-08 from live `http://localhost:4321`.
+
+- Nested Camera Wishlist route: `/tmp/ham-hobby-camera-wishlist-nested.json`; `backText` was `Back to parent hobby`, `slashArtifact` was `false`, and `agent-browser --session ham-hobbies-nested-qa errors` returned no browser errors.
+- Inactive Pen Spinning route: `/tmp/ham-hobby-pen-spinning-inactive.json`, `/tmp/ham-hobby-pen-spinning-inactive.png`; `hasFakeMetrics` was `false`, and the page rendered a parked note state with no fake `0 LINKS` or `0 PAGES` pills.
+- No code patch was made for Task 4 because no failure condition appeared.
 
 ---
 
