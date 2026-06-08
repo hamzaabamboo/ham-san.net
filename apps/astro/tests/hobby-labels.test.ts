@@ -4,6 +4,7 @@ import {
   getHobbyCountLabel,
   getHobbyEmbedDescription,
   getHobbyEmbedLabel,
+  getHobbyOverviewDescription,
   getHobbyOverviewSummary,
   getLocalizedHobbySummary,
   type HobbyEmbedTranslationKey,
@@ -31,6 +32,11 @@ describe('hobby labels', () => {
   test('falls back to field notes labels for unknown embed types', () => {
     expect(getHobbyEmbedLabel(t, 'unknown')).toBe('hobbies.embed-field-notes');
     expect(getHobbyEmbedDescription(t, undefined)).toBe('hobbies.embed-field-notes-description');
+  });
+
+  test('maps overview descriptions through translation keys', () => {
+    expect(getHobbyOverviewDescription(t, 'photo-gallery')).toBe('hobbies.overview-photo-gallery');
+    expect(getHobbyOverviewDescription(t, 'unknown')).toBe('hobbies.overview-field-notes');
   });
 
   test('uses a draft page label when the source note has no usable content', () => {

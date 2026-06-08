@@ -8,7 +8,7 @@ import MainLayout from '~/layouts/MainLayout.astro';
 import { parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
 import {
   getHobbyContentLabel,
-  getHobbyEmbedDescription,
+  getHobbyOverviewDescription,
   getHobbyOverviewSummary
 } from '~/utils/hobby-labels';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
@@ -204,7 +204,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                     : embed.label
                 }
                 moduleDescription={
-                  hasSourceContent ? getHobbyEmbedDescription(t, embed.type) : detailDescription
+                  hasSourceContent ? getHobbyOverviewDescription(t, embed.type) : detailDescription
                 }
               />
             );
