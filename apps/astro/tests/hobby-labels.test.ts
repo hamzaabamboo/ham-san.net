@@ -7,12 +7,12 @@ import {
   getHobbyOverviewDescription,
   getHobbyOverviewSummary,
   getLocalizedHobbySummary,
-  type HobbyEmbedTranslationKey,
   type HobbyTranslationKey,
+  localizeHobbyMarkdownHeadings,
   shouldLocalizeHobbySummary
 } from '../src/utils/hobby-labels';
 
-const t = (key: HobbyEmbedTranslationKey) => key;
+const t = (key: HobbyTranslationKey) => key;
 const metricT = (key: HobbyTranslationKey) =>
   ({
     'hobbies.metric-link': 'Link',
@@ -118,6 +118,28 @@ describe('hobby labels', () => {
     expect(shouldLocalizeHobbySummary('th', 'รูปภาพและลิงก์ภาพจากโน้ต')).toBe(false);
     expect(shouldLocalizeHobbySummary('ja', 'ノート内の画像と写真リンク。')).toBe(false);
     expect(shouldLocalizeHobbySummary('en', 'Pictures, gear, and lens references.')).toBe(false);
+  });
+
+  test('localizes known source markdown headings outside English', () => {
+    const content = `# Lens References (added 2026-03-06)
+- https://example.com
+
+# Interested In
+- Nikon z5
+
+# Custom Heading
+Keep this.`;
+
+    expect(localizeHobbyMarkdownHeadings({ content, locale: 'en', t })).toBe(content);
+    expect(localizeHobbyMarkdownHeadings({ content, locale: 'th', t }))
+      .toBe(`# hobbies.source-heading-lens-references (hobbies.source-heading-added 2026-03-06)
+- https://example.com
+
+# hobbies.source-heading-interested-in
+- Nikon z5
+
+# Custom Heading
+Keep this.`);
   });
 
   test('formats hobby metric counts with singular and plural labels', () => {

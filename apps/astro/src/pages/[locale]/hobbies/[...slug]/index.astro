@@ -9,7 +9,8 @@ import { parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
 import {
   getHobbyContentLabel,
   getHobbyOverviewDescription,
-  getHobbyOverviewSummary
+  getHobbyOverviewSummary,
+  localizeHobbyMarkdownHeadings
 } from '~/utils/hobby-labels';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
@@ -180,7 +181,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               return (
                 <div class={hobbyStyles.detailSurface}>
                   <Markdown
-                    content={part.content}
+                    content={localizeHobbyMarkdownHeadings({ content: part.content, locale, t })}
                     assetsPrefix={outlineAssetPrefix}
                     assetProxyBasePath={outlineAssetProxyPath}
                     openLinkLabel={t('hobbies.open-link')}

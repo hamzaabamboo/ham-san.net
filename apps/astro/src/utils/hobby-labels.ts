@@ -55,6 +55,17 @@ const metricCopyKeys = {
   }
 } as const;
 
+const sourceHeadingCopyKeys = {
+  body: 'source-heading-body',
+  lens: 'source-heading-lens',
+  'lens review': 'source-heading-lens-review',
+  'lens references': 'source-heading-lens-references',
+  'interested in': 'source-heading-interested-in',
+  'rental shop': 'source-heading-rental-shop',
+  'venue / live photo notes': 'source-heading-venue-live-photo-notes',
+  added: 'source-heading-added'
+} as const;
+
 type EmbedCopyKey =
   | (typeof embedCopyKeys)[keyof typeof embedCopyKeys]['label']
   | (typeof embedCopyKeys)[keyof typeof embedCopyKeys]['description']
@@ -68,13 +79,16 @@ type EmbedCopyKey =
 type MetricCopyKey =
   | (typeof metricCopyKeys)[keyof typeof metricCopyKeys]['singular']
   | (typeof metricCopyKeys)[keyof typeof metricCopyKeys]['plural'];
+type SourceHeadingCopyKey = (typeof sourceHeadingCopyKeys)[keyof typeof sourceHeadingCopyKeys];
 
 export type HobbyEmbedTranslationKey = `hobbies.${EmbedCopyKey}`;
 export type HobbyMetricTranslationKey = `hobbies.${MetricCopyKey}`;
-export type HobbyTranslationKey = `hobbies.${EmbedCopyKey | MetricCopyKey}`;
+export type HobbySourceHeadingTranslationKey = `hobbies.${SourceHeadingCopyKey}`;
+export type HobbyTranslationKey = `hobbies.${EmbedCopyKey | MetricCopyKey | SourceHeadingCopyKey}`;
 
 type Translate = (key: HobbyEmbedTranslationKey) => unknown;
 type MetricTranslate = (key: HobbyMetricTranslationKey) => unknown;
+type SourceHeadingTranslate = (key: HobbySourceHeadingTranslationKey) => unknown;
 
 const getCopyKey = (type: string | undefined, field: 'label' | 'description'): EmbedCopyKey =>
   embedCopyKeys[type as keyof typeof embedCopyKeys]?.[field] ?? fallbackCopyKeys[field];
@@ -155,6 +169,36 @@ export const getHobbyOverviewSummary = ({
     return getHobbyOverviewDescription(t, type);
   }
   return localized;
+};
+
+export const localizeHobbyMarkdownHeadings = ({
+  content,
+  locale,
+  t
+}: {
+  content: string;
+  locale: string | undefined;
+  t: SourceHeadingTranslate;
+}) => {
+  if (locale === 'en') return content;
+
+  return content.replace(/^(#{1,6})\s+(.+)$/gm, (match, marks: string, rawHeading: string) => {
+    const suffix = rawHeading.match(/\s+\(added\s+([^)]+)\)\s*$/i);
+    const heading = suffix ? rawHeading.slice(0, suffix.index).trim() : rawHeading;
+    const key =
+      sourceHeadingCopyKeys[
+        heading
+          .replace(/[*_`]/g, '')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .toLowerCase() as keyof typeof sourceHeadingCopyKeys
+      ];
+    if (!key) return match;
+
+    const localizedHeading = String(t(`hobbies.${key}`));
+    if (!suffix) return `${marks} ${localizedHeading}`;
+    return `${marks} ${localizedHeading} (${String(t('hobbies.source-heading-added'))} ${suffix[1]})`;
+  });
 };
 
 export const getHobbyCountLabel = ({
