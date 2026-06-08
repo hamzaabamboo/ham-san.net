@@ -7,7 +7,7 @@ export const FieldNotesEmbed = ({
   body = '',
   links = [],
   nestedPages = [],
-  emptySourceLabel = 'Waiting for note content.',
+  emptySourceLabel = 'Source material pending.',
   emptySourceStateLabel,
   nestedSourcePagesLabel = 'Related pages',
   sourceNoteAttachedLabel = 'Note content available'
