@@ -253,4 +253,54 @@ This is actual prose that belongs on the page.
 # Rental Shop
 - https://rental.example.com`);
   });
+
+  test('removes slash-only source artifact lines', () => {
+    const content = parseHobbyContent({
+      title: 'Wishlist',
+      text: `# Body
+Nikon z5
+
+\\\\
+
+# Lens Review
+- https://example.com`
+    });
+
+    expect(content.body).not.toContain('\\\\');
+    expect(content.body).toContain('# Body');
+    expect(content.body).toContain('# Lens Review');
+  });
+
+  test('removes trailing slash source artifacts before headings', () => {
+    const content = parseHobbyContent({
+      title: 'Wishlist',
+      text: `# Body
+- Nikon z5: https://photographylife.com \\\\
+# Lens Review
+- https://example.com`
+    });
+
+    expect(content.body).toBe(`# Body
+- Nikon z5: https://photographylife.com
+# Lens Review
+- https://example.com`);
+  });
+
+  test('removes slash-only source artifact list items', () => {
+    const content = parseHobbyContent({
+      title: 'Wishlist',
+      text: `# Lens
+* Tamron 100-400mm
+* \\\\
+
+# Lens Review
+* https://example.com`
+    });
+
+    expect(content.body).toBe(`# Lens
+* Tamron 100-400mm
+
+# Lens Review
+* https://example.com`);
+  });
 });

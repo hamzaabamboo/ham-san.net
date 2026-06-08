@@ -216,6 +216,15 @@ const normalizeHeading = (value: string) =>
 const getEmbedMarkers = (content: string) =>
   Array.from(content.matchAll(/<!--\s*hobby-embed:\d+\s*-->/g)).map((match) => match[0]);
 
+const cleanSourceArtifacts = (content: string) =>
+  content
+    .replace(/[ \t]+\\+[ \t]*(\n(?=#{1,6}\s+))/g, '$1')
+    .split('\n')
+    .filter((line) => !/^(?:[-*+]\s+)?\\+$/.test(line.trim()))
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
 export const sanitizeHobbyDisplayBody = (body: string) => {
   const sections: Array<{ start: number; end: number; heading: string }> = [];
 
@@ -232,12 +241,7 @@ export const sanitizeHobbyDisplayBody = (body: string) => {
   });
 
   if (sections.length === 0) {
-    return body
-      .split('\n')
-      .filter((line) => line.trim() !== '\\')
-      .join('\n')
-      .replace(/\n{3,}/g, '\n\n')
-      .trim();
+    return cleanSourceArtifacts(body);
   }
 
   let cursor = 0;
@@ -258,13 +262,7 @@ export const sanitizeHobbyDisplayBody = (body: string) => {
 
   chunks.push(body.slice(cursor));
 
-  return chunks
-    .join('')
-    .split('\n')
-    .filter((line) => line.trim() !== '\\')
-    .join('\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+  return cleanSourceArtifacts(chunks.join(''));
 };
 
 export const splitHobbyBodyParts = (body: string, embedCount: number): HobbyBodyPart[] => {

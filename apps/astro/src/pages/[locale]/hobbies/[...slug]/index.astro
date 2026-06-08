@@ -48,6 +48,8 @@ const childDocumentsRequest = await outlineClient.POST('/documents.list', {
   body: { parentDocumentId: childDocumentsParentId }
 });
 const childDocuments = (childDocumentsRequest.data?.data ?? []).filter(Boolean);
+const backHref = childId ? `/${locale}/hobbies/${rootId}` : `/${locale}/hobbies`;
+const backLabel = childId ? t('hobbies.back-to-parent') : t('hobbies.back-to-hobbies');
 const content = parseHobbyContent({
   title: data.title,
   text: data.text,
@@ -137,9 +139,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 
 <MainLayout title={pageTitle} description={detailDescription || data.title}>
   <div class={cx(hobbyStyles.detail, 'page-shell', 'hobby-detail')}>
-    <a class={cx(hobbyStyles.detailBack, 'hobby-meta')} href={`/${locale}/hobbies`}>
+    <a class={cx(hobbyStyles.detailBack, 'hobby-meta')} href={backHref}>
       <span aria-hidden="true">←</span>
-      <span>{t('hobbies.back-to-hobbies')}</span>
+      <span>{backLabel}</span>
     </a>
 
     <section class={hobbyStyles.detailHero}>
