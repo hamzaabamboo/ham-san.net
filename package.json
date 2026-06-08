@@ -12,7 +12,7 @@
     "clean:containers": "bash ./tools/cleanup-container-artifacts.sh",
     "prepare": "husky install && bun codegen:api && nx sync client && nx run-many -p client, astro -t prepare",
     "codegen": "nx run-many -p client, astro -t codegen",
-    "check": "nx run-many -p client, astro -t lint, format",
+    "check": "cd apps/client && bun run sync && cd ../.. && NODE_OPTIONS=--max-old-space-size=6144 nx run-many -p client, astro -t lint, format",
     "fix": "nx run-many -p client, astro -t fix:all",
     "codegen:prod": "nx run-many -p client, astro -t codegen:prod",
     "check:react-astro": "bash ./tools/check-react-astro.sh",
