@@ -14,7 +14,7 @@ import { parseHobbyContent } from '~/utils/hobby-content';
 import {
   getHobbyContentLabel,
   getHobbyCountLabel,
-  getLocalizedHobbySummary
+  getHobbyOverviewSummary
 } from '~/utils/hobby-labels';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 
@@ -299,19 +299,7 @@ const hobbies = hobbiesList
         });
         const childPages = h.childPages ?? [];
         const embedType = content.embeds[0]?.type ?? 'field-notes';
-        const sourceSummary = getLocalizedHobbySummary({
-          locale,
-          value: content.description,
-          type: embedType,
-          t
-        });
         const nestedSummary = formatNestedDescription(childPages);
-        const localizedNestedSummary = getLocalizedHobbySummary({
-          locale,
-          value: nestedSummary,
-          type: embedType,
-          t
-        });
         const resolvedImages = content.images
           .map(resolveHobbyAssetUrl)
           .filter((image): image is string => !!image);
@@ -320,8 +308,17 @@ const hobbies = hobbiesList
           ...content,
           banner: resolveHobbyAssetUrl(content.banner ?? content.images[0]),
           images: resolvedImages,
-          description:
-            sourceSummary || localizedNestedSummary || t('hobbies.empty-source-description'),
+          description: getHobbyOverviewSummary({
+            hasSource: hasSourceContent({
+              ...content,
+              images: resolvedImages,
+              childPages
+            }),
+            locale,
+            value: content.description || nestedSummary,
+            type: embedType,
+            t
+          }),
           updatedLabel: formatUpdated(content.updatedAt),
           childPages,
           status: getEffectiveStatus({

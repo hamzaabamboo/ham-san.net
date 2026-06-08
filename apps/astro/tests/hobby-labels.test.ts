@@ -4,6 +4,7 @@ import {
   getHobbyCountLabel,
   getHobbyEmbedDescription,
   getHobbyEmbedLabel,
+  getHobbyOverviewSummary,
   getLocalizedHobbySummary,
   type HobbyEmbedTranslationKey,
   type HobbyTranslationKey,
@@ -39,6 +40,60 @@ describe('hobby labels', () => {
     expect(getHobbyContentLabel({ hasSource: true, type: 'field-notes', t })).toBe(
       'hobbies.embed-field-notes'
     );
+  });
+
+  test('replaces generic overview summaries with type-specific copy', () => {
+    expect(
+      getHobbyOverviewSummary({
+        hasSource: true,
+        locale: 'en',
+        value: 'Stats and gear.',
+        type: 'darts-board',
+        t
+      })
+    ).toBe('hobbies.overview-darts-board');
+    expect(
+      getHobbyOverviewSummary({
+        hasSource: true,
+        locale: 'en',
+        value: 'Pictures, gear, and lens references (added 2026-03-06).',
+        type: 'photo-gallery',
+        t
+      })
+    ).toBe('hobbies.overview-photo-gallery');
+    expect(
+      getHobbyOverviewSummary({
+        hasSource: true,
+        locale: 'ja',
+        value: 'Profiles and links.',
+        type: 'typing-stats',
+        t
+      })
+    ).toBe('hobbies.overview-typing-stats');
+  });
+
+  test('preserves meaningful overview summaries', () => {
+    expect(
+      getHobbyOverviewSummary({
+        hasSource: true,
+        locale: 'en',
+        value: 'Trombone / Piano / Transcriptions',
+        type: 'piano-chords',
+        t
+      })
+    ).toBe('Trombone / Piano / Transcriptions');
+  });
+
+  test('uses parked overview copy for empty source pages', () => {
+    expect(
+      getHobbyOverviewSummary({
+        hasSource: false,
+        locale: 'en',
+        value: 'Parked for now.',
+        type: 'field-notes',
+        t
+      })
+    ).toBe('hobbies.overview-empty-page');
   });
 
   test('localizes plain English summaries outside English chrome', () => {
