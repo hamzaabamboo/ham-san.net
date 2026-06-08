@@ -10,18 +10,7 @@ const getHostLabel = (href: string) => {
 };
 
 export const TypingStatsEmbed = ({
-  body = '',
   links = [],
-  updatedAt,
-  status = 'active',
-  statusLabel,
-  liveContentLabel = 'live',
-  profilesMetricLabel = 'profiles',
-  linksMetricLabel = 'links',
-  updatedMetricLabel = 'updated',
-  statusMetricLabel = 'status',
-  sourceMetricLabel = 'source',
-  sourceNoteLabel = 'outline',
   noTypingProfilesLabel = 'No typing profiles are linked yet.'
 }: HobbyEmbedProps) => {
   const profileLinks = links
@@ -30,24 +19,9 @@ export const TypingStatsEmbed = ({
     )
     .slice(0, 6);
   const visibleLinks = profileLinks.length > 0 ? profileLinks : links.slice(0, 6);
-  const linkMetricLabel = profileLinks.length > 0 ? profilesMetricLabel : linksMetricLabel;
-  const sourceRows = [
-    ...(visibleLinks.length > 0 ? [[linkMetricLabel, String(visibleLinks.length)]] : []),
-    [updatedMetricLabel, updatedAt ?? liveContentLabel],
-    [statusMetricLabel, statusLabel || status],
-    ...(body ? [[sourceMetricLabel, sourceNoteLabel]] : [])
-  ];
 
   return (
     <div className={hobbyStyles.sourceModule}>
-      <div className={`${hobbyStyles.sourceStats} hobby-meta`}>
-        {sourceRows.map(([label, value]) => (
-          <div key={label}>
-            <span>{label}</span>
-            <strong>{value}</strong>
-          </div>
-        ))}
-      </div>
       {visibleLinks.length > 0 ? (
         <div className={`${hobbyStyles.sourceLinks} hobby-meta`}>
           {visibleLinks.map((link) => (

@@ -78,22 +78,12 @@ export const HobbyInteractiveEmbed = ({
   images = [],
   links = [],
   nestedPages = [],
-  statusLabel,
-  moduleLabel = 'embed',
   moduleTitle,
   moduleDescription,
-  updatedPrefix = 'Updated',
-  liveContentLabel = 'Live content',
   emptySourceLabel,
   emptySourceStateLabel,
   nestedSourcePagesLabel,
   sourceNoteAttachedLabel,
-  statusMetricLabel,
-  linksMetricLabel,
-  updatedMetricLabel,
-  pagesMetricLabel,
-  profilesMetricLabel,
-  sourceMetricLabel,
   linkedPhotoSourcesLabel,
   noImagesLabel,
   noLinksLabel,
@@ -108,7 +98,6 @@ export const HobbyInteractiveEmbed = ({
   playedLabel,
   audioStartsAfterTapLabel,
   sourcePagesAttachedLabel,
-  updatedAt,
   status = 'active'
 }: HobbyEmbedProps & { type: string }) => {
   const embed = embedRegistry[type] ?? fallbackEmbed;
@@ -117,16 +106,7 @@ export const HobbyInteractiveEmbed = ({
   return (
     <section className={hobbyStyles.embed} data-embed={embed.className} data-status={status}>
       <div className={hobbyStyles.embedHeader}>
-        <div>
-          <p className={`${hobbyStyles.embedEyebrow} hobby-meta`}>
-            {statusLabel ?? status} / {moduleLabel}
-          </p>
-          <h2>{moduleTitle ?? embed.title}</h2>
-        </div>
-        <div className={`${hobbyStyles.embedMeta} hobby-meta`}>
-          <span>{title ?? 'Hobby'}</span>
-          <span>{updatedAt ? `${updatedPrefix} ${updatedAt}` : liveContentLabel}</span>
-        </div>
+        <h2>{moduleTitle ?? embed.title}</h2>
       </div>
       <p className={hobbyStyles.embedSummary}>
         {moduleDescription || description || embed.description}
@@ -138,22 +118,12 @@ export const HobbyInteractiveEmbed = ({
         images={images}
         links={links}
         nestedPages={nestedPages}
-        statusLabel={statusLabel}
-        moduleLabel={moduleLabel}
         moduleTitle={moduleTitle}
         moduleDescription={moduleDescription}
-        updatedPrefix={updatedPrefix}
-        liveContentLabel={liveContentLabel}
         emptySourceLabel={emptySourceLabel}
         emptySourceStateLabel={emptySourceStateLabel}
         nestedSourcePagesLabel={nestedSourcePagesLabel}
         sourceNoteAttachedLabel={sourceNoteAttachedLabel}
-        statusMetricLabel={statusMetricLabel}
-        linksMetricLabel={linksMetricLabel}
-        updatedMetricLabel={updatedMetricLabel}
-        pagesMetricLabel={pagesMetricLabel}
-        profilesMetricLabel={profilesMetricLabel}
-        sourceMetricLabel={sourceMetricLabel}
         linkedPhotoSourcesLabel={linkedPhotoSourcesLabel}
         noImagesLabel={noImagesLabel}
         noLinksLabel={noLinksLabel}
@@ -168,7 +138,6 @@ export const HobbyInteractiveEmbed = ({
         playedLabel={playedLabel}
         audioStartsAfterTapLabel={audioStartsAfterTapLabel}
         sourcePagesAttachedLabel={sourcePagesAttachedLabel}
-        updatedAt={updatedAt}
         status={status}
       />
     </section>

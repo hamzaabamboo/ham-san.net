@@ -235,10 +235,6 @@ export const hobbyStyles = {
     }
   }),
   embedHeader: css({
-    display: 'flex',
-    gap: '6',
-    flexDirection: { base: 'column', md: 'row' },
-    justifyContent: 'space-between',
     borderBottom: '1px solid #524533',
     pb: '4',
     '& h2': {
@@ -247,26 +243,6 @@ export const hobbyStyles = {
       fontSize: 'clamp(2rem, 5vw, 3.75rem)',
       lineHeight: '0.95'
     }
-  }),
-  embedEyebrow: css({
-    m: '0 0 0.75rem',
-    color: '#2dd4bf',
-    fontFamily: 'JetBrains Mono, monospace',
-    fontSize: '10px',
-    letterSpacing: '0.12em',
-    textTransform: 'uppercase'
-  }),
-  embedMeta: css({
-    display: 'flex',
-    gap: '2',
-    flexDir: 'column',
-    alignItems: { base: 'flex-start', md: 'flex-end' },
-    color: '#9f8e78',
-    fontFamily: 'JetBrains Mono, monospace',
-    fontSize: '10px',
-    letterSpacing: '0.12em',
-    textAlign: { base: 'left', md: 'right' },
-    textTransform: 'uppercase'
   }),
   embedSummary: css({
     maxW: '52rem',
@@ -522,35 +498,6 @@ export const hobbyStyles = {
   sourceModule: css({
     display: 'grid',
     gap: '4'
-  }),
-  sourceStats: css({
-    display: 'grid',
-    gap: '1px',
-    gridTemplateColumns: { base: '1fr', md: 'repeat(4, 1fr)' },
-    border: '1px solid #524533',
-    bg: '#524533',
-    '& div': {
-      minW: '0',
-      p: '4',
-      bg: '#131313'
-    },
-    '& span': {
-      color: '#9f8e78',
-      fontFamily: 'JetBrains Mono, monospace',
-      fontSize: '10px',
-      letterSpacing: '0.12em',
-      textTransform: 'uppercase'
-    },
-    '& strong': {
-      display: 'block',
-      mt: '2',
-      color: '#2dd4bf',
-      fontFamily: 'JetBrains Mono, monospace',
-      fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-      lineHeight: '1.4',
-      textTransform: 'uppercase',
-      overflowWrap: 'anywhere'
-    }
   }),
   sourceLinks: css({
     display: 'grid',
@@ -837,38 +784,6 @@ export const hobbyStyles = {
         borderColor: '#ffb000',
         color: '#ffb000'
       }
-    },
-    '& dl': {
-      display: 'grid',
-      gap: '1px',
-      gridTemplateColumns: { base: '1fr', md: 'repeat(4, 1fr)' },
-      border: '1px solid #524533',
-      w: 'full',
-      maxW: '46rem',
-      m: '0',
-      textAlign: 'left',
-      bg: '#524533'
-    },
-    '& dl div': {
-      p: '4',
-      bg: '#131313'
-    },
-    '& dt': {
-      color: '#9f8e78',
-      fontFamily: 'JetBrains Mono, monospace',
-      fontSize: '10px',
-      letterSpacing: '0.12em',
-      textTransform: 'uppercase'
-    },
-    '& dd': {
-      display: 'block',
-      ml: '0',
-      mt: '2',
-      color: '#2dd4bf',
-      fontFamily: 'JetBrains Mono, monospace',
-      fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-      textTransform: 'uppercase',
-      overflowWrap: 'anywhere'
     }
   })
 };
