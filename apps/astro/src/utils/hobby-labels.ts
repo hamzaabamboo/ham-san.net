@@ -35,6 +35,17 @@ const fallbackCopyKeys = {
   emptyLabel: 'embed-empty-page'
 } as const;
 
+const metricCopyKeys = {
+  link: {
+    singular: 'metric-link',
+    plural: 'metric-links'
+  },
+  page: {
+    singular: 'metric-page',
+    plural: 'metric-pages'
+  }
+} as const;
+
 type EmbedCopyKey =
   | (typeof embedCopyKeys)[keyof typeof embedCopyKeys]['label']
   | (typeof embedCopyKeys)[keyof typeof embedCopyKeys]['description']
@@ -42,9 +53,16 @@ type EmbedCopyKey =
   | (typeof fallbackCopyKeys)['description']
   | (typeof fallbackCopyKeys)['emptyLabel'];
 
+type MetricCopyKey =
+  | (typeof metricCopyKeys)[keyof typeof metricCopyKeys]['singular']
+  | (typeof metricCopyKeys)[keyof typeof metricCopyKeys]['plural'];
+
 export type HobbyEmbedTranslationKey = `hobbies.${EmbedCopyKey}`;
+export type HobbyMetricTranslationKey = `hobbies.${MetricCopyKey}`;
+export type HobbyTranslationKey = `hobbies.${EmbedCopyKey | MetricCopyKey}`;
 
 type Translate = (key: HobbyEmbedTranslationKey) => unknown;
+type MetricTranslate = (key: HobbyMetricTranslationKey) => unknown;
 
 const getCopyKey = (type: string | undefined, field: 'label' | 'description'): EmbedCopyKey =>
   embedCopyKeys[type as keyof typeof embedCopyKeys]?.[field] ?? fallbackCopyKeys[field];
@@ -84,3 +102,19 @@ export const getLocalizedHobbySummary = ({
   type?: string;
   t: Translate;
 }) => (shouldLocalizeHobbySummary(locale, value) ? getHobbyEmbedDescription(t, type) : value);
+
+export const getHobbyCountLabel = ({
+  count,
+  locale,
+  type,
+  t
+}: {
+  count: number;
+  locale?: string;
+  type: keyof typeof metricCopyKeys;
+  t: MetricTranslate;
+}) => {
+  const key = count === 1 ? metricCopyKeys[type].singular : metricCopyKeys[type].plural;
+  const value = new Intl.NumberFormat(locale || 'en').format(count);
+  return `${value} ${String(t(`hobbies.${key}`))}`;
+};

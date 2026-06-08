@@ -11,7 +11,11 @@ import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
 import { getOutlineSettings } from '~/utils/outline-settings';
 import { parseHobbyContent } from '~/utils/hobby-content';
-import { getHobbyContentLabel, getLocalizedHobbySummary } from '~/utils/hobby-labels';
+import {
+  getHobbyContentLabel,
+  getHobbyCountLabel,
+  getLocalizedHobbySummary
+} from '~/utils/hobby-labels';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 
 export const prerender = false;
@@ -375,14 +379,24 @@ const hobbies = hobbiesList
                   ...(hobby.links?.length
                     ? [
                         {
-                          label: `${hobby.links.length} ${t('hobbies.metric-links')}`
+                          label: getHobbyCountLabel({
+                            count: hobby.links.length,
+                            locale,
+                            type: 'link',
+                            t
+                          })
                         }
                       ]
                     : []),
                   ...(hobby.childPages?.length
                     ? [
                         {
-                          label: `${hobby.childPages.length} ${t('hobbies.metric-pages')}`
+                          label: getHobbyCountLabel({
+                            count: hobby.childPages.length,
+                            locale,
+                            type: 'page',
+                            t
+                          })
                         }
                       ]
                     : [])

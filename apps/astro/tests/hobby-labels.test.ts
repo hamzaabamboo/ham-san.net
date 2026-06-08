@@ -1,14 +1,23 @@
 import { describe, expect, test } from 'bun:test';
 import {
   getHobbyContentLabel,
+  getHobbyCountLabel,
   getHobbyEmbedDescription,
   getHobbyEmbedLabel,
   getLocalizedHobbySummary,
   type HobbyEmbedTranslationKey,
+  type HobbyTranslationKey,
   shouldLocalizeHobbySummary
 } from '../src/utils/hobby-labels';
 
 const t = (key: HobbyEmbedTranslationKey) => key;
+const metricT = (key: HobbyTranslationKey) =>
+  ({
+    'hobbies.metric-link': 'Link',
+    'hobbies.metric-links': 'Links',
+    'hobbies.metric-page': 'Page',
+    'hobbies.metric-pages': 'Pages'
+  })[key] ?? key;
 
 describe('hobby labels', () => {
   test('maps embed labels and descriptions through translation keys', () => {
@@ -48,5 +57,13 @@ describe('hobby labels', () => {
     expect(shouldLocalizeHobbySummary('th', 'รูปภาพและลิงก์ภาพจากโน้ต')).toBe(false);
     expect(shouldLocalizeHobbySummary('ja', 'ノート内の画像と写真リンク。')).toBe(false);
     expect(shouldLocalizeHobbySummary('en', 'Pictures, gear, and lens references.')).toBe(false);
+  });
+
+  test('formats hobby metric counts with singular and plural labels', () => {
+    expect(getHobbyCountLabel({ count: 1, locale: 'en', type: 'page', t: metricT })).toBe('1 Page');
+    expect(getHobbyCountLabel({ count: 2, locale: 'en', type: 'page', t: metricT })).toBe(
+      '2 Pages'
+    );
+    expect(getHobbyCountLabel({ count: 1, locale: 'en', type: 'link', t: metricT })).toBe('1 Link');
   });
 });
