@@ -38,20 +38,20 @@
 
 ## Requirement Checklist
 
-- [ ] External Markdown remains the main content source from Outline.
-- [ ] Markdown slot directives can embed custom components in the main content stream.
-- [ ] Supported components are present and visually checked: photo gallery, Twitter/feed links, Rubik algorithm viewer, typing stats, piano chord player, darts board, link library, field notes fallback.
-- [ ] Frontmatter supports embed selection, embed labels, status, updated date, banner/image, and source descriptions.
-- [ ] Active/inactive pages are derived from real source metadata or actual source presence; no fake activity metrics.
-- [ ] Nested hobby pages work for parent and child routes, with correct parent navigation.
-- [ ] Category descriptions are consumed without cringe/generic copy leaking into public UI.
-- [ ] Overview and detail pages have deliberate fallback visuals when media is missing.
-- [ ] No `Ham-san` remains in public UI; brand is `Ham`.
-- [ ] Thai uses `งานอดิเรก`, not `ความสนใจ`, for hobbies.
-- [ ] Thai/Japanese typography and metadata do not look broken or forced-uppercase.
-- [ ] Mobile and desktop layouts have no horizontal overflow, clipped labels, or overlapping content.
-- [ ] Live API testing is documented for every page class.
-- [ ] Full gates pass: focused tests, lint, format, build.
+- [x] External Markdown remains the main content source from Outline. Evidence: Task 1 route inventory and Task 3 detail routes loaded from live `http://localhost:4321` through `agent-browser`, with Outline-derived source content in `/tmp/ham-hobby-*-desktop.json`.
+- [x] Markdown slot directives can embed custom components in the main content stream. Evidence: `bun test apps/astro/tests/hobby-content.test.ts apps/astro/tests/hobby-labels.test.ts apps/astro/tests/hobby-cards.test.ts` passed 28 tests, including explicit and shorthand embed slot directive cases.
+- [x] Supported components are present and visually checked: photo gallery, Twitter/feed links, Rubik algorithm viewer, typing stats, piano chord player, darts board, link library, field notes fallback. Evidence: Task 3 screenshots `/tmp/ham-hobby-camera-desktop.png`, `/tmp/ham-hobby-typing-desktop.png`, `/tmp/ham-hobby-music-desktop.png`, `/tmp/ham-hobby-darts-desktop.png`, `/tmp/ham-hobby-rubiks-desktop.png`, `/tmp/ham-hobby-geoguessr-desktop.png`, plus parked field-notes screenshots `/tmp/ham-hobby-pen-spinning-desktop.png` and `/tmp/ham-hobby-kendama-desktop.png`.
+- [x] Frontmatter supports embed selection, embed labels, status, updated date, banner/image, and source descriptions. Evidence: focused tests passed for frontmatter labels, source metadata precedence, canonical embed labels, and localized metrics.
+- [x] Active/inactive pages are derived from real source metadata or actual source presence; no fake activity metrics. Evidence: `/tmp/ham-hobby-pen-spinning-inactive.json` had `hasFakeMetrics:false`; Task 3 showed active routes populated from source body, links, images, or nested pages.
+- [x] Nested hobby pages work for parent and child routes, with correct parent navigation. Evidence: `/tmp/ham-hobby-camera-wishlist-nested.json` had `backText:"Back to parent hobby"` and `slashArtifact:false`.
+- [x] Category descriptions are consumed without cringe/generic copy leaking into public UI. Evidence: Task 2 mobile evals returned `genericEnglish:false` for `/th/hobbies` and `/ja/hobbies`; Task 3 JSON scans found route-specific descriptions instead of generic fallback copy.
+- [x] Overview and detail pages have deliberate fallback visuals when media is missing. Evidence: Task 2 overview screenshots `/tmp/ham-hobbies-th-mobile-after.png`, `/tmp/ham-hobbies-ja-mobile-after.png`; Task 3/4 inactive screenshots show parked visual states without fake content.
+- [x] No `Ham-san` remains in public UI; brand is `Ham`. Evidence: final route opens returned page titles `Hobbies | Ham`, `趣味 | Ham`, and `งานอดิเรก | Ham`.
+- [x] Thai uses `งานอดิเรก`, not `ความสนใจ`, for hobbies. Evidence: Task 2 Thai eval returned `badThai:false`; final `/th/hobbies` open returned title `งานอดิเรก | Ham`.
+- [x] Thai/Japanese typography and metadata do not look broken or forced-uppercase. Evidence: `/tmp/ham-hobbies-th-mobile-after.png` and `/tmp/ham-hobbies-ja-mobile-after.png` checked at `390x844`; Thai metadata used normal body typography and no forced uppercase.
+- [x] Mobile and desktop layouts have no horizontal overflow, clipped labels, or overlapping content. Evidence: Task 2 Thai and Japanese evals returned `scrollWidth:390` and `clientWidth:390`; Task 3 desktop screenshots checked at `1440x1000`.
+- [x] Live API testing is documented for every page class. Evidence: Task 1 route inventory, Task 2 overview mobile checks, Task 3 root detail checks, and Task 4 nested/inactive checks are documented in this plan with `/tmp` artifacts.
+- [x] Full gates pass: focused tests, lint, format, build. Evidence: final `bun test ...` passed 28 tests; final `cd apps/astro && bun run lint`, `bun run format`, and `bun run build` all exited 0.
 
 ---
 
@@ -449,7 +449,7 @@ Captured on 2026-06-08 from live `http://localhost:4321`.
 **Files:**
 - Modify: `docs/plans/2026-06-08-hobbies-production-hardening.md`
 
-- [ ] **Step 1: Re-run route class checks**
+- [x] **Step 1: Re-run route class checks**
 
 Run:
 ```bash
@@ -463,7 +463,7 @@ Expected:
 Each overview route loads from the live API.
 ```
 
-- [ ] **Step 2: Run final gates**
+- [x] **Step 2: Run final gates**
 
 Run:
 ```bash
@@ -478,11 +478,11 @@ Expected:
 All commands exit 0.
 ```
 
-- [ ] **Step 3: Fill the requirement checklist**
+- [x] **Step 3: Fill the requirement checklist**
 
 Update every checkbox in `Requirement Checklist` with evidence paths or command outputs.
 
-- [ ] **Step 4: Commit audit documentation**
+- [x] **Step 4: Commit audit documentation**
 
 Run:
 ```bash
@@ -496,7 +496,7 @@ Expected:
 Audit is pushed and the worktree is clean.
 ```
 
-- [ ] **Step 5: Only then consider the active goal complete**
+- [x] **Step 5: Only then consider the active goal complete**
 
 Required evidence:
 ```text
