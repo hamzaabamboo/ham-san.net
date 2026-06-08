@@ -9,7 +9,7 @@ import { parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
 import {
   getHobbyContentLabel,
   getHobbyEmbedDescription,
-  getLocalizedHobbySummary
+  getHobbyOverviewSummary
 } from '~/utils/hobby-labels';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
@@ -81,20 +81,13 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
     assetProxyBasePath: outlineAssetProxyPath
   });
 const embedType = content.embeds[0]?.type ?? 'field-notes';
-const sourceSummary = getLocalizedHobbySummary({
+const detailDescription = getHobbyOverviewSummary({
+  hasSource: hasSourceContent,
   locale,
-  value: content.description,
+  value: content.description || nestedDescription,
   type: embedType,
   t
 });
-const localizedNestedDescription = getLocalizedHobbySummary({
-  locale,
-  value: nestedDescription,
-  type: embedType,
-  t
-});
-const detailDescription =
-  sourceSummary || localizedNestedDescription || t('hobbies.empty-source-description');
 const embedLabel = getHobbyContentLabel({ hasSource: hasSourceContent, type: embedType, t });
 const statusLabel =
   effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
