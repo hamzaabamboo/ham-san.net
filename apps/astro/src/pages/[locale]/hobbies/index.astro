@@ -177,7 +177,8 @@ const hobbyCardPill = css({
   px: '3',
   bg: 'rgba(19, 19, 19, 0.72)',
   color: '#c7c6c6',
-  whiteSpace: 'nowrap',
+  whiteSpace: { base: 'normal', md: 'nowrap' },
+  overflowWrap: 'anywhere',
   '&[data-status="active"]': {
     borderColor: 'rgba(45, 212, 191, 0.38)',
     color: '#2dd4bf'

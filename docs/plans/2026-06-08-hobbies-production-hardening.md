@@ -152,7 +152,7 @@ Evidence captured on 2026-06-08 from live `http://localhost:4321/en/hobbies` usi
 - Modify: `apps/astro/src/index.css`
 - Test: live browser screenshots in `/tmp`
 
-- [ ] **Step 1: Verify the current mobile failure before editing**
+- [x] **Step 1: Verify the current mobile failure before editing**
 
 Run:
 ```bash
@@ -168,7 +168,7 @@ Expected:
 The JSON records whether horizontal overflow exists and whether Thai terminology is correct.
 ```
 
-- [ ] **Step 2: Patch only confirmed layout issues**
+- [x] **Step 2: Patch only confirmed layout issues**
 
 Allowed changes:
 ```ts
@@ -190,7 +190,7 @@ html:lang(th) .hobby-meta * {
 
 Do not change data fetching or content parsing in this task.
 
-- [ ] **Step 3: Verify mobile after editing**
+- [x] **Step 3: Verify mobile after editing**
 
 Run:
 ```bash
@@ -207,7 +207,7 @@ Expected:
 scrollWidth <= clientWidth for both routes, no bad Thai term, no generic English fallback copy.
 ```
 
-- [ ] **Step 4: Run gates and commit**
+- [x] **Step 4: Run gates and commit**
 
 Run:
 ```bash
