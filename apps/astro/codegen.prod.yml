@@ -10,3 +10,8 @@ generates:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-graphql-request'
+    config:
+      scalars:
+        Date: string
+        DateTime: string
+        I18NLocaleCode: string

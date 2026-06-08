@@ -10,7 +10,7 @@
     "astro": "astro",
     "prepare": "bun codegen:panda",
     "codegen": "graphql-codegen",
-    "codegen:prod": "graphql-codegen -c codegen.prod.yml",
+    "codegen:prod": "graphql-codegen -c codegen.prod.yml && bun scripts/fix-codegen-prod.mjs",
     "codegen:panda": "panda codegen",
     "codegen:park-ui": "bunx @park-ui/cli add --all",
     "lint": "eslint src",
