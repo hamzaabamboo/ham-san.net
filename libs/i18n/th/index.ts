@@ -2,6 +2,7 @@ import aboutMe from './about-me.json';
 import blog from './blog.json';
 import common from './common.json';
 import contact from './contact.json';
+import events from './events.json';
 import hobbies from './hobbies.json';
 import home from './home.json';
 import nameCard from './name-card.json';
@@ -13,6 +14,7 @@ export default {
   blog,
   common,
   contact,
+  events,
   home,
   'name-card': nameCard,
   note,

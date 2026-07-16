@@ -255,7 +255,7 @@ export function parseEventernoteEvents(html: string): EventernoteEvent[] {
       const dateText = cleanText(node.querySelector('.date p')?.textContent);
       const dateKey = parseDateKey(dateText);
       const venueLink = node.querySelector('.event .place a');
-      const venue = cleanText(venueLink?.textContent);
+      const venue = cleanVenueName(venueLink?.textContent);
       const venueHref = venueLink?.getAttribute('href') ?? undefined;
       const artists = Array.from(node.querySelectorAll('.actor li a'))
         .map((artist) => cleanText(artist.textContent))
@@ -345,7 +345,6 @@ export function buildEventernoteReport(
     rankItems(attendedEvents.map((event) => monthName(event.dateKey)))
   );
   const dateCounts = rankItems(attendedEvents.map((event) => event.dateKey));
-  const venueCountsByDay = rankVenuesByDay(attendedEvents);
   const dateRange = buildDateRange(attendedEvents);
   const totalDaysInRange = countDaysInRange(attendedEvents);
   const dailyActivity = rankDailyActivity(attendedEvents);
@@ -394,15 +393,19 @@ export function buildEventernoteReport(
       ? (eventsWithoutFavorites / attendedEvents.length) * 100
       : 0,
     multiEventDays: dateCounts.filter((item) => item.count > 1).length,
-    maxEventsInDay: dateCounts[0],
-    maxVenuesInDay: venueCountsByDay[0],
+    maxEventsInDay: multiEventDayStats.maxEventsInDayDate
+      ? { name: multiEventDayStats.maxEventsInDayDate, count: multiEventDayStats.maxEventsInDay }
+      : undefined,
+    maxVenuesInDay: multiEventDayStats.maxVenuesInDayDate
+      ? { name: multiEventDayStats.maxVenuesInDayDate, count: multiEventDayStats.maxVenuesInDay }
+      : undefined,
     weekendStats,
     multiEventDayStats,
     streaks,
     favoriteArtistAttendance: calculateFavoriteArtistAttendance(profile, attendedEvents, today),
     weekendEvents,
     weekdayEvents: attendedEvents.length - weekendEvents,
-    busiestMonth: monthlyBreakdown[0],
+    busiestMonth: [...monthlyBreakdown].sort((a, b) => b.count - a.count)[0],
     favoriteDay: [...weekdayBreakdown].sort((a, b) => b.count - a.count)[0],
     dateRange,
     fetchedAt: new Date(now).toISOString(),
@@ -412,6 +415,10 @@ export function buildEventernoteReport(
 
 function cleanText(value?: string | null) {
   return (value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function cleanVenueName(value?: string | null) {
+  return cleanText(value).replace(/^!_+/, '');
 }
 
 function parseNumber(value?: string | null) {
@@ -441,44 +448,60 @@ function rankItems(items: string[]): RankedItem[] {
 }
 
 function rankMonths(events: EventernoteEvent[]): MonthlyItem[] {
-  return rankItems(events.map((event) => event.dateKey.slice(0, 7))).map(({ name, count }) => ({
-    month: name,
-    count
-  }));
+  const counts = new Map<string, number>();
+
+  for (const event of events) {
+    const month = event.dateKey.slice(0, 7);
+    counts.set(month, (counts.get(month) ?? 0) + 1);
+  }
+
+  const months = [...counts.keys()].sort();
+  if (!months.length) return [];
+
+  const result: MonthlyItem[] = [];
+  let [year, month] = months[0].split('-').map(Number);
+  let key = months[0];
+
+  while (key <= months[months.length - 1]) {
+    result.push({ month: key, count: counts.get(key) ?? 0 });
+    month++;
+    if (month > 12) {
+      month = 1;
+      year++;
+    }
+    key = `${year}-${String(month).padStart(2, '0')}`;
+  }
+
+  return result;
 }
 
 function rankYears(events: EventernoteEvent[]): YearlyItem[] {
+  const counts = new Map<string, number>();
+
+  for (const event of events) {
+    const year = event.dateKey.slice(0, 4);
+    counts.set(year, (counts.get(year) ?? 0) + 1);
+  }
+
+  const years = [...counts.keys()].sort();
+  if (!years.length) return [];
+
+  const result: YearlyItem[] = [];
   let cumulative = 0;
 
-  return rankItems(events.map((event) => event.dateKey.slice(0, 4)))
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .map(({ name, count }) => {
-      cumulative += count;
-      return {
-        year: name,
-        count,
-        cumulative
-      };
-    });
+  for (let year = Number(years[0]); year <= Number(years[years.length - 1]); year++) {
+    const count = counts.get(String(year)) ?? 0;
+    cumulative += count;
+    result.push({ year: String(year), count, cumulative });
+  }
+
+  return result;
 }
 
 function rankDailyActivity(events: EventernoteEvent[]): DailyActivityItem[] {
   return rankItems(events.map((event) => event.dateKey))
     .map(({ name, count }) => ({ date: name, count }))
     .sort((a, b) => a.date.localeCompare(b.date));
-}
-
-function rankVenuesByDay(events: EventernoteEvent[]) {
-  const counts = new Map<string, Set<string>>();
-
-  for (const event of events) {
-    if (!counts.has(event.dateKey)) counts.set(event.dateKey, new Set());
-    if (event.venue) counts.get(event.dateKey)?.add(event.venue);
-  }
-
-  return Array.from(counts, ([name, venues]) => ({ name, count: venues.size })).sort(
-    (a, b) => b.count - a.count || b.name.localeCompare(a.name)
-  );
 }
 
 function calculateWeekendStats(events: EventernoteEvent[]): WeekendStats {
@@ -617,13 +640,13 @@ function calculateFavoriteArtistAttendance(
 
 function rankDateWindows(events: EventernoteEvent[], today: string): DateWindowItem[] {
   const windows = [
-    { label: 'This year', start: `${today.slice(0, 4)}-01-01` },
-    { label: 'Last 30 days', start: shiftDate(today, -30) },
-    { label: 'Last 6 months', start: shiftDate(today, -183) },
-    { label: 'Last year', start: shiftDate(today, -365) },
-    { label: 'Last 2 years', start: shiftDate(today, -730) },
-    { label: 'Last 3 years', start: shiftDate(today, -1095) },
-    { label: 'All time', start: '0000-00-00' }
+    { label: 'this-year', start: `${today.slice(0, 4)}-01-01` },
+    { label: 'last-30-days', start: shiftDate(today, -30) },
+    { label: 'last-6-months', start: shiftDate(today, -183) },
+    { label: 'last-year', start: shiftDate(today, -365) },
+    { label: 'last-2-years', start: shiftDate(today, -730) },
+    { label: 'last-3-years', start: shiftDate(today, -1095) },
+    { label: 'all-time', start: '0000-00-00' }
   ];
 
   return windows.map(({ label, start }) => ({
@@ -638,24 +661,44 @@ function rankCumulativeFavoriteArtists(
 ): CumulativeArtistItem[] {
   const tracked = favoriteArtists.slice(0, 5).map((artist) => artist.name);
   const cumulative = new Map(tracked.map((artist) => [artist, 0]));
-  const months = [...new Set(events.map((event) => event.dateKey.slice(0, 7)))].sort();
+  const byMonth = new Map<string, EventernoteEvent[]>();
 
-  return months.map((month) => {
-    for (const event of events.filter((item) => item.dateKey.startsWith(month))) {
+  for (const event of events) {
+    const month = event.dateKey.slice(0, 7);
+    byMonth.set(month, [...(byMonth.get(month) ?? []), event]);
+  }
+
+  const months = [...byMonth.keys()].sort();
+  if (!months.length) return [];
+
+  const result: CumulativeArtistItem[] = [];
+  let [year, month] = months[0].split('-').map(Number);
+  let key = months[0];
+
+  while (key <= months[months.length - 1]) {
+    for (const event of byMonth.get(key) ?? []) {
       for (const artist of tracked) {
         if (event.artists.includes(artist))
           cumulative.set(artist, (cumulative.get(artist) ?? 0) + 1);
       }
     }
 
-    return {
-      month,
+    result.push({
+      month: key,
       values: tracked.map((artist) => ({
         name: artist,
         count: cumulative.get(artist) ?? 0
       }))
-    };
-  });
+    });
+    month++;
+    if (month > 12) {
+      month = 1;
+      year++;
+    }
+    key = `${year}-${String(month).padStart(2, '0')}`;
+  }
+
+  return result;
 }
 
 function calculateStreaks(events: EventernoteEvent[], today: string) {
