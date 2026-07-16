@@ -2,7 +2,6 @@
 import { Box, Container, Grid, Stack, Wrap } from 'styled-system/jsx';
 import { formatDistanceBetween, formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
-import { SpecLabel } from '~/components/common/SpecLabel';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
@@ -57,7 +56,10 @@ const extractFirstParagraph = (md: string): string => {
     current += (current ? ' ' : '') + line.trim();
   }
   if (current) paragraphs.push(current.trim());
-  return paragraphs[0] ?? '';
+  return (paragraphs[0] ?? '')
+    .replace(/(?:^|(?<=[.!?]))[^.!?]*\bas follows\b[.:]?\s*$/i, '')
+    .replace(/(?:^|(?<=。))[^。]*（以下参照）[。：:]?\s*$/, '')
+    .trim();
 };
 
 const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is TagFragment => !!t);
@@ -92,11 +94,6 @@ const skillTags = (tags?.filter(
 ) ?? []) as Array<NonNullable<NonNullable<typeof tags>[number]> & { type: Enum_Tag_Type }>;
 
 const skills = groupByType(skillTags);
-const profileMetrics = [
-  { label: 'Experience', value: String(experiences?.length ?? 0).padStart(2, '0') },
-  { label: 'Skill tags', value: String(skillTags.length).padStart(2, '0') },
-  { label: 'Groups', value: String(Object.keys(skills).length).padStart(2, '0') }
-];
 const profileFocus = skillTags.slice(0, 4);
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
@@ -122,7 +119,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             color="#dbdbdb"
             letterSpacing="0.1em"
           >
-            Profile
+            {t('about-me.eyebrow')}
           </Text>
         </Box>
         <Heading
@@ -150,14 +147,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
               <span class="material-symbols-outlined" style="color: #ffb000; font-size: 1.25rem;"
                 >timeline</span
               >
-              <Heading
-                as="h2"
-                fontSize="sm"
-                fontStyle="normal"
-                fontWeight="black"
-                textTransform="uppercase"
-                letterSpacing="0.3em">Experience</Heading
-              >
+              <Heading as="h2" fontSize="3xl" fontStyle="italic">{t('common.experiences')}</Heading>
               <Box h="1px" flex="1" bg="#524533" />
             </Wrap>
             {
@@ -178,6 +168,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                       const { title, content, position, tags: expTags } = exp;
                       const dateRange = formatDateRange(exp.start as string, exp.end as string);
                       const duration = formatDuration(exp.start as string, exp.end as string);
+                      const blurb = content ? extractFirstParagraph(content) : '';
                       return (
                         <Box position="relative">
                           <Box
@@ -198,61 +189,60 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                             p="8"
                             className="blocky-shadow blocky-shadow-hover exp-card-hover"
                           >
-                            <Wrap justifyContent="space-between" alignItems="start" gap="4" mb="6">
-                              <Stack gap="1">
-                                <Heading
-                                  as="h3"
-                                  fontSize="xl"
-                                  fontWeight="bold"
-                                  fontStyle="normal"
-                                  textTransform="uppercase"
-                                  letterSpacing="-0.02em"
-                                >
-                                  {position}
-                                </Heading>
-                                <Text
-                                  fontFamily="JetBrains Mono, monospace"
-                                  fontSize="xs"
-                                  color="#ffb000"
-                                >
-                                  {(title ?? '').toUpperCase()} // {dateRange}
-                                  {duration && ` (${duration})`}
-                                </Text>
-                              </Stack>
-                              <Wrap gap="2">
-                                {expTags &&
-                                  sortTags(nonNullTags(expTags))
-                                    .slice(0, 3)
-                                    .map(
-                                      (s) =>
-                                        s.slug && (
-                                          <Link
-                                            href={`/${locale}/tags/${s.slug}`}
-                                            display="inline-flex"
-                                            minW="44px"
-                                            minH="44px"
-                                            alignItems="center"
+                            <Stack gap="1">
+                              <Heading
+                                as="h3"
+                                fontSize="xl"
+                                fontWeight="bold"
+                                fontStyle="normal"
+                                textTransform="uppercase"
+                                letterSpacing="-0.02em"
+                              >
+                                {position}
+                              </Heading>
+                              <Text
+                                fontFamily="JetBrains Mono, monospace"
+                                fontSize="xs"
+                                color="#ffb000"
+                              >
+                                {(title ?? '').toUpperCase()} // {dateRange}
+                                {duration && ` (${duration})`}
+                              </Text>
+                            </Stack>
+                            {expTags && nonNullTags(expTags).length > 0 && (
+                              <Wrap gap="2" mt="4">
+                                {sortTags(nonNullTags(expTags))
+                                  .slice(0, 3)
+                                  .map(
+                                    (s) =>
+                                      s.slug && (
+                                        <Link
+                                          href={`/${locale}/tags/${s.slug}`}
+                                          display="inline-flex"
+                                          minW="44px"
+                                          minH="44px"
+                                          alignItems="center"
+                                        >
+                                          <Box
+                                            px="2"
+                                            py="1"
+                                            border="1px solid"
+                                            borderColor="#524533"
+                                            fontFamily="JetBrains Mono, monospace"
+                                            fontSize="10px"
+                                            textTransform="uppercase"
+                                            color="#dbdbdb"
                                           >
-                                            <Box
-                                              px="2"
-                                              py="1"
-                                              border="1px solid"
-                                              borderColor="#524533"
-                                              fontFamily="JetBrains Mono, monospace"
-                                              fontSize="10px"
-                                              textTransform="uppercase"
-                                              color="#dbdbdb"
-                                            >
-                                              {s.title}
-                                            </Box>
-                                          </Link>
-                                        )
-                                    )}
+                                            {s.title}
+                                          </Box>
+                                        </Link>
+                                      )
+                                  )}
                               </Wrap>
-                            </Wrap>
-                            {content && (
-                              <Text color="#c7c6c6" fontSize="md" lineHeight="1.8">
-                                {extractFirstParagraph(content)}
+                            )}
+                            {blurb && (
+                              <Text color="#c7c6c6" fontSize="md" lineHeight="1.8" mt="5">
+                                {blurb}
                               </Text>
                             )}
                           </Stack>
@@ -290,97 +280,6 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             }
           </Stack>
 
-          {
-            Object.keys(skills)
-              .slice(0, 2)
-              .map((key) => {
-                const sorted = skills[key]
-                  .sort((a, b) => (b.projects?.length ?? 0) - (a.projects?.length ?? 0))
-                  .slice(0, 4);
-                return (
-                  <Stack gap="6">
-                    <Wrap alignItems="center" gap="4" mb="2">
-                      <Heading
-                        as="h3"
-                        fontSize="xs"
-                        fontStyle="normal"
-                        fontWeight="bold"
-                        textTransform="uppercase"
-                        letterSpacing="0.2em"
-                        color="#c7c6c6"
-                      >
-                        {t(`common.${toKebabCase(key) as 'frontend'}`)}
-                      </Heading>
-                      <Box h="1px" flex="1" bg="#524533" />
-                    </Wrap>
-                    <Stack gap="3">
-                      {sorted.map((s, i) => (
-                        <Wrap
-                          justifyContent="space-between"
-                          alignItems="center"
-                          fontFamily="JetBrains Mono, monospace"
-                          fontSize="sm"
-                        >
-                          <Link
-                            href={s.slug ? `/${locale}/tags/${s.slug}` : '#'}
-                            display="inline-flex"
-                            minW="44px"
-                            minH="44px"
-                            alignItems="center"
-                            color={i < 2 ? '#e5e2e1' : '#d7c4ac'}
-                          >
-                            {s.title}
-                          </Link>
-                          {i < 2 ? (
-                            <Text color="#ffb000" fontWeight="bold">
-                              Main
-                            </Text>
-                          ) : (
-                            <Text color="#9f8e78">{(0.95 - i * 0.07).toFixed(2)}</Text>
-                          )}
-                        </Wrap>
-                      ))}
-                    </Stack>
-                  </Stack>
-                );
-              })
-          }
-
-          <Box
-            border="1px solid"
-            borderColor="#524533"
-            bg="#131313"
-            p="6"
-            className="blocky-shadow"
-          >
-            <Text
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              textTransform="uppercase"
-              color="#ffb000"
-              letterSpacing="0.1em"
-              mb="4">Tools</Text
-            >
-            <Wrap gap="2">
-              {
-                ['VS Code', 'Figma', 'Git', 'Docker', 'Node.js', 'Blender'].map((tool) => (
-                  <Box
-                    px="2"
-                    py="1"
-                    border="1px solid"
-                    borderColor="#524533"
-                    fontFamily="JetBrains Mono, monospace"
-                    fontSize="10px"
-                    textTransform="uppercase"
-                    color="#dbdbdb"
-                  >
-                    {tool}
-                  </Box>
-                ))
-              }
-            </Wrap>
-          </Box>
-
           <Box pt="8" borderTop="1px solid" borderColor="#524533">
             <Stack gap="4">
               <Text fontSize="lg" lineHeight="1.8" fontFamily="Newsreader, serif">
@@ -399,46 +298,15 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             border="2px solid"
             borderColor="#524533"
             bg="#0e0e0e"
-            aspectRatio="1 / 1"
             overflow="hidden"
             className="blocky-shadow"
             p="6"
           >
-            <SpecLabel>Profile</SpecLabel>
-            <Stack h="full" justifyContent="space-between" pt="8">
-              <Grid gridTemplateColumns="repeat(3, 1fr)" gap="1px" bg="#524533">
-                {
-                  profileMetrics.map((metric) => (
-                    <Stack
-                      className="profile-metric-card"
-                      bg="#131313"
-                      p="4"
-                      minH="24"
-                      justifyContent="space-between"
-                    >
-                      <Text
-                        fontFamily="JetBrains Mono, monospace"
-                        fontSize="9px"
-                        textTransform="uppercase"
-                        color="#9f8e78"
-                      >
-                        {metric.label}
-                      </Text>
-                      <Text
-                        className="profile-metric-value"
-                        fontFamily="JetBrains Mono, monospace"
-                        fontSize="3xl"
-                      >
-                        {metric.value}
-                      </Text>
-                    </Stack>
-                  ))
-                }
-              </Grid>
+            <Stack gap="6">
               <Stack
                 border="1px solid"
                 borderColor="#524533"
-                bg="linear-gradient(135deg, rgba(45, 212, 191, 0.08), transparent 42%), #131313"
+                bg="linear-gradient(135deg, rgba(255, 176, 0, 0.06), transparent 42%), #131313"
                 p="5"
                 gap="4"
               >
@@ -446,10 +314,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                   fontFamily="JetBrains Mono, monospace"
                   fontSize="10px"
                   textTransform="uppercase"
-                  letterSpacing="0.12em"
-                  color="#2dd4bf"
+                  letterSpacing={locale === 'th' ? 'normal' : '0.12em'}
+                  color="#ffb000"
                 >
-                  Current stack
+                  {t('about-me.current-stack')}
                 </Text>
                 <Wrap gap="2">
                   {
@@ -500,8 +368,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                   position="absolute"
                   inset="4"
                   border="1px solid"
-                  borderColor="#2dd4bf"
-                  opacity="0.5"
+                  borderColor="rgba(255, 176, 0, 0.35)"
                 />
                 <Text
                   position="absolute"
@@ -528,7 +395,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
             </Stack>
           </Box>
           <Stack border="1px solid" borderColor="#524533" bg="#2a2a2a" p="8">
-            <Heading as="h3" fontSize="2xl" fontStyle="italic" mb="8">Institutional</Heading>
+            <Heading as="h2" fontSize="3xl" fontStyle="italic" mb="8"
+              >{t('common.education')}</Heading
+            >
             <Stack gap="0">
               {
                 educations && educations.length > 0 ? (
@@ -561,9 +430,11 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                         >
                           {edu.title}
                         </Heading>
-                        <Text color="#c7c6c6" fontSize="sm" mt="1">
-                          {edu.description}
-                        </Text>
+                        {edu.description && !/^\s*[（(]なし[)）]\s*$/.test(edu.description) && (
+                          <Text color="#c7c6c6" fontSize="sm" mt="1">
+                            {edu.description}
+                          </Text>
+                        )}
                       </Box>
                     );
                   })
@@ -601,6 +472,86 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
               {t('about-me.methodology-coda')}
             </Text>
           </Stack>
+          <Stack gap="8">
+            <Wrap alignItems="center" gap="4">
+              <Heading as="h2" fontSize="3xl" fontStyle="italic">{t('about-me.skills')}</Heading>
+              <Box h="1px" flex="1" bg="#524533" />
+            </Wrap>
+            {
+              Object.keys(skills)
+                .slice(0, 2)
+                .map((key) => {
+                  const sorted = skills[key]
+                    .sort((a, b) => (b.projects?.length ?? 0) - (a.projects?.length ?? 0))
+                    .slice(0, 4);
+                  return (
+                    <Stack gap="4">
+                      <Text
+                        fontFamily="JetBrains Mono, monospace"
+                        fontSize="10px"
+                        textTransform="uppercase"
+                        color="#ffb000"
+                        letterSpacing={locale === 'th' ? 'normal' : '0.1em'}
+                      >
+                        {t(`common.${toKebabCase(key) as 'frontend'}`)}
+                      </Text>
+                      <Wrap gap="2">
+                        {sorted.map((s) => (
+                          <Link
+                            href={s.slug ? `/${locale}/tags/${s.slug}` : '#'}
+                            display="inline-flex"
+                            minH="36px"
+                            alignItems="center"
+                          >
+                            <Box
+                              px="2"
+                              py="1"
+                              border="1px solid"
+                              borderColor="#524533"
+                              fontFamily="JetBrains Mono, monospace"
+                              fontSize="10px"
+                              textTransform="uppercase"
+                              color="#dbdbdb"
+                            >
+                              {s.title}
+                            </Box>
+                          </Link>
+                        ))}
+                      </Wrap>
+                    </Stack>
+                  );
+                })
+            }
+            <Stack gap="4">
+              <Text
+                fontFamily="JetBrains Mono, monospace"
+                fontSize="10px"
+                textTransform="uppercase"
+                color="#ffb000"
+                letterSpacing={locale === 'th' ? 'normal' : '0.1em'}
+              >
+                {t('about-me.tools')}
+              </Text>
+              <Wrap gap="2">
+                {
+                  ['VS Code', 'Figma', 'Git', 'Docker', 'Node.js', 'Blender'].map((tool) => (
+                    <Box
+                      px="2"
+                      py="1"
+                      border="1px solid"
+                      borderColor="#524533"
+                      fontFamily="JetBrains Mono, monospace"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      color="#dbdbdb"
+                    >
+                      {tool}
+                    </Box>
+                  ))
+                }
+              </Wrap>
+            </Stack>
+          </Stack>
         </Stack>
       </Grid>
     </Stack>
@@ -620,8 +571,8 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
       </div>
       <div class="credentials-cell">
         <span>{t('about-me.credentials-signal')}</span>
-        <a href={`/${locale}/contact`} class="credentials-signal"
-          >{t('about-me.credentials-signal-value')}</a
+        <a href="mailto:hello@ham-san.net" class="credentials-signal" style="text-transform:none"
+          >hello@ham-san.net</a
         >
       </div>
     </section>

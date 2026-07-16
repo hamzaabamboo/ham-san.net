@@ -18,7 +18,8 @@
   "credentials-availability": "Availability",
   "credentials-availability-value": "Selective freelance",
   "credentials-signal": "Contact",
-  "credentials-signal-value": "Email",
+  "tools": "Tools",
+  "current-stack": "Current stack",
   "timeline-empty-title": "Timeline unavailable",
   "timeline-empty-description": "Experience entries will show up again when the content connection is back."
 }

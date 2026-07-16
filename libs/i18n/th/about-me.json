@@ -2,7 +2,7 @@
   "title": "ประวัติ",
   "skills": "ทักษะ",
   "return-to": "กลับไปหน้าประวัติ",
-  "eyebrow": "Profile",
+  "eyebrow": "โปรไฟล์",
   "hero-title": "นักพัฒนารอบด้านที่ทำงานเว็บ",
   "hero-summary": "ทำงานฟรอนต์เอนด์ อินเทอร์เฟซโปรดักต์ และเครื่องมือเล็ก ๆ ที่ช่วยให้งานประจำวันง่ายขึ้น",
   "methodology": "วิธีการทำงาน",
@@ -18,7 +18,8 @@
   "credentials-availability": "สถานะรับงาน",
   "credentials-availability-value": "รับบางโปรเจกต์",
   "credentials-signal": "ช่องทางติดต่อ",
-  "credentials-signal-value": "อีเมล",
+  "tools": "เครื่องมือ",
+  "current-stack": "สแต็กที่ใช้ตอนนี้",
   "timeline-empty-title": "ไทม์ไลน์ยังไม่พร้อม",
   "timeline-empty-description": "ข้อมูลประสบการณ์จะกลับมาเมื่อเชื่อมต่อได้อีกครั้ง"
 }
