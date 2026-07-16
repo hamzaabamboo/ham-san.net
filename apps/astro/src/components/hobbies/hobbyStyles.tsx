@@ -3,6 +3,7 @@ import { css } from 'styled-system/css';
 export const hobbyStyles = {
   detail: css({
     w: 'min(100%, 1280px)',
+    minH: { md: '70vh' },
     mx: 'auto',
     py: { base: '6', md: '8' },
     px: { base: '4', md: '4' }
@@ -25,7 +26,10 @@ export const hobbyStyles = {
     gap: '8',
     alignItems: 'stretch',
     gridTemplateColumns: { base: '1fr', md: 'minmax(0, 7fr) minmax(20rem, 5fr)' },
-    mt: { base: '6', md: '10' }
+    mt: { base: '6', md: '10' },
+    '&[data-visual="glyph"]': {
+      gridTemplateColumns: { base: '1fr', md: 'minmax(0, 1fr) 18rem' }
+    }
   }),
   detailHeadline: css({
     display: 'grid',
@@ -41,14 +45,18 @@ export const hobbyStyles = {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: '10px',
     letterSpacing: '0.12em',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    '&[data-status="inactive"]': {
+      color: '#9f8e78'
+    }
   }),
   detailTitle: css({
     maxW: { base: 'none', md: '11ch' },
     m: '0',
     fontFamily: 'var(--font-display)',
     fontSize: 'clamp(3rem, 8vw, 7rem)',
-    lineHeight: '0.95'
+    lineHeight: '0.95',
+    fontStyle: 'italic'
   }),
   detailDescription: css({
     maxW: '42rem',
@@ -76,6 +84,10 @@ export const hobbyStyles = {
     bg: '#131313',
     overflow: 'hidden',
     placeItems: 'center',
+    '&[data-visual="glyph"]': {
+      display: { base: 'none', md: 'grid' },
+      minH: '0'
+    },
     '&[data-visual="glyph"]::before': {
       inset: '0',
       pos: 'absolute',
@@ -115,12 +127,12 @@ export const hobbyStyles = {
       boxShadow: '4rem 0 0 rgba(34, 197, 94, 0.12), 0 4rem 0 rgba(59, 130, 246, 0.12)'
     },
     '&[data-embed="typing-stats"]': {
-      borderColor: '#275e58',
-      bg: 'linear-gradient(135deg, rgba(20, 184, 166, 0.16), transparent 42%), linear-gradient(315deg, rgba(99, 102, 241, 0.12), transparent 46%), #0c1414'
+      borderColor: '#5d4d34',
+      bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.14), transparent 42%), linear-gradient(315deg, rgba(99, 102, 241, 0.12), transparent 46%), #121110'
     },
     '&[data-embed="typing-stats"][data-visual="glyph"]::after': {
       inset: 'auto 12% 18%',
-      borderColor: 'rgba(45, 212, 191, 0.66)',
+      borderColor: 'rgba(255, 176, 0, 0.66)',
       borderTop: '0',
       h: '34%'
     },
@@ -155,7 +167,7 @@ export const hobbyStyles = {
     },
     '&[data-embed="field-notes"]': {
       borderColor: '#5d4d34',
-      bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.12), transparent 40%), linear-gradient(315deg, rgba(45, 212, 191, 0.07), transparent 48%), #121110'
+      bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.12), transparent 40%), linear-gradient(315deg, rgba(255, 213, 151, 0.08), transparent 48%), #121110'
     },
     '&[data-embed="field-notes"][data-visual="glyph"]::after': {
       inset: '14% 20%',
@@ -175,20 +187,6 @@ export const hobbyStyles = {
     transform: 'scale(1.18)',
     color: '#ffb000',
     opacity: '0.34'
-  }),
-  detailVisualLabel: css({
-    zIndex: '1',
-    pos: 'absolute',
-    right: '6',
-    bottom: '5',
-    maxW: 'calc(100% - 3rem)',
-    color: '#e5e2e1',
-    fontFamily: 'JetBrains Mono, monospace',
-    fontSize: '10px',
-    letterSpacing: '0',
-    textAlign: 'right',
-    textTransform: 'uppercase',
-    overflowWrap: 'anywhere'
   }),
   detailBody: css({
     display: 'grid',
@@ -212,6 +210,7 @@ export const hobbyStyles = {
   }),
   detailSurface: css({
     border: '1px solid #524533',
+    minW: '0',
     p: 'clamp(1.5rem, 3vw, 2rem)',
     bg: '#1c1b1b'
   }),
@@ -267,6 +266,7 @@ export const hobbyStyles = {
   embed: css({
     pos: 'relative',
     border: '1px solid #524533',
+    minW: '0',
     p: 'clamp(1.5rem, 3vw, 2.5rem)',
     color: '#e5e2e1',
     bg: 'linear-gradient(135deg, rgba(45, 212, 191, 0.08), transparent 42%), linear-gradient(315deg, rgba(255, 176, 0, 0.08), transparent 46%), #131313',
@@ -411,12 +411,13 @@ export const hobbyStyles = {
       alignItems: 'center',
       border: '1px solid #524533',
       minH: '44px',
+      px: '3',
       color: '#ffb000',
       textDecoration: 'none',
       fontFamily: 'JetBrains Mono, monospace',
-      fontSize: '10px',
-      letterSpacing: '0.12em',
-      textTransform: 'uppercase',
+      fontSize: '11px',
+      letterSpacing: '0.02em',
+      overflowWrap: 'anywhere',
       _hover: {
         borderColor: '#ffb000',
         bg: 'rgba(255, 176, 0, 0.08)'

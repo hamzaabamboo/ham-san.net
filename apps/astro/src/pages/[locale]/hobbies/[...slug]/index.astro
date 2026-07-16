@@ -5,7 +5,7 @@ import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
-import { parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
+import { getHobbyBodyIntro, parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
 import {
   getHobbyContentLabel,
   getHobbyOverviewDescription,
@@ -48,7 +48,9 @@ const childDocumentsParentId = childId && data.parentDocumentId ? data.parentDoc
 const childDocumentsRequest = await outlineClient.POST('/documents.list', {
   body: { parentDocumentId: childDocumentsParentId }
 });
-const childDocuments = (childDocumentsRequest.data?.data ?? []).filter(Boolean);
+const childDocuments = (childDocumentsRequest.data?.data ?? [])
+  .filter(Boolean)
+  .filter((child) => child.id !== data.id);
 const backHref = childId ? `/${locale}/hobbies/${rootId}` : `/${locale}/hobbies`;
 const backLabel = childId ? t('hobbies.back-to-parent') : t('hobbies.back-to-hobbies');
 const content = parseHobbyContent({
@@ -82,13 +84,15 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
     assetProxyBasePath: outlineAssetProxyPath
   });
 const embedType = content.embeds[0]?.type ?? 'field-notes';
-const detailDescription = getHobbyOverviewSummary({
-  hasSource: hasSourceContent,
-  locale,
-  value: content.description || nestedDescription,
-  type: embedType,
-  t
-});
+const hasModule = content.embeds.length > 0;
+const detailDescription =
+  getHobbyOverviewSummary({
+    hasSource: hasSourceContent,
+    value: content.description,
+    t
+  }) || nestedDescription;
+const heroDescription =
+  detailDescription === getHobbyBodyIntro(content.body) ? '' : detailDescription;
 const embedLabel = getHobbyContentLabel({ hasSource: hasSourceContent, type: embedType, t });
 const statusLabel =
   effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
@@ -118,13 +122,12 @@ const embedProps = {
   noFeedLabel: t('hobbies.no-feed'),
   noTypingProfilesLabel: t('hobbies.no-typing-profiles'),
   sourceNoteUseLabel: t('hobbies.source-note-use'),
-  nestedSourcePageUseLabel: t('hobbies.nested-source-page-use'),
   openSourcePageLabel: t('hobbies.open-source-page'),
   noAlgorithmSetsLabel: t('hobbies.no-algorithm-sets'),
   audioUnavailableLabel: t('hobbies.audio-unavailable'),
   playedLabel: t('hobbies.played'),
   audioStartsAfterTapLabel: t('hobbies.audio-starts-after-tap'),
-  sourcePagesAttachedLabel: t('hobbies.source-pages-attached'),
+  noChordsLabel: t('hobbies.no-chords'),
   status: effectiveStatus
 };
 
@@ -138,11 +141,13 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
       <span>{backLabel}</span>
     </a>
 
-    <section class={hobbyStyles.detailHero}>
+    <section class={hobbyStyles.detailHero} data-visual={banner ? 'image' : 'glyph'}>
       <div class={hobbyStyles.detailHeadline}>
-        <p class={cx(hobbyStyles.detailEyebrow, 'hobby-meta')}>{statusLabel} / {embedLabel}</p>
+        <p class={cx(hobbyStyles.detailEyebrow, 'hobby-meta')} data-status={effectiveStatus}>
+          {statusLabel}{hasModule && ` / ${embedLabel}`}
+        </p>
         <h1 class={hobbyStyles.detailTitle}>{data.title}</h1>
-        {detailDescription && <p class={hobbyStyles.detailDescription}>{detailDescription}</p>}
+        {heroDescription && <p class={hobbyStyles.detailDescription}>{heroDescription}</p>}
         <p class={cx(hobbyStyles.detailUpdated, 'hobby-meta')}>
           <span>{t('hobbies.last-updated')}</span>
           <span>/</span>
@@ -159,22 +164,39 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           banner ? (
             <img src={banner} alt="" class={hobbyStyles.detailBanner} />
           ) : (
-            <>
-              <HobbyTypeGlyph
-                type={embedType}
-                label={embedLabel}
-                size="watermark"
-                className={hobbyStyles.detailVisualGlyph}
-              />
-              <span class={cx(hobbyStyles.detailVisualLabel, 'hobby-meta')}>{embedLabel}</span>
-            </>
+            <HobbyTypeGlyph
+              type={embedType}
+              label={embedLabel}
+              size="watermark"
+              className={hobbyStyles.detailVisualGlyph}
+            />
           )
         }
       </div>
     </section>
 
-    <section class={hobbyStyles.detailBody} data-has-aside={childDocuments.length > 0}>
+    <section
+      class={hobbyStyles.detailBody}
+      data-has-aside={childDocuments.length > 0 && bodyParts.length > 0}
+    >
       <div class={hobbyStyles.detailMain}>
+        {
+          bodyParts.length === 0 && childDocuments.length > 0 && (
+            <div class={hobbyStyles.detailPanel}>
+              <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+                {t('hobbies.learning-resources')}
+              </p>
+              <div class={hobbyStyles.detailNested}>
+                {childDocuments.map((child) => (
+                  <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
+                    <span>{child.title}</span>
+                    <span class="hobby-meta">{t('hobbies.doc-label')}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )
+        }
         {
           bodyParts.map((part) => {
             if (part.type === 'markdown') {
@@ -214,7 +236,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
       </div>
 
       {
-        childDocuments.length > 0 && (
+        childDocuments.length > 0 && bodyParts.length > 0 && (
           <aside class={hobbyStyles.detailAside}>
             <div class={hobbyStyles.detailPanel}>
               <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
@@ -222,10 +244,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               </p>
               <div class={hobbyStyles.detailNested}>
                 {childDocuments.map((child) => (
-                  <a
-                    href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}
-                    aria-current={child.id === data.id ? 'page' : undefined}
-                  >
+                  <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
                     <span>{child.title}</span>
                     <span class="hobby-meta">{t('hobbies.doc-label')}</span>
                   </a>

@@ -95,8 +95,6 @@ const getCopyKey = (type: string | undefined, field: 'label' | 'description'): E
 
 const translate = (t: Translate, key: EmbedCopyKey) => String(t(`hobbies.${key}`));
 
-const hasLatinWords = (value: string) => /[A-Za-z]{3}/.test(value);
-const hasCjkOrThaiText = (value: string) => /[\u0E00-\u0E7F\u3040-\u30ff\u3400-\u9fff]/.test(value);
 const genericSummaryPatterns = [
   /^links?\.?$/i,
   /^profiles? and links?\.?$/i,
@@ -128,47 +126,21 @@ export const getHobbyContentLabel = ({
   t: Translate;
 }) => (hasSource ? getHobbyEmbedLabel(t, type) : translate(t, fallbackCopyKeys.emptyLabel));
 
-export const shouldLocalizeHobbySummary = (locale: string | undefined, value?: string) =>
-  locale !== 'en' && !!value && hasLatinWords(value) && !hasCjkOrThaiText(value);
-
-export const getLocalizedHobbySummary = ({
-  locale,
-  value,
-  type,
-  t
-}: {
-  locale: string | undefined;
-  value?: string;
-  type?: string;
-  t: Translate;
-}) => (shouldLocalizeHobbySummary(locale, value) ? getHobbyEmbedDescription(t, type) : value);
-
 export const getHobbyOverviewSummary = ({
   hasSource,
-  locale,
   value,
-  type,
   t
 }: {
   hasSource: boolean;
-  locale: string | undefined;
   value?: string;
-  type?: string;
   t: Translate;
 }) => {
   if (!hasSource) return translate(t, fallbackCopyKeys.emptyOverview);
 
   const source = value?.trim();
-  if (source && genericSummaryPatterns.some((pattern) => pattern.test(source))) {
-    return getHobbyOverviewDescription(t, type);
-  }
-
-  const localized = getLocalizedHobbySummary({ locale, value, type, t })?.trim();
-  if (!localized) return getHobbyOverviewDescription(t, type);
-  if (genericSummaryPatterns.some((pattern) => pattern.test(localized))) {
-    return getHobbyOverviewDescription(t, type);
-  }
-  return localized;
+  if (!source) return '';
+  if (genericSummaryPatterns.some((pattern) => pattern.test(source))) return '';
+  return source;
 };
 
 export const localizeHobbyMarkdownHeadings = ({
@@ -213,6 +185,7 @@ export const getHobbyCountLabel = ({
   t: MetricTranslate;
 }) => {
   const key = count === 1 ? metricCopyKeys[type].singular : metricCopyKeys[type].plural;
+  const template = String(t(`hobbies.${key}`));
   const value = new Intl.NumberFormat(locale || 'en').format(count);
-  return `${value} ${String(t(`hobbies.${key}`))}`;
+  return template.includes('{count}') ? template.replace('{count}', value) : `${value} ${template}`;
 };

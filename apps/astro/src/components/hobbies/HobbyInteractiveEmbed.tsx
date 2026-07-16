@@ -91,13 +91,12 @@ export const HobbyInteractiveEmbed = ({
   noFeedLabel,
   noTypingProfilesLabel,
   sourceNoteUseLabel,
-  nestedSourcePageUseLabel,
   openSourcePageLabel,
   noAlgorithmSetsLabel,
   audioUnavailableLabel,
   playedLabel,
   audioStartsAfterTapLabel,
-  sourcePagesAttachedLabel,
+  noChordsLabel,
   status = 'active'
 }: HobbyEmbedProps & { type: string }) => {
   const embed = embedRegistry[type] ?? fallbackEmbed;
@@ -131,13 +130,12 @@ export const HobbyInteractiveEmbed = ({
         noFeedLabel={noFeedLabel}
         noTypingProfilesLabel={noTypingProfilesLabel}
         sourceNoteUseLabel={sourceNoteUseLabel}
-        nestedSourcePageUseLabel={nestedSourcePageUseLabel}
         openSourcePageLabel={openSourcePageLabel}
         noAlgorithmSetsLabel={noAlgorithmSetsLabel}
         audioUnavailableLabel={audioUnavailableLabel}
         playedLabel={playedLabel}
         audioStartsAfterTapLabel={audioStartsAfterTapLabel}
-        sourcePagesAttachedLabel={sourcePagesAttachedLabel}
+        noChordsLabel={noChordsLabel}
         status={status}
       />
     </section>

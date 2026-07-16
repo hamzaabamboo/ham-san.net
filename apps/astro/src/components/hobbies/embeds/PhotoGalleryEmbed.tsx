@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { getPhotoSourceLinks } from '~/utils/hobby-links';
 import { hobbyStyles } from '../hobbyStyles';
+import { getHostLabel } from './source';
 import type { HobbyEmbedProps } from './types';
 
 export const PhotoGalleryEmbed = ({
@@ -10,16 +12,17 @@ export const PhotoGalleryEmbed = ({
 }: HobbyEmbedProps) => {
   const galleryImages = images.slice(0, 6);
   const [activeImage, setActiveImage] = useState(0);
-  const photoLinks = links
-    .filter((link) =>
-      /(photo|photos|flickr|instagram|500px|imgur)/i.test(`${link.label} ${link.href}`)
-    )
-    .sort((a, b) => {
-      const score = (link: typeof a) =>
-        /photos\.app\.goo\.gl|photos\.google/i.test(link.href) ? 0 : 1;
-      return score(a) - score(b);
-    });
-  const galleryLinks = (photoLinks.length > 0 ? photoLinks : links).slice(0, 4);
+  const galleryLinks = getPhotoSourceLinks(links);
+  const getDisplayLabel = (link: { href: string; label: string }) => {
+    const host = getHostLabel(link.href);
+    if (link.label !== host && link.label !== link.href) return link.label;
+    try {
+      const segment = new URL(link.href).pathname.split('/').filter(Boolean)[0];
+      return segment ? `${host}/${segment}` : host;
+    } catch {
+      return link.href;
+    }
+  };
 
   return (
     <div className={hobbyStyles.gallery} data-has-rail={galleryImages.length > 0}>
@@ -32,7 +35,7 @@ export const PhotoGalleryEmbed = ({
             <div>
               {galleryLinks.map((link) => (
                 <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-                  {link.label}
+                  {getDisplayLabel(link)}
                 </a>
               ))}
             </div>

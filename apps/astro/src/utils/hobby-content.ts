@@ -87,6 +87,8 @@ const getProseDescription = (content: string) => {
   return cleanDescription(prose);
 };
 
+export const getHobbyBodyIntro = (body: string) => getProseDescription(body) ?? '';
+
 const getHeadingDescription = (content: string) => {
   const headings = Array.from(content.matchAll(/^#{1,3}\s+(.+)$/gm))
     .map((match) => cleanDescription(match[1]))
@@ -197,25 +199,6 @@ export const extractHobbyDirectives = (content: string) => {
   return { embeds, body };
 };
 
-const sourceOnlyHeadings = new Set([
-  'algorithms',
-  'audio',
-  'chords',
-  'gear',
-  'links',
-  'pictures',
-  'profiles',
-  'resources',
-  'stats',
-  'voicings'
-]);
-
-const normalizeHeading = (value: string) =>
-  value.replace(/[*_`]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
-
-const getEmbedMarkers = (content: string) =>
-  Array.from(content.matchAll(/<!--\s*hobby-embed:\d+\s*-->/g)).map((match) => match[0]);
-
 const cleanSourceArtifacts = (content: string) =>
   content
     .replace(/[ \t]+\\+[ \t]*(\n(?=#{1,6}\s+))/g, '$1')
@@ -224,46 +207,6 @@ const cleanSourceArtifacts = (content: string) =>
     .join('\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
-
-export const sanitizeHobbyDisplayBody = (body: string) => {
-  const sections: Array<{ start: number; end: number; heading: string }> = [];
-
-  for (const match of body.matchAll(/^#{1,3}\s+(.+)$/gm)) {
-    sections.push({
-      start: match.index ?? 0,
-      end: body.length,
-      heading: normalizeHeading(match[1] ?? '')
-    });
-  }
-
-  sections.forEach((section, index) => {
-    section.end = sections[index + 1]?.start ?? body.length;
-  });
-
-  if (sections.length === 0) {
-    return cleanSourceArtifacts(body);
-  }
-
-  let cursor = 0;
-  const chunks: string[] = [];
-
-  sections.forEach((section) => {
-    chunks.push(body.slice(cursor, section.start));
-    const content = body.slice(section.start, section.end);
-
-    if (sourceOnlyHeadings.has(section.heading)) {
-      chunks.push(getEmbedMarkers(content).join('\n\n'));
-    } else {
-      chunks.push(content);
-    }
-
-    cursor = section.end;
-  });
-
-  chunks.push(body.slice(cursor));
-
-  return cleanSourceArtifacts(chunks.join(''));
-};
 
 export const splitHobbyBodyParts = (body: string, embedCount: number): HobbyBodyPart[] => {
   const marker = /<!--\s*hobby-embed:(\d+)\s*-->/g;
@@ -291,7 +234,7 @@ export const extractMarkdownImages = (content: string) =>
     .filter((src): src is string => !!src);
 
 const formatLinkLabel = (href: string, fallback?: string) => {
-  const label = fallback?.trim();
+  const label = fallback?.replace(/\\/g, '').replace(/[*_`]/g, '').replace(/\s+/g, ' ').trim();
   if (label && !/^https?:\/\//i.test(label)) return label;
 
   try {
@@ -334,26 +277,6 @@ export const extractMarkdownLinks = (content: string) => {
   return Array.from(links.values());
 };
 
-export const inferHobbyEmbed = (
-  title?: string | null,
-  content?: string,
-  meta?: HobbyFrontmatter
-) => {
-  const explicit = normalizeHobbyEmbedKey(asString(meta?.component) ?? asString(meta?.embed));
-  if (explicit) return explicit;
-
-  const haystack = `${normalize(title)} ${normalize(content)}`;
-  if (/(photo|camera|film|gallery|lens|street)/.test(haystack)) return 'photo-gallery';
-  if (/(rubik|cube|cfop|oll|pll|algorithm)/.test(haystack)) return 'rubik-algorithms';
-  if (/(typing|keyboard|wpm|accuracy|layout)/.test(haystack)) return 'typing-stats';
-  if (/(darts|cricket|701|dartslive|target tor)/.test(haystack)) return 'darts-board';
-  if (/(geoguessr|plonkit|mapillary|google\.com\/document)/.test(haystack)) return 'link-library';
-  if (/(piano|chord|music|sound|scale|keys)/.test(haystack)) return 'piano-chords';
-  if (/(twitter|tweet|x\.com)/.test(haystack)) return 'twitter-feed';
-  if (extractMarkdownLinks(content ?? '').length > 0) return 'link-library';
-  return 'field-notes';
-};
-
 export const getHobbyStatus = (meta: HobbyFrontmatter): 'active' | 'inactive' => {
   const status = normalize(asString(meta.status));
   if (status === 'inactive' || meta.active === false) return 'inactive';
@@ -361,7 +284,6 @@ export const getHobbyStatus = (meta: HobbyFrontmatter): 'active' | 'inactive' =>
 };
 
 export const parseHobbyContent = ({
-  title,
   text,
   fallbackUpdatedAt
 }: {
@@ -371,15 +293,19 @@ export const parseHobbyContent = ({
 }): HobbyContentModel => {
   const { meta, body: withoutMeta } = parseHobbyFrontmatter(text ?? '');
   const { embeds: directedEmbeds, body: sourceBody } = extractHobbyDirectives(withoutMeta);
-  const inferred = inferHobbyEmbed(title, sourceBody, meta);
-  const inferredLabel =
+  const metaType = normalizeHobbyEmbedKey(asString(meta.component) ?? asString(meta.embed));
+  const metaLabel =
     asString(meta.embedLabel) ??
     asString(meta.componentLabel) ??
     asString(meta.moduleTitle) ??
-    inferred;
+    metaType;
   const embeds =
-    directedEmbeds.length > 0 ? directedEmbeds : [{ type: inferred, label: inferredLabel }];
-  const body = sanitizeHobbyDisplayBody(sourceBody);
+    directedEmbeds.length > 0
+      ? directedEmbeds
+      : metaType
+        ? [{ type: metaType, label: metaLabel ?? metaType }]
+        : [];
+  const body = cleanSourceArtifacts(sourceBody);
   const images = extractMarkdownImages(sourceBody);
   const links = extractMarkdownLinks(sourceBody);
   const description =

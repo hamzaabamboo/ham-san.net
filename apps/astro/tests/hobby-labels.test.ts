@@ -6,19 +6,24 @@ import {
   getHobbyEmbedLabel,
   getHobbyOverviewDescription,
   getHobbyOverviewSummary,
-  getLocalizedHobbySummary,
   type HobbyTranslationKey,
-  localizeHobbyMarkdownHeadings,
-  shouldLocalizeHobbySummary
+  localizeHobbyMarkdownHeadings
 } from '../src/utils/hobby-labels';
 
 const t = (key: HobbyTranslationKey) => key;
 const metricT = (key: HobbyTranslationKey) =>
   ({
-    'hobbies.metric-link': 'Link',
-    'hobbies.metric-links': 'Links',
-    'hobbies.metric-page': 'Page',
-    'hobbies.metric-pages': 'Pages'
+    'hobbies.metric-link': '{count} link',
+    'hobbies.metric-links': '{count} links',
+    'hobbies.metric-page': '{count} page',
+    'hobbies.metric-pages': '{count} pages'
+  })[key] ?? key;
+const metricJaT = (key: HobbyTranslationKey) =>
+  ({
+    'hobbies.metric-link': 'リンク{count}件',
+    'hobbies.metric-links': 'リンク{count}件',
+    'hobbies.metric-page': '{count}ページ',
+    'hobbies.metric-pages': '{count}ページ'
   })[key] ?? key;
 
 describe('hobby labels', () => {
@@ -48,76 +53,55 @@ describe('hobby labels', () => {
     );
   });
 
-  test('replaces generic overview summaries with type-specific copy', () => {
+  test('drops generic overview summaries instead of substituting canned copy', () => {
     expect(
       getHobbyOverviewSummary({
         hasSource: true,
-        locale: 'en',
         value: 'Stats and gear.',
-        type: 'darts-board',
         t
       })
-    ).toBe('hobbies.overview-darts-board');
+    ).toBe('');
     expect(
       getHobbyOverviewSummary({
         hasSource: true,
-        locale: 'en',
         value: 'Pictures, gear, and lens references (added 2026-03-06).',
-        type: 'photo-gallery',
         t
       })
-    ).toBe('hobbies.overview-photo-gallery');
+    ).toBe('');
     expect(
       getHobbyOverviewSummary({
         hasSource: true,
-        locale: 'ja',
-        value: 'Profiles and links.',
-        type: 'typing-stats',
+        value: undefined,
         t
       })
-    ).toBe('hobbies.overview-typing-stats');
+    ).toBe('');
   });
 
-  test('preserves meaningful overview summaries', () => {
+  test('preserves meaningful overview summaries in every locale', () => {
     expect(
       getHobbyOverviewSummary({
         hasSource: true,
-        locale: 'en',
         value: 'Trombone / Piano / Transcriptions',
-        type: 'piano-chords',
         t
       })
     ).toBe('Trombone / Piano / Transcriptions');
+    expect(
+      getHobbyOverviewSummary({
+        hasSource: true,
+        value: 'Daily routine cheatsheet for posture rehab.',
+        t
+      })
+    ).toBe('Daily routine cheatsheet for posture rehab.');
   });
 
   test('uses parked overview copy for empty source pages', () => {
     expect(
       getHobbyOverviewSummary({
         hasSource: false,
-        locale: 'en',
         value: 'Parked for now.',
-        type: 'field-notes',
         t
       })
     ).toBe('hobbies.overview-empty-page');
-  });
-
-  test('localizes plain English summaries outside English chrome', () => {
-    expect(shouldLocalizeHobbySummary('th', 'Pictures, gear, and lens references.')).toBe(true);
-    expect(
-      getLocalizedHobbySummary({
-        locale: 'th',
-        value: 'Pictures, gear, and lens references.',
-        type: 'photo-gallery',
-        t
-      })
-    ).toBe('hobbies.embed-photo-gallery-description');
-  });
-
-  test('preserves localized and English summaries in their own chrome', () => {
-    expect(shouldLocalizeHobbySummary('th', 'รูปภาพและลิงก์ภาพจากโน้ต')).toBe(false);
-    expect(shouldLocalizeHobbySummary('ja', 'ノート内の画像と写真リンク。')).toBe(false);
-    expect(shouldLocalizeHobbySummary('en', 'Pictures, gear, and lens references.')).toBe(false);
   });
 
   test('localizes known source markdown headings outside English', () => {
@@ -142,11 +126,20 @@ Keep this.`;
 Keep this.`);
   });
 
-  test('formats hobby metric counts with singular and plural labels', () => {
-    expect(getHobbyCountLabel({ count: 1, locale: 'en', type: 'page', t: metricT })).toBe('1 Page');
+  test('formats hobby metric counts with singular and plural templates', () => {
+    expect(getHobbyCountLabel({ count: 1, locale: 'en', type: 'page', t: metricT })).toBe('1 page');
     expect(getHobbyCountLabel({ count: 2, locale: 'en', type: 'page', t: metricT })).toBe(
-      '2 Pages'
+      '2 pages'
     );
-    expect(getHobbyCountLabel({ count: 1, locale: 'en', type: 'link', t: metricT })).toBe('1 Link');
+    expect(getHobbyCountLabel({ count: 1, locale: 'en', type: 'link', t: metricT })).toBe('1 link');
+  });
+
+  test('formats Japanese metric counts with native counter placement', () => {
+    expect(getHobbyCountLabel({ count: 12, locale: 'ja', type: 'link', t: metricJaT })).toBe(
+      'リンク12件'
+    );
+    expect(getHobbyCountLabel({ count: 2, locale: 'ja', type: 'page', t: metricJaT })).toBe(
+      '2ページ'
+    );
   });
 });

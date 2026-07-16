@@ -1,3 +1,4 @@
+import { dedupeHobbyLinks } from '~/utils/hobby-links';
 import { HobbyTypeGlyph } from '../HobbyTypeGlyph';
 import { hobbyStyles } from '../hobbyStyles';
 import type { HobbyEmbedProps } from './types';
@@ -17,7 +18,7 @@ export const FieldNotesEmbed = ({
     : nestedPages.length > 0
       ? nestedSourcePagesLabel
       : (emptySourceStateLabel ?? emptySourceLabel);
-  const sourceLinks = links.slice(0, 4);
+  const sourceLinks = dedupeHobbyLinks(links);
 
   return (
     <div className={hobbyStyles.fieldNotes}>

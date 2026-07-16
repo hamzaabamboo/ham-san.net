@@ -2,7 +2,27 @@ import { describe, expect, test } from 'bun:test';
 import { parseHobbyContent, splitHobbyBodyParts } from '../src/utils/hobby-content';
 
 describe('parseHobbyContent', () => {
-  test('uses frontmatter labels for inferred embed modules', () => {
+  test('renders documents without directives as plain markdown with no modules', () => {
+    const content = parseHobbyContent({
+      title: 'Camera',
+      text: `# Pictures
+
+<https://photos.example.com>
+
+# Gear
+
+* Nikon D7000`
+    });
+
+    expect(content.embeds).toEqual([]);
+    expect(content.body).toContain('# Pictures');
+    expect(content.body).toContain('# Gear');
+    expect(splitHobbyBodyParts(content.body, content.embeds.length)).toEqual([
+      { type: 'markdown', content: content.body }
+    ]);
+  });
+
+  test('uses frontmatter embed metadata for explicit modules', () => {
     const content = parseHobbyContent({
       title: 'Camera',
       text: `---
@@ -93,7 +113,7 @@ After slot.`,
     ]);
   });
 
-  test('places inferred embeds at the start when no explicit slot exists', () => {
+  test('places frontmatter modules at the start when no slot placeholder exists', () => {
     expect(splitHobbyBodyParts('Plain source note.', 1)).toEqual([
       { type: 'embed', index: 0 },
       { type: 'markdown', content: 'Plain source note.' }
@@ -174,7 +194,7 @@ End.`
     ]);
   });
 
-  test('keeps raw source sections for embeds but removes duplicate display sections', () => {
+  test('keeps every document section in the display body alongside embed slots', () => {
     const content = parseHobbyContent({
       title: 'Typing',
       text: `Intro.
@@ -195,11 +215,9 @@ End.`
       'https://typingstats.com',
       'https://monkeytype.com'
     ]);
-    expect(content.sourceBody).toContain('# Profiles');
-    expect(content.sourceBody).toContain('# Links');
-    expect(content.body).toBe(`Intro.
-
-<!-- hobby-embed:0 -->`);
+    expect(content.body).toContain('<!-- hobby-embed:0 -->');
+    expect(content.body).toContain('# Profiles');
+    expect(content.body).toContain('# Links');
   });
 
   test('preserves regular prose sections in the display body', () => {
@@ -216,10 +234,10 @@ This is actual prose that belongs on the page.
 
     expect(content.body).toContain('# Notes');
     expect(content.body).toContain('This is actual prose');
-    expect(content.body).not.toContain('# Links');
+    expect(content.body).toContain('# Links');
   });
 
-  test('removes picture source sections consumed by gallery embeds without hiding references', () => {
+  test('keeps picture source sections in the document next to gallery slots', () => {
     const content = parseHobbyContent({
       title: 'Camera',
       text: `Intro.
@@ -243,15 +261,10 @@ This is actual prose that belongs on the page.
         'https://rental.example.com'
       ].sort()
     );
-    expect(content.body).toBe(`Intro.
-
-<!-- hobby-embed:0 -->
-
-# Lens References
-- [Nikon 35mm](https://lens.example.com)
-
-# Rental Shop
-- https://rental.example.com`);
+    expect(content.body).toContain('<!-- hobby-embed:0 -->');
+    expect(content.body).toContain('# Pictures');
+    expect(content.body).toContain('# Lens References');
+    expect(content.body).toContain('# Rental Shop');
   });
 
   test('removes slash-only source artifact lines', () => {
@@ -284,6 +297,20 @@ Nikon z5
 - Nikon z5: https://photographylife.com
 # Lens Review
 - https://example.com`);
+  });
+
+  test('strips markdown escape artifacts from link labels', () => {
+    const content = parseHobbyContent({
+      title: 'Posture Thing',
+      text: `\\*Reference: [How to Safely Pop Your Back With a Foam Roller\\*](http://www.youtube.com/watch?v=60pjikvqpnA)`
+    });
+
+    expect(content.links).toEqual([
+      {
+        href: 'http://www.youtube.com/watch?v=60pjikvqpnA',
+        label: 'How to Safely Pop Your Back With a Foam Roller'
+      }
+    ]);
   });
 
   test('removes slash-only source artifact list items', () => {

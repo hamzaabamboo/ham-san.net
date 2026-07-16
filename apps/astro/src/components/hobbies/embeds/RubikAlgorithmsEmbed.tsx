@@ -1,13 +1,13 @@
 import { useState } from 'react';
+import { getRubikResourceLinks } from '~/utils/hobby-links';
 import { hobbyStyles } from '../hobbyStyles';
-import { cleanSourceText, getHostLabel, getListItems, getMarkdownSection } from './source';
+import { cleanSourceText, getLinkTileParts, getListItems, getMarkdownSection } from './source';
 import type { HobbyEmbedProps } from './types';
 
 type AlgorithmSet = {
   name: string;
   notation: string;
   use: string;
-  href?: string;
 };
 
 const parseSourceAlgorithms = (body: string, sourceNoteUseLabel: string): AlgorithmSet[] =>
@@ -27,30 +27,12 @@ const parseSourceAlgorithms = (body: string, sourceNoteUseLabel: string): Algori
 export const RubikAlgorithmsEmbed = ({
   body = '',
   links = [],
-  nestedPages = [],
   sourceNoteUseLabel = 'note',
-  nestedSourcePageUseLabel = 'related page',
-  openSourcePageLabel = 'Open page',
   noAlgorithmSetsLabel = 'No algorithm sets are listed yet.'
 }: HobbyEmbedProps) => {
   const [activeAlgorithm, setActiveAlgorithm] = useState(0);
-  const sourceAlgorithms = parseSourceAlgorithms(body, sourceNoteUseLabel);
-  const resources = links
-    .filter((link) =>
-      /(cube|cubing|oll|pll|alg|speedcube|jperm|cstimer|cubeskills|bestsiteever)/i.test(
-        `${link.label} ${link.href}`
-      )
-    )
-    .slice(0, 6);
-  const sourceSets: AlgorithmSet[] =
-    sourceAlgorithms.length > 0
-      ? sourceAlgorithms
-      : nestedPages.map((page) => ({
-          name: page.title,
-          notation: page.title,
-          use: nestedSourcePageUseLabel,
-          href: page.href
-        }));
+  const sourceSets = parseSourceAlgorithms(body, sourceNoteUseLabel);
+  const resources = getRubikResourceLinks(links);
   const activeSet = sourceSets[activeAlgorithm] ?? sourceSets[0];
 
   return (
@@ -72,20 +54,22 @@ export const RubikAlgorithmsEmbed = ({
           <div className={hobbyStyles.algorithmViewer}>
             <p>{activeSet?.notation}</p>
             <span>{activeSet?.use}</span>
-            {activeSet?.href && <a href={activeSet.href}>{openSourcePageLabel}</a>}
           </div>
         </div>
-      ) : (
+      ) : resources.length === 0 ? (
         <p className={hobbyStyles.sourceEmpty}>{noAlgorithmSetsLabel}</p>
-      )}
+      ) : null}
       {resources.length > 0 && (
         <div className={hobbyStyles.algorithmResources}>
-          {resources.map((link) => (
-            <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-              <span>{link.label}</span>
-              <strong>{getHostLabel(link.href)}</strong>
-            </a>
-          ))}
+          {resources.map((link) => {
+            const parts = getLinkTileParts(link);
+            return (
+              <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
+                <span>{parts.label}</span>
+                {parts.detail && <strong>{parts.detail}</strong>}
+              </a>
+            );
+          })}
         </div>
       )}
     </div>

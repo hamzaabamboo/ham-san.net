@@ -5,12 +5,12 @@ import { css, cx } from 'styled-system/css';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
-import { HobbyTypeGlyph } from '~/components/hobbies/HobbyTypeGlyph';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
 import { getOutlineSettings } from '~/utils/outline-settings';
 import { parseHobbyContent } from '~/utils/hobby-content';
+import { getHobbyRenderedLinks } from '~/utils/hobby-links';
 import {
   getHobbyContentLabel,
   getHobbyCountLabel,
@@ -55,14 +55,23 @@ const hobbyThumbnail = css({
   w: 'full',
   h: 'full',
   objectFit: 'cover',
-  filter: 'saturate(1.06) contrast(1.02)'
+  filter: 'saturate(0.68) sepia(0.16) brightness(0.82) contrast(1.05)'
 });
 const hobbyRow = css({
   pos: 'relative',
+  textDecorationLine: 'none',
   transition: 'background-color 160ms ease, border-color 160ms ease',
   _hover: {
     bg: 'rgba(255, 176, 0, 0.035)',
     borderColor: '#765c2f'
+  }
+});
+const hobbyCardTitle = css({
+  _groupHover: {
+    textDecorationLine: 'underline',
+    textDecorationColor: '#ffb000',
+    textDecorationThickness: '1px',
+    textUnderlineOffset: '0.18em'
   }
 });
 const hobbyVisual = css({
@@ -100,10 +109,12 @@ const hobbyVisual = css({
     bg: 'linear-gradient(135deg, rgba(56, 189, 248, 0.16), transparent 44%), linear-gradient(315deg, rgba(250, 204, 21, 0.12), transparent 54%)'
   },
   '&[data-embed="field-notes"]::before': {
-    bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.16), transparent 44%), linear-gradient(315deg, rgba(45, 212, 191, 0.09), transparent 54%)'
+    bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.16), transparent 44%), linear-gradient(315deg, rgba(255, 213, 151, 0.09), transparent 54%)'
   },
-  '&[data-visual="image"]::before': {
-    bg: 'linear-gradient(180deg, transparent 38%, rgba(0, 0, 0, 0.54))'
+  '&[data-visual="image"][data-embed]::before': {
+    bg: 'linear-gradient(160deg, rgba(255, 176, 0, 0.14), transparent 55%), linear-gradient(180deg, rgba(17, 16, 14, 0.58), rgba(17, 16, 14, 0.78))',
+    opacity: '1',
+    zIndex: '1'
   },
   '&[data-visual="glyph"]': {
     boxShadow: 'inset 0 0 0 1px rgba(255, 176, 0, 0.08)'
@@ -138,24 +149,8 @@ const hobbyVisual = css({
     bg: 'radial-gradient(circle at 22% 32%, rgba(56, 189, 248, 0.42) 0 5%, transparent 6%), radial-gradient(circle at 70% 24%, rgba(250, 204, 21, 0.34) 0 5%, transparent 6%), radial-gradient(circle at 78% 70%, rgba(45, 212, 191, 0.34) 0 5%, transparent 6%), radial-gradient(circle at 28% 72%, rgba(255, 176, 0, 0.32) 0 5%, transparent 6%), linear-gradient(28deg, transparent 0 48%, rgba(56, 189, 248, 0.24) 48% 50%, transparent 50%), linear-gradient(118deg, transparent 0 48%, rgba(255, 176, 0, 0.2) 48% 50%, transparent 50%)'
   },
   '&[data-embed="field-notes"][data-visual="glyph"]::after': {
-    bg: 'linear-gradient(135deg, transparent 0 24%, rgba(255, 176, 0, 0.18) 24% 26%, transparent 26%), linear-gradient(90deg, transparent 0 20%, rgba(255, 176, 0, 0.18) 20% 68%, transparent 68%), linear-gradient(0deg, transparent 0 22%, rgba(45, 212, 191, 0.18) 22% 24%, transparent 24% 36%, rgba(255, 176, 0, 0.14) 36% 38%, transparent 38%)'
+    bg: 'linear-gradient(135deg, transparent 0 24%, rgba(255, 176, 0, 0.18) 24% 26%, transparent 26%), linear-gradient(90deg, transparent 0 20%, rgba(255, 176, 0, 0.18) 20% 68%, transparent 68%), linear-gradient(0deg, transparent 0 22%, rgba(255, 213, 151, 0.18) 22% 24%, transparent 24% 36%, rgba(255, 176, 0, 0.14) 36% 38%, transparent 38%)'
   }
-});
-const hobbyVisualGlyph = css({
-  pos: 'relative',
-  zIndex: '1',
-  transform: 'scale(0.66)',
-  opacity: '0.82'
-});
-const hobbyVisualIndex = css({
-  pos: 'absolute',
-  right: '2',
-  bottom: '1',
-  zIndex: '2',
-  color: '#ffcf70',
-  fontFamily: 'JetBrains Mono, monospace',
-  fontSize: '10px',
-  letterSpacing: '0.08em'
 });
 const hobbyCardBody = css({
   display: 'grid',
@@ -196,13 +191,23 @@ try {
   const settings = await getOutlineSettings();
 
   if (settings?.['hobbies-collection']) {
-    const res = await outlineClient.POST('/documents.list', {
-      body: { collectionId: settings['hobbies-collection'] },
-      signal: controller.signal
-    });
+    const allDocuments: any[] = [];
+    const pageLimit = 100;
+    let offset = 0;
+
+    while (true) {
+      const res = await outlineClient.POST('/documents.list', {
+        body: { collectionId: settings['hobbies-collection'], offset, limit: pageLimit },
+        signal: controller.signal
+      });
+      if (!res.response.ok) throw new Error(`documents.list ${res.response.status}`);
+      const rows = res.data?.data ?? [];
+      allDocuments.push(...rows);
+      if (rows.length < (res.data?.pagination?.limit ?? pageLimit)) break;
+      offset += rows.length;
+    }
     clearTimeout(timeout);
 
-    const allDocuments = res.data?.data ?? [];
     const childrenByParent = new Map<string, { id: string; title: string }[]>();
 
     allDocuments.forEach((document: any) => {
@@ -299,7 +304,6 @@ const hobbies = hobbiesList
           fallbackUpdatedAt: h.updatedAt ?? h.createdAt
         });
         const childPages = h.childPages ?? [];
-        const embedType = content.embeds[0]?.type ?? 'field-notes';
         const nestedSummary = formatNestedDescription(childPages);
         const resolvedImages = content.images
           .map(resolveHobbyAssetUrl)
@@ -309,17 +313,16 @@ const hobbies = hobbiesList
           ...content,
           banner: resolveHobbyAssetUrl(content.banner ?? content.images[0]),
           images: resolvedImages,
-          description: getHobbyOverviewSummary({
-            hasSource: hasSourceContent({
-              ...content,
-              images: resolvedImages,
-              childPages
-            }),
-            locale,
-            value: content.description || nestedSummary,
-            type: embedType,
-            t
-          }),
+          description:
+            getHobbyOverviewSummary({
+              hasSource: hasSourceContent({
+                ...content,
+                images: resolvedImages,
+                childPages
+              }),
+              value: content.description,
+              t
+            }) || nestedSummary,
           updatedLabel: formatUpdated(content.updatedAt),
           childPages,
           status: getEffectiveStatus({
@@ -337,7 +340,7 @@ const hobbies = hobbiesList
   <Container maxW="breakpoint-xl" w="full" py={{ base: '6', md: '10' }} className="page-shell">
     <Stack gap={{ base: '8', md: '10' }}>
       <Stack gap="4" maxW="4xl">
-        <Heading as="h1" fontSize={{ base: '4xl', md: '6xl' }} lineHeight="1">
+        <Heading as="h1" fontSize={{ base: '5xl', md: '8xl' }} fontStyle="italic" lineHeight="0.92">
           {t('hobbies.page-heading')}
         </Heading>
         <Text color="#c7c6c6" fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.7" maxW="3xl">
@@ -362,10 +365,19 @@ const hobbies = hobbiesList
           </Box>
         ) : (
           <>
-            <Stack borderTop="1px solid" borderColor="#524533">
-              {hobbies.map((hobby, index) => {
+            <Stack gap="0" borderTop="1px solid" borderColor="#524533">
+              {hobbies.map((hobby) => {
                 const embedType = getEmbedType(hobby);
-                const readableEmbedType = getHobbyLabel(hobby);
+                const hasModule = hobby.embeds.length > 0;
+                const hobbySourced = hasSourceContent(hobby);
+                const readableEmbedType =
+                  hasModule && hobbySourced ? getHobbyLabel(hobby) : undefined;
+                const linkCount = getHobbyRenderedLinks({
+                  type: embedType,
+                  links: hobby.links ?? [],
+                  body: hobby.body,
+                  images: hobby.images
+                }).length;
                 const metaItems = [
                   {
                     label: getStatusLabel(hobby.status),
@@ -374,11 +386,11 @@ const hobbies = hobbiesList
                   {
                     label: `${t('hobbies.metric-updated')} ${hobby.updatedLabel}`
                   },
-                  ...(hobby.links?.length
+                  ...(linkCount
                     ? [
                         {
                           label: getHobbyCountLabel({
-                            count: hobby.links.length,
+                            count: linkCount,
                             locale,
                             type: 'link',
                             t
@@ -415,32 +427,42 @@ const hobbies = hobbiesList
                     borderColor="#524533"
                     className={cx('group', hobbyRow)}
                   >
-                    <Stack gap="2">
-                      <Box
-                        className={hobbyVisual}
-                        data-embed={embedType}
-                        data-visual={hobby.banner ? 'image' : 'glyph'}
+                    <Box
+                      className={hobbyVisual}
+                      data-embed={embedType}
+                      data-visual={hobby.banner ? 'image' : 'glyph'}
+                    >
+                      {hobby.banner ? (
+                        <img src={hobby.banner} alt="" class={hobbyThumbnail} loading="lazy" />
+                      ) : (
+                        <Box
+                          fontFamily="Newsreader, serif"
+                          fontStyle="italic"
+                          fontSize="64px"
+                          lineHeight="1"
+                          color="#ffb000"
+                          opacity="0.3"
+                          userSelect="none"
+                          aria-hidden="true"
+                        >
+                          {(hobby.title ?? '?').charAt(0).toUpperCase()}
+                        </Box>
+                      )}
+                    </Box>
+                    <div class={hobbyCardBody}>
+                      {readableEmbedType && (
+                        <Text className={metaTextClass} color="#9f8e78">
+                          {readableEmbedType}
+                        </Text>
+                      )}
+                      <Heading
+                        as="h2"
+                        className={hobbyCardTitle}
+                        fontSize={{ base: '2xl', md: '3xl' }}
+                        lineHeight="1.15"
                       >
-                        {hobby.banner ? (
-                          <img src={hobby.banner} alt="" class={hobbyThumbnail} loading="lazy" />
-                        ) : (
-                          <HobbyTypeGlyph
-                            type={embedType}
-                            label={readableEmbedType}
-                            size="hero"
-                            className={hobbyVisualGlyph}
-                          />
-                        )}
-                        <span class={hobbyVisualIndex}>{String(index + 1).padStart(2, '0')}</span>
-                      </Box>
-                      <Text className={metaTextClass} color="#9f8e78">
-                        {readableEmbedType}
-                      </Text>
-                      <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }} lineHeight="1.15">
                         {hobby.title}
                       </Heading>
-                    </Stack>
-                    <div class={hobbyCardBody}>
                       <Text color="#c7c6c6" lineHeight="1.7" overflowWrap="anywhere">
                         {hobby.description}
                       </Text>

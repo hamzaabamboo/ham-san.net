@@ -20,12 +20,11 @@ export type HobbyEmbedProps = {
   noFeedLabel?: string;
   noTypingProfilesLabel?: string;
   sourceNoteUseLabel?: string;
-  nestedSourcePageUseLabel?: string;
   openSourcePageLabel?: string;
   noAlgorithmSetsLabel?: string;
   audioUnavailableLabel?: string;
   playedLabel?: string;
   audioStartsAfterTapLabel?: string;
-  sourcePagesAttachedLabel?: string;
+  noChordsLabel?: string;
   status?: 'active' | 'inactive';
 };

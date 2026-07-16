@@ -1,13 +1,7 @@
+import { getSocialFeedLinks } from '~/utils/hobby-links';
 import { hobbyStyles } from '../hobbyStyles';
+import { getHostLabel, getPathLabel } from './source';
 import type { HobbyEmbedProps } from './types';
-
-const getHostLabel = (href: string) => {
-  try {
-    return new URL(href).hostname.replace(/^www\./, '');
-  } catch {
-    return href;
-  }
-};
 
 export const TwitterFeedEmbed = ({
   links = [],
@@ -15,9 +9,7 @@ export const TwitterFeedEmbed = ({
   sourceNoteLabel = 'note',
   noFeedLabel = 'No public feed link is attached to this note.'
 }: HobbyEmbedProps) => {
-  const feedLinks = links
-    .filter((link) => /(x\.com|twitter\.com|bsky\.app|threads\.net|mastodon)/i.test(link.href))
-    .slice(0, 3);
+  const feedLinks = getSocialFeedLinks(links);
 
   return (
     <div className={hobbyStyles.feed}>
@@ -27,7 +19,7 @@ export const TwitterFeedEmbed = ({
             <span>{getHostLabel(link.href)}</span>
             <p>
               <a href={link.href} target="_blank" rel="noreferrer">
-                {link.label}
+                {link.label === getHostLabel(link.href) ? getPathLabel(link.href) : link.label}
               </a>
             </p>
           </article>
