@@ -18,7 +18,8 @@ import type {
 } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
-import { sortTags } from '~/utils/tags';
+import { cleanProjectCopy } from '~/utils/project-copy';
+import { sortTags, tagSlug } from '~/utils/tags';
 
 export const prerender = false;
 
@@ -33,6 +34,16 @@ let tagData: TagData | undefined;
 try {
   const data = await graphQLSdk.getTagBySlug({ slug });
   tagData = data?.tags?.[0] ?? undefined;
+  if (!tagData) {
+    const aboutData = await graphQLSdk.fetchAboutMe({ locale: locale === 'ja' ? 'ja' : 'en' });
+    const match = (aboutData.tags ?? []).find(
+      (tag) => !!tag?.title && !!tag.slug && tagSlug(tag) === slug
+    );
+    if (match?.slug && match.slug !== slug) {
+      const bySlug = await graphQLSdk.getTagBySlug({ slug: match.slug });
+      tagData = bySlug?.tags?.[0] ?? undefined;
+    }
+  }
 } catch {
   return Astro.redirect('/404');
 }
@@ -46,9 +57,9 @@ const type = tagData?.type;
 const experienceItems = (tagData?.experiences ?? []).filter(
   (e): e is ExperienceFragment & { id: string } => !!e
 );
-const projectItems = (tagData?.projects ?? []).filter(
-  (p): p is ProjectPreviewFragment & { id: string } => !!p
-);
+const projectItems = (tagData?.projects ?? [])
+  .filter((p): p is ProjectPreviewFragment & { id: string } => !!p)
+  .map((p) => cleanProjectCopy(p));
 const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is TagFragment => !!t);
 const t = useTranslations(locale);
 const pageTitle = `${title ?? t('common.tags')} | ${t('common.name')}`;
@@ -100,16 +111,15 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 {title}
               </Heading>
               <Wrap fontSize="sm" color="#9f8e78" fontFamily="JetBrains Mono, monospace">
-                <Text>{position}</Text> <Text>|</Text>
+                <Text>{`${position}\u00A0|`}</Text>
                 <Text>
                   {formatMonthYear(parseDate(start as string), locale)} -{' '}
-                  {end ? formatMonthYear(parseDate(end as string), locale) : t('common.present')} (
-                  {formatDistanceBetween(
+                  {end ? formatMonthYear(parseDate(end as string), locale) : t('common.present')}{' '}
+                  {`(${formatDistanceBetween(
                     parseDate(start as string),
                     end ? parseDate(end as string) : new Date(),
                     locale
-                  )}
-                  )
+                  )})`}
                 </Text>
               </Wrap>
               {tags && (
@@ -118,7 +128,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                   {sortTags(nonNullTags(tags)).map(
                     (tag) =>
                       tag && (
-                        <Link href={`/${locale}/tags/${tag.slug}`} display="inline-flex">
+                        <Link href={`/${locale}/tags/${tagSlug(tag)}`} display="inline-flex">
                           <TagBadge tag={tag} showCount size="sm" />
                         </Link>
                       )
@@ -131,7 +141,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
         })
       }
       <Divider borderColor="#524533" />
-      <Grid gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))">
+      <Grid gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))" alignItems="start">
         {
           projectItems.map((project) => (
             <GridItem>

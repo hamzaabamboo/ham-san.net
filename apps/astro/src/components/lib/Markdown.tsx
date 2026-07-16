@@ -10,6 +10,34 @@ import { Table } from '../ui/table';
 import { Text } from '../ui/text';
 import { resolveOutlineAssetUrl } from '~/utils/outline-assets';
 
+export const createHeadingSlugger = () => {
+  const counts = new Map<string, number>();
+  let index = 0;
+  return (text: string) => {
+    index += 1;
+    const base = text
+      .toLowerCase()
+      .trim()
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/[*_`[\]#]/g, '')
+      .replace(/[^\p{L}\p{M}\p{N}]+/gu, '-')
+      .replace(/^-+|-+$/g, '');
+    const slug = base || `heading-${index}`;
+    const seen = counts.get(slug) ?? 0;
+    counts.set(slug, seen + 1);
+    return seen === 0 ? slug : `${slug}-${seen}`;
+  };
+};
+
+const childrenToText = (children: unknown): string => {
+  if (typeof children === 'string' || typeof children === 'number') return String(children);
+  if (Array.isArray(children)) return children.map(childrenToText).join('');
+  if (children && typeof children === 'object' && 'props' in children) {
+    return childrenToText((children as { props: { children?: unknown } }).props.children);
+  }
+  return '';
+};
+
 // https://github.com/remarkjs/react-markdown
 export const Markdown = ({
   content,
@@ -39,17 +67,81 @@ export const Markdown = ({
       | 'h5'
       | 'h6';
 
-  const formatBareUrlLabel = (rawUrl: string) => {
-    const href = rawUrl.startsWith('www.') ? `https://${rawUrl}` : rawUrl;
+  const toHttpHref = (rawUrl: string) => (rawUrl.startsWith('www.') ? `https://${rawUrl}` : rawUrl);
+
+  const unescapedContent = content
+    .split(/(```[\s\S]*?```|`[^`\n]*`)/)
+    .map((segment, index) =>
+      index % 2 === 1
+        ? segment
+        : segment
+            .replace(/\\n/g, '\n')
+            .replace(/\\\*\]\(([^)]+)\)/g, ']($1)*')
+            .replace(/\\\*/g, '*')
+    )
+    .join('');
+
+  const autoLabeledUrls = [
+    ...Array.from(
+      unescapedContent.matchAll(/^\s*(?:[-*]\s+)?((?:https?:\/\/|www\.)\S+)\s*$/gm),
+      (match) => match[1]
+    ),
+    ...Array.from(
+      unescapedContent.matchAll(/(?<!!)\[((?:https?:\/\/|www\.)[^\]\s]+)\]\(/g),
+      (match) => match[1]
+    ),
+    ...Array.from(
+      unescapedContent.matchAll(/<((?:https?:\/\/|www\.)[^>\s]+)>/g),
+      (match) => match[1]
+    )
+  ];
+  const hostGroups = new Map<string, Set<string>>();
+  for (const rawUrl of autoLabeledUrls) {
     try {
-      const url = new URL(href);
-      return `${openLinkLabel} ${url.hostname.replace(/^www\./, '')}`;
+      const href = toHttpHref(rawUrl);
+      const host = new URL(href).hostname.replace(/^www\./, '');
+      const group = hostGroups.get(host) ?? new Set<string>();
+      group.add(href);
+      hostGroups.set(host, group);
+    } catch {
+      continue;
+    }
+  }
+
+  const autoLabelDetails = new Map<string, string>();
+  for (const group of hostGroups.values()) {
+    const hrefs = Array.from(group);
+    if (hrefs.length < 2) continue;
+    const segmentLists = hrefs.map((href) => new URL(href).pathname.split('/').filter(Boolean));
+    const maxDepth = Math.max(...segmentLists.map((segments) => segments.length));
+    let depth = 0;
+    for (let level = 0; level < maxDepth; level += 1) {
+      if (new Set(segmentLists.map((segments) => segments[level] ?? '')).size > 1) {
+        depth = level;
+        break;
+      }
+    }
+    hrefs.forEach((href, index) => {
+      const segment = segmentLists[index][depth] ?? segmentLists[index][0];
+      if (!segment) return;
+      const shortSegment = segment.length > 12 ? `${segment.slice(0, 10)}…` : segment;
+      autoLabelDetails.set(href, depth > 0 ? `/…/${shortSegment}` : `/${shortSegment}`);
+    });
+  }
+
+  const formatBareUrlLabel = (rawUrl: string) => {
+    const href = toHttpHref(rawUrl);
+    try {
+      const host = new URL(href).hostname.replace(/^www\./, '');
+      return `${openLinkLabel} ${host}${autoLabelDetails.get(href) ?? ''}`;
     } catch {
       return rawUrl;
     }
   };
 
-  const normalizedContent = content
+  const slugger = createHeadingSlugger();
+
+  const normalizedContent = unescapedContent
     .split('\n')
     .map((line) =>
       line.replace(
@@ -75,37 +167,62 @@ export const Markdown = ({
           h1: ({ ref: __, node: _, ...props }) => (
             <Heading
               as={headingAs(1)}
+              id={slugger(childrenToText(props.children))}
               fontSize={headingLevelOffset > 0 ? '4xl' : '5xl'}
               lineHeight="0.95"
               overflowWrap="anywhere"
+              scrollMarginTop="24"
               {...props}
             />
           ),
           h2: ({ ref: __, node: _, ...props }) => (
             <Heading
               as={headingAs(2)}
+              id={slugger(childrenToText(props.children))}
               pt="6"
               fontSize={headingLevelOffset > 0 ? '3xl' : '4xl'}
               overflowWrap="anywhere"
+              scrollMarginTop="24"
               {...props}
             />
           ),
           h3: ({ ref: __, node: _, ...props }) => (
             <Heading
               as={headingAs(3)}
+              id={slugger(childrenToText(props.children))}
               fontSize={headingLevelOffset > 0 ? '2xl' : '3xl'}
               overflowWrap="anywhere"
+              scrollMarginTop="24"
               {...props}
             />
           ),
           h4: ({ ref: __, node: _, ...props }) => (
-            <Heading as={headingAs(4)} fontSize="2xl" {...props} />
+            <Heading
+              as={headingAs(4)}
+              id={slugger(childrenToText(props.children))}
+              fontSize="2xl"
+              scrollMarginTop="24"
+              {...props}
+            />
           ),
           h5: ({ ref: __, node: _, ...props }) => (
-            <Heading as={headingAs(5)} fontSize="xl" fontWeight="bold" {...props} />
+            <Heading
+              as={headingAs(5)}
+              id={slugger(childrenToText(props.children))}
+              fontSize="xl"
+              fontWeight="bold"
+              scrollMarginTop="24"
+              {...props}
+            />
           ),
           h6: ({ ref: __, node: _, ...props }) => (
-            <Heading as={headingAs(6)} fontSize="xl" {...props} />
+            <Heading
+              as={headingAs(6)}
+              id={slugger(childrenToText(props.children))}
+              fontSize="xl"
+              scrollMarginTop="24"
+              {...props}
+            />
           ),
           p: ({ ref: _ref, node: _, ...props }) => (
             <Text
@@ -136,7 +253,15 @@ export const Markdown = ({
               return <Text as="p">{props.children}</Text>;
             }
             return (
-              <Link target="_blank" href={dest} fontWeight="bold" {...rest}>
+              <Link
+                target="_blank"
+                href={dest}
+                color="#ffd597"
+                fontWeight="bold"
+                textDecorationColor="rgba(255, 176, 0, 0.55)"
+                _hover={{ color: '#ffb000', textDecorationColor: '#ffb000' }}
+                {...rest}
+              >
                 {displayChildren}
               </Link>
             );
@@ -237,6 +362,8 @@ export const Markdown = ({
                   alt={props.alt}
                   style={{
                     width: '100%',
+                    maxHeight: '70vh',
+                    objectFit: 'contain',
                     filter: 'saturate(1.08) contrast(1.04)'
                   }}
                 />

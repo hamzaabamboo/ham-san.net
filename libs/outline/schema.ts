@@ -1715,7 +1715,7 @@ export interface paths {
         put?: never;
         /**
          * List all revisions
-         * @description List all revisions for a specific document. Revisions represent historical snapshots of a document's content and can be used to track changes over time.
+         * @description List all revisions for a specific document. Revisions represent historical snapshots of a document's content and can be used to track changes over time. The `data` and `text` fields are omitted from listed revisions for performance; use `revisions.info` to retrieve the full content of a specific revision.
          */
         post: operations["revisionsList"];
         delete?: never;
@@ -2942,10 +2942,6 @@ export interface components {
             readonly title?: string;
             /** @description The name of the revision, if any. */
             readonly name?: string | null;
-            /** @description The body of the revision as a Prosemirror document. */
-            readonly data?: Record<string, never>;
-            /** @description Body of the document, may contain markdown formatting */
-            readonly text?: string;
             /** @description An emoji or icon associated with the revision. */
             readonly icon?: string | null;
             /** @description The color of the revision icon in hex format. */
@@ -2967,6 +2963,12 @@ export interface components {
              * @description Date and time when this revision was deleted, if applicable.
              */
             readonly deletedAt?: string | null;
+        };
+        RevisionDetail: components["schemas"]["Revision"] & {
+            /** @description The body of the revision as a Prosemirror document. */
+            readonly data?: Record<string, never>;
+            /** @description Body of the document, may contain markdown formatting */
+            readonly text?: string;
         };
         Share: {
             /**
@@ -3679,9 +3681,25 @@ export interface operations {
                     "application/json": {
                         data?: {
                             maxUploadSize?: number;
-                            /** Format: uri */
+                            /**
+                             * @description Indicates which presigned upload method the server is configured to use. When `post`, the client should perform a multipart form POST using `uploadUrl` and `form`. When `put`, the client should perform a PUT request to `url` with the supplied `headers`.
+                             * @enum {string}
+                             */
+                            mode?: "post" | "put";
+                            /**
+                             * Format: uri
+                             * @description Present when `mode` is `post`. The endpoint to POST a multipart form upload to.
+                             */
                             uploadUrl?: string;
+                            /** @description Present when `mode` is `post`. The form fields to include in the multipart upload, including signed credentials. */
                             form?: Record<string, never>;
+                            /**
+                             * Format: uri
+                             * @description Present when `mode` is `put`. The presigned URL to PUT the file contents to.
+                             */
+                            url?: string;
+                            /** @description Present when `mode` is `put`. The HTTP headers that must be sent with the PUT request. */
+                            headers?: Record<string, never>;
                             attachment?: components["schemas"]["Attachment"];
                         };
                     };
@@ -3946,10 +3964,12 @@ export interface operations {
                     /** @example Human Resources */
                     name: string;
                     /**
-                     * @description A brief description of the collection, markdown supported.
+                     * @description A brief description of the collection, markdown supported. Only one of `description` or `data` may be provided.
                      * @example HR documentation is confidential and should be handled with care.
                      */
                     description?: string;
+                    /** @description The collection description as a rich-text ProseMirror JSON document. Only one of `description` or `data` may be provided. */
+                    data?: Record<string, never>;
                     permission?: components["schemas"]["Permission"];
                     /** @description A string that represents an icon in the outline-icons package or an emoji */
                     icon?: string;
@@ -4000,10 +4020,12 @@ export interface operations {
                     /** @example Human Resources */
                     name?: string;
                     /**
-                     * @description A brief description of the collection, markdown supported.
+                     * @description A brief description of the collection, markdown supported. Only one of `description` or `data` may be provided.
                      * @example HR documentation is confidential and should be handled with care.
                      */
                     description?: string;
+                    /** @description The collection description as a rich-text ProseMirror JSON document. Only one of `description` or `data` may be provided. */
+                    data?: Record<string, never>;
                     permission?: components["schemas"]["Permission"];
                     /** @description A string that represents an icon in the outline-icons package or an emoji */
                     icon?: string;
@@ -7106,7 +7128,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Revision"];
+                        data?: components["schemas"]["RevisionDetail"];
                     };
                 };
             };
@@ -7935,6 +7957,8 @@ export interface operations {
                      * @description Optionally filter to a specific collection
                      */
                     collectionId?: string;
+                    /** @description Search query to filter templates by title */
+                    query?: string;
                 };
             };
         };

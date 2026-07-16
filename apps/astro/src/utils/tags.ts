@@ -1,3 +1,4 @@
+import { toKebabCase } from 'utils/kebab-case';
 import type { Enum_Tag_Type } from '~/graphql/generated/client';
 
 const SORT_ORDER = [
@@ -14,6 +15,9 @@ const SORT_ORDER = [
 ];
 
 type TagLike = { type?: Enum_Tag_Type | string | null; order?: number | null } | null | undefined;
+
+export const tagSlug = (tag: { title?: string | null; slug?: string | null }) =>
+  tag.title ? toKebabCase(tag.title) : (tag.slug ?? '');
 
 const getTypeOrder = (tag: TagLike) => {
   const normalizedType = tag?.type ? String(tag.type) : undefined;

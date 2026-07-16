@@ -2,7 +2,7 @@
 import { Box, Container, Grid, Stack } from 'styled-system/jsx';
 import { cleanArticleContent, getArticleBanner } from 'outline/article';
 import { Heading } from '~/components/ui/heading';
-import { Markdown } from '~/components/lib/Markdown';
+import { Markdown, createHeadingSlugger } from '~/components/lib/Markdown';
 import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
@@ -37,6 +37,7 @@ if (!shareId) {
 }
 
 let note: any = null;
+let noteMissing = false;
 
 try {
   const noteRequest = await outlineClient.POST('/documents.info', {
@@ -45,9 +46,15 @@ try {
 
   if (noteRequest.response.ok && noteRequest.data?.data) {
     note = noteRequest.data.data;
+  } else if ([400, 403, 404].includes(noteRequest.response.status)) {
+    noteMissing = true;
   }
 } catch {
   note = null;
+}
+
+if (noteMissing) {
+  Astro.response.status = 404;
 }
 
 const pageTitle = `${note?.title ?? t('common.note')} | ${t('common.name')}`;
@@ -80,27 +87,35 @@ const prevSibling = currentIndex > 0 ? siblings[currentIndex - 1] : null;
 const nextSibling =
   currentIndex >= 0 && currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : null;
 
+const slugger = createHeadingSlugger();
 const headings = (content ?? '')
   .split('\n')
-  .filter((line) => /^#{1,3}\s+/.test(line))
+  .filter((line) => /^#{1,6}\s+/.test(line))
   .map((line, idx) => {
-    const match = line.match(/^(#{1,3})\s+(.+)/);
+    const match = line.match(/^(#{1,6})\s+(.+)/);
     if (!match) return null;
     const text = match[2].replace(/[*_`\[\]]/g, '').trim();
-    const id = text
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '');
+    const id = slugger(match[2]);
     return { level: match[1].length, text, id, idx };
   })
-  .filter(Boolean) as { level: number; text: string; id: string; idx: number }[];
+  .filter((h) => !!h && h.level <= 3) as { level: number; text: string; id: string; idx: number }[];
 
-const rawLede = (content ?? '')
-  .split('\n')
-  .find(
-    (line) => line.trim().length > 30 && !/^[#!\[|>*-]/.test(line.trim()) && !/^`/.test(line.trim())
-  );
+const contentLines = (content ?? '').split('\n');
+const firstContentIndex = contentLines.findIndex((line) => line.trim().length > 0);
+const firstContentLine = firstContentIndex >= 0 ? contentLines[firstContentIndex].trim() : '';
+const ledeLineIndex =
+  firstContentLine.length > 30 &&
+  !/^[#!\[|>*-]/.test(firstContentLine) &&
+  !/^`/.test(firstContentLine) &&
+  !/^\d+[.)]\s/.test(firstContentLine)
+    ? firstContentIndex
+    : -1;
+const rawLede = ledeLineIndex >= 0 ? contentLines[ledeLineIndex] : undefined;
 const lede = rawLede?.replace(/[*_`\[\]]/g, '').trim() ?? null;
+const bodyContent =
+  ledeLineIndex >= 0
+    ? [...contentLines.slice(0, ledeLineIndex), ...contentLines.slice(ledeLineIndex + 1)].join('\n')
+    : content;
 
 const tags = (note as any)?.tags ?? [];
 ---
@@ -124,35 +139,21 @@ const tags = (note as any)?.tags ?? [];
               letterSpacing="0.12em"
               color="#ffd597"
             >
-              {t('note.archive-ref')}: unavailable
+              {noteMissing ? t('note.status-not-found') : t('note.status-unavailable')}
             </Text>
             <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic">
-              {t('note.empty-title')}
+              {noteMissing ? t('note.not-found-title') : t('note.empty-title')}
             </Heading>
             <Text color="#c7c6c6" fontSize="lg" maxW="2xl" lineHeight="1.7">
-              {t('note.empty-description')}
+              {noteMissing ? t('note.not-found-description') : t('note.empty-description')}
             </Text>
-          </Stack>
-          <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '8', md: '12' }}>
-            <Stack gap="4" alignItems="center" textAlign="center" py="12">
-              <Text
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                textTransform="uppercase"
-                letterSpacing="0.12em"
-                color="#9f8e78"
-              >
-                status: unavailable
-              </Text>
-              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
-                {t('note.empty-title')}
-              </Heading>
+            <Box>
               <a href={`/${locale}/notes`} class="note-cta-button group">
                 <span>{t('note.back-to-posts')}</span>
                 <span class="material-symbols-outlined note-cta-icon">arrow_back</span>
               </a>
-            </Stack>
-          </Box>
+            </Box>
+          </Stack>
         </Stack>
       ) : (
         <Grid
@@ -187,7 +188,7 @@ const tags = (note as any)?.tags ?? [];
                           textTransform="uppercase"
                           letterSpacing="-0.02em"
                         >
-                          {String(idx + 1).padStart(2, '0')} // {h.text}
+                          {h.text}
                         </Text>
                       </a>
                     ))
@@ -198,7 +199,7 @@ const tags = (note as any)?.tags ?? [];
                       color="#ffb000"
                       textTransform="uppercase"
                     >
-                      01 // {note.title}
+                      {note.title}
                     </Text>
                   )}
                 </Stack>
@@ -223,7 +224,7 @@ const tags = (note as any)?.tags ?? [];
                   color="#ffb000"
                   letterSpacing="0.12em"
                 >
-                  {t('note.archive-ref')}: {(note.id ?? '').slice(0, 8).toUpperCase()}
+                  {t('note.note-label')}
                 </Text>
               </Box>
               <Heading
@@ -273,9 +274,9 @@ const tags = (note as any)?.tags ?? [];
               </Box>
             )}
 
-            {content && (
+            {bodyContent && (
               <Markdown
-                content={content}
+                content={bodyContent}
                 assetsPrefix={outlineAssetPrefix}
                 assetProxyBasePath={outlineAssetProxyPath}
               />
@@ -374,7 +375,7 @@ const tags = (note as any)?.tags ?? [];
                   textTransform="uppercase"
                   color="#ffb000"
                 >
-                  SPEC_SHEET
+                  {t('note.details')}
                 </Text>
               </Box>
               <Stack gap="6" mt="2">

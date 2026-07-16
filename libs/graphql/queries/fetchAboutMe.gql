@@ -19,5 +19,8 @@ query fetchAboutMe($locale: I18NLocaleCode) {
     projects {
       id: documentId
     }
+    experiences {
+      id: documentId
+    }
   }
 }

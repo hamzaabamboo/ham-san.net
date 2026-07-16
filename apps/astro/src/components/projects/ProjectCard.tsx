@@ -4,6 +4,7 @@ import { formatMonthYear, parseDate } from 'utils/date';
 import { getMediaUrl } from 'utils/media';
 import { Enum_Componentutilslink_Type } from '~/graphql/generated/client';
 import { Languages } from '~/i18n/ui';
+import { useTranslations } from '~/i18n/utils';
 import { IconButton } from '../ui/icon-button';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
@@ -45,6 +46,7 @@ const extractMedia = (
 
 export const ProjectCard = (props: { data: ProjectCardData; locale: Languages }) => {
   const { data, locale } = props;
+  const t = useTranslations(locale);
   const { title, description, slug, date, links } = data;
   const category =
     data.category && 'name' in data.category
@@ -63,19 +65,21 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
         flex={1}
       >
         <Stack gap="0" h="full">
-          <Box
-            borderColor="#524533"
-            borderBottom="1px solid"
-            py="2"
-            px="3"
-            color="#ffd597"
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            letterSpacing="0.12em"
-            textTransform="uppercase"
-          >
-            {data.isActive ? 'selected work' : 'personal work'}
-          </Box>
+          {!data.isActive && (
+            <Box
+              borderColor="#524533"
+              borderBottom="1px solid"
+              py="2"
+              px="3"
+              color="#ffd597"
+              fontFamily="JetBrains Mono, monospace"
+              fontSize="10px"
+              letterSpacing="0.12em"
+              textTransform="uppercase"
+            >
+              {t('project.card-archive')}
+            </Box>
+          )}
           <Box
             borderColor="#524533"
             borderBottom="1px solid"
@@ -163,7 +167,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               letterSpacing="0.12em"
               textTransform="uppercase"
             >
-              <Text>Open project</Text>
+              <Text>{t('project.open-project')}</Text>
               <FaArrowRight />
             </Wrap>
           </Stack>
@@ -172,14 +176,30 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
       <Wrap w="full" p="4" pt="0">
         {link?.url && (
           <Link href={link?.url} target="_blank">
-            <IconButton size="xs" variant="subtle" border="1px solid" borderColor="#524533">
+            <IconButton
+              size="xs"
+              variant="ghost"
+              border="1px solid"
+              borderColor="#2a2a2a"
+              color="#c7c6c6"
+              bg="transparent"
+              _hover={{ bg: 'transparent', borderColor: '#ffb000', color: '#ffb000' }}
+            >
               <FaGlobe />
             </IconButton>
           </Link>
         )}
         {ghLink?.url && (
           <Link href={ghLink.url} target="_blank">
-            <IconButton size="xs" variant="subtle" border="1px solid" borderColor="#524533">
+            <IconButton
+              size="xs"
+              variant="ghost"
+              border="1px solid"
+              borderColor="#2a2a2a"
+              color="#c7c6c6"
+              bg="transparent"
+              _hover={{ bg: 'transparent', borderColor: '#ffb000', color: '#ffb000' }}
+            >
               <FaGithub />
             </IconButton>
           </Link>

@@ -37,6 +37,7 @@ const bannerUrl = getMediaUrl(banner?.url, {}, import.meta.env.PUBLIC_API_URL);
 const bannerName = banner?.name;
 const images = (media ?? [])
   .filter((d): d is { name: string; url: string } => !!d)
+  .filter((d) => !banner?.url || d.url !== banner.url)
   .map((d) => getMediaUrl(d.url, {}, import.meta.env.PUBLIC_API_URL))
   .filter((d): d is string => !!d);
 const nonNullTags = (items: Array<TagFragment | null>) =>
@@ -146,7 +147,9 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
 
               <Divider borderColor="#524533" />
               {content && (
-                <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />
+                <Box maxW="70ch">
+                  <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />
+                </Box>
               )}
               {images.length > 0 && (
                 <Stack gap="6">
@@ -172,7 +175,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 color="#9f8e78"
                 mb="4"
               >
-                status: unavailable
+                {t('project.status-unavailable')}
               </Text>
               <Heading
                 as="h1"

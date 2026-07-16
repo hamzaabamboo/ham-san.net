@@ -38,10 +38,21 @@ const featuredProjects = activeProjects.slice(0, 6);
 const overflowProjects = activeProjects.slice(6);
 const inactiveProjects = projects.filter((p) => !p.isActive);
 const archiveProjects = [...overflowProjects, ...inactiveProjects];
+const archiveGridProjects = archiveProjects.slice(0, 9);
 const latestProjectYear = projects.reduce((latest, project) => {
   const year = project.date?.slice(0, 4);
   return year && year > latest ? year : latest;
 }, '----');
+const yearPartFormatter = new Intl.DateTimeFormat(locale, {
+  year: 'numeric',
+  timeZone: 'Asia/Tokyo'
+});
+const yearLabel = (year?: string) =>
+  year && /^\d{4}$/.test(year)
+    ? (yearPartFormatter
+        .formatToParts(new Date(`${year}-01-01T00:00:00+09:00`))
+        .find((part) => part.type === 'year')?.value ?? year)
+    : year;
 
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 ---
@@ -66,7 +77,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
             textTransform="uppercase"
             color="#ffd597"
           >
-            projects
+            {t('project.projects')}
           </Text>
         </Box>
         <Heading
@@ -108,7 +119,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
             {t('project.active')}
           </Text>
           <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
-            {String(activeProjects.length).padStart(2, '0')}
+            {featuredProjects.length}
           </Text>
         </Stack>
         <Stack className="contact-panel" p="5" gap="2">
@@ -120,8 +131,8 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
           >
             {t('project.inactive')}
           </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#2dd4bf">
-            {String(archiveProjects.length).padStart(2, '0')}
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+            {archiveProjects.length}
           </Text>
         </Stack>
         <Stack bg="#131313" p="5" gap="2">
@@ -131,10 +142,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
             textTransform="uppercase"
             color="#9f8e78"
           >
-            Latest
+            {t('project.latest')}
           </Text>
           <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffd597">
-            {latestProjectYear}
+            {yearLabel(latestProjectYear)}
           </Text>
         </Stack>
       </Grid>
@@ -150,7 +161,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 letterSpacing="0.12em"
                 color="#9f8e78"
               >
-                status: unavailable
+                {t('project.status-unavailable')}
               </Text>
               <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
                 {t('project.empty-title')}
@@ -189,105 +200,61 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                       { height: 480 },
                       import.meta.env.PUBLIC_API_URL
                     ) ?? '/images/placeholder-project.jpg';
+                  const hasImage = !!project.media?.[0]?.url;
                   return (
                     <Link
                       href={`/${locale}/projects/${project.slug}`}
                       display="block"
                       w="full"
                       bg="#131313"
+                      textDecorationLine="none"
                       className="group"
+                      _hover={{ bg: '#0e0e0e' }}
+                      transition="background-color 0.2s ease"
                     >
-                      <Stack
-                        p="6"
-                        h="full"
-                        _hover={{ bg: '#0e0e0e' }}
-                        transition="background-color 0.2s ease"
-                      >
-                        <Box
-                          position="relative"
-                          aspectRatio="16 / 9"
-                          border="1px solid"
-                          borderColor="#524533"
-                          overflow="hidden"
-                          className="image-archival"
-                          mb="6"
-                        >
-                          {project.media?.[0]?.url ? (
+                      <Stack p="6" h="full" position="relative" overflow="hidden">
+                        {hasImage ? (
+                          <Box
+                            position="relative"
+                            aspectRatio="16 / 9"
+                            border="1px solid"
+                            borderColor="#524533"
+                            overflow="hidden"
+                            className="image-archival"
+                            mb="6"
+                          >
                             <img
                               src={imageUrl}
                               alt=""
                               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
-                          ) : (
-                            <Box
-                              position="absolute"
-                              inset="0"
-                              bgGradient="to-br"
-                              gradientFrom="#1c1b1b"
-                              gradientVia="#232323"
-                              gradientTo="#1a1a1a"
-                              className="fallback-grid-lines"
-                            >
-                              <Box position="absolute" right="-10" bottom="-8">
-                                <Text
-                                  fontFamily="Newsreader, serif"
-                                  fontStyle="italic"
-                                  fontSize="200px"
-                                  lineHeight="1"
-                                  color="#e5e2e1"
-                                  opacity="0.04"
-                                  userSelect="none"
-                                  transition="opacity 0.5s ease"
-                                  className="group-hover-watermark-strong"
-                                  aria-hidden="true"
-                                >
-                                  {project.title?.charAt(0)?.toUpperCase() ?? 'P'}
-                                </Text>
-                              </Box>
-                              <Box
-                                position="absolute"
-                                top="50%"
-                                left="0"
-                                right="0"
-                                h="1px"
-                                bg="#524533"
-                                opacity="0.5"
-                              />
-                              <Box
-                                position="absolute"
-                                bottom="0"
-                                left="0"
-                                right="0"
-                                h="2px"
-                                bg="#ffb000"
-                                opacity="0.35"
-                                transition="opacity 0.3s ease"
-                                className="group-hover-amber-bar"
-                              />
-                            </Box>
-                          )}
+                          </Box>
+                        ) : (
                           <Box
-                            position="absolute"
-                            top="0"
-                            right="0"
-                            p="4"
-                            opacity="0"
-                            transition="opacity 0.2s ease"
-                            className="group-hover-reveal"
+                            position="relative"
+                            aspectRatio="16 / 9"
+                            border="1px solid"
+                            borderColor="#524533"
+                            overflow="hidden"
+                            className="fallback-grid-lines"
+                            display="grid"
+                            placeItems="center"
+                            mb="6"
+                            aria-hidden="true"
                           >
                             <Box
-                              bg="#ffb000"
-                              color="#432c00"
-                              px="3"
-                              py="1"
-                              fontFamily="JetBrains Mono, monospace"
-                              fontSize="10px"
-                              fontWeight="bold"
+                              fontFamily="Newsreader, serif"
+                              fontStyle="italic"
+                              fontSize="96px"
+                              lineHeight="1"
+                              color="#ffb000"
+                              opacity="0.3"
+                              userSelect="none"
                             >
-                              {t('project.case-study').toUpperCase()}
+                              {project.title?.charAt(0)?.toUpperCase()}
                             </Box>
                           </Box>
-                        </Box>
+                        )}
                         <Flex justifyContent="space-between" alignItems="start" mb="2">
                           <Heading
                             as="h2"
@@ -296,7 +263,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                             fontStyle="normal"
                             fontFamily="Manrope, sans-serif"
                             transition="color 0.2s ease"
-                            className="group-hover-amber"
+                            className="group-hover-amber group-hover-underline"
                           >
                             {project.title}
                           </Heading>
@@ -305,7 +272,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                             fontSize="sm"
                             color="#9f8e78"
                           >
-                            {project.date?.slice(0, 4)}
+                            {yearLabel(project.date?.slice(0, 4))}
                           </Text>
                         </Flex>
                         {project.category?.name && (
@@ -394,104 +361,41 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 </Text>
                 <Box h="1px" w="full" bg="#524533" />
               </Flex>
-              <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap="8">
-                {archiveProjects.slice(0, 9).map((project, index) => {
-                  const imageUrl =
-                    getMediaUrl(
-                      project.media?.[0]?.url,
-                      { height: 360 },
-                      import.meta.env.PUBLIC_API_URL
-                    ) ?? '/images/placeholder-project.jpg';
+              <Grid
+                gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+                gap="8"
+                alignItems="start"
+              >
+                {archiveGridProjects.map((project) => {
                   return (
                     <Link
                       href={`/${locale}/projects/${project.slug}`}
                       display="block"
                       w="full"
                       position="relative"
+                      overflow="hidden"
                       bg="#1c1b1b"
                       border="1px solid"
                       borderColor="#524533"
                       p="6"
+                      textDecorationLine="none"
                       className="group blocky-shadow blocky-shadow-hover"
                     >
                       <Box
                         position="absolute"
-                        top="-3"
-                        left="-3"
-                        px="2"
-                        py="1"
-                        bg="#353534"
-                        border="1px solid"
-                        borderColor="#524533"
-                        fontFamily="JetBrains Mono, monospace"
-                        fontSize="9px"
-                        color="#ffd597"
+                        bottom="-24px"
+                        right="-8px"
+                        fontFamily="Newsreader, serif"
+                        fontStyle="italic"
+                        fontSize="120px"
+                        lineHeight="1"
+                        color="#e5e2e1"
+                        opacity="0.04"
+                        userSelect="none"
+                        pointerEvents="none"
+                        aria-hidden="true"
                       >
-                        Project {String(index + 1).padStart(3, '0')}
-                      </Box>
-                      <Box
-                        position="relative"
-                        aspectRatio="1 / 1"
-                        border="1px solid"
-                        borderColor="#524533"
-                        overflow="hidden"
-                        className="image-muted-soft"
-                        mb="6"
-                      >
-                        {project.media?.[0]?.url ? (
-                          <img
-                            src={imageUrl}
-                            alt=""
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                          />
-                        ) : (
-                          <Box
-                            position="absolute"
-                            inset="0"
-                            bgGradient="to-br"
-                            gradientFrom="#1c1b1b"
-                            gradientVia="#222"
-                            gradientTo="#191919"
-                            className="fallback-grid-lines"
-                          >
-                            <Box position="absolute" right="-6" bottom="-4">
-                              <Text
-                                fontFamily="Newsreader, serif"
-                                fontStyle="italic"
-                                fontSize="140px"
-                                lineHeight="1"
-                                color="#e5e2e1"
-                                opacity="0.04"
-                                userSelect="none"
-                                transition="opacity 0.5s ease"
-                                className="group-hover-watermark-strong"
-                                aria-hidden="true"
-                              >
-                                {project.title?.charAt(0)?.toUpperCase() ?? 'P'}
-                              </Text>
-                            </Box>
-                            <Box
-                              position="absolute"
-                              left="50%"
-                              top="0"
-                              bottom="0"
-                              w="1px"
-                              bg="#524533"
-                              opacity="0.4"
-                            />
-                            <Box
-                              position="absolute"
-                              bottom="0"
-                              left="0"
-                              right="0"
-                              h="2px"
-                              bg="#ffb000"
-                              opacity="0.35"
-                              transition="opacity 0.3s ease"
-                              className="group-hover-amber-bar"
-                            />
-                          </Box>
-                        )}
+                        {project.title?.charAt(0)?.toUpperCase()}
                       </Box>
                       <Flex justifyContent="space-between" alignItems="center" mb="2">
                         <Heading
@@ -500,6 +404,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                           fontWeight="bold"
                           fontStyle="normal"
                           fontFamily="Manrope, sans-serif"
+                          className="group-hover-underline"
                         >
                           {project.title}
                         </Heading>
@@ -508,7 +413,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                           fontSize="10px"
                           color="#9f8e78"
                         >
-                          {project.date?.slice(0, 4)}
+                          {yearLabel(project.date?.slice(0, 4))}
                         </Text>
                       </Flex>
                       <Text color="#c7c6c6" fontSize="xs" lineHeight="1.7" mb="4">
@@ -547,6 +452,66 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                   );
                 })}
               </Grid>
+              {archiveProjects.length > 9 && (
+                <Stack gap="1px" bg="#524533" border="1px solid" borderColor="#524533">
+                  {archiveProjects.slice(9).map((project) => (
+                    <Link
+                      href={`/${locale}/projects/${project.slug}`}
+                      display="block"
+                      w="full"
+                      bg="#1c1b1b"
+                      p="4"
+                      textDecorationLine="none"
+                      className="group"
+                      _hover={{ bg: '#131313' }}
+                      transition="background-color 0.2s ease"
+                    >
+                      <Flex
+                        justifyContent="space-between"
+                        alignItems="center"
+                        gap="4"
+                        flexWrap="wrap"
+                      >
+                        <Stack gap="1" minW="0">
+                          <Heading
+                            as="h3"
+                            fontSize="md"
+                            fontWeight="bold"
+                            fontStyle="normal"
+                            fontFamily="Manrope, sans-serif"
+                            className="group-hover-amber group-hover-underline"
+                            transition="color 0.2s ease"
+                          >
+                            {project.title}
+                          </Heading>
+                          {project.category?.name && (
+                            <Text
+                              fontFamily="JetBrains Mono, monospace"
+                              fontSize="9px"
+                              textTransform="uppercase"
+                              color="#9f8e78"
+                            >
+                              {project.category.name}
+                            </Text>
+                          )}
+                        </Stack>
+                        <Flex gap="4" alignItems="center" flexShrink="0">
+                          <Text
+                            fontFamily="JetBrains Mono, monospace"
+                            fontSize="10px"
+                            color="#9f8e78"
+                          >
+                            {yearLabel(project.date?.slice(0, 4))}
+                          </Text>
+                          <Text color="#ffb000" fontSize="sm">
+                            →
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    </Link>
+                  ))}
+                </Stack>
+              )}
             </Stack>
           </>
         )

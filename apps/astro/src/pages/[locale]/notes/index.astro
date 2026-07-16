@@ -14,14 +14,17 @@ export const prerender = false;
 const PAGE_SIZE = 10;
 
 const { locale } = Astro.params;
-const page =
-  Astro.url.searchParams.get('page') && !isNaN(Number(Astro.url.searchParams.get('page')))
-    ? Number(Astro.url.searchParams.get('page'))
-    : 1;
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
+
+const rawPage = Astro.url.searchParams.get('page');
+const parsedPage = rawPage === null ? 1 : Number(rawPage);
+if (rawPage !== null && (!Number.isInteger(parsedPage) || parsedPage < 1)) {
+  return Astro.redirect(`/${locale}/notes`);
+}
+const page = parsedPage;
 
 const headers = {
   Authorization: undefined as unknown as 'Bearer hoge'
@@ -29,54 +32,91 @@ const headers = {
 const t = useTranslations(locale);
 const pageTitle = `${t('common.note')} | ${t('common.name')}`;
 
-let sharedArticlesList: any[] | undefined = undefined;
-try {
+const fetchSharePage = async (offset: number, pageLimit: number) => {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 5000);
-  const shareRequest = await outlineClient.POST('/shares.list', {
-    body: {
-      sort: 'createdAt',
-      direction: 'DESC',
-      limit: PAGE_SIZE,
-      offset: (page - 1) * PAGE_SIZE
-    },
-    headers,
-    signal: controller.signal
-  });
-  clearTimeout(timeout);
-  if (shareRequest.response.ok) {
-    sharedArticlesList = shareRequest.data?.data;
+  try {
+    return await outlineClient.POST('/shares.list', {
+      body: {
+        sort: 'createdAt',
+        direction: 'DESC',
+        limit: pageLimit,
+        offset
+      },
+      headers,
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timeout);
   }
-} catch {
-  // CMS unavailable or timeout — render fallback
+};
+
+const fetchAllShares = async () => {
+  const shares: any[] = [];
+  const pageLimit = 100;
+  let offset = 0;
+  while (true) {
+    const shareRequest = await fetchSharePage(offset, pageLimit);
+    if (!shareRequest.response.ok) return undefined;
+    const rows = shareRequest.data?.data ?? [];
+    shares.push(...rows);
+    if (rows.length < (shareRequest.data?.pagination?.limit ?? pageLimit)) break;
+    offset += rows.length;
+  }
+  return shares;
+};
+
+let sharedArticlesList: any[] | undefined = undefined;
+for (let attempt = 0; attempt < 2 && !sharedArticlesList; attempt++) {
+  try {
+    sharedArticlesList = await fetchAllShares();
+  } catch {
+    sharedArticlesList = undefined;
+  }
 }
 
-const hasNextPage = (sharedArticlesList?.length ?? 0) >= PAGE_SIZE;
+const allArticles = (sharedArticlesList ?? []).filter(Boolean);
+if (sharedArticlesList && allArticles.length > 0) {
+  const lastPage = Math.ceil(allArticles.length / PAGE_SIZE);
+  if (page > lastPage) {
+    return Astro.redirect(
+      lastPage === 1 ? `/${locale}/notes` : `/${locale}/notes?page=${lastPage}`
+    );
+  }
+}
+const visibleArticles = allArticles.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+const hasNextPage = allArticles.length > page * PAGE_SIZE;
 const hasPrevPage = page > 1;
-const visibleArticles = (sharedArticlesList ?? []).filter(Boolean);
+const showHero = page === 1;
 const collectionCount = new Set(
-  visibleArticles.map((article) => article.collectionName).filter(Boolean)
+  allArticles.map((article) => article.collectionName).filter(Boolean)
 ).size;
-const latestNoteDate = visibleArticles[0]?.createdAt
-  ? formatMonthYear(parseISO(visibleArticles[0].createdAt), locale)
+const latestNoteDate = allArticles[0]?.createdAt
+  ? formatMonthYear(parseISO(allArticles[0].createdAt), locale)
   : '----';
 
-Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+const makeExcerpt = (summary: unknown, max: number) => {
+  const cleaned = String(summary ?? '')
+    .replace(/https?:\/\/\S+/g, '')
+    .replace(/\(image\)/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!cleaned) return null;
+  return cleaned.length > max ? `${cleaned.slice(0, max).trimEnd()}...` : cleaned;
+};
+
+Astro.response.headers.set(
+  'CDN-Cache-Control',
+  sharedArticlesList
+    ? 'public, max-age=86400, must-revalidate'
+    : 'public, max-age=60, must-revalidate'
+);
 ---
 
 <MainLayout title={pageTitle} description={t('note.description')}>
   <Container maxW="breakpoint-xl" w="full" className="page-shell">
     <Stack py="8" gap="10">
       <Stack gap="4" borderLeftWidth="2px" borderLeftStyle="solid" borderLeftColor="#ffb000" pl="6">
-        <Text
-          fontFamily="JetBrains Mono, monospace"
-          fontSize="10px"
-          textTransform="uppercase"
-          letterSpacing="0.12em"
-          color="#ffd597"
-        >
-          {t('note.note-label')}
-        </Text>
         <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic">
           {t('note.notes')}
         </Heading>
@@ -85,7 +125,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
         </Text>
       </Stack>
       {
-        !sharedArticlesList || sharedArticlesList.length === 0 ? (
+        !sharedArticlesList || visibleArticles.length === 0 ? (
           <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '8', md: '12' }}>
             <Stack gap="4" alignItems="center" textAlign="center" py="12">
               <Text
@@ -95,7 +135,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 letterSpacing="0.12em"
                 color="#9f8e78"
               >
-                status: unavailable
+                {t('note.status-unavailable')}
               </Text>
               <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
                 {t('note.empty-title')}
@@ -121,10 +161,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                   textTransform="uppercase"
                   color="#9f8e78"
                 >
-                  Page
+                  {t('note.total-notes')}
                 </Text>
                 <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
-                  {String(page).padStart(2, '0')}
+                  {allArticles.length}
                 </Text>
               </Stack>
               <Stack className="note-signal-card" p="5" gap="2">
@@ -134,10 +174,10 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                   textTransform="uppercase"
                   color="#9f8e78"
                 >
-                  Collections
+                  {t('note.collections')}
                 </Text>
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#2dd4bf">
-                  {String(collectionCount).padStart(2, '0')}
+                <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+                  {collectionCount}
                 </Text>
               </Stack>
               <Stack bg="#131313" p="5" gap="2">
@@ -147,7 +187,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                   textTransform="uppercase"
                   color="#9f8e78"
                 >
-                  Latest
+                  {t('note.latest')}
                 </Text>
                 <Text fontFamily="JetBrains Mono, monospace" fontSize="lg" color="#ffd597">
                   {latestNoteDate}
@@ -155,128 +195,49 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
               </Stack>
             </Grid>
             <Stack gap="4">
-              {sharedArticlesList?.map((data, index) => {
-                if (!data) return null;
-                const { id, documentTitle, collectionName, documentSummary, createdAt } =
-                  data as typeof data & {
-                    collectionName: string;
-                    documentSummary: string;
-                    documentCreatedAt: string;
-                  };
-
-                const isHero = index === 0;
-
-                if (isHero) {
-                  return (
-                    <Link href={`/${locale}/notes/${id}`}>
-                      <Box
-                        border="1px solid"
-                        borderColor="#524533"
-                        p={{ base: '6', md: '10' }}
-                        _hover={{ transform: 'translate(-2px, -2px)' }}
-                        transition="transform 0.2s ease"
-                        className="card-hover-amber note-feature-card"
-                      >
-                        <Grid gridTemplateColumns={{ base: '1fr', lg: '8fr 3fr' }} gap="8">
-                          <Stack gap={4}>
-                            <Text
-                              fontFamily="JetBrains Mono, monospace"
-                              fontSize="10px"
-                              textTransform="uppercase"
-                              letterSpacing="0.12em"
-                              color="#2dd4bf"
-                            >
-                              Latest note
-                            </Text>
-                            <Heading
-                              as="h2"
-                              fontSize={{ base: '4xl', md: '5xl' }}
-                              fontStyle="italic"
-                              lineHeight="0.95"
-                            >
-                              {documentTitle}
-                            </Heading>
-                            <Wrap
-                              fontSize="sm"
-                              color="#9f8e78"
-                              fontFamily="JetBrains Mono, monospace"
-                            >
-                              <Text>{collectionName}</Text> |{' '}
-                              <Text>
-                                {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
-                              </Text>
-                            </Wrap>
-                            <Text color="#c7c6c6" maxW="3xl" fontSize="md" lineHeight="1.7">
-                              {documentSummary.substring(0, 220) + '...'}
-                            </Text>
-                          </Stack>
-                          <Stack
-                            borderLeft={{ base: '0', lg: '1px solid' }}
-                            borderTop={{ base: '1px solid', lg: '0' }}
-                            borderColor="#524533"
-                            pl={{ base: '0', lg: '6' }}
-                            pt={{ base: '6', lg: '0' }}
-                            justifyContent="space-between"
-                          >
-                            <Text
-                              fontFamily="JetBrains Mono, monospace"
-                              fontSize="10px"
-                              textTransform="uppercase"
-                              color="#9f8e78"
-                            >
-                              Archive ref
-                            </Text>
-                            <Text
-                              fontFamily="JetBrains Mono, monospace"
-                              fontSize="2xl"
-                              color="#ffb000"
-                            >
-                              {(id ?? '').slice(0, 6).toUpperCase()}
-                            </Text>
-                          </Stack>
-                        </Grid>
-                      </Box>
-                    </Link>
-                  );
-                }
-                return null;
-              })}
-              <Grid gap="4" gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}>
-                {sharedArticlesList?.slice(1).map((data) => {
-                  if (!data) return null;
+              {showHero &&
+                visibleArticles.slice(0, 1).map((data) => {
                   const { id, documentTitle, collectionName, documentSummary, createdAt } =
                     data as typeof data & {
                       collectionName: string;
                       documentSummary: string;
                       documentCreatedAt: string;
                     };
+                  const excerpt = makeExcerpt(documentSummary, 220);
 
                   return (
-                    <Link href={`/${locale}/notes/${id}`} style={{ minWidth: 0 }}>
+                    <Link
+                      href={`/${locale}/notes/${id}`}
+                      display="block"
+                      w="full"
+                      textDecorationLine="none"
+                      className="group"
+                    >
                       <Box
                         border="1px solid"
                         borderColor="#524533"
-                        p="6"
-                        h="full"
+                        p={{ base: '6', md: '10' }}
+                        w="full"
                         _hover={{ transform: 'translate(-2px, -2px)' }}
                         transition="transform 0.2s ease"
-                        className="card-hover-amber note-signal-card"
+                        className="card-hover-amber note-feature-card"
                       >
-                        <Stack gap={3}>
+                        <Stack gap={4}>
                           <Text
                             fontFamily="JetBrains Mono, monospace"
                             fontSize="10px"
                             textTransform="uppercase"
                             letterSpacing="0.12em"
-                            color="#ffd597"
+                            color="#ffb000"
                           >
-                            Note
+                            {t('note.latest-note')}
                           </Text>
                           <Heading
-                            as="h4"
-                            fontSize={{ base: '2xl', md: '3xl' }}
+                            as="h2"
+                            fontSize={{ base: '4xl', md: '5xl' }}
                             fontStyle="italic"
-                            overflowWrap="anywhere"
+                            lineHeight="0.95"
+                            className="group-hover-underline"
                           >
                             {documentTitle}
                           </Heading>
@@ -290,14 +251,79 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                               {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
                             </Text>
                           </Wrap>
-                          <Text color="#c7c6c6" fontSize="sm">
-                            {documentSummary.substring(0, 100) + '...'}
-                          </Text>
+                          {excerpt && (
+                            <Text color="#c7c6c6" maxW="3xl" fontSize="md" lineHeight="1.7">
+                              {excerpt}
+                            </Text>
+                          )}
                         </Stack>
                       </Box>
                     </Link>
                   );
                 })}
+              <Grid gap="4" gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}>
+                {(showHero ? visibleArticles.slice(1) : visibleArticles).map(
+                  (data, index, cards) => {
+                    const { id, documentTitle, collectionName, documentSummary, createdAt } =
+                      data as typeof data & {
+                        collectionName: string;
+                        documentSummary: string;
+                        documentCreatedAt: string;
+                      };
+                    const excerpt = makeExcerpt(documentSummary, 100);
+                    const spansRow = cards.length % 2 === 1 && index === cards.length - 1;
+
+                    return (
+                      <Link
+                        href={`/${locale}/notes/${id}`}
+                        display="block"
+                        w="full"
+                        h="full"
+                        minW="0"
+                        gridColumn={spansRow ? { md: 'span 2' } : undefined}
+                        textDecorationLine="none"
+                        className="group"
+                      >
+                        <Box
+                          border="1px solid"
+                          borderColor="#524533"
+                          p="6"
+                          h="full"
+                          _hover={{ transform: 'translate(-2px, -2px)' }}
+                          transition="transform 0.2s ease"
+                          className="card-hover-amber note-signal-card"
+                        >
+                          <Stack gap={3}>
+                            <Heading
+                              as="h4"
+                              fontSize={{ base: '2xl', md: '3xl' }}
+                              fontStyle="italic"
+                              overflowWrap="anywhere"
+                              className="group-hover-underline"
+                            >
+                              {documentTitle}
+                            </Heading>
+                            <Wrap
+                              fontSize="sm"
+                              color="#9f8e78"
+                              fontFamily="JetBrains Mono, monospace"
+                            >
+                              <Text>{collectionName}</Text> |{' '}
+                              <Text>
+                                {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
+                              </Text>
+                            </Wrap>
+                            {excerpt && (
+                              <Text color="#c7c6c6" fontSize="sm">
+                                {excerpt}
+                              </Text>
+                            )}
+                          </Stack>
+                        </Box>
+                      </Link>
+                    );
+                  }
+                )}
               </Grid>
             </Stack>
             {(hasPrevPage || hasNextPage) && (
@@ -319,19 +345,17 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                 {hasPrevPage && (
                   <a
                     href={page === 2 ? `/${locale}/notes` : `/${locale}/notes?page=${page - 1}`}
-                    style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid #524533;background:#1c1b1b;color:#ffd597;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;text-decoration:none;transition:border-color 0.25s ease"
-                    class="card-hover-amber"
+                    class="notes-pagination-link card-hover-amber"
                   >
-                    ← {t('note.previous-entry')}
+                    ← {t('note.newer-notes')}
                   </a>
                 )}
                 {hasNextPage && (
                   <a
                     href={`/${locale}/notes?page=${page + 1}`}
-                    style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid #524533;background:#1c1b1b;color:#ffd597;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;text-decoration:none;transition:border-color 0.25s ease"
-                    class="card-hover-amber"
+                    class="notes-pagination-link card-hover-amber"
                   >
-                    {t('note.next-entry')} →
+                    {t('note.older-notes')} →
                   </a>
                 )}
               </Box>
