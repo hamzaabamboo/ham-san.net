@@ -22,13 +22,52 @@ const { title, description, image } = Astro.props;
       }
     </script>
   </Fragment>
+  <div id="nav-progress" aria-hidden="true"></div>
   <SmoothScroll client:only="react" />
   <Navigation transition:persist="navbar" />
   <DesktopSidebar transition:persist="sidebar" />
   <div class="shell-content">
-    <main class="flex-1 relative">
+    <main class="shell-main">
       <slot />
     </main>
     <Footer transition:persist="footer" />
   </div>
 </BaseLayout>
+
+<style is:global>
+  #nav-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #ffb000;
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  #nav-progress.loading {
+    opacity: 1;
+    transform: scaleX(0.9);
+    transition: transform 4s cubic-bezier(0.1, 0.7, 0.2, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #nav-progress.loading {
+      transform: scaleX(1);
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:before-preparation', () => {
+    document.getElementById('nav-progress')?.classList.add('loading');
+  });
+  document.addEventListener('astro:page-load', () => {
+    document.getElementById('nav-progress')?.classList.remove('loading');
+  });
+</script>

@@ -34,6 +34,14 @@ export const theme = {
         animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)'
       }
     },
+    kanatapeek: {
+      '0%, 75%, 100%': {
+        transform: 'scaleX(-100%) translate(100%,100%)'
+      },
+      '25%, 50%': {
+        transform: 'scaleX(-100%) translate(0,0)'
+      }
+    },
     'fade-in-up': {
       '0%': {
         opacity: '0',

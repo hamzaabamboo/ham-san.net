@@ -1,13 +1,14 @@
 ---
-import { Box, Container, Flex, Stack } from 'styled-system/jsx';
+import { Container, Flex, Stack } from 'styled-system/jsx';
 import { Text } from '~/components/ui/text';
-import { getLangFromUrl } from '~/i18n/utils';
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<MainLayout title="404 | Not Found">
+<MainLayout title={`404 | ${t('common.page-not-found')}`}>
   <Container maxW="breakpoint-xl" className="page-shell">
     <Flex minH="70vh" alignItems="center" justifyContent="center" px={{ base: '6', md: '10' }}>
       <Stack gap="0" alignItems="center" textAlign="center" maxW="520px">
@@ -19,7 +20,7 @@ const lang = getLangFromUrl(Astro.url);
           color="#9f8e78"
           mb="6"
         >
-          Page not found
+          {t('common.page-not-found')}
         </Text>
 
         <Text
@@ -43,7 +44,7 @@ const lang = getLangFromUrl(Astro.url);
           color="#e5e2e1"
           mb="6"
         >
-          Path not found.
+          {t('common.not-found-heading')}
         </Text>
 
         <Text
@@ -53,26 +54,14 @@ const lang = getLangFromUrl(Astro.url);
           color="#c7c6c6"
           mb="10"
         >
-          The requested route does not exist or has been relocated.
+          {t('common.not-found-description')}
         </Text>
 
         <Flex gap="3" flexWrap="wrap" justifyContent="center">
-          <a href={`/${lang}/`} class="not-found-cta"> Return home </a>
-          <a href={`/${lang}/projects`} class="not-found-link"> Projects </a>
-          <a href={`/${lang}/contact`} class="not-found-link"> Contact </a>
+          <a href={`/${lang}/`} class="not-found-cta"> {t('common.return-home')} </a>
+          <a href={`/${lang}/projects`} class="not-found-link"> {t('common.projects')} </a>
+          <a href={`/${lang}/contact`} class="not-found-link"> {t('common.contact')} </a>
         </Flex>
-
-        <Box mt="12" pt="8" borderTop="1px solid #524533" w="full">
-          <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
-            letterSpacing="0.1em"
-            color="#4c4e4e"
-          >
-            404
-          </Text>
-        </Box>
       </Stack>
     </Flex>
   </Container>

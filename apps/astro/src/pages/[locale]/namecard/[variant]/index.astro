@@ -69,6 +69,7 @@ const Image = styled.img;
     minW="screen"
     minH="screen"
     alignItems="center"
+    bgColor="#bf99b0"
     style={{ '--main-color': color } as Record<string, string>}
   >
     <Box
@@ -77,6 +78,7 @@ const Image = styled.img;
       left="0"
       w="full"
       h="full"
+      bgColor="#bf99b0"
       backgroundImage="url('https://assets.st-note.com/production/uploads/images/121975199/rectangle_large_type_2_64744113d43ef15f0d5c9ad5464e6a8e.jpeg?width=2000&height=2000&fit=bounds&format=jpg&quality=85')"
       backgroundRepeat="no-repeat"
       backgroundSize="cover"
@@ -151,9 +153,17 @@ const Image = styled.img;
       <Box position="absolute" top="0" right="0" animation={'pyon'}>
         <Image w="400px" translateX="15%" src={kaho1.src} alt="日野下花帆" />
       </Box>
-      <Box position="fixed" bottom="0" left="0" overflow="hidden">
+      <Box
+        display={{ base: 'none', md: 'block' }}
+        position="fixed"
+        bottom="0"
+        left="0"
+        overflow="hidden"
+        pointerEvents="none"
+      >
         <Image
           animation="kanatapeek"
+          pointerEvents="none"
           transform="scaleX(-100%)"
           src={kanataPeek.src}
           alt="彼方このえ"

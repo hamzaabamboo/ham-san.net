@@ -39,5 +39,11 @@ export const animations = defineTokens.animations({
   },
   spin: {
     value: 'spin 1s linear infinite'
+  },
+  pyon: {
+    value: 'pyon 2s linear infinite'
+  },
+  kanatapeek: {
+    value: 'kanatapeek 4s ease-in infinite'
   }
 });

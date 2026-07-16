@@ -32,7 +32,7 @@ export const DEFAULT_NAMECARDS: DefaultNamecardData[] = [
         secondRow: '鬼頭明里の里民、タイ支部 🇹🇭',
         name: 'ハムP',
         nameSubtitle: 'はむぴー／HamP',
-        message: 'สวัสดีครับ!（サワディーカー）',
+        message: 'สวัสดีครับ!（サワディークラップ）',
         contacts: defaultContacts
       }),
       frontRail: createDefaultFrontRailContent({
@@ -63,7 +63,7 @@ export const DEFAULT_NAMECARDS: DefaultNamecardData[] = [
         secondRow: '蓮ノ空のこと好き好きクラブのみなさん',
         name: 'ハムP',
         nameSubtitle: 'はむぴー／HamP',
-        message: 'สวัสดีครับ!（サワディーカー）',
+        message: 'สวัสดีครับ!（サワディークラップ）',
         contacts: defaultContacts
       }),
       frontRail: createDefaultFrontRailContent({
@@ -104,7 +104,7 @@ export const DEFAULT_NAMECARDS: DefaultNamecardData[] = [
         secondRow: 'アッシュくんの爪研ぎ、タイ支部 🇹🇭',
         name: 'ハムP',
         nameSubtitle: 'はむぴー／HamP',
-        message: 'สวัสดีครับ!（サワディーカー）',
+        message: 'สวัสดีครับ!（サワディークラップ）',
         contacts: defaultContacts
       }),
       frontRail: createDefaultFrontRailContent({
@@ -132,7 +132,7 @@ export const DEFAULT_NAMECARDS: DefaultNamecardData[] = [
         secondRow: 'L高生、バンコクサテライト 🇹🇭',
         name: 'ハムP',
         nameSubtitle: 'はむぴー／HamP',
-        message: 'สวัสดีครับ!（サワディーカー）',
+        message: 'สวัสดีครับ!（サワディークラップ）',
         contacts: defaultContacts
       }),
       frontRail: createDefaultFrontRailContent({

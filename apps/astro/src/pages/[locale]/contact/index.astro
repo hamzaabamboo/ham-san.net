@@ -18,17 +18,8 @@ if (!validateLocale(locale)) {
 
 const t = useTranslations(locale);
 const pageTitle = `${t('common.contact')} | ${t('common.name')}`;
-const currentUtcTime = new Intl.DateTimeFormat('en-GB', {
-  timeZone: 'UTC',
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-  hour12: false
-}).format(new Date());
-const officeHoursBody = `${t('contact.office-hours-body')}\n${t('contact.current-time-label')}: ${currentUtcTime} UTC`;
 
 const items = [
-  { label: 'EMAIL', value: 'hello@ham-san.net', url: 'mailto:hello@ham-san.net' },
   { label: 'GITHUB', value: 'hamzaabamboo', url: 'https://github.com/hamzaabamboo' },
   {
     label: 'LINKEDIN',
@@ -57,15 +48,6 @@ const items = [
         pl="8"
         py="4"
       >
-        <Text
-          fontFamily="JetBrains Mono, monospace"
-          fontSize="10px"
-          textTransform="uppercase"
-          letterSpacing="0.2em"
-          color="#ffb000"
-        >
-          contact
-        </Text>
         <Heading
           as="h1"
           fontSize={{ base: '5xl', md: '8xl' }}
@@ -73,9 +55,9 @@ const items = [
           lineHeight="tight"
           letterSpacing="tighter"
         >
-          {t('contact.hero-prefix') + ' '}<Box as="span" color="#ffb000"
+          {t('contact.hero-prefix') + t('contact.hero-separator')}<Box as="span" color="#ffb000"
             >{t('contact.hero-highlight')}</Box
-          >.
+          >{t('contact.hero-suffix')}
         </Heading>
         <Text color="#c7c6c6" fontSize="xl" maxW="2xl" lineHeight="relaxed" mt="2">
           {t('contact.intro')}
@@ -83,7 +65,7 @@ const items = [
       </Stack>
 
       <Grid
-        gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+        gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
         gap="1px"
         bg="#524533"
         border="1px solid"
@@ -96,7 +78,7 @@ const items = [
             textTransform="uppercase"
             color="#9f8e78"
           >
-            Direct
+            {t('contact.direct')}
           </Text>
           <Text fontFamily="JetBrains Mono, monospace" fontSize="sm" color="#ffb000">
             hello@ham-san.net
@@ -109,23 +91,10 @@ const items = [
             textTransform="uppercase"
             color="#9f8e78"
           >
-            Namecards
+            {t('contact.namecards')}
           </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#2dd4bf">
-            {String(NAMECARDS.length).padStart(2, '0')}
-          </Text>
-        </Stack>
-        <Stack bg="#131313" p="5" gap="2">
-          <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
-            color="#9f8e78"
-          >
-            UTC
-          </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffd597">
-            {currentUtcTime.slice(0, 5)}
+          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+            {NAMECARDS.length}
           </Text>
         </Stack>
       </Grid>
@@ -144,7 +113,7 @@ const items = [
             </Text>
             <Grid gridTemplateColumns="1fr" gap="2">
               {
-                items.map((item, index) => (
+                items.map((item) => (
                   <Link
                     href={item.url}
                     target={item.url.startsWith('mailto:') ? undefined : '_blank'}
@@ -156,15 +125,6 @@ const items = [
                     p="4"
                     className="group contact-social-card"
                   >
-                    <Text
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="10px"
-                      color="#9f8e78"
-                      className="group-hover-amber"
-                      mb="2"
-                    >
-                      {String(index + 1).padStart(2, '0')}/
-                    </Text>
                     <Text fontWeight="bold" fontSize="sm">
                       {item.label}
                     </Text>
@@ -235,8 +195,16 @@ const items = [
                 fontSize="10px"
                 textTransform="uppercase"
               >
-                <Text>Default card</Text>
-                <Text>{t('contact.namecards')}</Text>
+                <Text>{t('contact.default-card')}</Text>
+                <Link
+                  href={`/${locale}/namecard/all`}
+                  color="#ffd597"
+                  textTransform="uppercase"
+                  fontSize="10px"
+                  fontFamily="JetBrains Mono, monospace"
+                >
+                  {t('name-card.view-other-namecards')}
+                </Link>
               </Wrap>
             </Stack>
           </Stack>
@@ -319,54 +287,100 @@ const items = [
               </button>
             </form>
           </Stack>
+        </Stack>
+      </Grid>
 
-          <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
-            <Stack border="1px solid" borderColor="#524533" p="6">
-              <Text
-                fontWeight="bold"
-                fontSize="sm"
-                textTransform="uppercase"
-                letterSpacing="0.2em"
-                color="#ffd597"
-                mb="4"
-              >
-                {t('contact.security-brief')}
-              </Text>
-              <Text color="#c7c6c6" fontSize="sm" lineHeight="relaxed">
-                {t('contact.security-brief-body')}
-              </Text>
-            </Stack>
-            <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6">
-              <Text
-                fontWeight="bold"
-                fontSize="sm"
-                textTransform="uppercase"
-                letterSpacing="0.2em"
-                color="#ffd597"
-                mb="4"
-              >
-                {t('contact.office-hours')}
-              </Text>
-              <Text
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                color="#c7c6c6"
-                lineHeight="2.2"
-                whiteSpace="pre-line"
-              >
-                {officeHoursBody}
-              </Text>
-            </Stack>
-          </Grid>
+      <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
+        <Stack border="1px solid" borderColor="#524533" p="6">
+          <Text
+            fontWeight="bold"
+            fontSize="sm"
+            textTransform="uppercase"
+            letterSpacing="0.2em"
+            color="#ffd597"
+            mb="4"
+          >
+            {t('contact.security-brief')}
+          </Text>
+          <Text color="#c7c6c6" fontSize="sm" lineHeight="relaxed">
+            {t('contact.security-brief-body')}
+          </Text>
+        </Stack>
+        <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6">
+          <Text
+            fontWeight="bold"
+            fontSize="sm"
+            textTransform="uppercase"
+            letterSpacing="0.2em"
+            color="#ffd597"
+            mb="4"
+          >
+            {t('contact.office-hours')}
+          </Text>
+          <Text
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            color="#c7c6c6"
+            lineHeight="2.2"
+            whiteSpace="pre-line"
+          >
+            {t('contact.office-hours-body')}
+          </Text>
+          <Text
+            id="contact-utc-time"
+            data-label={t('contact.current-time-label')}
+            fontFamily="JetBrains Mono, monospace"
+            fontSize="10px"
+            color="#c7c6c6"
+            lineHeight="2.2"
+          />
         </Stack>
       </Grid>
     </Stack>
   </Container>
 </MainLayout>
 
+<script>
+  const utcFormatter = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'UTC',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+
+  const updateUtcTime = () => {
+    const el = document.getElementById('contact-utc-time');
+    if (el) el.textContent = `${el.dataset.label}: ${utcFormatter.format(new Date())} UTC`;
+  };
+
+  const bindContactForm = () => {
+    const form = document.querySelector<HTMLFormElement>('.contact-form');
+    if (!form || form.dataset.mailtoBound) return;
+    form.dataset.mailtoBound = 'true';
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const label = (id: string) =>
+        document.querySelector(`label[for="${id}"]`)?.textContent?.trim() ?? '';
+      const body = `${label('contact-name')}: ${data.get('name')}\n${label('contact-email')}: ${data.get('email')}\n\n${data.get('message')}`;
+      const subject = String(data.get('subject') ?? '');
+      window.location.href = `${form.action}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  };
+
+  updateUtcTime();
+  bindContactForm();
+  setInterval(updateUtcTime, 1000);
+  document.addEventListener('astro:page-load', () => {
+    updateUtcTime();
+    bindContactForm();
+  });
+</script>
+
 <style>
   .contact-namecard-preview {
-    --namecard-scale: min(1, calc((100vw - 32px) / 91mm));
+    --namecard-scale: min(1, calc((100vw - 82px) / 91mm));
     width: calc(91mm * var(--namecard-scale));
     height: calc(55mm * var(--namecard-scale));
     margin-inline: auto;

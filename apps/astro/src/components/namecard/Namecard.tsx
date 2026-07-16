@@ -39,6 +39,7 @@ export const Namecard = ({
         gap="0"
         width="91mm"
         height="55mm"
+        color="#111"
         bgColor="white"
         _print={{
           pageBreakBefore: 'always',
@@ -65,6 +66,7 @@ export const Namecard = ({
       gap="0"
       width="91mm"
       height="55mm"
+      color="#111"
       bgColor="white"
       _print={{
         printColorAdjust: 'exact'

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { BrandMark } from '~/components/brand/BrandMark';
 import { Languages, languages } from '~/i18n/ui';
+import { useTranslations } from '~/i18n/utils';
 
 const ICONS: Record<string, string> = {
   '/projects': 'work',
@@ -21,8 +22,10 @@ export const Sidebar = ({
   pathname: string;
   links: { label: string; value: string }[];
 }) => {
+  const t = useTranslations(locale);
   const [open, setOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -48,7 +51,13 @@ export const Sidebar = ({
 
     closeButtonRef.current?.focus();
 
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+
     return () => {
+      document.removeEventListener('keydown', onKeyDown);
       document.documentElement.classList.remove('shell-drawer-open');
       document.body.style.position = '';
       document.body.style.top = '';
@@ -66,6 +75,8 @@ export const Sidebar = ({
           element.removeAttribute('inert');
         }
       });
+
+      triggerRef.current?.focus();
     };
   }, [open]);
 
@@ -80,7 +91,12 @@ export const Sidebar = ({
 
   return (
     <>
-      <button onClick={() => setOpen(true)} className="shell-drawer-trigger" aria-label="Open menu">
+      <button
+        ref={triggerRef}
+        onClick={() => setOpen(true)}
+        className="shell-drawer-trigger"
+        aria-label={t('common.menu-open')}
+      >
         <span
           className="material-symbols-outlined"
           style={{ fontSize: '1.25rem' }}
@@ -92,7 +108,12 @@ export const Sidebar = ({
 
       {open &&
         createPortal(
-          <div className="shell-drawer-portal" role="dialog" aria-modal="true" aria-label="Menu">
+          <div
+            className="shell-drawer-portal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('common.menu')}
+          >
             <div className="shell-drawer-overlay" onClick={() => setOpen(false)} />
             <div className="shell-drawer">
               <div className="shell-drawer-header">
@@ -101,7 +122,7 @@ export const Sidebar = ({
                   ref={closeButtonRef}
                   onClick={() => setOpen(false)}
                   className="shell-drawer-close"
-                  aria-label="Close menu"
+                  aria-label={t('common.menu-close')}
                 >
                   <span className="material-symbols-outlined" aria-hidden="true">
                     close
@@ -137,7 +158,7 @@ export const Sidebar = ({
               </nav>
 
               <div className="shell-drawer-locale">
-                <span className="shell-drawer-locale-label">LOCALE</span>
+                <span className="shell-drawer-locale-label">{t('common.language')}</span>
                 <div className="shell-drawer-locale-list">
                   {Object.keys(languages).map((code) => (
                     <a
