@@ -11,6 +11,7 @@ import MainLayout from '~/layouts/MainLayout.astro';
 import StatusRow from '~/components/home/StatusRow.astro';
 import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
+import { projectMonogram } from '~/utils/monogram';
 import { cleanProjectCopy } from '~/utils/project-copy';
 
 export const prerender = false;
@@ -389,7 +390,7 @@ Astro.response.headers.set(
                             right="0"
                             fontFamily="Newsreader, serif"
                             fontStyle="italic"
-                            fontSize="180px"
+                            fontSize="140px"
                             lineHeight="1"
                             color="#e5e2e1"
                             opacity="0.05"
@@ -397,7 +398,7 @@ Astro.response.headers.set(
                             pointerEvents="none"
                             aria-hidden="true"
                           >
-                            {(project.title || 'P')[0]}
+                            {projectMonogram(project.title)}
                           </Box>
                           <Box
                             position="absolute"
@@ -450,7 +451,11 @@ Astro.response.headers.set(
                         <Text fontFamily="JetBrains Mono, monospace" fontSize="10px">
                           {yearLabel(project.date?.slice(0, 4)) ?? t('common.projects')}
                         </Text>
-                        <span class="material-symbols-outlined" style="font-size:14px">
+                        <span
+                          class="material-symbols-outlined"
+                          style="font-size:14px"
+                          aria-hidden="true"
+                        >
                           north_east
                         </span>
                       </Flex>
@@ -500,8 +505,10 @@ Astro.response.headers.set(
               class="card-hover-amber"
               style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid #524533;background-color:#1c1b1b;text-decoration:none;color:inherit"
             >
-              <span class="material-symbols-outlined" style="color: #FFB000; font-size: 2.25rem;"
-                >dark_mode</span
+              <span
+                class="material-symbols-outlined"
+                style="color: #FFB000; font-size: 2.25rem;"
+                aria-hidden="true">dark_mode</span
               >
               <Text
                 fontFamily="JetBrains Mono, monospace"
@@ -517,8 +524,10 @@ Astro.response.headers.set(
               class="card-hover-amber"
               style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid #524533;background-color:#1c1b1b;text-decoration:none;color:inherit"
             >
-              <span class="material-symbols-outlined" style="color: #FFB000; font-size: 2.25rem;"
-                >category</span
+              <span
+                class="material-symbols-outlined"
+                style="color: #FFB000; font-size: 2.25rem;"
+                aria-hidden="true">category</span
               >
               <Text
                 fontFamily="JetBrains Mono, monospace"

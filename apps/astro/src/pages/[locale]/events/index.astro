@@ -270,7 +270,9 @@ const favoriteAttendanceTotal = report?.favoriteArtistAttendance.reduce(
 const favoriteAttendancePct = favoriteAttendanceTotal?.total
   ? (favoriteAttendanceTotal.attended / favoriteAttendanceTotal.total) * 100
   : 0;
-const bestFavoriteAttendance = report?.favoriteArtistAttendance[0];
+const bestFavoriteAttendance = [...(report?.favoriteArtistAttendance ?? [])].sort(
+  (a, b) => b.pct - a.pct || b.attended - a.attended || a.name.localeCompare(b.name)
+)[0];
 const eventingStyle = report
   ? report.multiEventDayStats.maxEventsInDay >= 10
     ? {
@@ -510,7 +512,9 @@ const highlightCards =
           label: t('common.events-report-most-loyal'),
           value: bestFavoriteAttendance?.name ?? '-',
           sub: bestFavoriteAttendance
-            ? `${pct1(bestFavoriteAttendance.pct)} ${t('common.events-report-attendance-rate')}`
+            ? `${pct1(bestFavoriteAttendance.pct)} ${t('common.events-report-attendance-rate')} (${formatter.format(
+                bestFavoriteAttendance.attended
+              )}/${formatter.format(bestFavoriteAttendance.total)})`
             : '-'
         },
         {
@@ -643,6 +647,7 @@ const reportSections = report
                   <a
                     href={`/${locale}/events`}
                     data-active={selectedYear === 'all' ? 'true' : 'false'}
+                    aria-current={selectedYear === 'all' ? 'page' : undefined}
                   >
                     {t('common.events-report-all-years')}
                   </a>
@@ -650,6 +655,7 @@ const reportSections = report
                     <a
                       href={`/${locale}/events?year=${year}`}
                       data-active={selectedYear === year ? 'true' : 'false'}
+                      aria-current={selectedYear === year ? 'page' : undefined}
                     >
                       {yearLabel(year)}
                     </a>

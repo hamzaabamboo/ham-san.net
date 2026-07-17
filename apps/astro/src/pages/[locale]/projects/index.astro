@@ -8,6 +8,7 @@ import { graphQLSdk } from '~/graphql';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
+import { projectMonogram } from '~/utils/monogram';
 import { cleanProjectCopy } from '~/utils/project-copy';
 import MainLayout from '~/layouts/MainLayout.astro';
 
@@ -257,7 +258,7 @@ if (projectsUnavailable) {
                               opacity="0.3"
                               userSelect="none"
                             >
-                              {project.title?.charAt(0)?.toUpperCase()}
+                              {projectMonogram(project.title)}
                             </Box>
                           </Box>
                         )}
@@ -401,7 +402,7 @@ if (projectsUnavailable) {
                         pointerEvents="none"
                         aria-hidden="true"
                       >
-                        {project.title?.charAt(0)?.toUpperCase()}
+                        {projectMonogram(project.title)}
                       </Box>
                       <Flex justifyContent="space-between" alignItems="center" mb="2">
                         <Heading

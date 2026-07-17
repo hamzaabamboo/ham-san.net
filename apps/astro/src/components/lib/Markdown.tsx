@@ -8,6 +8,7 @@ import { Heading } from '../ui/heading';
 import { Link } from '../ui/link';
 import { Table } from '../ui/table';
 import { Text } from '../ui/text';
+import { formatBareUrlLabel } from '~/utils/link-label';
 import { resolveOutlineAssetUrl } from '~/utils/outline-assets';
 
 export const createHeadingSlugger = () => {
@@ -46,7 +47,6 @@ export const Markdown = ({
   linksPrefix,
   disableLinks,
   disableInternalLinks,
-  openLinkLabel = 'Open',
   headingLevelOffset = 0
 }: {
   content: string;
@@ -55,7 +55,6 @@ export const Markdown = ({
   linksPrefix?: string;
   disableLinks?: string;
   disableInternalLinks?: boolean;
-  openLinkLabel?: string;
   headingLevelOffset?: number;
 }) => {
   const headingAs = (level: number) =>
@@ -66,8 +65,6 @@ export const Markdown = ({
       | 'h4'
       | 'h5'
       | 'h6';
-
-  const toHttpHref = (rawUrl: string) => (rawUrl.startsWith('www.') ? `https://${rawUrl}` : rawUrl);
 
   const unescapedContent = content
     .split(/(```[\s\S]*?```|`[^`\n]*`)/)
@@ -80,68 +77,6 @@ export const Markdown = ({
             .replace(/\\\*/g, '*')
     )
     .join('');
-
-  const autoLabeledUrls = [
-    ...Array.from(
-      unescapedContent.matchAll(/^\s*(?:[-*]\s+)?((?:https?:\/\/|www\.)\S+)\s*$/gm),
-      (match) => match[1]
-    ),
-    ...Array.from(
-      unescapedContent.matchAll(/(?<!!)\[((?:https?:\/\/|www\.)[^\]\s]+)\]\(/g),
-      (match) => match[1]
-    ),
-    ...Array.from(
-      unescapedContent.matchAll(/<((?:https?:\/\/|www\.)[^>\s]+)>/g),
-      (match) => match[1]
-    )
-  ];
-  const hostGroups = new Map<string, Set<string>>();
-  for (const rawUrl of autoLabeledUrls) {
-    try {
-      const href = toHttpHref(rawUrl);
-      const host = new URL(href).hostname.replace(/^www\./, '');
-      const group = hostGroups.get(host) ?? new Set<string>();
-      group.add(href);
-      hostGroups.set(host, group);
-    } catch {
-      continue;
-    }
-  }
-
-  const autoLabelDetails = new Map<string, string>();
-  for (const group of hostGroups.values()) {
-    const hrefs = Array.from(group);
-    if (hrefs.length < 2) continue;
-    const segmentLists = hrefs.map((href) => new URL(href).pathname.split('/').filter(Boolean));
-    const maxDepth = Math.max(...segmentLists.map((segments) => segments.length));
-    let depth = 0;
-    for (let level = 0; level < maxDepth; level += 1) {
-      if (new Set(segmentLists.map((segments) => segments[level] ?? '')).size > 1) {
-        depth = level;
-        break;
-      }
-    }
-    hrefs.forEach((href, index) => {
-      const segment = segmentLists[index][depth] ?? segmentLists[index][0];
-      if (!segment) return;
-      const joiner = '\u2060';
-      const shortSegment = segment.length > 12 ? `${segment.slice(0, 10)}${joiner}…` : segment;
-      autoLabelDetails.set(
-        href,
-        depth > 0 ? `/${joiner}…${joiner}/${joiner}${shortSegment}` : `/${joiner}${shortSegment}`
-      );
-    });
-  }
-
-  const formatBareUrlLabel = (rawUrl: string) => {
-    const href = toHttpHref(rawUrl);
-    try {
-      const host = new URL(href).hostname.replace(/^www\./, '');
-      return `${openLinkLabel} ${host}${autoLabelDetails.get(href) ?? ''}`;
-    } catch {
-      return rawUrl;
-    }
-  };
 
   const slugger = createHeadingSlugger();
 

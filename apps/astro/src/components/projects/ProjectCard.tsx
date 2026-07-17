@@ -2,6 +2,7 @@ import { FaArrowRight, FaGithub, FaGlobe } from 'react-icons/fa';
 import { Box, Center, Stack, styled, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { getMediaUrl } from 'utils/media';
+import { projectMonogram } from '~/utils/monogram';
 import { Enum_Componentutilslink_Type } from '~/graphql/generated/client';
 import { Languages } from '~/i18n/ui';
 import { useTranslations } from '~/i18n/utils';
@@ -110,7 +111,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                   <Text
                     color="#e5e2e1"
                     fontFamily="Newsreader, serif"
-                    fontSize="120px"
+                    fontSize="96px"
                     lineHeight="1"
                     opacity="0.06"
                     userSelect="none"
@@ -118,7 +119,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                     fontStyle="italic"
                     _groupHover={{ opacity: 0.1 }}
                   >
-                    {title?.charAt(0)?.toUpperCase() ?? 'P'}
+                    {projectMonogram(title)}
                   </Text>
                 </Center>
                 <Box

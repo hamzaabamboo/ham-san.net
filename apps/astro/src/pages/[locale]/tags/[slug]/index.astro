@@ -161,24 +161,25 @@ if (!tagUnavailable) {
 
             {experienceItems.map((experience) => {
               const { title, content, position, tags, start, end } = experience;
+              const startDate = start ? parseDate(start as string) : null;
+              const endDate = end ? parseDate(end as string) : null;
+              const duration = startDate
+                ? formatDistanceBetween(startDate, endDate ?? new Date(), locale)
+                : '';
               return (
                 <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6">
                   <Heading as="h2" fontSize="4xl" fontStyle="italic">
                     {title}
                   </Heading>
                   <Wrap fontSize="sm" color="#9f8e78" fontFamily="JetBrains Mono, monospace">
-                    <Text>{`${position}\u00A0|`}</Text>
-                    <Text>
-                      {formatMonthYear(parseDate(start as string), locale)} -{' '}
-                      {end
-                        ? formatMonthYear(parseDate(end as string), locale)
-                        : t('common.present')}{' '}
-                      {`(${formatDistanceBetween(
-                        parseDate(start as string),
-                        end ? parseDate(end as string) : new Date(),
-                        locale
-                      )})`}
-                    </Text>
+                    {position && <Text>{`${position}\u00A0|`}</Text>}
+                    {startDate && (
+                      <Text>
+                        {formatMonthYear(startDate, locale)} -{' '}
+                        {endDate ? formatMonthYear(endDate, locale) : t('common.present')}
+                        {duration ? ` (${duration})` : ''}
+                      </Text>
+                    )}
                   </Wrap>
                   {tags && (
                     <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">

@@ -42,6 +42,7 @@ const formatRelativeUnit = (
 };
 
 export const formatDistanceBetween = (start: Date, end: Date, locale = 'en') => {
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return '';
   const [first, last] = start.getTime() <= end.getTime() ? [start, end] : [end, start];
   const months =
     (last.getFullYear() - first.getFullYear()) * 12 + (last.getMonth() - first.getMonth()) + 1;

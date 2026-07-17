@@ -707,27 +707,26 @@ html:lang(th) h6 {
   }
 }
 
-.credentials-value {
-  color: #ffb000;
-}
-.credentials-value-alt {
-  color: #dbdbdb;
-}
 .credentials-value,
 .credentials-value-alt {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
+  color: #dbdbdb;
 }
 .credentials-signal {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
-  color: #dbdbdb;
+  color: #ffd597;
+  text-decoration-line: underline;
+  text-decoration-color: rgba(255, 176, 0, 0.4);
+  text-underline-offset: 0.2em;
   transition: color 0.15s ease;
 }
 .credentials-signal:hover {
   color: #ffb000;
+  text-decoration-color: #ffb000;
 }
 
 .wireframe-container {

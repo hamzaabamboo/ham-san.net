@@ -174,7 +174,9 @@ const tags = (note as any)?.tags ?? [];
             <Box>
               <a href={`/${locale}/notes`} class="note-cta-button group">
                 <span>{t('note.back-to-posts')}</span>
-                <span class="material-symbols-outlined note-cta-icon">arrow_back</span>
+                <span class="material-symbols-outlined note-cta-icon" aria-hidden="true">
+                  arrow_back
+                </span>
               </a>
             </Box>
           </Stack>
@@ -495,7 +497,9 @@ const tags = (note as any)?.tags ?? [];
             <Stack gap="4">
               <a href={`/${locale}/notes`} class="note-cta-button group">
                 <span>{t('note.back-to-posts')}</span>
-                <span class="material-symbols-outlined note-cta-icon">arrow_back</span>
+                <span class="material-symbols-outlined note-cta-icon" aria-hidden="true">
+                  arrow_back
+                </span>
               </a>
               <a
                 href={outlineUrl}
@@ -504,7 +508,9 @@ const tags = (note as any)?.tags ?? [];
                 class="note-cta-button group"
               >
                 <span>{t('note.read-in-outline')}</span>
-                <span class="material-symbols-outlined note-cta-icon">open_in_new</span>
+                <span class="material-symbols-outlined note-cta-icon" aria-hidden="true">
+                  open_in_new
+                </span>
               </a>
             </Stack>
           </Stack>

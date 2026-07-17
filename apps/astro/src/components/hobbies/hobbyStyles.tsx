@@ -206,7 +206,12 @@ export const hobbyStyles = {
     display: 'grid',
     gap: '6',
     alignContent: 'start',
-    minW: '0'
+    alignSelf: 'start',
+    minW: '0',
+    md: {
+      pos: 'sticky',
+      top: '6'
+    }
   }),
   detailSurface: css({
     border: '1px solid #524533',
