@@ -13,6 +13,7 @@ import { getOutlineSettings } from '~/utils/outline-settings';
 import { parseHobbyContent } from '~/utils/hobby-content';
 import { getHobbyRenderedLinks } from '~/utils/hobby-links';
 import {
+  formatHobbyUpdated,
   getHobbyContentLabel,
   getHobbyCountLabel,
   getHobbyOverviewSummary
@@ -276,14 +277,8 @@ const getEffectiveStatus = (hobby: {
   return hasSourceContent(hobby) ? hobby.status : 'inactive';
 };
 
-const formatUpdated = (date?: string | null) => {
-  const parsed = date ? new Date(date) : null;
-  return parsed && !Number.isNaN(parsed.getTime())
-    ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
-        parsed
-      )
-    : t('hobbies.no-date');
-};
+const formatUpdated = (date?: string | null) =>
+  formatHobbyUpdated({ date, locale, noDateLabel: String(t('hobbies.no-date')) });
 const formatNestedDescription = (childPages?: { title: string }[]) => {
   const titles = (childPages ?? [])
     .map((child) => child.title)
@@ -432,27 +427,28 @@ const hobbies = hobbiesList
                       data-embed={embedType}
                       data-visual={hobby.banner ? 'image' : 'glyph'}
                     >
-                      {hobby.banner ? (
+                      <Box
+                        fontFamily="Newsreader, serif"
+                        fontStyle="italic"
+                        fontSize="64px"
+                        lineHeight="1"
+                        color="#ffb000"
+                        opacity="0.3"
+                        userSelect="none"
+                        aria-hidden="true"
+                        gridArea="1 / 1"
+                      >
+                        {(hobby.title ?? '?').charAt(0).toUpperCase()}
+                      </Box>
+                      {hobby.banner && (
                         <img
                           src={hobby.banner}
                           alt=""
                           class={hobbyThumbnail}
                           loading="lazy"
+                          style="grid-area: 1 / 1; position: relative; z-index: 1"
                           onerror="this.closest('[data-visual]')?.setAttribute('data-visual', 'glyph'); this.remove()"
                         />
-                      ) : (
-                        <Box
-                          fontFamily="Newsreader, serif"
-                          fontStyle="italic"
-                          fontSize="64px"
-                          lineHeight="1"
-                          color="#ffb000"
-                          opacity="0.3"
-                          userSelect="none"
-                          aria-hidden="true"
-                        >
-                          {(hobby.title ?? '?').charAt(0).toUpperCase()}
-                        </Box>
                       )}
                     </Box>
                     <div class={hobbyCardBody}>

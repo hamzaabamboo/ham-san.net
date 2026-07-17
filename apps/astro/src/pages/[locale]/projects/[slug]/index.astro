@@ -11,6 +11,7 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
+import { withLastGood } from '~/utils/cms-cache';
 import type { ProjectFragment, TagFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
@@ -27,7 +28,11 @@ if (!validateLocale(locale)) {
 let project: (ProjectFragment & { id: string }) | undefined;
 let projectUnavailable = false;
 try {
-  const data = await graphQLSdk.getProjectBySlug({ slug });
+  const data = await withLastGood(
+    `project:${slug}`,
+    () => graphQLSdk.getProjectBySlug({ slug }),
+    (result) => !!result?.projects?.[0]
+  );
   const rawProject = data?.projects?.[0] as (ProjectFragment & { id: string }) | undefined;
   project = rawProject ? cleanProjectCopy(rawProject) : undefined;
 } catch {

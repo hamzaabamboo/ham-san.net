@@ -129,6 +129,23 @@ export const getHobbyOverviewSummary = ({
   return source;
 };
 
+export const formatHobbyUpdated = ({
+  date,
+  locale,
+  noDateLabel
+}: {
+  date?: string | null;
+  locale?: string;
+  noDateLabel: string;
+}) => {
+  const parsed = date ? new Date(date) : null;
+  return parsed && !Number.isNaN(parsed.getTime())
+    ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
+        parsed
+      )
+    : noDateLabel;
+};
+
 export const getHobbyCountLabel = ({
   count,
   locale,

@@ -42,15 +42,19 @@ let noteMissing = false;
 let noteUnavailable = false;
 
 try {
-  const noteRequest = await withLastGood(`note:${shareId}:${maybeDocId ?? ''}`, async () => {
-    const request = await outlineClient.POST('/documents.info', {
-      body: maybeDocSegment === 'doc' && maybeDocId ? { shareId, id: maybeDocId } : { shareId }
-    });
-    if (!request.response.ok && ![400, 403, 404].includes(request.response.status)) {
-      throw new Error(`documents.info ${request.response.status}`);
-    }
-    return request;
-  });
+  const noteRequest = await withLastGood(
+    `note:${shareId}:${maybeDocId ?? ''}`,
+    async () => {
+      const request = await outlineClient.POST('/documents.info', {
+        body: maybeDocSegment === 'doc' && maybeDocId ? { shareId, id: maybeDocId } : { shareId }
+      });
+      if (!request.response.ok && ![400, 403, 404].includes(request.response.status)) {
+        throw new Error(`documents.info ${request.response.status}`);
+      }
+      return request;
+    },
+    (request) => request.response.ok
+  );
 
   if (noteRequest.response.ok && noteRequest.data?.data) {
     note = noteRequest.data.data;

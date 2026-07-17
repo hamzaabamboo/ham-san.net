@@ -7,6 +7,7 @@ import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { getHobbyBodyIntro, parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
 import {
+  formatHobbyUpdated,
   getHobbyContentLabel,
   getHobbyOverviewDescription,
   getHobbyOverviewSummary
@@ -51,13 +52,17 @@ if (!cmsUnavailable) {
     return Astro.redirect(`/${locale}/404`);
   }
   try {
-    const documentRequest = await withLastGood(`hobby:${documentId}`, async () => {
-      const request = await fetchHobbyDocument(settings!['hobbies-collection'], documentId);
-      if (request.response.status >= 500) {
-        throw new Error(`documents.info ${request.response.status}`);
-      }
-      return request;
-    });
+    const documentRequest = await withLastGood(
+      `hobby:${documentId}`,
+      async () => {
+        const request = await fetchHobbyDocument(settings!['hobbies-collection'], documentId);
+        if (request.response.status >= 500) {
+          throw new Error(`documents.info ${request.response.status}`);
+        }
+        return request;
+      },
+      (request) => request.response.ok
+    );
     if (documentRequest.response.status >= 500) {
       cmsUnavailable = true;
     } else {
@@ -134,13 +139,11 @@ const statusLabel =
   effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 const banner = resolveHobbyAssetUrl(content.banner);
 const images = content.images.map(resolveHobbyAssetUrl).filter((image): image is string => !!image);
-const updatedDate = content.updatedAt ? new Date(content.updatedAt) : null;
-const updatedLabel =
-  updatedDate && !Number.isNaN(updatedDate.getTime())
-    ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
-        updatedDate
-      )
-    : t('hobbies.no-date');
+const updatedLabel = formatHobbyUpdated({
+  date: content.updatedAt,
+  locale,
+  noDateLabel: String(t('hobbies.no-date'))
+});
 const bodyParts = splitHobbyBodyParts(content.body, content.embeds.length);
 const embedProps = {
   title: data?.title,

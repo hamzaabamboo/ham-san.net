@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import {
+  formatHobbyUpdated,
   getHobbyContentLabel,
   getHobbyCountLabel,
   getHobbyEmbedDescription,
@@ -101,6 +102,21 @@ describe('hobby labels', () => {
         t
       })
     ).toBe('hobbies.overview-empty-page');
+  });
+
+  test('formats hobby updated labels and falls back on bad dates', () => {
+    expect(formatHobbyUpdated({ date: '2026-06-02', locale: 'en', noDateLabel: 'No date' })).toBe(
+      'Jun 2, 2026'
+    );
+    expect(formatHobbyUpdated({ date: null, locale: 'en', noDateLabel: 'No date' })).toBe(
+      'No date'
+    );
+    expect(formatHobbyUpdated({ date: undefined, locale: 'en', noDateLabel: 'No date' })).toBe(
+      'No date'
+    );
+    expect(formatHobbyUpdated({ date: 'not-a-date', locale: 'en', noDateLabel: 'No date' })).toBe(
+      'No date'
+    );
   });
 
   test('formats hobby metric counts with singular and plural templates', () => {

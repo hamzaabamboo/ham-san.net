@@ -10,6 +10,7 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
+import { withLastGood } from '~/utils/cms-cache';
 import type {
   ExperienceFragment,
   GetTagBySlugQuery,
@@ -32,19 +33,29 @@ if (!validateLocale(locale)) {
 
 let tagData: TagData | undefined;
 let tagUnavailable = false;
+const cmsLocale = locale === 'ja' ? 'ja' : 'en';
 try {
-  const data = await graphQLSdk.getTagBySlug({ slug });
-  tagData = data?.tags?.[0] ?? undefined;
-  if (!tagData) {
-    const aboutData = await graphQLSdk.fetchAboutMe({ locale: locale === 'ja' ? 'ja' : 'en' });
-    const match = (aboutData.tags ?? []).find(
-      (tag) => !!tag?.title && !!tag.slug && tagSlug(tag) === slug
-    );
-    if (match?.slug && match.slug !== slug) {
-      const bySlug = await graphQLSdk.getTagBySlug({ slug: match.slug });
-      tagData = bySlug?.tags?.[0] ?? undefined;
-    }
-  }
+  tagData = await withLastGood(
+    `tag:${slug}`,
+    async () => {
+      const data = await graphQLSdk.getTagBySlug({ slug });
+      let tag = data?.tags?.[0] ?? undefined;
+      if (!tag) {
+        const aboutData = await withLastGood(`about:${cmsLocale}`, () =>
+          graphQLSdk.fetchAboutMe({ locale: cmsLocale })
+        );
+        const match = (aboutData.tags ?? []).find(
+          (candidate) => !!candidate?.title && !!candidate.slug && tagSlug(candidate) === slug
+        );
+        if (match?.slug && match.slug !== slug) {
+          const bySlug = await graphQLSdk.getTagBySlug({ slug: match.slug });
+          tag = bySlug?.tags?.[0] ?? undefined;
+        }
+      }
+      return tag;
+    },
+    (tag) => !!tag
+  );
 } catch {
   tagUnavailable = true;
 }
