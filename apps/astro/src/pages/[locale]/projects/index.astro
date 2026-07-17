@@ -6,6 +6,7 @@ import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
 import { useTranslations, validateLocale } from '~/i18n/utils';
+import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { cleanProjectCopy } from '~/utils/project-copy';
 import MainLayout from '~/layouts/MainLayout.astro';
@@ -19,15 +20,16 @@ if (!validateLocale(locale)) {
 }
 
 let projects: any[] = [];
+let projectsUnavailable = false;
 
 try {
-  const data = await graphQLSdk.fetchProjects({ limit: 75 });
+  const data = await withLastGood('projects', () => graphQLSdk.fetchProjects({ limit: 75 }));
   projects = (data?.projects ?? [])
     .map((p) => pickLocale(p, locale))
     .filter((p: any) => !!p)
     .map((p) => cleanProjectCopy(p as any));
 } catch {
-  // CMS unavailable — render with empty data
+  projectsUnavailable = true;
 }
 
 const t = useTranslations(locale);
@@ -54,7 +56,11 @@ const yearLabel = (year?: string) =>
         .find((part) => part.type === 'year')?.value ?? year)
     : year;
 
-Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+if (projectsUnavailable) {
+  Astro.response.status = 503;
+} else {
+  Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+}
 ---
 
 <MainLayout title={pageTitle} description={t('project.intro')}>

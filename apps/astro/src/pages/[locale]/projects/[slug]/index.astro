@@ -25,12 +25,17 @@ if (!validateLocale(locale)) {
 }
 
 let project: (ProjectFragment & { id: string }) | undefined;
+let projectUnavailable = false;
 try {
   const data = await graphQLSdk.getProjectBySlug({ slug });
   const rawProject = data?.projects?.[0] as (ProjectFragment & { id: string }) | undefined;
   project = rawProject ? cleanProjectCopy(rawProject) : undefined;
 } catch {
-  project = undefined;
+  projectUnavailable = true;
+}
+
+if (!projectUnavailable && !project) {
+  return Astro.redirect(`/${locale}/404`);
 }
 const { content, title, banner, links, media, category, date, finishedDate, tags } = project ?? {};
 const bannerUrl = getMediaUrl(banner?.url, {}, import.meta.env.PUBLIC_API_URL);
@@ -46,7 +51,11 @@ const nonNullLinks = (links ?? []).filter((l): l is NonNullable<typeof l> => !!l
 const t = useTranslations(locale);
 const pageTitle = `${title ?? t('common.projects')} | ${t('common.name')}`;
 
-Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+if (projectUnavailable) {
+  Astro.response.status = 503;
+} else {
+  Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+}
 ---
 
 <MainLayout

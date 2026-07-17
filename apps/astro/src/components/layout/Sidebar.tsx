@@ -52,7 +52,27 @@ export const Sidebar = ({
     closeButtonRef.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key === 'Escape') {
+        setOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const dialog = document.querySelector('.shell-drawer-portal');
+      if (!dialog) return;
+      const tabbables = Array.from(
+        dialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
+      );
+      if (tabbables.length === 0) return;
+      const first = tabbables[0];
+      const last = tabbables[tabbables.length - 1];
+      const active = document.activeElement;
+      if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && (active === first || !dialog.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      }
     };
     document.addEventListener('keydown', onKeyDown);
 

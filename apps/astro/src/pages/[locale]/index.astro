@@ -346,7 +346,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                   <a
                     href={`/${locale}/projects/${project.slug}`}
                     class="project-card"
-                    style="display:block;border-right:1px solid #524533;border-bottom:1px solid #524533;overflow:hidden;background:#131313;cursor:pointer;text-decoration:none;color:inherit"
+                    style="display:flex;flex-direction:column;height:100%;border-right:1px solid #524533;border-bottom:1px solid #524533;overflow:hidden;background:#131313;cursor:pointer;text-decoration:none;color:inherit"
                   >
                     <Box
                       position="relative"
@@ -406,7 +406,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                         </Box>
                       )}
                     </Box>
-                    <Box p="6">
+                    <Box p="6" display="flex" flexDirection="column" flex="1">
                       <Flex justify="space-between" align="start" mb="2">
                         <Text
                           fontFamily="Manrope, sans-serif"
@@ -423,11 +423,12 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                         fontSize="sm"
                         fontFamily="Newsreader, serif"
                         fontStyle="italic"
+                        mb="6"
                       >
                         {project.description}
                       </Text>
                       <Flex
-                        mt="6"
+                        mt="auto"
                         pt="4"
                         borderTop="1px solid"
                         borderColor="#524533"
@@ -435,7 +436,11 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-reva
                         align="center"
                         opacity="0.5"
                         className="project-card-footer"
-                        style={{ transition: 'opacity 300ms' }}
+                        style={{
+                          marginTop: 'auto',
+                          paddingTop: '1rem',
+                          transition: 'opacity 300ms'
+                        }}
                       >
                         <Text fontFamily="JetBrains Mono, monospace" fontSize="10px">
                           {yearLabel(project.date?.slice(0, 4)) ?? t('common.projects')}
