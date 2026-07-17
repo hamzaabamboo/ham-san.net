@@ -4,9 +4,22 @@ import { Grid, GridItem, Stack, styled } from 'styled-system/jsx';
 import { Carousel as UICarousel, type RootProps } from '~/components/ui/carousel';
 import { IconButton } from '~/components/ui/icon-button';
 
-export const AppCarousel = (props: Omit<RootProps, 'slideCount'> & { images: string[] }) => {
+export const AppCarousel = (
+  props: Omit<RootProps, 'slideCount'> & {
+    images: string[];
+    previousSlideLabel?: string;
+    nextSlideLabel?: string;
+    gotoSlideLabel?: string;
+  }
+) => {
   const [index, setIndex] = useState(0);
-  const { images, ...rest } = props;
+  const {
+    images,
+    previousSlideLabel = 'Previous slide',
+    nextSlideLabel = 'Next slide',
+    gotoSlideLabel = 'Go to slide',
+    ...rest
+  } = props;
 
   return (
     <Stack>
@@ -34,7 +47,7 @@ export const AppCarousel = (props: Omit<RootProps, 'slideCount'> & { images: str
           </UICarousel.ItemGroup>
           <UICarousel.Control>
             <UICarousel.PrevTrigger asChild>
-              <IconButton size="sm" variant="link" aria-label="Previous Slide">
+              <IconButton size="sm" variant="link" aria-label={previousSlideLabel}>
                 <FaChevronLeft />
               </IconButton>
             </UICarousel.PrevTrigger>
@@ -43,12 +56,12 @@ export const AppCarousel = (props: Omit<RootProps, 'slideCount'> & { images: str
                 <UICarousel.Indicator
                   key={index}
                   index={index}
-                  aria-label={`Goto slide ${index + 1}`}
+                  aria-label={`${gotoSlideLabel} ${index + 1}`}
                 />
               ))}
             </UICarousel.IndicatorGroup>
             <UICarousel.NextTrigger asChild>
-              <IconButton size="sm" variant="link" aria-label="Next Slide">
+              <IconButton size="sm" variant="link" aria-label={nextSlideLabel}>
                 <FaChevronRight />
               </IconButton>
             </UICarousel.NextTrigger>

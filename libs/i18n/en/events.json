@@ -1,5 +1,16 @@
 {
   "other": "Other",
   "busiest-months": "Busiest months",
-  "show-all": "Show all"
+  "show-all": "Show all",
+  "aria-hero-stats": "Headline event statistics",
+  "aria-rail": "Report controls",
+  "aria-status": "Report status",
+  "aria-sections": "Report sections",
+  "aria-year-filter": "Year filter",
+  "aria-overview": "Overview statistics",
+  "aria-preset-grid": "Date range event counts",
+  "aria-highlight-totals": "Highlight totals",
+  "aria-chart-grid": "Chart panels",
+  "aria-metrics-strip": "Secondary event statistics",
+  "aria-analytics": "Event analytics charts"
 }

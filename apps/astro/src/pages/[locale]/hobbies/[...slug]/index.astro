@@ -32,35 +32,62 @@ if (!rootId || (maybeDocSegment && maybeDocSegment !== 'doc')) {
 }
 
 const t = useTranslations(locale);
-const settings = await getOutlineSettings();
 
-if (!settings?.['hobbies-collection']) {
-  return Astro.redirect(`/${locale}/404`);
+let cmsUnavailable = false;
+let settings: Awaited<ReturnType<typeof getOutlineSettings>>;
+try {
+  settings = await getOutlineSettings();
+} catch {
+  cmsUnavailable = true;
 }
 
 const documentId = childId ?? rootId;
-const documentRequest = await outlineClient.POST('/documents.info', {
-  body: { collectionId: settings['hobbies-collection'], id: documentId }
-});
-const data = documentRequest.data?.data;
+const fetchHobbyDocument = (collectionId: string, id: string) =>
+  outlineClient.POST('/documents.info', { body: { collectionId, id } });
+let data: NonNullable<Awaited<ReturnType<typeof fetchHobbyDocument>>['data']>['data'] | undefined;
 
-if (!data) {
+if (!cmsUnavailable) {
+  if (!settings?.['hobbies-collection']) {
+    return Astro.redirect(`/${locale}/404`);
+  }
+  try {
+    const documentRequest = await fetchHobbyDocument(settings['hobbies-collection'], documentId);
+    if (documentRequest.response.status >= 500) {
+      cmsUnavailable = true;
+    } else {
+      data = documentRequest.data?.data;
+    }
+  } catch {
+    cmsUnavailable = true;
+  }
+}
+
+if (!cmsUnavailable && !data) {
   return Astro.redirect(`/${locale}/404`);
 }
 
-const childDocumentsParentId = childId && data.parentDocumentId ? data.parentDocumentId : data.id;
-const childDocumentsRequest = await outlineClient.POST('/documents.list', {
-  body: { parentDocumentId: childDocumentsParentId }
-});
-const childDocuments = (childDocumentsRequest.data?.data ?? [])
+if (cmsUnavailable) {
+  Astro.response.status = 503;
+}
+
+const childDocumentsRequest = data
+  ? await outlineClient
+      .POST('/documents.list', {
+        body: {
+          parentDocumentId: childId && data.parentDocumentId ? data.parentDocumentId : data.id
+        }
+      })
+      .catch(() => null)
+  : null;
+const childDocuments = (childDocumentsRequest?.data?.data ?? [])
   .filter(Boolean)
-  .filter((child) => child.id !== data.id);
+  .filter((child) => child.id !== data?.id);
 const backHref = childId ? `/${locale}/hobbies/${rootId}` : `/${locale}/hobbies`;
 const backLabel = childId ? t('hobbies.back-to-parent') : t('hobbies.back-to-hobbies');
 const content = parseHobbyContent({
-  title: data.title,
-  text: data.text,
-  fallbackUpdatedAt: data.updatedAt ?? data.createdAt
+  title: data?.title ?? '',
+  text: data?.text ?? '',
+  fallbackUpdatedAt: data?.updatedAt ?? data?.createdAt
 });
 const nestedPages = childDocuments.map((child) => ({
   title: child.title ?? 'Untitled',
@@ -79,7 +106,7 @@ const nestedDescription = nestedPages
   .filter(Boolean)
   .slice(0, 3)
   .join(' / ');
-const pageTitle = `${data.title ?? t('common.hobbies')} | ${t('common.name')}`;
+const pageTitle = `${data?.title ?? t('common.hobbies')} | ${t('common.name')}`;
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = getOutlineAssetProxyPath(locale);
 const resolveHobbyAssetUrl = (rawUrl?: string) =>
@@ -109,7 +136,7 @@ const updatedLabel = content.updatedAt
   : t('hobbies.no-date');
 const bodyParts = splitHobbyBodyParts(content.body, content.embeds.length);
 const embedProps = {
-  title: data.title,
+  title: data?.title,
   description: detailDescription,
   body: content.sourceBody,
   images,
@@ -135,129 +162,150 @@ const embedProps = {
   status: effectiveStatus
 };
 
-Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+if (!cmsUnavailable) {
+  Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+}
 ---
 
-<MainLayout title={pageTitle} description={detailDescription || data.title}>
+<MainLayout title={pageTitle} description={detailDescription || data?.title}>
   <div class={cx(hobbyStyles.detail, 'page-shell', 'hobby-detail')}>
     <a class={cx(hobbyStyles.detailBack, 'hobby-meta')} href={backHref}>
       <span aria-hidden="true">←</span>
       <span>{backLabel}</span>
     </a>
 
-    <section class={hobbyStyles.detailHero} data-visual={banner ? 'image' : 'glyph'}>
-      <div class={hobbyStyles.detailHeadline}>
-        <p class={cx(hobbyStyles.detailEyebrow, 'hobby-meta')} data-status={effectiveStatus}>
-          {statusLabel}{hasModule && ` / ${embedLabel}`}
-        </p>
-        <h1 class={hobbyStyles.detailTitle}>{data.title}</h1>
-        {heroDescription && <p class={hobbyStyles.detailDescription}>{heroDescription}</p>}
-        <p class={cx(hobbyStyles.detailUpdated, 'hobby-meta')}>
-          <span>{t('hobbies.last-updated')}</span>
-          <span>/</span>
-          <span>{updatedLabel}</span>
-        </p>
-      </div>
-
-      <div
-        class={hobbyStyles.detailVisual}
-        data-embed={embedType}
-        data-visual={banner ? 'image' : 'glyph'}
-      >
-        {
-          banner ? (
-            <img src={banner} alt="" class={hobbyStyles.detailBanner} />
-          ) : (
-            <HobbyTypeGlyph
-              type={embedType}
-              label={embedLabel}
-              size="watermark"
-              className={hobbyStyles.detailVisualGlyph}
-            />
-          )
-        }
-      </div>
-    </section>
-
-    <section
-      class={hobbyStyles.detailBody}
-      data-has-aside={childDocuments.length > 0 && bodyParts.length > 0}
-    >
-      <div class={hobbyStyles.detailMain}>
-        {
-          bodyParts.length === 0 && childDocuments.length > 0 && (
+    {
+      cmsUnavailable && (
+        <section class={hobbyStyles.detailBody}>
+          <div class={hobbyStyles.detailMain}>
             <div class={hobbyStyles.detailPanel}>
               <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
-                {t('hobbies.learning-resources')}
+                {t('hobbies.status-unavailable')}
               </p>
-              <div class={hobbyStyles.detailNested}>
-                {childDocuments.map((child) => (
-                  <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
-                    <span>{child.title}</span>
-                    <span class="hobby-meta">{t('hobbies.doc-label')}</span>
-                  </a>
-                ))}
-              </div>
+              <h1 class={hobbyStyles.detailTitle}>{t('hobbies.empty-title')}</h1>
+              <p class={hobbyStyles.detailDescription}>{t('hobbies.empty-description')}</p>
             </div>
-          )
-        }
-        {
-          bodyParts.map((part) => {
-            if (part.type === 'markdown') {
-              return (
-                <div class={hobbyStyles.detailSurface}>
-                  <Markdown
-                    content={localizeHobbyMarkdownHeadings({ content: part.content, locale, t })}
-                    assetsPrefix={outlineAssetPrefix}
-                    assetProxyBasePath={outlineAssetProxyPath}
-                    openLinkLabel={t('hobbies.open-link')}
-                    headingLevelOffset={1}
-                  />
-                </div>
-              );
-            }
+          </div>
+        </section>
+      )
+    }
 
-            const embed = content.embeds[part.index];
-            if (!embed) return null;
+    {
+      !cmsUnavailable && (
+        <section class={hobbyStyles.detailHero} data-visual={banner ? 'image' : 'glyph'}>
+          <div class={hobbyStyles.detailHeadline}>
+            <p class={cx(hobbyStyles.detailEyebrow, 'hobby-meta')} data-status={effectiveStatus}>
+              {statusLabel}
+              {hasModule && ` / ${embedLabel}`}
+            </p>
+            <h1 class={hobbyStyles.detailTitle}>{data?.title}</h1>
+            {heroDescription && <p class={hobbyStyles.detailDescription}>{heroDescription}</p>}
+            <p class={cx(hobbyStyles.detailUpdated, 'hobby-meta')}>
+              <span>{t('hobbies.last-updated')}</span>
+              <span>/</span>
+              <span>{updatedLabel}</span>
+            </p>
+          </div>
 
-            return (
-              <HobbyInteractiveEmbed
-                client:load
-                {...embedProps}
-                type={embed.type}
-                moduleTitle={
-                  embed.label === embed.type
-                    ? getHobbyContentLabel({ hasSource: hasSourceContent, type: embed.type, t })
-                    : embed.label
-                }
-                moduleDescription={
-                  hasSourceContent ? getHobbyOverviewDescription(t, embed.type) : detailDescription
-                }
+          <div
+            class={hobbyStyles.detailVisual}
+            data-embed={embedType}
+            data-visual={banner ? 'image' : 'glyph'}
+          >
+            {banner ? (
+              <img src={banner} alt="" class={hobbyStyles.detailBanner} />
+            ) : (
+              <HobbyTypeGlyph
+                type={embedType}
+                label={embedLabel}
+                size="watermark"
+                className={hobbyStyles.detailVisualGlyph}
               />
-            );
-          })
-        }
-      </div>
+            )}
+          </div>
+        </section>
+      )
+    }
 
-      {
-        childDocuments.length > 0 && bodyParts.length > 0 && (
-          <aside class={hobbyStyles.detailAside}>
-            <div class={hobbyStyles.detailPanel}>
-              <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
-                {t('hobbies.learning-resources')}
-              </p>
-              <div class={hobbyStyles.detailNested}>
-                {childDocuments.map((child) => (
-                  <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
-                    <span>{child.title}</span>
-                    <span class="hobby-meta">{t('hobbies.doc-label')}</span>
-                  </a>
-                ))}
+    {
+      !cmsUnavailable && (
+        <section
+          class={hobbyStyles.detailBody}
+          data-has-aside={childDocuments.length > 0 && bodyParts.length > 0}
+        >
+          <div class={hobbyStyles.detailMain}>
+            {bodyParts.length === 0 && childDocuments.length > 0 && (
+              <div class={hobbyStyles.detailPanel}>
+                <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+                  {t('hobbies.learning-resources')}
+                </p>
+                <div class={hobbyStyles.detailNested}>
+                  {childDocuments.map((child) => (
+                    <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
+                      <span>{child.title}</span>
+                      <span class="hobby-meta">{t('hobbies.doc-label')}</span>
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          </aside>
-        )
-      }
-    </section>
+            )}
+            {bodyParts.map((part) => {
+              if (part.type === 'markdown') {
+                return (
+                  <div class={hobbyStyles.detailSurface}>
+                    <Markdown
+                      content={localizeHobbyMarkdownHeadings({ content: part.content, locale, t })}
+                      assetsPrefix={outlineAssetPrefix}
+                      assetProxyBasePath={outlineAssetProxyPath}
+                      openLinkLabel={t('hobbies.open-link')}
+                      headingLevelOffset={1}
+                    />
+                  </div>
+                );
+              }
+
+              const embed = content.embeds[part.index];
+              if (!embed) return null;
+
+              return (
+                <HobbyInteractiveEmbed
+                  client:load
+                  {...embedProps}
+                  type={embed.type}
+                  moduleTitle={
+                    embed.label === embed.type
+                      ? getHobbyContentLabel({ hasSource: hasSourceContent, type: embed.type, t })
+                      : embed.label
+                  }
+                  moduleDescription={
+                    hasSourceContent
+                      ? getHobbyOverviewDescription(t, embed.type)
+                      : detailDescription
+                  }
+                />
+              );
+            })}
+          </div>
+
+          {childDocuments.length > 0 && bodyParts.length > 0 && (
+            <aside class={hobbyStyles.detailAside}>
+              <div class={hobbyStyles.detailPanel}>
+                <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+                  {t('hobbies.learning-resources')}
+                </p>
+                <div class={hobbyStyles.detailNested}>
+                  {childDocuments.map((child) => (
+                    <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
+                      <span>{child.title}</span>
+                      <span class="hobby-meta">{t('hobbies.doc-label')}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          )}
+        </section>
+      )
+    }
   </div>
 </MainLayout>

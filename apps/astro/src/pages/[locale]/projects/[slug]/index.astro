@@ -156,7 +156,13 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-rev
                   <Heading as="h2" fontSize="4xl" fontStyle="italic">
                     {t('project.screenshots')}
                   </Heading>
-                  <Carousel client:visible images={images} />
+                  <Carousel
+                    client:visible
+                    images={images}
+                    previousSlideLabel={t('common.carousel-previous')}
+                    nextSlideLabel={t('common.carousel-next')}
+                    gotoSlideLabel={t('common.carousel-goto')}
+                  />
                 </Stack>
               )}
             </>

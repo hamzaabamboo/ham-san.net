@@ -62,11 +62,14 @@ const content = note ? cleanArticleContent(note.text) : '';
 const banner = resolveOutlineAssetUrl(getArticleBanner(content) ?? undefined);
 
 const siblingsRequest = note
-  ? await outlineClient.POST('/documents.list', {
-      body: {
-        parentDocumentId: maybeDocSegment === 'doc' && maybeDocId ? note.parentDocumentId : note.id
-      }
-    })
+  ? await outlineClient
+      .POST('/documents.list', {
+        body: {
+          parentDocumentId:
+            maybeDocSegment === 'doc' && maybeDocId ? note.parentDocumentId : note.id
+        }
+      })
+      .catch(() => null)
   : null;
 
 const siblings = siblingsRequest?.data?.data ?? [];
@@ -88,9 +91,16 @@ const nextSibling =
   currentIndex >= 0 && currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : null;
 
 const slugger = createHeadingSlugger();
+let inFence = false;
 const headings = (content ?? '')
   .split('\n')
-  .filter((line) => /^#{1,6}\s+/.test(line))
+  .filter((line) => {
+    if (/^\s*(```|~~~)/.test(line)) {
+      inFence = !inFence;
+      return false;
+    }
+    return !inFence && /^#{1,6}\s+/.test(line);
+  })
   .map((line, idx) => {
     const match = line.match(/^(#{1,6})\s+(.+)/);
     if (!match) return null;

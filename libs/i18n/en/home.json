@@ -50,5 +50,6 @@
   "bench-tools-frontend": "Frontend",
   "bench-tools-styling": "Styling",
   "bench-tools-design": "Design",
-  "bench-tools-scripting": "Scripting"
+  "bench-tools-scripting": "Scripting",
+  "no-photo": "No photo yet"
 }

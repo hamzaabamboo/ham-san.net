@@ -1,5 +1,16 @@
 {
   "other": "その他",
   "busiest-months": "参加が多い月",
-  "show-all": "すべて表示"
+  "show-all": "すべて表示",
+  "aria-hero-stats": "主要イベント統計",
+  "aria-rail": "レポート操作",
+  "aria-status": "レポートステータス",
+  "aria-sections": "レポートセクション",
+  "aria-year-filter": "年フィルター",
+  "aria-overview": "概要統計",
+  "aria-preset-grid": "期間別イベント数",
+  "aria-highlight-totals": "ハイライト合計",
+  "aria-chart-grid": "チャートパネル",
+  "aria-metrics-strip": "補助イベント統計",
+  "aria-analytics": "イベント分析チャート"
 }

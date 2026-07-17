@@ -574,7 +574,7 @@ const reportSections = report
           </div>
           {
             heroStats.length ? (
-              <div class="event-report__hero-stats" aria-label="Headline event statistics">
+              <div class="event-report__hero-stats" aria-label={t('events.aria-hero-stats')}>
                 {heroStats.map((stat) => (
                   <article>
                     <span>{stat.label}</span>
@@ -613,8 +613,8 @@ const reportSections = report
           </section>
         ) : (
           <div class="event-report__workspace">
-            <aside class="event-report__rail" aria-label="Report controls">
-              <section class="event-report__status" aria-label="Report status">
+            <aside class="event-report__rail" aria-label={t('events.aria-rail')}>
+              <section class="event-report__status" aria-label={t('events.aria-status')}>
                 <span>
                   {report.cached
                     ? t('common.events-report-cache')
@@ -625,7 +625,7 @@ const reportSections = report
                 <span>{report.profile.bio}</span>
               </section>
 
-              <nav class="event-report__jump-nav" aria-label="Report sections">
+              <nav class="event-report__jump-nav" aria-label={t('events.aria-sections')}>
                 {reportSections.map((section) => (
                   <a href={`#${section.id}`}>{section.label}</a>
                 ))}
@@ -635,7 +635,7 @@ const reportSections = report
                 <div class="event-report__section-head">
                   <h2>{t('common.events-report-filter')}</h2>
                 </div>
-                <nav class="event-report__year-filter" aria-label="Year filter">
+                <nav class="event-report__year-filter" aria-label={t('events.aria-year-filter')}>
                   <a
                     href={`/${locale}/events`}
                     data-active={selectedYear === 'all' ? 'true' : 'false'}
@@ -659,7 +659,7 @@ const reportSections = report
                 <div class="event-report__section-head">
                   <h2>{t('common.events-report-overview')}</h2>
                 </div>
-                <div class="event-report__overview-card" aria-label="Overview statistics">
+                <div class="event-report__overview-card" aria-label={t('events.aria-overview')}>
                   {overviewGroups.map((group) => (
                     <section>
                       <h3>{group.title}</h3>
@@ -675,7 +675,7 @@ const reportSections = report
                     </section>
                   ))}
                 </div>
-                <div class="event-report__preset-grid" aria-label="Date range event counts">
+                <div class="event-report__preset-grid" aria-label={t('events.aria-preset-grid')}>
                   {report.dateWindows.map((window) => (
                     <article>
                       <p>{windowLabels[window.label] ?? window.label}</p>
@@ -691,7 +691,10 @@ const reportSections = report
                     <h2>{t('common.events-report-highlights')}</h2>
                     <p>{t('common.events-report-highlights-subtitle')}</p>
                   </div>
-                  <div class="event-report__highlight-totals" aria-label="Highlight totals">
+                  <div
+                    class="event-report__highlight-totals"
+                    aria-label={t('events.aria-highlight-totals')}
+                  >
                     <span>
                       <strong>{formatter.format(report.totalEvents)}</strong>
                       {t('common.events-report-events-unit')}
@@ -724,7 +727,7 @@ const reportSections = report
                 <div class="event-report__section-head">
                   <h2>{t('common.events-report-charts')}</h2>
                 </div>
-                <div class="event-report__chart-grid" aria-label="Chart panels">
+                <div class="event-report__chart-grid" aria-label={t('events.aria-chart-grid')}>
                   <div class="event-report__panel event-report__panel--wide">
                     <div class="event-report__panel-head">
                       <h2>{t('common.events-report-yearly')}</h2>
@@ -895,7 +898,10 @@ const reportSections = report
                 <div class="event-report__section-head">
                   <h2>{t('common.events-report-rhythm')}</h2>
                 </div>
-                <div class="event-report__metrics-strip" aria-label="Secondary event statistics">
+                <div
+                  class="event-report__metrics-strip"
+                  aria-label={t('events.aria-metrics-strip')}
+                >
                   {secondaryStats.map((stat) => (
                     <article>
                       <p>{stat.label}</p>
@@ -904,7 +910,7 @@ const reportSections = report
                     </article>
                   ))}
                 </div>
-                <div class="event-report__analytics" aria-label="Event analytics charts">
+                <div class="event-report__analytics" aria-label={t('events.aria-analytics')}>
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
                       <h2>{t('common.events-report-weekdays')}</h2>

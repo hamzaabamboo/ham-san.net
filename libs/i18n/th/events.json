@@ -1,5 +1,16 @@
 {
   "other": "อื่นๆ",
   "busiest-months": "เดือนที่ไปมากที่สุด",
-  "show-all": "แสดงทั้งหมด"
+  "show-all": "แสดงทั้งหมด",
+  "aria-hero-stats": "สถิติเด่นของอีเวนต์",
+  "aria-rail": "ส่วนควบคุมรายงาน",
+  "aria-status": "สถานะรายงาน",
+  "aria-sections": "ส่วนของรายงาน",
+  "aria-year-filter": "ตัวกรองปี",
+  "aria-overview": "สถิติภาพรวม",
+  "aria-preset-grid": "จำนวนอีเวนต์ตามช่วงเวลา",
+  "aria-highlight-totals": "ยอดรวมไฮไลต์",
+  "aria-chart-grid": "แผงแผนภูมิ",
+  "aria-metrics-strip": "สถิติรองของอีเวนต์",
+  "aria-analytics": "แผนภูมิวิเคราะห์อีเวนต์"
 }

@@ -50,5 +50,6 @@
   "bench-tools-frontend": "フロントエンド",
   "bench-tools-styling": "スタイリング",
   "bench-tools-design": "デザイン",
-  "bench-tools-scripting": "スクリプト"
+  "bench-tools-scripting": "スクリプト",
+  "no-photo": "写真は準備中"
 }

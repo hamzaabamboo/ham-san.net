@@ -2,11 +2,11 @@ query getTagBySlug($slug: String, $locale: I18NLocaleCode) {
   tags(filters: { slug: { eq: $slug } }, locale: $locale) {
     id: documentId
     ...tag
-    projects(sort: ["isFeatured:desc", "date:desc"]) {
+    projects(sort: ["isFeatured:desc", "date:desc"], pagination: { limit: 100 }) {
       id: documentId
       ...projectPreview
     }
-    experiences(sort: ["start:desc"]) {
+    experiences(sort: ["start:desc"], pagination: { limit: 100 }) {
       id: documentId
       ...experience
     }

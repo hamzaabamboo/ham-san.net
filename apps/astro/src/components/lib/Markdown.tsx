@@ -124,8 +124,12 @@ export const Markdown = ({
     hrefs.forEach((href, index) => {
       const segment = segmentLists[index][depth] ?? segmentLists[index][0];
       if (!segment) return;
-      const shortSegment = segment.length > 12 ? `${segment.slice(0, 10)}…` : segment;
-      autoLabelDetails.set(href, depth > 0 ? `/…/${shortSegment}` : `/${shortSegment}`);
+      const joiner = '\u2060';
+      const shortSegment = segment.length > 12 ? `${segment.slice(0, 10)}${joiner}…` : segment;
+      autoLabelDetails.set(
+        href,
+        depth > 0 ? `/${joiner}…${joiner}/${joiner}${shortSegment}` : `/${joiner}${shortSegment}`
+      );
     });
   }
 

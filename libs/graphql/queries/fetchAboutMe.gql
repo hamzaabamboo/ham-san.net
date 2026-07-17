@@ -16,10 +16,10 @@ query fetchAboutMe($locale: I18NLocaleCode) {
   }
   tags(locale: $locale, sort: ["order:asc"], pagination: { limit: 100 }) {
     ...tag
-    projects {
+    projects(pagination: { limit: 100 }) {
       id: documentId
     }
-    experiences {
+    experiences(pagination: { limit: 100 }) {
       id: documentId
     }
   }

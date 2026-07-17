@@ -174,5 +174,8 @@
   "events-report-window-last-3-years": "Last 3 years",
   "events-report-window-all-time": "All time",
   "tags-empty-title": "Tags unavailable",
-  "tags-empty-description": "Tags will show up again when the content connection is back."
+  "tags-empty-description": "Tags will show up again when the content connection is back.",
+  "carousel-previous": "Previous slide",
+  "carousel-next": "Next slide",
+  "carousel-goto": "Go to slide"
 }

@@ -73,6 +73,7 @@ export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
                 <HStack gap="1mm" alignItems="center">
                   <styled.img
                     src={polkaMember01.src}
+                    alt=""
                     objectFit="contain"
                     width="3mm"
                     height="3mm"
@@ -84,6 +85,7 @@ export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
                 <HStack gap="1mm" alignItems="center">
                   <styled.img
                     src={hasuMember01Icon.src}
+                    alt=""
                     objectFit="contain"
                     width="3mm"
                     height="3mm"
@@ -96,13 +98,25 @@ export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
                   百瀬安由未
                 </ProfileText>
                 <HStack gap="1mm" alignItems="center">
-                  <styled.img src={ashPng.src} objectFit="contain" width="3mm" height="3mm" />
+                  <styled.img
+                    src={ashPng.src}
+                    alt=""
+                    objectFit="contain"
+                    width="3mm"
+                    height="3mm"
+                  />
                   <ProfileText color="#ba2635" fontSize="3mm">
                     佐々木琴子
                   </ProfileText>
                 </HStack>
                 <HStack gap="1mm" alignItems="center">
-                  <styled.img src={akarinLogo.src} objectFit="contain" width="3mm" height="3mm" />
+                  <styled.img
+                    src={akarinLogo.src}
+                    alt=""
+                    objectFit="contain"
+                    width="3mm"
+                    height="3mm"
+                  />
                   <ProfileText color="#ee6a5a" fontSize="3mm">
                     鬼頭明里
                   </ProfileText>
@@ -110,7 +124,7 @@ export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
               </Grid>
             </Stack>
             <Stack justifyContent="center">
-              <styled.img src={polkaQr.src} w="13mm" h="13mm" />
+              <styled.img src={polkaQr.src} alt="QR code" w="13mm" h="13mm" />
             </Stack>
           </HStack>
         ),
@@ -210,7 +224,7 @@ export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
               </GridItem>
             </Grid>
             <Stack justifyContent="center">
-              <styled.img src={polkaQr.src} w="13mm" h="13mm" />
+              <styled.img src={polkaQr.src} alt="QR code" w="13mm" h="13mm" />
             </Stack>
           </HStack>
         ),

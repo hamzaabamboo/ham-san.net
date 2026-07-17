@@ -19,7 +19,8 @@ export function authMiddleware(token: string): Middleware {
 }
 
 export const outlineClient = createOutlineClient({
-  baseUrl: outlineServerUrl as 'https://app.getoutline.com/api'
+  baseUrl: outlineServerUrl as 'https://app.getoutline.com/api',
+  fetch: (request) => fetch(request, { signal: AbortSignal.timeout(7000) })
 });
 
 outlineClient.use(authMiddleware(outlineApiToken));
