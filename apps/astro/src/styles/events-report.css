@@ -177,7 +177,12 @@
 .event-report__section {
   display: grid;
   gap: 1rem;
+  min-width: 0;
   scroll-margin-top: 1rem;
+}
+
+.event-report__section > * {
+  min-width: 0;
 }
 
 .event-report__section--controls {
@@ -190,8 +195,14 @@
   display: grid;
   gap: 0.35rem;
   align-content: start;
+  min-width: 0;
   border-left: 2px solid #ffb000;
   padding-left: 0.8rem;
+}
+
+.event-report__section-head h2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .event-report__section-head h2 {
@@ -549,7 +560,13 @@
   display: grid;
   align-content: start;
   gap: 1rem;
+  min-width: 0;
   padding: clamp(1rem, 2vw, 1.35rem);
+}
+
+.event-report__panel > *,
+.event-report__panel-head {
+  min-width: 0;
 }
 
 .event-report__panel-head {

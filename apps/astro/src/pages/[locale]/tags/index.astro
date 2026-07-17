@@ -116,18 +116,13 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
                 </Flex>
                 <Wrap gap="3">
                   {groupTags.map((tag) => (
-                    <Link href={`/${locale}/tags/${tagSlug(tag)}`} display="block">
-                      <Box
-                        border="1px solid"
-                        borderColor="#524533"
-                        bg="#1c1b1b"
-                        px="4"
-                        py="3"
-                        _hover={{ transform: 'translate(-2px, -2px)', borderColor: '#ffb000' }}
-                        transition="all 0.2s ease"
-                      >
-                        <TagBadge tag={tag} showCount size="md" />
-                      </Box>
+                    <Link
+                      href={`/${locale}/tags/${tagSlug(tag)}`}
+                      display="block"
+                      _hover={{ transform: 'translate(-2px, -2px)' }}
+                      transition="transform 0.2s ease"
+                    >
+                      <TagBadge tag={tag} showCount size="md" />
                     </Link>
                   ))}
                 </Wrap>
@@ -151,18 +146,13 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
                 </Flex>
                 <Wrap gap="3">
                   {groupTags.map((tag) => (
-                    <Link href={`/${locale}/tags/${tagSlug(tag)}`} display="block">
-                      <Box
-                        border="1px solid"
-                        borderColor="#524533"
-                        bg="#1c1b1b"
-                        px="4"
-                        py="3"
-                        _hover={{ transform: 'translate(-2px, -2px)', borderColor: '#ffb000' }}
-                        transition="all 0.2s ease"
-                      >
-                        <TagBadge tag={tag} showCount size="md" />
-                      </Box>
+                    <Link
+                      href={`/${locale}/tags/${tagSlug(tag)}`}
+                      display="block"
+                      _hover={{ transform: 'translate(-2px, -2px)' }}
+                      transition="transform 0.2s ease"
+                    >
+                      <TagBadge tag={tag} showCount size="md" />
                     </Link>
                   ))}
                 </Wrap>

@@ -19,8 +19,9 @@ const t = useTranslations(locale);
   borderColor="#524533"
 >
   <Stack
-    p="8"
+    p={{ base: '5', sm: '8' }}
     gap="3"
+    minW="0"
     borderRight={{ md: '1px solid' }}
     borderBottom={{ base: '1px solid', md: 'none' }}
     borderColor="#524533"
@@ -35,7 +36,7 @@ const t = useTranslations(locale);
     <Heading fontSize="2xl">{t('home.status-phase-title')}</Heading>
   </Stack>
 
-  <Stack p="8" gap="3" bg="#1c1b1b">
+  <Stack p={{ base: '5', sm: '8' }} gap="3" bg="#1c1b1b" minW="0">
     <Text
       fontFamily="JetBrains Mono, monospace"
       fontSize="xs"
