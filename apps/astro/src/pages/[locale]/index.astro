@@ -9,6 +9,7 @@ import type { ProjectPreviewFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import StatusRow from '~/components/home/StatusRow.astro';
+import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { cleanProjectCopy } from '~/utils/project-copy';
 
@@ -29,9 +30,9 @@ let homepageData: any = null;
 let projects: ProjectPreviewFragment[] = [];
 
 try {
-  const data = await graphQLSdk.fetchHomePage({
-    locale: cmsLocale
-  });
+  const data = await withLastGood(`home:${cmsLocale}`, () =>
+    graphQLSdk.fetchHomePage({ locale: cmsLocale })
+  );
   homepageData = data?.homepage;
   const rawProjects = data?.projects ?? [];
   projects = rawProjects
