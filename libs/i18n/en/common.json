@@ -138,7 +138,6 @@
   "events-report-home-venue": "Home venue",
   "events-report-visits": "visits",
   "events-report-longest-streak": "Longest streak",
-  "events-report-consecutive-weeks": "consecutive weeks",
   "events-report-personal-record": "Personal record",
   "events-report-events-in-one-day": "events in 1 day",
   "events-report-events-on-this-day": "events on this day",
@@ -177,5 +176,6 @@
   "tags-empty-description": "Tags will show up again when the content connection is back.",
   "carousel-previous": "Previous slide",
   "carousel-next": "Next slide",
-  "carousel-goto": "Go to slide"
+  "carousel-goto": "Go to slide",
+  "events-report-weekly-best": "weekly best: {n} consecutive weeks"
 }

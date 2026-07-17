@@ -523,7 +523,10 @@ const highlightCards =
           icon: 'local_fire_department',
           label: t('common.events-report-longest-streak'),
           value: `${formatter.format(report.streaks.daily.longestStreak)} ${dayUnit(report.streaks.daily.longestStreak)}`,
-          sub: `${formatter.format(report.streaks.weekly.longestStreak)} ${t('common.events-report-consecutive-weeks')}`
+          sub: t('common.events-report-weekly-best').replace(
+            '{n}',
+            formatter.format(report.streaks.weekly.longestStreak)
+          )
         },
         {
           icon: 'bolt',

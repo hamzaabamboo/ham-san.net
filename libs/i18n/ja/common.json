@@ -138,7 +138,6 @@
   "events-report-home-venue": "ホーム会場",
   "events-report-visits": "回訪問",
   "events-report-longest-streak": "最長連続",
-  "events-report-consecutive-weeks": "連続週",
   "events-report-personal-record": "自己記録",
   "events-report-events-in-one-day": "件 / 1日",
   "events-report-events-on-this-day": "件",
@@ -177,5 +176,6 @@
   "tags-empty-description": "接続が戻ると、タグが再表示されます。",
   "carousel-previous": "前のスライド",
   "carousel-next": "次のスライド",
-  "carousel-goto": "スライドへ移動"
+  "carousel-goto": "スライドへ移動",
+  "events-report-weekly-best": "週間ベスト: {n}週連続"
 }

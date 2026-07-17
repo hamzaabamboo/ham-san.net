@@ -138,7 +138,6 @@
   "events-report-home-venue": "สถานที่ประจำ",
   "events-report-visits": "ครั้ง",
   "events-report-longest-streak": "สตรีคยาวสุด",
-  "events-report-consecutive-weeks": "สัปดาห์ติดกัน",
   "events-report-personal-record": "สถิติส่วนตัว",
   "events-report-events-in-one-day": "อีเวนต์ใน 1 วัน",
   "events-report-events-on-this-day": "อีเวนต์ในวันนั้น",
@@ -177,5 +176,6 @@
   "tags-empty-description": "แท็กจะกลับมาแสดงเมื่อเชื่อมต่อข้อมูลได้อีกครั้ง",
   "carousel-previous": "สไลด์ก่อนหน้า",
   "carousel-next": "สไลด์ถัดไป",
-  "carousel-goto": "ไปยังสไลด์"
+  "carousel-goto": "ไปยังสไลด์",
+  "events-report-weekly-best": "สถิติรายสัปดาห์: {n} สัปดาห์ติดกัน"
 }

@@ -81,6 +81,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             </Box>
           )}
           <Box
+            flexShrink={0}
             borderColor="#524533"
             borderBottom="1px solid"
             backgroundColor="#353534"
@@ -134,7 +135,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               </Box>
             )}
           </Box>
-          <Stack gap="3" h="full" p="5">
+          <Stack flex="1" gap="3" p="5">
             <Wrap
               gap="2"
               rowGap="0.5"
@@ -161,6 +162,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             <Wrap
               gap="2"
               alignItems="center"
+              marginTop="auto"
               color="#ffb000"
               fontFamily="JetBrains Mono, monospace"
               fontSize="10px"

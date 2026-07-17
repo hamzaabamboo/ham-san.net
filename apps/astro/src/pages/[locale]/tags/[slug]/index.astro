@@ -187,7 +187,10 @@ if (!tagUnavailable) {
               );
             })}
             <Divider borderColor="#524533" />
-            <Grid gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))" alignItems="stretch">
+            <Grid
+              gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+              alignItems={{ base: 'start', md: 'stretch' }}
+            >
               {projectItems.map((project) => (
                 <GridItem>
                   <ProjectCard data={project} locale={locale} />
