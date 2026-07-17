@@ -7,7 +7,7 @@ export const onRequest = defineMiddleware(({ url, preferredLocale, redirect }, n
   const locale = validateLocale(preferredLocale) ? preferredLocale : 'en';
 
   if (!Object.keys(languages).includes(paths.split('/')[1])) {
-    return redirect(`/${locale}${paths}`);
+    return redirect(`/${locale}${paths}${url.search}`);
   }
 
   // return a Response or the result of calling `next()`

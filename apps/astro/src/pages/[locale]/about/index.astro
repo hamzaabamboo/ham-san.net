@@ -78,6 +78,7 @@ let aboutMe: any = null;
 let educations: any[] | null = null;
 let experiences: any[] | null = null;
 let tags: any[] | null = null;
+let aboutUnavailable = false;
 
 try {
   const result = await withLastGood(`about:${cmsLocale}`, () =>
@@ -88,7 +89,7 @@ try {
   experiences = result.experiences;
   tags = result.tags;
 } catch {
-  // CMS unavailable — render with empty data
+  aboutUnavailable = true;
 }
 
 const skillTags = (tags?.filter(
@@ -99,7 +100,10 @@ const skillTags = (tags?.filter(
 const skills = groupByType(skillTags);
 const profileFocus = skillTags.slice(0, 4);
 
-Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
+Astro.response.headers.set(
+  'CDN-Cache-Control',
+  aboutUnavailable ? 'public, max-age=60, must-revalidate' : 'public, max-age=3600, must-revalidate'
+);
 ---
 
 <MainLayout title={pageTitle} description={t('about-me.hero-summary')}>

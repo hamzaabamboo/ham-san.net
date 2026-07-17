@@ -431,7 +431,13 @@ const hobbies = hobbiesList
                       data-visual={hobby.banner ? 'image' : 'glyph'}
                     >
                       {hobby.banner ? (
-                        <img src={hobby.banner} alt="" class={hobbyThumbnail} loading="lazy" />
+                        <img
+                          src={hobby.banner}
+                          alt=""
+                          class={hobbyThumbnail}
+                          loading="lazy"
+                          onerror="this.closest('[data-visual]')?.setAttribute('data-visual', 'glyph'); this.remove()"
+                        />
                       ) : (
                         <Box
                           fontFamily="Newsreader, serif"

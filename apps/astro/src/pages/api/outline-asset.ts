@@ -11,11 +11,17 @@ export const GET: APIRoute = async ({ url }) => {
 
   const outlineBaseUrl = outlineServerUrl.replace(/\/api$/, '');
   const upstreamUrl = `${outlineBaseUrl}/api/attachments.redirect?${url.searchParams.toString()}`;
-  const upstreamResponse = await fetch(upstreamUrl, {
-    headers: {
-      Authorization: `Bearer ${outlineApiToken}`
-    }
-  });
+  let upstreamResponse: Response;
+  try {
+    upstreamResponse = await fetch(upstreamUrl, {
+      headers: {
+        Authorization: `Bearer ${outlineApiToken}`
+      },
+      signal: AbortSignal.timeout(8000)
+    });
+  } catch {
+    return new Response('Asset upstream unavailable', { status: 504 });
+  }
 
   const headers = new Headers();
   for (const key of ['content-type', 'content-length', 'cache-control', 'etag', 'last-modified']) {

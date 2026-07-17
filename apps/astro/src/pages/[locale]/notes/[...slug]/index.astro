@@ -39,6 +39,7 @@ if (!shareId) {
 
 let note: any = null;
 let noteMissing = false;
+let noteUnavailable = false;
 
 try {
   const noteRequest = await withLastGood(`note:${shareId}:${maybeDocId ?? ''}`, async () => {
@@ -58,10 +59,13 @@ try {
   }
 } catch {
   note = null;
+  noteUnavailable = true;
 }
 
 if (noteMissing) {
   Astro.response.status = 404;
+} else if (noteUnavailable) {
+  Astro.response.status = 503;
 }
 
 const pageTitle = `${note?.title ?? t('common.note')} | ${t('common.name')}`;

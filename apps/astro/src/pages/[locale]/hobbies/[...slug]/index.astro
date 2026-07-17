@@ -219,7 +219,12 @@ if (!cmsUnavailable) {
             data-visual={banner ? 'image' : 'glyph'}
           >
             {banner ? (
-              <img src={banner} alt="" class={hobbyStyles.detailBanner} />
+              <img
+                src={banner}
+                alt=""
+                class={hobbyStyles.detailBanner}
+                onerror="this.closest('[data-visual]')?.setAttribute('data-visual', 'glyph'); this.remove()"
+              />
             ) : (
               <HobbyTypeGlyph
                 type={embedType}

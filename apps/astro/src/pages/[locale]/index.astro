@@ -28,6 +28,7 @@ const cmsLocale = locale === 'ja' ? 'ja' : 'en';
 
 let homepageData: any = null;
 let projects: ProjectPreviewFragment[] = [];
+let homeUnavailable = false;
 
 try {
   const data = await withLastGood(`home:${cmsLocale}`, () =>
@@ -42,6 +43,7 @@ try {
 } catch {
   homepageData = null;
   projects = [];
+  homeUnavailable = true;
 }
 
 const introImage =
@@ -63,7 +65,10 @@ const yearLabel = (year?: string) =>
         .find((part) => part.type === 'year')?.value ?? year)
     : undefined;
 
-Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
+Astro.response.headers.set(
+  'CDN-Cache-Control',
+  homeUnavailable ? 'public, max-age=60, must-revalidate' : 'public, max-age=3600, must-revalidate'
+);
 ---
 
 <MainLayout title={pageTitle} description={t('home.hero-subtitle').replace(/<[^>]*>/g, '')}>
