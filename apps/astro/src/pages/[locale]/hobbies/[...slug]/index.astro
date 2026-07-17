@@ -9,8 +9,7 @@ import { getHobbyBodyIntro, parseHobbyContent, splitHobbyBodyParts } from '~/uti
 import {
   getHobbyContentLabel,
   getHobbyOverviewDescription,
-  getHobbyOverviewSummary,
-  localizeHobbyMarkdownHeadings
+  getHobbyOverviewSummary
 } from '~/utils/hobby-labels';
 import { withLastGood } from '~/utils/cms-cache';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
@@ -135,11 +134,13 @@ const statusLabel =
   effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
 const banner = resolveHobbyAssetUrl(content.banner);
 const images = content.images.map(resolveHobbyAssetUrl).filter((image): image is string => !!image);
-const updatedLabel = content.updatedAt
-  ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
-      new Date(content.updatedAt)
-    )
-  : t('hobbies.no-date');
+const updatedDate = content.updatedAt ? new Date(content.updatedAt) : null;
+const updatedLabel =
+  updatedDate && !Number.isNaN(updatedDate.getTime())
+    ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
+        updatedDate
+      )
+    : t('hobbies.no-date');
 const bodyParts = splitHobbyBodyParts(content.body, content.embeds.length);
 const embedProps = {
   title: data?.title,
@@ -265,7 +266,7 @@ if (!cmsUnavailable) {
                 return (
                   <div class={hobbyStyles.detailSurface}>
                     <Markdown
-                      content={localizeHobbyMarkdownHeadings({ content: part.content, locale, t })}
+                      content={part.content}
                       assetsPrefix={outlineAssetPrefix}
                       assetProxyBasePath={outlineAssetProxyPath}
                       openLinkLabel={t('hobbies.open-link')}

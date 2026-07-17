@@ -276,12 +276,14 @@ const getEffectiveStatus = (hobby: {
   return hasSourceContent(hobby) ? hobby.status : 'inactive';
 };
 
-const formatUpdated = (date?: string | null) =>
-  date
+const formatUpdated = (date?: string | null) => {
+  const parsed = date ? new Date(date) : null;
+  return parsed && !Number.isNaN(parsed.getTime())
     ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(
-        new Date(date)
+        parsed
       )
     : t('hobbies.no-date');
+};
 const formatNestedDescription = (childPages?: { title: string }[]) => {
   const titles = (childPages ?? [])
     .map((child) => child.title)

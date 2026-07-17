@@ -6,8 +6,7 @@ import {
   getHobbyEmbedLabel,
   getHobbyOverviewDescription,
   getHobbyOverviewSummary,
-  type HobbyTranslationKey,
-  localizeHobbyMarkdownHeadings
+  type HobbyTranslationKey
 } from '../src/utils/hobby-labels';
 
 const t = (key: HobbyTranslationKey) => key;
@@ -102,28 +101,6 @@ describe('hobby labels', () => {
         t
       })
     ).toBe('hobbies.overview-empty-page');
-  });
-
-  test('localizes known source markdown headings outside English', () => {
-    const content = `# Lens References (added 2026-03-06)
-- https://example.com
-
-# Interested In
-- Nikon z5
-
-# Custom Heading
-Keep this.`;
-
-    expect(localizeHobbyMarkdownHeadings({ content, locale: 'en', t })).toBe(content);
-    expect(localizeHobbyMarkdownHeadings({ content, locale: 'th', t }))
-      .toBe(`# hobbies.source-heading-lens-references (hobbies.source-heading-added 2026-03-06)
-- https://example.com
-
-# hobbies.source-heading-interested-in
-- Nikon z5
-
-# Custom Heading
-Keep this.`);
   });
 
   test('formats hobby metric counts with singular and plural templates', () => {
