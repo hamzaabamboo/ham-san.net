@@ -306,7 +306,7 @@ const hobbies = hobbiesList
         return {
           ...h,
           ...content,
-          banner: resolveHobbyAssetUrl(content.banner ?? content.images[0]),
+          banner: resolveHobbyAssetUrl(content.banner),
           images: resolvedImages,
           description:
             getHobbyOverviewSummary({
@@ -315,7 +315,7 @@ const hobbies = hobbiesList
                 images: resolvedImages,
                 childPages
               }),
-              value: content.description,
+              value: content.authoredDescription,
               t
             }) || nestedSummary,
           updatedLabel: formatUpdated(content.updatedAt),

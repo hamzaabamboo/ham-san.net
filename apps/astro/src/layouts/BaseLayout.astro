@@ -1,4 +1,5 @@
 ---
+import { languages } from '../i18n/ui';
 import { getLangFromUrl } from '../i18n/utils';
 import '../index.css';
 
@@ -6,6 +7,9 @@ const lang = getLangFromUrl(Astro.url);
 const { title = 'Ham', description, image } = Astro.props;
 const canonicalUrl = Astro.url.href;
 const siteName = 'Ham';
+const localePath = Astro.url.pathname.replace(/^\/[^/]+/, '');
+const alternateLocales = Object.keys(languages);
+const alternateUrl = (code: string) => new URL(`/${code}${localePath}`, Astro.url).href;
 ---
 
 <html lang={lang} class="dark">
@@ -17,6 +21,12 @@ const siteName = 'Ham';
     <meta name="generator" content={Astro.generator} />
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonicalUrl} />
+    {
+      alternateLocales.map((code) => (
+        <link rel="alternate" hreflang={code} href={alternateUrl(code)} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={alternateUrl('en')} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />

@@ -191,9 +191,11 @@ export const Markdown = ({
             if (disableLinks || (disableInternalLinks && href?.startsWith('/'))) {
               return <Text as="p">{props.children}</Text>;
             }
+            const isExternal = !!dest && !dest.startsWith('#') && !dest.startsWith('/');
             return (
               <Link
-                target="_blank"
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noreferrer' : undefined}
                 href={dest}
                 color="#ffd597"
                 fontWeight="bold"

@@ -19,7 +19,7 @@ describe('formatBareUrlLabel', () => {
       formatBareUrlLabel(
         'https://www.lenstip.com/157.1-Lens_review-Nikon_Nikkor_AF-S_DX_35_mm.html'
       )
-    ).toBe('lenstip.com⁠ / Lens review Nikon Nikkor AF S DX 35 mm');
+    ).toBe('lenstip.com⁠ / Lens review-Nikon Nikkor AF-S DX 35 mm');
   });
 
   test('picks the most informative path segment, not the last one', () => {
@@ -27,7 +27,7 @@ describe('formatBareUrlLabel', () => {
       formatBareUrlLabel(
         'https://www.imaging-resource.com/lenses/nikon/18-105mm-f3.5-5.6g-ed-vr-dx-af-s-nikkor/review/'
       )
-    ).toContain('18 105mm');
+    ).toContain('18-105mm');
   });
 
   test('falls back to the host when there is no path', () => {
@@ -56,7 +56,7 @@ describe('truncateLinkLabel', () => {
 
   test('truncates on a word boundary and joins the ellipsis', () => {
     const result = truncateLinkLabel(
-      'Lens review Tamron SP 70 300 mm f 4 5.6 Di VC USD Image resolution',
+      'Lens review-Tamron SP 70-300 mm f 4-5.6 Di VC USD Image resolution',
       52
     );
     expect(result.endsWith('⁠…')).toBe(true);

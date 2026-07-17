@@ -4,9 +4,12 @@ import { SmoothScroll } from '~/components/common/SmoothScroll';
 import DesktopSidebar from '~/components/layout/DesktopSidebar.astro';
 import Footer from '~/components/layout/Footer.astro';
 import Navigation from '~/components/layout/Navigation.astro';
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 import BaseLayout from './BaseLayout.astro';
 
 const { title, description, image } = Astro.props;
+const locale = getLangFromUrl(Astro.url);
+const t = useTranslations(locale);
 ---
 
 <BaseLayout title={title} description={description} image={image}>
@@ -22,12 +25,13 @@ const { title, description, image } = Astro.props;
       }
     </script>
   </Fragment>
+  <a href="#main" class="skip-link">{t('common.skip-to-content')}</a>
   <div id="nav-progress" aria-hidden="true"></div>
   <SmoothScroll client:only="react" />
   <Navigation transition:persist="navbar" />
   <DesktopSidebar transition:persist="sidebar" />
   <div class="shell-content">
-    <main class="shell-main">
+    <main id="main" tabindex="-1" class="shell-main">
       <slot />
     </main>
     <Footer transition:persist="footer" />

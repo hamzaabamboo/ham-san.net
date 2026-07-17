@@ -188,6 +188,17 @@ export const hobbyStyles = {
     color: '#ffb000',
     opacity: '0.34'
   }),
+  detailVisualLettermark: css({
+    zIndex: '1',
+    pos: 'relative',
+    color: '#ffb000',
+    fontFamily: 'Newsreader, serif',
+    fontSize: 'clamp(4rem, 10vw, 7rem)',
+    lineHeight: '1',
+    opacity: '0.3',
+    userSelect: 'none',
+    fontStyle: 'italic'
+  }),
   detailBody: css({
     display: 'grid',
     gap: '8',

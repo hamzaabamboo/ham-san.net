@@ -2,6 +2,28 @@ import { describe, expect, test } from 'bun:test';
 import { parseHobbyContent, splitHobbyBodyParts } from '../src/utils/hobby-content';
 
 describe('parseHobbyContent', () => {
+  test('rejects url-only bodies as descriptions', () => {
+    const autolink = parseHobbyContent({
+      title: 'Links',
+      text: '<https://www.lenstip.com/284.4-Lens_review-Tamron.html>\n\n<https://example.com/a>'
+    });
+    expect(autolink.description || undefined).toBeUndefined();
+
+    const bare = parseHobbyContent({
+      title: 'Links',
+      text: 'https://example.com/some/deep/path'
+    });
+    expect(bare.description || undefined).toBeUndefined();
+  });
+
+  test('keeps prose descriptions that merely contain a url', () => {
+    const result = parseHobbyContent({
+      title: 'Camera',
+      text: 'Gear notes and lens research, mostly from https://www.lenstip.com reviews.'
+    });
+    expect(result.description).toContain('Gear notes and lens research');
+  });
+
   test('renders documents without directives as plain markdown with no modules', () => {
     const content = parseHobbyContent({
       title: 'Camera',

@@ -177,5 +177,6 @@
   "carousel-previous": "Previous slide",
   "carousel-next": "Next slide",
   "carousel-goto": "Go to slide",
-  "events-report-weekly-best": "weekly best: {n} consecutive weeks"
+  "events-report-weekly-best": "weekly best: {n} consecutive weeks",
+  "skip-to-content": "Skip to content"
 }

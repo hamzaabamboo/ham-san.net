@@ -15,7 +15,7 @@ const humanizeSegment = (segment: string) => {
   return value
     .replace(/\.(html?|php|aspx|jsp)$/i, '')
     .replace(/^[\d.]+[-_](?=\p{L})/u, '')
-    .replace(/[-_]+/g, ' ')
+    .replace(/_+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 };

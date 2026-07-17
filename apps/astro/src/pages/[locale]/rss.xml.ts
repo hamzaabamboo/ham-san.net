@@ -1,11 +1,13 @@
 import type { APIRoute } from 'astro';
+import { validateLocale } from '~/i18n/utils';
 import { outlineClient } from '~/utils/outline-api';
 
 export const prerender = false;
 
 const SITE_URL = 'https://ham-san.net';
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ params }) => {
+  const locale = validateLocale(params.locale) ? params.locale : 'en';
   let items = '';
 
   try {
@@ -28,7 +30,7 @@ export const GET: APIRoute = async () => {
         const pubDate = s.createdAt
           ? new Date(s.createdAt).toUTCString()
           : new Date().toUTCString();
-        const link = `${SITE_URL}/en/notes/${s.id ?? ''}`;
+        const link = `${SITE_URL}/${locale}/notes/${s.id ?? ''}`;
         const description = esc(s.documentSummary?.slice(0, 280) ?? '');
 
         return `    <item>
@@ -47,10 +49,10 @@ export const GET: APIRoute = async () => {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ham — Notes</title>
-    <link>${SITE_URL}/en/notes</link>
+    <link>${SITE_URL}/${locale}/notes</link>
     <description>Public notes from a personal knowledge base.</description>
-    <language>en</language>
-    <atom:link href="${SITE_URL}/en/rss.xml" rel="self" type="application/rss+xml"/>
+    <language>${locale}</language>
+    <atom:link href="${SITE_URL}/${locale}/rss.xml" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>
 </rss>`;

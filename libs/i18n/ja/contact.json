@@ -37,5 +37,6 @@
   "office-hours-body": "通常は数日以内に返信します。\n非同期で大丈夫です。",
   "current-time-label": "現在時刻",
   "send-email": "メールする",
-  "project-brief": "概要が決まっていれば、そのまま送ってください。"
+  "project-brief": "概要が決まっていれば、そのまま送ってください。",
+  "namecards-count": "登録カード数"
 }

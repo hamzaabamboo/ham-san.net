@@ -177,5 +177,6 @@
   "carousel-previous": "สไลด์ก่อนหน้า",
   "carousel-next": "สไลด์ถัดไป",
   "carousel-goto": "ไปยังสไลด์",
-  "events-report-weekly-best": "สถิติรายสัปดาห์: {n} สัปดาห์ติดกัน"
+  "events-report-weekly-best": "สถิติรายสัปดาห์: {n} สัปดาห์ติดกัน",
+  "skip-to-content": "ข้ามไปยังเนื้อหา"
 }

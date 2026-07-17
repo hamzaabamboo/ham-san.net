@@ -20,6 +20,7 @@ export type HobbyContentModel = {
   meta: HobbyFrontmatter;
   description: string;
   banner?: string;
+  authoredDescription?: string;
   images: string[];
   links: HobbyLink[];
   embeds: HobbyEmbedConfig[];
@@ -60,6 +61,7 @@ const cleanDescription = (value?: string) => {
   const cleaned = value
     ?.replace(/!\[[^\]]*]\([^)]+\)/g, '')
     .replace(/\[([^\]]+)]\([^)]+\)/g, '$1')
+    .replace(/<((?:https?:\/\/|www\.)[^>\s]+)>/gi, '$1')
     .replace(/[*_`>#]/g, '')
     .replace(/\\/g, '')
     .replace(/\\\.\.\.$/, '')
@@ -69,6 +71,11 @@ const cleanDescription = (value?: string) => {
   if (!cleaned || /^[.\s]+$/.test(cleaned)) return undefined;
   if (cleaned === '...') return undefined;
   if (/^(https?:\/\/|www\.)/i.test(cleaned)) return undefined;
+  const withoutUrls = cleaned
+    .replace(/(?:https?:\/\/|www\.)\S+/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!/[a-z0-9]{3}/i.test(withoutUrls)) return undefined;
   if (!/[a-z0-9]{3}/i.test(cleaned)) return undefined;
   if (/^[\w\s/-]+:$/.test(cleaned)) return undefined;
   return cleaned;
@@ -308,10 +315,12 @@ export const parseHobbyContent = ({
   const body = cleanSourceArtifacts(sourceBody);
   const images = extractMarkdownImages(sourceBody);
   const links = extractMarkdownLinks(sourceBody);
-  const description =
+  const authoredDescription =
     cleanDescription(asString(meta.description)) ??
     cleanDescription(asString(meta.summary)) ??
-    cleanDescription(asString(meta.categoryDescription)) ??
+    cleanDescription(asString(meta.categoryDescription));
+  const description =
+    authoredDescription ??
     getProseDescription(sourceBody) ??
     getHeadingDescription(sourceBody) ??
     '';
@@ -322,6 +331,7 @@ export const parseHobbyContent = ({
     sourceBody,
     meta,
     description,
+    authoredDescription: authoredDescription ?? '',
     banner,
     images,
     links,

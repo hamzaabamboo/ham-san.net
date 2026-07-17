@@ -100,7 +100,7 @@
 }
 
 .event-report__hero-stats strong {
-  color: #ffd597;
+  color: #ffb000;
   font-family: 'JetBrains Mono', monospace;
   font-size: clamp(0.85rem, 2vw, 1.1rem);
   line-height: 1.2;
@@ -332,6 +332,10 @@
   font-weight: 650;
   line-height: 1.35;
   overflow-wrap: anywhere;
+}
+
+.event-report__overview-grid strong[data-kind='context'] {
+  color: #ffd597;
 }
 
 .event-report__overview-grid strong {
@@ -601,6 +605,7 @@
 
 .event-report__svg-chart--line polyline {
   stroke: var(--line-color, #ffd597);
+  stroke-dasharray: var(--line-dash, none);
 }
 
 .event-report__svg-chart text {

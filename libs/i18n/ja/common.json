@@ -177,5 +177,6 @@
   "carousel-previous": "前のスライド",
   "carousel-next": "次のスライド",
   "carousel-goto": "スライドへ移動",
-  "events-report-weekly-best": "週間ベスト: {n}週連続"
+  "events-report-weekly-best": "週間ベスト: {n}週連続",
+  "skip-to-content": "本文へスキップ"
 }

@@ -6,10 +6,18 @@ import { outlineClient, outlineSettingsDocumentId } from './outline-api';
 import type { Link, Table, Text } from 'mdast';
 
 export const getOutlineSettings = async () => {
-  const events = await withLastGood('outline:settings', () =>
-    outlineClient.POST('/documents.info', {
-      body: { id: outlineSettingsDocumentId }
-    })
+  const events = await withLastGood(
+    'outline:settings',
+    async () => {
+      const request = await outlineClient.POST('/documents.info', {
+        body: { id: outlineSettingsDocumentId }
+      });
+      if (!request.response.ok) {
+        throw new Error(`documents.info ${request.response.status}`);
+      }
+      return request;
+    },
+    (request) => request.response.ok
   );
 
   const settingsContent = cleanArticleContent(events.data?.data?.text);

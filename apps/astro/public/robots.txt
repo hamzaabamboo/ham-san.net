@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ham-san.net/en/sitemap.xml
+Sitemap: https://ham-san.net/ja/sitemap.xml
+Sitemap: https://ham-san.net/th/sitemap.xml

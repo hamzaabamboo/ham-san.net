@@ -145,7 +145,7 @@
 
   html:lang(th) body {
     --font-body: 'Noto Sans Thai', 'Manrope', sans-serif;
-    --font-display: 'Noto Sans Thai', 'Manrope', sans-serif;
+    --font-display: 'Noto Serif Thai', 'Newsreader', serif;
     font-family: 'Noto Sans Thai', 'Manrope', sans-serif;
   }
 
@@ -155,7 +155,7 @@
   html:lang(th) h4,
   html:lang(th) h5,
   html:lang(th) h6 {
-    font-family: 'Noto Sans Thai', 'Manrope', sans-serif;
+    font-family: 'Noto Serif Thai', 'Newsreader', serif;
     font-style: normal;
     letter-spacing: 0;
   }
@@ -1256,4 +1256,25 @@ html:lang(th) h6 {
 .shell-drawer-locale-btn[data-active='false']:hover {
   color: #ffb000;
   border-color: #ffb000;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  transform: translateY(-120%);
+  border: 1px solid #ffb000;
+  background: #131313;
+  padding: 0.75rem 1rem;
+  color: #ffb000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: transform 0.15s ease;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
 }

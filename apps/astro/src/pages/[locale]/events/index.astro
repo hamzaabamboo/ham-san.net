@@ -87,13 +87,23 @@ const busiestMonths = [...(report?.monthlyBreakdown ?? [])]
   .sort((a, b) => b.count - a.count)
   .slice(0, 12);
 const maxMonthCount = Math.max(...busiestMonths.map((item) => item.count), 1);
-const maxWeekdayCount = Math.max(...(report?.weekdayBreakdown.map((item) => item.count) ?? [1]));
+const maxWeekdayCount = Math.max(...(report?.weekdayBreakdown.map((item) => item.count) ?? []), 1);
 const maxMonthOfYearCount = Math.max(
-  ...(report?.monthOfYearBreakdown.map((item) => item.count) ?? [1])
+  ...(report?.monthOfYearBreakdown.map((item) => item.count) ?? []),
+  1
 );
-const maxDailyActivityCount = Math.max(...(report?.dailyActivity.map((item) => item.count) ?? [1]));
+const maxDailyActivityCount = Math.max(
+  ...(report?.dailyActivity.map((item) => item.count) ?? []),
+  1
+);
 const latestFavoriteCumulative = report?.cumulativeFavoriteArtists.at(-1)?.values ?? [];
-const lineColors = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
+const lineStyles = [
+  { color: '#ffb000', dash: 'none' },
+  { color: '#ffd597', dash: '6 4' },
+  { color: '#c7c6c6', dash: '2 3' },
+  { color: '#9f8e78', dash: '10 4 2 4' },
+  { color: '#765c2f', dash: '1 4' }
+];
 const monthlyChartData = (report?.monthlyBreakdown ?? []).slice(-18);
 const maxMonthlyChartCount = Math.max(...monthlyChartData.map((item) => item.count), 1);
 const monthTickStep = Math.max(1, Math.ceil(monthlyChartData.length / 9));
@@ -415,11 +425,13 @@ const overviewGroups = report
           },
           {
             label: t('common.events-report-most-active-day'),
+            kind: 'context',
             value: weekdayLabel(report.favoriteDay?.name),
             meta: `${formatter.format(report.favoriteDay?.count ?? 0)} ${t('common.events-report-events-unit')}`
           },
           {
             label: t('common.events-report-busiest-month'),
+            kind: 'context',
             value: monthLabel(report.busiestMonth?.month),
             meta: `${formatter.format(report.busiestMonth?.count ?? 0)} ${t('common.events-report-events-unit')}`
           },
@@ -677,7 +689,9 @@ const reportSections = report
                         {group.items.map((stat) => (
                           <article>
                             <p>{stat.label}</p>
-                            <strong>{stat.value}</strong>
+                            <strong data-kind={'kind' in stat ? stat.kind : 'count'}>
+                              {stat.value}
+                            </strong>
                             {stat.meta ? <span>{stat.meta}</span> : null}
                           </article>
                         ))}
@@ -857,13 +871,15 @@ const reportSections = report
                       {latestFavoriteCumulative.map((artist, index) => (
                         <polyline
                           points={cumulativeLine(artist.name)}
-                          style={`--line-color: ${lineColors[index % lineColors.length]}`}
+                          style={`--line-color: ${lineStyles[index % lineStyles.length].color}; --line-dash: ${lineStyles[index % lineStyles.length].dash}`}
                         />
                       ))}
                     </svg>
                     <div class="event-report__legend">
                       {latestFavoriteCumulative.map((artist, index) => (
-                        <span style={`--legend-color: ${lineColors[index % lineColors.length]}`}>
+                        <span
+                          style={`--legend-color: ${lineStyles[index % lineStyles.length].color}; --legend-dash: ${lineStyles[index % lineStyles.length].dash}`}
+                        >
                           {artist.name}
                         </span>
                       ))}

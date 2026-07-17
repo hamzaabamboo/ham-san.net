@@ -1,6 +1,5 @@
 ---
 import { HobbyInteractiveEmbed } from '~/components/hobbies/HobbyInteractiveEmbed';
-import { HobbyTypeGlyph } from '~/components/hobbies/HobbyTypeGlyph';
 import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
@@ -230,12 +229,9 @@ if (!cmsUnavailable) {
                 onerror="this.closest('[data-visual]')?.setAttribute('data-visual', 'glyph'); this.remove()"
               />
             ) : (
-              <HobbyTypeGlyph
-                type={embedType}
-                label={embedLabel}
-                size="watermark"
-                className={hobbyStyles.detailVisualGlyph}
-              />
+              <span class={hobbyStyles.detailVisualLettermark} aria-hidden="true">
+                {(data?.title ?? '?').charAt(0).toUpperCase()}
+              </span>
             )}
           </div>
         </section>
