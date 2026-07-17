@@ -23,15 +23,19 @@ const { locale, slug } = Astro.params;
 const slugParts = slug?.split('/') ?? [];
 const [rootId, maybeDocSegment, childId] = slugParts;
 
-if (!validateLocale(locale) || !rootId || (maybeDocSegment && maybeDocSegment !== 'doc')) {
+if (!validateLocale(locale)) {
   return Astro.redirect('/404');
+}
+
+if (!rootId || (maybeDocSegment && maybeDocSegment !== 'doc')) {
+  return Astro.redirect(`/${locale}/404`);
 }
 
 const t = useTranslations(locale);
 const settings = await getOutlineSettings();
 
 if (!settings?.['hobbies-collection']) {
-  return Astro.redirect('/404');
+  return Astro.redirect(`/${locale}/404`);
 }
 
 const documentId = childId ?? rootId;
@@ -41,7 +45,7 @@ const documentRequest = await outlineClient.POST('/documents.info', {
 const data = documentRequest.data?.data;
 
 if (!data) {
-  return Astro.redirect('/404');
+  return Astro.redirect(`/${locale}/404`);
 }
 
 const childDocumentsParentId = childId && data.parentDocumentId ? data.parentDocumentId : data.id;

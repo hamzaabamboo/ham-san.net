@@ -45,11 +45,11 @@ try {
     }
   }
 } catch {
-  return Astro.redirect('/404');
+  return Astro.redirect(`/${locale}/404`);
 }
 
 if (!tagData) {
-  return Astro.redirect('/404');
+  return Astro.redirect(`/${locale}/404`);
 }
 
 const title = tagData?.title;
