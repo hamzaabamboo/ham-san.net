@@ -22,6 +22,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .animate-ping {
     animation: none;
   }
@@ -630,7 +634,7 @@ html:lang(th) h6 {
   opacity: 0.3;
 }
 
-.contact-input:focus {
+.contact-input:focus-visible {
   border-color: #ffb000;
   outline: 2px solid #ffb000;
   outline-offset: 2px;
@@ -654,11 +658,8 @@ html:lang(th) h6 {
   transition: border-color 0.15s ease;
 }
 
-.contact-select:focus {
+.contact-select:focus-visible {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23ffb000' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E");
-}
-
-.contact-select:focus {
   border-color: #ffb000;
   outline: 2px solid #ffb000;
   outline-offset: 2px;
@@ -1137,6 +1138,8 @@ html:lang(th) h6 {
 .shell-drawer-overlay {
   position: fixed;
   inset: 0;
+  padding: 0;
+  border: 0;
   background: rgba(0, 0, 0, 0.6);
   z-index: 50;
 }

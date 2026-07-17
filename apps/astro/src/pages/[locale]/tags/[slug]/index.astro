@@ -1,7 +1,7 @@
 ---
 import { FaArrowLeft } from 'react-icons/fa';
 import { Container, Divider, Grid, GridItem, Stack, Wrap } from 'styled-system/jsx';
-import { formatDistanceBetween, formatMonthYear, parseDate } from 'utils/date';
+import { formatMonthSpan, formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
 import { ProjectCard } from '~/components/projects/ProjectCard';
@@ -164,7 +164,7 @@ if (!tagUnavailable) {
               const startDate = start ? parseDate(start as string) : null;
               const endDate = end ? parseDate(end as string) : null;
               const duration = startDate
-                ? formatDistanceBetween(startDate, endDate ?? new Date(), locale)
+                ? formatMonthSpan(startDate, endDate ?? new Date(), locale)
                 : '';
               return (
                 <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6">

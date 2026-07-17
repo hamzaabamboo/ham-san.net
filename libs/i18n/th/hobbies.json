@@ -1,4 +1,5 @@
 {
+  "untitled": "ไม่มีชื่อ",
   "back-to-hobbies": "กลับไปหน้างานอดิเรก",
   "back-to-parent": "กลับไปงานอดิเรกหลัก",
   "page-heading": "งานอดิเรก",
@@ -18,6 +19,7 @@
   "metric-pages": "{count} หน้า",
   "linked-photo-sources": "หน้ารูปภาพที่ลิงก์ไว้",
   "no-images": "ยังไม่มีภาพแนบ",
+  "image-label": "ภาพ",
   "no-links": "ยังไม่มีลิงก์ภายนอกในโน้ตนี้",
   "source-note": "โน้ต",
   "no-feed": "ยังไม่มีลิงก์ฟีดสาธารณะในโน้ตนี้",

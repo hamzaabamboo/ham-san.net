@@ -8,6 +8,7 @@ import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { withLastGood } from '~/utils/cms-cache';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
+import { requireOutlineOk } from '~/utils/outline-response';
 
 export const prerender = false;
 
@@ -78,15 +79,28 @@ const banner = resolveOutlineAssetUrl(getArticleBanner(content) ?? undefined);
 
 const siblingsParentId =
   maybeDocSegment === 'doc' && maybeDocId ? note?.parentDocumentId : note?.id;
+let siblingsUnavailable = false;
 const siblingsRequest = note
-  ? await withLastGood(`note-siblings:${siblingsParentId}`, () =>
-      outlineClient.POST('/documents.list', {
+  ? await withLastGood(`note-siblings:${siblingsParentId}`, async () => {
+      const request = await outlineClient.POST('/documents.list', {
         body: { parentDocumentId: siblingsParentId }
-      })
-    ).catch(() => null)
+      });
+      return requireOutlineOk(request, 'documents.list');
+    }).catch(() => {
+      siblingsUnavailable = true;
+      return null;
+    })
   : null;
 
 const siblings = siblingsRequest?.data?.data ?? [];
+if (siblingsUnavailable) {
+  Astro.response.status = 503;
+}
+if (noteMissing || noteUnavailable || siblingsUnavailable) {
+  Astro.response.headers.set('CDN-Cache-Control', 'no-store');
+} else {
+  Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+}
 const outlineUrl = `${outlineAssetPrefix}/s/${shareId}${maybeDocSegment === 'doc' && maybeDocId ? `/doc/${maybeDocId}` : ''}`;
 
 const wordCount = content ? content.split(/\s+/).length : 0;
@@ -288,7 +302,13 @@ const tags = (note as any)?.tags ?? [];
                 className="note-hero-frame"
                 mb="4"
               >
-                <img src={banner} alt={note.title ?? undefined} class="note-hero-image" />
+                <img
+                  src={banner}
+                  alt={note.title ?? undefined}
+                  width="1600"
+                  height="900"
+                  class="note-hero-image"
+                />
                 <Box
                   position="absolute"
                   inset="0"
@@ -306,6 +326,12 @@ const tags = (note as any)?.tags ?? [];
                 assetsPrefix={outlineAssetPrefix}
                 assetProxyBasePath={outlineAssetProxyPath}
               />
+            )}
+
+            {siblingsUnavailable && (
+              <Box border="1px solid" borderColor="#765c2f" bg="#1c1b1b" p="4">
+                <Text color="#ffd597">{t('note.status-unavailable')}</Text>
+              </Box>
             )}
 
             {(prevSibling || nextSibling) && (

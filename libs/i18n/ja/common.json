@@ -1,4 +1,5 @@
 {
+  "records-pending": "記録待ち",
   "ham": "ハム",
   "name": "Ham",
   "home": "ホーム",
@@ -177,6 +178,9 @@
   "carousel-previous": "前のスライド",
   "carousel-next": "次のスライド",
   "carousel-goto": "スライドへ移動",
+  "carousel-slide": "スクリーンショット",
+  "carousel-start": "スライドの自動再生を開始",
+  "carousel-stop": "スライドの自動再生を停止",
   "events-report-weekly-best": "週間ベスト: {n}週連続",
   "skip-to-content": "本文へスキップ"
 }

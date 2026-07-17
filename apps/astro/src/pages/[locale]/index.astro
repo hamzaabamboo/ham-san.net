@@ -141,7 +141,10 @@ Astro.response.headers.set(
                 introImage ? (
                   <img
                     src={introImage}
-                    alt="Profile"
+                    alt={t('home.profile-image-alt')}
+                    width="1200"
+                    height="1200"
+                    fetchpriority="high"
                     style={{
                       width: '100%',
                       height: '100%',
@@ -367,6 +370,9 @@ Astro.response.headers.set(
                             alt=""
                             style="width:100%;height:100%;object-fit:cover;filter:saturate(1.08) contrast(1.04);transition:filter 500ms, transform 500ms"
                             class="project-card-img"
+                            width="600"
+                            height="600"
+                            loading="lazy"
                           />
                           <Box
                             position="absolute"

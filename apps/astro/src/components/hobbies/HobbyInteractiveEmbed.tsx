@@ -86,6 +86,7 @@ export const HobbyInteractiveEmbed = ({
   sourceNoteAttachedLabel,
   linkedPhotoSourcesLabel,
   noImagesLabel,
+  imageLabel,
   noLinksLabel,
   sourceNoteLabel,
   noFeedLabel,
@@ -125,6 +126,7 @@ export const HobbyInteractiveEmbed = ({
         sourceNoteAttachedLabel={sourceNoteAttachedLabel}
         linkedPhotoSourcesLabel={linkedPhotoSourcesLabel}
         noImagesLabel={noImagesLabel}
+        imageLabel={imageLabel}
         noLinksLabel={noLinksLabel}
         sourceNoteLabel={sourceNoteLabel}
         noFeedLabel={noFeedLabel}

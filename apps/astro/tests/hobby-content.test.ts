@@ -100,6 +100,45 @@ Switch history.`
 Switch history.`);
   });
 
+  test('preserves directive examples inside fenced code blocks', () => {
+    const content = parseHobbyContent({
+      title: 'Authoring',
+      text: `Use this syntax:
+
+\`\`\`md
+::photo[Example]
+\`\`\``
+    });
+
+    expect(content.embeds).toEqual([]);
+    expect(content.body).toContain('::photo[Example]');
+  });
+
+  test('requires a matching fence marker and length before closing', () => {
+    const content = parseHobbyContent({
+      title: 'Authoring',
+      text: `\`\`\`\`md
+\`\`\`js
+::photo[Still code]
+\`\`\`\`
+
+::photo[Gallery]`
+    });
+
+    expect(content.embeds).toEqual([{ type: 'photo-gallery', label: 'Gallery' }]);
+    expect(content.body).toContain('::photo[Still code]');
+  });
+
+  test('preserves unsupported directives instead of fabricating a module', () => {
+    const content = parseHobbyContent({
+      title: 'Camera',
+      text: '::hobby[photo-galery|Contact sheets]'
+    });
+
+    expect(content.embeds).toEqual([]);
+    expect(content.body).toBe('::hobby[photo-galery|Contact sheets]');
+  });
+
   test('uses source metadata before generated fallbacks', () => {
     const content = parseHobbyContent({
       title: 'Maps',

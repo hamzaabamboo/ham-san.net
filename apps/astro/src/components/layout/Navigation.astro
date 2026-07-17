@@ -1,6 +1,7 @@
 ---
 import { languages } from '~/i18n/ui';
 import { getLangFromUrl, useTranslations } from '~/i18n/utils';
+import { localizePath } from '~/i18n/path';
 import { BrandMark } from '~/components/brand/BrandMark';
 import { Sidebar } from './Sidebar';
 
@@ -12,8 +13,7 @@ const getURLWithLanguage = (value: string) => {
 };
 
 const getCurrentURLWithLanguage = (language: string) => {
-  const [, , ...currentPath] = Astro.url.pathname.split('/');
-  return `/${language}/${currentPath.join('/')}`;
+  return localizePath(Astro.url.pathname, language, Astro.url.search);
 };
 
 const NAVIGATION_LINKS = [
@@ -73,6 +73,12 @@ const NAVIGATION_LINKS = [
           ))
       }
     </div>
-    <Sidebar links={NAVIGATION_LINKS} locale={lang} pathname={Astro.url.pathname} client:visible />
+    <Sidebar
+      links={NAVIGATION_LINKS}
+      locale={lang}
+      pathname={Astro.url.pathname}
+      search={Astro.url.search}
+      client:visible
+    />
   </div>
 </nav>

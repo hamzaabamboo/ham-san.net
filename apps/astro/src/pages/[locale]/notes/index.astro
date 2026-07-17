@@ -9,6 +9,8 @@ import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { withLastGood } from '~/utils/cms-cache';
 import { outlineClient } from '~/utils/outline-api';
+import { requireOutlineOk } from '~/utils/outline-response';
+import { retryOnce } from '~/utils/retry';
 
 export const prerender = false;
 
@@ -57,8 +59,9 @@ const fetchAllShares = async () => {
   const pageLimit = 100;
   let offset = 0;
   while (true) {
-    const shareRequest = await fetchSharePage(offset, pageLimit);
-    if (!shareRequest.response.ok) return undefined;
+    const shareRequest = await retryOnce(async () =>
+      requireOutlineOk(await fetchSharePage(offset, pageLimit), 'shares.list')
+    );
     const rows = shareRequest.data?.data ?? [];
     shares.push(...rows);
     if (rows.length < (shareRequest.data?.pagination?.limit ?? pageLimit)) break;

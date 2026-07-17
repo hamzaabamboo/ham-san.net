@@ -9,7 +9,8 @@ const canonicalUrl = Astro.url.href;
 const siteName = 'Ham';
 const localePath = Astro.url.pathname.replace(/^\/[^/]+/, '');
 const alternateLocales = Object.keys(languages);
-const alternateUrl = (code: string) => new URL(`/${code}${localePath}`, Astro.url).href;
+const alternateUrl = (code: string) =>
+  new URL(`/${code}${localePath}${Astro.url.search}`, Astro.url).href;
 ---
 
 <html lang={lang} class="dark">

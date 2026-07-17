@@ -1,4 +1,5 @@
 {
+  "untitled": "無題",
   "back-to-hobbies": "趣味一覧へ",
   "back-to-parent": "親の趣味へ戻る",
   "page-heading": "趣味",
@@ -18,6 +19,7 @@
   "metric-pages": "{count}ページ",
   "linked-photo-sources": "リンク済み写真ページ",
   "no-images": "画像はまだ添付されていません",
+  "image-label": "写真",
   "no-links": "このノートには外部リンクがありません。",
   "source-note": "ノート",
   "no-feed": "公開フィードのリンクはまだありません。",

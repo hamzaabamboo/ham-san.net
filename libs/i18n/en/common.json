@@ -1,4 +1,5 @@
 {
+  "records-pending": "Records pending",
   "ham": "Ham",
   "name": "Ham",
   "home": "Home",
@@ -177,6 +178,9 @@
   "carousel-previous": "Previous slide",
   "carousel-next": "Next slide",
   "carousel-goto": "Go to slide",
+  "carousel-slide": "Screenshot",
+  "carousel-start": "Start slide rotation",
+  "carousel-stop": "Stop slide rotation",
   "events-report-weekly-best": "weekly best: {n} consecutive weeks",
   "skip-to-content": "Skip to content"
 }

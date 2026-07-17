@@ -43,6 +43,25 @@ const formatRelativeUnit = (
 
 export const formatDistanceBetween = (start: Date, end: Date, locale = 'en') => {
   if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return '';
+  const diffMs = Math.abs(end.getTime() - start.getTime());
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const week = 7 * day;
+  const month = 30 * day;
+  const year = 365 * day;
+
+  if (diffMs >= year) return formatRelativeUnit(Math.floor(diffMs / year), 'year', locale);
+  if (diffMs >= month) return formatRelativeUnit(Math.floor(diffMs / month), 'month', locale);
+  if (diffMs >= week) return formatRelativeUnit(Math.floor(diffMs / week), 'week', locale);
+  if (diffMs >= day) return formatRelativeUnit(Math.floor(diffMs / day), 'day', locale);
+  if (diffMs >= hour) return formatRelativeUnit(Math.floor(diffMs / hour), 'hour', locale);
+  if (diffMs >= minute) return formatRelativeUnit(Math.floor(diffMs / minute), 'minute', locale);
+  return formatRelativeUnit(Math.max(1, Math.floor(diffMs / 1000)), 'second', locale);
+};
+
+export const formatMonthSpan = (start: Date, end: Date, locale = 'en') => {
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return '';
   const [first, last] = start.getTime() <= end.getTime() ? [start, end] : [end, start];
   const months =
     (last.getFullYear() - first.getFullYear()) * 12 + (last.getMonth() - first.getMonth()) + 1;

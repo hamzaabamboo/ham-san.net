@@ -8,6 +8,7 @@ export const FieldNotesEmbed = ({
   body = '',
   links = [],
   nestedPages = [],
+  moduleTitle,
   emptySourceLabel = 'Source material pending.',
   emptySourceStateLabel,
   nestedSourcePagesLabel = 'Related pages',
@@ -25,7 +26,7 @@ export const FieldNotesEmbed = ({
       <HobbyTypeGlyph type="field-notes" size="hero" />
       <div>
         <p>{sourceState}</p>
-        <strong>{title ?? 'Note links'}</strong>
+        <strong>{title ?? moduleTitle ?? 'Note links'}</strong>
         {nestedPages.length > 0 && (
           <nav>
             {nestedPages.slice(0, 4).map((page) => (

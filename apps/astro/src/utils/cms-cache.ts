@@ -1,11 +1,11 @@
 const lastGood = new Map<string, unknown>();
 const MAX_ENTRIES = 256;
 
-export const withLastGood = async <T>(
+export const withLastGoodState = async <T>(
   key: string,
   fetcher: () => Promise<T>,
   shouldStore?: (value: T) => boolean
-): Promise<T> => {
+) => {
   try {
     const value = await fetcher();
     if (!shouldStore || shouldStore(value)) {
@@ -15,11 +15,20 @@ export const withLastGood = async <T>(
       }
       lastGood.set(key, value);
     }
-    return value;
+    return { value, fromCache: false };
   } catch (error) {
     if (lastGood.has(key)) {
-      return lastGood.get(key) as T;
+      return { value: lastGood.get(key) as T, fromCache: true };
     }
     throw error;
   }
+};
+
+export const withLastGood = async <T>(
+  key: string,
+  fetcher: () => Promise<T>,
+  shouldStore?: (value: T) => boolean
+): Promise<T> => {
+  const { value } = await withLastGoodState(key, fetcher, shouldStore);
+  return value;
 };

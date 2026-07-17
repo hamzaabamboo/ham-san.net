@@ -8,7 +8,8 @@ export const PhotoGalleryEmbed = ({
   images = [],
   links = [],
   linkedPhotoSourcesLabel = 'Linked photo sources',
-  noImagesLabel = 'No images attached yet'
+  noImagesLabel = 'No images attached yet',
+  imageLabel = 'Photo'
 }: HobbyEmbedProps) => {
   const galleryImages = images.slice(0, 6);
   const [activeImage, setActiveImage] = useState(0);
@@ -28,7 +29,12 @@ export const PhotoGalleryEmbed = ({
     <div className={hobbyStyles.gallery} data-has-rail={galleryImages.length > 0}>
       <div className={hobbyStyles.galleryStage}>
         {galleryImages[activeImage] ? (
-          <img src={galleryImages[activeImage]} alt="" />
+          <img
+            src={galleryImages[activeImage]}
+            alt={`${imageLabel} ${activeImage + 1}`}
+            width={1200}
+            height={900}
+          />
         ) : galleryLinks.length > 0 ? (
           <div className={hobbyStyles.gallerySources}>
             <strong>{linkedPhotoSourcesLabel}</strong>
@@ -53,9 +59,11 @@ export const PhotoGalleryEmbed = ({
               key={image}
               type="button"
               data-active={index === activeImage}
+              aria-label={`${imageLabel} ${index + 1}`}
+              aria-pressed={index === activeImage}
               onClick={() => setActiveImage(index)}
             >
-              <img src={image} alt="" />
+              <img src={image} alt="" width={320} height={240} />
             </button>
           ))}
         </div>

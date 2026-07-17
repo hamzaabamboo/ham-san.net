@@ -1,6 +1,6 @@
 ---
 import { Box, Container, Grid, Stack, Wrap } from 'styled-system/jsx';
-import { formatDistanceBetween, formatMonthYear, parseDate } from 'utils/date';
+import { formatMonthSpan, formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
@@ -36,7 +36,7 @@ const formatDuration = (start?: string, end?: string) => {
   if (!start) return '';
   const startDate = parseDate(start);
   const endDate = end ? parseDate(end) : new Date();
-  return formatDistanceBetween(startDate, endDate, locale);
+  return formatMonthSpan(startDate, endDate, locale);
 };
 
 const extractFirstParagraph = (md: string): string => {
@@ -359,7 +359,7 @@ Astro.response.headers.set(
                         textTransform="uppercase"
                         color="#9f8e78"
                       >
-                        Records pending
+                        {t('common.records-pending')}
                       </Text>
                     )
                   }

@@ -28,13 +28,13 @@ const t = useTranslations(locale);
   <a href="#main" class="skip-link">{t('common.skip-to-content')}</a>
   <div id="nav-progress" aria-hidden="true"></div>
   <SmoothScroll client:only="react" />
-  <Navigation transition:persist="navbar" />
-  <DesktopSidebar transition:persist="sidebar" />
+  <Navigation />
+  <DesktopSidebar />
   <div class="shell-content">
     <main id="main" tabindex="-1" class="shell-main">
       <slot />
     </main>
-    <Footer transition:persist="footer" />
+    <Footer />
   </div>
 </BaseLayout>
 

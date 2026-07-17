@@ -238,6 +238,7 @@ const items = [
                     id="contact-name"
                     name="name"
                     type="text"
+                    autocomplete="name"
                     class="contact-input"
                     placeholder={t('contact.placeholder-name')}
                     required
@@ -251,6 +252,8 @@ const items = [
                     id="contact-email"
                     name="email"
                     type="email"
+                    autocomplete="email"
+                    spellcheck="false"
                     class="contact-input"
                     placeholder={t('contact.placeholder-email')}
                     required
@@ -261,7 +264,12 @@ const items = [
                 <label for="contact-subject" class="contact-label">
                   {t('contact.field-subject')}
                 </label>
-                <select id="contact-subject" name="subject" class="contact-select">
+                <select
+                  id="contact-subject"
+                  name="subject"
+                  class="contact-select"
+                  autocomplete="off"
+                >
                   <option>{t('contact.subject-project')}</option>
                   <option>{t('contact.subject-collaboration')}</option>
                   <option>{t('contact.subject-technical')}</option>
@@ -276,6 +284,7 @@ const items = [
                   id="contact-message"
                   name="message"
                   class="contact-input"
+                  autocomplete="off"
                   rows="5"
                   placeholder={t('contact.placeholder-message')}
                   style="min-height: 180px; resize: vertical;"

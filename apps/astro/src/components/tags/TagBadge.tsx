@@ -33,7 +33,7 @@ export const TagBadge = ({
 
   return (
     <Badge variant="outline" size={size} colorPalette={colorPalette} textTransform="uppercase">
-      {title} {showCount && count > 0 && `(${count})`}
+      {title} {showCount && `(${count})`}
     </Badge>
   );
 };

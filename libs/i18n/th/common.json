@@ -1,4 +1,5 @@
 {
+  "records-pending": "รอบันทึก",
   "ham": "Ham",
   "name": "Ham",
   "home": "หน้าแรก",
@@ -177,6 +178,9 @@
   "carousel-previous": "สไลด์ก่อนหน้า",
   "carousel-next": "สไลด์ถัดไป",
   "carousel-goto": "ไปยังสไลด์",
+  "carousel-slide": "ภาพหน้าจอ",
+  "carousel-start": "เริ่มเล่นสไลด์อัตโนมัติ",
+  "carousel-stop": "หยุดเล่นสไลด์อัตโนมัติ",
   "events-report-weekly-best": "สถิติรายสัปดาห์: {n} สัปดาห์ติดกัน",
   "skip-to-content": "ข้ามไปยังเนื้อหา"
 }

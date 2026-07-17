@@ -15,6 +15,7 @@ export type HobbyEmbedProps = {
   sourceNoteAttachedLabel?: string;
   linkedPhotoSourcesLabel?: string;
   noImagesLabel?: string;
+  imageLabel?: string;
   noLinksLabel?: string;
   sourceNoteLabel?: string;
   noFeedLabel?: string;

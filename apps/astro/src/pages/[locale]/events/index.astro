@@ -1,6 +1,6 @@
 ---
 import MainLayout from '~/layouts/MainLayout.astro';
-import { withLastGood } from '~/utils/cms-cache';
+import { withLastGoodState } from '~/utils/cms-cache';
 import '~/styles/events-report.css';
 
 import { Container } from 'styled-system/jsx';
@@ -28,7 +28,10 @@ let rawReport: EventernoteReport | undefined;
 let fetchError = false;
 
 try {
-  rawReport = await withLastGood('events:report', () => getEventernoteReport());
+  const { value, fromCache } = await withLastGoodState('events:report', () =>
+    getEventernoteReport()
+  );
+  rawReport = fromCache ? { ...value, cached: true } : value;
 } catch {
   fetchError = true;
 }

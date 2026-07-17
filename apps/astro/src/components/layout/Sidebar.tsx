@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { BrandMark } from '~/components/brand/BrandMark';
 import { Languages, languages } from '~/i18n/ui';
 import { useTranslations } from '~/i18n/utils';
+import { localizePath } from '~/i18n/path';
 
 const ICONS: Record<string, string> = {
   '/projects': 'work',
@@ -16,10 +17,12 @@ const ICONS: Record<string, string> = {
 export const Sidebar = ({
   locale = 'en',
   pathname,
+  search,
   links
 }: {
   locale: Languages;
   pathname: string;
+  search: string;
   links: { label: string; value: string }[];
 }) => {
   const t = useTranslations(locale);
@@ -60,7 +63,7 @@ export const Sidebar = ({
       const dialog = document.querySelector('.shell-drawer-portal');
       if (!dialog) return;
       const tabbables = Array.from(
-        dialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
+        dialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled]):not([tabindex="-1"])')
       );
       if (tabbables.length === 0) return;
       const first = tabbables[0];
@@ -105,8 +108,7 @@ export const Sidebar = ({
   };
 
   const getCurrentURLWithLanguage = (language: string) => {
-    const [, , ...currentPath] = pathname.split('/');
-    return `/${language}/${currentPath.join('/')}`;
+    return localizePath(pathname, language, search);
   };
 
   return (
@@ -134,7 +136,12 @@ export const Sidebar = ({
             aria-modal="true"
             aria-label={t('common.menu')}
           >
-            <div className="shell-drawer-overlay" onClick={() => setOpen(false)} />
+            <button
+              className="shell-drawer-overlay"
+              onClick={() => setOpen(false)}
+              aria-label={t('common.menu-close')}
+              tabIndex={-1}
+            />
             <div className="shell-drawer">
               <div className="shell-drawer-header">
                 <BrandMark />

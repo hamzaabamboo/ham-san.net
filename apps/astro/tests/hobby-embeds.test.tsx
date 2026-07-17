@@ -150,4 +150,16 @@ describe('hobby embeds', () => {
     expect(html).toContain('photos.app.goo.gl/abc123');
     expect(html).toContain('photos.app.goo.gl/def456');
   });
+
+  test('photo gallery names thumbnail controls and exposes the selected image', () => {
+    const html = renderToStaticMarkup(
+      <PhotoGalleryEmbed images={['/one.jpg', '/two.jpg']} imageLabel="Photo" />
+    );
+
+    expect(html).toContain('aria-label="Photo 1"');
+    expect(html).toContain('aria-label="Photo 2"');
+    expect(html).toContain('alt="Photo 1"');
+    expect(html).toContain('aria-pressed="true"');
+    expect(html).toContain('aria-pressed="false"');
+  });
 });

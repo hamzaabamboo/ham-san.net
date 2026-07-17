@@ -45,6 +45,16 @@ const embedAliases: Record<string, string> = {
   typing: 'typing-stats',
   x: 'twitter-feed'
 };
+const embedTypes = new Set([
+  'darts-board',
+  'field-notes',
+  'link-library',
+  'photo-gallery',
+  'piano-chords',
+  'rubik-algorithms',
+  'twitter-feed',
+  'typing-stats'
+]);
 
 const normalize = (value?: string | null) => (value ?? '').trim().toLowerCase();
 
@@ -155,7 +165,7 @@ export const parseHobbyFrontmatter = (content?: string) => {
 export const normalizeHobbyEmbedKey = (token?: string) => {
   if (!token) return undefined;
   const normalized = normalize(token).replace(/_/g, '-');
-  return embedAliases[normalized] ?? normalized;
+  return embedAliases[normalized] ?? (embedTypes.has(normalized) ? normalized : undefined);
 };
 
 const parseDirective = (line: string): HobbyEmbedConfig | undefined => {
@@ -190,10 +200,28 @@ const parseDirective = (line: string): HobbyEmbedConfig | undefined => {
 
 export const extractHobbyDirectives = (content: string) => {
   const embeds: HobbyEmbedConfig[] = [];
+  let fence: string | undefined;
   const body = content
     .split('\n')
     .map((line) => {
-      const directive = parseDirective(line.trim());
+      const trimmed = line.trim();
+      const marker = trimmed.match(/^(`{3,}|~{3,})/)?.[1];
+      if (!fence && marker) {
+        fence = marker;
+        return line;
+      }
+      if (fence) {
+        const closingMarker = trimmed.match(/^(`+|~+)\s*$/)?.[1];
+        if (
+          closingMarker &&
+          closingMarker[0] === fence[0] &&
+          closingMarker.length >= fence.length
+        ) {
+          fence = undefined;
+        }
+        return line;
+      }
+      const directive = parseDirective(trimmed);
       if (!directive) return line;
       const index = embeds.length;
       embeds.push(directive);

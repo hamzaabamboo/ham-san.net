@@ -5,6 +5,7 @@ import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { getHobbyBodyIntro, parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
+import { getHobbyDetailResponse } from '~/utils/hobby-detail-response';
 import {
   formatHobbyUpdated,
   getHobbyContentLabel,
@@ -15,6 +16,7 @@ import { withLastGood } from '~/utils/cms-cache';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 import { getOutlineSettings } from '~/utils/outline-settings';
+import { requireOutlineOk } from '~/utils/outline-response';
 import { cx } from 'styled-system/css';
 
 export const prerender = false;
@@ -45,48 +47,54 @@ const documentId = childId ?? rootId;
 const fetchHobbyDocument = (collectionId: string, id: string) =>
   outlineClient.POST('/documents.info', { body: { collectionId, id } });
 let data: NonNullable<Awaited<ReturnType<typeof fetchHobbyDocument>>['data']>['data'] | undefined;
+let documentStatus: number | undefined;
 
 if (!cmsUnavailable) {
   if (!settings?.['hobbies-collection']) {
-    return Astro.redirect(`/${locale}/404`);
+    cmsUnavailable = true;
   }
   try {
+    if (!settings?.['hobbies-collection']) throw new Error('hobbies collection not configured');
     const documentRequest = await withLastGood(
       `hobby:${documentId}`,
       async () => {
         const request = await fetchHobbyDocument(settings!['hobbies-collection'], documentId);
-        if (request.response.status >= 500) {
-          throw new Error(`documents.info ${request.response.status}`);
-        }
-        return request;
+        if (request.response.status === 404) return request;
+        return requireOutlineOk(request, 'documents.info');
       },
       (request) => request.response.ok
     );
-    if (documentRequest.response.status >= 500) {
-      cmsUnavailable = true;
-    } else {
-      data = documentRequest.data?.data;
-    }
+    documentStatus = documentRequest.response.status;
+    data = documentRequest.data?.data;
   } catch {
     cmsUnavailable = true;
   }
 }
 
-if (!cmsUnavailable && !data) {
+const initialResponse = getHobbyDetailResponse({
+  settingsAvailable: !!settings?.['hobbies-collection'],
+  documentStatus,
+  hasDocument: !!data
+});
+
+if (initialResponse.redirectTo404) {
   return Astro.redirect(`/${locale}/404`);
 }
 
-if (cmsUnavailable) {
-  Astro.response.status = 503;
-}
+cmsUnavailable = initialResponse.status === 503;
 
 const childDocumentsParentId = childId && data?.parentDocumentId ? data.parentDocumentId : data?.id;
+let childDocumentsUnavailable = false;
 const childDocumentsRequest = data
-  ? await withLastGood(`hobby-children:${childDocumentsParentId}`, () =>
-      outlineClient.POST('/documents.list', {
+  ? await withLastGood(`hobby-children:${childDocumentsParentId}`, async () => {
+      const request = await outlineClient.POST('/documents.list', {
         body: { parentDocumentId: childDocumentsParentId }
-      })
-    ).catch(() => null)
+      });
+      return requireOutlineOk(request, 'documents.list');
+    }).catch(() => {
+      childDocumentsUnavailable = true;
+      return null;
+    })
   : null;
 const childDocuments = (childDocumentsRequest?.data?.data ?? [])
   .filter(Boolean)
@@ -99,7 +107,7 @@ const content = parseHobbyContent({
   fallbackUpdatedAt: data?.updatedAt ?? data?.createdAt
 });
 const nestedPages = childDocuments.map((child) => ({
-  title: child.title ?? 'Untitled',
+  title: child.title ?? t('hobbies.untitled'),
   href: `/${locale}/hobbies/${rootId}/doc/${child.id}`
 }));
 const hasExplicitStatus =
@@ -157,6 +165,7 @@ const embedProps = {
   sourceNoteAttachedLabel: t('hobbies.source-note-attached'),
   linkedPhotoSourcesLabel: t('hobbies.linked-photo-sources'),
   noImagesLabel: t('hobbies.no-images'),
+  imageLabel: t('hobbies.image-label'),
   noLinksLabel: t('hobbies.no-links'),
   sourceNoteLabel: t('hobbies.source-note'),
   noFeedLabel: t('hobbies.no-feed'),
@@ -171,9 +180,14 @@ const embedProps = {
   status: effectiveStatus
 };
 
-if (!cmsUnavailable) {
-  Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
-}
+const responseState = getHobbyDetailResponse({
+  settingsAvailable: !!settings?.['hobbies-collection'],
+  documentStatus,
+  hasDocument: !!data,
+  childDocumentsUnavailable
+});
+Astro.response.status = responseState.status;
+Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
 ---
 
 <MainLayout title={pageTitle} description={detailDescription || data?.title}>
@@ -225,6 +239,8 @@ if (!cmsUnavailable) {
               <img
                 src={banner}
                 alt=""
+                width="1200"
+                height="900"
                 class={hobbyStyles.detailBanner}
                 onerror="this.closest('[data-visual]')?.setAttribute('data-visual', 'glyph'); this.remove()"
               />
@@ -245,6 +261,14 @@ if (!cmsUnavailable) {
           data-has-aside={childDocuments.length > 0 && bodyParts.length > 0}
         >
           <div class={hobbyStyles.detailMain}>
+            {childDocumentsUnavailable && (
+              <div class={hobbyStyles.detailPanel}>
+                <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+                  {t('hobbies.status-unavailable')}
+                </p>
+                <p class={hobbyStyles.detailDescription}>{t('hobbies.empty-description')}</p>
+              </div>
+            )}
             {bodyParts.length === 0 && childDocuments.length > 0 && (
               <div class={hobbyStyles.detailPanel}>
                 <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>

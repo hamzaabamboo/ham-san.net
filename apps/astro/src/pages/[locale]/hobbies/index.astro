@@ -186,9 +186,10 @@ const hobbyCardPill = css({
 });
 
 let hobbiesList: any[] | undefined = undefined;
+let hobbiesUnavailable = false;
 
 try {
-  hobbiesList = await withLastGood('hobbies:list', async () => {
+  hobbiesList = await withLastGood(`hobbies:list:${locale}`, async () => {
     const settings = await getOutlineSettings();
     if (!settings?.['hobbies-collection']) {
       throw new Error('hobbies collection not configured');
@@ -216,7 +217,7 @@ try {
       const children = childrenByParent.get(document.parentDocumentId) ?? [];
       children.push({
         id: document.id,
-        title: document.title ?? 'Untitled'
+        title: document.title ?? t('hobbies.untitled')
       });
       childrenByParent.set(document.parentDocumentId, children);
     });
@@ -227,7 +228,16 @@ try {
       childPages: childrenByParent.get(document.id) ?? []
     }));
   });
-} catch {}
+} catch {
+  hobbiesUnavailable = true;
+}
+
+if (hobbiesUnavailable) {
+  Astro.response.status = 503;
+  Astro.response.headers.set('CDN-Cache-Control', 'no-store');
+} else {
+  Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
+}
 
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = getOutlineAssetProxyPath(locale);
@@ -444,6 +454,8 @@ const hobbies = hobbiesList
                         <img
                           src={hobby.banner}
                           alt=""
+                          width="640"
+                          height="480"
                           class={hobbyThumbnail}
                           loading="lazy"
                           style="grid-area: 1 / 1; position: relative; z-index: 1"

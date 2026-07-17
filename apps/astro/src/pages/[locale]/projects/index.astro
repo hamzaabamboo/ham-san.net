@@ -10,6 +10,7 @@ import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { projectMonogram } from '~/utils/monogram';
 import { cleanProjectCopy } from '~/utils/project-copy';
+import { groupProjectsByActivity, requireProjects } from '~/utils/project-groups';
 import MainLayout from '~/layouts/MainLayout.astro';
 
 export const prerender = false;
@@ -24,7 +25,9 @@ let projects: any[] = [];
 let projectsUnavailable = false;
 
 try {
-  const data = await withLastGood('projects', () => graphQLSdk.fetchProjects({ limit: 75 }));
+  const data = await withLastGood('projects', async () =>
+    requireProjects(await graphQLSdk.fetchProjects({ limit: 75 }))
+  );
   projects = (data?.projects ?? [])
     .map((p) => pickLocale(p, locale))
     .filter((p: any) => !!p)
@@ -36,12 +39,8 @@ try {
 const t = useTranslations(locale);
 const pageTitle = `${t('common.projects')} | ${t('common.name')}`;
 
-const activeProjects = projects.filter((p) => p.isActive);
-const featuredProjects = activeProjects.slice(0, 6);
-const overflowProjects = activeProjects.slice(6);
-const inactiveProjects = projects.filter((p) => !p.isActive);
-const archiveProjects = [...overflowProjects, ...inactiveProjects];
-const archiveGridProjects = archiveProjects.slice(0, 9);
+const { active: activeProjects, inactive: inactiveProjects } = groupProjectsByActivity(projects);
+const inactiveGridProjects = inactiveProjects.slice(0, 9);
 const latestProjectYear = projects.reduce((latest, project) => {
   const year = project.date?.slice(0, 4);
   return year && year > latest ? year : latest;
@@ -59,6 +58,7 @@ const yearLabel = (year?: string) =>
 
 if (projectsUnavailable) {
   Astro.response.status = 503;
+  Astro.response.headers.set('CDN-Cache-Control', 'no-store');
 } else {
   Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 }
@@ -126,7 +126,7 @@ if (projectsUnavailable) {
             {t('project.active')}
           </Text>
           <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
-            {featuredProjects.length}
+            {activeProjects.length}
           </Text>
         </Stack>
         <Stack className="contact-panel" p="5" gap="2">
@@ -139,7 +139,7 @@ if (projectsUnavailable) {
             {t('project.inactive')}
           </Text>
           <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
-            {archiveProjects.length}
+            {inactiveProjects.length}
           </Text>
         </Stack>
         <Stack bg="#131313" p="5" gap="2">
@@ -200,7 +200,7 @@ if (projectsUnavailable) {
                 border="1px solid"
                 borderColor="#524533"
               >
-                {featuredProjects.map((project) => {
+                {activeProjects.map((project) => {
                   const imageUrl =
                     getMediaUrl(
                       project.media?.[0]?.url,
@@ -233,6 +233,9 @@ if (projectsUnavailable) {
                             <img
                               src={imageUrl}
                               alt=""
+                              width="960"
+                              height="540"
+                              loading="lazy"
                               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
                           </Box>
@@ -373,7 +376,7 @@ if (projectsUnavailable) {
                 gap="8"
                 alignItems="start"
               >
-                {archiveGridProjects.map((project) => {
+                {inactiveGridProjects.map((project) => {
                   return (
                     <Link
                       href={`/${locale}/projects/${project.slug}`}
@@ -459,9 +462,9 @@ if (projectsUnavailable) {
                   );
                 })}
               </Grid>
-              {archiveProjects.length > 9 && (
+              {inactiveProjects.length > 9 && (
                 <Stack gap="1px" bg="#524533" border="1px solid" borderColor="#524533">
-                  {archiveProjects.slice(9).map((project) => (
+                  {inactiveProjects.slice(9).map((project) => (
                     <Link
                       href={`/${locale}/projects/${project.slug}`}
                       display="block"

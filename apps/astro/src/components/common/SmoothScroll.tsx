@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 
 export const SmoothScroll = () => {
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const lenis = new Lenis({
       lerp: 0.1,
       duration: 1.2,
@@ -11,14 +13,16 @@ export const SmoothScroll = () => {
       touchMultiplier: 2.0
     });
 
+    let frame = 0;
     const raf = (time: number) => {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      frame = requestAnimationFrame(raf);
     };
 
-    requestAnimationFrame(raf);
+    frame = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(frame);
       lenis.destroy();
     };
   }, []);

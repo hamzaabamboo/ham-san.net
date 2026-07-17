@@ -1,4 +1,5 @@
 {
+  "untitled": "Untitled",
   "back-to-hobbies": "Back to hobbies",
   "back-to-parent": "Back to parent hobby",
   "page-heading": "Hobbies",
@@ -18,6 +19,7 @@
   "metric-pages": "{count} pages",
   "linked-photo-sources": "Linked photo pages",
   "no-images": "No images attached yet",
+  "image-label": "Photo",
   "no-links": "No external links in this note.",
   "source-note": "Note",
   "no-feed": "No public feed link is attached to this note.",
