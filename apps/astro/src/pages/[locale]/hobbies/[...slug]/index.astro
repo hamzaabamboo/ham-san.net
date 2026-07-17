@@ -12,6 +12,7 @@ import {
   getHobbyOverviewSummary,
   localizeHobbyMarkdownHeadings
 } from '~/utils/hobby-labels';
+import { withLastGood } from '~/utils/cms-cache';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
 import { getOutlineSettings } from '~/utils/outline-settings';
@@ -51,7 +52,13 @@ if (!cmsUnavailable) {
     return Astro.redirect(`/${locale}/404`);
   }
   try {
-    const documentRequest = await fetchHobbyDocument(settings['hobbies-collection'], documentId);
+    const documentRequest = await withLastGood(`hobby:${documentId}`, async () => {
+      const request = await fetchHobbyDocument(settings!['hobbies-collection'], documentId);
+      if (request.response.status >= 500) {
+        throw new Error(`documents.info ${request.response.status}`);
+      }
+      return request;
+    });
     if (documentRequest.response.status >= 500) {
       cmsUnavailable = true;
     } else {
@@ -70,14 +77,13 @@ if (cmsUnavailable) {
   Astro.response.status = 503;
 }
 
+const childDocumentsParentId = childId && data?.parentDocumentId ? data.parentDocumentId : data?.id;
 const childDocumentsRequest = data
-  ? await outlineClient
-      .POST('/documents.list', {
-        body: {
-          parentDocumentId: childId && data.parentDocumentId ? data.parentDocumentId : data.id
-        }
+  ? await withLastGood(`hobby-children:${childDocumentsParentId}`, () =>
+      outlineClient.POST('/documents.list', {
+        body: { parentDocumentId: childDocumentsParentId }
       })
-      .catch(() => null)
+    ).catch(() => null)
   : null;
 const childDocuments = (childDocumentsRequest?.data?.data ?? [])
   .filter(Boolean)

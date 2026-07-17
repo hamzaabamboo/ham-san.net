@@ -6,6 +6,7 @@ import { Markdown, createHeadingSlugger } from '~/components/lib/Markdown';
 import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import { withLastGood } from '~/utils/cms-cache';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 
 export const prerender = false;
@@ -40,8 +41,14 @@ let note: any = null;
 let noteMissing = false;
 
 try {
-  const noteRequest = await outlineClient.POST('/documents.info', {
-    body: maybeDocSegment === 'doc' && maybeDocId ? { shareId, id: maybeDocId } : { shareId }
+  const noteRequest = await withLastGood(`note:${shareId}:${maybeDocId ?? ''}`, async () => {
+    const request = await outlineClient.POST('/documents.info', {
+      body: maybeDocSegment === 'doc' && maybeDocId ? { shareId, id: maybeDocId } : { shareId }
+    });
+    if (!request.response.ok && ![400, 403, 404].includes(request.response.status)) {
+      throw new Error(`documents.info ${request.response.status}`);
+    }
+    return request;
   });
 
   if (noteRequest.response.ok && noteRequest.data?.data) {
@@ -61,15 +68,14 @@ const pageTitle = `${note?.title ?? t('common.note')} | ${t('common.name')}`;
 const content = note ? cleanArticleContent(note.text) : '';
 const banner = resolveOutlineAssetUrl(getArticleBanner(content) ?? undefined);
 
+const siblingsParentId =
+  maybeDocSegment === 'doc' && maybeDocId ? note?.parentDocumentId : note?.id;
 const siblingsRequest = note
-  ? await outlineClient
-      .POST('/documents.list', {
-        body: {
-          parentDocumentId:
-            maybeDocSegment === 'doc' && maybeDocId ? note.parentDocumentId : note.id
-        }
+  ? await withLastGood(`note-siblings:${siblingsParentId}`, () =>
+      outlineClient.POST('/documents.list', {
+        body: { parentDocumentId: siblingsParentId }
       })
-      .catch(() => null)
+    ).catch(() => null)
   : null;
 
 const siblings = siblingsRequest?.data?.data ?? [];

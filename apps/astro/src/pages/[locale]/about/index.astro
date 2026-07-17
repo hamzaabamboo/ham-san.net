@@ -6,6 +6,7 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
+import { withLastGood } from '~/utils/cms-cache';
 import type { TagFragment } from '~/graphql/generated/client';
 import { Enum_Tag_Type } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
@@ -79,7 +80,9 @@ let experiences: any[] | null = null;
 let tags: any[] | null = null;
 
 try {
-  const result = await graphQLSdk.fetchAboutMe({ locale: cmsLocale });
+  const result = await withLastGood(`about:${cmsLocale}`, () =>
+    graphQLSdk.fetchAboutMe({ locale: cmsLocale })
+  );
   aboutMe = result.aboutMe;
   educations = result.educations;
   experiences = result.experiences;

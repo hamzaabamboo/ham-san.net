@@ -28,5 +28,8 @@
   "empty-description": "接続が戻ると、ノートが再表示されます。",
   "status-not-found": "ステータス: 見つかりません",
   "not-found-title": "ノートが見つかりません",
-  "not-found-description": "このノートは存在しないか、公開が終了しています。"
+  "not-found-description": "このノートは存在しないか、公開が終了しています。",
+  "status-empty": "ステータス: 未公開",
+  "empty-none-title": "ノートはまだありません",
+  "empty-none-description": "まだ公開されたノートはありません。また後で見に来てください。"
 }

@@ -28,5 +28,8 @@
   "empty-description": "Notes will show up again when the content connection is back.",
   "status-not-found": "Status: not found",
   "not-found-title": "Note Not Found",
-  "not-found-description": "This note does not exist or is no longer shared."
+  "not-found-description": "This note does not exist or is no longer shared.",
+  "status-empty": "Status: empty",
+  "empty-none-title": "No Notes Yet",
+  "empty-none-description": "Nothing has been published here yet. Check back later."
 }

@@ -6,6 +6,7 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
+import { withLastGood } from '~/utils/cms-cache';
 import { Enum_Tag_Type } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
@@ -24,7 +25,10 @@ const t = useTranslations(locale);
 let tags: any[] = [];
 
 try {
-  const data = await graphQLSdk.fetchAboutMe({ locale: locale === 'ja' ? 'ja' : 'en' });
+  const cmsLocale = locale === 'ja' ? 'ja' : 'en';
+  const data = await withLastGood(`about:${cmsLocale}`, () =>
+    graphQLSdk.fetchAboutMe({ locale: cmsLocale })
+  );
   tags = sortTags(
     (data.tags ?? []).filter(
       (tag: any): tag is NonNullable<(typeof data.tags)[number]> =>

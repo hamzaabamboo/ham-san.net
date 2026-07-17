@@ -6,6 +6,7 @@ import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
+import { withLastGood } from '~/utils/cms-cache';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { orderHobbyCards } from '~/utils/hobby-cards';
 import { getOutlineSettings } from '~/utils/outline-settings';
@@ -186,19 +187,19 @@ const hobbyCardPill = css({
 let hobbiesList: any[] | undefined = undefined;
 
 try {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 7000);
-  const settings = await getOutlineSettings();
+  hobbiesList = await withLastGood('hobbies:list', async () => {
+    const settings = await getOutlineSettings();
+    if (!settings?.['hobbies-collection']) {
+      throw new Error('hobbies collection not configured');
+    }
 
-  if (settings?.['hobbies-collection']) {
     const allDocuments: any[] = [];
     const pageLimit = 100;
     let offset = 0;
 
     while (true) {
       const res = await outlineClient.POST('/documents.list', {
-        body: { collectionId: settings['hobbies-collection'], offset, limit: pageLimit },
-        signal: controller.signal
+        body: { collectionId: settings['hobbies-collection'], offset, limit: pageLimit }
       });
       if (!res.response.ok) throw new Error(`documents.list ${res.response.status}`);
       const rows = res.data?.data ?? [];
@@ -206,7 +207,6 @@ try {
       if (rows.length < (res.data?.pagination?.limit ?? pageLimit)) break;
       offset += rows.length;
     }
-    clearTimeout(timeout);
 
     const childrenByParent = new Map<string, { id: string; title: string }[]>();
 
@@ -221,13 +221,11 @@ try {
     });
 
     const rootDocuments = allDocuments.filter((d: any) => !d.parentDocumentId);
-    hobbiesList = rootDocuments.map((document: any) => ({
+    return rootDocuments.map((document: any) => ({
       ...document,
       childPages: childrenByParent.get(document.id) ?? []
     }));
-  } else {
-    clearTimeout(timeout);
-  }
+  });
 } catch {}
 
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');

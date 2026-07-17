@@ -7,6 +7,7 @@ import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import { withLastGood } from '~/utils/cms-cache';
 import { outlineClient } from '~/utils/outline-api';
 
 export const prerender = false;
@@ -67,12 +68,14 @@ const fetchAllShares = async () => {
 };
 
 let sharedArticlesList: any[] | undefined = undefined;
-for (let attempt = 0; attempt < 2 && !sharedArticlesList; attempt++) {
-  try {
-    sharedArticlesList = await fetchAllShares();
-  } catch {
-    sharedArticlesList = undefined;
-  }
+try {
+  sharedArticlesList = await withLastGood('notes:list', async () => {
+    const shares = await fetchAllShares();
+    if (!shares) throw new Error('shares.list failed');
+    return shares;
+  });
+} catch {
+  sharedArticlesList = undefined;
 }
 
 const allArticles = (sharedArticlesList ?? []).filter(Boolean);
@@ -135,13 +138,15 @@ Astro.response.headers.set(
                 letterSpacing="0.12em"
                 color="#9f8e78"
               >
-                {t('note.status-unavailable')}
+                {sharedArticlesList ? t('note.status-empty') : t('note.status-unavailable')}
               </Text>
               <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
-                {t('note.empty-title')}
+                {sharedArticlesList ? t('note.empty-none-title') : t('note.empty-title')}
               </Heading>
               <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
-                {t('note.empty-description')}
+                {sharedArticlesList
+                  ? t('note.empty-none-description')
+                  : t('note.empty-description')}
               </Text>
             </Stack>
           </Box>
