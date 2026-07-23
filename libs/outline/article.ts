@@ -4,7 +4,7 @@ export const cleanArticleContent = (content?: string) => {
 
 export const getArticleBanner = (content?: string) => {
   return (
-    /!\[(.*)\]\((.+?)(?:".*?")?\)/
+    /!\[(.*?)\]\((.+?)(?:".*?")?\)/
       .exec(content ?? '')?.[2]
       .replaceAll('\\', '')
       .trim() ?? undefined

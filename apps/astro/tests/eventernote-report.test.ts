@@ -208,8 +208,8 @@ describe('eventernote report', () => {
         artist.name === 'Aqours'
           ? {
               ...artist,
-              totalEvents: 3,
-              eventDates: ['2021-05-01', '2022-05-01', '2023-05-01']
+              totalEvents: 4,
+              eventDates: ['2021-01-15', '2021-05-01', '2022-05-01', '2023-05-01']
             }
           : { ...artist, totalEvents: 0, eventDates: [] as string[] }
       )
@@ -221,12 +221,21 @@ describe('eventernote report', () => {
     );
     expect(unbounded).toMatchObject({ attended: 1, total: 3, missed: 2, pct: expect.any(Number) });
 
-    const bounded = buildEventernoteReport(
+    const boundedEnd = buildEventernoteReport(
       hydrated,
       yearEvents,
       now,
       '2021-12-31'
     ).favoriteArtistAttendance.find((item) => item.name === 'Aqours');
-    expect(bounded).toMatchObject({ attended: 1, total: 1, missed: 0, pct: 100 });
+    expect(boundedEnd).toMatchObject({ attended: 1, total: 1, missed: 0, pct: 100 });
+
+    const boundedYear = buildEventernoteReport(
+      hydrated,
+      yearEvents,
+      now,
+      '2021-12-31',
+      '2021-01-01'
+    ).favoriteArtistAttendance.find((item) => item.name === 'Aqours');
+    expect(boundedYear).toMatchObject({ attended: 1, total: 2, missed: 1, pct: 50 });
   });
 });

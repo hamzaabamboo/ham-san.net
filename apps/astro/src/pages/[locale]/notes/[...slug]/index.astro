@@ -167,7 +167,7 @@ const bodyWithLede =
     : content;
 const bodyContent =
   banner && bodyWithLede
-    ? bodyWithLede.replace(/!\[(.*)\]\((.+?)(?:".*?")?\)/, '').replace(/^\s*\n+/, '')
+    ? bodyWithLede.replace(/!\[.*?\]\((.+?)(?:".*?")?\)/, '').replace(/^\s*\n+/, '')
     : bodyWithLede;
 
 const tags = (note as any)?.tags ?? [];

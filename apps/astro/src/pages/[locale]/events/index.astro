@@ -53,7 +53,8 @@ const report =
             rawReport.profile,
             filteredEvents,
             new Date(rawReport.fetchedAt).getTime(),
-            `${selectedYear}-12-31`
+            `${selectedYear}-12-31`,
+            `${selectedYear}-01-01`
           ),
           fetchedAt: rawReport.fetchedAt,
           cached: rawReport.cached
