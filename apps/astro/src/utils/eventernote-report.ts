@@ -324,7 +324,8 @@ export function parseEventernoteProfile(html: string): EventernoteProfile {
 export function buildEventernoteReport(
   profile: EventernoteProfile,
   events: EventernoteEvent[],
-  now = Date.now()
+  now = Date.now(),
+  attendanceWindowEnd?: string
 ): EventernoteReport {
   const today = toJstDateKey(now);
   const sorted = [...events].sort((a, b) => b.dateKey.localeCompare(a.dateKey));
@@ -402,7 +403,12 @@ export function buildEventernoteReport(
     weekendStats,
     multiEventDayStats,
     streaks,
-    favoriteArtistAttendance: calculateFavoriteArtistAttendance(profile, attendedEvents, today),
+    favoriteArtistAttendance: calculateFavoriteArtistAttendance(
+      profile,
+      attendedEvents,
+      today,
+      attendanceWindowEnd
+    ),
     weekendEvents,
     weekdayEvents: attendedEvents.length - weekendEvents,
     busiestMonth: [...monthlyBreakdown].sort((a, b) => b.count - a.count)[0],
@@ -601,12 +607,13 @@ function calculateMultiEventDayStats(events: EventernoteEvent[]): MultiEventDayS
 function calculateFavoriteArtistAttendance(
   profile: EventernoteProfile,
   events: EventernoteEvent[],
-  today: string
+  today: string,
+  windowEnd?: string
 ): FavoriteArtistAttendanceItem[] {
   const counts = new Map<string, number>();
   const dateKeys = events.map((event) => event.dateKey).sort();
   const startDate = dateKeys[0];
-  const endDate = today;
+  const endDate = windowEnd && windowEnd < today ? windowEnd : today;
 
   for (const event of events) {
     for (const artist of event.artists) {

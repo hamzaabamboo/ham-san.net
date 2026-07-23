@@ -187,4 +187,46 @@ describe('eventernote report', () => {
       { name: 'Liella!', attended: 1, missed: 1, total: 2, pct: 50 }
     ]);
   });
+
+  test('attendanceWindowEnd caps favorite-artist denominator to the selected period', () => {
+    const profile = parseEventernoteProfile(profileHtml);
+    const yearEvents = [
+      {
+        id: '1',
+        title: 'Aqours 2021',
+        url: 'https://example.com/events/1',
+        dateText: '2021-05-01',
+        dateKey: '2021-05-01',
+        venue: 'Tokyo Hall',
+        venueUrl: undefined,
+        artists: ['Aqours']
+      }
+    ];
+    const hydrated = {
+      ...profile,
+      favoriteArtists: profile.favoriteArtists.map((artist) =>
+        artist.name === 'Aqours'
+          ? {
+              ...artist,
+              totalEvents: 3,
+              eventDates: ['2021-05-01', '2022-05-01', '2023-05-01']
+            }
+          : { ...artist, totalEvents: 0, eventDates: [] as string[] }
+      )
+    };
+    const now = new Date('2026-05-06T00:00:00+09:00').getTime();
+
+    const unbounded = buildEventernoteReport(hydrated, yearEvents, now).favoriteArtistAttendance.find(
+      (item) => item.name === 'Aqours'
+    );
+    expect(unbounded).toMatchObject({ attended: 1, total: 3, missed: 2, pct: expect.any(Number) });
+
+    const bounded = buildEventernoteReport(
+      hydrated,
+      yearEvents,
+      now,
+      '2021-12-31'
+    ).favoriteArtistAttendance.find((item) => item.name === 'Aqours');
+    expect(bounded).toMatchObject({ attended: 1, total: 1, missed: 0, pct: 100 });
+  });
 });

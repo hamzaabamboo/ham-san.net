@@ -1,7 +1,7 @@
 ---
-import { useTranslations, validateLocale } from '~/i18n/utils';
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 
-const locale = validateLocale(Astro.params.locale) ? Astro.params.locale : 'en';
+const locale = getLangFromUrl(Astro.url);
 const t = useTranslations(locale);
 ---
 
