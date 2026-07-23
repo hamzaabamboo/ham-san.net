@@ -29,7 +29,7 @@ const SIDEBAR_LINKS = [
     </p>
   </div>
 
-  <nav class="shell-sidebar-nav">
+  <nav class="shell-sidebar-nav" aria-label={t('common.menu')}>
     {
       SIDEBAR_LINKS.map(({ label, value, icon }) => {
         const fullPath = getURLWithLanguage(value);

@@ -157,7 +157,7 @@ export const Sidebar = ({
                 </button>
               </div>
 
-              <nav className="shell-drawer-nav">
+              <nav className="shell-drawer-nav" aria-label={t('common.menu')}>
                 {links.map(({ label, value }) => {
                   const fullPath = getURLWithLanguage(value);
                   const isCurrent =

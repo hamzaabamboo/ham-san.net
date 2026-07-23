@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { getHobbyChordItems } from '~/utils/hobby-chords';
 import { hobbyStyles } from '../hobbyStyles';
 import type { HobbyEmbedProps } from './types';
@@ -28,6 +28,7 @@ export const PianoChordsEmbed = ({
   noChordsLabel = 'No chords are listed yet.'
 }: HobbyEmbedProps) => {
   const [playedChord, setPlayedChord] = useState<string | null>(null);
+  const audioRef = useRef<AudioContext | null>(null);
   const chordItems = getHobbyChordItems(body).filter((chord) => chord.notes);
 
   const playChord = (name: string, notes: number[]) => {
@@ -37,20 +38,23 @@ export const PianoChordsEmbed = ({
       return;
     }
 
-    const audio = new AudioContextClass();
+    const audio = audioRef.current ?? (audioRef.current = new AudioContextClass());
+    if (audio.state === 'suspended') void audio.resume();
+
+    const now = audio.currentTime;
     const gain = audio.createGain();
-    gain.gain.setValueAtTime(0.0001, audio.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.16, audio.currentTime + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 1.2);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.16, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
     gain.connect(audio.destination);
 
     notes.forEach((frequency, index) => {
       const osc = audio.createOscillator();
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(frequency, audio.currentTime + index * 0.025);
+      osc.frequency.setValueAtTime(frequency, now + index * 0.025);
       osc.connect(gain);
-      osc.start(audio.currentTime + index * 0.025);
-      osc.stop(audio.currentTime + 1.25);
+      osc.start(now + index * 0.025);
+      osc.stop(now + 1.25);
     });
 
     setPlayedChord(name);
