@@ -95,13 +95,15 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
                 letterSpacing="0.12em"
                 color="#9f8e78"
               >
-                {t('note.status-unavailable')}
+                {tagsUnavailable ? t('note.status-unavailable') : t('common.tags-status-empty')}
               </Text>
               <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
-                {t('common.tags-empty-title')}
+                {tagsUnavailable ? t('common.tags-empty-title') : t('common.tags-empty-none-title')}
               </Heading>
               <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
-                {t('common.tags-empty-description')}
+                {tagsUnavailable
+                  ? t('common.tags-empty-description')
+                  : t('common.tags-empty-none-description')}
               </Text>
             </Stack>
           </Box>

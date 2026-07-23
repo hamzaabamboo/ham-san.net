@@ -105,15 +105,17 @@ const Image = styled.img;
           {
             links.map((item) => {
               const Icon = item.icon;
+              const isInternal = item.url.startsWith('/');
+              const href = isInternal ? `/${locale}${item.url}` : item.url;
               return (
                 <GridItem h="full" w="full">
                   <Link
                     h="full"
                     w="full"
-                    target="_blank"
-                    rel="noreferrer"
+                    target={isInternal ? undefined : '_blank'}
+                    rel={isInternal ? undefined : 'noreferrer'}
                     color="#1f1f1f"
-                    href={item.url}
+                    href={href}
                   >
                     <Stack
                       gap="1"

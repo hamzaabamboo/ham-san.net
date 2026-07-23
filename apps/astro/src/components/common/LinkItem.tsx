@@ -11,7 +11,7 @@ type LinkData = {
   type?: Enum_Componentutilslink_Type | null;
 };
 
-const processUrl = (link: Pick<LinkData, 'url' | 'type'>) => {
+const processUrl = (link: Pick<LinkData, 'url' | 'type'>, openLabel: string) => {
   switch (link.type) {
     case Enum_Componentutilslink_Type.Github:
       return link.url?.split('github.com/').splice(-1)[0];
@@ -19,7 +19,7 @@ const processUrl = (link: Pick<LinkData, 'url' | 'type'>) => {
       if (!link.url) return link.url;
       try {
         const url = new URL(link.url);
-        return `Open ${url.hostname.replace(/^www\./, '')}`;
+        return `${openLabel} ${url.hostname.replace(/^www\./, '')}`;
       } catch {
         return link.url;
       }
@@ -40,14 +40,16 @@ const linkIcon = (link: Pick<LinkData, 'type'>) => {
 export const LinkItem = ({
   data,
   Icon: _icon,
-  linkText
+  linkText,
+  openLabel = 'Open'
 }: {
   data: LinkData;
   Icon?: IconType;
   linkText?: string;
+  openLabel?: string;
 }) => {
   const Icon = _icon ? _icon : linkIcon(data);
-  const text = linkText ? linkText : processUrl(data);
+  const text = linkText ? linkText : processUrl(data, openLabel);
   return (
     <Wrap
       gap="3"

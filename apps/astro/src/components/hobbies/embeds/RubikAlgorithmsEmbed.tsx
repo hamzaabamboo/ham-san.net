@@ -45,6 +45,7 @@ export const RubikAlgorithmsEmbed = ({
                 key={algorithm.name}
                 type="button"
                 data-active={index === activeAlgorithm}
+                aria-pressed={index === activeAlgorithm}
                 onClick={() => setActiveAlgorithm(index)}
               >
                 {algorithm.name}

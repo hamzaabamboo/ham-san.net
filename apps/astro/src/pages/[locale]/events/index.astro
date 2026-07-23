@@ -704,14 +704,16 @@ const reportSections = report
                     </section>
                   ))}
                 </div>
-                <div class="event-report__preset-grid" aria-label={t('events.aria-preset-grid')}>
-                  {report.dateWindows.map((window) => (
-                    <article>
-                      <p>{windowLabels[window.label] ?? window.label}</p>
-                      <strong>{formatter.format(window.count)}</strong>
-                    </article>
-                  ))}
-                </div>
+                {selectedYear === 'all' && (
+                  <div class="event-report__preset-grid" aria-label={t('events.aria-preset-grid')}>
+                    {report.dateWindows.map((window) => (
+                      <article>
+                        <p>{windowLabels[window.label] ?? window.label}</p>
+                        <strong>{formatter.format(window.count)}</strong>
+                      </article>
+                    ))}
+                  </div>
+                )}
               </section>
 
               <section id="highlights" class="event-report__section">

@@ -240,7 +240,7 @@ Astro.response.headers.set(
                             overflowWrap="anywhere"
                             className="group-hover-underline"
                           >
-                            {documentTitle}
+                            {documentTitle ?? t('note.untitled')}
                           </Heading>
                           <Wrap
                             fontSize="sm"
@@ -302,7 +302,7 @@ Astro.response.headers.set(
                               overflowWrap="anywhere"
                               className="group-hover-underline"
                             >
-                              {documentTitle}
+                              {documentTitle ?? t('note.untitled')}
                             </Heading>
                             <Wrap
                               fontSize="sm"

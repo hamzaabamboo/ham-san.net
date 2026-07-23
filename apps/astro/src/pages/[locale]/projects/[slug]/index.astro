@@ -153,7 +153,7 @@ if (projectUnavailable) {
                 {links && (
                   <Stack gap="2">
                     {nonNullLinks.map((l) => {
-                      return <LinkItem data={l} />;
+                      return <LinkItem data={l} openLabel={t('common.open')} />;
                     })}
                   </Stack>
                 )}
@@ -162,7 +162,11 @@ if (projectUnavailable) {
               <Divider borderColor="#524533" />
               {content && (
                 <Box maxW="70ch">
-                  <Markdown content={content} assetsPrefix={import.meta.env.PUBLIC_API_URL} />
+                  <Markdown
+                    content={content}
+                    assetsPrefix={import.meta.env.PUBLIC_API_URL}
+                    headingLevelOffset={1}
+                  />
                 </Box>
               )}
               {images.length > 0 && (
