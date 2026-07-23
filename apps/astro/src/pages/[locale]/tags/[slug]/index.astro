@@ -199,6 +199,11 @@ if (!tagUnavailable) {
               );
             })}
             <Divider borderColor="#524533" />
+            {projectItems.length > 0 && (
+              <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic">
+                {t('project.projects')}
+              </Heading>
+            )}
             <Grid
               gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
               alignItems={{ base: 'start', md: 'stretch' }}
