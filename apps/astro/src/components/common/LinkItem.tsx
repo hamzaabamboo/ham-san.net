@@ -73,6 +73,7 @@ export const LinkItem = ({
             className="amber-link"
             href={data.url ?? ''}
             target="_blank"
+            rel="noreferrer"
             fontFamily="JetBrains Mono, monospace"
             overflowWrap="anywhere"
           >
