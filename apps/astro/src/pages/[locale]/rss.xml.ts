@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { useTranslations, validateLocale } from '~/i18n/utils';
+import { makeExcerpt } from '~/utils/excerpt';
 import { outlineClient } from '~/utils/outline-api';
 import { requireOutlineOk } from '~/utils/outline-response';
 
@@ -33,7 +34,7 @@ export const GET: APIRoute = async ({ params }) => {
         const title = s.documentTitle ?? t('note.untitled');
         const pubDate = s.createdAt ? new Date(s.createdAt).toUTCString() : undefined;
         const link = `${SITE_URL}/${locale}/notes/${s.id ?? ''}`;
-        const description = esc(s.documentSummary?.slice(0, 280) ?? '');
+        const description = esc(makeExcerpt(s.documentSummary, 280) ?? '');
 
         return `    <item>
       <title>${esc(title)}</title>

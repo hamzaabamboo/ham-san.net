@@ -70,5 +70,8 @@
   "source-index-note": "This page lists the current hobby notes as they are. Open a row for links, images, related pages, and the embed attached to that note.",
   "send-message": "Send a message",
   "empty-title": "Hobby notebook unavailable",
-  "empty-description": "The source notebook could not be reached. Hobbies will reappear when the connection is restored."
+  "empty-description": "The source notebook could not be reached. Hobbies will reappear when the connection is restored.",
+  "status-empty": "Status: empty",
+  "empty-none-title": "No hobbies published yet",
+  "empty-none-description": "Nothing here yet — new hobby notes will show up on this page as they are added."
 }

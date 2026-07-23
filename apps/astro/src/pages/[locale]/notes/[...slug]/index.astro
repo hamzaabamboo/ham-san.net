@@ -103,7 +103,18 @@ if (noteMissing || noteUnavailable || siblingsUnavailable) {
 }
 const outlineUrl = `${outlineAssetPrefix}/s/${shareId}${maybeDocSegment === 'doc' && maybeDocId ? `/doc/${maybeDocId}` : ''}`;
 
-const wordCount = content ? content.split(/\s+/).length : 0;
+const countWords = (text: string) => {
+  if (!text.trim()) return 0;
+  try {
+    const segmenter = new Intl.Segmenter(locale, { granularity: 'word' });
+    let count = 0;
+    for (const segment of segmenter.segment(text)) if (segment.isWordLike) count++;
+    return count;
+  } catch {
+    return text.split(/\s+/).filter(Boolean).length;
+  }
+};
+const wordCount = countWords(content ?? '');
 const readingMinutes = Math.max(1, Math.round(wordCount / 200));
 const publishedDate = note?.publishedAt ?? note?.createdAt;
 const formattedDate = publishedDate
@@ -150,10 +161,14 @@ const ledeLineIndex =
     : -1;
 const rawLede = ledeLineIndex >= 0 ? contentLines[ledeLineIndex] : undefined;
 const lede = rawLede?.replace(/[*_`\[\]]/g, '').trim() ?? null;
-const bodyContent =
+const bodyWithLede =
   ledeLineIndex >= 0
     ? [...contentLines.slice(0, ledeLineIndex), ...contentLines.slice(ledeLineIndex + 1)].join('\n')
     : content;
+const bodyContent =
+  banner && bodyWithLede
+    ? bodyWithLede.replace(/!\[(.*)\]\((.+?)(?:".*?")?\)/, '').replace(/^\s*\n+/, '')
+    : bodyWithLede;
 
 const tags = (note as any)?.tags ?? [];
 ---

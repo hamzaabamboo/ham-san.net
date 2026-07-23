@@ -136,7 +136,7 @@ if (projectUnavailable) {
                     )}
                   </Wrap>
                 </Stack>
-                {tags && (
+                {tags && nonNullTags(tags).length > 0 && (
                   <HStack>
                     <Text fontWeight="bold" fontSize="sm" color="#c7c6c6">
                       {t('common.tags')}:
@@ -144,7 +144,7 @@ if (projectUnavailable) {
                     <Wrap>
                       {nonNullTags(tags).map((tag) => (
                         <Link href={`/${locale}/tags/${tag.slug}`}>
-                          <TagBadge tag={tag} showCount size="sm" />
+                          <TagBadge tag={tag} size="sm" />
                         </Link>
                       ))}
                     </Wrap>

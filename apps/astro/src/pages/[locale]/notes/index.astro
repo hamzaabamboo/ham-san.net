@@ -8,6 +8,7 @@ import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import { withLastGood } from '~/utils/cms-cache';
+import { makeExcerpt } from '~/utils/excerpt';
 import { outlineClient } from '~/utils/outline-api';
 import { requireOutlineOk } from '~/utils/outline-response';
 import { retryOnce } from '~/utils/retry';
@@ -100,16 +101,6 @@ const collectionCount = new Set(
 const latestNoteDate = allArticles[0]?.createdAt
   ? formatMonthYear(parseISO(allArticles[0].createdAt), locale)
   : '----';
-
-const makeExcerpt = (summary: unknown, max: number) => {
-  const cleaned = String(summary ?? '')
-    .replace(/https?:\/\/\S+/g, '')
-    .replace(/\(image\)/gi, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-  if (!cleaned) return null;
-  return cleaned.length > max ? `${cleaned.slice(0, max).trimEnd()}...` : cleaned;
-};
 
 Astro.response.headers.set(
   'CDN-Cache-Control',
@@ -218,6 +209,7 @@ Astro.response.headers.set(
                       href={`/${locale}/notes/${id}`}
                       display="block"
                       w="full"
+                      minW="0"
                       textDecorationLine="none"
                       className="group"
                     >
@@ -245,6 +237,7 @@ Astro.response.headers.set(
                             fontSize={{ base: '4xl', md: '5xl' }}
                             fontStyle="italic"
                             lineHeight="0.95"
+                            overflowWrap="anywhere"
                             className="group-hover-underline"
                           >
                             {documentTitle}
@@ -303,7 +296,7 @@ Astro.response.headers.set(
                         >
                           <Stack gap={3}>
                             <Heading
-                              as="h4"
+                              as="h3"
                               fontSize={{ base: '2xl', md: '3xl' }}
                               fontStyle="italic"
                               overflowWrap="anywhere"

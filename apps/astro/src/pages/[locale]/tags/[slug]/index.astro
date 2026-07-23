@@ -154,7 +154,7 @@ if (!tagUnavailable) {
                   {title}
                 </Heading>
                 <Wrap fontSize="sm" color="#9f8e78" fontFamily="JetBrains Mono, monospace">
-                  <Text>{t(`common.${toKebabCase(type as string) as 'frontend'}`)}</Text>
+                  {type && <Text>{t(`common.${toKebabCase(type) as 'frontend'}`)}</Text>}
                 </Wrap>
               </Stack>
             </Stack>

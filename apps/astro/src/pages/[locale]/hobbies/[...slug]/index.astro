@@ -277,7 +277,7 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
                 <div class={hobbyStyles.detailNested}>
                   {childDocuments.map((child) => (
                     <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
-                      <span>{child.title}</span>
+                      <span>{child.title ?? t('hobbies.untitled')}</span>
                       <span class="hobby-meta">{t('hobbies.doc-label')}</span>
                     </a>
                   ))}
@@ -330,7 +330,7 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
                 <div class={hobbyStyles.detailNested}>
                   {childDocuments.map((child) => (
                     <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
-                      <span>{child.title}</span>
+                      <span>{child.title ?? t('hobbies.untitled')}</span>
                       <span class="hobby-meta">{t('hobbies.doc-label')}</span>
                     </a>
                   ))}

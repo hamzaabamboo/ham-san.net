@@ -5,5 +5,7 @@
   "view-other-namecards": "ดูนามบัตรแบบอื่น",
   "tierlist": "Tierlist นักพากย์ LL!",
   "tierlist-description": "ทำไว้เพราะอยากทำ",
-  "home": "หน้าแรก"
+  "home": "หน้าแรก",
+  "front-namecard": "นามบัตรด้านหน้า",
+  "back-namecard": "นามบัตรด้านหลัง"
 }

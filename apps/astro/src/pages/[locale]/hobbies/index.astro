@@ -358,13 +358,15 @@ const hobbies = hobbiesList
           <Box border="1px solid" borderColor="#524533" bg="#171615" p={{ base: '6', md: '8' }}>
             <Stack gap="4" py="8">
               <Text className={unavailableMetaTextClass} color="#9f8e78">
-                {t('hobbies.status-unavailable')}
+                {hobbiesUnavailable ? t('hobbies.status-unavailable') : t('hobbies.status-empty')}
               </Text>
               <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }}>
-                {t('hobbies.empty-title')}
+                {hobbiesUnavailable ? t('hobbies.empty-title') : t('hobbies.empty-none-title')}
               </Heading>
               <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
-                {t('hobbies.empty-description')}
+                {hobbiesUnavailable
+                  ? t('hobbies.empty-description')
+                  : t('hobbies.empty-none-description')}
               </Text>
             </Stack>
           </Box>
