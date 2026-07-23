@@ -76,6 +76,7 @@ export const formatMonthYear = (date: Date, locale = 'en') => {
   if (Number.isNaN(date.getTime())) return '';
   return new Intl.DateTimeFormat(intlLocale(locale), {
     year: 'numeric',
-    month: 'long'
+    month: 'long',
+    calendar: 'gregory'
   }).format(date);
 };

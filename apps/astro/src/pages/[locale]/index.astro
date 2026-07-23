@@ -57,7 +57,8 @@ const introImage =
 const heroProjects = projects.slice(0, 3);
 const yearPartFormatter = new Intl.DateTimeFormat(locale, {
   year: 'numeric',
-  timeZone: 'Asia/Tokyo'
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
 });
 const yearLabel = (year?: string) =>
   year

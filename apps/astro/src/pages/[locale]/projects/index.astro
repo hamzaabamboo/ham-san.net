@@ -47,7 +47,8 @@ const latestProjectYear = projects.reduce((latest, project) => {
 }, '----');
 const yearPartFormatter = new Intl.DateTimeFormat(locale, {
   year: 'numeric',
-  timeZone: 'Asia/Tokyo'
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
 });
 const yearLabel = (year?: string) =>
   year && /^\d{4}$/.test(year)

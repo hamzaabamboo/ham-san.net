@@ -60,7 +60,7 @@ describe('formatMonthYear', () => {
     const date = new Date(2024, 0, 1);
     expect(formatMonthYear(date, 'en')).toBe('January 2024');
     expect(formatMonthYear(date, 'ja')).toBe('2024年1月');
-    expect(formatMonthYear(date, 'th')).toContain('2567');
+    expect(formatMonthYear(date, 'th')).toContain('2024');
   });
 
   test('returns empty string for invalid dates', () => {

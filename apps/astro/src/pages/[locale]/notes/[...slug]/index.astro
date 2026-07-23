@@ -74,8 +74,12 @@ if (noteMissing) {
 }
 
 const pageTitle = `${note?.title ?? t('common.note')} | ${t('common.name')}`;
-const content = note ? cleanArticleContent(note.text) : '';
-const banner = resolveOutlineAssetUrl(getArticleBanner(content) ?? undefined);
+const rawContent = note ? (cleanArticleContent(note.text) ?? '') : '';
+const bannerRaw = getArticleBanner(rawContent);
+const banner = resolveOutlineAssetUrl(bannerRaw ?? undefined);
+const content = bannerRaw
+  ? rawContent.replace(/!\[.*?\]\((.+?)(?:".*?")?\)/, '').replace(/^\s*\n+/, '')
+  : rawContent;
 
 const siblingsParentId =
   maybeDocSegment === 'doc' && maybeDocId ? note?.parentDocumentId : note?.id;
@@ -160,15 +164,18 @@ const ledeLineIndex =
     ? firstContentIndex
     : -1;
 const rawLede = ledeLineIndex >= 0 ? contentLines[ledeLineIndex] : undefined;
-const lede = rawLede?.replace(/[*_`\[\]]/g, '').trim() ?? null;
-const bodyWithLede =
+const lede =
+  rawLede
+    ?.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/https?:\/\/\S+/g, '')
+    .replace(/[*_`]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim() ?? null;
+const bodyContent =
   ledeLineIndex >= 0
     ? [...contentLines.slice(0, ledeLineIndex), ...contentLines.slice(ledeLineIndex + 1)].join('\n')
     : content;
-const bodyContent =
-  banner && bodyWithLede
-    ? bodyWithLede.replace(/!\[.*?\]\((.+?)(?:".*?")?\)/, '').replace(/^\s*\n+/, '')
-    : bodyWithLede;
 
 const tags = (note as any)?.tags ?? [];
 ---

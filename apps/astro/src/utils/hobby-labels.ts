@@ -144,7 +144,8 @@ export const formatHobbyUpdated = ({
         year: 'numeric',
         month: 'short',
         day: 'numeric',
-        timeZone: 'Asia/Tokyo'
+        timeZone: 'Asia/Tokyo',
+        calendar: 'gregory'
       }).format(parsed)
     : noDateLabel;
 };

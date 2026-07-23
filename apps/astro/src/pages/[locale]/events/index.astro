@@ -66,12 +66,14 @@ const emptyYear = Boolean(rawReport && selectedYear !== 'all' && !report);
 const formatter = new Intl.NumberFormat(locale);
 const dateFormatter = new Intl.DateTimeFormat(locale, {
   dateStyle: 'medium',
-  timeZone: 'Asia/Tokyo'
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
 });
 const timeFormatter = new Intl.DateTimeFormat(locale, {
   dateStyle: 'medium',
   timeStyle: 'short',
-  timeZone: 'Asia/Tokyo'
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
 });
 const percentFormatter = new Intl.NumberFormat(locale, {
   maximumFractionDigits: 0,
@@ -83,7 +85,8 @@ const decimalFormatter = new Intl.NumberFormat(locale, {
 const monthFormatter = new Intl.DateTimeFormat(locale, {
   year: 'numeric',
   month: 'short',
-  timeZone: 'Asia/Tokyo'
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
 });
 const weekendRate = report?.totalEvents
   ? percentFormatter.format(report.weekendEvents / report.totalEvents)
@@ -146,7 +149,8 @@ const monthLabel = (month?: string) =>
   month ? monthFormatter.format(new Date(`${month}-01T00:00:00+09:00`)) : '-';
 const yearPartFormatter = new Intl.DateTimeFormat(locale, {
   year: 'numeric',
-  timeZone: 'Asia/Tokyo'
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
 });
 const yearLabel = (year: string) =>
   yearPartFormatter

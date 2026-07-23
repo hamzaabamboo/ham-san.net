@@ -178,34 +178,46 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
       </Link>
       <Wrap w="full" p="4" pt="0">
         {link?.url && (
-          <Link href={link?.url} target="_blank">
-            <IconButton
-              size="xs"
-              variant="ghost"
-              border="1px solid"
-              borderColor="#2a2a2a"
-              color="#c7c6c6"
-              bg="transparent"
-              _hover={{ bg: 'transparent', borderColor: '#ffb000', color: '#ffb000' }}
+          <IconButton
+            asChild
+            size="xs"
+            variant="ghost"
+            border="1px solid"
+            borderColor="#2a2a2a"
+            color="#c7c6c6"
+            bg="transparent"
+            _hover={{ bg: 'transparent', borderColor: '#ffb000', color: '#ffb000' }}
+          >
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={t('project.visit-site')}
             >
               <FaGlobe />
-            </IconButton>
-          </Link>
+            </a>
+          </IconButton>
         )}
         {ghLink?.url && (
-          <Link href={ghLink.url} target="_blank">
-            <IconButton
-              size="xs"
-              variant="ghost"
-              border="1px solid"
-              borderColor="#2a2a2a"
-              color="#c7c6c6"
-              bg="transparent"
-              _hover={{ bg: 'transparent', borderColor: '#ffb000', color: '#ffb000' }}
+          <IconButton
+            asChild
+            size="xs"
+            variant="ghost"
+            border="1px solid"
+            borderColor="#2a2a2a"
+            color="#c7c6c6"
+            bg="transparent"
+            _hover={{ bg: 'transparent', borderColor: '#ffb000', color: '#ffb000' }}
+          >
+            <a
+              href={ghLink.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={t('project.source-code')}
             >
               <FaGithub />
-            </IconButton>
-          </Link>
+            </a>
+          </IconButton>
         )}
       </Wrap>
     </Stack>

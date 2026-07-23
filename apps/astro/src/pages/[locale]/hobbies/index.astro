@@ -113,6 +113,9 @@ const hobbyVisual = css({
   '&[data-embed="field-notes"]::before': {
     bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.16), transparent 44%), linear-gradient(315deg, rgba(255, 213, 151, 0.09), transparent 54%)'
   },
+  '&[data-embed="twitter-feed"]::before': {
+    bg: 'linear-gradient(135deg, rgba(56, 189, 248, 0.18), transparent 46%), linear-gradient(315deg, rgba(29, 161, 242, 0.12), transparent 54%)'
+  },
   '&[data-visual="image"][data-embed]::before': {
     bg: 'linear-gradient(160deg, rgba(255, 176, 0, 0.14), transparent 55%), linear-gradient(180deg, rgba(17, 16, 14, 0.58), rgba(17, 16, 14, 0.78))',
     opacity: '1',
@@ -152,6 +155,9 @@ const hobbyVisual = css({
   },
   '&[data-embed="field-notes"][data-visual="glyph"]::after': {
     bg: 'linear-gradient(135deg, transparent 0 24%, rgba(255, 176, 0, 0.18) 24% 26%, transparent 26%), linear-gradient(90deg, transparent 0 20%, rgba(255, 176, 0, 0.18) 20% 68%, transparent 68%), linear-gradient(0deg, transparent 0 22%, rgba(255, 213, 151, 0.18) 22% 24%, transparent 24% 36%, rgba(255, 176, 0, 0.14) 36% 38%, transparent 38%)'
+  },
+  '&[data-embed="twitter-feed"][data-visual="glyph"]::after': {
+    bg: 'linear-gradient(90deg, transparent 0 22%, rgba(56, 189, 248, 0.3) 22% 26%, transparent 26% 48%, rgba(56, 189, 248, 0.24) 48% 52%, transparent 52% 74%, rgba(56, 189, 248, 0.2) 74% 78%, transparent 78%), radial-gradient(circle at 50% 44%, rgba(29, 161, 242, 0.26) 0 6%, transparent 7%)'
   }
 });
 const hobbyCardBody = css({
