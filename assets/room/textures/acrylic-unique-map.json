@@ -1,0 +1,1566 @@
+{
+  "artwork": [
+    {
+      "id": "a-01",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        39,
+        12,
+        146,
+        308
+      ],
+      "pixels": 16397
+    },
+    {
+      "id": "a-02",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        185,
+        9,
+        307,
+        307
+      ],
+      "pixels": 15190
+    },
+    {
+      "id": "a-03",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        335,
+        9,
+        457,
+        309
+      ],
+      "pixels": 20321
+    },
+    {
+      "id": "a-04",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        484,
+        4,
+        612,
+        309
+      ],
+      "pixels": 17725
+    },
+    {
+      "id": "a-05",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        636,
+        8,
+        768,
+        308
+      ],
+      "pixels": 17264
+    },
+    {
+      "id": "a-06",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        810,
+        10,
+        944,
+        307
+      ],
+      "pixels": 15547
+    },
+    {
+      "id": "a-07",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        975,
+        8,
+        1058,
+        305
+      ],
+      "pixels": 15890
+    },
+    {
+      "id": "a-08",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        1110,
+        7,
+        1228,
+        308
+      ],
+      "pixels": 20636
+    },
+    {
+      "id": "a-09",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        29,
+        321,
+        147,
+        623
+      ],
+      "pixels": 20696
+    },
+    {
+      "id": "a-10",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        195,
+        320,
+        284,
+        622
+      ],
+      "pixels": 15522
+    },
+    {
+      "id": "a-11",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        320,
+        322,
+        464,
+        621
+      ],
+      "pixels": 20570
+    },
+    {
+      "id": "a-12",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        473,
+        320,
+        623,
+        623
+      ],
+      "pixels": 18486
+    },
+    {
+      "id": "a-13",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        648,
+        321,
+        755,
+        622
+      ],
+      "pixels": 14872
+    },
+    {
+      "id": "a-14",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        812,
+        321,
+        925,
+        623
+      ],
+      "pixels": 15458
+    },
+    {
+      "id": "a-15",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        980,
+        322,
+        1070,
+        622
+      ],
+      "pixels": 14988
+    },
+    {
+      "id": "a-16",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        1100,
+        320,
+        1233,
+        622
+      ],
+      "pixels": 21625
+    },
+    {
+      "id": "a-17",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        26,
+        634,
+        144,
+        933
+      ],
+      "pixels": 17878
+    },
+    {
+      "id": "a-18",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        156,
+        634,
+        324,
+        934
+      ],
+      "pixels": 26274
+    },
+    {
+      "id": "a-19",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        359,
+        633,
+        433,
+        933
+      ],
+      "pixels": 13855
+    },
+    {
+      "id": "a-20",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        495,
+        633,
+        615,
+        931
+      ],
+      "pixels": 18379
+    },
+    {
+      "id": "a-21",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        635,
+        632,
+        781,
+        934
+      ],
+      "pixels": 20390
+    },
+    {
+      "id": "a-22",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        809,
+        632,
+        907,
+        933
+      ],
+      "pixels": 19258
+    },
+    {
+      "id": "a-23",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        966,
+        633,
+        1073,
+        933
+      ],
+      "pixels": 17254
+    },
+    {
+      "id": "a-24",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        1128,
+        632,
+        1238,
+        933
+      ],
+      "pixels": 15530
+    },
+    {
+      "id": "a-25",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        27,
+        946,
+        142,
+        1238
+      ],
+      "pixels": 18201
+    },
+    {
+      "id": "a-26",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        189,
+        946,
+        292,
+        1236
+      ],
+      "pixels": 13561
+    },
+    {
+      "id": "a-27",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        347,
+        942,
+        445,
+        1238
+      ],
+      "pixels": 14853
+    },
+    {
+      "id": "a-28",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        494,
+        945,
+        617,
+        1233
+      ],
+      "pixels": 18365
+    },
+    {
+      "id": "a-29",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        664,
+        945,
+        773,
+        1238
+      ],
+      "pixels": 18360
+    },
+    {
+      "id": "a-30",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        808,
+        944,
+        923,
+        1234
+      ],
+      "pixels": 15756
+    },
+    {
+      "id": "a-31",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        971,
+        945,
+        1064,
+        1237
+      ],
+      "pixels": 15470
+    },
+    {
+      "id": "a-32",
+      "image": "acrylic-unique-a.png",
+      "bounds": [
+        1125,
+        944,
+        1218,
+        1238
+      ],
+      "pixels": 16508
+    },
+    {
+      "id": "b-01",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        17,
+        22,
+        151,
+        315
+      ],
+      "pixels": 22212
+    },
+    {
+      "id": "b-02",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        177,
+        14,
+        305,
+        313
+      ],
+      "pixels": 15764
+    },
+    {
+      "id": "b-03",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        317,
+        23,
+        441,
+        311
+      ],
+      "pixels": 12779
+    },
+    {
+      "id": "b-04",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        466,
+        20,
+        637,
+        312
+      ],
+      "pixels": 18681
+    },
+    {
+      "id": "b-05",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        640,
+        23,
+        764,
+        314
+      ],
+      "pixels": 14653
+    },
+    {
+      "id": "b-06",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        792,
+        29,
+        934,
+        315
+      ],
+      "pixels": 17475
+    },
+    {
+      "id": "b-07",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        959,
+        21,
+        1082,
+        312
+      ],
+      "pixels": 17013
+    },
+    {
+      "id": "b-08",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        1119,
+        22,
+        1233,
+        317
+      ],
+      "pixels": 15135
+    },
+    {
+      "id": "b-09",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        21,
+        326,
+        153,
+        634
+      ],
+      "pixels": 23984
+    },
+    {
+      "id": "b-10",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        184,
+        333,
+        301,
+        631
+      ],
+      "pixels": 15445
+    },
+    {
+      "id": "b-11",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        333,
+        327,
+        455,
+        632
+      ],
+      "pixels": 15064
+    },
+    {
+      "id": "b-12",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        490,
+        337,
+        611,
+        631
+      ],
+      "pixels": 15687
+    },
+    {
+      "id": "b-13",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        640,
+        331,
+        776,
+        636
+      ],
+      "pixels": 16728
+    },
+    {
+      "id": "b-14",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        789,
+        337,
+        936,
+        632
+      ],
+      "pixels": 18965
+    },
+    {
+      "id": "b-15",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        949,
+        340,
+        1123,
+        633
+      ],
+      "pixels": 21179
+    },
+    {
+      "id": "b-16",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        1115,
+        335,
+        1235,
+        633
+      ],
+      "pixels": 15178
+    },
+    {
+      "id": "b-17",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        25,
+        636,
+        147,
+        942
+      ],
+      "pixels": 15085
+    },
+    {
+      "id": "b-18",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        166,
+        651,
+        306,
+        946
+      ],
+      "pixels": 24047
+    },
+    {
+      "id": "b-19",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        337,
+        650,
+        454,
+        947
+      ],
+      "pixels": 15237
+    },
+    {
+      "id": "b-20",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        461,
+        643,
+        625,
+        947
+      ],
+      "pixels": 21220
+    },
+    {
+      "id": "b-21",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        643,
+        656,
+        775,
+        947
+      ],
+      "pixels": 17563
+    },
+    {
+      "id": "b-22",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        779,
+        654,
+        946,
+        947
+      ],
+      "pixels": 16506
+    },
+    {
+      "id": "b-23",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        951,
+        648,
+        1094,
+        947
+      ],
+      "pixels": 19862
+    },
+    {
+      "id": "b-24",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        1117,
+        650,
+        1240,
+        947
+      ],
+      "pixels": 17611
+    },
+    {
+      "id": "b-25",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        21,
+        963,
+        151,
+        1243
+      ],
+      "pixels": 19300
+    },
+    {
+      "id": "b-26",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        173,
+        961,
+        304,
+        1245
+      ],
+      "pixels": 15703
+    },
+    {
+      "id": "b-27",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        336,
+        967,
+        457,
+        1247
+      ],
+      "pixels": 14301
+    },
+    {
+      "id": "b-28",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        468,
+        967,
+        594,
+        1250
+      ],
+      "pixels": 18727
+    },
+    {
+      "id": "b-29",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        636,
+        966,
+        768,
+        1246
+      ],
+      "pixels": 16092
+    },
+    {
+      "id": "b-30",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        802,
+        969,
+        931,
+        1244
+      ],
+      "pixels": 16907
+    },
+    {
+      "id": "b-31",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        949,
+        970,
+        1089,
+        1247
+      ],
+      "pixels": 17693
+    },
+    {
+      "id": "b-32",
+      "image": "acrylic-unique-b.png",
+      "bounds": [
+        1114,
+        959,
+        1239,
+        1246
+      ],
+      "pixels": 20236
+    },
+    {
+      "id": "c-01",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        35,
+        12,
+        141,
+        312
+      ],
+      "pixels": 15258
+    },
+    {
+      "id": "c-02",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        166,
+        11,
+        315,
+        313
+      ],
+      "pixels": 23866
+    },
+    {
+      "id": "c-03",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        341,
+        8,
+        436,
+        312
+      ],
+      "pixels": 15391
+    },
+    {
+      "id": "c-04",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        471,
+        10,
+        611,
+        311
+      ],
+      "pixels": 23487
+    },
+    {
+      "id": "c-05",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        645,
+        10,
+        760,
+        313
+      ],
+      "pixels": 19522
+    },
+    {
+      "id": "c-06",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        828,
+        9,
+        906,
+        312
+      ],
+      "pixels": 13767
+    },
+    {
+      "id": "c-07",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        964,
+        10,
+        1077,
+        313
+      ],
+      "pixels": 17800
+    },
+    {
+      "id": "c-08",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        1134,
+        9,
+        1233,
+        312
+      ],
+      "pixels": 16249
+    },
+    {
+      "id": "c-09",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        12,
+        319,
+        144,
+        623
+      ],
+      "pixels": 22973
+    },
+    {
+      "id": "c-10",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        135,
+        323,
+        313,
+        625
+      ],
+      "pixels": 23956
+    },
+    {
+      "id": "c-11",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        339,
+        322,
+        456,
+        623
+      ],
+      "pixels": 18007
+    },
+    {
+      "id": "c-12",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        475,
+        322,
+        621,
+        625
+      ],
+      "pixels": 25431
+    },
+    {
+      "id": "c-13",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        655,
+        323,
+        757,
+        625
+      ],
+      "pixels": 17326
+    },
+    {
+      "id": "c-14",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        796,
+        323,
+        935,
+        624
+      ],
+      "pixels": 24659
+    },
+    {
+      "id": "c-15",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        972,
+        325,
+        1098,
+        624
+      ],
+      "pixels": 13549
+    },
+    {
+      "id": "c-16",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        1104,
+        325,
+        1242,
+        625
+      ],
+      "pixels": 19535
+    },
+    {
+      "id": "c-17",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        37,
+        635,
+        115,
+        934
+      ],
+      "pixels": 13576
+    },
+    {
+      "id": "c-18",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        151,
+        634,
+        305,
+        935
+      ],
+      "pixels": 24382
+    },
+    {
+      "id": "c-19",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        333,
+        635,
+        443,
+        934
+      ],
+      "pixels": 15412
+    },
+    {
+      "id": "c-20",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        498,
+        634,
+        612,
+        935
+      ],
+      "pixels": 17374
+    },
+    {
+      "id": "c-21",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        632,
+        634,
+        780,
+        932
+      ],
+      "pixels": 28123
+    },
+    {
+      "id": "c-22",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        800,
+        620,
+        949,
+        938
+      ],
+      "pixels": 19894
+    },
+    {
+      "id": "c-23",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        967,
+        636,
+        1090,
+        933
+      ],
+      "pixels": 21173
+    },
+    {
+      "id": "c-24",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        1125,
+        635,
+        1226,
+        935
+      ],
+      "pixels": 19728
+    },
+    {
+      "id": "c-25",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        20,
+        943,
+        143,
+        1245
+      ],
+      "pixels": 20953
+    },
+    {
+      "id": "c-26",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        196,
+        944,
+        294,
+        1243
+      ],
+      "pixels": 17834
+    },
+    {
+      "id": "c-27",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        315,
+        944,
+        460,
+        1243
+      ],
+      "pixels": 21912
+    },
+    {
+      "id": "c-28",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        469,
+        943,
+        616,
+        1243
+      ],
+      "pixels": 22080
+    },
+    {
+      "id": "c-29",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        643,
+        944,
+        763,
+        1243
+      ],
+      "pixels": 18770
+    },
+    {
+      "id": "c-30",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        804,
+        945,
+        918,
+        1243
+      ],
+      "pixels": 19494
+    },
+    {
+      "id": "c-31",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        924,
+        945,
+        1086,
+        1242
+      ],
+      "pixels": 23594
+    },
+    {
+      "id": "c-32",
+      "image": "acrylic-unique-c.png",
+      "bounds": [
+        1104,
+        945,
+        1234,
+        1241
+      ],
+      "pixels": 17556
+    },
+    {
+      "id": "d-01",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        20,
+        17,
+        133,
+        311
+      ],
+      "pixels": 17856
+    },
+    {
+      "id": "d-02",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        183,
+        18,
+        285,
+        311
+      ],
+      "pixels": 16731
+    },
+    {
+      "id": "d-03",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        332,
+        17,
+        446,
+        311
+      ],
+      "pixels": 18021
+    },
+    {
+      "id": "d-04",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        506,
+        10,
+        600,
+        310
+      ],
+      "pixels": 16497
+    },
+    {
+      "id": "d-05",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        627,
+        18,
+        792,
+        312
+      ],
+      "pixels": 21162
+    },
+    {
+      "id": "d-06",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        806,
+        15,
+        929,
+        309
+      ],
+      "pixels": 21102
+    },
+    {
+      "id": "d-07",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        991,
+        18,
+        1070,
+        311
+      ],
+      "pixels": 14659
+    },
+    {
+      "id": "d-08",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        1136,
+        17,
+        1228,
+        307
+      ],
+      "pixels": 19925
+    },
+    {
+      "id": "d-09",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        27,
+        324,
+        129,
+        622
+      ],
+      "pixels": 15235
+    },
+    {
+      "id": "d-10",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        170,
+        327,
+        300,
+        622
+      ],
+      "pixels": 18215
+    },
+    {
+      "id": "d-11",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        334,
+        327,
+        452,
+        622
+      ],
+      "pixels": 15205
+    },
+    {
+      "id": "d-12",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        506,
+        327,
+        607,
+        622
+      ],
+      "pixels": 16435
+    },
+    {
+      "id": "d-13",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        652,
+        325,
+        768,
+        621
+      ],
+      "pixels": 20010
+    },
+    {
+      "id": "d-14",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        821,
+        327,
+        904,
+        624
+      ],
+      "pixels": 15166
+    },
+    {
+      "id": "d-15",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        946,
+        327,
+        1077,
+        624
+      ],
+      "pixels": 20006
+    },
+    {
+      "id": "d-16",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        1129,
+        320,
+        1228,
+        624
+      ],
+      "pixels": 18058
+    },
+    {
+      "id": "d-17",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        13,
+        635,
+        141,
+        936
+      ],
+      "pixels": 21665
+    },
+    {
+      "id": "d-18",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        176,
+        637,
+        296,
+        936
+      ],
+      "pixels": 18797
+    },
+    {
+      "id": "d-19",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        337,
+        637,
+        447,
+        934
+      ],
+      "pixels": 16222
+    },
+    {
+      "id": "d-20",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        475,
+        637,
+        649,
+        935
+      ],
+      "pixels": 16997
+    },
+    {
+      "id": "d-21",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        657,
+        633,
+        787,
+        936
+      ],
+      "pixels": 15911
+    },
+    {
+      "id": "d-22",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        800,
+        638,
+        967,
+        935
+      ],
+      "pixels": 23908
+    },
+    {
+      "id": "d-23",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        986,
+        639,
+        1089,
+        932
+      ],
+      "pixels": 16040
+    },
+    {
+      "id": "d-24",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        1111,
+        639,
+        1230,
+        934
+      ],
+      "pixels": 19467
+    },
+    {
+      "id": "d-25",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        17,
+        947,
+        146,
+        1239
+      ],
+      "pixels": 21486
+    },
+    {
+      "id": "d-26",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        183,
+        950,
+        312,
+        1239
+      ],
+      "pixels": 17815
+    },
+    {
+      "id": "d-27",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        342,
+        946,
+        441,
+        1239
+      ],
+      "pixels": 16442
+    },
+    {
+      "id": "d-28",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        485,
+        947,
+        608,
+        1239
+      ],
+      "pixels": 22169
+    },
+    {
+      "id": "d-29",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        630,
+        947,
+        782,
+        1240
+      ],
+      "pixels": 22985
+    },
+    {
+      "id": "d-30",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        806,
+        942,
+        912,
+        1239
+      ],
+      "pixels": 16479
+    },
+    {
+      "id": "d-31",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        953,
+        947,
+        1078,
+        1237
+      ],
+      "pixels": 19531
+    },
+    {
+      "id": "d-32",
+      "image": "acrylic-unique-d.png",
+      "bounds": [
+        1111,
+        944,
+        1237,
+        1240
+      ],
+      "pixels": 20411
+    }
+  ],
+  "diagnostics": [
+    {
+      "image": "acrylic-unique-a.png",
+      "components": 32,
+      "sizes": [
+        16397,
+        15190,
+        20321,
+        17725,
+        17264,
+        15547,
+        15890,
+        20636,
+        20696,
+        15522,
+        20570,
+        18486,
+        14872,
+        15458,
+        14988,
+        21625,
+        17878,
+        26274,
+        13855,
+        18379,
+        20390,
+        19258,
+        17254,
+        15530,
+        18201,
+        13561,
+        14853,
+        18365,
+        18360,
+        15756,
+        15470,
+        16508
+      ]
+    },
+    {
+      "image": "acrylic-unique-b.png",
+      "components": 32,
+      "sizes": [
+        22212,
+        15764,
+        12779,
+        18681,
+        14653,
+        17475,
+        17013,
+        15135,
+        23984,
+        15445,
+        15064,
+        15687,
+        16728,
+        18965,
+        21179,
+        15178,
+        15085,
+        24047,
+        15237,
+        21220,
+        17563,
+        16506,
+        19862,
+        17611,
+        19300,
+        15703,
+        14301,
+        18727,
+        16092,
+        16907,
+        17693,
+        20236
+      ]
+    },
+    {
+      "image": "acrylic-unique-c.png",
+      "components": 32,
+      "sizes": [
+        15258,
+        23866,
+        15391,
+        23487,
+        19522,
+        13767,
+        17800,
+        16249,
+        22973,
+        23956,
+        18007,
+        25431,
+        17326,
+        24659,
+        13549,
+        19535,
+        13576,
+        24382,
+        15412,
+        17374,
+        28123,
+        19894,
+        21173,
+        19728,
+        20953,
+        17834,
+        21912,
+        22080,
+        18770,
+        19494,
+        23594,
+        17556
+      ]
+    },
+    {
+      "image": "acrylic-unique-d.png",
+      "components": 32,
+      "sizes": [
+        17856,
+        16731,
+        18021,
+        16497,
+        21162,
+        21102,
+        14659,
+        19925,
+        15235,
+        18215,
+        15205,
+        16435,
+        20010,
+        15166,
+        20006,
+        18058,
+        21665,
+        18797,
+        16222,
+        16997,
+        15911,
+        23908,
+        16040,
+        19467,
+        21486,
+        17815,
+        16442,
+        22169,
+        22985,
+        16479,
+        19531,
+        20411
+      ]
+    }
+  ]
+}

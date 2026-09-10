@@ -1,0 +1,1289 @@
+{
+  "schemaVersion": 1,
+  "source": "assets/room/room.blend",
+  "sourceCollection": "RoomHome",
+  "floorplan": {
+    "id": "owner-floorplan-v2 / 2026-09-07 15:20:59",
+    "width": 1000,
+    "depth": 640,
+    "note": "X grows toward the right (shelf) wall, Y grows from the window wall toward the entry wall. Scene calibration is derived from the floor mesh bounds at check time; never from measured metres."
+  },
+  "budgets": {
+    "trianglesRenderableMax": 450000,
+    "objectsRenderableMax": 2400,
+    "glbBytesMax": 52428800
+  },
+  "forbiddenNamePattern": "^(Cube|Plane|Cylinder|Sphere|Circle|Cone|Torus|Object|Empty|Mesh)(\\.\\d+)?$",
+  "forbiddenObjects": [
+    "kitchen",
+    "sofa",
+    "bed",
+    "plant",
+    "clothes hanger",
+    "hanger rack"
+  ],
+  "gates": [
+    {
+      "id": "G1-LAYOUT",
+      "items": [
+        "GEO-SHELL",
+        "GEO-BALCONY",
+        "GEO-REAR-WINDOW",
+        "ENTRY",
+        "CLOSET",
+        "DART-MAT",
+        "CHAIR-MAT",
+        "AC-INDOOR"
+      ],
+      "proof": [
+        "PROOF_TOP",
+        "PROOF_ENTRY"
+      ]
+    },
+    {
+      "id": "G2-PRIMARY-FORM",
+      "items": [
+        "PC-DESK",
+        "PC-CHAIR",
+        "KEYBOARD-STAND",
+        "DART-STAND",
+        "DART-BOARD",
+        "SHELF-FRAME",
+        "SHELF-BOARD",
+        "LOW-TABLE",
+        "BEANBAG",
+        "GEO-BALCONY-CURTAIN"
+      ],
+      "proof": [
+        "PROOF_ENTRY",
+        "PROOF_PC",
+        "PROOF_DARTS",
+        "PROOF_SHELF_FRONT"
+      ]
+    },
+    {
+      "id": "G3-COLLECTION",
+      "items": [
+        "SHELF-TEAL-BACK",
+        "BOOK-MANGA",
+        "BOOK-MAGAZINE",
+        "BOOK-FOLDER",
+        "BOOK-ALBUM",
+        "ACRYLIC-CASE",
+        "ACRYLIC-STAND",
+        "ACRYLIC-CONTENTS",
+        "SHELF-FRAME-ART",
+        "SHELF-TOP-PLUSH",
+        "PLUSH-RACK",
+        "NESOBERI"
+      ],
+      "proof": [
+        "PROOF_SHELF_FRONT",
+        "PROOF_SHELF_OBLIQUE",
+        "PROOF_SHELF_BAY",
+        "PROOF_DARTS"
+      ]
+    },
+    {
+      "id": "G4-DISPLAY-WALL",
+      "items": [
+        "PENLIGHT-GRID",
+        "PENLIGHT",
+        "PENLIGHT-SPILL",
+        "LIVE-TOWEL",
+        "UCHIWA-FLAG"
+      ],
+      "proof": [
+        "PROOF_DISPLAY_DAY",
+        "PROOF_DISPLAY_NIGHT"
+      ]
+    },
+    {
+      "id": "G5-EQUIPMENT",
+      "items": [
+        "PC-MONITOR",
+        "PC-LAPTOP-TABLET",
+        "PC-INPUT",
+        "PC-SUPPORT",
+        "PC-RUBIK",
+        "PC-NOTES",
+        "PC-NAMECARD",
+        "PC-CAMERA",
+        "PC-POSTER-NOTES",
+        "TABLE-CONTENTS",
+        "LOWER-POSTER",
+        "DART-ACCESSORIES",
+        "LIT-CEILING"
+      ],
+      "proof": [
+        "PROOF_PC",
+        "PROOF_LIE_DOWN"
+      ]
+    },
+    {
+      "id": "G6-MATERIAL",
+      "items": [
+        "*"
+      ],
+      "proof": [
+        "PROOF_ENTRY",
+        "PROOF_SHELF_BAY",
+        "PROOF_PC"
+      ]
+    },
+    {
+      "id": "G7-INTERACTION",
+      "items": [
+        "SHELF-INTERACTION",
+        "HOBBY-PIANO",
+        "HOBBY-YOYO",
+        "HOBBY-KENDAMA",
+        "HOBBY-CARDISTRY",
+        "HOBBY-PENSPIN",
+        "HOBBY-RUBIK",
+        "HOBBY-TYPING-STENO",
+        "HOBBY-CAMERA",
+        "EVENT-TICKET"
+      ],
+      "proof": []
+    },
+    {
+      "id": "G8-EXPORT",
+      "items": [
+        "*"
+      ],
+      "proof": []
+    }
+  ],
+  "proofCameras": {
+    "PROOF_TOP": {
+      "kind": "ortho_top",
+      "orthoScale": 6.4,
+      "center": [
+        0.743,
+        0.004
+      ]
+    },
+    "PROOF_ENTRY": {
+      "position": [
+        -1.2,
+        -1.6,
+        1.2
+      ],
+      "lookAt": [
+        1,
+        1,
+        0.8
+      ],
+      "lens": 18
+    },
+    "PROOF_PC": {
+      "position": [
+        -0.7,
+        0.7,
+        1.05
+      ],
+      "lookAt": [
+        -1.75,
+        0.85,
+        0.8
+      ],
+      "lens": 24
+    },
+    "PROOF_LIE_DOWN": {
+      "position": [
+        -0.5,
+        0.2,
+        0.45
+      ],
+      "lookAt": [
+        -1.75,
+        0.85,
+        0.9
+      ],
+      "lens": 22
+    },
+    "PROOF_DARTS": {
+      "position": [
+        0.8,
+        0.3,
+        1.2
+      ],
+      "lookAt": [
+        0.8,
+        1.85,
+        1.1
+      ],
+      "lens": 24
+    },
+    "PROOF_SHELF_FRONT": {
+      "position": [
+        0.55,
+        0.85,
+        0.95
+      ],
+      "lookAt": [
+        1.75,
+        0.85,
+        0.85
+      ],
+      "lens": 20
+    },
+    "PROOF_SHELF_OBLIQUE": {
+      "position": [
+        0.4,
+        -0.9,
+        1.2
+      ],
+      "lookAt": [
+        1.7,
+        0.5,
+        0.9
+      ],
+      "lens": 18
+    },
+    "PROOF_SHELF_BAY": {
+      "position": [
+        2.65,
+        0.42,
+        0.62
+      ],
+      "lookAt": [
+        3.25,
+        0.42,
+        0.58
+      ],
+      "lens": 32
+    },
+    "PROOF_DISPLAY_DAY": {
+      "position": [
+        2.1,
+        -1.2,
+        1.3
+      ],
+      "lookAt": [
+        3.23,
+        -1.05,
+        1.25
+      ],
+      "lens": 24,
+      "lighting": "day"
+    },
+    "PROOF_DISPLAY_NIGHT": {
+      "position": [
+        0.6,
+        -1.2,
+        1.3
+      ],
+      "lookAt": [
+        1.73,
+        -1.1,
+        1.25
+      ],
+      "lens": 24,
+      "lighting": "night"
+    },
+    "PROOF_BALCONY": {
+      "position": [
+        -0.5,
+        -0.3,
+        1.1
+      ],
+      "lookAt": [
+        -1.1,
+        1.9,
+        1
+      ],
+      "lens": 22
+    },
+    "PHOTO_015010154_wide": {
+      "position": [
+        -1.35,
+        -1.75,
+        1.3
+      ],
+      "lookAt": [
+        1.3,
+        1.5,
+        0.9
+      ],
+      "lens": 16
+    },
+    "PHOTO_033311397_darts": {
+      "position": [
+        0.8150000000000001,
+        0.3,
+        1.2
+      ],
+      "lookAt": [
+        0.8150000000000001,
+        1.85,
+        1.2
+      ],
+      "lens": 24
+    },
+    "PHOTO_033318171_shelf": {
+      "position": [
+        -0.5,
+        0.75,
+        1.2
+      ],
+      "lookAt": [
+        3.23,
+        0.85,
+        1
+      ],
+      "lens": 14
+    },
+    "PHOTO_033141015_display": {
+      "position": [
+        2.1,
+        -1.2,
+        1.3
+      ],
+      "lookAt": [
+        3.23,
+        -1.1,
+        1.25
+      ],
+      "lens": 24
+    },
+    "PHOTO_033233767_desk": {
+      "position": [
+        -0.9,
+        0.8,
+        1.1
+      ],
+      "lookAt": [
+        -1.75,
+        0.85,
+        0.8
+      ],
+      "lens": 22
+    },
+    "PHOTO_015016170_lower": {
+      "position": [
+        0.8999999999999999,
+        1.3,
+        1.2
+      ],
+      "lookAt": [
+        1.2999999999999998,
+        -1.85,
+        0.8
+      ],
+      "lens": 16
+    },
+    "PHOTO_033126602_plush": {
+      "position": [
+        0.8150000000000001,
+        0.9,
+        1
+      ],
+      "lookAt": [
+        0.8150000000000001,
+        1.8,
+        0.8
+      ],
+      "lens": 26
+    },
+    "PHOTO_051921621_bays": {
+      "position": [
+        2.5,
+        0.9,
+        1
+      ],
+      "lookAt": [
+        3.23,
+        0.9,
+        0.8
+      ],
+      "lens": 30
+    }
+  },
+  "items": {
+    "GEO-SHELL": {
+      "zone": "shell",
+      "namePattern": "^(Floor base|Web Staggered oak floor|Staggered oak floor|Room ceiling|Skirting|.*wall.*|Genkan.*)$",
+      "minObjects": 6,
+      "maxTris": 20000,
+      "anchor": [
+        0,
+        0,
+        1000,
+        640
+      ],
+      "anchorTolerance": 60
+    },
+    "GEO-BALCONY": {
+      "zone": "shell",
+      "namePattern": "^(Balcony|Condenser).*",
+      "minObjects": 8,
+      "maxTris": 70000,
+      "anchor": [
+        20,
+        -220,
+        420,
+        0
+      ],
+      "anchorTolerance": 40,
+      "requiredMaterialsAny": [
+        "Room/ClearGlass",
+        "Balcony glass",
+        "Glass"
+      ]
+    },
+    "GEO-BALCONY-CURTAIN": {
+      "zone": "shell",
+      "namePattern": "^Balcony gathered curtain.*",
+      "minObjects": 2,
+      "maxTris": 40000,
+      "anchor": [
+        0,
+        0,
+        440,
+        30
+      ],
+      "anchorTolerance": 40,
+      "requiredProps": {
+        "roomCurtain": [
+          "balcony-left",
+          "balcony-right"
+        ]
+      }
+    },
+    "GEO-REAR-WINDOW": {
+      "zone": "shell",
+      "namePattern": "^(Rear frosted glass|Raised window.*|Upper .*window.*|Frosted .*)$",
+      "minObjects": 3,
+      "maxTris": 45000,
+      "anchor": [
+        600,
+        -20,
+        960,
+        30
+      ],
+      "anchorTolerance": 40,
+      "requiredProps": {
+        "roomCurtain": [
+          "raised-left",
+          "raised-right"
+        ]
+      }
+    },
+    "LIT-CEILING": {
+      "zone": "shell",
+      "namePattern": "^(Ceiling diffuser.*|Room light switch.*)$",
+      "minObjects": 3,
+      "maxTris": 6000,
+      "requiredProps": {
+        "roomTarget": [
+          "light"
+        ]
+      }
+    },
+    "ENTRY": {
+      "zone": "lower",
+      "namePattern": "^(Genkan.*|Entry door.*|Entry threshold.*|Entrance.*)$",
+      "minObjects": 2,
+      "maxTris": 4000,
+      "anchor": [
+        0,
+        500,
+        280,
+        640
+      ],
+      "anchorTolerance": 50
+    },
+    "CLOSET": {
+      "zone": "lower",
+      "namePattern": "^Closet sliding panel.*",
+      "minObjects": 2,
+      "maxTris": 4000,
+      "anchor": [
+        600,
+        600,
+        1000,
+        640
+      ],
+      "anchorTolerance": 50,
+      "requiredProps": {
+        "roomClosetLeaf": [
+          "left",
+          "right"
+        ]
+      }
+    },
+    "LOWER-POSTER": {
+      "zone": "lower",
+      "namePattern": "^(Closet anime illustrated print|Closet portrait illustrated print|Lower poster.*)$",
+      "minObjects": 2,
+      "maxTris": 200,
+      "anchor": [
+        280,
+        600,
+        600,
+        640
+      ],
+      "anchorTolerance": 60
+    },
+    "PC-DESK": {
+      "zone": "pc",
+      "namePattern": "^(Desk straight top|Standing desk.*|Desk T foot.*|Desk column.*|Desk cross.*)$",
+      "minObjects": 4,
+      "maxTris": 8000,
+      "anchor": [
+        0,
+        60,
+        150,
+        320
+      ],
+      "anchorTolerance": 60
+    },
+    "PC-CHAIR": {
+      "zone": "pc",
+      "namePattern": "^Chair .*",
+      "minObjects": 10,
+      "maxTris": 12000,
+      "anchor": [
+        180,
+        60,
+        280,
+        250
+      ],
+      "anchorTolerance": 60,
+      "note": "Photo 015016170: legs are thin black round tubes splayed slightly outward with a cross-brace under the seat; replace the four straight square legs (Chair leg*) with 12 mm round tubes angled 6 degrees, add two brace tubes. Keep \"Chair moulded shell\"."
+    },
+    "CHAIR-MAT": {
+      "zone": "pc",
+      "namePattern": "^Desk brown protective mat.*",
+      "minObjects": 1,
+      "maxTris": 200,
+      "anchor": [
+        140,
+        90,
+        420,
+        290
+      ],
+      "anchorTolerance": 60
+    },
+    "KEYBOARD-STAND": {
+      "zone": "pc",
+      "namePattern": "^Piano .*",
+      "minObjects": 3,
+      "maxTris": 30000,
+      "anchor": [
+        0,
+        320,
+        70,
+        500
+      ],
+      "anchorTolerance": 60,
+      "requiredProps": {
+        "roomTarget": [
+          "piano"
+        ]
+      }
+    },
+    "PC-MONITOR": {
+      "zone": "pc",
+      "namePattern": "^(Monitor .*|PC monitor.*|Soundbar.*)$",
+      "minObjects": 4,
+      "maxTris": 6000,
+      "anchor": [
+        0,
+        60,
+        140,
+        320
+      ],
+      "anchorTolerance": 60,
+      "requiredProps": {
+        "roomTarget": [
+          "projects"
+        ]
+      }
+    },
+    "PC-LAPTOP-TABLET": {
+      "zone": "pc",
+      "namePattern": "^(Laptop .*|Tablet .*)$",
+      "minObjects": 4,
+      "maxTris": 20000,
+      "anchor": [
+        0,
+        60,
+        140,
+        320
+      ],
+      "anchorTolerance": 60
+    },
+    "PC-INPUT": {
+      "zone": "pc",
+      "namePattern": "^(Laptop key.*|Laptop recessed keyboard.*|Mouse.*|Desk mouse.*)$",
+      "minObjects": 2,
+      "maxTris": 20000,
+      "anchor": [
+        0,
+        60,
+        140,
+        320
+      ],
+      "anchorTolerance": 60,
+      "requiredProps": {
+        "roomTarget": [
+          "typing"
+        ]
+      }
+    },
+    "PC-SUPPORT": {
+      "zone": "pc",
+      "namePattern": "^(PC desk cable grommet|PC wall outlet.*|Cable .*|Power strip.*)$",
+      "minObjects": 2,
+      "maxTris": 6000,
+      "anchor": [
+        0,
+        40,
+        160,
+        340
+      ],
+      "anchorTolerance": 80
+    },
+    "PC-RUBIK": {
+      "zone": "pc",
+      "namePattern": "^Desk Rubik.*",
+      "minObjects": 2,
+      "maxTris": 3000,
+      "anchor": [
+        0,
+        60,
+        140,
+        320
+      ],
+      "anchorTolerance": 60,
+      "requiredProps": {
+        "roomTarget": [
+          "rubik"
+        ]
+      }
+    },
+    "PC-NOTES": {
+      "zone": "pc",
+      "namePattern": "^(Notes .*|Desk handwritten sheet.*)$",
+      "minObjects": 2,
+      "maxTris": 2000,
+      "anchor": [
+        0,
+        60,
+        140,
+        320
+      ],
+      "anchorTolerance": 60,
+      "requiredProps": {
+        "roomTarget": [
+          "notes"
+        ]
+      }
+    },
+    "PC-NAMECARD": {
+      "zone": "pc",
+      "namePattern": "^Namecard.*",
+      "minObjects": 1,
+      "maxTris": 4000,
+      "anchor": [
+        0,
+        60,
+        140,
+        320
+      ],
+      "anchorTolerance": 60,
+      "requiredProps": {
+        "roomTarget": [
+          "namecard"
+        ]
+      }
+    },
+    "PC-CAMERA": {
+      "zone": "pc",
+      "namePattern": "^Camera gear .*",
+      "minObjects": 3,
+      "maxTris": 20000,
+      "requiredProps": {
+        "roomTarget": [
+          "hobbies"
+        ]
+      }
+    },
+    "PC-POSTER-NOTES": {
+      "zone": "pc",
+      "namePattern": "^(Desk group poster atlas print|Desk wall note.*|Desk handwritten sheet.*)$",
+      "minObjects": 2,
+      "maxTris": 500,
+      "anchor": [
+        0,
+        0,
+        60,
+        340
+      ],
+      "anchorTolerance": 80
+    },
+    "DART-STAND": {
+      "zone": "darts",
+      "namePattern": "^(Darts stand.*|Dart stand.*|Plush rack.*|Nesoberi rack.*)$",
+      "minObjects": 2,
+      "maxTris": 8000,
+      "anchor": [
+        450,
+        0,
+        570,
+        60
+      ],
+      "anchorTolerance": 50
+    },
+    "DART-BOARD": {
+      "zone": "darts",
+      "namePattern": "^Dartboard.*",
+      "minObjects": 2,
+      "maxTris": 12000,
+      "anchor": [
+        450,
+        0,
+        570,
+        60
+      ],
+      "anchorTolerance": 50,
+      "requiredProps": {
+        "roomTarget": [
+          "darts"
+        ]
+      }
+    },
+    "DART-ACCESSORIES": {
+      "zone": "darts",
+      "namePattern": "^Darts accessory.*",
+      "minObjects": 3,
+      "maxTris": 4000,
+      "anchor": [
+        450,
+        0,
+        570,
+        80
+      ],
+      "anchorTolerance": 50
+    },
+    "DART-MAT": {
+      "zone": "darts",
+      "namePattern": "^Darts (throwing mat|mat).*",
+      "minObjects": 1,
+      "maxTris": 600,
+      "anchor": [
+        450,
+        60,
+        570,
+        420
+      ],
+      "anchorTolerance": 50
+    },
+    "PLUSH-RACK": {
+      "zone": "darts",
+      "namePattern": "^(Plush rack.*|Nesoberi rack.*|Darts stand shelf.*)$",
+      "minObjects": 1,
+      "maxTris": 8000,
+      "anchor": [
+        450,
+        0,
+        570,
+        60
+      ],
+      "anchorTolerance": 50
+    },
+    "NESOBERI": {
+      "zone": "darts",
+      "namePattern": "^Nesoberi .*",
+      "minObjects": 8,
+      "maxTris": 70000,
+      "anchor": [
+        450,
+        0,
+        570,
+        60
+      ],
+      "anchorTolerance": 50,
+      "distinctRootsMin": 3,
+      "note": "REJECTED twice (cream hair; then hair spheres scaled to 0.4 m blobs covering the rack and board). Exact recipe, no other change: for every mesh whose name starts with \"Nesoberi variant\", set the material in slot 1 (index 1, the hair slot) base colour to (0.93,0.45,0.12,1). Do NOT change any object scale, location, or mesh vertex positions. Do NOT add objects. Then re-run the audit. Acceptance: proof_darts must still show the black rack rails, three shelves, and the dartboard fully visible above the plush; any plush larger than 0.30 m in any axis is a failure."
+    },
+    "SHELF-FRAME": {
+      "zone": "shelf",
+      "namePattern": "^(Shelf frame.*|Modular shelf.*|Shelf support.*|Right shelf.*|Magazine bookcase.*)$",
+      "minObjects": 6,
+      "maxTris": 20000,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50
+    },
+    "SHELF-BOARD": {
+      "zone": "shelf",
+      "namePattern": "^(Shelf board.*|Shelf mesh board.*|Modular shelf board.*)$",
+      "minObjects": 6,
+      "maxTris": 12000,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50
+    },
+    "SHELF-TEAL-BACK": {
+      "zone": "shelf",
+      "namePattern": "^(Shelf teal back.*|Teal bay back.*)$",
+      "minObjects": 3,
+      "maxTris": 200,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50,
+      "requiredMaterialsAny": [
+        "Room/ShelfTeal",
+        "Shelf teal",
+        "Teal"
+      ]
+    },
+    "BOOK-MANGA": {
+      "zone": "shelf",
+      "namePattern": "^(Shelf book.*|Manga run.*|Manga .*|Tankobon .*)$",
+      "minObjects": 60,
+      "maxTris": 30000,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50,
+      "requiredMaterialsAny": [
+        "Minimal shelf spine print",
+        "Room/BookSpineAtlas"
+      ],
+      "minDims": [
+        0.075,
+        0.006,
+        0.12
+      ],
+      "maxDims": [
+        0.18,
+        0.0225,
+        0.19
+      ]
+    },
+    "BOOK-MAGAZINE": {
+      "zone": "shelf",
+      "namePattern": "^(Magazine spine.*|Magazine face-out.*|Magazine run.*|Shelf magazine.*)$",
+      "minObjects": 30,
+      "maxTris": 12000,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50,
+      "maxThickness": 0.35,
+      "minDims": [
+        0.1125,
+        0.003,
+        0.18
+      ],
+      "maxDims": [
+        0.27,
+        0.031,
+        0.31
+      ]
+    },
+    "BOOK-FOLDER": {
+      "zone": "shelf",
+      "namePattern": "^(Binder .*|Folder .*|Shelf binder.*)$",
+      "minObjects": 4,
+      "maxTris": 6000,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50,
+      "minDims": [
+        0.15,
+        0.0225,
+        0.18
+      ],
+      "maxDims": [
+        0.2625,
+        0.06,
+        0.255
+      ]
+    },
+    "BOOK-ALBUM": {
+      "zone": "shelf",
+      "namePattern": "^(Collection album.*|Record sleeve.*|Upper collection booklet.*|Album .*)$",
+      "minObjects": 60,
+      "maxTris": 8000,
+      "anchor": [
+        900,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 80,
+      "minDims": [
+        0.075,
+        0.0023,
+        0.0045
+      ],
+      "maxDims": [
+        0.2,
+        0.2,
+        0.25
+      ],
+      "note": "REJECTED twice (four tiny stacks; then one black slab). Exact recipe: in the teal unit bottom bay, board top z=0.151, y from 0.915 to 1.515, back wall x=3.828: create CD spines as separate cubes named \"Album cd spine 01\"..\"Album cd spine NN\": each cube dims x=0.125 (depth into shelf), y=0.010 (thickness), z=0.125 (height); place x from 3.828-0.125-0.02, y advancing by 0.0105 from 0.915 until y+0.010 > 1.515 (about 57 spines), z=0.151; material slot 0 = \"Minimal shelf spine print\" with a UV that maps the -X face to one of 16 columns of the atlas (u = col/16 .. (col+1)/16, v = 0..1), other faces to \"Paper\". Use one mesh per column (16 meshes) and link duplicates. No black materials, no single merged slab. Acceptance: proof_shelf_bay shows a pale row of thin vertical spines with small coloured bands filling the bay; each spine is a separate object."
+    },
+    "ACRYLIC-CASE": {
+      "zone": "shelf",
+      "namePattern": "^(Middle clear display.*|Right clear display.*|Clear case.*|Acrylic case.*)$",
+      "minObjects": 36,
+      "maxTris": 20000,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50,
+      "requiredMaterialsAny": [
+        "Display acrylic",
+        "Clear acrylic",
+        "Room/AcrylicClear"
+      ]
+    },
+    "ACRYLIC-STAND": {
+      "zone": "shelf",
+      "namePattern": "^(Idol .* (print|plate)|Acrylic stand.*)$",
+      "minObjects": 120,
+      "maxTris": 80000,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50,
+      "requiredMaterialsAny": [
+        "Display acrylic",
+        "Clear acrylic",
+        "Room/AcrylicClear"
+      ],
+      "minDims": [
+        0.0008,
+        0.02,
+        0.055
+      ],
+      "maxDims": [
+        0.03,
+        0.16,
+        0.2
+      ],
+      "note": "photo: 30+ stands per bay; each stand = print + plate objects, so 120 objects = 60 stands minimum across bays and cases"
+    },
+    "ACRYLIC-CONTENTS": {
+      "zone": "shelf",
+      "namePattern": "^(Idol .*|Acrylic stand.*|Acrylic riser.*|Display riser.*)$",
+      "minObjects": 260,
+      "maxTris": 90000,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50,
+      "distinctHeightsMin": 3,
+      "note": "Photo 033118190/033111450: 10-15 stands per clear case, 30+ per open bay. Add stands only with the existing \"Idol <bay> r<n> s<n> print/plate/base/hair\" naming and the same silhouette-cut construction (print plate + clear plate offset 4 mm + round base); pack rows 30-45 mm apart; no intersections."
+    },
+    "SHELF-FRAME-ART": {
+      "zone": "shelf",
+      "namePattern": "^(Framed idol portrait.*|Top display photo.*|Signed print.*)$",
+      "minObjects": 2,
+      "maxTris": 2000,
+      "anchor": [
+        900,
+        40,
+        1000,
+        460
+      ],
+      "anchorTolerance": 80
+    },
+    "SHELF-TOP-PLUSH": {
+      "zone": "shelf",
+      "namePattern": "^Shelf top plush.*",
+      "minObjects": 2,
+      "maxTris": 20000,
+      "anchor": [
+        930,
+        40,
+        1000,
+        440
+      ],
+      "anchorTolerance": 50
+    },
+    "SHELF-INTERACTION": {
+      "zone": "shelf",
+      "namePattern": "^(Shelf .*|Modular shelf.*|Display cabinet.*|Collection (album|booklet).*|Idol .*|Acrylic .*|Album .*|Magazine .*|Manga .*|Binder .*|Clear case .*|Upper collection.*|Record sleeve.*)$",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "hobbies"
+        ]
+      },
+      "anchor": [
+        900,
+        40,
+        1000,
+        460
+      ],
+      "anchorTolerance": 80
+    },
+    "LOW-TABLE": {
+      "zone": "center",
+      "namePattern": "^Low hobby table.*",
+      "minObjects": 2,
+      "maxTris": 2000,
+      "anchor": [
+        665,
+        140,
+        825,
+        300
+      ],
+      "anchorTolerance": 50
+    },
+    "TABLE-CONTENTS": {
+      "zone": "center",
+      "namePattern": "^Low table album.*",
+      "minObjects": 2,
+      "maxTris": 2000,
+      "anchor": [
+        665,
+        140,
+        825,
+        300
+      ],
+      "anchorTolerance": 50
+    },
+    "BEANBAG": {
+      "zone": "center",
+      "namePattern": "^Beanbag.*",
+      "minObjects": 1,
+      "maxTris": 25000,
+      "anchor": [
+        665,
+        340,
+        825,
+        500
+      ],
+      "anchorTolerance": 50
+    },
+    "PENLIGHT-GRID": {
+      "zone": "display",
+      "namePattern": "^(Penlight grid.*|Wire grid.*|Penlight hook.*|Penlight retaining.*)$",
+      "minObjects": 2,
+      "maxTris": 30000,
+      "anchor": [
+        930,
+        440,
+        1000,
+        600
+      ],
+      "anchorTolerance": 50
+    },
+    "PENLIGHT": {
+      "zone": "display",
+      "namePattern": "^(Cheering light.*|Collection penlight.*|Penlight [^gs].*)$",
+      "minObjects": 55,
+      "maxTris": 40000,
+      "anchor": [
+        930,
+        440,
+        1000,
+        600
+      ],
+      "anchorTolerance": 50,
+      "requiredMaterialsAny": [
+        "Room/EmissivePenlight",
+        "Penlight",
+        "emissive"
+      ],
+      "note": "11 penlights x 5 parts exist; add 3 more penlights and a microphone-shaped one per photo 033141015"
+    },
+    "PENLIGHT-SPILL": {
+      "zone": "display",
+      "namePattern": "^Penlight spill.*",
+      "types": [
+        "LIGHT"
+      ],
+      "minObjects": 2,
+      "anchor": [
+        900,
+        440,
+        1000,
+        620
+      ],
+      "anchorTolerance": 80
+    },
+    "LIVE-TOWEL": {
+      "zone": "display",
+      "namePattern": "^(Folded towel.*|Live towel.*|Live wall towel.*)$",
+      "minObjects": 3,
+      "maxTris": 30000,
+      "anchor": [
+        930,
+        440,
+        1000,
+        600
+      ],
+      "anchorTolerance": 50,
+      "requiredProps": {
+        "roomTarget": [
+          "events"
+        ]
+      }
+    },
+    "UCHIWA-FLAG": {
+      "zone": "display",
+      "namePattern": "^(Live wall uchiwa.*|Uchiwa.*|Pennant.*)$",
+      "minObjects": 1,
+      "maxTris": 4000,
+      "anchor": [
+        900,
+        400,
+        1000,
+        640
+      ],
+      "anchorTolerance": 80,
+      "requiredProps": {
+        "roomTarget": [
+          "events"
+        ]
+      },
+      "note": "Photo 033141015: orange pennant hangs from the TOP of a thin white pole, tip pointing down-left, about 0.55 long; current \"Pennant flag face\" points up-left. Rotate so the base edge is vertical along the pole top and the tip hangs down; keep on the right wall at y about -0.45."
+    },
+    "HOBBY-PIANO": {
+      "zone": "hobby",
+      "namePattern": "^Piano .*",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "piano"
+        ]
+      }
+    },
+    "HOBBY-YOYO": {
+      "zone": "hobby",
+      "namePattern": "^Skill toy yoyo.*",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "yoyo"
+        ]
+      }
+    },
+    "HOBBY-KENDAMA": {
+      "zone": "hobby",
+      "namePattern": "^Skill toy kendama.*",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "kendama"
+        ]
+      }
+    },
+    "HOBBY-CARDISTRY": {
+      "zone": "hobby",
+      "namePattern": "^Skill toy card.*",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "cardistry"
+        ]
+      }
+    },
+    "HOBBY-PENSPIN": {
+      "zone": "hobby",
+      "namePattern": "^Skill toy pen.*",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "penspinning"
+        ]
+      }
+    },
+    "HOBBY-RUBIK": {
+      "zone": "hobby",
+      "namePattern": "^Desk Rubik.*",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "rubik"
+        ]
+      }
+    },
+    "HOBBY-TYPING-STENO": {
+      "zone": "hobby",
+      "namePattern": ".*",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "typing"
+        ]
+      }
+    },
+    "HOBBY-CAMERA": {
+      "zone": "hobby",
+      "namePattern": "^Camera gear .*",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "hobbies"
+        ]
+      }
+    },
+    "EVENT-TICKET": {
+      "zone": "hobby",
+      "namePattern": "^(Event ticket.*|Ticket print.*)$",
+      "minObjects": 1,
+      "requiredProps": {
+        "roomTarget": [
+          "events"
+        ]
+      }
+    },
+    "AC-INDOOR": {
+      "zone": "shell",
+      "namePattern": "^Wall AC indoor unit.*",
+      "minObjects": 3,
+      "maxTris": 2000,
+      "anchor": [
+        0,
+        0,
+        120,
+        260
+      ],
+      "anchorTolerance": 60,
+      "note": "observed in 015010154 and 033330798; wall-mounted above the PC/balcony corner"
+    }
+  },
+  "dimsNote": "minDims/maxDims are [x,y,z] world extents per object; for the right-wall shelf x is depth into the wall, y runs along the shelf, z is height."
+}

@@ -1,0 +1,820 @@
+{
+ "objects": 1978,
+ "floating": [
+  {
+   "name": "Microphone",
+   "bottom": 0.845,
+   "lo": [
+    -1.414,
+    0.257,
+    0.845
+   ],
+   "hi": [
+    -1.304,
+    0.315,
+    0.957
+   ]
+  },
+  {
+   "name": "Standing desk cross brace",
+   "bottom": 0.442,
+   "lo": [
+    -1.634,
+    0.115,
+    0.442
+   ],
+   "hi": [
+    -1.595,
+    1.434,
+    0.486
+   ]
+  },
+  {
+   "name": "Tablet screen bezel",
+   "bottom": 0.681,
+   "lo": [
+    -1.561,
+    1.241,
+    0.681
+   ],
+   "hi": [
+    -1.535,
+    1.537,
+    0.925
+   ]
+  },
+  {
+   "name": "Darts stand shelf",
+   "bottom": 0.163,
+   "lo": [
+    0.565,
+    1.482,
+    0.163
+   ],
+   "hi": [
+    1.024,
+    1.786,
+    0.174
+   ]
+  },
+  {
+   "name": "Darts stand shelf.002",
+   "bottom": 0.514,
+   "lo": [
+    0.565,
+    1.482,
+    0.514
+   ],
+   "hi": [
+    1.024,
+    1.786,
+    0.525
+   ]
+  },
+  {
+   "name": "Darts stand shelf.003",
+   "bottom": 0.889,
+   "lo": [
+    0.565,
+    1.482,
+    0.889
+   ],
+   "hi": [
+    1.024,
+    1.786,
+    0.9
+   ]
+  },
+  {
+   "name": "Low hobby table top",
+   "bottom": 0.336,
+   "lo": [
+    1.68,
+    0.297,
+    0.336
+   ],
+   "hi": [
+    2.28,
+    0.897,
+    0.385
+   ]
+  },
+  {
+   "name": "Darts accessory barrel",
+   "bottom": 1.506,
+   "lo": [
+    0.733,
+    1.73,
+    1.506
+   ],
+   "hi": [
+    0.75,
+    1.812,
+    1.524
+   ]
+  },
+  {
+   "name": "Darts accessory flight",
+   "bottom": 1.502,
+   "lo": [
+    0.771,
+    1.652,
+    1.502
+   ],
+   "hi": [
+    0.804,
+    1.689,
+    1.528
+   ]
+  },
+  {
+   "name": "Darts accessory barrel.001",
+   "bottom": 1.461,
+   "lo": [
+    0.787,
+    1.73,
+    1.461
+   ],
+   "hi": [
+    0.804,
+    1.812,
+    1.479
+   ]
+  },
+  {
+   "name": "Darts accessory flight.001",
+   "bottom": 1.457,
+   "lo": [
+    0.825,
+    1.652,
+    1.457
+   ],
+   "hi": [
+    0.858,
+    1.689,
+    1.483
+   ]
+  },
+  {
+   "name": "Darts accessory barrel.002",
+   "bottom": 1.529,
+   "lo": [
+    0.846,
+    1.73,
+    1.529
+   ],
+   "hi": [
+    0.863,
+    1.812,
+    1.546
+   ]
+  },
+  {
+   "name": "Darts accessory flight.002",
+   "bottom": 1.525,
+   "lo": [
+    0.884,
+    1.652,
+    1.525
+   ],
+   "hi": [
+    0.917,
+    1.689,
+    1.55
+   ]
+  },
+  {
+   "name": "Chair moulded shell",
+   "bottom": 0.33,
+   "lo": [
+    -1.047,
+    0.593,
+    0.33
+   ],
+   "hi": [
+    -0.637,
+    0.956,
+    0.703
+   ]
+  },
+  {
+   "name": "Chair brace front",
+   "bottom": 0.096,
+   "lo": [
+    -1.011,
+    0.926,
+    0.096
+   ],
+   "hi": [
+    -0.685,
+    0.938,
+    0.108
+   ]
+  },
+  {
+   "name": "Chair brace rear",
+   "bottom": 0.096,
+   "lo": [
+    -1.011,
+    0.612,
+    0.096
+   ],
+   "hi": [
+    -0.685,
+    0.624,
+    0.108
+   ]
+  },
+  {
+   "name": "Projector lens",
+   "bottom": 0.984,
+   "lo": [
+    -1.253,
+    -1.695,
+    0.984
+   ],
+   "hi": [
+    -1.228,
+    -1.651,
+    1.028
+   ]
+  },
+  {
+   "name": "Chair moulded shell 2",
+   "bottom": 0.33,
+   "lo": [
+    -1.027,
+    1.153,
+    0.33
+   ],
+   "hi": [
+    -0.617,
+    1.516,
+    0.703
+   ]
+  },
+  {
+   "name": "Chair brace front 2",
+   "bottom": 0.096,
+   "lo": [
+    -0.991,
+    1.486,
+    0.096
+   ],
+   "hi": [
+    -0.665,
+    1.498,
+    0.108
+   ]
+  },
+  {
+   "name": "Chair brace rear 2",
+   "bottom": 0.096,
+   "lo": [
+    -0.991,
+    1.172,
+    0.096
+   ],
+   "hi": [
+    -0.665,
+    1.184,
+    0.108
+   ]
+  }
+ ],
+ "wall_penetration": [
+  {
+   "name": "Rear window sill wall",
+   "sides": [
+    "y+"
+   ],
+   "lo": [
+    1.851,
+    1.9,
+    0.012
+   ],
+   "hi": [
+    2.999,
+    1.989,
+    0.649
+   ]
+  },
+  {
+   "name": "Rear window lintel",
+   "sides": [
+    "y+"
+   ],
+   "lo": [
+    1.851,
+    1.9,
+    1.864
+   ],
+   "hi": [
+    2.999,
+    1.989,
+    2.35
+   ]
+  },
+  {
+   "name": "Rear deep sill",
+   "sides": [
+    "y+"
+   ],
+   "lo": [
+    1.83,
+    1.752,
+    0.623
+   ],
+   "hi": [
+    3.02,
+    1.915,
+    0.66
+   ]
+  },
+  {
+   "name": "Staggered oak floor",
+   "sides": [
+    "x+",
+    "y-",
+    "y+"
+   ],
+   "lo": [
+    -1.736,
+    -1.869,
+    0.014
+   ],
+   "hi": [
+    3.314,
+    1.92,
+    0.014
+   ]
+  },
+  {
+   "name": "Entry door leaf",
+   "sides": [
+    "y-"
+   ],
+   "lo": [
+    -1.602,
+    -1.911,
+    0.02
+   ],
+   "hi": [
+    -0.99,
+    -1.878,
+    1.72
+   ]
+  },
+  {
+   "name": "Entry door jamb",
+   "sides": [
+    "y-"
+   ],
+   "lo": [
+    -1.644,
+    -1.907,
+    0.012
+   ],
+   "hi": [
+    -1.596,
+    -1.843,
+    1.787
+   ]
+  },
+  {
+   "name": "Entry door jamb.001",
+   "sides": [
+    "y-"
+   ],
+   "lo": [
+    -0.996,
+    -1.907,
+    0.012
+   ],
+   "hi": [
+    -0.948,
+    -1.843,
+    1.787
+   ]
+  },
+  {
+   "name": "Entry door lintel",
+   "sides": [
+    "y-"
+   ],
+   "lo": [
+    -1.635,
+    -1.907,
+    1.722
+   ],
+   "hi": [
+    -0.957,
+    -1.843,
+    1.775
+   ]
+  },
+  {
+   "name": "Entry door threshold",
+   "sides": [
+    "y-"
+   ],
+   "lo": [
+    -1.607,
+    -1.916,
+    0.02
+   ],
+   "hi": [
+    -0.985,
+    -1.819,
+    0.026
+   ]
+  },
+  {
+   "name": "Entry lever backplate",
+   "sides": [
+    "y-"
+   ],
+   "lo": [
+    -1.074,
+    -1.875,
+    0.896
+   ],
+   "hi": [
+    -1.041,
+    -1.864,
+    1.024
+   ]
+  },
+  {
+   "name": "Rear window daylight backdrop",
+   "sides": [
+    "y+"
+   ],
+   "lo": [
+    1.775,
+    1.958,
+    0.55
+   ],
+   "hi": [
+    3.075,
+    1.962,
+    1.95
+   ]
+  }
+ ],
+ "intersections": [
+  {
+   "a": "PC monitor ventilation slot 01",
+   "b": "Monitor bezel",
+   "frac": 1.0
+  },
+  {
+   "a": "PC monitor ventilation slot 02",
+   "b": "Monitor bezel",
+   "frac": 1.0
+  },
+  {
+   "a": "PC monitor ventilation slot 03",
+   "b": "Monitor bezel",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse",
+   "b": "Mouse wheel recess lining",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse",
+   "b": "Mouse scroll wheel",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse",
+   "b": "Mouse thumb scroll wheel",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse",
+   "b": "Mouse wheel mode button",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse",
+   "b": "Mouse thumb button 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse",
+   "b": "Mouse thumb button 2",
+   "frac": 1.0
+  },
+  {
+   "a": "Chair moulded shell",
+   "b": "Chair moulded shell seat pad",
+   "frac": 1.0
+  },
+  {
+   "a": "Chair moulded shell 2",
+   "b": "Chair moulded shell seat pad 2",
+   "frac": 1.0
+  },
+  {
+   "a": "Nesoberi v3 s2 r1 1",
+   "b": "Nesoberi v3 s2 r1 1 mouth",
+   "frac": 1.0
+  },
+  {
+   "a": "Nesoberi lying orange",
+   "b": "Nesoberi lying orange mouth",
+   "frac": 1.0
+  },
+  {
+   "a": "Nesoberi lying brown",
+   "b": "Nesoberi lying brown mouth",
+   "frac": 1.0
+  },
+  {
+   "a": "Nesoberi v3 giant eared",
+   "b": "Nesoberi v3 giant eared cheek 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Nesoberi v3 giant eared",
+   "b": "Nesoberi v3 giant eared eye 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Nesoberi v3 giant eared",
+   "b": "Nesoberi v3 giant eared mouth",
+   "frac": 1.0
+  },
+  {
+   "a": "Nesoberi v3 giant eared",
+   "b": "Nesoberi v3 giant eared eye 2",
+   "frac": 1.0
+  },
+  {
+   "a": "Nesoberi v3 giant eared",
+   "b": "Nesoberi v3 giant eared cheek 2",
+   "frac": 1.0
+  },
+  {
+   "a": "Nesoberi v3 s2 r1 6",
+   "b": "Nesoberi v3 s2 r1 6 mouth",
+   "frac": 1.0
+  },
+  {
+   "a": "Skill toy kendama turned ken",
+   "b": "Skill toy kendama center collar",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk Rubik stickers",
+   "b": "Desk Rubik cube core",
+   "frac": 1.0
+  },
+  {
+   "a": "Camera gear Nikon DX 18-105mm lens hood",
+   "b": "Camera gear Nikon DX 18-105mm lens front ring",
+   "frac": 1.0
+  },
+  {
+   "a": "Camera gear Nikon D7000 body",
+   "b": "Camera gear Nikon D7000 grip",
+   "frac": 1.0
+  },
+  {
+   "a": "Laptop lid",
+   "b": "Laptop display",
+   "frac": 0.99
+  },
+  {
+   "a": "Desk pen cup noodle band",
+   "b": "Desk pen cup noodle body",
+   "frac": 0.98
+  },
+  {
+   "a": "Camera gear Tamron 70-300mm lens zoom ring.001",
+   "b": "Camera gear Tamron 70-300mm lens zoom ring",
+   "frac": 0.96
+  },
+  {
+   "a": "Camera gear Tamron 70-300mm lens barrel",
+   "b": "Camera gear Tamron 70-300mm lens zoom ring.001",
+   "frac": 0.92
+  },
+  {
+   "a": "Camera gear Nikon DX 18-105mm lens barrel",
+   "b": "Camera gear Nikon DX 18-105mm lens zoom ring",
+   "frac": 0.92
+  },
+  {
+   "a": "Camera gear Tamron 70-300mm lens barrel",
+   "b": "Camera gear Tamron 70-300mm lens zoom ring",
+   "frac": 0.89
+  },
+  {
+   "a": "Nesoberi lying orange",
+   "b": "Nesoberi lying orange eye 1",
+   "frac": 0.83
+  },
+  {
+   "a": "Nesoberi lying orange",
+   "b": "Nesoberi lying orange eye 2",
+   "frac": 0.83
+  },
+  {
+   "a": "Nesoberi lying brown",
+   "b": "Nesoberi lying brown eye 1",
+   "frac": 0.83
+  },
+  {
+   "a": "Nesoberi lying brown",
+   "b": "Nesoberi lying brown eye 2",
+   "frac": 0.83
+  },
+  {
+   "a": "Camera gear Tamron 70-300mm lens barrel",
+   "b": "Camera gear Tamron 70-300mm lens front ring",
+   "frac": 0.8
+  },
+  {
+   "a": "Desk fan stand",
+   "b": "Desk fan body",
+   "frac": 0.77
+  },
+  {
+   "a": "Desk pen cup noodle body",
+   "b": "Desk pen noodle cup 1",
+   "frac": 0.73
+  },
+  {
+   "a": "Desk pen cup noodle body",
+   "b": "Desk pen noodle cup 3",
+   "frac": 0.73
+  },
+  {
+   "a": "Desk pen cup noodle body",
+   "b": "Desk pen noodle cup 2",
+   "frac": 0.73
+  },
+  {
+   "a": "Mouse",
+   "b": "Mouse button split",
+   "frac": 0.72
+  },
+  {
+   "a": "Monitor stem",
+   "b": "Monitor bezel",
+   "frac": 0.69
+  },
+  {
+   "a": "Skill toy penspinning pen 2 barrel",
+   "b": "Skill toy penspinning pen 2 grip a",
+   "frac": 0.6
+  },
+  {
+   "a": "Skill toy penspinning pen 2 barrel",
+   "b": "Skill toy penspinning pen 2 grip b",
+   "frac": 0.6
+  },
+  {
+   "a": "Skill toy penspinning pen 1 barrel",
+   "b": "Skill toy penspinning pen 1 grip a",
+   "frac": 0.56
+  },
+  {
+   "a": "Skill toy penspinning pen 1 barrel",
+   "b": "Skill toy penspinning pen 1 grip b",
+   "frac": 0.56
+  },
+  {
+   "a": "Monitor bezel",
+   "b": "Desk pen 3",
+   "frac": 0.51
+  },
+  {
+   "a": "Monitor bezel",
+   "b": "Desk pen 1",
+   "frac": 0.51
+  },
+  {
+   "a": "Skill toy kendama tether",
+   "b": "Skill toy kendama center collar",
+   "frac": 0.51
+  },
+  {
+   "a": "Skill toy yoyo cotton string",
+   "b": "Skill toy yoyo display cradle",
+   "frac": 0.51
+  },
+  {
+   "a": "Desk pen cup",
+   "b": "Desk pen 3",
+   "frac": 0.47
+  },
+  {
+   "a": "Desk pen cup",
+   "b": "Desk pen 1",
+   "frac": 0.47
+  },
+  {
+   "a": "Desk pen cup",
+   "b": "Desk pen 4",
+   "frac": 0.47
+  },
+  {
+   "a": "Desk pen cup",
+   "b": "Desk pen 2",
+   "frac": 0.47
+  },
+  {
+   "a": "Skill toy kendama large cup",
+   "b": "Skill toy kendama bridge",
+   "frac": 0.46
+  },
+  {
+   "a": "Monitor bezel",
+   "b": "Monitor screen",
+   "frac": 0.42
+  },
+  {
+   "a": "Skill toy kendama bridge",
+   "b": "Skill toy kendama turned ken",
+   "frac": 0.42
+  },
+  {
+   "a": "Laptop lid",
+   "b": "Laptop hinge",
+   "frac": 0.39
+  },
+  {
+   "a": "Laptop lid",
+   "b": "Laptop hinge.001",
+   "frac": 0.39
+  },
+  {
+   "a": "Darts accessory flight",
+   "b": "Darts accessory shaft",
+   "frac": 0.39
+  },
+  {
+   "a": "Darts accessory flight.001",
+   "b": "Darts accessory shaft.001",
+   "frac": 0.39
+  },
+  {
+   "a": "Darts accessory flight.002",
+   "b": "Darts accessory shaft.002",
+   "frac": 0.39
+  },
+  {
+   "a": "Mouse button split",
+   "b": "Mouse wheel recess lining",
+   "frac": 0.38
+  },
+  {
+   "a": "Skill toy kendama turned ken",
+   "b": "Skill toy kendama tether",
+   "frac": 0.38
+  },
+  {
+   "a": "Skill toy kendama large cup rim",
+   "b": "Skill toy kendama large cup",
+   "frac": 0.35
+  },
+  {
+   "a": "Skill toy kendama small cup rim",
+   "b": "Skill toy kendama small cup",
+   "frac": 0.35
+  },
+  {
+   "a": "Skill toy kendama large cup rim",
+   "b": "Skill toy kendama turned ken",
+   "frac": 0.33
+  },
+  {
+   "a": "Skill toy kendama bridge",
+   "b": "Skill toy kendama small cup",
+   "frac": 0.32
+  },
+  {
+   "a": "Camera gear Nikon D7000 prism",
+   "b": "Camera gear Nikon D7000 hot shoe",
+   "frac": 0.31
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop USB port rim",
+   "frac": 0.3
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop USB port rim.001",
+   "frac": 0.3
+  }
+ ],
+ "sinks": [],
+ "collider_drift": [],
+ "curve_hits": []
+}

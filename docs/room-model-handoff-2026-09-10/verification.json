@@ -1,0 +1,409 @@
+{
+  "capturedAt": "2026-09-10T10:25:21.732Z",
+  "parentHead": "fa3f507114370a7d0d48a45b39e5939d562c51f9",
+  "branch": "main",
+  "native": {
+    "status": "ok",
+    "result": {
+      "filepath": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/room.blend",
+      "dirty": true,
+      "version": "5.2.1 LTS",
+      "visible_prints": 126,
+      "unique_artwork_ids": 126,
+      "layout_version": 1,
+      "temporary_export_collection": false,
+      "temporary_proof_scenes": []
+    }
+  },
+  "buildCheck": {
+    "command": "node tools/room-harness/build/check-build.mjs --json",
+    "exitCode": 1,
+    "calibration": {
+      "x0": -1.784,
+      "x1": 3.2709,
+      "yTop": 1.9004,
+      "yBottom": -1.8916
+    },
+    "results": [
+      {
+        "item": "BUDGET-TRIS",
+        "status": "pass",
+        "detail": "392092 / 450000"
+      },
+      {
+        "item": "BUDGET-OBJECTS",
+        "status": "pass",
+        "detail": "2062 / 2400"
+      },
+      {
+        "item": "NAMING-GENERIC",
+        "status": "pass",
+        "detail": "no generic names"
+      },
+      {
+        "item": "FORBIDDEN-OBJECTS",
+        "status": "pass",
+        "detail": "none"
+      },
+      {
+        "item": "BOUNDS-ROOM",
+        "status": "pass",
+        "detail": "all renderables inside room envelope"
+      },
+      {
+        "item": "CALIBRATION",
+        "status": "info",
+        "detail": "floor x -1.784..3.2709, y -1.8916..1.9004"
+      },
+      {
+        "item": "PHYSICS-PAIRS",
+        "status": "pass",
+        "detail": "70 pairs, all sub-assemblies"
+      },
+      {
+        "item": "PHYSICS-STRUCTURE",
+        "status": "pass",
+        "detail": "0 content-in-structure hits"
+      },
+      {
+        "item": "PHYSICS-FURNITURE",
+        "status": "pass",
+        "detail": "0 content-in-furniture hits"
+      },
+      {
+        "item": "PHYSICS-SINKS",
+        "status": "pass",
+        "detail": "0 objects sunk into a surface"
+      },
+      {
+        "item": "PHYSICS-CURVES",
+        "status": "pass",
+        "detail": "0 cable/string hits"
+      },
+      {
+        "item": "PHYSICS-COLLIDERS",
+        "status": "pass",
+        "detail": "0 walk colliders drifted"
+      },
+      {
+        "item": "GEO-SHELL",
+        "status": "pass",
+        "detail": "51 objects, 1716 tris"
+      },
+      {
+        "item": "GEO-BALCONY",
+        "status": "pass",
+        "detail": "147 objects, 62232 tris"
+      },
+      {
+        "item": "GEO-BALCONY-CURTAIN",
+        "status": "pass",
+        "detail": "2 objects, 38016 tris"
+      },
+      {
+        "item": "GEO-REAR-WINDOW",
+        "status": "pass",
+        "detail": "3 objects, 38028 tris"
+      },
+      {
+        "item": "LIT-CEILING",
+        "status": "pass",
+        "detail": "7 objects, 2404 tris"
+      },
+      {
+        "item": "ENTRY",
+        "status": "pass",
+        "detail": "7 objects, 1140 tris"
+      },
+      {
+        "item": "CLOSET",
+        "status": "pass",
+        "detail": "2 objects, 376 tris"
+      },
+      {
+        "item": "LOWER-POSTER",
+        "status": "pass",
+        "detail": "2 objects, 4 tris"
+      },
+      {
+        "item": "PC-DESK",
+        "status": "pass",
+        "detail": "13 objects, 1388 tris"
+      },
+      {
+        "item": "PC-CHAIR",
+        "status": "pass",
+        "detail": "16 objects, 2224 tris"
+      },
+      {
+        "item": "CHAIR-MAT",
+        "status": "pass",
+        "detail": "1 objects, 188 tris"
+      },
+      {
+        "item": "KEYBOARD-STAND",
+        "status": "pass",
+        "detail": "62 objects, 17160 tris"
+      },
+      {
+        "item": "PC-MONITOR",
+        "status": "pass",
+        "detail": "12 objects, 1476 tris"
+      },
+      {
+        "item": "PC-LAPTOP-TABLET",
+        "status": "pass",
+        "detail": "108 objects, 11792 tris"
+      },
+      {
+        "item": "PC-INPUT",
+        "status": "pass",
+        "detail": "55 objects, 6030 tris"
+      },
+      {
+        "item": "PC-SUPPORT",
+        "status": "pass",
+        "detail": "5 objects, 472 tris"
+      },
+      {
+        "item": "PC-RUBIK",
+        "status": "fail",
+        "detail": "2/2 outside floorplan anchor (Desk Rubik cube core, Desk Rubik stickers)"
+      },
+      {
+        "item": "PC-NOTES",
+        "status": "pass",
+        "detail": "13 objects, 1388 tris"
+      },
+      {
+        "item": "PC-NAMECARD",
+        "status": "pass",
+        "detail": "2 objects, 2996 tris"
+      },
+      {
+        "item": "PC-CAMERA",
+        "status": "pass",
+        "detail": "18 objects, 3688 tris"
+      },
+      {
+        "item": "PC-POSTER-NOTES",
+        "status": "pass",
+        "detail": "6 objects, 72 tris"
+      },
+      {
+        "item": "DART-STAND",
+        "status": "pass",
+        "detail": "11 objects, 2196 tris"
+      },
+      {
+        "item": "DART-BOARD",
+        "status": "pass",
+        "detail": "102 objects, 2296 tris"
+      },
+      {
+        "item": "DART-ACCESSORIES",
+        "status": "pass",
+        "detail": "12 objects, 396 tris"
+      },
+      {
+        "item": "DART-MAT",
+        "status": "pass",
+        "detail": "3 objects, 404 tris"
+      },
+      {
+        "item": "PLUSH-RACK",
+        "status": "pass",
+        "detail": "6 objects, 1656 tris"
+      },
+      {
+        "item": "NESOBERI",
+        "status": "pass",
+        "detail": "21 objects, 14342 tris"
+      },
+      {
+        "item": "SHELF-FRAME",
+        "status": "pass",
+        "detail": "55 objects, 18404 tris"
+      },
+      {
+        "item": "SHELF-BOARD",
+        "status": "pass",
+        "detail": "12 objects, 10320 tris"
+      },
+      {
+        "item": "SHELF-TEAL-BACK",
+        "status": "pass",
+        "detail": "3 objects, 36 tris"
+      },
+      {
+        "item": "BOOK-MANGA",
+        "status": "pass",
+        "detail": "98 objects, 2744 tris"
+      },
+      {
+        "item": "BOOK-MAGAZINE",
+        "status": "pass",
+        "detail": "66 objects, 1848 tris"
+      },
+      {
+        "item": "BOOK-FOLDER",
+        "status": "pass",
+        "detail": "4 objects, 3696 tris"
+      },
+      {
+        "item": "BOOK-ALBUM",
+        "status": "pass",
+        "detail": "142 objects, 1704 tris"
+      },
+      {
+        "item": "ACRYLIC-CASE",
+        "status": "fail",
+        "detail": "no material matching Display acrylic|Clear acrylic|Room/AcrylicClear"
+      },
+      {
+        "item": "ACRYLIC-STAND",
+        "status": "pass",
+        "detail": "248 objects, 41552 tris"
+      },
+      {
+        "item": "ACRYLIC-CONTENTS",
+        "status": "pass",
+        "detail": "376 objects, 66948 tris"
+      },
+      {
+        "item": "SHELF-FRAME-ART",
+        "status": "pass",
+        "detail": "8 objects, 96 tris"
+      },
+      {
+        "item": "SHELF-TOP-PLUSH",
+        "status": "pass",
+        "detail": "2 objects, 5824 tris"
+      },
+      {
+        "item": "SHELF-INTERACTION",
+        "status": "pass",
+        "detail": "836 objects, 109980 tris"
+      },
+      {
+        "item": "LOW-TABLE",
+        "status": "pass",
+        "detail": "5 objects, 236 tris"
+      },
+      {
+        "item": "TABLE-CONTENTS",
+        "status": "pass",
+        "detail": "10 objects, 120 tris"
+      },
+      {
+        "item": "BEANBAG",
+        "status": "pass",
+        "detail": "2 objects, 23040 tris"
+      },
+      {
+        "item": "PENLIGHT-GRID",
+        "status": "pass",
+        "detail": "29 objects, 876 tris"
+      },
+      {
+        "item": "PENLIGHT",
+        "status": "pass",
+        "detail": "144 objects, 5776 tris"
+      },
+      {
+        "item": "PENLIGHT-SPILL",
+        "status": "pass",
+        "detail": "3 objects, 0 tris"
+      },
+      {
+        "item": "LIVE-TOWEL",
+        "status": "pass",
+        "detail": "14 objects, 27784 tris"
+      },
+      {
+        "item": "UCHIWA-FLAG",
+        "status": "pass",
+        "detail": "27 objects, 724 tris"
+      },
+      {
+        "item": "HOBBY-PIANO",
+        "status": "pass",
+        "detail": "62 objects, 17160 tris"
+      },
+      {
+        "item": "HOBBY-YOYO",
+        "status": "pass",
+        "detail": "5 objects, 4188 tris"
+      },
+      {
+        "item": "HOBBY-KENDAMA",
+        "status": "pass",
+        "detail": "9 objects, 18928 tris"
+      },
+      {
+        "item": "HOBBY-CARDISTRY",
+        "status": "pass",
+        "detail": "6 objects, 72 tris"
+      },
+      {
+        "item": "HOBBY-PENSPIN",
+        "status": "pass",
+        "detail": "8 objects, 320 tris"
+      },
+      {
+        "item": "HOBBY-RUBIK",
+        "status": "pass",
+        "detail": "2 objects, 296 tris"
+      },
+      {
+        "item": "HOBBY-TYPING-STENO",
+        "status": "pass",
+        "detail": "45 objects, 188 tris"
+      },
+      {
+        "item": "HOBBY-CAMERA",
+        "status": "pass",
+        "detail": "18 objects, 3688 tris"
+      },
+      {
+        "item": "EVENT-TICKET",
+        "status": "pass",
+        "detail": "2 objects, 288 tris"
+      },
+      {
+        "item": "AC-INDOOR",
+        "status": "pass",
+        "detail": "4 objects, 96 tris"
+      }
+    ],
+    "failed": 2
+  },
+  "physics": {
+    "floating": 20,
+    "wall_penetration": 11,
+    "intersections": 70,
+    "sinks": 0,
+    "curve_hits": 0,
+    "collider_drift": 0
+  },
+  "handoffReadCoverage": [
+    "1-175",
+    "176-350",
+    "351-517 EOF"
+  ],
+  "privacyScan": {
+    "selectedTextFiles": 27,
+    "matches": 0,
+    "scope": "credential signatures and raw-conversation markers; no absolute guarantee"
+  },
+  "browser": "not run or inspected",
+  "modelAcceptance": "incomplete",
+  "commitPolicy": {
+    "localOnly": true,
+    "signing": false,
+    "appWideLintStagedHook": "not run for binary/model checkpoint; native and data checks used",
+    "unrelatedDirtyChanges": "excluded"
+  },
+  "commitLookup": "git log -1 --format='%H %s' -- docs/HANDOFF_2026-09-10_SHRINE_MODEL.md",
+  "note": "Pre-commit verification receipt. Final commit existence and manifest integrity are checked against Git after creation; this receipt does not claim the two failing model gates passed."
+}
