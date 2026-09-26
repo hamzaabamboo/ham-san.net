@@ -1,0 +1,3 @@
+# Projects come from Strapi; notes and hobbies come from Outline
+
+Projects, the about profile and tags are structured records in Strapi (GraphQL, `libs/graphql`, `apps/astro/codegen.yml`). Notes and hobbies are documents in Ham's Outline knowledge base, read through the Outline API (`apps/astro/src/utils/outline-api.ts`). Notes and hobby pages are written where Ham already keeps them, so publishing needs no second copy. Projects and the profile need typed fields (dates, links, tags, screenshots) that Outline documents do not carry. The consequence is two failure modes and two cache keys to reason about on pages that combine them.
