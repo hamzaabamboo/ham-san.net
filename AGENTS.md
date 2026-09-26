@@ -7,6 +7,13 @@
 - Astro format check: `cd apps/astro && bun run format`
 - Workspace check: `bun run check`
 
+## Docs
+
+- Domain words: `CONTEXT.md`. Name things with its terms.
+- Why a structural choice was made: `docs/adr/`. Flag any change that contradicts one.
+- Module map, data flow, room pipeline, deploy: `docs/architecture.md`.
+- Before changing a page or UI: `docs/design/README.md` and `docs/design/pages/<page>.md`.
+
 ## Validation
 
 - Primary gate for the Stitch workstream: `cd apps/astro && bun run build`
