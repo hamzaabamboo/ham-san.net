@@ -31,9 +31,7 @@
 
 .home-hero-photo figcaption {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.25rem 1rem;
-  align-items: baseline;
+  gap: 0.25rem;
 }
 
 .home-hero-photo-name {
@@ -44,16 +42,13 @@
 }
 
 .home-hero-photo-meta {
-  grid-column: 1;
   color: var(--atelier-fg-muted);
   font-size: 0.875rem;
   line-height: 1.5;
 }
 
-.home-hero-photo figcaption > a,
 .home-photos-all {
-  grid-column: 2;
-  grid-row: 1;
+  flex-shrink: 0;
   color: var(--atelier-accent);
   font-size: 0.875rem;
   text-underline-offset: 0.2em;

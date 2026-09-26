@@ -17,7 +17,7 @@ This is the first page a visitor sees. It says who Ham is in one sentence, shows
 │                                          │ │ portrait  │ │
 │ I spend as much time in a darkroom …     │ │ (own ratio)│ │
 │                                          │ └───────────┘ │
-│ [View my work]  [Explore my hobbies]     │ Name   All photos
+│ [View my work]  [Explore my hobbies]     │ Name          │
 │                                          │ Event         │
 ├──────────────────────────────────────────┴───────────────┤
 │ How I work ───────────────────────────────────────────── │
@@ -30,9 +30,9 @@ This is the first page a visitor sees. It says who Ham is in one sentence, shows
 └──────────────────────────────────────────────────────────┘
 ```
 
-1. **Hero.** The h1 is `home.hero-heading-prefix` plus `home.hero-heading-emphasis`: two lines in one colour with no accent phrase. Below it come the subtitle `home.hero-subtitle`, the primary CTA `home.view-my-work` → `/projects` and the secondary CTA `home.explore-hobbies` → `/hobbies`. The right column is a figure showing the newest named gallery portrait, with the person's name, the event and an "All photos" link.
-2. **How I work** (`SectionHeading home.bench-heading`). A manifesto card with three principle chips (sentence case) beside a tools card.
-3. **Featured projects** (`home.featured-projects`). Up to 3 projects, preferring ones with a screenshot.
+1. **Hero.** The h1 is `home.hero-heading-prefix` plus `home.hero-heading-emphasis`: two lines in one colour with no accent phrase. Below it come the subtitle `home.hero-subtitle`, the primary CTA `home.view-my-work` → `/projects` and the secondary CTA `home.explore-hobbies` → `/hobbies`. The right column is a figure showing the newest named gallery portrait, with the person's name and the event. "All photos" appears once, beside the Recent photos heading.
+2. **How I work** (`SectionHeading home.bench-heading`, no subtitle). A manifesto card with three principle chips (sentence case) beside a tools card.
+3. **Featured projects** (`home.featured-projects`). Up to 3 projects, preferring ones with a screenshot, in a 16:10 frame. Titles are in the display face, as set (not uppercased). There's no arrow glyph. On touch devices screenshots show at true colour, since there is no hover to recover it.
 4. **Recent photos** (`home.photos-heading`). The newest photo of each of up to four other people, excluding the hero's person.
 
 ## Data and caching
@@ -60,6 +60,9 @@ This is the first page a visitor sees. It says who Ham is in one sentence, shows
 - Recent photos is 4 columns (aligned to the top, each at its own ratio), then 2 at ≤700 px.
 
 ## Rules
+
+- Sections are separated by spacing only; there are no full-width divider lines. Every section title is a `SectionHeading` (display h2 plus inline rule). A trailing action link sits after the rule.
+- The footer links are sentence case in the body face.
 
 - The hero never shows CMS clip art (`introductionImage`). Any hero `<img>` must be a gallery image (`data-kameko-image`); `tests/round22-contracts` checks this.
 - No eyebrow chip, no status row, no availability claim unless Ham states one.

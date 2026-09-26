@@ -474,6 +474,17 @@ html:lang(th) h6 {
 .project-card:hover .project-card-footer {
   opacity: 1 !important;
 }
+@media (hover: none) {
+  .project-card .project-card-img {
+    filter: var(--atelier-image-plate) !important;
+  }
+  .project-card .project-card-overlay {
+    opacity: 0 !important;
+  }
+  .project-card .project-card-footer {
+    opacity: 1 !important;
+  }
+}
 
 .cta-secondary {
   transition:
