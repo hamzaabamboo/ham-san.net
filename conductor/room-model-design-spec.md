@@ -91,7 +91,7 @@ Each row is a buildable model contract. `roomTarget` is the interaction target w
 | PC-INPUT | full keyboard in playing position, mouse, desk mat | keyboard faces chair and is not rotated sideways; mat stays under chair/input area | keycaps with restrained legends, rubber mat, cable exits | close-up proves orientation, key spacing, mouse contact, and no clipping |
 | PC-SUPPORT | grommet, cable bundle, socket/outlet plate, power strip cues | visible support/cable path beside PC without becoming random clutter | black rubber cables, white outlet, metal contacts | socket is near desk PC wall; no floating cable ends |
 | PC-CHAIR | curved brown plywood seat/back, cushion, connected supports, legs | characteristic curved shell with thickness and connected frame | warm plywood UV, brown fabric/leather cushion, dark metal frame | chair is to desk right, fully grounded, no rectangular board substitute |
-| PC-RUBIK | 3x3 cube with six colored face groups and bevels | compact cube with readable sticker grid; no floating faces | satin plastic body, colored sticker UV | `roomTarget=rubik`; sits on desk, never embedded in top |
+| PC-RUBIK | 3x3 cube with six colored face groups and bevels | compact cube with readable sticker grid; no floating faces | satin plastic body, colored sticker UV | `roomTarget=rubik`; sits on the low hobby table beside the staged hobby props, never embedded in the top |
 | PC-NOTES | paper stack, folded sheets, pen/ink, handwritten graphic | small stack with varying sheet edges; graphic remains minimal and source-grounded | off-white paper roughness, graphite/ink marks | `roomTarget=notes`; paper lies flat on desk and remains legible in focus |
 | PC-NAMECARD | namecard body, printed face, slight edge | small horizontal card lying on desk, not an upright sign | card stock with restrained print UV | `roomTarget=namecard`; card is supported and not occluded by keyboard |
 | PC-CAMERA | Nikon D7000 body, Nikon DX 18–105 lens, Tamron 70–300 lens | camera bodies and lenses use confirmed silhouettes only; no wishlist hardware | dark textured body, glass lens rings, rubber grips, metal mount | `roomTarget=hobbies`; distinguish confirmed gear from wishlist; close-up proves body/lens separation |
@@ -158,7 +158,7 @@ Each row is a buildable model contract. `roomTarget` is the interaction target w
 | HOBBY-KENDAMA | ken, cups, tama, tether | turned wood form with cup openings and visible string | `roomTarget=kendama`, route resolves Kendama |
 | HOBBY-CARDISTRY | small deck, separated cards, printed backs | cards fan/stack with readable deck silhouette; no invented deck name | `roomTarget=cardistry`, route resolves Cardistry/Magic |
 | HOBBY-PENSPIN | weighted pen/barrel, grip, tip, small rest | one or two supported pens; no generic long rods scattered in shelf | `roomTarget=penspinning`, route resolves Pen Spinning |
-| HOBBY-RUBIK | cube and sticker faces | use PC-RUBIK design; keep cube on desk | `roomTarget=rubik`, route resolves Rubiks |
+| HOBBY-RUBIK | cube and sticker faces | use PC-RUBIK design; keep cube on the low hobby table at the owner-authorized staged position | `roomTarget=rubik`, route resolves Rubiks |
 | HOBBY-TYPING-STENO | PC-INPUT keyboard or confirmed steno device | reuse the real keyboard silhouette; do not invent a separate steno machine without a supplied reference | `roomTarget=typing`, route resolves Typing/Steno |
 | HOBBY-MUSIC-TRANSCRIPTION | PC-MONITOR/PC-NOTES music workspace | represent transcription through the existing screen and paper cues; no invented instrument model | `roomTarget=music`, route resolves Music/Transcriptions |
 | HOBBY-TROMBONE | none until a physical reference is supplied | content-only hobby target for now; do not add a guessed brass instrument to the room | `roomTarget=music`, route resolves Music |
@@ -279,10 +279,12 @@ The family index above is not detailed enough to build from. These cards are the
 
 - Source / current nodes: `033233767`, `033243806`; `Web Desk Rubik cube core`, `Web Desk Rubik stickers`.
 - Geometry: rounded 3x3 cube core with six sticker faces, thin sticker recess, seam gaps and small bevel. Each face is divided into nine readable squares; stickers are not floating plates.
-- Proportion / anchor: small cube sits fully on the desk mat beside the input, with one corner orientation matching the source; no intersection with paper or laptop.
+- Proportion / anchor: small cube sits fully on the low hobby table beside the staged hobby props, with one corner orientation matching the source; no intersection with paper, laptop or table contents.
 - Finish / UV: satin dark/colored plastic core, separate colored sticker UVs with slight roughness and edge wear. Keep palette controlled, not a random rainbow cube.
 - State / target: `roomTarget=rubik`; examine locks movement and shows a close-up panel; cube may rotate only inside examine if explicitly implemented.
-- Proof / reject: macro view must show bevels, sticker seams and desk contact. Reject six colored planes, embedded cube, or floating facelets.
+- Proof / reject: macro view must show bevels, sticker seams and low-table contact. Reject six colored planes, embedded cube, or floating facelets.
+
+The stable `Desk Rubik` object names and `roomTarget=rubik` remain unchanged. The owner-authorized low-table placement supersedes the prior desk-anchor assumption.
 
 #### PC-NOTES
 
@@ -403,7 +405,7 @@ The current GLB node inventory is a staging audit, not approval. Every exported 
 | `Web Dartboard *`, `Web Darts accessory *`, `Web Darts mat *` | DART-BOARD, DART-ACCESSORIES, DART-MAT | Target construction, three supported darts, straight throw axis |
 | `Web Desk brown protective mat *` | CHAIR-MAT | rectangular desk mat under input/chair only |
 | `Web Desk handwritten sheet *`, `Web Notes *` | PC-NOTES | layered paper edges, restrained writing, desk contact |
-| `Web Desk Rubik *` | PC-RUBIK | beveled 3x3 cube, six sticker faces, desk contact |
+| `Web Desk Rubik *` | PC-RUBIK | beveled 3x3 cube, six sticker faces, low-table contact |
 | `Web Event ticket *`, `Web Ticket print *` | EVENT-TICKET | one readable supported ticket/card, no invented event copy |
 | `Web Floor *`, `Web Skirting *`, `Web Genkan *` | GEO-SHELL, ENTRY | continuous rectangle, threshold and skirting joins |
 | `Web Folded towel *`, `Web Live wall uchiwa *` | LIVE-TOWEL, UCHIWA-FLAG | wall-mounted long towels and supported uchiwa; no hanger |

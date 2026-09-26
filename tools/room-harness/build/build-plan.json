@@ -648,22 +648,23 @@
       "anchorTolerance": 80
     },
     "PC-RUBIK": {
-      "zone": "pc",
+      "zone": "center",
       "namePattern": "^Desk Rubik.*",
       "minObjects": 2,
       "maxTris": 3000,
       "anchor": [
-        0,
-        60,
+        665,
         140,
-        320
+        825,
+        300
       ],
-      "anchorTolerance": 60,
+      "anchorTolerance": 50,
       "requiredProps": {
         "roomTarget": [
           "rubik"
         ]
-      }
+      },
+      "note": "Stable Desk Rubik object names and roomTarget remain unchanged; the owner-authorized staged placement is on the low hobby table."
     },
     "PC-NOTES": {
       "zone": "pc",

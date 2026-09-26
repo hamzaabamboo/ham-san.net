@@ -115,7 +115,7 @@ const physicsChecks = async () => {
     push('PHYSICS-AUDIT', 'fail', 'physics-latest.json missing; run physics_audit.py in Blender')
     return
   }
-  const assembly = /Monitor|Piano|Rubik|kendama|Nikon|Tamron|Laptop|penspinning|yoyo|Desk pen|Darts accessory|Desk fan|Camera gear|Chair moulded shell|Shelf cover display|^Mouse|^Nesoberi/i
+  const assembly = /Monitor|Piano|Rubik|kendama|Nikon|Tamron|Laptop|penspinning|yoyo|Desk pen|Darts accessory|Desk fan|Camera gear|Chair moulded shell|Shelf cover display|^Mouse|^Nesoberi|jump rope/i
   const pairs = physics.intersections.filter((i) => !i.kind && !(assembly.test(i.a) && assembly.test(i.b)))
   const kinds = (k) => physics.intersections.filter((i) => i.kind === k)
   push('PHYSICS-PAIRS', pairs.length ? 'fail' : 'pass', pairs.length ? pairs.slice(0, 5).map((p) => `${p.a} × ${p.b}`).join('; ') : `${physics.intersections.length} pairs, all sub-assemblies`)

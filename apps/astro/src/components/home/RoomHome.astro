@@ -1,0 +1,703 @@
+---
+import { useTranslations } from '~/i18n/utils';
+import { roomCopy } from './room-copy';
+
+const { locale } = Astro.props as { locale: 'en' | 'ja' | 'th' };
+const t = useTranslations(locale);
+const copy = roomCopy[locale];
+const destinations = [
+  { id: 'projects', label: t('common.projects'), path: 'projects' },
+  { id: 'notes', label: t('common.note'), path: 'notes' },
+  { id: 'hobbies', label: t('common.hobbies'), path: 'hobbies' },
+  { id: 'namecard', label: copy.namecard, path: 'namecard/default' },
+  { id: 'events', label: copy.events, path: 'events' }
+];
+---
+
+<main
+  class="room-home"
+  data-room-home
+  data-locale={locale}
+  data-room-error={copy.failed}
+  data-room-mobile-controls={copy.mobileControls}
+  data-room-blocked={copy.blocked}
+>
+  <div class="room-static-preview" data-room-preview aria-hidden="true">
+    <img src="/models/room-preview.png" alt="" />
+  </div>
+  <div class="room-stage" data-room-stage aria-label={copy.scene}></div>
+  <header class="room-header">
+    <a class="room-brand" href={`/${locale}/overview`}>{t('common.name')}<span>{copy.room}</span></a
+    >
+    <div class="room-time"><span data-room-time></span><span>Tokyo</span></div>
+    <div class="room-light-control" data-room-light-control hidden>
+      <button type="button" data-room-light-toggle aria-pressed="false">{copy.light}</button>
+      <button type="button" data-room-light-left aria-pressed="false">{copy.lightLeft}</button>
+      <button type="button" data-room-light-right aria-pressed="false">{copy.lightRight}</button>
+      <button type="button" data-room-light-auto hidden>{copy.lightAuto}</button>
+      <button type="button" data-room-curtains aria-pressed="false">{copy.curtains}</button>
+      <button type="button" data-room-curtains-auto hidden>{copy.curtainsAuto}</button>
+    </div>
+    <nav class="room-languages" aria-label={t('common.language')}>
+      {
+        (['en', 'ja', 'th'] as const).map((lang) => (
+          <a href={`/${lang}/`} aria-current={lang === locale ? 'page' : undefined}>
+            {lang.toUpperCase()}
+          </a>
+        ))
+      }
+    </nav>
+  </header>
+  <section class="room-entry" data-room-entry>
+    <p class="room-eyebrow">{copy.welcome}</p>
+    <h1>{copy.title}</h1>
+    <p>{copy.intro}</p>
+    <button class="room-enter" data-room-enter disabled>{copy.loading}</button>
+    <p class="room-status" data-room-status role="status">{copy.loadingDescription}</p>
+    <a class="room-text-link" href={`/${locale}/overview`}>{copy.conventional} ↗</a>
+  </section>
+  <div class="room-reticle" data-room-reticle hidden aria-hidden="true">+</div>
+  <div class="room-target-labels" data-room-target-labels hidden></div>
+  <div class="room-hint" data-room-hint hidden aria-live="polite"></div>
+  <footer class="room-controls">
+    <p data-room-help data-room-desktop-controls={copy.controls}>{copy.controls}</p>
+    <nav aria-label={copy.destinations}>
+      {
+        destinations.map((item) => (
+          <a href={`/${locale}/${item.path}`} data-room-destination={item.id}>
+            {item.label}
+          </a>
+        ))
+      }
+      <button type="button" data-room-lie-down hidden aria-pressed="false">{copy.lieDown}</button>
+      <button type="button" data-room-closet hidden aria-pressed="false">{copy.closetOpen}</button>
+      <button data-room-exit hidden>{copy.exit}</button>
+    </nav>
+  </footer>
+  <dialog class="room-panel" data-room-panel aria-labelledby="room-panel-title">
+    <header class="room-panel-header">
+      <div>
+        <p class="room-panel-kicker" data-room-panel-kicker>{copy.examine}</p>
+        <h2 id="room-panel-title"></h2>
+      </div>
+      <a data-room-full-page>{copy.fullPage} ↗</a>
+      <button data-room-close aria-label={copy.close}>×</button>
+    </header>
+    <nav class="room-panel-tabs" data-room-tabs aria-label={copy.related}></nav>
+    <p class="room-panel-status" data-room-panel-status role="status">{copy.loadingDescription}</p>
+    <section class="room-darts-game" data-room-darts hidden aria-labelledby="room-darts-title">
+      <h3 id="room-darts-title">{copy.darts}</h3>
+      <p>{copy.dartsIntro}</p>
+      <div class="room-darts-scoreboard" aria-live="polite">
+        <span>{copy.dartsScore}: <strong data-room-darts-score>0</strong></span>
+        <span>{copy.dartsThrows}: <strong data-room-darts-throws>0</strong></span>
+      </div>
+      <div class="room-darts-playfield">
+        <button
+          type="button"
+          class="room-darts-target"
+          data-room-darts-target
+          aria-label={copy.dartsBoard}
+        >
+          <span class="room-darts-target-ring room-darts-target-ring-single"></span>
+          <span class="room-darts-target-ring room-darts-target-ring-outer"></span>
+          <span class="room-darts-target-ring room-darts-target-ring-bull"></span>
+          <span class="room-darts-crosshair" data-room-darts-crosshair hidden>+</span>
+        </button>
+        <div class="room-darts-actions">
+          <p data-room-darts-result role="status">{copy.dartsReady}</p>
+          <button type="button" data-room-darts-throw disabled>{copy.dartsThrow}</button>
+        </div>
+      </div>
+      <button class="room-darts-reset" type="button" data-room-darts-reset>{copy.dartsReset}</button
+      >
+    </section>
+    <iframe data-room-frame title={copy.content} referrerpolicy="same-origin"></iframe>
+  </dialog>
+</main>
+
+<script>
+  import { initRoom } from './room-runtime';
+  type RoomHomeLifecycle = { root?: HTMLElement; dispose?: () => void };
+  const windowWithRoom = window as Window & { __roomHomeLifecycle?: RoomHomeLifecycle };
+  const lifecycle = windowWithRoom.__roomHomeLifecycle ?? {};
+  windowWithRoom.__roomHomeLifecycle = lifecycle;
+  const mount = () => {
+    const root = document.querySelector<HTMLElement>('[data-room-home]');
+    if (!root || lifecycle.root === root) return;
+    lifecycle.dispose?.();
+    const dispose = initRoom(root);
+    lifecycle.root = dispose ? root : undefined;
+    lifecycle.dispose = dispose;
+  };
+  const unmount = () => {
+    lifecycle.dispose?.();
+    lifecycle.root = undefined;
+    lifecycle.dispose = undefined;
+  };
+  document.addEventListener('astro:before-swap', unmount);
+  document.addEventListener('astro:page-load', mount);
+  mount();
+</script>
+
+<style>
+  .room-home {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    background: var(--atelier-bg);
+    color: var(--atelier-fg);
+  }
+  .room-static-preview {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--atelier-bg);
+  }
+  .room-static-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: saturate(0.85) contrast(0.95);
+  }
+  .room-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    touch-action: none;
+    transition: filter 260ms ease;
+  }
+  .room-stage :global(canvas) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    outline: 0;
+  }
+  .room-header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(var(--atelier-bg), transparent);
+    pointer-events: none;
+  }
+  .room-header a {
+    pointer-events: auto;
+  }
+  .room-light-control {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-left: auto;
+    pointer-events: auto;
+  }
+  .room-light-control button {
+    padding: 0.45rem 0.6rem;
+    color: var(--atelier-fg);
+    border: 1px solid var(--atelier-line);
+    background: color-mix(in srgb, var(--atelier-bg) 72%, transparent);
+    font-family: var(--font-code);
+    font-size: 0.63rem;
+    letter-spacing: 0.04em;
+  }
+  .room-light-control button:hover,
+  .room-light-control button[aria-pressed='true'] {
+    color: var(--atelier-bg);
+    border-color: var(--atelier-accent);
+    background: var(--atelier-accent);
+  }
+  .room-brand {
+    display: grid;
+    color: var(--atelier-fg);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-shadow: 0 1px 8px var(--atelier-bg);
+  }
+  .room-brand span,
+  .room-time,
+  .room-languages {
+    font-family: var(--font-code);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+  .room-brand span {
+    font-weight: 400;
+  }
+  .room-time {
+    display: grid;
+    margin-left: auto;
+    text-align: right;
+    text-shadow: 0 1px 8px var(--atelier-bg);
+  }
+  .room-languages {
+    display: flex;
+    gap: 0.8rem;
+  }
+  .room-languages a {
+    color: var(--atelier-fg);
+    text-shadow: 0 1px 8px var(--atelier-bg);
+    padding: 0.5rem 0;
+  }
+  .room-languages a[aria-current] {
+    color: var(--atelier-accent-soft);
+  }
+  .room-entry {
+    position: relative;
+    z-index: 2;
+    width: min(26rem, calc(100% - 3rem));
+    margin: clamp(3rem, 15svh, 10rem) 0 12rem 5vw;
+    padding: 2rem;
+    background: color-mix(in srgb, var(--atelier-bg) 88%, transparent);
+    border: 1px solid var(--atelier-line);
+    backdrop-filter: blur(12px);
+  }
+  .room-eyebrow {
+    font-family: var(--font-code);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    color: var(--atelier-accent-soft);
+  }
+  .room-entry h1 {
+    margin: 0.8rem 0 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    line-height: 1.05;
+  }
+  .room-entry > p:not(.room-eyebrow) {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--atelier-fg-muted);
+  }
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--atelier-accent);
+    outline-offset: 4px;
+  }
+  .room-enter {
+    margin: 1.5rem 0 0.8rem;
+    padding: 0.8rem 1.3rem;
+    background: var(--atelier-accent);
+    color: var(--atelier-bg);
+    font-weight: 600;
+    min-height: 44px;
+  }
+  .room-enter:disabled {
+    opacity: 0.5;
+    cursor: progress;
+  }
+  .room-enter:hover:not(:disabled) {
+    background: var(--atelier-accent-soft);
+  }
+  .room-text-link {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-size: 0.8rem;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+  .room-controls {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 2;
+    padding: 1.2rem 2rem;
+    background: color-mix(in srgb, var(--atelier-bg) 90%, transparent);
+    border-top: 1px solid var(--atelier-line);
+  }
+  .room-controls p {
+    font-size: 0.75rem;
+    color: var(--atelier-fg-muted);
+    margin-bottom: 0.65rem;
+  }
+  .room-home:has(.room-panel[open]) .room-controls {
+    visibility: hidden;
+  }
+  .room-home:has(.room-panel[open]) .room-stage {
+    filter: brightness(0.52) saturate(0.72) blur(1px);
+  }
+  .room-controls nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+  }
+  .room-controls a,
+  .room-controls button {
+    padding: 0.5rem 0;
+    font-size: 0.85rem;
+    color: var(--atelier-fg);
+  }
+  .room-controls a:hover,
+  .room-controls button:hover {
+    color: var(--atelier-accent);
+  }
+  .room-reticle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    color: var(--atelier-fg);
+    text-shadow: 0 1px 4px var(--atelier-bg);
+  }
+  .room-target-labels {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .room-target-labels :global(.room-target-label) {
+    position: absolute;
+    pointer-events: auto;
+    cursor: pointer;
+    padding: 0.35rem 0.55rem;
+    color: var(--atelier-fg);
+    background: color-mix(in srgb, var(--atelier-bg) 90%, transparent);
+    border: 1px solid var(--atelier-line);
+    font-family: var(--font-code);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    white-space: nowrap;
+    transform: translate(-50%, -100%);
+    transition:
+      background-color 140ms ease,
+      border-color 140ms ease,
+      color 140ms ease,
+      opacity 140ms ease,
+      transform 140ms ease;
+  }
+  .room-target-labels :global(.room-target-label[data-room-target-hover]) {
+    color: var(--atelier-bg);
+    background: var(--atelier-accent);
+    border-color: var(--atelier-accent);
+    font-weight: 600;
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1.04);
+  }
+  .room-target-labels :global(.room-target-label[data-room-target-marker]) {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    color: transparent;
+    font-size: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .room-target-labels :global(.room-target-label[data-room-target-marker]::before) {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    background: var(--atelier-fg);
+    border: 1px solid var(--atelier-bg);
+    border-radius: 50%;
+  }
+  .room-target-labels
+    :global(.room-target-label[data-room-target-marker][data-room-target-hover]::after) {
+    content: attr(aria-label);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.35rem 0.55rem;
+    font-size: 0.68rem;
+    color: var(--atelier-bg);
+    background: var(--atelier-accent);
+    pointer-events: none;
+  }
+  .room-target-labels :global(.room-target-label:focus-visible) {
+    outline: 2px solid var(--atelier-accent);
+    outline-offset: 2px;
+  }
+  .room-hint {
+    position: absolute;
+    top: calc(50% + 2rem);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 0.9rem;
+    pointer-events: none;
+    font-size: 0.8rem;
+    background: var(--atelier-bg);
+    border: 1px solid var(--atelier-line);
+  }
+  .room-panel {
+    position: fixed;
+    inset: 1.5rem 1.5rem 1.5rem auto;
+    margin: 0;
+    width: min(58rem, 67vw);
+    max-width: calc(100vw - 3rem);
+    height: calc(100svh - 3rem);
+    max-height: none;
+    padding: 0;
+    color: var(--atelier-fg);
+    background: var(--atelier-bg);
+    border: 1px solid var(--atelier-line);
+    box-shadow: 0 2rem 8rem color-mix(in srgb, var(--atelier-bg) 78%, transparent);
+    backdrop-filter: blur(18px);
+    overflow: hidden;
+  }
+  .room-panel[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  .room-panel::backdrop {
+    background: color-mix(in srgb, var(--atelier-bg) 64%, transparent);
+  }
+  .room-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1.2rem;
+    border-bottom: 1px solid var(--atelier-line);
+  }
+  .room-panel-header h2 {
+    margin: 0.12rem 0 0;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+  }
+  .room-panel-kicker {
+    margin: 0;
+    color: var(--atelier-accent-soft);
+    font-family: var(--font-code);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .room-panel-header a {
+    margin-left: auto;
+    font-size: 0.7rem;
+    text-decoration: underline;
+  }
+  .room-panel-header button {
+    font-size: 1.8rem;
+    width: 44px;
+    height: 44px;
+  }
+  .room-panel-tabs {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 1.2rem;
+    border-bottom: 1px solid var(--atelier-line);
+  }
+  .room-panel-tabs:empty {
+    display: none;
+  }
+  .room-panel-tabs :global(button) {
+    font-size: 0.8rem;
+    min-height: 36px;
+  }
+  .room-panel-tabs :global(button[aria-current]) {
+    color: var(--atelier-accent);
+  }
+  .room-panel iframe {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    border: 0;
+    background: var(--atelier-bg);
+  }
+  .room-panel-status {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.75rem;
+    color: var(--atelier-fg-muted);
+  }
+  .room-darts-game {
+    display: grid;
+    gap: 1rem;
+    align-content: center;
+    justify-items: center;
+    flex: 1;
+    min-height: 0;
+    padding: 1.5rem;
+    background:
+      radial-gradient(
+        circle at 50% 38%,
+        color-mix(in srgb, var(--atelier-accent) 9%, transparent),
+        transparent 42%
+      ),
+      color-mix(in srgb, var(--atelier-bg) 88%, var(--atelier-surface));
+  }
+  .room-darts-game h3,
+  .room-darts-game p {
+    margin: 0;
+  }
+  .room-darts-game p {
+    color: var(--atelier-fg-muted);
+    font-size: 0.78rem;
+  }
+  .room-darts-scoreboard {
+    display: flex;
+    gap: 1rem;
+    color: var(--atelier-fg-muted);
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+  }
+  .room-darts-scoreboard strong {
+    color: var(--atelier-accent-soft);
+    font-size: 1rem;
+  }
+  .room-darts-playfield {
+    display: grid;
+    grid-template-columns: minmax(12rem, 18rem) minmax(10rem, 14rem);
+    align-items: center;
+    gap: 1.4rem;
+    width: min(36rem, 100%);
+  }
+  .room-darts-target {
+    position: relative;
+    display: grid;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 0;
+    overflow: hidden;
+    border: 0.65rem solid #20252a;
+    border-radius: 50%;
+    background: repeating-conic-gradient(from -9deg, #edf0ee 0deg 9deg, #23282c 9deg 18deg);
+    box-shadow:
+      0 0 0 0.2rem #515a60,
+      0 1.25rem 2rem rgb(0 0 0 / 32%),
+      inset 0 0 0 0.18rem rgb(255 255 255 / 25%);
+    cursor: crosshair;
+  }
+  .room-darts-target::before,
+  .room-darts-target::after,
+  .room-darts-target-ring {
+    position: absolute;
+    inset: 12%;
+    border: 0.25rem solid #bd665e;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .room-darts-target::after {
+    inset: 35%;
+    border-color: #568b84;
+  }
+  .room-darts-target::before {
+    inset: 47%;
+    border-color: #bd665e;
+    background: #bd665e;
+  }
+  .room-darts-target-ring-single {
+    inset: 27%;
+    border-color: #568b84;
+  }
+  .room-darts-target-ring-outer {
+    inset: 35%;
+    border-color: #bd665e;
+  }
+  .room-darts-target-ring-bull {
+    inset: 44%;
+    border-color: #bd665e;
+    background: #bd665e;
+  }
+  .room-darts-crosshair {
+    position: absolute;
+    z-index: 1;
+    display: grid;
+    width: 1.35rem;
+    height: 1.35rem;
+    place-items: center;
+    margin: -0.675rem 0 0 -0.675rem;
+    color: var(--atelier-bg);
+    border: 1px solid var(--atelier-accent);
+    border-radius: 50%;
+    background: var(--atelier-accent);
+    font-family: var(--font-code);
+    font-size: 0.85rem;
+    pointer-events: none;
+  }
+  .room-darts-actions {
+    display: grid;
+    gap: 0.8rem;
+  }
+  .room-darts-actions p {
+    min-height: 2.5rem;
+    margin: 0;
+    color: var(--atelier-fg-muted);
+    font-size: 0.78rem;
+  }
+  .room-darts-actions button {
+    min-height: 3rem;
+    color: var(--atelier-fg);
+    border: 1px solid var(--atelier-line);
+    background: color-mix(in srgb, var(--atelier-surface-highest) 72%, transparent);
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    transition:
+      transform 140ms ease,
+      border-color 140ms ease,
+      background-color 140ms ease;
+  }
+  .room-darts-actions button:hover:not(:disabled),
+  .room-darts-actions button:focus-visible,
+  .room-darts-target:hover,
+  .room-darts-target:focus-visible {
+    border-color: var(--atelier-accent);
+    background: color-mix(in srgb, var(--atelier-accent) 20%, var(--atelier-bg));
+    transform: translateY(-2px);
+  }
+  .room-darts-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+  .room-darts-reset {
+    min-height: 40px;
+    padding-inline: 1rem;
+    color: var(--atelier-fg);
+    border: 1px solid var(--atelier-line);
+  }
+  [hidden] {
+    display: none !important;
+  }
+  @media (max-width: 700px) {
+    .room-header {
+      padding: 1rem;
+      gap: 1rem;
+    }
+    .room-light-control {
+      gap: 0.25rem;
+    }
+    .room-light-control button {
+      font-size: 0.56rem;
+    }
+    .room-entry {
+      margin: 5svh auto 14rem;
+      padding: 1.5rem;
+    }
+    .room-controls {
+      padding: 0.8rem 1rem;
+    }
+    .room-controls nav {
+      gap: 0 1rem;
+    }
+    .room-target-labels :global(.room-target-label) {
+      font-size: 0.62rem;
+    }
+    .room-panel {
+      inset: 28svh 0.5rem 0.5rem;
+      width: calc(100vw - 1rem);
+      max-width: none;
+      height: calc(72svh - 0.5rem);
+    }
+    .room-panel-header {
+      padding: 0.5rem 0.8rem;
+    }
+    .room-darts-playfield {
+      grid-template-columns: 1fr;
+      width: min(18rem, 100%);
+    }
+  }
+</style>

@@ -128,7 +128,7 @@ COLLIDER_SOURCES = {
     'wire-rack': ['Wire rack upright 1', 'Wire rack upright 4'],
     'box-tall': ['Cardboard box tall'],
     'boxes': ['Cardboard box large'],
-    'darts-stand': ['Darts stand upright', 'Darts stand upright.001', 'Darts stand shelf'],
+    'darts-stand': ['Darts stand post front 1', 'Darts stand post rear 2', 'Darts stand shelf'],
     'floor-table': ['Low hobby table top'],
     'beanbag': ['Beanbag tailored shell'],
     'piano': ['Piano case'],
