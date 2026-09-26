@@ -1,7 +1,7 @@
 import { FaArrowRight, FaGithub, FaGlobe } from 'react-icons/fa';
 import { Box, Center, Stack, styled, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
-import { getMediaUrl } from 'utils/media';
+import { resolveMedia } from 'utils/media';
 import { projectMonogram } from '~/utils/monogram';
 import { Enum_Componentutilslink_Type } from '~/graphql/generated/client';
 import { Languages } from '~/i18n/ui';
@@ -10,7 +10,13 @@ import { IconButton } from '../ui/icon-button';
 import { Link } from '../ui/link';
 import { Text } from '../ui/text';
 
-type MediaFile = { name: string; url: string };
+type MediaFile = {
+  name: string;
+  url: string;
+  width?: number | null;
+  height?: number | null;
+  formats?: unknown;
+};
 type LegacyWrapped<T> = { data: { attributes: T } | null };
 type LegacyCollection<T> = { data: Array<{ attributes: T }> };
 
@@ -54,11 +60,18 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
       ? data.category
       : (data.category as LegacyWrapped<{ name?: string | null }> | null)?.data?.attributes;
   const image = extractMedia(data.banner, data.media);
+  const resolved = resolveMedia(image, 400, import.meta.env.PUBLIC_API_URL);
   const link = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Web);
   const ghLink = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Github);
 
   return (
-    <Stack className="group" border="1px solid" borderColor="#524533" h="full" bg="#131313">
+    <Stack
+      className="group"
+      border="1px solid"
+      borderColor="var(--atelier-line)"
+      h="full"
+      bg="var(--atelier-bg)"
+    >
       <Link
         href={`/${locale}/projects/${slug}`}
         data-astro-prefetch="hover"
@@ -66,39 +79,52 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
         flex={1}
       >
         <Stack gap="0" h="full">
-          {!data.isActive && (
-            <Box
-              borderColor="#524533"
-              borderBottom="1px solid"
-              py="2"
-              px="3"
-              color="#ffd597"
-              fontFamily="JetBrains Mono, monospace"
-              fontSize="10px"
-              letterSpacing="0.12em"
-              textTransform="uppercase"
-            >
-              {t('project.card-archive')}
-            </Box>
-          )}
+          {/* Overlaid on the media, not stacked above it: a 33px band pushed archived cards
+              down, so a five-across row showed three different title baselines. */}
           <Box
+            position="relative"
             flexShrink={0}
-            borderColor="#524533"
+            borderColor="var(--atelier-line)"
             borderBottom="1px solid"
-            backgroundColor="#353534"
+            backgroundColor="var(--atelier-surface-highest)"
             overflow="hidden"
           >
-            {image ? (
+            {!data.isActive && (
+              <Box
+                zIndex="1"
+                position="absolute"
+                top="0"
+                left="0"
+                borderColor="var(--atelier-line)"
+                borderRight="1px solid"
+                borderBottom="1px solid"
+                py="1.5"
+                px="3"
+                color="var(--atelier-fg-muted)"
+                fontFamily="var(--font-code)"
+                fontSize="10px"
+                letterSpacing="0.12em"
+                textTransform="uppercase"
+                bg="var(--atelier-bg)"
+              >
+                {t('project.card-archive')}
+              </Box>
+            )}
+            {image && resolved ? (
               <styled.img
-                src={getMediaUrl(image.url, {}, import.meta.env.PUBLIC_API_URL) ?? ''}
+                src={resolved.src}
                 alt={image.name}
+                htmlWidth={800}
+                htmlHeight={600}
+                loading="lazy"
+                decoding="async"
                 aspectRatio="4 / 3"
                 objectPosition="center"
                 objectFit="cover"
                 width="full"
                 transition="transform 0.3s ease, filter 0.3s ease"
-                filter="saturate(1.12) contrast(1.04)"
-                _groupHover={{ transform: 'scale(1.03)', filter: 'saturate(1.26) contrast(1.08)' }}
+                filter="var(--atelier-image-rest)"
+                _groupHover={{ transform: 'scale(1.03)', filter: 'var(--atelier-image-hover)' }}
               />
             ) : (
               <Box
@@ -109,8 +135,8 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               >
                 <Center inset="0" position="absolute">
                   <Text
-                    color="#e5e2e1"
-                    fontFamily="Newsreader, serif"
+                    color="var(--atelier-fg)"
+                    fontFamily="var(--font-display)"
                     fontSize="96px"
                     lineHeight="1"
                     opacity="0.06"
@@ -128,20 +154,24 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                   right="0"
                   bottom="0"
                   h="2px"
-                  bg="#ffb000"
-                  opacity="0.4"
-                  transition="opacity 0.3s ease"
-                  _groupHover={{ opacity: 0.7 }}
+                  bg="var(--atelier-line)"
+                  transition="background-color 0.3s ease"
+                  _groupHover={{ bg: 'var(--atelier-accent)' }}
                 />
               </Box>
             )}
           </Box>
           <Stack flex="1" gap="3" p="5">
+            {/* Reserves two lines: in a narrow column "Side Project | October 2020" wraps
+                while "School Work | May 2015" does not, and the 20px difference put the
+                titles of one row on two baselines. */}
             <Wrap
               gap="2"
               rowGap="0.5"
-              color="#9f8e78"
-              fontFamily="JetBrains Mono, monospace"
+              alignContent="start"
+              minH="2.4rem"
+              color="var(--atelier-outline)"
+              fontFamily="var(--font-code)"
               fontSize="xs"
             >
               {category?.name && <Text>{category.name}</Text>}
@@ -150,22 +180,24 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             </Wrap>
             <Text
               as="h3"
-              fontFamily="Newsreader, serif"
-              fontSize="3xl"
-              lineHeight="0.95"
-              fontStyle="italic"
+              fontFamily="var(--font-body)"
+              fontSize="xl"
+              fontWeight="bold"
+              letterSpacing="-0.02em"
+              lineHeight="1.1"
+              textTransform="uppercase"
             >
               {title}
             </Text>
-            <Text color="#c7c6c6" fontSize="sm" lineHeight="1.7">
+            <Text color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="1.7">
               {description}
             </Text>
             <Wrap
               gap="2"
               alignItems="center"
               marginTop="auto"
-              color="#ffb000"
-              fontFamily="JetBrains Mono, monospace"
+              color="var(--atelier-accent)"
+              fontFamily="var(--font-code)"
               fontSize="10px"
               letterSpacing="0.12em"
               textTransform="uppercase"
@@ -176,17 +208,24 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
           </Stack>
         </Stack>
       </Link>
-      <Wrap w="full" p="4" pt="0">
+      {/* Reserves the icon row's height even when a project has no external links. Without
+          it the sibling collapses, the link stack above absorbs the slack, and the bottom-
+          pinned CTA drops ~32px below its neighbours in the same grid row. */}
+      <Wrap alignItems="center" w="full" minH="3rem" p="4" pt="0">
         {link?.url && (
           <IconButton
             asChild
             size="xs"
             variant="ghost"
             border="1px solid"
-            borderColor="#2a2a2a"
-            color="#c7c6c6"
+            borderColor="var(--atelier-surface-high)"
+            color="var(--atelier-fg-muted)"
             bg="transparent"
-            _hover={{ bg: 'transparent', borderColor: '#ffb000', color: '#ffb000' }}
+            _hover={{
+              bg: 'transparent',
+              borderColor: 'var(--atelier-accent)',
+              color: 'var(--atelier-accent)'
+            }}
           >
             <a
               href={link.url}
@@ -204,10 +243,14 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             size="xs"
             variant="ghost"
             border="1px solid"
-            borderColor="#2a2a2a"
-            color="#c7c6c6"
+            borderColor="var(--atelier-surface-high)"
+            color="var(--atelier-fg-muted)"
             bg="transparent"
-            _hover={{ bg: 'transparent', borderColor: '#ffb000', color: '#ffb000' }}
+            _hover={{
+              bg: 'transparent',
+              borderColor: 'var(--atelier-accent)',
+              color: 'var(--atelier-accent)'
+            }}
           >
             <a
               href={ghLink.url}

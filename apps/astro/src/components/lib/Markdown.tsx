@@ -1,3 +1,4 @@
+import { authoredHeadingLevels, FRONTMATTER, makeRankOf } from '~/utils/heading-rank';
 import { join } from 'path';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -30,6 +31,16 @@ export const createHeadingSlugger = () => {
   };
 };
 
+// A chord chart or tab written in Outline arrives as ordinary paragraphs, one per line, so
+// it was set in Manrope at a 52px pitch — the bar columns did not line up and a two-screen
+// chart became five. Two shapes only, both unambiguous and neither reachable from prose:
+// a line GFM would have made a table row if it had carried a delimiter row (`| E | F#m |`),
+// and a bracketed section label (`[Intro]`). Anything else stays prose.
+const STRUCTURAL_LINE = /^\s*(?:\|.*|\[[^\]]+\])\s*$/;
+// `.` does not match a newline and `$` is end-of-string here, so a soft-wrapped paragraph
+// that merely opens with a pipe already fails the test — no separate line-count check.
+export const isStructuralLine = (text: string) => STRUCTURAL_LINE.test(text);
+
 const childrenToText = (children: unknown): string => {
   if (typeof children === 'string' || typeof children === 'number') return String(children);
   if (Array.isArray(children)) return children.map(childrenToText).join('');
@@ -57,15 +68,17 @@ export const Markdown = ({
   disableInternalLinks?: boolean;
   headingLevelOffset?: number;
 }) => {
-  const headingAs = (level: number) =>
-    `h${Math.min(6, Math.max(1, level + headingLevelOffset))}` as
-      | 'h1'
-      | 'h2'
-      | 'h3'
-      | 'h4'
-      | 'h5'
-      | 'h6';
-
+  // Body copy is `lg`, so every heading level must sit strictly above it, and the top of
+  // the ladder must not outsize the heading that encloses the markdown at that offset.
+  const HEADING_SIZES: Record<number, readonly string[]> = {
+    0: ['5xl', '4xl', '3xl', '2xl', 'xl', 'xl'],
+    1: ['4xl', '3xl', '2xl', 'xl', 'xl', 'xl'],
+    // Offset 2 nests markdown under an h2, so only two sizes sit above body copy (`lg`).
+    // A third step is available because headings also carry the display face and heading
+    // weight, so `lg` still reads as a heading against `lg` body text. Levels 4-6 collapse,
+    // as they already do at offsets 0 and 1.
+    2: ['2xl', 'xl', 'lg', 'lg', 'lg', 'lg']
+  };
   const unescapedContent = content
     .split(/(```[\s\S]*?```|`[^`\n]*`)/)
     .map((segment, index) =>
@@ -81,6 +94,7 @@ export const Markdown = ({
   const slugger = createHeadingSlugger();
 
   const normalizedContent = unescapedContent
+    .replace(FRONTMATTER, '')
     .split('\n')
     .map((line) =>
       line.replace(
@@ -98,6 +112,22 @@ export const Markdown = ({
     });
   };
 
+  const rankOf = makeRankOf(authoredHeadingLevels(normalizedContent));
+
+  const headingSize = (level: number) =>
+    (HEADING_SIZES[Math.min(2, headingLevelOffset)] ?? HEADING_SIZES[0])[
+      Math.min(6, rankOf(level) + headingLevelOffset) - 1
+    ];
+
+  const headingAs = (level: number) =>
+    `h${Math.min(6, Math.max(1, rankOf(level) + headingLevelOffset))}` as
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6';
+
   return (
     <Stack gap="5" minW="0" maxW="full" lineHeight="1.8">
       <ReactMarkdown
@@ -107,7 +137,7 @@ export const Markdown = ({
             <Heading
               as={headingAs(1)}
               id={slugger(childrenToText(props.children))}
-              fontSize={headingLevelOffset > 0 ? '4xl' : '5xl'}
+              fontSize={headingSize(1)}
               lineHeight="0.95"
               overflowWrap="anywhere"
               scrollMarginTop="24"
@@ -119,7 +149,7 @@ export const Markdown = ({
               as={headingAs(2)}
               id={slugger(childrenToText(props.children))}
               pt="6"
-              fontSize={headingLevelOffset > 0 ? '3xl' : '4xl'}
+              fontSize={headingSize(2)}
               overflowWrap="anywhere"
               scrollMarginTop="24"
               {...props}
@@ -129,7 +159,7 @@ export const Markdown = ({
             <Heading
               as={headingAs(3)}
               id={slugger(childrenToText(props.children))}
-              fontSize={headingLevelOffset > 0 ? '2xl' : '3xl'}
+              fontSize={headingSize(3)}
               overflowWrap="anywhere"
               scrollMarginTop="24"
               {...props}
@@ -139,7 +169,7 @@ export const Markdown = ({
             <Heading
               as={headingAs(4)}
               id={slugger(childrenToText(props.children))}
-              fontSize="2xl"
+              fontSize={headingSize(4)}
               scrollMarginTop="24"
               {...props}
             />
@@ -148,7 +178,7 @@ export const Markdown = ({
             <Heading
               as={headingAs(5)}
               id={slugger(childrenToText(props.children))}
-              fontSize="xl"
+              fontSize={headingSize(5)}
               fontWeight="bold"
               scrollMarginTop="24"
               {...props}
@@ -158,21 +188,42 @@ export const Markdown = ({
             <Heading
               as={headingAs(6)}
               id={slugger(childrenToText(props.children))}
-              fontSize="xl"
+              fontSize={headingSize(6)}
               scrollMarginTop="24"
               {...props}
             />
           ),
-          p: ({ ref: _ref, node: _, ...props }) => (
-            <Text
-              as="p"
-              color="#c7c6c6"
-              fontSize="lg"
-              lineHeight="1.8"
-              overflowWrap="anywhere"
-              {...props}
-            />
-          ),
+          p: ({ ref: _ref, node: _, ...props }) => {
+            const text = childrenToText(props.children);
+            // A trailing `\` is markdown's hard-break escape. When it ends up alone in its
+            // own block it reaches the DOM as a visible backslash under the article.
+            if (/^\\+$/.test(text.trim())) return null;
+            if (isStructuralLine(text)) {
+              return (
+                <Text
+                  as="p"
+                  className="markdown-structural"
+                  color="var(--atelier-fg)"
+                  fontFamily="var(--font-code)"
+                  fontSize="sm"
+                  lineHeight="1.7"
+                  overflowWrap="anywhere"
+                  whiteSpace="pre-wrap"
+                  {...props}
+                />
+              );
+            }
+            return (
+              <Text
+                as="p"
+                color="var(--atelier-fg-muted)"
+                fontSize="lg"
+                lineHeight="1.8"
+                overflowWrap="anywhere"
+                {...props}
+              />
+            );
+          },
           strong: ({ ref: _, node: __, ...props }) => (
             <Text as="span" fontWeight="bold" {...props} />
           ),
@@ -192,15 +243,21 @@ export const Markdown = ({
               return <Text as="p">{props.children}</Text>;
             }
             const isExternal = !!dest && !dest.startsWith('#') && !dest.startsWith('/');
+            // Amber + bold on every inline link turned a body with twenty of them into
+            // highlighter, and spent the system's one signal colour on prose. The hero and
+            // project descriptions set links as body ink with a rule; this matches them and
+            // keeps amber for the hover.
             return (
               <Link
                 target={isExternal ? '_blank' : undefined}
                 rel={isExternal ? 'noreferrer' : undefined}
                 href={dest}
-                color="#ffd597"
-                fontWeight="bold"
-                textDecorationColor="rgba(255, 176, 0, 0.55)"
-                _hover={{ color: '#ffb000', textDecorationColor: '#ffb000' }}
+                color="var(--atelier-fg)"
+                textDecorationColor="var(--atelier-outline)"
+                _hover={{
+                  color: 'var(--atelier-accent)',
+                  textDecorationColor: 'var(--atelier-accent)'
+                }}
                 {...rest}
               >
                 {displayChildren}
@@ -208,15 +265,15 @@ export const Markdown = ({
             );
           },
           hr: ({ ref: _, node: __, ...props }) => (
-            <Divider borderColor="#524533" my="4" {...props} />
+            <Divider borderColor="var(--atelier-line)" my="4" {...props} />
           ),
           blockquote: ({ ref: __, node: _, ...props }) => (
             <styled.blockquote
               borderLeftWidth="2px"
-              borderLeftColor="#ffb000"
+              borderLeftColor="var(--atelier-accent)"
               padding="5"
-              color="#e5e2e1"
-              bg="#1c1b1b"
+              color="var(--atelier-fg)"
+              bg="var(--atelier-surface-low)"
               borderLeftStyle="solid"
               {...props}
             />
@@ -224,7 +281,7 @@ export const Markdown = ({
           ul: ({ ref: _, node: __, ...props }) => (
             <styled.ul
               pl="6"
-              color="#c7c6c6"
+              color="var(--atelier-fg-muted)"
               listStyleType="disc"
               css={{ '& > li + li': { marginTop: '0.5rem' } }}
               {...props}
@@ -233,7 +290,7 @@ export const Markdown = ({
           ol: ({ ref: _, node: __, ...props }) => (
             <styled.ol
               pl="6"
-              color="#c7c6c6"
+              color="var(--atelier-fg-muted)"
               listStyleType="decimal"
               css={{ '& > li + li': { marginTop: '0.5rem' } }}
               {...props}
@@ -249,9 +306,9 @@ export const Markdown = ({
             return (
               <styled.pre
                 border="1px solid"
-                borderColor="#524533"
+                borderColor="var(--atelier-line)"
                 p="5"
-                bg="#1c1b1b"
+                bg="var(--atelier-surface-low)"
                 overflowX="auto"
               >
                 <styled.code className={className}>{content}</styled.code>
@@ -266,11 +323,11 @@ export const Markdown = ({
           thead: ({ ref: _, node: __, ...props }) => <Table.Head {...props} />,
           th: ({ ref: _, node: __, ...props }) => (
             <Table.Header
-              borderBottomColor="#524533"
+              borderBottomColor="var(--atelier-line)"
               py="2"
               px="3"
-              color="#9f8e78"
-              fontFamily="JetBrains Mono, monospace"
+              color="var(--atelier-outline)"
+              fontFamily="var(--font-code)"
               fontSize="xs"
               letterSpacing="0.08em"
               textTransform="uppercase"
@@ -280,32 +337,51 @@ export const Markdown = ({
           tbody: ({ ref: _, node: __, ...props }) => <Table.Body {...props} />,
           tr: ({ ref: _, node: __, ...props }) => (
             <Table.Row
-              borderBottomColor="#524533"
+              borderBottomColor="var(--atelier-line)"
               _hover={{ bg: 'rgba(53,53,52,0.3)' }}
               {...props}
             />
           ),
           td: ({ ref: _, node: __, ...props }) => (
-            <Table.Cell py="2" px="3" color="#c7c6c6" fontSize="sm" {...props} />
+            <Table.Cell py="2" px="3" color="var(--atelier-fg-muted)" fontSize="sm" {...props} />
           ),
           img: ({ ref: _, node: __, ...props }) => {
             const url = resolveImageUrl(props.src);
             return (
               <styled.div
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
                 border="1px solid"
-                borderColor="#524533"
+                borderColor="var(--atelier-line)"
                 maxW="full"
+                // CMS markdown carries no intrinsic dimensions, so nothing can reserve the
+                // exact box. Width/height attributes reserve it but pin the ratio: measured
+                // a 140x200 portrait rendered 538x302. A floor bounds the shift to the
+                // difference from 220px rather than from zero, and distorts nothing.
+                minH="220px"
                 p="1"
+                lineHeight="0"
+                bg="var(--atelier-surface-lowest)"
                 overflow="hidden"
+                // Offscreen images are not laid out until they approach the viewport, and
+                // the browser remembers each box's real size after first render, so the
+                // reserved height converges on the true one instead of staying a guess.
+                contentVisibility="auto"
+                containIntrinsicSize="auto 420px"
               >
                 <img
                   src={url}
                   alt={props.alt}
+                  loading="lazy"
+                  decoding="async"
                   style={{
-                    width: '100%',
+                    // `width: 100%` upscaled small images to the column width and made a
+                    // 146px grid cell render a full-width box.
+                    maxWidth: '100%',
+                    height: 'auto',
                     maxHeight: '70vh',
-                    objectFit: 'contain',
-                    filter: 'saturate(1.08) contrast(1.04)'
+                    objectFit: 'contain'
                   }}
                 />
               </styled.div>

@@ -7,16 +7,15 @@
   "page-heading": "制作と実験。",
   "intro": "これまでに作ったWebプロジェクト、小さなツール、実験の記録。",
   "view-execution": "詳細を見る",
-  "card-featured": "アクティブ",
   "card-archive": "非アクティブ",
   "open-project": "プロジェクトを見る",
   "latest": "最新",
   "status-unavailable": "ステータス: 利用不可",
-  "case-study": "事例",
   "visit-site": "サイトを見る",
   "source-code": "ソースを見る",
   "empty-title": "プロジェクトは現在利用できません",
   "empty-description": "接続が戻ると、プロジェクトが再表示されます。",
   "detail-empty-title": "プロジェクトを取得できません",
-  "detail-empty-description": "このプロジェクトは今読み込めません。接続が戻ると再表示されます。"
+  "detail-empty-description": "このプロジェクトは今読み込めません。接続が戻ると再表示されます。",
+  "earlier-work": "これまでの制作"
 }

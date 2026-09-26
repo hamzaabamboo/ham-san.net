@@ -7,16 +7,15 @@
   "page-heading": "Work & Experiments.",
   "intro": "Web projects, small tools, and experiments I have worked on.",
   "view-execution": "View project",
-  "card-featured": "Active",
   "card-archive": "Inactive",
   "open-project": "Open project",
   "latest": "Latest",
   "status-unavailable": "Status: unavailable",
-  "case-study": "Case Study",
   "visit-site": "Visit site",
   "source-code": "Source code",
   "empty-title": "Projects Unavailable",
   "empty-description": "Projects will show up again when the content connection is back.",
   "detail-empty-title": "Project Unavailable",
-  "detail-empty-description": "This project could not be loaded right now. It will show up again when the content connection is back."
+  "detail-empty-description": "This project could not be loaded right now. It will show up again when the content connection is back.",
+  "earlier-work": "Earlier work"
 }

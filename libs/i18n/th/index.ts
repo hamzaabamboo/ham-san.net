@@ -7,6 +7,7 @@ import hobbies from './hobbies.json';
 import home from './home.json';
 import nameCard from './name-card.json';
 import note from './note.json';
+import photos from './photos.json';
 import project from './project.json';
 
 export default {
@@ -18,6 +19,7 @@ export default {
   home,
   'name-card': nameCard,
   note,
+  photos,
   project,
   hobbies
 };

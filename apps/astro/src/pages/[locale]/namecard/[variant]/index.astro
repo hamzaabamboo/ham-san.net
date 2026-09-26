@@ -90,7 +90,16 @@ const Image = styled.img;
         <HStack justifyContent="flex-end" gap="2" w="full">
           {
             Object.entries(languages).map((t) => {
-              return <Link href={`/${t[0]}/namecard/${variant}`}>{t[1]}</Link>;
+              const isCurrent = t[0] === locale;
+              return (
+                <Link
+                  href={`/${t[0]}/namecard/${variant}`}
+                  aria-current={isCurrent ? 'true' : undefined}
+                  fontWeight={isCurrent ? 'bold' : '500'}
+                >
+                  {t[1]}
+                </Link>
+              );
             })
           }
         </HStack>

@@ -3,9 +3,9 @@
   "message": "สวัสดีครับ ผมชื่อ Ham",
   "subtitle": "ทำงานสายฟรอนต์เอนด์เต็มเวลา และยังมีเรื่องที่ชอบจริงจังอีกหลายอย่าง",
   "view-other-namecards": "ดูนามบัตรแบบอื่น",
-  "tierlist": "Tierlist นักพากย์ LL!",
-  "tierlist-description": "ทำไว้เพราะอยากทำ",
-  "home": "หน้าแรก",
   "front-namecard": "นามบัตรด้านหน้า",
-  "back-namecard": "นามบัตรด้านหลัง"
+  "back-namecard": "นามบัตรด้านหลัง",
+  "tierlist": "ทีเรียลิสต์",
+  "tierlist-description": "จัดอันดับเซย์ยู Love Live",
+  "home": "หน้าแรก"
 }

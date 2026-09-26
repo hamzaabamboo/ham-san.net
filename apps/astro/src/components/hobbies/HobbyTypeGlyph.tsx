@@ -11,8 +11,8 @@ type HobbyTypeGlyphProps = {
 const shell = css({
   display: 'inline-grid',
   flexShrink: '0',
-  border: '1px solid #524533',
-  color: '#ffb000',
+  border: '1px solid var(--atelier-line)',
+  color: 'var(--atelier-accent)',
   bg: 'rgba(19, 19, 19, 0.92)',
   boxShadow: 'inset 0 0 0 1px rgba(255, 176, 0, 0.08)',
   placeItems: 'center',
@@ -26,7 +26,7 @@ const shell = css({
     h: '44px'
   },
   '&[data-size="hero"]': {
-    borderColor: '#ffb000',
+    borderColor: 'var(--atelier-accent)',
     w: { base: '8.5rem', md: '12rem' },
     h: { base: '8.5rem', md: '12rem' },
     bg: 'rgba(14, 14, 14, 0.68)',
@@ -157,7 +157,13 @@ export const HobbyTypeGlyph = ({
   size = 'badge',
   className
 }: HobbyTypeGlyphProps) => (
-  <span className={cx(shell, className)} data-size={size} aria-label={label} aria-hidden={!label}>
+  <span
+    className={cx(shell, className)}
+    data-size={size}
+    role={label ? 'img' : undefined}
+    aria-label={label}
+    aria-hidden={!label}
+  >
     <svg className={svg} viewBox="0 0 48 48" role="img" aria-hidden="true">
       {glyphs[type] ?? glyphs['field-notes']}
     </svg>

@@ -7,6 +7,7 @@ import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import PageMasthead from '~/components/common/PageMasthead.astro';
 import { withLastGood } from '~/utils/cms-cache';
 import { makeExcerpt } from '~/utils/excerpt';
 import { outlineClient } from '~/utils/outline-api';
@@ -113,31 +114,33 @@ Astro.response.headers.set(
 <MainLayout title={pageTitle} description={t('note.description')}>
   <Container maxW="breakpoint-xl" w="full" className="page-shell">
     <Stack py="8" gap="10">
-      <Stack gap="4" borderLeftWidth="2px" borderLeftStyle="solid" borderLeftColor="#ffb000" pl="6">
-        <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic">
-          {t('note.notes')}
-        </Heading>
-        <Text color="#c7c6c6" fontSize="lg" maxW="2xl">
-          {t('note.description')}
-        </Text>
-      </Stack>
+      <PageMasthead
+        eyebrow={t('note.notes')}
+        heading={t('note.notes')}
+        lede={t('note.description')}
+      />
       {
         !sharedArticlesList || visibleArticles.length === 0 ? (
-          <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '8', md: '12' }}>
+          <Box
+            border="1px solid"
+            borderColor="var(--atelier-line)"
+            bg="var(--atelier-surface-low)"
+            p={{ base: '8', md: '12' }}
+          >
             <Stack gap="4" alignItems="center" textAlign="center" py="12">
               <Text
-                fontFamily="JetBrains Mono, monospace"
+                fontFamily="var(--font-code)"
                 fontSize="10px"
                 textTransform="uppercase"
                 letterSpacing="0.12em"
-                color="#9f8e78"
+                color="var(--atelier-outline)"
               >
                 {sharedArticlesList ? t('note.status-empty') : t('note.status-unavailable')}
               </Text>
-              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }}>
                 {sharedArticlesList ? t('note.empty-none-title') : t('note.empty-title')}
               </Heading>
-              <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
+              <Text color="var(--atelier-fg-muted)" maxW="md" lineHeight="1.7">
                 {sharedArticlesList
                   ? t('note.empty-none-description')
                   : t('note.empty-description')}
@@ -147,48 +150,52 @@ Astro.response.headers.set(
         ) : (
           <>
             <Grid
-              gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+              gridTemplateColumns={{ base: 'repeat(3, minmax(0, 1fr))' }}
               gap="1px"
-              bg="#524533"
+              bg="var(--atelier-line)"
               border="1px solid"
-              borderColor="#524533"
+              borderColor="var(--atelier-line)"
             >
-              <Stack bg="#131313" p="5" gap="2">
+              <Stack bg="var(--atelier-bg)" p="5" gap="2">
                 <Text
-                  fontFamily="JetBrains Mono, monospace"
+                  fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase"
-                  color="#9f8e78"
+                  color="var(--atelier-outline)"
                 >
                   {t('note.total-notes')}
                 </Text>
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+                <Text fontFamily="var(--font-code)" fontSize="3xl" color="var(--atelier-accent)">
                   {allArticles.length}
                 </Text>
               </Stack>
               <Stack className="note-signal-card" p="5" gap="2">
                 <Text
-                  fontFamily="JetBrains Mono, monospace"
+                  fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase"
-                  color="#9f8e78"
+                  color="var(--atelier-outline)"
                 >
                   {t('note.collections')}
                 </Text>
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+                <Text fontFamily="var(--font-code)" fontSize="3xl" color="var(--atelier-accent)">
                   {collectionCount}
                 </Text>
               </Stack>
-              <Stack bg="#131313" p="5" gap="2">
+              <Stack bg="var(--atelier-bg)" p="5" gap="2">
                 <Text
-                  fontFamily="JetBrains Mono, monospace"
+                  fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase"
-                  color="#9f8e78"
+                  color="var(--atelier-outline)"
                 >
                   {t('note.latest')}
                 </Text>
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="lg" color="#ffd597">
+                <Text
+                  fontFamily="var(--font-code)"
+                  fontSize={{ base: 'xl', md: '3xl' }}
+                  color="var(--atelier-accent)"
+                >
                   {latestNoteDate}
                 </Text>
               </Stack>
@@ -215,7 +222,7 @@ Astro.response.headers.set(
                     >
                       <Box
                         border="1px solid"
-                        borderColor="#524533"
+                        borderColor="var(--atelier-line)"
                         p={{ base: '6', md: '10' }}
                         w="full"
                         _hover={{ transform: 'translate(-2px, -2px)' }}
@@ -224,18 +231,17 @@ Astro.response.headers.set(
                       >
                         <Stack gap={4}>
                           <Text
-                            fontFamily="JetBrains Mono, monospace"
+                            fontFamily="var(--font-code)"
                             fontSize="10px"
                             textTransform="uppercase"
                             letterSpacing="0.12em"
-                            color="#ffb000"
+                            color="var(--atelier-accent)"
                           >
                             {t('note.latest-note')}
                           </Text>
                           <Heading
                             as="h2"
                             fontSize={{ base: '4xl', md: '5xl' }}
-                            fontStyle="italic"
                             lineHeight="0.95"
                             overflowWrap="anywhere"
                             className="group-hover-underline"
@@ -244,8 +250,8 @@ Astro.response.headers.set(
                           </Heading>
                           <Wrap
                             fontSize="sm"
-                            color="#9f8e78"
-                            fontFamily="JetBrains Mono, monospace"
+                            color="var(--atelier-outline)"
+                            fontFamily="var(--font-code)"
                           >
                             <Text>{collectionName}</Text> |{' '}
                             <Text>
@@ -253,7 +259,12 @@ Astro.response.headers.set(
                             </Text>
                           </Wrap>
                           {excerpt && (
-                            <Text color="#c7c6c6" maxW="3xl" fontSize="md" lineHeight="1.7">
+                            <Text
+                              color="var(--atelier-fg-muted)"
+                              maxW="3xl"
+                              fontSize="md"
+                              lineHeight="1.7"
+                            >
                               {excerpt}
                             </Text>
                           )}
@@ -262,7 +273,10 @@ Astro.response.headers.set(
                     </Link>
                   );
                 })}
-              <Grid gap="4" gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}>
+              <Grid
+                gap="4"
+                gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
+              >
                 {(showHero ? visibleArticles.slice(1) : visibleArticles).map(
                   (data, index, cards) => {
                     const { id, documentTitle, collectionName, documentSummary, createdAt } =
@@ -287,38 +301,42 @@ Astro.response.headers.set(
                       >
                         <Box
                           border="1px solid"
-                          borderColor="#524533"
+                          borderColor="var(--atelier-line)"
                           p="6"
                           h="full"
                           _hover={{ transform: 'translate(-2px, -2px)' }}
                           transition="transform 0.2s ease"
                           className="card-hover-amber note-signal-card"
                         >
-                          <Stack gap={3}>
+                          {/* Cards are height-matched per row but their content was not, so
+                              a card without an excerpt left 90-130px dead at the bottom while
+                              its row partner filled. The meta line anchors to the bottom, so
+                              every card in a row shares one baseline. */}
+                          <Stack gap={3} h="full">
                             <Heading
                               as="h2"
                               fontSize={{ base: '2xl', md: '3xl' }}
-                              fontStyle="italic"
                               overflowWrap="anywhere"
                               className="group-hover-underline"
                             >
                               {documentTitle ?? t('note.untitled')}
                             </Heading>
+                            {excerpt && (
+                              <Text color="var(--atelier-fg-muted)" fontSize="sm">
+                                {excerpt}
+                              </Text>
+                            )}
                             <Wrap
                               fontSize="sm"
-                              color="#9f8e78"
-                              fontFamily="JetBrains Mono, monospace"
+                              color="var(--atelier-outline)"
+                              fontFamily="var(--font-code)"
+                              mt="auto"
                             >
                               <Text>{collectionName}</Text> |{' '}
                               <Text>
                                 {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
                               </Text>
                             </Wrap>
-                            {excerpt && (
-                              <Text color="#c7c6c6" fontSize="sm">
-                                {excerpt}
-                              </Text>
-                            )}
                           </Stack>
                         </Box>
                       </Link>
@@ -341,7 +359,7 @@ Astro.response.headers.set(
                 pt="4"
                 borderTopWidth="1px"
                 borderTopStyle="solid"
-                borderTopColor="#524533"
+                borderTopColor="var(--atelier-line)"
               >
                 {hasPrevPage && (
                   <a

@@ -7,7 +7,7 @@ export const code = defineRecipe({
     gap: '1',
     alignItems: 'center',
     borderRadius: 'l2',
-    fontFamily: 'code',
+    fontFamily: 'var(--font-code)',
     fontWeight: 'medium',
     fontVariantNumeric: 'tabular-nums',
     lineHeight: '1'

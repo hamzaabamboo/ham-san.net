@@ -1,4 +1,8 @@
 fragment media on UploadFile {
   name
   url
+  width
+  height
+  size
+  formats
 }

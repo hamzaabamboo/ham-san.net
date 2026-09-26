@@ -31,6 +31,15 @@ export const GET: APIRoute = async ({ url }) => {
     }
   }
 
+  // This proxy serves every Outline image on the site. Without an explicit CDN header it
+  // is a guaranteed miss, so each byte re-streams through the origin on every request.
+  if (upstreamResponse.ok) {
+    headers.set('CDN-Cache-Control', 'public, max-age=604800, immutable');
+    if (!headers.has('cache-control')) {
+      headers.set('Cache-Control', 'public, max-age=86400');
+    }
+  }
+
   return new Response(upstreamResponse.body, {
     status: upstreamResponse.status,
     headers

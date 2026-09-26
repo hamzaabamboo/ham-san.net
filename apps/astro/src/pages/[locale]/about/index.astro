@@ -11,6 +11,8 @@ import type { TagFragment } from '~/graphql/generated/client';
 import { Enum_Tag_Type } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import SectionHeading from '~/components/common/SectionHeading.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { sortTags } from '~/utils/tags';
 
@@ -81,7 +83,6 @@ const groupByType = <T extends { type: Enum_Tag_Type }>(items: T[]) =>
 
 const cmsLocale = locale === 'ja' ? 'ja' : 'en';
 
-let aboutMe: any = null;
 let educations: any[] | null = null;
 let experiences: any[] | null = null;
 let tags: any[] | null = null;
@@ -91,7 +92,6 @@ try {
   const result = await withLastGood(`about:${cmsLocale}`, () =>
     graphQLSdk.fetchAboutMe({ locale: cmsLocale })
   );
-  aboutMe = result.aboutMe;
   educations = result.educations;
   experiences = result.experiences;
   tags = result.tags;
@@ -116,56 +116,31 @@ Astro.response.headers.set(
 <MainLayout title={pageTitle} description={t('about-me.hero-summary')}>
   <Container maxW="breakpoint-xl" w="full" className="page-shell">
     <Stack py="10" gap="12">
-      <Stack borderLeft="4px solid" borderLeftColor="#ffb000" pl="8" py="4">
-        <Box
-          px="2"
-          py="1"
-          bg="#353534"
-          border="1px solid"
-          borderColor="#524533"
-          mb="4"
-          w="fit-content"
-        >
-          <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
-            color="#dbdbdb"
-            letterSpacing="0.1em"
-          >
-            {t('about-me.eyebrow')}
-          </Text>
+      <Stack className="page-header-rule" py="4">
+        <Box mb="4">
+          <Eyebrow label={t('about-me.eyebrow')} />
         </Box>
-        <Heading
-          as="h1"
-          fontSize={{ base: '5xl', md: '7xl' }}
-          fontStyle="italic"
-          lineHeight="0.95"
-          mb="4"
-        >
+        <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} lineHeight="0.95" mb="4">
           {t('about-me.hero-title')}
         </Heading>
-        <Text maxW="2xl" fontSize="lg" color="#c7c6c6" lineHeight="1.8">
-          {
-            locale === cmsLocale
-              ? (aboutMe?.introduction ?? t('about-me.hero-summary'))
-              : t('about-me.hero-summary')
-          }
+        {
+          /* Always the authored line. The CMS `introduction` is résumé boilerplate
+            ("proficient in modern web technologies… Committed to delivering…") that reads
+            boastful against this voice and contradicts the page's own meta description —
+            and it surfaced on /en alone, because ja's is null and th never took the branch. */
+        }
+        <Text maxW="2xl" fontSize="lg" color="var(--atelier-fg-muted)" lineHeight="1.8">
+          {t('about-me.hero-summary')}
         </Text>
       </Stack>
 
-      <Grid gridTemplateColumns={{ base: '1fr', xl: '0.8fr 1.2fr' }} gap="12">
+      <Grid
+        gridTemplateColumns={{ base: 'minmax(0, 1fr)', xl: 'minmax(0, 0.8fr) minmax(0, 1.2fr)' }}
+        gap="12"
+      >
         <Stack gap="16" order={{ base: 2, xl: 2 }}>
           <Stack gap="8">
-            <Wrap alignItems="center" gap="4">
-              <span
-                class="material-symbols-outlined"
-                style="color: #ffb000; font-size: 1.25rem;"
-                aria-hidden="true">timeline</span
-              >
-              <Heading as="h2" fontSize="3xl" fontStyle="italic">{t('common.experiences')}</Heading>
-              <Box h="1px" flex="1" bg="#524533" />
-            </Wrap>
+            <SectionHeading label={t('common.experiences')} />
             {
               experiences && experiences.length > 0 ? (
                 <Box position="relative" pl={{ base: '6', md: '12' }}>
@@ -200,8 +175,8 @@ Astro.response.headers.set(
                           />
                           <Stack
                             border="1px solid"
-                            borderColor="#524533"
-                            bg="#1c1b1b"
+                            borderColor="var(--atelier-line)"
+                            bg="var(--atelier-surface-low)"
                             p="8"
                             className="blocky-shadow blocky-shadow-hover exp-card-hover"
                           >
@@ -217,9 +192,9 @@ Astro.response.headers.set(
                                 {position}
                               </Heading>
                               <Text
-                                fontFamily="JetBrains Mono, monospace"
+                                fontFamily="var(--font-code)"
                                 fontSize="xs"
-                                color="#ffb000"
+                                color="var(--atelier-accent)"
                               >
                                 {(title ?? '').toUpperCase()} // {dateRange}
                                 {duration && ` (${duration})`}
@@ -243,11 +218,11 @@ Astro.response.headers.set(
                                             px="2"
                                             py="1"
                                             border="1px solid"
-                                            borderColor="#524533"
-                                            fontFamily="JetBrains Mono, monospace"
+                                            borderColor="var(--atelier-line)"
+                                            fontFamily="var(--font-code)"
                                             fontSize="10px"
                                             textTransform="uppercase"
-                                            color="#dbdbdb"
+                                            color="var(--atelier-fg-muted)"
                                           >
                                             {s.title}
                                           </Box>
@@ -257,7 +232,12 @@ Astro.response.headers.set(
                               </Wrap>
                             )}
                             {blurb && (
-                              <Text color="#c7c6c6" fontSize="md" lineHeight="1.8" mt="5">
+                              <Text
+                                color="var(--atelier-fg-muted)"
+                                fontSize="md"
+                                lineHeight="1.8"
+                                mt="5"
+                              >
                                 {blurb}
                               </Text>
                             )}
@@ -270,24 +250,29 @@ Astro.response.headers.set(
               ) : (
                 <Box
                   border="1px solid"
-                  borderColor="#524533"
-                  bg="#1c1b1b"
+                  borderColor="var(--atelier-line)"
+                  bg="var(--atelier-surface-low)"
                   p={{ base: '6', md: '8' }}
                 >
                   <Stack alignItems="center" textAlign="center" py="8" gap="4">
                     <Text
-                      fontFamily="JetBrains Mono, monospace"
+                      fontFamily="var(--font-code)"
                       fontSize="10px"
                       textTransform="uppercase"
                       letterSpacing="0.15em"
-                      color="#9f8e78"
+                      color="var(--atelier-outline)"
                     >
                       {t('note.status-unavailable')}
                     </Text>
-                    <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic">
+                    <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }}>
                       {t('about-me.timeline-empty-title')}
                     </Heading>
-                    <Text color="#c7c6c6" maxW="sm" lineHeight="1.7" fontSize="sm">
+                    <Text
+                      color="var(--atelier-fg-muted)"
+                      maxW="sm"
+                      lineHeight="1.7"
+                      fontSize={{ base: 'lg', md: 'xl' }}
+                    >
                       {t('about-me.timeline-empty-description')}
                     </Text>
                   </Stack>
@@ -295,43 +280,29 @@ Astro.response.headers.set(
               )
             }
           </Stack>
-
-          <Box pt="8" borderTop="1px solid" borderColor="#524533">
-            <Stack gap="4">
-              <Text fontSize="lg" lineHeight="1.8" fontFamily="Newsreader, serif">
-                {t('about-me.bio-integrity')}
-              </Text>
-              <Text fontSize="lg" lineHeight="1.8" fontFamily="Newsreader, serif">
-                {t('about-me.bio-subtractive')}
-              </Text>
-            </Stack>
-          </Box>
         </Stack>
 
         <Stack gap="8" order={{ base: 1, xl: 1 }}>
-          <Box
-            position="relative"
-            border="2px solid"
-            borderColor="#524533"
-            bg="#0e0e0e"
-            overflow="hidden"
-            className="blocky-shadow"
-            p="6"
-          >
+          {
+            /* A 2px frame wrapped two 1px-framed blocks, one of which carries a third inset
+              border — two concentric hairlines 12px apart with nothing between them. The
+              column reads as a column without an enclosing box. */
+          }
+          <Box position="relative">
             <Stack gap="6">
               <Stack
                 border="1px solid"
-                borderColor="#524533"
-                bg="linear-gradient(135deg, rgba(255, 176, 0, 0.06), transparent 42%), #131313"
+                borderColor="var(--atelier-line)"
+                bg="linear-gradient(135deg, rgba(255, 176, 0, 0.06), transparent 42%), var(--atelier-bg)"
                 p="5"
                 gap="4"
               >
                 <Text
-                  fontFamily="JetBrains Mono, monospace"
+                  fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase"
                   letterSpacing={locale === 'th' ? 'normal' : '0.12em'}
-                  color="#ffb000"
+                  color="var(--atelier-accent)"
                 >
                   {t('about-me.current-stack')}
                 </Text>
@@ -349,11 +320,11 @@ Astro.response.headers.set(
                             px="2"
                             py="1"
                             border="1px solid"
-                            borderColor="#524533"
-                            fontFamily="JetBrains Mono, monospace"
+                            borderColor="var(--atelier-line)"
+                            fontFamily="var(--font-code)"
                             fontSize="10px"
                             textTransform="uppercase"
-                            color="#dbdbdb"
+                            color="var(--atelier-fg-muted)"
                           >
                             {tag.title}
                           </Box>
@@ -361,10 +332,10 @@ Astro.response.headers.set(
                       ))
                     ) : (
                       <Text
-                        fontFamily="JetBrains Mono, monospace"
+                        fontFamily="var(--font-code)"
                         fontSize="10px"
                         textTransform="uppercase"
-                        color="#9f8e78"
+                        color="var(--atelier-outline)"
                       >
                         {t('common.records-pending')}
                       </Text>
@@ -375,7 +346,7 @@ Astro.response.headers.set(
               <Box
                 position="relative"
                 border="1px solid"
-                borderColor="#ffb000"
+                borderColor="var(--atelier-line)"
                 minH="28"
                 overflow="hidden"
                 className="fallback-grid-lines"
@@ -384,16 +355,21 @@ Astro.response.headers.set(
                   position="absolute"
                   inset="4"
                   border="1px solid"
-                  borderColor="rgba(255, 176, 0, 0.35)"
+                  borderColor="var(--atelier-line)"
                 />
+                {
+                  /* Sat outside the frame it belongs to, with the italic descender crossing
+                    the bottom rule — in a hard-edged language with no other overhangs that
+                    reads as clipping, not as a bleed. */
+                }
                 <Text
                   position="absolute"
-                  left="4"
-                  bottom="3"
-                  fontFamily="Newsreader, serif"
+                  left="7"
+                  bottom="6"
+                  fontFamily="var(--font-display)"
                   fontSize="5xl"
                   fontStyle="italic"
-                  lineHeight="1"
+                  lineHeight="1.15"
                 >
                   Ham
                 </Text>
@@ -401,17 +377,22 @@ Astro.response.headers.set(
                   position="absolute"
                   right="6"
                   top="6"
-                  fontFamily="JetBrains Mono, monospace"
+                  fontFamily="var(--font-code)"
                   fontSize="10px"
-                  color="#ffb000"
+                  color="var(--atelier-accent)"
                 >
                   WEB / UI
                 </Text>
               </Box>
             </Stack>
           </Box>
-          <Stack border="1px solid" borderColor="#524533" bg="#2a2a2a" p="8">
-            <Heading as="h2" fontSize="3xl" fontStyle="italic" mb="8"
+          <Stack
+            border="1px solid"
+            borderColor="var(--atelier-line)"
+            bg="var(--atelier-surface-low)"
+            p="8"
+          >
+            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} mb="8"
               >{t('common.education')}</Heading
             >
             <Stack gap="0">
@@ -426,19 +407,19 @@ Astro.response.headers.set(
                           i > 0 ? 'education-entry education-entry-separated' : 'education-entry'
                         }
                         pb="6"
-                        borderColor="#524533"
+                        borderColor="var(--atelier-line)"
                       >
                         <Text
-                          fontFamily="JetBrains Mono, monospace"
+                          fontFamily="var(--font-code)"
                           fontSize="xs"
-                          color="#ffb000"
+                          color="var(--atelier-accent)"
                           mb="1"
                         >
                           {formatDateRange(edu.start as string, edu.end as string)}
                         </Text>
                         <Heading
                           as="h3"
-                          fontSize="sm"
+                          fontSize="xl"
                           fontStyle="normal"
                           fontWeight="bold"
                           textTransform="uppercase"
@@ -447,7 +428,7 @@ Astro.response.headers.set(
                           {edu.title}
                         </Heading>
                         {edu.description && !/^\s*[（(]なし[)）]\s*$/.test(edu.description) && (
-                          <Text color="#c7c6c6" fontSize="sm" mt="1">
+                          <Text color="var(--atelier-fg-muted)" fontSize="sm" mt="1">
                             {edu.description}
                           </Text>
                         )}
@@ -457,11 +438,11 @@ Astro.response.headers.set(
                 ) : (
                   <Box py="4">
                     <Text
-                      fontFamily="JetBrains Mono, monospace"
+                      fontFamily="var(--font-code)"
                       fontSize="10px"
                       textTransform="uppercase"
                       letterSpacing="0.15em"
-                      color="#9f8e78"
+                      color="var(--atelier-outline)"
                     >
                       {t('common.records-pending')}
                     </Text>
@@ -470,29 +451,24 @@ Astro.response.headers.set(
               }
             </Stack>
           </Stack>
-          <Stack bg="#ffb000" p="8">
-            <Heading
-              as="h2"
-              fontSize="3xl"
-              fontWeight="bold"
-              fontStyle="italic"
-              color="#432c00"
-              mb="6"
-            >
+          <Stack
+            bg="var(--atelier-surface-low)"
+            border="1px solid"
+            borderColor="var(--atelier-line)"
+            p="8"
+          >
+            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} color="var(--atelier-fg)" mb="6">
               {t('about-me.methodology')}
             </Heading>
-            <Text color="#432c00" lineHeight="1.8" mb="4">
+            <Text color="var(--atelier-fg-muted)" lineHeight="1.8" mb="4">
               {t('about-me.methodology-body')}
             </Text>
-            <Text color="#432c00" lineHeight="1.8" fontWeight="bold">
+            <Text color="var(--atelier-fg)" lineHeight="1.8" fontWeight="bold">
               {t('about-me.methodology-coda')}
             </Text>
           </Stack>
           <Stack gap="8">
-            <Wrap alignItems="center" gap="4">
-              <Heading as="h2" fontSize="3xl" fontStyle="italic">{t('about-me.skills')}</Heading>
-              <Box h="1px" flex="1" bg="#524533" />
-            </Wrap>
+            <SectionHeading label={t('about-me.skills')} />
             {
               Object.keys(skills)
                 .slice(0, 2)
@@ -503,10 +479,10 @@ Astro.response.headers.set(
                   return (
                     <Stack gap="4">
                       <Text
-                        fontFamily="JetBrains Mono, monospace"
+                        fontFamily="var(--font-code)"
                         fontSize="10px"
                         textTransform="uppercase"
-                        color="#ffb000"
+                        color="var(--atelier-accent)"
                         letterSpacing={locale === 'th' ? 'normal' : '0.1em'}
                       >
                         {t(`common.${toKebabCase(key) as 'frontend'}`)}
@@ -523,11 +499,11 @@ Astro.response.headers.set(
                               px="2"
                               py="1"
                               border="1px solid"
-                              borderColor="#524533"
-                              fontFamily="JetBrains Mono, monospace"
+                              borderColor="var(--atelier-line)"
+                              fontFamily="var(--font-code)"
                               fontSize="10px"
                               textTransform="uppercase"
-                              color="#dbdbdb"
+                              color="var(--atelier-fg-muted)"
                             >
                               {s.title}
                             </Box>
@@ -540,10 +516,10 @@ Astro.response.headers.set(
             }
             <Stack gap="4">
               <Text
-                fontFamily="JetBrains Mono, monospace"
+                fontFamily="var(--font-code)"
                 fontSize="10px"
                 textTransform="uppercase"
-                color="#ffb000"
+                color="var(--atelier-accent)"
                 letterSpacing={locale === 'th' ? 'normal' : '0.1em'}
               >
                 {t('about-me.tools')}
@@ -555,11 +531,11 @@ Astro.response.headers.set(
                       px="2"
                       py="1"
                       border="1px solid"
-                      borderColor="#524533"
-                      fontFamily="JetBrains Mono, monospace"
+                      borderColor="var(--atelier-line)"
+                      fontFamily="var(--font-code)"
                       fontSize="10px"
                       textTransform="uppercase"
-                      color="#dbdbdb"
+                      color="var(--atelier-fg-muted)"
                     >
                       {tool}
                     </Box>
@@ -570,6 +546,20 @@ Astro.response.headers.set(
           </Stack>
         </Stack>
       </Grid>
+
+      {
+        /* Full width, closing the page. Inside the Experience column it sat under that
+          column's rule and read as a footnote to the last job, while the left rail ended
+          ~230px above it. */
+      }
+      <Stack gap="4" pt="10" borderTop="1px solid" borderColor="var(--atelier-line)">
+        <Text fontSize="2xl" lineHeight="1.6" fontFamily="var(--font-display)" maxW="4xl">
+          {t('about-me.bio-integrity')}
+        </Text>
+        <Text fontSize="2xl" lineHeight="1.6" fontFamily="var(--font-display)" maxW="4xl">
+          {t('about-me.bio-subtractive')}
+        </Text>
+      </Stack>
     </Stack>
 
     <section class="credentials-grid">

@@ -1,9 +1,11 @@
 ---
 import { getLangFromUrl } from '../i18n/utils';
+import { namecardFontHref } from '../utils/fonts';
 import '../index.css';
 
 const lang = getLangFromUrl(Astro.url);
 const { title = 'Ham', description, image } = Astro.props;
+const socialImage = new URL(image ?? '/og-default.png', Astro.url).href;
 const canonicalUrl = Astro.url.href;
 const siteName = 'Ham';
 ---
@@ -11,7 +13,8 @@ const siteName = 'Ham';
 <html lang={lang} class="namecard-document">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#bf99b0" />
     <meta name="generator" content={Astro.generator} />
@@ -22,17 +25,14 @@ const siteName = 'Ham';
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:site_name" content={siteName} />
-    {image && <meta property="og:image" content={image} />}
-    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     {description && <meta name="twitter:description" content={description} />}
-    {image && <meta name="twitter:image" content={image} />}
+    <meta name="twitter:image" content={socialImage} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;500;700;800&family=M+PLUS+1p:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+Thai:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href={namecardFontHref()} rel="stylesheet" />
     <title>{title}</title>
     <slot name="head" />
   </head>

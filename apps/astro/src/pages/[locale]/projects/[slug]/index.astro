@@ -1,8 +1,8 @@
 ---
 import { FaArrowLeft } from 'react-icons/fa';
-import { Box, Container, Divider, HStack, Stack, Wrap, styled } from 'styled-system/jsx';
+import { Box, Container, Divider, Grid, HStack, Stack, Wrap, styled } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
-import { getMediaUrl } from 'utils/media';
+import { resolveMedia } from 'utils/media';
 import { Carousel } from '~/components/common/Carousel';
 import { LinkItem } from '~/components/common/LinkItem';
 import { Markdown } from '~/components/lib/Markdown';
@@ -15,6 +15,7 @@ import { withLastGood } from '~/utils/cms-cache';
 import type { ProjectFragment, TagFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import { cleanProjectCopy } from '~/utils/project-copy';
 
 export const prerender = false;
@@ -43,12 +44,12 @@ if (!projectUnavailable && !project) {
   return Astro.redirect(`/${locale}/404`);
 }
 const { content, title, banner, links, media, category, date, finishedDate, tags } = project ?? {};
-const bannerUrl = getMediaUrl(banner?.url, {}, import.meta.env.PUBLIC_API_URL);
+const bannerUrl = resolveMedia(banner, 1110, import.meta.env.PUBLIC_API_URL)?.src;
 const bannerName = banner?.name;
 const images = (media ?? [])
-  .filter((d): d is { name: string; url: string } => !!d)
+  .filter((d): d is NonNullable<typeof d> => !!d)
   .filter((d) => !banner?.url || d.url !== banner.url)
-  .map((d) => getMediaUrl(d.url, {}, import.meta.env.PUBLIC_API_URL))
+  .map((d) => resolveMedia(d, 1110, import.meta.env.PUBLIC_API_URL)?.src)
   .filter((d): d is string => !!d);
 const nonNullTags = (items: Array<TagFragment | null>) =>
   items.filter((t): t is TagFragment => !!t);
@@ -58,6 +59,7 @@ const pageTitle = `${title ?? t('common.projects')} | ${t('common.name')}`;
 
 if (projectUnavailable) {
   Astro.response.status = 503;
+  Astro.response.headers.set('CDN-Cache-Control', 'no-store');
 } else {
   Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 }
@@ -68,15 +70,20 @@ if (projectUnavailable) {
   description={project?.description || project?.title || t('project.page-heading')}
 >
   <Container maxW="breakpoint-xl" py="8" w="full">
-    <Box bg="#1c1b1b" p={{ base: '6', md: '10' }} border="1px solid" borderColor="#524533">
+    <Box
+      bg="var(--atelier-surface-low)"
+      p={{ base: '6', md: '10' }}
+      border="1px solid"
+      borderColor="var(--atelier-line)"
+    >
       <Stack gap="8">
         <Link href={`/${locale}/projects`}>
           <Wrap
-            fontFamily="JetBrains Mono, monospace"
+            fontFamily="var(--font-code)"
             fontSize="xs"
             alignItems="center"
-            color="#c7c6c6"
-            _hover={{ color: '#ffd597' }}
+            color="var(--atelier-fg-muted)"
+            _hover={{ color: 'var(--atelier-accent-soft)' }}
             transition="colors"
           >
             <FaArrowLeft />
@@ -87,7 +94,7 @@ if (projectUnavailable) {
           project ? (
             <>
               {bannerUrl && (
-                <Box overflow="hidden" border="1px solid" borderColor="#524533">
+                <Box overflow="hidden" border="1px solid" borderColor="var(--atelier-line)">
                   <styled.img
                     src={bannerUrl}
                     alt={bannerName ?? title ?? undefined}
@@ -95,37 +102,24 @@ if (projectUnavailable) {
                     objectPosition="center"
                     width="full"
                     aspectRatio="16 / 9"
-                    backgroundColor="#353534"
-                    filter="saturate(1.12) contrast(1.04)"
+                    backgroundColor="var(--atelier-surface-highest)"
+                    filter="var(--atelier-image-plate)"
                   />
                 </Box>
               )}
               <Stack gap="4">
                 <Stack gap="2">
-                  <Text
-                    fontFamily="JetBrains Mono, monospace"
-                    fontSize="10px"
-                    textTransform="uppercase"
-                    letterSpacing="0.12em"
-                    color="#ffb000"
-                  >
-                    {t('common.projects')}
-                  </Text>
-                  <Heading
-                    as="h1"
-                    fontSize={{ base: '5xl', md: '7xl' }}
-                    fontStyle="italic"
-                    lineHeight="0.95"
-                  >
+                  <Eyebrow label={t('common.projects')} />
+                  <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} lineHeight="0.95">
                     {title}
                   </Heading>
-                  <Wrap fontSize="sm" color="#9f8e78" fontFamily="JetBrains Mono, monospace">
+                  <Wrap fontSize="sm" color="var(--atelier-outline)" fontFamily="var(--font-code)">
                     {category?.name && (
-                      <Text fontWeight="bold" color="#ffb000">
+                      <Text fontWeight="bold" color="var(--atelier-accent)">
                         {category.name}
                       </Text>
                     )}
-                    {category?.name && date && <Text color="#524533">|</Text>}
+                    {category?.name && date && <Text color="var(--atelier-outline)">|</Text>}
                     {date && (
                       <Text>
                         {formatMonthYear(parseDate(date as string), locale)} -{' '}
@@ -138,7 +132,7 @@ if (projectUnavailable) {
                 </Stack>
                 {tags && nonNullTags(tags).length > 0 && (
                   <HStack>
-                    <Text fontWeight="bold" fontSize="sm" color="#c7c6c6">
+                    <Text fontWeight="bold" fontSize="sm" color="var(--atelier-fg-muted)">
                       {t('common.tags')}:
                     </Text>
                     <Wrap>
@@ -150,28 +144,51 @@ if (projectUnavailable) {
                     </Wrap>
                   </HStack>
                 )}
-                {links && (
-                  <Stack gap="2">
-                    {nonNullLinks.map((l) => {
-                      return <LinkItem data={l} openLabel={t('common.open')} />;
-                    })}
-                  </Stack>
-                )}
               </Stack>
 
-              <Divider borderColor="#524533" />
-              {content && (
-                <Box maxW="70ch">
+              <Divider borderColor="var(--atelier-line)" />
+              {/* The prose is capped at 70ch for reading, but the links sat above it at full
+                  container width, so the article looked left-shoved inside a wider frame with
+                  a dead right third. In a rail the measure is deliberate and the column is
+                  occupied — the note detail page already reads this way. */}
+              <Grid
+                gridTemplateColumns={{
+                  base: 'minmax(0, 70ch)',
+                  xl: 'minmax(0, 70ch) 280px'
+                }}
+                gap={{ base: '8', xl: '12' }}
+                alignItems="start"
+              >
+                {content && (
                   <Markdown
                     content={content}
                     assetsPrefix={import.meta.env.PUBLIC_API_URL}
                     headingLevelOffset={1}
                   />
-                </Box>
-              )}
+                )}
+                {links && nonNullLinks.length > 0 && (
+                  <Stack gap="2" position={{ xl: 'sticky' }} top={{ xl: '24' }} minW="0">
+                    <Text
+                      fontFamily="var(--font-code)"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      letterSpacing="0.12em"
+                      color="var(--atelier-outline)"
+                      pb="2"
+                      borderBottom="1px solid"
+                      borderColor="var(--atelier-line)"
+                    >
+                      {t('common.open')}
+                    </Text>
+                    {nonNullLinks.map((l) => {
+                      return <LinkItem data={l} openLabel={t('common.open')} />;
+                    })}
+                  </Stack>
+                )}
+              </Grid>
               {images.length > 0 && (
                 <Stack gap="6">
-                  <Heading as="h2" fontSize="4xl" fontStyle="italic">
+                  <Heading as="h2" fontSize="4xl">
                     {t('project.screenshots')}
                   </Heading>
                   <Carousel
@@ -190,30 +207,29 @@ if (projectUnavailable) {
           ) : (
             <Box
               border="1px solid"
-              borderColor="#524533"
+              borderColor="var(--atelier-line)"
               p={{ base: '8', md: '12' }}
               textAlign="center"
             >
               <Text
-                fontFamily="JetBrains Mono, monospace"
+                fontFamily="var(--font-code)"
                 fontSize="10px"
                 textTransform="uppercase"
                 letterSpacing="0.2em"
-                color="#9f8e78"
+                color="var(--atelier-outline)"
                 mb="4"
               >
                 {t('project.status-unavailable')}
               </Text>
               <Heading
                 as="h1"
-                fontFamily="Newsreader, serif"
+                fontFamily="var(--font-display)"
                 fontSize={{ base: '4xl', md: '5xl' }}
-                fontStyle="italic"
                 mb="4"
               >
                 {t('project.detail-empty-title')}
               </Heading>
-              <Text color="#c7c6c6" maxW="md" mx="auto">
+              <Text color="var(--atelier-fg-muted)" maxW="md" mx="auto">
                 {t('project.detail-empty-description')}
               </Text>
             </Box>

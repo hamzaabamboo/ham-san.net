@@ -8,7 +8,7 @@ export const kbd = defineRecipe({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 'l2',
-    fontFamily: 'code',
+    fontFamily: 'var(--font-code)',
     fontWeight: 'medium',
     userSelect: 'none',
     whiteSpace: 'nowrap',

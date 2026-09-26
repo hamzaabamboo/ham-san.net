@@ -1,0 +1,14 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import RoomHome from '~/components/home/RoomHome.astro';
+import { useTranslations, validateLocale } from '~/i18n/utils';
+
+export const prerender = false;
+const { locale } = Astro.params;
+if (!validateLocale(locale)) return Astro.redirect('/404');
+const t = useTranslations(locale);
+---
+
+<BaseLayout title={`${t('common.room')} | ${t('common.name')}`}>
+  <RoomHome locale={locale} />
+</BaseLayout>

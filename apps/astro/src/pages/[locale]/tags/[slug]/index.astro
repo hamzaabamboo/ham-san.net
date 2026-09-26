@@ -1,6 +1,6 @@
 ---
 import { FaArrowLeft } from 'react-icons/fa';
-import { Container, Divider, Grid, GridItem, Stack, Wrap } from 'styled-system/jsx';
+import { Box, Container, Divider, Grid, GridItem, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthSpan, formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
@@ -19,6 +19,8 @@ import type {
 } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
+import SectionHeading from '~/components/common/SectionHeading.astro';
 import { cleanProjectCopy } from '~/utils/project-copy';
 import { sortTags, tagSlug } from '~/utils/tags';
 
@@ -80,7 +82,9 @@ const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is T
 const t = useTranslations(locale);
 const pageTitle = `${title ?? t('common.tags')} | ${t('common.name')}`;
 
-if (!tagUnavailable) {
+if (tagUnavailable) {
+  Astro.response.headers.set('CDN-Cache-Control', 'no-store');
+} else {
   Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 }
 ---
@@ -91,10 +95,10 @@ if (!tagUnavailable) {
       <Link href={`/${locale}/tags`}>
         <Wrap
           fontSize="xs"
-          fontFamily="JetBrains Mono, monospace"
+          fontFamily="var(--font-code)"
           alignItems="center"
-          color="#c7c6c6"
-          _hover={{ color: '#ffb000' }}
+          color="var(--atelier-fg-muted)"
+          _hover={{ color: 'var(--atelier-accent)' }}
         >
           <FaArrowLeft />
           <Text>{t('common.tags')}</Text>
@@ -108,23 +112,23 @@ if (!tagUnavailable) {
             textAlign="center"
             py="12"
             border="1px solid"
-            borderColor="#524533"
-            bg="#1c1b1b"
+            borderColor="var(--atelier-line)"
+            bg="var(--atelier-surface-low)"
             p={{ base: '8', md: '12' }}
           >
             <Text
-              fontFamily="JetBrains Mono, monospace"
+              fontFamily="var(--font-code)"
               fontSize="10px"
               textTransform="uppercase"
               letterSpacing="0.12em"
-              color="#9f8e78"
+              color="var(--atelier-outline)"
             >
               {t('note.status-unavailable')}
             </Text>
-            <Heading as="h1" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+            <Heading as="h1" fontSize={{ base: '3xl', md: '4xl' }}>
               {t('common.tags-empty-title')}
             </Heading>
-            <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
+            <Text color="var(--atelier-fg-muted)" maxW="md" lineHeight="1.7">
               {t('common.tags-empty-description')}
             </Text>
           </Stack>
@@ -133,32 +137,19 @@ if (!tagUnavailable) {
       {
         !tagUnavailable && (
           <>
-            <Stack
-              gap="4"
-              borderLeftWidth="2px"
-              borderLeftStyle="solid"
-              borderLeftColor="#ffb000"
-              pl="6"
-            >
-              <Text
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                textTransform="uppercase"
-                letterSpacing="0.12em"
-                color="#ffd597"
-              >
-                {t('common.tags')}
-              </Text>
+            <Stack gap="4" className="page-header-rule" py="2">
+              <Eyebrow label={t('common.tags')} />
               <Stack gap="1">
-                <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic">
+                <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }}>
                   {title}
                 </Heading>
-                <Wrap fontSize="sm" color="#9f8e78" fontFamily="JetBrains Mono, monospace">
+                <Wrap fontSize="sm" color="var(--atelier-outline)" fontFamily="var(--font-code)">
                   {type && <Text>{t(`common.${toKebabCase(type) as 'frontend'}`)}</Text>}
                 </Wrap>
               </Stack>
             </Stack>
 
+            {experienceItems.length > 0 && <SectionHeading label={t('common.experiences')} />}
             {experienceItems.map((experience) => {
               const { title, content, position, tags, start, end } = experience;
               const startDate = start ? parseDate(start as string) : null;
@@ -167,11 +158,16 @@ if (!tagUnavailable) {
                 ? formatMonthSpan(startDate, endDate ?? new Date(), locale)
                 : '';
               return (
-                <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6">
-                  <Heading as="h2" fontSize="4xl" fontStyle="italic">
+                <Stack
+                  border="1px solid"
+                  borderColor="var(--atelier-line)"
+                  bg="var(--atelier-surface-low)"
+                  p="6"
+                >
+                  <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }}>
                     {title}
                   </Heading>
-                  <Wrap fontSize="sm" color="#9f8e78" fontFamily="JetBrains Mono, monospace">
+                  <Wrap fontSize="sm" color="var(--atelier-outline)" fontFamily="var(--font-code)">
                     {position && <Text>{`${position}\u00A0|`}</Text>}
                     {startDate && (
                       <Text>
@@ -182,7 +178,7 @@ if (!tagUnavailable) {
                     )}
                   </Wrap>
                   {tags && (
-                    <Wrap fontSize="sm" gap="2" rowGap="2" alignItems="center">
+                    <Wrap fontSize="sm" gap="2" rowGap="3" alignItems="center">
                       <Text>{t('common.tags')}</Text>
                       {sortTags(nonNullTags(tags)).map(
                         (tag) =>
@@ -194,18 +190,20 @@ if (!tagUnavailable) {
                       )}
                     </Wrap>
                   )}
-                  {content && <Markdown content={content} />}
+                  {/* The card body ran the full 1070px container — about 130 characters a
+                      line, against ~70 on every other prose surface on the site. */}
+                  {content && (
+                    <Box maxW="70ch">
+                      <Markdown content={content} headingLevelOffset={2} />
+                    </Box>
+                  )}
                 </Stack>
               );
             })}
-            <Divider borderColor="#524533" />
-            {projectItems.length > 0 && (
-              <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic">
-                {t('project.projects')}
-              </Heading>
-            )}
+            <Divider borderColor="var(--atelier-line)" />
+            {projectItems.length > 0 && <SectionHeading label={t('project.projects')} />}
             <Grid
-              gridTemplateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+              gridTemplateColumns="repeat(auto-fit, minmax(min(100%, 300px), 1fr))"
               alignItems={{ base: 'start', md: 'stretch' }}
             >
               {projectItems.map((project) => (

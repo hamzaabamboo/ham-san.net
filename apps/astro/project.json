@@ -14,7 +14,9 @@
     },
     "container": {
       "executor": "@nx-tools/nx-container:build",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "defaultConfiguration": "local",
       "options": {
         "engine": "docker",
@@ -24,20 +26,37 @@
       },
       "configurations": {
         "local": {
-          "tags": ["ham-san-net-astro:latest"],
+          "tags": [
+            "ham-san-net-astro:latest"
+          ],
           "push": false
         },
         "production": {
-          "tags": ["registry.ham-san.net/ham-san-net-astro:latest"],
+          "tags": [
+            "registry.ham-san.net/ham-san-net-astro:latest"
+          ],
           "push": true
         }
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/astro/**/*.{ts,tsx,astro}"]
+        "lintFilePatterns": [
+          "apps/astro/**/*.{ts,tsx,astro}"
+        ],
+        "maxWarnings": 50
+      }
+    },
+    "compile": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "cwd": "apps/astro",
+        "command": "tsc --pretty --noEmit && astro check"
       }
     }
   }

@@ -34,6 +34,7 @@ export const PhotoGalleryEmbed = ({
             alt={`${imageLabel} ${activeImage + 1}`}
             width={1200}
             height={900}
+            decoding="async"
           />
         ) : galleryLinks.length > 0 ? (
           <div className={hobbyStyles.gallerySources}>
@@ -63,7 +64,7 @@ export const PhotoGalleryEmbed = ({
               aria-pressed={index === activeImage}
               onClick={() => setActiveImage(index)}
             >
-              <img src={image} alt="" width={320} height={240} />
+              <img src={image} alt="" width={320} height={240} loading="lazy" decoding="async" />
             </button>
           ))}
         </div>

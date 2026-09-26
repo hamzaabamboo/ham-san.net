@@ -1,11 +1,11 @@
 import { defineTokens } from '@pandacss/dev';
 import { animations } from './animations';
+import { atelier } from './atelier';
 import { blurs } from './blurs';
 import { borders } from './borders';
 import { colors } from './colors';
 import { durations } from './durations';
 import { easings } from './easings';
-import { fonts } from './fonts';
 import { fontSizes } from './font-sizes';
 import { fontWeights } from './font-weights';
 import { letterSpacings } from './letter-spacings';
@@ -19,10 +19,9 @@ export const tokens = defineTokens({
   animations,
   blurs,
   borders,
-  colors,
+  colors: { ...colors, atelier },
   durations,
   easings,
-  fonts,
   fontSizes,
   fontWeights,
   letterSpacings,

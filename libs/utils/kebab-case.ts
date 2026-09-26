@@ -1,22 +1,22 @@
 export const LANGUAGES = ['en', 'ja'];
 
 export const getLocalizedItems = <
-    T extends { locale?: string | null },
-    A extends { data?: I[] },
-    I extends { attributes?: T | null },
-    L extends { localizations?: A | null }
+  T extends { locale?: string | null },
+  A extends { data?: I[] },
+  I extends { attributes?: T | null },
+  L extends { localizations?: A | null }
 >(
-    data?: L | null,
-    locale = 'en'
+  data?: L | null,
+  locale = 'en'
 ): T | undefined | null => {
-    if (!data) return;
-    const items = data?.localizations?.data;
-    return items?.find((d) => d?.attributes?.locale === locale)?.attributes ?? items?.[0]?.attributes;
+  if (!data) return;
+  const items = data?.localizations?.data;
+  return items?.find((d) => d?.attributes?.locale === locale)?.attributes ?? items?.[0]?.attributes;
 };
 
 export const toKebabCase = (value: string) =>
-    value
-        .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-        .replace(/[^a-zA-Z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .toLowerCase();
+  value
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/[^a-zA-Z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase();

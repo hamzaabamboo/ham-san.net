@@ -16,8 +16,10 @@ const SORT_ORDER = [
 
 type TagLike = { type?: Enum_Tag_Type | string | null; order?: number | null } | null | undefined;
 
+// A title with no ASCII kebabs to the empty string, so a truthy CJK or Thai title would
+// short-circuit past a perfectly usable stored slug and send every such tag to `/tags/`.
 export const tagSlug = (tag: { title?: string | null; slug?: string | null }) =>
-  tag.title ? toKebabCase(tag.title) : (tag.slug ?? '');
+  (tag.title ? toKebabCase(tag.title) : '') || (tag.slug ?? '');
 
 const getTypeOrder = (tag: TagLike) => {
   const normalizedType = tag?.type ? String(tag.type) : undefined;

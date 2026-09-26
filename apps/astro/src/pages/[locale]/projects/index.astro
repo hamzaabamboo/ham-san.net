@@ -1,6 +1,6 @@
 ---
 import { Box, Container, Flex, Grid, Stack, Wrap } from 'styled-system/jsx';
-import { getMediaUrl } from 'utils/media';
+import { resolveMedia } from 'utils/media';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
@@ -12,6 +12,8 @@ import { projectMonogram } from '~/utils/monogram';
 import { cleanProjectCopy } from '~/utils/project-copy';
 import { groupProjectsByActivity, requireProjects } from '~/utils/project-groups';
 import MainLayout from '~/layouts/MainLayout.astro';
+import PageMasthead from '~/components/common/PageMasthead.astro';
+import SectionHeading from '~/components/common/SectionHeading.astro';
 
 export const prerender = false;
 
@@ -68,91 +70,55 @@ if (projectsUnavailable) {
 <MainLayout title={pageTitle} description={t('project.intro')}>
   <Container maxW="breakpoint-xl" className="page-shell">
     <Stack py="10" gap="16">
-      <Stack gap="6" position="relative" pt="4">
-        <Box
-          position="absolute"
-          top="0"
-          left="0"
-          px="2"
-          py="1"
-          bg="#353534"
-          border="1px solid"
-          borderColor="#524533"
-        >
-          <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
-            color="#ffd597"
-          >
-            {t('project.projects')}
-          </Text>
-        </Box>
-        <Heading
-          as="h1"
-          fontSize={{ base: '5xl', md: '8xl' }}
-          fontStyle="italic"
-          lineHeight="0.92"
-          mt="8"
-        >
-          {t('project.page-heading')}
-        </Heading>
-        <Text
-          maxW="2xl"
-          color="#c7c6c6"
-          fontSize="lg"
-          borderLeft="1px solid"
-          borderLeftColor="#ffb000"
-          pl="6"
-          py="2"
-        >
-          {t('project.intro')}
-        </Text>
-      </Stack>
+      <PageMasthead
+        eyebrow={t('project.projects')}
+        heading={t('project.page-heading')}
+        lede={t('project.intro')}
+      />
 
       <Grid
-        gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+        gridTemplateColumns={{ base: 'repeat(3, minmax(0, 1fr))' }}
         gap="1px"
-        bg="#524533"
+        bg="var(--atelier-line)"
         border="1px solid"
-        borderColor="#524533"
+        borderColor="var(--atelier-line)"
       >
-        <Stack bg="#131313" p="5" gap="2">
+        <Stack bg="var(--atelier-bg)" p="5" gap="2">
           <Text
-            fontFamily="JetBrains Mono, monospace"
+            fontFamily="var(--font-code)"
             fontSize="10px"
             textTransform="uppercase"
-            color="#9f8e78"
+            color="var(--atelier-outline)"
           >
             {t('project.active')}
           </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+          <Text fontFamily="var(--font-code)" fontSize="3xl" color="var(--atelier-accent)">
             {activeProjects.length}
           </Text>
         </Stack>
         <Stack className="contact-panel" p="5" gap="2">
           <Text
-            fontFamily="JetBrains Mono, monospace"
+            fontFamily="var(--font-code)"
             fontSize="10px"
             textTransform="uppercase"
-            color="#9f8e78"
+            color="var(--atelier-outline)"
           >
             {t('project.inactive')}
           </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+          <Text fontFamily="var(--font-code)" fontSize="3xl" color="var(--atelier-accent)">
             {inactiveProjects.length}
           </Text>
         </Stack>
-        <Stack bg="#131313" p="5" gap="2">
+        <Stack bg="var(--atelier-bg)" p="5" gap="2">
           <Text
-            fontFamily="JetBrains Mono, monospace"
+            fontFamily="var(--font-code)"
             fontSize="10px"
             textTransform="uppercase"
-            color="#9f8e78"
+            color="var(--atelier-outline)"
           >
             {t('project.latest')}
           </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffd597">
+          <Text fontFamily="var(--font-code)" fontSize="3xl" color="var(--atelier-accent)">
             {yearLabel(latestProjectYear)}
           </Text>
         </Stack>
@@ -160,21 +126,26 @@ if (projectsUnavailable) {
 
       {
         projects.length === 0 ? (
-          <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p={{ base: '8', md: '12' }}>
+          <Box
+            border="1px solid"
+            borderColor="var(--atelier-line)"
+            bg="var(--atelier-surface-low)"
+            p={{ base: '8', md: '12' }}
+          >
             <Stack gap="4" alignItems="center" textAlign="center" py="12">
               <Text
-                fontFamily="JetBrains Mono, monospace"
+                fontFamily="var(--font-code)"
                 fontSize="10px"
                 textTransform="uppercase"
                 letterSpacing="0.12em"
-                color="#9f8e78"
+                color="var(--atelier-outline)"
               >
                 {t('project.status-unavailable')}
               </Text>
-              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="italic">
+              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }}>
                 {t('project.empty-title')}
               </Heading>
-              <Text color="#c7c6c6" maxW="md" lineHeight="1.7">
+              <Text color="var(--atelier-fg-muted)" maxW="md" lineHeight="1.7">
                 {t('project.empty-description')}
               </Text>
             </Stack>
@@ -183,42 +154,34 @@ if (projectsUnavailable) {
           <>
             {activeProjects.length > 0 && (
               <Stack gap="10">
-                <Flex align="center" gap="4" overflow="hidden">
-                  <Text
-                    fontSize="2xl"
-                    fontWeight="black"
-                    textTransform="uppercase"
-                    letterSpacing="-0.05em"
-                    flexShrink="0"
-                  >
-                    {t('project.active')}
-                  </Text>
-                  <Box h="1px" w="full" bg="#524533" />
-                </Flex>
+                <SectionHeading label={t('project.active')} />
                 <Grid
-                  gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
+                  gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
                   gap="1px"
-                  bg="#524533"
+                  bg="var(--atelier-line)"
                   border="1px solid"
-                  borderColor="#524533"
+                  borderColor="var(--atelier-line)"
                 >
-                  {activeProjects.map((project) => {
-                    const imageUrl =
-                      getMediaUrl(
-                        project.media?.[0]?.url,
-                        { height: 480 },
-                        import.meta.env.PUBLIC_API_URL
-                      ) ?? '/images/placeholder-project.jpg';
+                  {activeProjects.map((project, index) => {
+                    const resolved = resolveMedia(
+                      project.media?.[0],
+                      500,
+                      import.meta.env.PUBLIC_API_URL
+                    );
+                    const imageUrl = resolved?.src ?? '/images/placeholder-project.jpg';
                     const hasImage = !!project.media?.[0]?.url;
+                    // The first card is the measured LCP element on this route (1836ms on
+                    // /en, 2648ms on /th) and was deferred behind `loading="lazy"`.
+                    const isLcp = index === 0;
                     return (
                       <Link
                         href={`/${locale}/projects/${project.slug}`}
                         display="block"
                         w="full"
-                        bg="#131313"
+                        bg="var(--atelier-bg)"
                         textDecorationLine="none"
                         className="group"
-                        _hover={{ bg: '#0e0e0e' }}
+                        _hover={{ bg: 'var(--atelier-surface-lowest)' }}
                         transition="background-color 0.2s ease"
                       >
                         <Stack p="6" h="full" position="relative" overflow="hidden">
@@ -227,7 +190,7 @@ if (projectsUnavailable) {
                               position="relative"
                               aspectRatio="16 / 9"
                               border="1px solid"
-                              borderColor="#524533"
+                              borderColor="var(--atelier-line)"
                               overflow="hidden"
                               className="image-archival"
                               mb="6"
@@ -235,9 +198,10 @@ if (projectsUnavailable) {
                               <img
                                 src={imageUrl}
                                 alt=""
-                                width="960"
-                                height="540"
-                                loading="lazy"
+                                width={resolved?.width ?? 960}
+                                height={resolved?.height ?? 540}
+                                loading={isLcp ? 'eager' : 'lazy'}
+                                fetchpriority={isLcp ? 'high' : undefined}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                               />
                             </Box>
@@ -246,7 +210,7 @@ if (projectsUnavailable) {
                               position="relative"
                               aspectRatio="16 / 9"
                               border="1px solid"
-                              borderColor="#524533"
+                              borderColor="var(--atelier-line)"
                               overflow="hidden"
                               className="fallback-grid-lines"
                               display="grid"
@@ -255,11 +219,11 @@ if (projectsUnavailable) {
                               aria-hidden="true"
                             >
                               <Box
-                                fontFamily="Newsreader, serif"
+                                fontFamily="var(--font-display)"
                                 fontStyle="italic"
                                 fontSize="96px"
                                 lineHeight="1"
-                                color="#ffb000"
+                                color="var(--atelier-outline)"
                                 opacity="0.3"
                                 userSelect="none"
                               >
@@ -267,22 +231,24 @@ if (projectsUnavailable) {
                               </Box>
                             </Box>
                           )}
-                          <Flex justifyContent="space-between" alignItems="start" mb="2">
+                          <Flex justifyContent="space-between" alignItems="start" mb="2" gap="3">
                             <Heading
-                              as="h2"
-                              fontSize="2xl"
+                              as="h3"
+                              minW="0"
+                              fontSize="xl"
                               fontWeight="extrabold"
                               fontStyle="normal"
-                              fontFamily="Manrope, sans-serif"
+                              fontFamily="var(--font-body)"
                               transition="color 0.2s ease"
                               className="group-hover-amber group-hover-underline"
                             >
                               {project.title}
                             </Heading>
                             <Text
-                              fontFamily="JetBrains Mono, monospace"
+                              fontFamily="var(--font-code)"
                               fontSize="sm"
-                              color="#9f8e78"
+                              flexShrink="0"
+                              color="var(--atelier-outline)"
                             >
                               {yearLabel(project.date?.slice(0, 4))}
                             </Text>
@@ -290,14 +256,14 @@ if (projectsUnavailable) {
                           {project.category?.name && (
                             <Flex gap="2" mb="4">
                               <Box
-                                bg="#2a2a2a"
+                                bg="var(--atelier-surface-high)"
                                 border="1px solid"
-                                borderColor="#524533"
+                                borderColor="var(--atelier-line)"
                                 px="2"
                                 py="0.5"
                               >
                                 <Text
-                                  fontFamily="JetBrains Mono, monospace"
+                                  fontFamily="var(--font-code)"
                                   fontSize="9px"
                                   textTransform="uppercase"
                                 >
@@ -313,17 +279,17 @@ if (projectsUnavailable) {
                                 .slice(0, 3)
                                 .map((tag: any) => (
                                   <Box
-                                    bg="#1c1b1b"
+                                    bg="var(--atelier-surface-low)"
                                     border="1px solid"
-                                    borderColor="#524533"
+                                    borderColor="var(--atelier-line)"
                                     px="2"
                                     py="0.5"
                                   >
                                     <Text
-                                      fontFamily="JetBrains Mono, monospace"
+                                      fontFamily="var(--font-code)"
                                       fontSize="9px"
                                       textTransform="uppercase"
-                                      color="#9f8e78"
+                                      color="var(--atelier-outline)"
                                     >
                                       {tag.title}
                                     </Text>
@@ -331,7 +297,12 @@ if (projectsUnavailable) {
                                 ))}
                             </Wrap>
                           )}
-                          <Text color="#c7c6c6" fontSize="sm" lineHeight="1.7" mb="6">
+                          <Text
+                            color="var(--atelier-fg-muted)"
+                            fontSize="sm"
+                            lineHeight="1.7"
+                            mb="6"
+                          >
                             {project.description}
                           </Text>
                           <Flex
@@ -341,16 +312,16 @@ if (projectsUnavailable) {
                             className="view-execution-link"
                           >
                             <Text
-                              fontFamily="JetBrains Mono, monospace"
+                              fontFamily="var(--font-code)"
                               fontSize="11px"
                               textTransform="uppercase"
                               letterSpacing="0.08em"
-                              color="#ffb000"
+                              color="var(--atelier-accent)"
                             >
                               {t('project.view-execution')}
                             </Text>
                             <Text
-                              color="#ffb000"
+                              color="var(--atelier-accent)"
                               fontSize="sm"
                               transition="margin-left 0.2s ease"
                               className="arrow-icon"
@@ -368,34 +339,28 @@ if (projectsUnavailable) {
 
             {inactiveProjects.length > 0 && (
               <Stack gap="10">
-                <Flex align="center" gap="4" overflow="hidden">
-                  <Text
-                    fontSize="2xl"
-                    fontWeight="black"
-                    textTransform="uppercase"
-                    letterSpacing="-0.05em"
-                    flexShrink="0"
-                  >
-                    {t('project.inactive')}
-                  </Text>
-                  <Box h="1px" w="full" bg="#524533" />
-                </Flex>
+                <SectionHeading label={t('project.inactive')} />
                 <Grid
-                  gridTemplateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
+                  gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(3, minmax(0, 1fr))' }}
                   gap="8"
-                  alignItems="start"
                 >
                   {inactiveGridProjects.map((project) => {
+                    // `alignItems="stretch"` is load-bearing: Park-UI's Link sets
+                    // `align-items: center`, so making this card a flex column to pin its
+                    // chip row centred every line inside it.
                     return (
                       <Link
                         href={`/${locale}/projects/${project.slug}`}
-                        display="block"
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="stretch"
+                        h="full"
                         w="full"
                         position="relative"
                         overflow="hidden"
-                        bg="#1c1b1b"
+                        bg="var(--atelier-surface-low)"
                         border="1px solid"
-                        borderColor="#524533"
+                        borderColor="var(--atelier-line)"
                         p="6"
                         textDecorationLine="none"
                         className="group blocky-shadow blocky-shadow-hover"
@@ -404,11 +369,11 @@ if (projectsUnavailable) {
                           position="absolute"
                           bottom="-24px"
                           right="-8px"
-                          fontFamily="Newsreader, serif"
+                          fontFamily="var(--font-display)"
                           fontStyle="italic"
                           fontSize="120px"
                           lineHeight="1"
-                          color="#e5e2e1"
+                          color="var(--atelier-fg)"
                           opacity="0.04"
                           userSelect="none"
                           pointerEvents="none"
@@ -416,40 +381,47 @@ if (projectsUnavailable) {
                         >
                           {projectMonogram(project.title)}
                         </Box>
-                        <Flex justifyContent="space-between" alignItems="center" mb="2">
+                        <Flex justifyContent="space-between" alignItems="center" mb="2" gap="3">
                           <Heading
-                            as="h2"
+                            as="h3"
+                            minW="0"
                             fontSize="lg"
                             fontWeight="bold"
                             fontStyle="normal"
-                            fontFamily="Manrope, sans-serif"
+                            fontFamily="var(--font-body)"
                             className="group-hover-underline"
                           >
                             {project.title}
                           </Heading>
                           <Text
-                            fontFamily="JetBrains Mono, monospace"
+                            fontFamily="var(--font-code)"
                             fontSize="10px"
-                            color="#9f8e78"
+                            flexShrink="0"
+                            color="var(--atelier-outline)"
                           >
                             {yearLabel(project.date?.slice(0, 4))}
                           </Text>
                         </Flex>
-                        <Text color="#c7c6c6" fontSize="xs" lineHeight="1.7" mb="4">
+                        <Text color="var(--atelier-fg-muted)" fontSize="xs" lineHeight="1.7" mb="4">
                           {project.description}
                         </Text>
                         {project.links?.length > 0 && (
-                          <Wrap gap="2" mb="4">
+                          <Wrap gap="2" mb="4" mt="auto">
                             {project.links
                               .filter((link: any) => link?.url)
                               .slice(0, 2)
                               .map((link: any) => (
-                                <Box border="1px solid" borderColor="#524533" px="2" py="0.5">
+                                <Box
+                                  border="1px solid"
+                                  borderColor="var(--atelier-line)"
+                                  px="2"
+                                  py="0.5"
+                                >
                                   <Text
-                                    fontFamily="JetBrains Mono, monospace"
+                                    fontFamily="var(--font-code)"
                                     fontSize="9px"
                                     textTransform="uppercase"
-                                    color="#9f8e78"
+                                    color="var(--atelier-outline)"
                                   >
                                     {link.title ?? link.type}
                                   </Text>
@@ -458,9 +430,9 @@ if (projectsUnavailable) {
                           </Wrap>
                         )}
                         <Text
-                          fontFamily="JetBrains Mono, monospace"
+                          fontFamily="var(--font-code)"
                           fontSize="9px"
-                          color="#ffb000"
+                          color="var(--atelier-accent)"
                           opacity="0"
                           transition="opacity 0.2s ease"
                           className="group-hover-reveal"
@@ -472,64 +444,72 @@ if (projectsUnavailable) {
                   })}
                 </Grid>
                 {inactiveProjects.length > 9 && (
-                  <Stack gap="1px" bg="#524533" border="1px solid" borderColor="#524533">
-                    {inactiveProjects.slice(9).map((project) => (
-                      <Link
-                        href={`/${locale}/projects/${project.slug}`}
-                        display="block"
-                        w="full"
-                        bg="#1c1b1b"
-                        p="4"
-                        textDecorationLine="none"
-                        className="group"
-                        _hover={{ bg: '#131313' }}
-                        transition="background-color 0.2s ease"
-                      >
-                        <Flex
-                          justifyContent="space-between"
-                          alignItems="center"
-                          gap="4"
-                          flexWrap="wrap"
+                  <>
+                    <SectionHeading label={t('project.earlier-work')} />
+                    <Stack
+                      gap="1px"
+                      bg="var(--atelier-line)"
+                      border="1px solid"
+                      borderColor="var(--atelier-line)"
+                    >
+                      {inactiveProjects.slice(9).map((project) => (
+                        <Link
+                          href={`/${locale}/projects/${project.slug}`}
+                          display="block"
+                          w="full"
+                          bg="var(--atelier-surface-low)"
+                          p="4"
+                          textDecorationLine="none"
+                          className="group"
+                          _hover={{ bg: 'var(--atelier-bg)' }}
+                          transition="background-color 0.2s ease"
                         >
-                          <Stack gap="1" minW="0">
-                            <Heading
-                              as="h2"
-                              fontSize="md"
-                              fontWeight="bold"
-                              fontStyle="normal"
-                              fontFamily="Manrope, sans-serif"
-                              className="group-hover-amber group-hover-underline"
-                              transition="color 0.2s ease"
-                            >
-                              {project.title}
-                            </Heading>
-                            {project.category?.name && (
-                              <Text
-                                fontFamily="JetBrains Mono, monospace"
-                                fontSize="9px"
-                                textTransform="uppercase"
-                                color="#9f8e78"
+                          <Flex
+                            justifyContent="space-between"
+                            alignItems="center"
+                            gap="4"
+                            flexWrap="wrap"
+                          >
+                            <Stack gap="1" minW="0">
+                              <Heading
+                                as="h3"
+                                fontSize="md"
+                                fontWeight="bold"
+                                fontStyle="normal"
+                                fontFamily="var(--font-body)"
+                                className="group-hover-amber group-hover-underline"
+                                transition="color 0.2s ease"
                               >
-                                {project.category.name}
+                                {project.title}
+                              </Heading>
+                              {project.category?.name && (
+                                <Text
+                                  fontFamily="var(--font-code)"
+                                  fontSize="9px"
+                                  textTransform="uppercase"
+                                  color="var(--atelier-outline)"
+                                >
+                                  {project.category.name}
+                                </Text>
+                              )}
+                            </Stack>
+                            <Flex gap="4" alignItems="center" flexShrink="0">
+                              <Text
+                                fontFamily="var(--font-code)"
+                                fontSize="10px"
+                                color="var(--atelier-outline)"
+                              >
+                                {yearLabel(project.date?.slice(0, 4))}
                               </Text>
-                            )}
-                          </Stack>
-                          <Flex gap="4" alignItems="center" flexShrink="0">
-                            <Text
-                              fontFamily="JetBrains Mono, monospace"
-                              fontSize="10px"
-                              color="#9f8e78"
-                            >
-                              {yearLabel(project.date?.slice(0, 4))}
-                            </Text>
-                            <Text color="#ffb000" fontSize="sm">
-                              →
-                            </Text>
+                              <Text color="var(--atelier-accent)" fontSize="sm">
+                                →
+                              </Text>
+                            </Flex>
                           </Flex>
-                        </Flex>
-                      </Link>
-                    ))}
-                  </Stack>
+                        </Link>
+                      ))}
+                    </Stack>
+                  </>
                 )}
               </Stack>
             )}

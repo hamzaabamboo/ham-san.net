@@ -35,7 +35,7 @@ export const carousel = defineSlotRecipe({
     indicator: {
       cursor: 'pointer',
       borderRadius: 'full',
-      background: 'gray.subtle.bg',
+      background: 'var(--atelier-surface-highest)',
       _current: {
         background: 'colorPalette.solid.bg'
       },

@@ -29,10 +29,21 @@ export const TagBadge = ({
   const { title } = tag;
   const count = relationCount(tag.projects) + relationCount(tag.experiences);
 
-  const colorPalette = 'amber';
-
+  // Tag chips are inventory, not signal: the same tag names render in `--atelier-outline`
+  // grey on the project cards. Amber is reserved for the hovered/active chip.
+  //
+  // The Atelier tokens directly, not a Park-UI palette: `colorPalette="gray"` is aliased
+  // onto the Radix MAUVE ramp in panda.config.ts, so it painted a cool purple-grey border
+  // (#3c393f) and a cool near-white (#eeeef0) beside the warm --atelier-line and
+  // --atelier-fg on the same screen — trading one off-system hue for another.
   return (
-    <Badge variant="outline" size={size} colorPalette={colorPalette} textTransform="uppercase">
+    <Badge
+      variant="outline"
+      size={size}
+      borderColor="var(--atelier-line)"
+      color="var(--atelier-fg-muted)"
+      textTransform="uppercase"
+    >
       {title} {showCount && `(${count})`}
     </Badge>
   );

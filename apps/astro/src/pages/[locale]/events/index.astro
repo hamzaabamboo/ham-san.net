@@ -1,5 +1,8 @@
 ---
+import { Glyph } from '~/components/ui/glyph';
 import MainLayout from '~/layouts/MainLayout.astro';
+import SectionHeading from '~/components/common/SectionHeading.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import { withLastGoodState } from '~/utils/cms-cache';
 import '~/styles/events-report.css';
 
@@ -35,6 +38,15 @@ try {
 } catch {
   fetchError = true;
 }
+
+// The heaviest SSR page in the app. Cache the good render, but downgrade a degraded one
+// so a single upstream timeout cannot pin a broken page at the edge for an hour.
+Astro.response.headers.set(
+  'CDN-Cache-Control',
+  fetchError || !rawReport
+    ? 'public, max-age=60, must-revalidate'
+    : 'public, max-age=3600, must-revalidate'
+);
 
 const yearOptions = [
   ...(rawReport?.yearlyBreakdown.filter((item) => item.count > 0).map((item) => item.year) ?? [])
@@ -75,13 +87,11 @@ const timeFormatter = new Intl.DateTimeFormat(locale, {
   timeZone: 'Asia/Tokyo',
   calendar: 'gregory'
 });
-const percentFormatter = new Intl.NumberFormat(locale, {
-  maximumFractionDigits: 0,
-  style: 'percent'
-});
 const decimalFormatter = new Intl.NumberFormat(locale, {
+  minimumFractionDigits: 1,
   maximumFractionDigits: 1
 });
+const pct1 = (value: number) => `${decimalFormatter.format(value)}%`;
 const monthFormatter = new Intl.DateTimeFormat(locale, {
   year: 'numeric',
   month: 'short',
@@ -89,7 +99,7 @@ const monthFormatter = new Intl.DateTimeFormat(locale, {
   calendar: 'gregory'
 });
 const weekendRate = report?.totalEvents
-  ? percentFormatter.format(report.weekendEvents / report.totalEvents)
+  ? pct1((report.weekendEvents / report.totalEvents) * 100)
   : '0%';
 const busiestMonths = [...(report?.monthlyBreakdown ?? [])]
   .sort((a, b) => b.count - a.count)
@@ -100,17 +110,13 @@ const maxMonthOfYearCount = Math.max(
   ...(report?.monthOfYearBreakdown.map((item) => item.count) ?? []),
   1
 );
-const maxDailyActivityCount = Math.max(
-  ...(report?.dailyActivity.map((item) => item.count) ?? []),
-  1
-);
 const latestFavoriteCumulative = report?.cumulativeFavoriteArtists.at(-1)?.values ?? [];
 const lineStyles = [
-  { color: '#ffb000', dash: 'none' },
-  { color: '#ffd597', dash: '6 4' },
-  { color: '#c7c6c6', dash: '2 3' },
-  { color: '#9f8e78', dash: '10 4 2 4' },
-  { color: '#765c2f', dash: '1 4' }
+  { color: 'var(--atelier-accent)', dash: 'none' },
+  { color: 'var(--atelier-accent-soft)', dash: '6 4' },
+  { color: 'var(--atelier-fg-muted)', dash: '2 3' },
+  { color: 'var(--atelier-outline)', dash: '10 4 2 4' },
+  { color: 'var(--atelier-fg)', dash: '1 4' }
 ];
 const monthlyChartData = (report?.monthlyBreakdown ?? []).slice(-18);
 const maxMonthlyChartCount = Math.max(...monthlyChartData.map((item) => item.count), 1);
@@ -142,7 +148,6 @@ const averageEventsPerActiveDay = report?.activeDays
 const averageEventsPerYear = report?.yearlyBreakdown.length
   ? (report.totalEvents / report.yearlyBreakdown.length).toFixed(1)
   : '0.0';
-const pct1 = (value: number) => `${decimalFormatter.format(value)}%`;
 const dateLabel = (date?: string) =>
   date ? dateFormatter.format(new Date(`${date}T00:00:00+09:00`)) : '-';
 const monthLabel = (month?: string) =>
@@ -205,8 +210,15 @@ const monthOrder = [
 const monthShortFormatter = new Intl.DateTimeFormat(locale, { month: 'short', timeZone: 'UTC' });
 const monthShort = (name: string) =>
   monthShortFormatter.format(new Date(Date.UTC(2024, monthOrder.indexOf(name), 1)));
+const unitGap = locale === 'ja' ? '' : ' ';
+const withUnit = (count: number | string, unit: string) =>
+  `${typeof count === 'number' ? formatter.format(count) : count}${unitGap}${unit}`;
+
 const dayUnit = (count: number) =>
-  count === 1 ? t('common.events-report-day-unit') : t('common.events-report-days-unit');
+  (count === 1
+    ? t('common.events-report-day-count')
+    : t('common.events-report-days-count')
+  ).replace('{n}', formatter.format(count));
 
 const cumulativeLine = (artist: string, data = report?.cumulativeFavoriteArtists ?? []) => {
   return data
@@ -227,21 +239,34 @@ const heatmapDays = (() => {
   const end = new Date(`${days[days.length - 1].date}T00:00:00+09:00`);
   const items: { date: string; count: number; weekday: number; month: string }[] = [];
 
-  for (const cursor = new Date(start); cursor <= end; cursor.setUTCDate(cursor.getUTCDate() + 1)) {
-    const date = new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'Asia/Tokyo',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    }).format(cursor);
+  // Both formatters are loop-invariant; constructing them per day dominated this loop.
+  const dayFormatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Tokyo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  const monthFormatter = new Intl.DateTimeFormat(locale, {
+    month: 'short',
+    timeZone: 'Asia/Tokyo'
+  });
+
+  // Only the trailing window is rendered, so do not walk the whole history to discard it.
+  const windowStart = new Date(end);
+  windowStart.setUTCDate(windowStart.getUTCDate() - 209);
+  const cursorStart = windowStart > start ? windowStart : start;
+
+  for (
+    const cursor = new Date(cursorStart);
+    cursor <= end;
+    cursor.setUTCDate(cursor.getUTCDate() + 1)
+  ) {
+    const date = dayFormatter.format(cursor);
     items.push({
       date,
       count: activity.get(date) ?? 0,
       weekday: new Date(`${date}T00:00:00Z`).getUTCDay(),
-      month: new Intl.DateTimeFormat(locale, {
-        month: 'short',
-        timeZone: 'Asia/Tokyo'
-      }).format(new Date(`${date}T00:00:00+09:00`))
+      month: monthFormatter.format(new Date(`${date}T00:00:00+09:00`))
     });
   }
 
@@ -266,6 +291,12 @@ const heatmapWindowLabel = heatmapDays.length
   ? `${dateLabel(heatmapDays[0].date)} - ${dateLabel(heatmapDays[heatmapDays.length - 1].date)}`
   : '';
 const rankListVisible = 12;
+// Linear, because the bar is drawn inside a full-width track and labelled with the absolute
+// percentage: the track reads as a 0-100% axis, so any non-linear fill makes the bar
+// contradict its own label. A square-root scale was tried to stop the long tail collapsing
+// onto the bar's minimum width, but a compressed tail is a legibility problem while a
+// mis-scaled bar is a correctness one. The tail keeps a minimum stub; the printed value
+// disambiguates it.
 const shareItems = (items: { name: string; count: number }[], total: number) => {
   const top = items.slice(0, 10);
   const maxCount = Math.max(top[0]?.count ?? 1, 1);
@@ -295,27 +326,27 @@ const bestFavoriteAttendance = [...(report?.favoriteArtistAttendance ?? [])].sor
 const eventingStyle = report
   ? report.multiEventDayStats.maxEventsInDay >= 10
     ? {
-        icon: 'bolt',
+        icon: 'category' as const,
         label: t('common.events-report-your-style'),
         value: t('common.events-report-style-machine'),
         sub: t('common.events-report-style-machine-sub')
       }
     : report.avgEventsPerMonth >= 20
       ? {
-          icon: 'local_fire_department',
+          icon: 'timeline' as const,
           label: t('common.events-report-your-style'),
           value: t('common.events-report-style-full-time'),
           sub: t('common.events-report-style-full-time-sub')
         }
       : report.weekendStats.weekendEventPercentage >= 80
         ? {
-            icon: 'weekend',
+            icon: 'weekend' as const,
             label: t('common.events-report-your-style'),
             value: t('common.events-report-style-weekend'),
             sub: t('common.events-report-style-weekend-sub')
           }
         : {
-            icon: 'explore',
+            icon: 'explore' as const,
             label: t('common.events-report-your-style'),
             value: t('common.events-report-style-balanced'),
             sub: t('common.events-report-style-balanced-sub')
@@ -327,7 +358,10 @@ const secondaryStats = report
       {
         label: t('common.events-report-active-days'),
         value: formatter.format(report.activeDays),
-        meta: `${formatter.format(report.multiEventDays)} ${t('common.events-report-multi-days')}`
+        meta: t('common.events-report-multi-days').replace(
+          '{n}',
+          formatter.format(report.multiEventDays)
+        )
       },
       {
         label: t('common.events-report-weekend-rate'),
@@ -342,11 +376,12 @@ const secondaryStats = report
       {
         label: t('common.events-report-events-per-year'),
         value: averageEventsPerYear,
-        meta: `${formatter.format(report.yearlyBreakdown.length)} ${
+        meta: withUnit(
+          report.yearlyBreakdown.length,
           report.yearlyBreakdown.length === 1
             ? t('common.events-report-year')
             : t('common.events-report-years')
-        }`
+        )
       },
       {
         label: t('common.events-report-artist-appearances'),
@@ -355,7 +390,7 @@ const secondaryStats = report
       },
       {
         label: t('common.events-report-days-spent'),
-        value: percentFormatter.format(report.daysSpentPercentage / 100),
+        value: pct1(report.daysSpentPercentage),
         meta: `${formatter.format(report.activeDays)} / ${formatter.format(report.totalDaysInRange)}`
       },
       {
@@ -366,7 +401,10 @@ const secondaryStats = report
       {
         label: t('common.events-report-followers'),
         value: formatter.format(report.profile.followers),
-        meta: `${formatter.format(report.profile.following)} ${t('common.events-report-following')}`
+        meta: t('common.events-report-following').replace(
+          '{n}',
+          formatter.format(report.profile.following)
+        )
       }
     ]
   : [];
@@ -410,7 +448,10 @@ const overviewGroups = report
           {
             label: t('common.events-report-unique-artists-full'),
             value: formatter.format(report.uniqueArtists),
-            meta: `${formatter.format(report.totalArtistAppearances)} ${t('common.events-report-appearances')}`
+            meta: t('common.events-report-appearances').replace(
+              '{n}',
+              formatter.format(report.totalArtistAppearances)
+            )
           },
           {
             label: t('common.events-report-without-favorites'),
@@ -436,13 +477,13 @@ const overviewGroups = report
             label: t('common.events-report-most-active-day'),
             kind: 'context',
             value: weekdayLabel(report.favoriteDay?.name),
-            meta: `${formatter.format(report.favoriteDay?.count ?? 0)} ${t('common.events-report-events-unit')}`
+            meta: withUnit(report.favoriteDay?.count ?? 0, t('common.events-report-events-unit'))
           },
           {
             label: t('common.events-report-busiest-month'),
             kind: 'context',
             value: monthLabel(report.busiestMonth?.month),
-            meta: `${formatter.format(report.busiestMonth?.count ?? 0)} ${t('common.events-report-events-unit')}`
+            meta: withUnit(report.busiestMonth?.count ?? 0, t('common.events-report-events-unit'))
           },
           {
             label: t('common.events-report-weekend-active'),
@@ -523,53 +564,68 @@ const highlightCards =
     ? [
         eventingStyle,
         {
-          icon: 'crown',
+          icon: 'crown' as const,
           label: t('common.events-report-most-seen-artist'),
           value: report.topArtists[0]?.name ?? '-',
-          sub: `${formatter.format(report.topArtists[0]?.count ?? 0)} ${t('common.events-report-events-together')}`
+          sub: t('common.events-report-events-together').replace(
+            '{n}',
+            formatter.format(report.topArtists[0]?.count ?? 0)
+          )
         },
         {
-          icon: 'social_leaderboard',
+          icon: 'social_leaderboard' as const,
           label: t('common.events-report-most-loyal'),
           value: bestFavoriteAttendance?.name ?? '-',
           sub: bestFavoriteAttendance
-            ? `${pct1(bestFavoriteAttendance.pct)} ${t('common.events-report-attendance-rate')} (${formatter.format(
-                bestFavoriteAttendance.attended
-              )}/${formatter.format(bestFavoriteAttendance.total)})`
+            ? `${t('common.events-report-attendance-rate-value').replace(
+                '{n}',
+                pct1(bestFavoriteAttendance.pct)
+              )} (${formatter.format(bestFavoriteAttendance.attended)}/${formatter.format(
+                bestFavoriteAttendance.total
+              )})`
             : '-'
         },
         {
-          icon: 'home',
+          icon: 'home' as const,
           label: t('common.events-report-home-venue'),
           value: report.topVenues[0]?.name ?? '-',
-          sub: `${formatter.format(report.topVenues[0]?.count ?? 0)} ${t('common.events-report-visits')}`
+          sub: t('common.events-report-visits').replace(
+            '{n}',
+            formatter.format(report.topVenues[0]?.count ?? 0)
+          )
         },
         {
-          icon: 'local_fire_department',
+          icon: 'local_fire_department' as const,
           label: t('common.events-report-longest-streak'),
-          value: `${formatter.format(report.streaks.daily.longestStreak)} ${dayUnit(report.streaks.daily.longestStreak)}`,
+          value: dayUnit(report.streaks.daily.longestStreak),
           sub: t('common.events-report-weekly-best').replace(
             '{n}',
             formatter.format(report.streaks.weekly.longestStreak)
           )
         },
         {
-          icon: 'bolt',
+          icon: 'bolt' as const,
           label: t('common.events-report-personal-record'),
-          value: `${formatter.format(report.multiEventDayStats.maxEventsInDay)} ${t('common.events-report-events-in-one-day')}`,
+          value: t('common.events-report-events-in-one-day').replace(
+            '{n}',
+            formatter.format(report.multiEventDayStats.maxEventsInDay)
+          ),
           sub: dateLabel(report.multiEventDayStats.maxEventsInDayDate)
         },
         {
-          icon: 'bar_chart',
+          icon: 'bar_chart' as const,
           label: t('common.events-report-busiest-month'),
           value: monthLabel(report.busiestMonth?.month),
-          sub: `${formatter.format(report.busiestMonth?.count ?? 0)} ${t('common.events-report-events-unit')}`
+          sub: withUnit(report.busiestMonth?.count ?? 0, t('common.events-report-events-unit'))
         },
         {
-          icon: 'event',
+          icon: 'event' as const,
           label: t('common.events-report-favorite-day'),
           value: weekdayLabel(report.favoriteDay?.name),
-          sub: `${formatter.format(report.favoriteDay?.count ?? 0)} ${t('common.events-report-events-on-this-day')}`
+          sub: t('common.events-report-events-on-this-day').replace(
+            '{n}',
+            formatter.format(report.favoriteDay?.count ?? 0)
+          )
         }
       ]
     : [];
@@ -592,7 +648,7 @@ const reportSections = report
     <section class="event-report">
       <header class="event-report__hero">
         <div class="event-report__hero-copy">
-          <p class="event-report__kicker">{t('common.events-report-kicker')}</p>
+          <Eyebrow label={t('common.events-report-kicker')} />
           <h1>{t('common.event')}</h1>
           <p>{t('common.events-description')}</p>
         </div>
@@ -603,7 +659,11 @@ const reportSections = report
           </div>
           {
             heroStats.length ? (
-              <div class="event-report__hero-stats" aria-label={t('events.aria-hero-stats')}>
+              <div
+                role="group"
+                class="event-report__hero-stats"
+                aria-label={t('events.aria-hero-stats')}
+              >
                 {heroStats.map((stat) => (
                   <article>
                     <span>{stat.label}</span>
@@ -615,7 +675,7 @@ const reportSections = report
           }
           <div class="event-report__actions">
             <a href={EVENTERNOTE_PROFILE_URL} target="_blank" rel="noreferrer">
-              <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+              <Glyph name="open_in_new" />
               {t('common.events-report-source-profile')}
             </a>
           </div>
@@ -625,9 +685,7 @@ const reportSections = report
       {
         fetchError || !report ? (
           <section class="event-report__fallback" aria-live="polite">
-            <span class="material-symbols-outlined" aria-hidden="true">
-              {emptyYear ? 'event_busy' : 'cloud_off'}
-            </span>
+            <Glyph name={emptyYear ? 'event_busy' : 'cloud_off'} />
             <div>
               <h2>{emptyYear ? yearLabel(selectedYear) : t('common.events-empty-title')}</h2>
               <p>
@@ -661,9 +719,7 @@ const reportSections = report
               </nav>
 
               <section class="event-report__section event-report__section--controls">
-                <div class="event-report__section-head">
-                  <h2>{t('common.events-report-filter')}</h2>
-                </div>
+                <SectionHeading label={t('common.events-report-filter')} />
                 <nav class="event-report__year-filter" aria-label={t('events.aria-year-filter')}>
                   <a
                     href={`/${locale}/events`}
@@ -687,10 +743,12 @@ const reportSections = report
 
             <div class="event-report__content">
               <section id="overview" class="event-report__section">
-                <div class="event-report__section-head">
-                  <h2>{t('common.events-report-overview')}</h2>
-                </div>
-                <div class="event-report__overview-card" aria-label={t('events.aria-overview')}>
+                <SectionHeading label={t('common.events-report-overview')} />
+                <div
+                  role="group"
+                  class="event-report__overview-card"
+                  aria-label={t('events.aria-overview')}
+                >
                   {overviewGroups.map((group) => (
                     <section>
                       <h3>{group.title}</h3>
@@ -709,7 +767,11 @@ const reportSections = report
                   ))}
                 </div>
                 {selectedYear === 'all' && (
-                  <div class="event-report__preset-grid" aria-label={t('events.aria-preset-grid')}>
+                  <div
+                    role="group"
+                    class="event-report__preset-grid"
+                    aria-label={t('events.aria-preset-grid')}
+                  >
                     {report.dateWindows.map((window) => (
                       <article>
                         <p>{windowLabels[window.label] ?? window.label}</p>
@@ -727,6 +789,7 @@ const reportSections = report
                     <p>{t('common.events-report-highlights-subtitle')}</p>
                   </div>
                   <div
+                    role="group"
                     class="event-report__highlight-totals"
                     aria-label={t('events.aria-highlight-totals')}
                   >
@@ -747,9 +810,7 @@ const reportSections = report
                 <div class="event-report__highlight-grid">
                   {highlightCards.map((item) => (
                     <article>
-                      <span class="material-symbols-outlined" aria-hidden="true">
-                        {item.icon}
-                      </span>
+                      <Glyph name={item.icon} />
                       <p>{item.label}</p>
                       <strong>{item.value}</strong>
                       <small>{item.sub}</small>
@@ -759,13 +820,15 @@ const reportSections = report
               </section>
 
               <section id="charts" class="event-report__section">
-                <div class="event-report__section-head">
-                  <h2>{t('common.events-report-charts')}</h2>
-                </div>
-                <div class="event-report__chart-grid" aria-label={t('events.aria-chart-grid')}>
+                <SectionHeading label={t('common.events-report-charts')} />
+                <div
+                  role="group"
+                  class="event-report__chart-grid"
+                  aria-label={t('events.aria-chart-grid')}
+                >
                   <div class="event-report__panel event-report__panel--wide">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-yearly')}</h2>
+                      <h3>{t('common.events-report-yearly')}</h3>
                     </div>
                     <svg class="event-report__svg-chart" viewBox="0 0 720 260" role="img">
                       <title>{t('common.events-report-yearly')}</title>
@@ -802,7 +865,7 @@ const reportSections = report
 
                   <div class="event-report__panel event-report__panel--wide">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-months')}</h2>
+                      <h3>{t('common.events-report-months')}</h3>
                     </div>
                     <svg class="event-report__svg-chart" viewBox="0 0 720 280" role="img">
                       <title>{t('common.events-report-months')}</title>
@@ -846,7 +909,7 @@ const reportSections = report
 
                   <div class="event-report__panel event-report__panel--wide">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-cumulative-artist-attendance')}</h2>
+                      <h3>{t('common.events-report-cumulative-artist-attendance')}</h3>
                     </div>
                     <svg
                       class="event-report__svg-chart event-report__svg-chart--line"
@@ -899,12 +962,12 @@ const reportSections = report
 
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-venue-distribution')}</h2>
+                      <h3>{t('common.events-report-venue-distribution')}</h3>
                       <span>{formatter.format(report.totalEvents)}</span>
                     </div>
                     <ol class="event-report__rank-list">
-                      {venueShares.map((venue) => (
-                        <li style={`--size: ${venue.size}%`}>
+                      {venueShares.map((venue, index) => (
+                        <li data-leader={index === 0 || undefined} style={`--size: ${venue.size}%`}>
                           <span>{venue.name}</span>
                           <i />
                           <strong>{pct1(venue.share)}</strong>
@@ -915,12 +978,15 @@ const reportSections = report
 
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-artist-distribution')}</h2>
+                      <h3>{t('common.events-report-artist-distribution')}</h3>
                       <span>{formatter.format(report.totalArtistAppearances)}</span>
                     </div>
                     <ol class="event-report__rank-list">
-                      {artistShares.map((artist) => (
-                        <li style={`--size: ${artist.size}%`}>
+                      {artistShares.map((artist, index) => (
+                        <li
+                          data-leader={index === 0 || undefined}
+                          style={`--size: ${artist.size}%`}
+                        >
                           <span>{artist.name}</span>
                           <i />
                           <strong>{pct1(artist.share)}</strong>
@@ -932,10 +998,9 @@ const reportSections = report
               </section>
 
               <section id="rhythm" class="event-report__section">
-                <div class="event-report__section-head">
-                  <h2>{t('common.events-report-rhythm')}</h2>
-                </div>
+                <SectionHeading label={t('common.events-report-rhythm')} />
                 <div
+                  role="group"
                   class="event-report__metrics-strip"
                   aria-label={t('events.aria-metrics-strip')}
                 >
@@ -947,14 +1012,21 @@ const reportSections = report
                     </article>
                   ))}
                 </div>
-                <div class="event-report__analytics" aria-label={t('events.aria-analytics')}>
+                <div
+                  role="group"
+                  class="event-report__analytics"
+                  aria-label={t('events.aria-analytics')}
+                >
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-weekdays')}</h2>
+                      <h3>{t('common.events-report-weekdays')}</h3>
                     </div>
                     <div class="event-report__compact-chart">
                       {report.weekdayBreakdown.map((day) => (
-                        <div class="event-report__compact-bar">
+                        <div
+                          class="event-report__compact-bar"
+                          data-leader={day.count === maxWeekdayCount || undefined}
+                        >
                           <span>{weekdayShort(day.name)}</span>
                           <i style={`--size: ${(day.count / maxWeekdayCount) * 100}%`} />
                           <strong>{formatter.format(day.count)}</strong>
@@ -965,11 +1037,14 @@ const reportSections = report
 
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-month-rhythm')}</h2>
+                      <h3>{t('common.events-report-month-rhythm')}</h3>
                     </div>
                     <div class="event-report__spark-grid">
                       {report.monthOfYearBreakdown.map((month) => (
-                        <div class="event-report__spark">
+                        <div
+                          class="event-report__spark"
+                          data-leader={month.count === maxMonthOfYearCount || undefined}
+                        >
                           <span>{monthShort(month.name)}</span>
                           <i style={`--size: ${(month.count / maxMonthOfYearCount) * 100}`} />
                           <strong>{formatter.format(month.count)}</strong>
@@ -981,16 +1056,19 @@ const reportSections = report
               </section>
 
               <section id="activity" class="event-report__section">
-                <div class="event-report__section-head">
-                  <h2>{t('common.events-report-activity')}</h2>
-                </div>
+                <SectionHeading label={t('common.events-report-activity')} />
                 <div class="event-report__grid">
                   <div class="event-report__panel event-report__panel--wide">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-activity-heatmap')}</h2>
+                      <h3>{t('common.events-report-activity-heatmap')}</h3>
                       <span class="event-report__heatmap-window">{heatmapWindowLabel}</span>
                     </div>
-                    <div class="event-report__heatmap-shell">
+                    <div
+                      class="event-report__heatmap-shell"
+                      tabindex="0"
+                      role="group"
+                      aria-label={t('events.aria-heatmap-scroll')}
+                    >
                       <div
                         class="event-report__heatmap-months"
                         style={`--weeks: ${heatmapWeekCount}`}
@@ -1005,31 +1083,34 @@ const reportSections = report
                           <span>{weekdayShort('Wednesday')}</span>
                           <span>{weekdayShort('Friday')}</span>
                         </div>
-                        <div class="event-report__heatmap">
+                        <div
+                          class="event-report__heatmap"
+                          role="img"
+                          aria-label={t('events.aria-heatmap')}
+                        >
                           {heatmapCells.map((day) => (
                             <span
                               title={`${dateLabel(day.date)}: ${formatter.format(day.count)}`}
                               data-empty={day.count === 0 ? 'true' : 'false'}
-                              style={`--level: ${day.count / maxDailyActivityCount}; --weekday: ${day.weekday}`}
+                              style={`--level: ${day.count === 0 ? 0 : Math.min(2, day.count - 1) / 2}; --weekday: ${day.weekday}`}
                             />
                           ))}
                         </div>
                       </div>
-                      <div class="event-report__heatmap-legend">
-                        <span>{t('common.events-report-less')}</span>
-                        <i />
-                        <i />
-                        <i />
-                        <i />
-                        <i />
-                        <span>{t('common.events-report-more')}</span>
-                      </div>
+                    </div>
+                    <div class="event-report__heatmap-legend">
+                      <span>{t('common.events-report-less')}</span>
+                      <i />
+                      <i />
+                      <i />
+                      <i />
+                      <span>{t('common.events-report-more')}</span>
                     </div>
                   </div>
 
                   <div class="event-report__panel event-report__panel--attendance">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-favorite-attendance')}</h2>
+                      <h3>{t('common.events-report-favorite-attendance')}</h3>
                       <span>{pct1(favoriteAttendancePct)}</span>
                     </div>
                     <div class="event-report__attendance-table">
@@ -1065,13 +1146,11 @@ const reportSections = report
               </section>
 
               <section id="events" class="event-report__section">
-                <div class="event-report__section-head">
-                  <h2>{t('common.events-report-events')}</h2>
-                </div>
+                <SectionHeading label={t('common.events-report-events')} />
                 <div class="event-report__grid">
                   <div class="event-report__panel event-report__panel--wide">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-next')}</h2>
+                      <h3>{t('common.events-report-next')}</h3>
                       <span>{formatter.format(report.nextEvents.length)}</span>
                     </div>
                     {report.nextEvents.length ? (
@@ -1098,7 +1177,7 @@ const reportSections = report
 
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-recent')}</h2>
+                      <h3>{t('common.events-report-recent')}</h3>
                     </div>
                     <div class="event-report__event-list">
                       {report.recentEvents.map((event) => (
@@ -1121,18 +1200,17 @@ const reportSections = report
               </section>
 
               <section id="rankings" class="event-report__section">
-                <div class="event-report__section-head">
-                  <h2>{t('common.events-report-rankings')}</h2>
-                </div>
+                <SectionHeading label={t('common.events-report-rankings')} />
                 <div class="event-report__grid event-report__grid--three">
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-top-artists')}</h2>
+                      <h3>{t('common.events-report-top-artists')}</h3>
                       <span>{t('common.events-report-top-50')}</span>
                     </div>
                     <ol class="event-report__rank-list">
-                      {report.topArtists.slice(0, rankListVisible).map((artist) => (
+                      {report.topArtists.slice(0, rankListVisible).map((artist, index) => (
                         <li
+                          data-leader={index === 0 || undefined}
                           style={`--size: ${(artist.count / Math.max(report.topArtists[0]?.count ?? 1, 1)) * 100}%`}
                         >
                           <span>{artist.name}</span>
@@ -1161,12 +1239,13 @@ const reportSections = report
 
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
-                      <h2>{t('common.events-report-top-venues')}</h2>
+                      <h3>{t('common.events-report-top-venues')}</h3>
                       <span>{t('common.events-report-top-50')}</span>
                     </div>
                     <ol class="event-report__rank-list">
-                      {report.topVenues.slice(0, rankListVisible).map((venue) => (
+                      {report.topVenues.slice(0, rankListVisible).map((venue, index) => (
                         <li
+                          data-leader={index === 0 || undefined}
                           style={`--size: ${(venue.count / Math.max(report.topVenues[0]?.count ?? 1, 1)) * 100}%`}
                         >
                           <span>{venue.name}</span>
@@ -1195,11 +1274,11 @@ const reportSections = report
 
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
-                      <h2>{t('events.busiest-months')}</h2>
+                      <h3>{t('events.busiest-months')}</h3>
                     </div>
                     <div class="event-report__month-list">
-                      {busiestMonths.map((month) => (
-                        <div class="event-report__month">
+                      {busiestMonths.map((month, index) => (
+                        <div class="event-report__month" data-leader={index === 0 || undefined}>
                           <div>
                             <span>{monthLabel(month.month)}</span>
                             <strong>{formatter.format(month.count)}</strong>
@@ -1223,10 +1302,26 @@ const reportSections = report
   const updateHeatmapMonthLabels = (shell: Element) => {
     const days = shell.querySelector('.event-report__heatmap-days');
     if (!days) return;
+    // Read every rect first, then write. Interleaving them forced one synchronous layout
+    // per label per scroll event.
     const boundary = days.getBoundingClientRect().right;
-    shell.querySelectorAll<HTMLElement>('.event-report__heatmap-months span').forEach((label) => {
-      label.style.visibility = label.getBoundingClientRect().left < boundary ? 'hidden' : '';
+    const labels = [...shell.querySelectorAll<HTMLElement>('.event-report__heatmap-months span')];
+    const hidden = labels.map((label) => label.getBoundingClientRect().left < boundary);
+    labels.forEach((label, index) => {
+      label.style.visibility = hidden[index] ? 'hidden' : '';
     });
+  };
+
+  const coalesce = (fn: () => void) => {
+    let ticking = false;
+    return () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        fn();
+      });
+    };
   };
 
   const scrollHeatmaps = () => {
@@ -1235,9 +1330,13 @@ const reportSections = report
       updateHeatmapMonthLabels(shell);
       if (!(shell as HTMLElement).dataset.monthLabelsBound) {
         (shell as HTMLElement).dataset.monthLabelsBound = 'true';
-        shell.addEventListener('scroll', () => updateHeatmapMonthLabels(shell), {
-          passive: true
-        });
+        shell.addEventListener(
+          'scroll',
+          coalesce(() => updateHeatmapMonthLabels(shell)),
+          {
+            passive: true
+          }
+        );
       }
     });
   };

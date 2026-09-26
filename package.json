@@ -12,12 +12,14 @@
     "clean:containers": "bash ./tools/cleanup-container-artifacts.sh",
     "prepare": "husky install && bun codegen:api && nx sync client && nx run-many -p client, astro -t prepare",
     "codegen": "nx run-many -p client, astro -t codegen",
-    "check": "cd apps/client && bun run sync && cd ../.. && NODE_OPTIONS=--max-old-space-size=6144 nx run-many -p client, astro -t lint, format",
+    "check": "cd apps/client && bun run sync && cd ../.. && NODE_OPTIONS=--max-old-space-size=6144 nx run-many -p client, astro -t lint, format, compile && bun run check:libs",
     "fix": "nx run-many -p client, astro -t fix:all",
     "codegen:prod": "nx run-many -p client, astro -t codegen:prod",
     "check:react-astro": "bash ./tools/check-react-astro.sh",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "codegen:api": "bunx openapi-typescript https://raw.githubusercontent.com/outline/openapi/main/spec3.yml -o ./libs/outline/schema.ts"
+    "test": "bun test",
+    "codegen:api": "bunx openapi-typescript https://raw.githubusercontent.com/outline/openapi/main/spec3.yml -o ./libs/outline/schema.ts",
+    "check:libs": "prettier -c 'libs/**/*.{ts,tsx,json}' '!libs/outline/schema.ts'",
+    "format:libs": "prettier -w 'libs/**/*.{ts,tsx,json}' '!libs/outline/schema.ts'"
   },
   "lint-staged": {
     "client/*.{ts,tsx,svelte}": "eslint --fix",

@@ -18,7 +18,6 @@ const runMiddleware = (path: string, preferredLocale: string | undefined) =>
 
 test('root-scoped assets bypass locale redirects', () => {
   expect(getLocaleRedirect('/robots.txt', '', 'ja')).toBeNull();
-  expect(getLocaleRedirect('/manifest.webmanifest', '', 'th')).toBeNull();
 });
 
 test('bare routes receive a locale without losing query state', () => {
@@ -42,7 +41,25 @@ test('middleware falls back to English for invalid preferred locales', async () 
 
 test('middleware calls next for localized routes and root assets', async () => {
   const localized = await runMiddleware('/th/events?year=2024', 'ja');
-  const asset = await runMiddleware('/favicon.svg', undefined);
+  const favicon = await runMiddleware('/favicon-64.png', undefined);
+  const appleIcon = await runMiddleware('/apple-touch-icon.png', undefined);
+  const ogImage = await runMiddleware('/og-default.png', undefined);
+  const nestedAsset = await runMiddleware('/images/placeholder-project.jpg', undefined);
   expect(await localized.text()).toBe('next');
-  expect(await asset.text()).toBe('next');
+  expect(await favicon.text()).toBe('next');
+  expect(await appleIcon.text()).toBe('next');
+  expect(await ogImage.text()).toBe('next');
+  expect(await nestedAsset.text()).toBe('next');
+});
+
+test('a locale-shaped segment that is not a locale is not prefixed', async () => {
+  // `/xx/nope` was redirecting to `/en/xx/nope` — a nonsense URL the user and any crawler
+  // sees before the 404. A two-letter first segment that is not a known locale must 404
+  // where it stands.
+  const { getLocaleRedirect } = await import('../src/middleware/redirect');
+  expect(getLocaleRedirect('/xx/nope', '', 'en')).toBeNull();
+  expect(getLocaleRedirect('/zz', '', 'en')).toBeNull();
+  // ...while a real path still gets its locale prefix.
+  expect(getLocaleRedirect('/nope', '', 'en')).toBe('/en/nope');
+  expect(getLocaleRedirect('/projects', '', 'ja')).toBe('/ja/projects');
 });

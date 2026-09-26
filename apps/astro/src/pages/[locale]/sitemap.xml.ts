@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { escapeXml } from 'utils/xml';
 import { graphQLSdk } from '~/graphql';
 
 export const prerender = false;
@@ -18,12 +19,13 @@ const STATIC_ROUTES = [
 ];
 
 export const GET: APIRoute = async () => {
+  let cmsUnavailable = false;
   const urls: string[] = [];
 
   for (const locale of LOCALES) {
     for (const route of STATIC_ROUTES) {
       const path = route === '/' ? `/${locale}` : `/${locale}${route}`;
-      urls.push(`  <url><loc>${SITE_URL}${path}</loc></url>`);
+      urls.push(`  <url><loc>${escapeXml(SITE_URL + path)}</loc></url>`);
     }
   }
 
@@ -34,11 +36,13 @@ export const GET: APIRoute = async () => {
       const slug = (project as Record<string, unknown>).slug as string | undefined;
       if (!slug) continue;
       for (const locale of LOCALES) {
-        urls.push(`  <url><loc>${SITE_URL}/${locale}/projects/${slug}</loc></url>`);
+        const href = `${SITE_URL}/${locale}/projects/${encodeURIComponent(slug)}`;
+        urls.push(`  <url><loc>${escapeXml(href)}</loc></url>`);
       }
     }
   } catch {
-    // GraphQL unavailable — return static routes only
+    // GraphQL unavailable: serve the static routes, but do not cache a truncated sitemap.
+    cmsUnavailable = true;
   }
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -46,10 +50,14 @@ export const GET: APIRoute = async () => {
 ${urls.join('\n')}
 </urlset>`;
 
+  // A truncated sitemap served as 200 is read by a crawler as authoritative, which can
+  // deindex every project page. `rss.xml.ts` already returns 503 in the equivalent branch.
   return new Response(sitemap, {
+    status: cmsUnavailable ? 503 : 200,
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600'
+      'Cache-Control': cmsUnavailable ? 'no-store' : 'public, max-age=3600',
+      'CDN-Cache-Control': cmsUnavailable ? 'no-store' : 'public, max-age=3600, must-revalidate'
     }
   });
 };

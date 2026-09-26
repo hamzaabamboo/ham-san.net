@@ -17,6 +17,14 @@ describe('tagSlug', () => {
     expect(tagSlug({ title: null, slug: null })).toBe('');
     expect(tagSlug({})).toBe('');
   });
+
+  test('a title with no ASCII falls back to the stored slug', () => {
+    // `toKebabCase` strips every non-ASCII character, so a truthy CJK or Thai title used to
+    // short-circuit past a usable slug and route every such tag to `/tags/`.
+    expect(tagSlug({ title: '推し活', slug: 'oshikatsu' })).toBe('oshikatsu');
+    expect(tagSlug({ title: 'ไทย', slug: 'thai' })).toBe('thai');
+    expect(tagSlug({ title: '日本語 Web', slug: 'japanese-web' })).toBe('web');
+  });
 });
 
 describe('sortTags', () => {

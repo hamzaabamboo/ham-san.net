@@ -776,16 +776,29 @@ function calculateSequentialStreaks(
   };
 }
 
+// These formatters are called once per attended event and once per calendar day in the
+// weekend scan, so constructing them per call dominated report build time.
+const WEEKDAY_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  weekday: 'long',
+  timeZone: 'Asia/Tokyo'
+});
+const MONTH_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  timeZone: 'Asia/Tokyo'
+});
+const JST_DATE_KEY_FORMATTER = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Asia/Tokyo',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit'
+});
+
 function weekdayName(dateKey: string) {
-  return new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: 'Asia/Tokyo' }).format(
-    new Date(`${dateKey}T00:00:00+09:00`)
-  );
+  return WEEKDAY_FORMATTER.format(new Date(`${dateKey}T00:00:00+09:00`));
 }
 
 function monthName(dateKey: string) {
-  return new Intl.DateTimeFormat('en-US', { month: 'short', timeZone: 'Asia/Tokyo' }).format(
-    new Date(`${dateKey}T00:00:00+09:00`)
-  );
+  return MONTH_FORMATTER.format(new Date(`${dateKey}T00:00:00+09:00`));
 }
 
 function orderWeekdays(items: RankedItem[]) {
@@ -841,12 +854,7 @@ function daysBetween(start: string, end: string) {
 }
 
 function toJstDateKey(value: number) {
-  return new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Asia/Tokyo',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  }).format(new Date(value));
+  return JST_DATE_KEY_FORMATTER.format(new Date(value));
 }
 
 function shiftDate(dateKey: string, days: number) {

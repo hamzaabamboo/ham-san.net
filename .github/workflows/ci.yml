@@ -23,3 +23,5 @@ jobs:
         run: bun run codegen:prod
       - name: Run Lint All
         run: bun run check
+      - name: Run Tests
+        run: bun test

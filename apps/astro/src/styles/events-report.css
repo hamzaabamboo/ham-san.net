@@ -1,7 +1,7 @@
 .event-report {
   display: grid;
   gap: 1.5rem;
-  color: #f5eee3;
+  color: var(--atelier-fg);
 }
 
 .event-report__hero {
@@ -9,39 +9,34 @@
   grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
   gap: 1.5rem;
   align-items: stretch;
-  border-left: 2px solid #ffb000;
-  padding-left: clamp(1rem, 3vw, 2rem);
+  /* Hangs in the gutter so the h1 starts on the content edge, like every other route. */
+  border-left: 2px solid var(--atelier-line);
+  padding-left: 1.5rem;
+  margin-left: calc(-1.5rem - 2px);
 }
 
+/* Bottom-anchoring the copy inside a 19rem column left a ~700x220px hole above the page
+   title, so the eye landed on the identity card before the page name. */
 .event-report__hero-copy {
   display: grid;
   gap: 1rem;
-  align-content: end;
-  min-height: 19rem;
+  align-content: start;
 }
 
 .event-report__hero h1 {
   max-width: 11ch;
-  font-size: clamp(3.25rem, 8vw, 7.5rem);
-  font-style: italic;
+  /* The site's page-name h1 scale. This was clamped to 7.5rem and set in caps, so `/events`
+     was both the largest heading and the only uppercase one on the site. */
+  font-size: clamp(3.25rem, 8vw, 4.5rem);
   line-height: 0.88;
   letter-spacing: 0;
-  text-transform: uppercase;
 }
 
 .event-report__hero-copy > p:last-child {
   max-width: 44rem;
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   font-size: clamp(1rem, 2vw, 1.25rem);
   line-height: 1.7;
-}
-
-.event-report__kicker {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .event-report__identity,
@@ -51,8 +46,8 @@
 .event-report__stats article,
 .event-report__panel,
 .event-report__highlights article {
-  border: 1px solid #524533;
-  background: #1c1b1b;
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-surface-low);
 }
 
 .event-report__identity {
@@ -63,15 +58,15 @@
 }
 
 .event-report__identity p {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-accent);
+  font-family: var(--font-code);
   font-size: clamp(1.25rem, 4vw, 2rem);
   line-height: 1.1;
   overflow-wrap: anywhere;
 }
 
 .event-report__identity span {
-  color: #9f8e78;
+  color: var(--atelier-outline);
   line-height: 1.6;
 }
 
@@ -87,21 +82,21 @@
   min-height: 4.75rem;
   align-content: end;
   border: 1px solid rgba(82, 69, 51, 0.65);
-  background: #171616;
+  background: var(--atelier-bg);
   padding: 0.65rem;
 }
 
 .event-report__hero-stats span {
-  color: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 0.625rem;
   line-height: 1.25;
   text-transform: uppercase;
 }
 
 .event-report__hero-stats strong {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
   font-size: clamp(0.85rem, 2vw, 1.1rem);
   line-height: 1.2;
   overflow-wrap: anywhere;
@@ -119,10 +114,10 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border: 1px solid #8a6a34;
+  border: 1px solid var(--atelier-line);
   padding: 0.6rem 0.9rem;
-  color: #ffd597;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-accent-soft);
+  font-family: var(--font-code);
   font-size: 0.75rem;
   text-decoration: none;
   text-transform: uppercase;
@@ -134,17 +129,17 @@
 
 .event-report__actions a:hover,
 .event-report__actions a:focus-visible {
-  border-color: #ffb000;
-  background: #ffb000;
-  color: #111;
+  border-color: var(--atelier-accent);
+  background: var(--atelier-accent);
+  color: var(--atelier-bg);
 }
 
 .event-report__status {
   display: grid;
   gap: 0.55rem;
   padding: 1rem;
-  color: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 0.75rem;
 }
 
@@ -178,7 +173,8 @@
   display: grid;
   gap: 1rem;
   min-width: 0;
-  scroll-margin-top: 1rem;
+  /* Clears the 64px fixed nav — at 1rem every rail anchor landed its h2 behind it. */
+  scroll-margin-top: 5.5rem;
 }
 
 .event-report__section > * {
@@ -186,30 +182,9 @@
 }
 
 .event-report__section--controls {
-  border: 1px solid #524533;
-  background: #171616;
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-bg);
   padding: 1rem;
-}
-
-.event-report__section-head {
-  display: grid;
-  gap: 0.35rem;
-  align-content: start;
-  min-width: 0;
-  border-left: 2px solid #ffb000;
-  padding-left: 0.8rem;
-}
-
-.event-report__section-head h2 {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.event-report__section-head h2 {
-  color: #f5eee3;
-  font-size: clamp(1.5rem, 3vw, 2.4rem);
-  font-style: italic;
-  line-height: 1;
 }
 
 .event-report__jump-nav {
@@ -223,8 +198,8 @@
   align-items: center;
   border-bottom: 1px solid rgba(82, 69, 51, 0.55);
   padding: 0.65rem 0.75rem;
-  color: #c7c6c6;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg-muted);
+  font-family: var(--font-code);
   font-size: 0.75rem;
   text-decoration: none;
   text-transform: uppercase;
@@ -240,7 +215,7 @@
 .event-report__jump-nav a:hover,
 .event-report__jump-nav a:focus-visible {
   background: rgba(255, 176, 0, 0.1);
-  color: #ffd597;
+  color: var(--atelier-accent-soft);
 }
 
 .event-report__year-filter {
@@ -253,12 +228,13 @@
   display: inline-flex;
   min-width: 44px;
   min-height: 44px;
+  white-space: nowrap;
   align-items: center;
   justify-content: center;
-  border: 1px solid #524533;
+  border: 1px solid var(--atelier-line);
   padding: 0.55rem 0.85rem;
-  color: #c7c6c6;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg-muted);
+  font-family: var(--font-code);
   font-size: 0.75rem;
   text-decoration: none;
   text-transform: uppercase;
@@ -268,12 +244,21 @@
     color 180ms ease;
 }
 
-.event-report__year-filter a[data-active='true'],
+.event-report__year-filter /* The selected chip carried the same solid amber fill the sidebar's active row was demoted
+   from in round 22, making a passive selection the loudest element on the page. The rule
+   marks it; the fill stays for the interactive states. */
+a[data-active='true'] {
+  border-color: var(--atelier-accent);
+  border-left: 2px solid var(--atelier-accent);
+  background: var(--atelier-surface-low);
+  color: var(--atelier-fg);
+}
+
 .event-report__year-filter a:hover,
 .event-report__year-filter a:focus-visible {
-  border-color: #ffb000;
-  background: #ffb000;
-  color: #111;
+  border-color: var(--atelier-accent);
+  background: var(--atelier-accent);
+  color: var(--atelier-bg);
 }
 
 .event-report__preset-grid {
@@ -287,21 +272,21 @@
   gap: 0.4rem;
   min-height: 5.75rem;
   align-content: center;
-  border: 1px solid #524533;
-  background: #171616;
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-bg);
   padding: 0.8rem;
 }
 
 .event-report__preset-grid p {
-  color: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 0.6875rem;
   text-transform: uppercase;
 }
 
 .event-report__preset-grid strong {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
   font-size: 1.5rem;
   line-height: 1;
 }
@@ -309,8 +294,8 @@
 .event-report__overview-card {
   display: grid;
   gap: 2rem;
-  border: 1px solid #524533;
-  background: #1c1b1b;
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-surface-low);
   padding: clamp(1rem, 3vw, 1.75rem);
 }
 
@@ -320,38 +305,51 @@
 }
 
 .event-report__overview-card h3 {
-  color: #f5eee3;
-  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  color: var(--atelier-fg);
+  /* Same rank as `.event-report__panel h3` on the same page, so the same ramp. */
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
   line-height: 1.2;
 }
 
+/* `subgrid` rather than a reserved label height: the articles share the parent's row tracks,
+   so the label row is as tall as the tallest label in the row and every value starts on the
+   same line by construction. A `min-height` guess only holds until a label wraps to one more
+   line than the guess — at 1180 a two-line reservation still broke by 22px. */
 .event-report__overview-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: auto;
   gap: clamp(0.85rem, 2vw, 2rem);
 }
 
 .event-report__overview-grid article {
   display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
   gap: 0.45rem;
   min-height: 5.25rem;
   align-content: start;
 }
 
+/* Reserves two label lines so every value in a row starts on the same track. With
+   `align-content: start` the value row begins wherever the label ends, so the one label that
+   wrapped dropped its number 21px below its neighbours — the same failure the project cards
+   had when their icon row collapsed. */
 .event-report__overview-grid p {
-  color: #9f8e78;
-  font-weight: 650;
+  color: var(--atelier-outline);
+  font-weight: 700;
   line-height: 1.35;
+  min-height: 2.7em;
   overflow-wrap: anywhere;
 }
 
 .event-report__overview-grid strong[data-kind='context'] {
-  color: #ffd597;
+  color: var(--atelier-fg-muted);
 }
 
 .event-report__overview-grid strong {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
   font-size: clamp(1.2rem, 2vw, 1.65rem);
   line-height: 1;
   overflow-wrap: break-word;
@@ -359,7 +357,7 @@
 }
 
 .event-report__overview-grid span {
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -369,21 +367,23 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
-  border: 1px solid #524533;
+  border: 1px solid var(--atelier-line);
   border-bottom: 0;
-  background: #1c1b1b;
+  background: var(--atelier-surface-low);
   padding: clamp(1rem, 2vw, 1.35rem);
 }
 
+/* A panel header keeps its own frame — no stretching rule, because the panel's border draws
+   that line — but it sits on the same type step as every other section heading. */
 .event-report__highlight-head h2 {
-  color: #f5eee3;
-  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  color: var(--atelier-fg);
+  font-size: clamp(1.875rem, 3vw, 2.25rem);
   line-height: 1.1;
 }
 
 .event-report__highlight-head p,
 .event-report__panel-head p {
-  color: #9f8e78;
+  color: var(--atelier-outline);
   line-height: 1.5;
 }
 
@@ -395,14 +395,16 @@
 .event-report__highlight-totals span {
   display: grid;
   gap: 0.2rem;
-  color: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 0.75rem;
-  text-align: center;
+  /* Left, like every other block on the site: centred inside a left-aligned panel head the
+     figures read as a stray card, which is what they looked like at 390. */
+  text-align: left;
 }
 
 .event-report__highlight-totals strong {
-  color: #ffb000;
+  color: var(--atelier-fg);
   font-size: clamp(1.6rem, 3vw, 2.25rem);
   line-height: 1;
 }
@@ -411,9 +413,9 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
-  border: 1px solid #524533;
+  border: 1px solid var(--atelier-line);
   border-top: 0;
-  background: #1c1b1b;
+  background: var(--atelier-surface-low);
   padding: clamp(1rem, 2vw, 1.35rem);
 }
 
@@ -426,28 +428,23 @@
   padding: 1rem;
 }
 
-.event-report__highlight-grid .material-symbols-outlined {
-  color: #ffb000;
-  font-size: 1.7rem;
-}
-
 .event-report__highlight-grid p {
-  color: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .event-report__highlight-grid strong {
-  color: #f5eee3;
+  color: var(--atelier-fg);
   font-size: clamp(0.95rem, 1.45vw, 1.1rem);
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
 .event-report__highlight-grid small {
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -467,21 +464,21 @@
 
 .event-report__stats p,
 .event-report__highlights p {
-  color: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 0.6875rem;
   text-transform: uppercase;
 }
 
 .event-report__stats strong {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
   font-size: clamp(1.9rem, 4vw, 3rem);
   line-height: 1;
 }
 
 .event-report__stats span {
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   font-size: 0.8125rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
@@ -499,27 +496,27 @@
   gap: 0.25rem 0.75rem;
   min-height: 4.25rem;
   align-content: center;
-  border: 1px solid #524533;
-  background: #171616;
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-bg);
   padding: 0.75rem;
 }
 
 .event-report__metrics-strip p {
-  color: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 0.6875rem;
   text-transform: uppercase;
 }
 
 .event-report__metrics-strip strong {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
   font-size: 1.25rem;
 }
 
 .event-report__metrics-strip span {
   grid-column: 1 / -1;
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   font-size: 0.75rem;
   line-height: 1.35;
   overflow-wrap: anywhere;
@@ -577,57 +574,64 @@
   gap: 1rem;
 }
 
-.event-report__panel h2 {
-  color: #f5eee3;
+.event-report__panel h3 {
+  color: var(--atelier-fg);
   font-size: clamp(1.35rem, 2.2vw, 2rem);
-  font-style: italic;
   line-height: 1.05;
 }
 
 .event-report__panel-head > span {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-accent);
+  font-family: var(--font-code);
   font-size: 1.5rem;
   flex-shrink: 0;
   white-space: nowrap;
 }
 
-.event-report__panel-head h2 {
+.event-report__panel-head h3 {
   min-width: 0;
 }
 
 .event-report__svg-chart {
   width: 100%;
-  min-height: 16rem;
+  height: auto;
   border: 1px solid rgba(82, 69, 51, 0.55);
-  background: #151414;
+  background: var(--atelier-bg);
+}
+
+/* The 16rem floor is right once there is width for it; at 390, against a fixed viewBox, it
+   letterboxed 70px of dead band above and below 117px of drawn chart. */
+@media (min-width: 45rem) {
+  .event-report__svg-chart {
+    min-height: 16rem;
+  }
 }
 
 .event-report__svg-chart line {
-  stroke: #524533;
+  stroke: var(--atelier-line);
   stroke-width: 2;
 }
 
 .event-report__svg-chart rect {
-  fill: #ffb000;
+  fill: var(--atelier-outline);
 }
 
 .event-report__svg-chart polyline {
   fill: none;
-  stroke: #ffd597;
+  stroke: var(--atelier-accent-soft);
   stroke-width: 4;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
 
 .event-report__svg-chart--line polyline {
-  stroke: var(--line-color, #ffd597);
+  stroke: var(--line-color, var(--atelier-accent-soft));
   stroke-dasharray: var(--line-dash, none);
 }
 
 .event-report__svg-chart text {
-  fill: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  fill: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 1rem;
   text-anchor: middle;
 }
@@ -653,14 +657,13 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   line-height: 1.4;
 }
 
 .event-report__legend span::before {
   width: 0.65rem;
   height: 0.65rem;
-  border-radius: 50%;
   background: var(--legend-color);
   content: '';
 }
@@ -689,34 +692,34 @@
 
 .event-report__event:hover,
 .event-report__event:focus-visible {
-  border-color: #ffb000;
+  border-color: var(--atelier-accent);
   background: rgba(255, 176, 0, 0.08);
   transform: translateY(-1px);
 }
 
 .event-report__event time {
   grid-row: span 2;
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-accent);
+  font-family: var(--font-code);
   font-size: 0.75rem;
   line-height: 1.35;
 }
 
 .event-report__event span {
-  color: #f5eee3;
-  font-weight: 650;
+  color: var(--atelier-fg);
+  font-weight: 700;
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
 .event-report__event small {
-  color: #9f8e78;
+  color: var(--atelier-outline);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
 .event-report__event--next {
-  border-color: #8a6a34;
+  border-color: var(--atelier-line);
   background: rgba(255, 176, 0, 0.045);
 }
 
@@ -729,8 +732,8 @@
   display: flex;
   min-height: 44px;
   align-items: center;
-  color: #ffd597;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-accent-soft);
+  font-family: var(--font-code);
   font-size: 0.75rem;
   text-transform: uppercase;
   cursor: pointer;
@@ -738,7 +741,7 @@
 
 .event-report__rank-more summary:hover,
 .event-report__rank-more summary:focus-visible {
-  color: #ffb000;
+  color: var(--atelier-accent);
 }
 
 .event-report__rank-more[open] > .event-report__rank-list {
@@ -754,25 +757,31 @@
   border-bottom: 1px solid rgba(82, 69, 51, 0.55);
 }
 
+/* The bar fills a full-width track rather than floating at its own length: without the
+   unfilled remainder there is no scale on screen, so a square-root-compressed bar reads as
+   a linear one and understates the leader. */
 .event-report__rank-list i {
   display: block;
-  width: var(--size, 0%);
-  min-width: 0.35rem;
+  width: 100%;
   height: 0.45rem;
-  background: #ffb000;
+  background: linear-gradient(
+    to right,
+    var(--atelier-outline) 0 max(var(--size, 0%), 3px),
+    var(--atelier-surface-high) max(var(--size, 0%), 3px) 100%
+  );
 }
 
 .event-report__rank-list span,
 .event-report__month span {
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
 .event-report__rank-list strong,
 .event-report__month strong {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
 }
 
 .event-report__month {
@@ -793,7 +802,7 @@
   width: var(--size);
   min-width: 0.5rem;
   height: 0.45rem;
-  background: #ffb000;
+  background: var(--atelier-outline);
 }
 
 .event-report__compact-chart,
@@ -804,15 +813,15 @@
 
 .event-report__compact-bar span,
 .event-report__spark span {
-  color: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 0.75rem;
 }
 
 .event-report__compact-bar strong,
 .event-report__spark strong {
-  color: #f5eee3;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
   font-size: 0.75rem;
   text-align: right;
 }
@@ -830,7 +839,7 @@
   width: var(--size);
   min-width: 0.5rem;
   height: 0.65rem;
-  background: #ffb000;
+  background: var(--atelier-outline);
 }
 
 .event-report__spark-grid {
@@ -850,7 +859,7 @@
   display: block;
   width: 100%;
   height: max(0.25rem, calc(var(--size) / 100 * 3.5rem));
-  background: #ffb000;
+  background: var(--atelier-outline);
 }
 
 .event-report__heatmap-shell {
@@ -865,8 +874,8 @@
   grid-template-columns: 2.92rem repeat(var(--weeks, 30), 0.65rem);
   gap: 0.18rem;
   min-height: 1rem;
-  color: #c7c6c6;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg-muted);
+  font-family: var(--font-code);
   font-size: 0.72rem;
 }
 
@@ -877,7 +886,7 @@
   left: 0;
   grid-row: 1;
   grid-column: 1;
-  background: #1c1b1b;
+  background: var(--atelier-surface-low);
 }
 
 .event-report__heatmap-months span {
@@ -888,8 +897,8 @@
 
 .event-report__panel-head > .event-report__heatmap-window {
   align-self: center;
-  color: #9f8e78;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-outline);
+  font-family: var(--font-code);
   font-size: 0.75rem;
   text-transform: none;
 }
@@ -907,11 +916,11 @@
   display: grid;
   grid-template-rows: repeat(7, 0.65rem);
   gap: 0.18rem;
-  color: #c7c6c6;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg-muted);
+  font-family: var(--font-code);
   font-size: 0.62rem;
   line-height: 0.65rem;
-  background: #1c1b1b;
+  background: var(--atelier-surface-low);
 }
 
 .event-report__heatmap-days span:nth-of-type(1) {
@@ -938,12 +947,23 @@
 .event-report__heatmap span {
   aspect-ratio: 1;
   grid-row: calc(var(--weekday) + 1);
-  border: 1px solid rgba(82, 69, 51, 0.8);
-  background: color-mix(in srgb, #ffb000 calc(var(--level) * 100%), #25211b);
+  /* A full-strength outline is 35% of a ~10px cell and brighter than bucket 1, which
+     flattens the very density signal the fill carries. The legend swatches are large
+     enough to keep the stronger border. */
+  border: 1px solid var(--atelier-line);
+  background: color-mix(
+    in srgb,
+    var(--atelier-accent) calc(55% + var(--level) * 45%),
+    var(--atelier-surface)
+  );
 }
 
 .event-report__heatmap span[data-empty='true'] {
-  background: #25211b;
+  /* An empty cell has no fill to carry meaning, so its border is the only mark that the day
+     exists — it takes the strong outline. Populated cells keep the soft hairline, because
+     there a bright 1px border on a ~10px cell out-reads the bucket fill it frames. */
+  border-color: var(--atelier-outline);
+  background: var(--atelier-surface-high);
 }
 
 .event-report__heatmap-legend {
@@ -951,30 +971,28 @@
   gap: 0.35rem;
   align-items: center;
   justify-content: flex-end;
-  color: #9f8e78;
+  color: var(--atelier-outline);
   font-size: 0.75rem;
 }
 
 .event-report__heatmap-legend i {
   width: 0.75rem;
   height: 0.75rem;
-  background: #25211b;
+  border: 1px solid var(--atelier-outline);
+  /* Must match `span[data-empty='true']`, or the key teaches a state the grid never shows. */
+  background: var(--atelier-surface-high);
 }
 
 .event-report__heatmap-legend i:nth-of-type(2) {
-  background: color-mix(in srgb, #ffb000 25%, #25211b);
+  background: color-mix(in srgb, var(--atelier-accent) 55%, var(--atelier-surface));
 }
 
 .event-report__heatmap-legend i:nth-of-type(3) {
-  background: color-mix(in srgb, #ffb000 45%, #25211b);
+  background: color-mix(in srgb, var(--atelier-accent) 77.5%, var(--atelier-surface));
 }
 
 .event-report__heatmap-legend i:nth-of-type(4) {
-  background: color-mix(in srgb, #ffb000 70%, #25211b);
-}
-
-.event-report__heatmap-legend i:nth-of-type(5) {
-  background: #ffb000;
+  background: var(--atelier-accent);
 }
 
 .event-report__panel--attendance {
@@ -986,10 +1004,12 @@
   gap: 0.4rem;
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: #ffb000 #25211b;
+  scrollbar-color: var(--atelier-accent) var(--atelier-surface);
   background:
-    linear-gradient(to right, #1c1b1b 30%, rgba(28, 27, 27, 0)) left/2.5rem 100% no-repeat local,
-    linear-gradient(to left, #1c1b1b 30%, rgba(28, 27, 27, 0)) right/2.5rem 100% no-repeat local,
+    linear-gradient(to right, var(--atelier-surface-low) 30%, rgba(28, 27, 27, 0)) left/2.5rem 100%
+      no-repeat local,
+    linear-gradient(to left, var(--atelier-surface-low) 30%, rgba(28, 27, 27, 0)) right/2.5rem 100%
+      no-repeat local,
     linear-gradient(to right, rgba(255, 176, 0, 0.35), transparent) left/1rem 100% no-repeat scroll,
     linear-gradient(to left, rgba(255, 176, 0, 0.35), transparent) right/1rem 100% no-repeat scroll;
 }
@@ -1002,7 +1022,7 @@
   min-width: 42rem;
   border-bottom: 1px solid rgba(82, 69, 51, 0.55);
   padding: 0.6rem 0;
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
 }
 
 .event-report__attendance-row > span:first-child {
@@ -1014,23 +1034,23 @@
   width: var(--size);
   max-width: 100%;
   height: 0.25rem;
-  background: #ffb000;
+  background: var(--atelier-outline);
 }
 
 .event-report__attendance-row strong {
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
 }
 
 .event-report__attendance-row--head,
 .event-report__attendance-row--total {
-  color: #f5eee3;
+  color: var(--atelier-fg);
   font-weight: 700;
 }
 
 .event-report__attendance-row--total {
   border-bottom: 0;
-  background: rgba(245, 238, 227, 0.04);
+  background: rgba(229, 226, 225, 0.04);
   padding-inline: 0.75rem;
 }
 
@@ -1049,13 +1069,8 @@
   padding: 1rem;
 }
 
-.event-report__highlights .material-symbols-outlined {
-  color: #ffb000;
-  font-size: 2rem;
-}
-
 .event-report__highlights strong {
-  color: #f5eee3;
+  color: var(--atelier-fg);
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
@@ -1069,27 +1084,21 @@
   padding: clamp(1.25rem, 3vw, 2rem);
 }
 
-.event-report__fallback .material-symbols-outlined {
-  color: #ffb000;
-  font-size: 2.25rem;
-}
-
 .event-report__fallback h2 {
   font-size: clamp(2rem, 4vw, 3rem);
-  font-style: italic;
 }
 
 .event-report__fallback p,
 .event-report__empty {
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   line-height: 1.7;
 }
 
 .event-report__fallback a {
   display: inline-block;
   margin-top: 0.5rem;
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-accent);
+  font-family: var(--font-code);
   font-size: 0.85rem;
   text-decoration: underline;
   text-underline-offset: 0.2em;
@@ -1097,7 +1106,7 @@
 
 @media (max-width: 1080px) {
   .event-report__workspace {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .event-report__rail {
@@ -1134,7 +1143,7 @@
   .event-report__highlights,
   .event-report__analytics,
   .event-report__chart-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .event-report__highlight-head {
@@ -1182,8 +1191,18 @@
 }
 
 @media (max-width: 520px) {
-  .event-report__hero {
-    padding-left: 1rem;
+  /* A 30rem row inside a 324px card scrolled, so the "Missed" header read as "Mis" and the
+     values were sliced mid-glyph at the card edge — it looked broken rather than scrollable.
+     Went and Rate carry the point; Missed and Total are derivable from them. */
+  .event-report__attendance-row {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .event-report__attendance-row > *:nth-child(3),
+  .event-report__attendance-row > *:nth-child(4) {
+    display: none;
   }
 
   .event-report__actions {
@@ -1192,11 +1211,11 @@
 
   .event-report__highlight-totals {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .event-report__metrics-strip article {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .event-report__preset-grid {
@@ -1212,11 +1231,18 @@
   }
 
   .event-report__rank-list li {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  /* Name and value share row 1, the bar spans row 2. Without pinning the value the second
+     column resolved to 0px and the percentage fell to a third row under the bar, taking
+     every row from 47px to 87px. */
+  .event-report__rank-list li > strong {
+    grid-area: 1 / 2;
   }
 
   .event-report__rank-list i {
-    grid-column: 1 / -1;
+    grid-area: 2 / 1 / 3 / -1;
   }
 
   .event-report__spark-grid {
@@ -1224,7 +1250,7 @@
   }
 
   .event-report__event {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .event-report__event time {
@@ -1238,4 +1264,41 @@
   .event-report__status {
     display: grid;
   }
+}
+
+.event-report__highlight-grid svg {
+  color: var(--atelier-accent);
+  font-size: 1.5rem;
+}
+
+.event-report__highlights svg {
+  color: var(--atelier-accent);
+  font-size: 1.5rem;
+}
+
+.event-report__fallback svg {
+  color: var(--atelier-accent);
+  font-size: 1.5rem;
+}
+
+/* One amber mark per chart: the leading value. Every other bar is graphite, so the eye
+   goes to the datum that matters instead of to the whole chart.
+   Marked in the template, not by `:first-of-type` — DOM position is the leader only in a
+   list sorted descending. The weekday and month-of-year charts are in calendar order, so
+   position 1 was Monday and January; the attendance table's first row is its header, which
+   has no bar at all. */
+[data-leader] i {
+  background: linear-gradient(
+    to right,
+    var(--atelier-accent) 0 var(--size, 100%),
+    var(--atelier-surface-high) var(--size, 100%) 100%
+  );
+}
+
+/* A spark encodes its value as HEIGHT, so it has no horizontal track to fill — and it emits
+   `--size` unitless for the height calc, which made the gradient above an invalid value.
+   An invalid `background` falls back to the initial value, not to the graphite rule, so the
+   one bar meant to be amber was the only invisible bar on the page. */
+.event-report__spark[data-leader] i {
+  background: var(--atelier-accent);
 }

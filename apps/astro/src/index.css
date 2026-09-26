@@ -22,6 +22,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
   html {
     scroll-behavior: auto;
   }
@@ -36,19 +44,58 @@
 @layer base {
   :root {
     color-scheme: dark;
+    /* Park UI recipes fall back to #005fcc when this is undefined, which paints a blue
+       focus ring on every page that imports a ui/link or IconButton. */
+    --global-color-focus-ring: var(--atelier-accent);
+  }
+
+  body {
+    /* The italic suppression below is keyed to `html:lang(ja)`/`:lang(th)`, so Thai or
+       Japanese CMS text inside an `lang="en"` document still got a faux oblique from a face
+       with no italic. Refuse synthesis outright rather than per-locale. */
+    font-synthesis-style: none;
   }
 
   html {
-    --font-body: 'Manrope', sans-serif;
-    --font-display: 'Newsreader', serif;
-    --font-code: 'JetBrains Mono', monospace;
+    /* The page content sits this far inside the sidebar column. The nav bar and the footer
+       consume the same value so the brand, the headings and the copyright share one left
+       edge; hand-set paddings had them 32px outboard and 24px inboard respectively, at
+       every width. */
+    --content-inset: 2rem;
+    --atelier-bg: #131313;
+    --atelier-fg: #e5e2e1;
+    --atelier-surface-lowest: #0e0e0e;
+    --atelier-surface-low: #1c1b1b;
+    --atelier-surface: #201f1f;
+    --atelier-surface-high: #2a2a2a;
+    --atelier-surface-highest: #353534;
+    --atelier-fg-muted: #c7c6c6;
+    --atelier-outline: #9f8e78;
+    --atelier-line: #524533;
+    --atelier-accent: #ffb000;
+    --atelier-accent-soft: #ffd597;
+    --atelier-on-accent: #432c00;
+    --atelier-danger: #ffb4ab;
+    /* CMS data carries Japanese names on every locale (artist and venue fields on
+       /events). Manrope, Newsreader and JetBrains Mono have no CJK coverage, so those runs
+       fell to an arbitrary browser default on /en. These fallbacks are installed system
+       faces, not webfonts, so /en downloads nothing extra and Latin still leads. */
+    --font-body: 'Manrope', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    --font-display: 'Newsreader', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    --font-code: 'JetBrains Mono', 'Hiragino Sans', 'Yu Gothic', monospace;
+    /* CMS and photographic imagery sits in the graphite system at rest and comes to colour
+       on hover. Six call sites duplicated three slightly different spellings of this. */
+    --atelier-image-rest: saturate(0.32) contrast(1.06) brightness(0.78);
+    --atelier-image-hover: saturate(1.05) contrast(1.06);
+    /* Surfaces that rest at true colour because they have no hover to recover from: the
+       project detail banner is the page's primary product screenshot. */
+    --atelier-image-plate: contrast(1.04);
     font-family: var(--font-body);
-    scroll-behavior: smooth;
     background:
       linear-gradient(rgba(82, 69, 51, 0.14) 1px, transparent 1px),
       linear-gradient(90deg, rgba(82, 69, 51, 0.14) 1px, transparent 1px),
       linear-gradient(135deg, rgba(255, 213, 151, 0.05), transparent 32rem),
-      linear-gradient(180deg, rgba(255, 176, 0, 0.06), transparent 24rem), #131313;
+      linear-gradient(180deg, rgba(255, 176, 0, 0.06), transparent 24rem), var(--atelier-bg);
     background-size:
       56px 56px,
       56px 56px,
@@ -58,8 +105,8 @@
   }
 
   body {
-    background-color: token(colors.bg.canvas);
-    color: token(colors.fg.default);
+    background-color: var(--atelier-bg);
+    color: var(--atelier-fg);
     min-height: 100dvh;
     text-rendering: optimizeLegibility;
   }
@@ -69,48 +116,26 @@
   }
 
   :focus-visible {
-    outline: 2px solid #ffb000;
+    outline: 2px solid var(--atelier-accent);
     outline-offset: 2px;
   }
 
   ::selection {
-    background: #ffb000;
-    color: #131313;
+    background: var(--atelier-accent);
+    color: var(--atelier-bg);
   }
 
   ::-webkit-scrollbar {
     width: 4px;
   }
   ::-webkit-scrollbar-track {
-    background: #131313;
+    background: var(--atelier-bg);
   }
   ::-webkit-scrollbar-thumb {
-    background: #524533;
+    background: var(--atelier-line);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #ffb000;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(circle at top right, rgba(255, 176, 0, 0.1), transparent 28%),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.18), transparent 12rem);
-    z-index: -1;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0.015));
-    mix-blend-mode: soft-light;
-    opacity: 0.45;
-    z-index: -1;
+    background: var(--atelier-accent);
   }
 
   a {
@@ -133,9 +158,10 @@
   }
 
   html:lang(ja) body {
-    --font-body: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
-    --font-display: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
-    font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+    --font-body: 'Manrope', 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    --font-display: 'Newsreader', 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    font-family: 'Manrope', 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    --font-code: 'JetBrains Mono', 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', monospace;
   }
 
   html:lang(ja) h1,
@@ -144,15 +170,16 @@
   html:lang(ja) h4,
   html:lang(ja) h5,
   html:lang(ja) h6 {
-    font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+    font-family: 'Newsreader', 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
     font-style: normal;
     letter-spacing: -0.02em;
   }
 
   html:lang(th) body {
-    --font-body: 'Noto Sans Thai', 'Manrope', sans-serif;
-    --font-display: 'Noto Serif Thai', 'Newsreader', serif;
-    font-family: 'Noto Sans Thai', 'Manrope', sans-serif;
+    --font-body: 'Manrope', 'Noto Sans Thai', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    --font-display: 'Newsreader', 'Noto Serif Thai', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    font-family: 'Manrope', 'Noto Sans Thai', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    --font-code: 'JetBrains Mono', 'Noto Sans Thai', 'Hiragino Sans', 'Yu Gothic', monospace;
   }
 
   html:lang(th) h1,
@@ -161,14 +188,13 @@
   html:lang(th) h4,
   html:lang(th) h5,
   html:lang(th) h6 {
-    font-family: 'Noto Serif Thai', 'Newsreader', serif;
+    font-family: 'Newsreader', 'Noto Serif Thai', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
     font-style: normal;
     letter-spacing: 0;
   }
 }
 
 html:lang(ja) .font-style_italic,
-html:lang(ja) .shell-nav-link,
 html:lang(th) .font-style_italic,
 html:lang(th) .shell-nav-link {
   font-style: normal !important;
@@ -191,7 +217,6 @@ html:lang(ja) .credentials-grid,
 html:lang(ja) .note-cta-button,
 html:lang(ja) .home-hero-cta,
 html:lang(ja) .notes-pagination-link,
-html:lang(ja) .event-report__kicker,
 html:lang(ja) .event-report__highlight-grid p,
 html:lang(th) [class*='ls_0.'],
 html:lang(th) [class*='ls_wide'],
@@ -203,18 +228,27 @@ html:lang(th) .credentials-grid,
 html:lang(th) .note-cta-button,
 html:lang(th) .home-hero-cta,
 html:lang(th) .notes-pagination-link,
-html:lang(th) .event-report__kicker,
 html:lang(th) .event-report__highlight-grid p {
   letter-spacing: 0 !important;
   text-transform: none !important;
+}
+
+/* The wordmark is Latin on every locale, but the `[class*='ls_*']` exemptions above catch
+   any element carrying a letter-spacing utility and kill its `text-transform` too, so the
+   plate read "HAM" on /en and "Ham" on /ja and /th. Styled by name, it is not matched. */
+.brand-plate-label {
+  font-family: var(--font-code);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
 .home-hero-cta {
   display: inline-flex;
   align-items: center;
   padding: 1rem 2rem;
-  border: 1px solid #524533;
-  font-family: 'Manrope', sans-serif;
+  border: 1px solid var(--atelier-line);
+  font-family: var(--font-body);
   font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -222,15 +256,24 @@ html:lang(th) .event-report__highlight-grid p {
   text-transform: uppercase;
 }
 
+/* Stacked at 390 the two CTAs were 183px and 238px, both left-aligned, so the hero's most
+   important element had a ragged right edge. */
+@media (max-width: 640px) {
+  .home-hero-cta {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
 .notes-pagination-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  border: 1px solid #524533;
-  background: #1c1b1b;
-  color: #ffd597;
-  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-surface-low);
+  color: var(--atelier-accent-soft);
+  font-family: var(--font-code);
   font-size: 11px;
   letter-spacing: 0.12em;
   text-decoration: none;
@@ -239,19 +282,22 @@ html:lang(th) .event-report__highlight-grid p {
 }
 
 .home-hero-cta-primary {
-  background-color: #ffb000;
-  color: #432c00;
+  background-color: var(--atelier-accent);
+  color: var(--atelier-on-accent);
 }
 
 .home-hero-cta.cta-secondary {
   background-color: transparent;
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
 }
 
+/* Coupling this to a Panda utility class name broke silently when the font family moved
+   to a token. Target the elements instead. */
 html:lang(ja) h1,
 html:lang(ja) h2,
 html:lang(ja) h3,
-html:lang(ja) [class*='ff_Newsreader'] {
+html:lang(ja) h4,
+html:lang(ja) p {
   word-break: auto-phrase;
 }
 
@@ -265,8 +311,7 @@ html:lang(th) h6 {
 }
 
 #main-nav.scrolled {
-  background-color: rgba(19, 19, 19, 0.95) !important;
-  backdrop-filter: blur(12px);
+  background-color: var(--atelier-bg) !important;
   box-shadow: 0 4px 0 0 rgba(14, 14, 14, 1);
 }
 
@@ -283,30 +328,10 @@ html:lang(th) h6 {
   border-right: 1px solid rgba(82, 69, 51, 0.35);
 }
 
-.spec-label {
-  background: #353534;
-  border-color: #524533;
-}
-
-.spec-label-inverted {
-  background: #432c00;
-  border-color: #432c00;
-}
-
-.image-muted,
-.image-muted img,
-.image-muted picture,
-.image-muted video {
-  filter: saturate(1.08) contrast(1.03);
-}
-
-.group:hover .group-hover-scale {
-  transform: scale(1.05);
-}
-
 .image-archival img {
-  filter: saturate(1.12) contrast(1.04);
-  opacity: 0.92;
+  /* CMS imagery rests in the graphite system and comes to colour on hover. This rule, not
+     ProjectCard, is what the projects index uses, so the round-15 edit never reached it. */
+  filter: var(--atelier-image-rest);
   transform: scale(1);
   transition:
     filter 0.5s ease,
@@ -315,30 +340,17 @@ html:lang(th) h6 {
 }
 
 .group:hover .image-archival img {
-  filter: saturate(1.28) contrast(1.08);
+  filter: var(--atelier-image-hover);
   opacity: 1;
   transform: scale(1.05);
 }
 
-.image-muted-soft img {
-  filter: saturate(0.95) contrast(1.04);
-  opacity: 0.78;
-  transition:
-    filter 0.5s ease,
-    opacity 0.5s ease;
-}
-
-.group:hover .image-muted-soft img {
-  filter: saturate(1.2) contrast(1.08);
-  opacity: 0.96;
-}
-
 .amber-link {
-  color: #ffb000;
+  color: var(--atelier-accent);
 }
 
 .amber-link:hover {
-  color: #ffd597;
+  color: var(--atelier-accent-soft);
 }
 
 .group:hover .group-hover-reveal {
@@ -346,7 +358,7 @@ html:lang(th) h6 {
 }
 
 .group:hover .group-hover-amber {
-  color: #ffd597;
+  color: var(--atelier-accent-soft);
 }
 
 .group:hover .arrow-icon {
@@ -405,7 +417,7 @@ html:lang(th) h6 {
     background-color 0.25s ease;
 }
 .card-hover-amber:hover {
-  border-color: #ffb000 !important;
+  border-color: var(--atelier-accent) !important;
   background-color: rgba(53, 53, 52, 0.25);
 }
 
@@ -417,8 +429,7 @@ html:lang(th) h6 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(1.12) contrast(1.04);
-  opacity: 0.78;
+  filter: var(--atelier-image-rest);
   mix-blend-mode: normal;
 }
 
@@ -432,7 +443,7 @@ html:lang(th) h6 {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #e5e2e1;
+  color: var(--atelier-fg);
   transition: background-color 0.15s ease;
 }
 
@@ -446,11 +457,11 @@ html:lang(th) h6 {
 }
 
 .group:hover .note-cta-icon {
-  color: #ffb000;
+  color: var(--atelier-accent);
 }
 
 .project-card:hover .project-card-img {
-  filter: saturate(1.24) contrast(1.08) !important;
+  filter: var(--atelier-image-hover) !important;
   transform: scale(1.03);
 }
 .project-card:hover .project-card-overlay {
@@ -470,21 +481,34 @@ html:lang(th) h6 {
 }
 
 .cta-secondary:hover {
-  background-color: #353534;
+  background-color: var(--atelier-surface-highest);
 }
 
 .hero-subtitle {
   font-size: clamp(1.125rem, 2vw, 1.5rem);
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   max-width: 42rem;
   line-height: 1.7;
   margin: 0;
 }
 
+/* Driven by the scrollspy, not by index: the rail marks the heading actually in view. */
+.note-toc-link[aria-current='true'] > * {
+  color: var(--atelier-accent);
+}
+
 .subtitle-hl {
   text-decoration: underline;
-  text-decoration-color: #524533;
+  text-decoration-color: var(--atelier-line);
   text-underline-offset: 4px;
+}
+
+/* Thai carries below-vowels (◌ุ ◌ู) and descenders (ญ ฏ ฐ) in the zone a Latin-tuned 4px
+   offset lands in, and `skip-ink` cannot rescue a mark that sits on the line. Push the rule
+   clear of the lower zone for that locale only. */
+html:lang(th) .subtitle-hl,
+html:lang(th) a {
+  text-underline-offset: 0.28em;
 }
 
 .blocky-shadow {
@@ -492,7 +516,7 @@ html:lang(th) h6 {
 }
 
 .blocky-shadow-sm {
-  box-shadow: 4px 4px 0px 0px #0e0e0e;
+  box-shadow: 4px 4px 0px 0px var(--atelier-surface-lowest);
 }
 
 .group:hover .bench-render-img {
@@ -508,7 +532,6 @@ html:lang(th) h6 {
 .blocky-shadow-hover:hover {
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0px 0px rgba(14, 14, 14, 1);
-  background-color: rgba(28, 27, 27, 0.6);
 }
 
 .blocky-shadow-hover:active {
@@ -521,11 +544,22 @@ html:lang(th) h6 {
 }
 
 .contact-nav-item:hover {
-  color: #ffb000;
+  color: var(--atelier-accent);
+}
+
+.atelier-icon-lg {
+  color: var(--atelier-outline);
+  font-size: 1.5rem;
+}
+
+.atelier-icon-sm {
+  color: var(--atelier-outline);
+  font-size: 1.25rem;
 }
 
 .contact-social-card {
-  background: linear-gradient(90deg, rgba(255, 176, 0, 0.06), transparent 48%), #131313;
+  border-color: var(--atelier-outline);
+  background: var(--atelier-bg);
   transition:
     border-color 0.15s ease,
     background-color 0.15s ease,
@@ -533,41 +567,84 @@ html:lang(th) h6 {
 }
 
 .contact-social-card:hover {
-  border-color: #ffb000;
-  background-color: #1c1b1b;
+  border-color: var(--atelier-accent);
+  background-color: var(--atelier-surface-low);
   transform: translateX(4px);
 }
 
 .contact-panel {
-  background: #131313;
+  background: var(--atelier-bg);
+}
+
+/* The card is a light-mode print artifact; floating it in a container 2.3x its own width
+   read as a foreign object dropped on the page. Cap the stage to the card. */
+/* A contents rail holding one or two entries costs a 200px column for the whole scroll and
+   repeats the heading beside it. Below three entries the article takes the width back:
+   540px to 820px on the notes that have no headings. Set here rather than as a conditional
+   prop so the value stays static. */
+/* `align-items: start` is what makes the rails sticky: a stretched grid child is already
+   full height, so `position: sticky` has nothing to travel and the rail scrolled away,
+   leaving two-thirds of the viewport empty for the rest of a 2000px page. */
+.note-layout {
+  display: grid;
+  gap: 2.5rem;
+  min-width: 0;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1280px) {
+  .note-layout {
+    grid-template-columns: minmax(0, 1fr) 260px;
+  }
+
+  .note-layout[data-contents] {
+    grid-template-columns: 200px minmax(0, 1fr) 260px;
+  }
+}
+
+/* The decorative header rule used to sit INSIDE the content box, so every page carrying one
+   pushed its own h1 right by the rule plus its padding — five different title left edges
+   across eight routes, none of them the site's own edge. The rule now hangs in the gutter
+   and the title starts where the container starts. */
+.page-header-rule {
+  border-left: 2px solid var(--atelier-line);
+  padding-left: 1.5rem;
+  margin-left: calc(-1.5rem - 2px);
+}
+
+/* Where the sidebar is present its right border already draws this line, 6px away and in the
+   same colour — two parallel strokes that read as mis-registration rather than as a marginal
+   accent. The padding stays so the heading keeps its place on the content spine. */
+@media (min-width: 1024px) {
+  .page-header-rule {
+    border-left-color: transparent;
+  }
+}
+
+/* A run of chord/tab lines is one block, not a stack of paragraphs: the Stack's 1.25rem gap
+   put 52px between rows of a chart that has to read as a grid. Only consecutive structural
+   lines close up; the gap before and after the run is untouched. */
+.markdown-structural + .markdown-structural {
+  margin-top: -1rem;
 }
 
 .contact-namecard-stage {
-  background:
-    linear-gradient(90deg, rgba(255, 176, 0, 0.12), transparent 18%),
-    linear-gradient(180deg, rgba(255, 176, 0, 0.08), transparent 60%), #0e0e0e;
-}
-
-.profile-metric-card:nth-child(2) {
-  background: #171d1c;
-}
-
-.profile-metric-value {
-  color: #ffb000;
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-surface-lowest);
 }
 
 .note-signal-card {
-  background: #131313;
+  background: var(--atelier-bg);
 }
 
 .card-hover-amber.note-signal-card {
-  background: #1c1b1b;
+  background: var(--atelier-surface-low);
 }
 
+/* One step above the ordinary cards, which are already `surface-low`. */
 .note-feature-card {
-  background:
-    linear-gradient(135deg, rgba(255, 176, 0, 0.1), transparent 34%),
-    linear-gradient(315deg, rgba(255, 213, 151, 0.06), transparent 42%), #1c1b1b;
+  background: var(--atelier-surface-high);
 }
 
 .contact-form {
@@ -583,10 +660,10 @@ html:lang(th) h6 {
   justify-content: center;
   gap: 0.75rem;
   width: 100%;
-  background-color: #ffb000;
-  color: #432c00;
-  font-family: 'Manrope', sans-serif;
-  font-weight: 800;
+  background-color: var(--atelier-accent);
+  color: var(--atelier-on-accent);
+  font-family: var(--font-body);
+  font-weight: 700;
   text-transform: uppercase;
   font-size: 0.875rem;
   padding: 1.25rem 3rem;
@@ -615,43 +692,44 @@ html:lang(th) h6 {
 
 .contact-input {
   width: 100%;
-  background-color: #131313;
-  border: 1px solid #7d6c52;
+  background-color: var(--atelier-bg);
+  border: 1px solid var(--atelier-outline);
   padding: 1rem;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.875rem;
-  color: #e5e2e1;
+  color: var(--atelier-fg);
   transition: border-color 0.15s ease;
 }
 
 .contact-label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-code);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: #9f8e78;
+  color: var(--atelier-outline);
 }
 
 .contact-input::placeholder {
-  opacity: 0.3;
+  color: var(--atelier-outline);
+  opacity: 1;
 }
 
 .contact-input:focus-visible {
-  border-color: #ffb000;
-  outline: 2px solid #ffb000;
+  border-color: var(--atelier-accent);
+  outline: 2px solid var(--atelier-accent);
   outline-offset: 2px;
   box-shadow: none;
 }
 
 .contact-select {
   width: 100%;
-  background-color: #131313;
-  border: 1px solid #7d6c52;
+  background-color: var(--atelier-bg);
+  border: 1px solid var(--atelier-outline);
   padding: 1rem;
   padding-right: 3rem;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.875rem;
-  color: #e5e2e1;
+  color: var(--atelier-fg);
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%239f8e78' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -662,31 +740,31 @@ html:lang(th) h6 {
 
 .contact-select:focus-visible {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23ffb000' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E");
-  border-color: #ffb000;
-  outline: 2px solid #ffb000;
+  border-color: var(--atelier-accent);
+  outline: 2px solid var(--atelier-accent);
   outline-offset: 2px;
   box-shadow: none;
 }
 
 .credentials-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border-top: 1px solid #524533;
-  font-family: 'JetBrains Mono', monospace;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--atelier-line);
+  font-family: var(--font-code);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
 }
 @media (min-width: 768px) {
   .credentials-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
 .credentials-cell {
   padding: 1rem;
-  border-right: 1px solid #524533;
+  border-right: 1px solid var(--atelier-line);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -706,7 +784,7 @@ html:lang(th) h6 {
     border-right: none;
   }
   .credentials-cell:nth-child(n + 3) {
-    border-top: 1px solid #524533;
+    border-top: 1px solid var(--atelier-line);
   }
 }
 
@@ -715,21 +793,21 @@ html:lang(th) h6 {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
-  color: #dbdbdb;
+  color: var(--atelier-fg-muted);
 }
 .credentials-signal {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
-  color: #ffd597;
+  color: var(--atelier-accent-soft);
   text-decoration-line: underline;
   text-decoration-color: rgba(255, 176, 0, 0.4);
   text-underline-offset: 0.2em;
   transition: color 0.15s ease;
 }
 .credentials-signal:hover {
-  color: #ffb000;
-  text-decoration-color: #ffb000;
+  color: var(--atelier-accent);
+  text-decoration-color: var(--atelier-accent);
 }
 
 .wireframe-container {
@@ -744,13 +822,13 @@ html:lang(th) h6 {
   position: relative;
   width: 192px;
   height: 192px;
-  border: 1px solid #ffb000;
+  border: 1px solid var(--atelier-accent);
   opacity: 0.2;
 }
 .wireframe-inner {
   position: absolute;
   inset: 0;
-  border: 1px solid #ffb000;
+  border: 1px solid var(--atelier-accent);
 }
 .wireframe-cube {
   transform: rotate(12deg);
@@ -772,14 +850,14 @@ html:lang(th) h6 {
   width: 128px;
   height: 128px;
   background: rgba(255, 176, 0, 0.1);
-  border: 1px solid #ffb000;
+  border: 1px solid var(--atelier-accent);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .wireframe-icon {
   font-size: 3.75rem;
-  color: #ffb000;
+  color: var(--atelier-accent);
 }
 
 .exp-card-hover {
@@ -790,21 +868,27 @@ html:lang(th) h6 {
     box-shadow 0.15s ease;
 }
 .exp-card-hover:hover {
-  border-color: #ffb000;
+  border-color: var(--atelier-accent);
 }
 
 .spine-gradient {
-  background: linear-gradient(180deg, #524533 0%, #ffb000 15%, #ffb000 85%, #524533 100%);
+  background: linear-gradient(
+    180deg,
+    var(--atelier-line) 0%,
+    var(--atelier-accent) 15%,
+    var(--atelier-accent) 85%,
+    var(--atelier-line) 100%
+  );
 }
 
 .timeline-node {
-  background: #131313;
-  border-color: #9f8e78;
+  background: var(--atelier-bg);
+  border-color: var(--atelier-outline);
 }
 
 .timeline-node-active {
-  background: #ffb000;
-  border-color: #ffb000;
+  background: var(--atelier-accent);
+  border-color: var(--atelier-accent);
 }
 
 .education-entry {
@@ -814,7 +898,7 @@ html:lang(th) h6 {
 
 .education-entry-separated {
   padding-top: 1.5rem;
-  border-top: 1px solid #524533;
+  border-top: 1px solid var(--atelier-line);
 }
 
 .notes-pagination {
@@ -830,7 +914,7 @@ html:lang(th) h6 {
 }
 
 .shell-footer-link:hover {
-  color: #ffb000;
+  color: var(--atelier-accent);
 }
 
 .shell-footer-link {
@@ -839,20 +923,6 @@ html:lang(th) h6 {
   min-height: 44px;
   align-items: center;
   justify-content: center;
-}
-
-.holographic-sheen {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 176, 0, 0) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 176, 0, 0) 100%
-  );
-  background-size: 200% 200%;
-}
-
-.group:hover .group-hover-holographic-sheen {
-  opacity: 0.6;
 }
 
 .shell-nav {
@@ -865,9 +935,26 @@ html:lang(th) h6 {
   align-items: center;
   padding: 0 1.5rem;
   height: 4rem;
-  background-color: #131313;
-  border-bottom: 1px solid #524533;
+  background-color: var(--atelier-bg);
+  border-bottom: 1px solid var(--atelier-line);
   box-shadow: 4px 4px 0px 0px rgba(14, 14, 14, 1);
+}
+
+@media (min-width: 1024px) {
+  /* Centre the bar's contents on the same column the page content uses, while the bar and
+     its bottom rule stay full-bleed. */
+  .shell-nav {
+    /* Never less than the sidebar width: below breakpoint-xl the centring term goes
+       negative and would pull the brand left of the content column. */
+    padding-left: max(
+      calc(16rem + var(--content-inset)),
+      calc(16rem + var(--content-inset) + (100% - 16rem - var(--sizes-breakpoint-xl, 1280px)) / 2)
+    );
+    padding-right: max(
+      1.5rem,
+      calc(var(--content-inset) + (100% - 16rem - var(--sizes-breakpoint-xl, 1280px)) / 2)
+    );
+  }
 }
 @media print {
   .shell-nav {
@@ -881,17 +968,12 @@ html:lang(th) h6 {
   gap: 0.75rem;
   min-width: 44px;
   min-height: 44px;
-  font-family: 'Manrope', sans-serif;
-  font-weight: 900;
+  font-family: var(--font-body);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 0.875rem;
-  color: #ffb000;
   text-decoration: none;
-  transition: color 0.15s ease;
-}
-.shell-nav-brand:hover {
-  color: #ffd597;
 }
 
 .shell-nav-links {
@@ -900,18 +982,32 @@ html:lang(th) h6 {
   gap: 2rem;
   height: 100%;
 }
-@media (min-width: 768px) {
+/* The bar carries the nav only in the 900-1023px window, where the rail is not yet shown.
+   From 1024 the rail is always visible with the same six destinations, icons and a stronger
+   active marker, so the bar's copy was a second complete navigation on screen at all times
+   — 256px of composition spent saying the same thing twice. */
+@media (min-width: 900px) {
   .shell-nav-links {
     display: flex;
   }
 }
+@media (min-width: 1024px) {
+  .shell-nav-links {
+    display: none;
+  }
+}
 
+/* 400, not 500: these six links were the ONLY consumers of weight 500 in the body face, and
+   `/ja` was paying ~30 KB gz of render-blocking font CSS for that one weight — for a bar that
+   only renders in the 900-1023px window. */
 .shell-nav-link {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.25rem;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 0.875rem;
+  font-weight: 400;
   letter-spacing: 0;
   height: 100%;
+  white-space: nowrap;
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -920,19 +1016,19 @@ html:lang(th) h6 {
     background-color 0.15s ease;
 }
 .shell-nav-link[aria-current='page'] {
-  color: #ffb000;
-  border-bottom: 2px solid #ffb000;
+  color: var(--atelier-accent);
+  border-bottom: 2px solid var(--atelier-accent);
   padding-bottom: 0.25rem;
   font-weight: 700;
 }
 .shell-nav-link:not([aria-current='page']) {
-  color: #c7c6c6;
-  font-weight: 500;
+  color: var(--atelier-fg-muted);
+  font-weight: 400;
   padding: 0 0.5rem;
 }
 .shell-nav-link:not([aria-current='page']):hover {
-  color: #ffb000;
-  background-color: #353534;
+  color: var(--atelier-accent);
+  background-color: var(--atelier-surface-highest);
 }
 
 .shell-nav-actions {
@@ -963,13 +1059,13 @@ html:lang(th) h6 {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #9f8e78;
+  color: var(--atelier-outline);
   padding: 0 0.25rem;
   text-decoration: none;
   transition: color 0.15s ease;
 }
 .shell-nav-lang:hover {
-  color: #ffb000;
+  color: var(--atelier-accent);
 }
 
 .shell-sidebar {
@@ -979,8 +1075,8 @@ html:lang(th) h6 {
   height: calc(100dvh - 4rem);
   display: none;
   flex-direction: column;
-  background-color: #0e0e0e;
-  border-right: 1px solid #524533;
+  background-color: var(--atelier-surface-lowest);
+  border-right: 1px solid var(--atelier-line);
   width: 16rem;
   z-index: 40;
 }
@@ -997,7 +1093,7 @@ html:lang(th) h6 {
 
 .shell-sidebar-header {
   padding: 1.5rem;
-  border-bottom: 1px solid #524533;
+  border-bottom: 1px solid var(--atelier-line);
 }
 
 .shell-sidebar-nav {
@@ -1020,19 +1116,25 @@ html:lang(th) h6 {
     border-left-color 0.15s ease,
     color 0.15s ease;
 }
+/* A solid 254x48 amber block made a PASSIVE "you are here" marker the loudest element on
+   every page — louder than the content and louder than the page's own call to action, and
+   the horizontal nav already marks the same state with an amber underline. A rule carries
+   it, and leaves the fill for interactive amber. */
 .shell-sidebar-link[aria-current='page'] {
-  background-color: #ffb000;
-  color: #432c00;
+  border-left: 4px solid var(--atelier-accent);
+  padding-left: calc(1.5rem - 4px);
+  background-color: var(--atelier-surface-low);
+  color: var(--atelier-fg);
   font-weight: 700;
 }
 .shell-sidebar-link:not([aria-current='page']) {
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   border-left: 4px solid transparent;
   padding-left: calc(1.5rem - 4px);
 }
 .shell-sidebar-link:not([aria-current='page']):hover {
-  background-color: #353534;
-  border-left-color: #ffb000;
+  background-color: var(--atelier-surface-highest);
+  border-left-color: var(--atelier-accent);
 }
 
 .shell-sidebar-link-icon {
@@ -1040,7 +1142,7 @@ html:lang(th) h6 {
 }
 
 .shell-sidebar-link-label {
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
   text-transform: uppercase;
   font-size: 10px;
   letter-spacing: 0.1em;
@@ -1048,27 +1150,40 @@ html:lang(th) h6 {
 
 .shell-sidebar-footer {
   padding: 1.5rem;
-  border-top: 1px solid #524533;
+  border-top: 1px solid var(--atelier-line);
 }
 
+/* Was the lightest surface in the rail — a passive locale readout outranking the
+   current-page marker, which round 22 deliberately demoted to a rule on a low surface. */
 .shell-sidebar-env {
-  background-color: #353534;
+  background-color: var(--atelier-surface-low);
   padding: 1rem;
-  border: 1px solid #524533;
+  border: 1px solid var(--atelier-line);
   position: relative;
 }
 
+/* Typography only. The corner-notch positioning below is scoped to the env panel, which is
+   the `position: relative` ancestor it needs — sharing this class with the header eyebrow
+   for its type had it resolve against `.shell-sidebar` instead and hang at `left: -1px`,
+   with its own border off-canvas. */
 .shell-sidebar-env-label {
+  /* Shrink to the label. The notch instance gets this from `position: absolute`; the header
+     instance is a block in flow, so without it the same bordered chip stretched the full
+     207px of the rail beside a 66px one. */
+  width: fit-content;
+  padding: 0.125rem 0.5rem;
+  background-color: var(--atelier-surface-low);
+  color: var(--atelier-accent);
+  font-family: var(--font-code);
+  font-size: 10px;
+  text-transform: uppercase;
+  border: 1px solid var(--atelier-line);
+}
+
+.shell-sidebar-env > .shell-sidebar-env-label {
   position: absolute;
   top: -1px;
   left: -1px;
-  padding: 0.125rem 0.5rem;
-  background-color: #353534;
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  border: 1px solid #524533;
   z-index: 10;
 }
 
@@ -1077,7 +1192,7 @@ html:lang(th) h6 {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background-color: #131313;
+  background-color: var(--atelier-bg);
 }
 @media (min-width: 1024px) {
   .shell-content {
@@ -1091,23 +1206,91 @@ html:lang(th) h6 {
 }
 
 .shell-footer {
+  /* Capped to the same width the page content uses (Park-UI `Container maxW="breakpoint-xl"`
+     at the call sites), so the footer stays aligned with the content above it. The top rule
+     is on this box, so it is capped too — deliberate, not full-bleed. */
   width: 100%;
+  max-width: var(--sizes-breakpoint-xl, 1280px);
+  margin-inline: auto;
+  /* Matches the content inset (.page-shell 2rem + the section's lg:px_6 1.5rem), so the
+     copyright lines up with the headings above it rather than sitting 32px outboard. */
   padding: 1rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  border-top: 2px solid #524533;
-  background-color: #131313;
+  border-top: 2px solid var(--atelier-line);
+  background-color: var(--atelier-bg);
   cursor: crosshair;
 }
+@media (min-width: 1024px) {
+  .shell-footer {
+    padding-inline: var(--content-inset);
+  }
+}
+
 @media (min-width: 640px) {
   .shell-footer {
     flex-direction: row;
   }
 }
 @media print {
+  /* Chrome defaults "Background graphics" to off, which drops the dark canvas while
+     keeping the explicit light text colour. Forcing `body` alone is not enough: every card
+     and section paints its own dark surface through a utility class that `body` cannot
+     override, so headings printed black-on-black. Invert at the surface, not the root. */
+  html,
+  body,
+  .shell-content,
+  .page-shell,
+  .blocky-shadow,
+  .blocky-shadow-sm,
+  .contact-panel,
+  [class*='bg_var(--atelier'],
+  [class*='bgColor_var(--atelier'] {
+    background: #fff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  td,
+  th,
+  a,
+  span,
+  strong,
+  em,
+  small,
+  figcaption,
+  blockquote {
+    color: #111 !important;
+    background: transparent !important;
+  }
+
+  /* Structural rules must stay visible as ink, not disappear with the dark palette. */
+  * {
+    border-color: #999 !important;
+  }
+  /* `position: fixed` elements repeat on every printed page — this printed over the
+     content twice on /about. The same block already hides nav, sidebar and footer. */
+  .skip-link {
+    display: none;
+  }
+
+  /* A card split across a page break reads as two broken cards. */
+  .blocky-shadow,
+  .blocky-shadow-sm,
+  .contact-panel {
+    break-inside: avoid;
+  }
   .shell-footer {
     display: none;
   }
@@ -1119,8 +1302,8 @@ html:lang(th) h6 {
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid #524533;
-  color: #c7c6c6;
+  border: 1px solid var(--atelier-line);
+  color: var(--atelier-fg-muted);
   background: none;
   cursor: pointer;
   transition:
@@ -1128,10 +1311,10 @@ html:lang(th) h6 {
     border-color 0.15s ease;
 }
 .shell-drawer-trigger:hover {
-  color: #ffb000;
-  border-color: #ffb000;
+  color: var(--atelier-accent);
+  border-color: var(--atelier-accent);
 }
-@media (min-width: 768px) {
+@media (min-width: 900px) {
   .shell-drawer-trigger {
     display: none;
   }
@@ -1142,7 +1325,7 @@ html:lang(th) h6 {
   inset: 0;
   padding: 0;
   border: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(14, 14, 14, 0.72);
   z-index: 50;
 }
 
@@ -1152,8 +1335,8 @@ html:lang(th) h6 {
   right: 0;
   height: 100%;
   width: 18rem;
-  background-color: #0e0e0e;
-  border-left: 1px solid #524533;
+  background-color: var(--atelier-surface-lowest);
+  border-left: 1px solid var(--atelier-line);
   z-index: 50;
   display: flex;
   flex-direction: column;
@@ -1165,7 +1348,7 @@ html:lang(th) h6 {
   justify-content: space-between;
   padding: 0 1.5rem;
   height: 4rem;
-  border-bottom: 1px solid #524533;
+  border-bottom: 1px solid var(--atelier-line);
 }
 
 .shell-drawer-close {
@@ -1174,14 +1357,14 @@ html:lang(th) h6 {
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
   background: none;
   border: none;
   cursor: pointer;
   transition: color 0.15s ease;
 }
 .shell-drawer-close:hover {
-  color: #ffb000;
+  color: var(--atelier-accent);
 }
 
 .shell-drawer-nav {
@@ -1202,26 +1385,26 @@ html:lang(th) h6 {
   transition: background-color 0.15s ease;
 }
 .shell-drawer-link[data-active='true'] {
-  background-color: #ffb000;
-  color: #432c00;
+  background-color: var(--atelier-accent);
+  color: var(--atelier-on-accent);
   font-weight: 700;
 }
 .shell-drawer-link[data-active='false'] {
-  color: #c7c6c6;
+  color: var(--atelier-fg-muted);
 }
 .shell-drawer-link[data-active='false']:hover {
-  background-color: #353534;
+  background-color: var(--atelier-surface-highest);
 }
 
 .shell-drawer-locale {
   padding: 1rem 1.5rem;
-  border-top: 1px solid #524533;
+  border-top: 1px solid var(--atelier-line);
 }
 
 .shell-drawer-locale-label {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-code);
   font-size: 10px;
-  color: #9f8e78;
+  color: var(--atelier-outline);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   display: block;
@@ -1234,7 +1417,7 @@ html:lang(th) h6 {
 }
 
 .shell-drawer-locale-btn {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-code);
   font-size: 0.75rem;
   text-transform: uppercase;
   display: inline-flex;
@@ -1249,18 +1432,25 @@ html:lang(th) h6 {
     border-color 0.15s ease;
 }
 .shell-drawer-locale-btn[data-active='true'] {
-  background-color: #ffb000;
-  color: #432c00;
-  border: 1px solid #ffb000;
+  background-color: var(--atelier-accent);
+  color: var(--atelier-on-accent);
+  border: 1px solid var(--atelier-accent);
   font-weight: 700;
 }
 .shell-drawer-locale-btn[data-active='false'] {
-  color: #c7c6c6;
-  border: 1px solid #524533;
+  color: var(--atelier-fg-muted);
+  border: 1px solid var(--atelier-line);
 }
 .shell-drawer-locale-btn[data-active='false']:hover {
-  color: #ffb000;
-  border-color: #ffb000;
+  color: var(--atelier-accent);
+  border-color: var(--atelier-accent);
+}
+
+/* The skip link's whole job is to land you at the content; without this the first 64px of
+   `#main` sits under the fixed nav, which is exactly the state it exists to avoid. Same
+   88px the section anchors use. */
+#main {
+  scroll-margin-top: 88px;
 }
 
 .skip-link {
@@ -1269,11 +1459,11 @@ html:lang(th) h6 {
   left: 0;
   z-index: 100;
   transform: translateY(-120%);
-  border: 1px solid #ffb000;
-  background: #131313;
+  border: 1px solid var(--atelier-accent);
+  background: var(--atelier-bg);
   padding: 0.75rem 1rem;
-  color: #ffb000;
-  font-family: 'JetBrains Mono', monospace;
+  color: var(--atelier-accent);
+  font-family: var(--font-code);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-decoration: none;

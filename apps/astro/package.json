@@ -13,12 +13,14 @@
     "codegen:prod": "graphql-codegen -c codegen.prod.yml && bun scripts/fix-codegen-prod.mjs",
     "codegen:panda": "panda codegen",
     "codegen:park-ui": "bunx @park-ui/cli add --all",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "compile": "tsc --pretty --noEmit",
-    "format": "prettier -c --ignore-path .prettierignore 'src/**/*.{ts,tsx,astro}'",
-    "format:fix": "prettier -w --ignore-path .prettierignore 'src/**/*.{ts,tsx,astro}'",
-    "fix:all": "bun lint:fix && bun format:fix"
+    "lint": "eslint src tests --max-warnings=50",
+    "lint:fix": "eslint src tests --fix",
+    "test": "cd ../.. && bun test",
+    "compile": "tsc --pretty --noEmit && astro check",
+    "format": "prettier -c --ignore-path .prettierignore '{src,tests}/**/*.{ts,tsx,astro,css}'",
+    "format:fix": "prettier -w --ignore-path .prettierignore '{src,tests}/**/*.{ts,tsx,astro,css}'",
+    "fix:all": "bun lint:fix && bun format:fix",
+    "fetch:kameko": "node scripts/fetch-kameko.mjs"
   },
   "dependencies": {
     "@ark-ui/react": "5.34.1",

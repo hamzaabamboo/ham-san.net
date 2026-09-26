@@ -4,6 +4,7 @@ import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import { getHobbyBodyIntro, parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
 import { getHobbyDetailResponse } from '~/utils/hobby-detail-response';
 import {
@@ -217,10 +218,7 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
       !cmsUnavailable && (
         <section class={hobbyStyles.detailHero} data-visual={banner ? 'image' : 'glyph'}>
           <div class={hobbyStyles.detailHeadline}>
-            <p class={cx(hobbyStyles.detailEyebrow, 'hobby-meta')} data-status={effectiveStatus}>
-              {statusLabel}
-              {hasModule && ` / ${embedLabel}`}
-            </p>
+            <Eyebrow label={hasModule ? `${statusLabel} / ${embedLabel}` : statusLabel} />
             <h1 class={hobbyStyles.detailTitle}>{data?.title}</h1>
             {heroDescription && <p class={hobbyStyles.detailDescription}>{heroDescription}</p>}
             <p class={cx(hobbyStyles.detailUpdated, 'hobby-meta')}>
@@ -269,6 +267,24 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
                 <p class={hobbyStyles.detailDescription}>{t('hobbies.empty-description')}</p>
               </div>
             )}
+            {bodyParts.length === 0 &&
+              childDocuments.length === 0 &&
+              !childDocumentsUnavailable && (
+                <div class={hobbyStyles.detailPanel}>
+                  {/* The hero already carries this sentence as its subtitle; repeating it
+                      190px lower in the same face read as an unfiltered dump. The panel
+                      title states the condition, so the panel only needs the way out. */}
+                  <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+                    {t('hobbies.empty-source-state')}
+                  </p>
+                  <div class={hobbyStyles.detailNested}>
+                    <a href={`/${locale}/hobbies`}>
+                      <span>{t('hobbies.page-heading')}</span>
+                      <span class="hobby-meta">{t('common.open')}</span>
+                    </a>
+                  </div>
+                </div>
+              )}
             {bodyParts.length === 0 && childDocuments.length > 0 && (
               <div class={hobbyStyles.detailPanel}>
                 <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
@@ -303,7 +319,7 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
 
               return (
                 <HobbyInteractiveEmbed
-                  client:load
+                  client:visible
                   {...embedProps}
                   type={embed.type}
                   moduleTitle={

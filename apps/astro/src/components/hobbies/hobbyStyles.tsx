@@ -6,48 +6,55 @@ export const hobbyStyles = {
     minH: { md: '70vh' },
     mx: 'auto',
     py: { base: '6', md: '8' },
-    px: { base: '4', md: '4' }
+    // Matches the content inset every other route uses; 16px put the whole hobby detail
+    // column 16px left of the site's edge, so navigating into a hobby shifted the page.
+    px: { base: '4', md: '8' }
   }),
   detailBack: css({
     display: 'inline-flex',
     gap: '2',
     alignItems: 'center',
     minH: '44px',
-    color: '#c7c6c6',
+    color: 'var(--atelier-fg-muted)',
     textDecoration: 'none',
-    fontFamily: 'JetBrains Mono, monospace',
+    fontFamily: 'var(--font-code)',
     fontSize: '0.75rem',
     _hover: {
-      color: '#ffb000'
+      color: 'var(--atelier-accent)'
     }
   }),
   detailHero: css({
     display: 'grid',
     gap: '8',
     alignItems: 'stretch',
-    gridTemplateColumns: { base: '1fr', md: 'minmax(0, 7fr) minmax(20rem, 5fr)' },
+    // Same right-hand track as `detailBody`: at 7fr/5fr and 1fr/18rem the hero panel and
+    // the rail under it started 75px apart — a vertical seam that does not line up.
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) 22rem' },
     mt: { base: '6', md: '10' },
     '&[data-visual="glyph"]': {
-      gridTemplateColumns: { base: '1fr', md: 'minmax(0, 1fr) 18rem' }
+      gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) 22rem' }
     }
   }),
   detailHeadline: css({
     display: 'grid',
     gap: '6',
     alignContent: 'start',
-    borderLeft: '4px solid #ffb000',
+    // The rule hangs in the gutter so the h1 lands on the content edge, as on every other
+    // page header.
+    borderLeft: '4px solid var(--atelier-line)',
+    ml: 'calc(-1.5rem - 4px)',
     py: '4',
-    pl: 'clamp(1.5rem, 4vw, 2rem)'
+    pl: '1.5rem'
   }),
   detailEyebrow: css({
     m: '0',
-    color: '#2dd4bf',
-    fontFamily: 'JetBrains Mono, monospace',
+    color: 'var(--atelier-outline)',
+    fontFamily: 'var(--font-code)',
     fontSize: '10px',
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
     '&[data-status="inactive"]': {
-      color: '#9f8e78'
+      color: 'var(--atelier-outline)'
     }
   }),
   detailTitle: css({
@@ -55,13 +62,12 @@ export const hobbyStyles = {
     m: '0',
     fontFamily: 'var(--font-display)',
     fontSize: 'clamp(3rem, 8vw, 7rem)',
-    lineHeight: '0.95',
-    fontStyle: 'italic'
+    lineHeight: '0.95'
   }),
   detailDescription: css({
     maxW: '42rem',
     m: '0',
-    color: '#c7c6c6',
+    color: 'var(--atelier-fg-muted)',
     fontSize: 'clamp(1.125rem, 2vw, 1.25rem)',
     lineHeight: '1.7'
   }),
@@ -69,8 +75,8 @@ export const hobbyStyles = {
     display: 'flex',
     gap: '2',
     m: '0',
-    color: '#9f8e78',
-    fontFamily: 'JetBrains Mono, monospace',
+    color: 'var(--atelier-outline)',
+    fontFamily: 'var(--font-code)',
     fontSize: '10px',
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
@@ -79,9 +85,9 @@ export const hobbyStyles = {
   detailVisual: css({
     display: 'grid',
     pos: 'relative',
-    border: '1px solid #524533',
+    border: '1px solid var(--atelier-line)',
     minH: { base: '18rem', md: '26rem' },
-    bg: '#131313',
+    bg: 'var(--atelier-bg)',
     overflow: 'hidden',
     placeItems: 'center',
     '&[data-visual="glyph"]': {
@@ -91,7 +97,7 @@ export const hobbyStyles = {
     '&[data-visual="glyph"]::before': {
       inset: '0',
       pos: 'absolute',
-      bg: 'linear-gradient(90deg, rgba(255, 176, 0, 0.11) 1px, transparent 1px), linear-gradient(180deg, rgba(255, 176, 0, 0.1) 1px, transparent 1px)',
+      bg: 'linear-gradient(90deg, rgba(229, 226, 225, 0.11) 1px, transparent 1px), linear-gradient(180deg, rgba(229, 226, 225, 0.1) 1px, transparent 1px)',
       backgroundSize: '3.75rem 3.75rem',
       content: '""',
       maskImage: 'linear-gradient(135deg, black, transparent 78%)'
@@ -99,79 +105,80 @@ export const hobbyStyles = {
     '&[data-visual="glyph"]::after': {
       inset: '12%',
       pos: 'absolute',
-      border: '1px solid rgba(255, 176, 0, 0.72)',
+      border: '1px solid rgba(229, 226, 225, 0.72)',
       content: '""'
     },
     '&[data-embed="photo-gallery"]': {
-      bg: 'radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.18), transparent 38%), linear-gradient(135deg, rgba(255, 176, 0, 0.1), transparent 50%), #15120d'
+      bg: 'radial-gradient(circle at 50% 50%, rgba(229, 226, 225, 0.18), transparent 38%), linear-gradient(135deg, rgba(229, 226, 225, 0.1), transparent 50%), var(--atelier-bg)'
     },
     '&[data-embed="photo-gallery"][data-visual="glyph"]::after': {
       rounded: 'full',
-      boxShadow: 'inset 0 0 0 2.25rem rgba(255, 176, 0, 0.08), 0 0 0 5rem rgba(255, 176, 0, 0.04)'
+      boxShadow:
+        'inset 0 0 0 2.25rem rgba(229, 226, 225, 0.08), 0 0 0 5rem rgba(229, 226, 225, 0.04)'
     },
     '&[data-embed="twitter-feed"]': {
-      borderColor: '#25576a',
-      bg: 'radial-gradient(circle at 74% 20%, rgba(56, 189, 248, 0.2), transparent 34%), linear-gradient(135deg, rgba(14, 165, 233, 0.12), transparent 48%), #0d1417'
+      borderColor: 'var(--atelier-line)',
+      bg: 'radial-gradient(circle at 74% 20%, rgba(229, 226, 225, 0.14), transparent 34%), var(--atelier-bg)'
     },
     '&[data-embed="twitter-feed"][data-visual="glyph"]::after': {
       inset: '18% 12%',
       transform: 'skewX(-8deg)',
-      borderColor: 'rgba(56, 189, 248, 0.64)'
+      borderColor: 'rgba(229, 226, 225, 0.64)'
     },
     '&[data-embed="rubik-algorithms"]': {
-      borderColor: '#5d3348',
-      bg: 'linear-gradient(135deg, rgba(239, 68, 68, 0.16), transparent 36%), linear-gradient(225deg, rgba(34, 197, 94, 0.12), transparent 42%), linear-gradient(315deg, rgba(59, 130, 246, 0.12), transparent 48%), #130f12'
+      borderColor: 'var(--atelier-line)',
+      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.14), transparent 36%), linear-gradient(315deg, rgba(229, 226, 225, 0.08), transparent 48%), var(--atelier-bg)'
     },
     '&[data-embed="rubik-algorithms"][data-visual="glyph"]::after': {
-      borderColor: 'rgba(239, 68, 68, 0.64)',
-      boxShadow: '4rem 0 0 rgba(34, 197, 94, 0.12), 0 4rem 0 rgba(59, 130, 246, 0.12)'
+      borderColor: 'rgba(229, 226, 225, 0.64)',
+      boxShadow: '4rem 0 0 rgba(229, 226, 225, 0.1), 0 4rem 0 rgba(229, 226, 225, 0.08)'
     },
     '&[data-embed="typing-stats"]': {
-      borderColor: '#5d4d34',
-      bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.14), transparent 42%), linear-gradient(315deg, rgba(99, 102, 241, 0.12), transparent 46%), #121110'
+      borderColor: 'var(--atelier-line)',
+      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.14), transparent 42%), linear-gradient(315deg, rgba(229, 226, 225, 0.1), transparent 46%), var(--atelier-bg)'
     },
     '&[data-embed="typing-stats"][data-visual="glyph"]::after': {
       inset: 'auto 12% 18%',
-      borderColor: 'rgba(255, 176, 0, 0.66)',
+      borderColor: 'rgba(229, 226, 225, 0.66)',
       borderTop: '0',
       h: '34%'
     },
     '&[data-embed="darts-board"]': {
-      borderColor: '#4f5f32',
-      bg: 'radial-gradient(circle at 50% 50%, rgba(132, 204, 22, 0.16), transparent 34%), linear-gradient(135deg, rgba(220, 38, 38, 0.12), transparent 42%), #11140d'
+      borderColor: 'var(--atelier-line)',
+      bg: 'radial-gradient(circle at 50% 50%, rgba(229, 226, 225, 0.16), transparent 34%), var(--atelier-bg)'
     },
     '&[data-embed="darts-board"][data-visual="glyph"]::after': {
-      borderColor: 'rgba(132, 204, 22, 0.7)',
+      borderColor: 'rgba(229, 226, 225, 0.7)',
       rounded: 'full',
       boxShadow:
-        'inset 0 0 0 2rem rgba(132, 204, 22, 0.05), inset 0 0 0 4rem rgba(220, 38, 38, 0.08)'
+        'inset 0 0 0 2rem rgba(229, 226, 225, 0.05), inset 0 0 0 4rem rgba(229, 226, 225, 0.07)'
     },
     '&[data-embed="link-library"]': {
-      borderColor: '#345b6f',
-      bg: 'linear-gradient(135deg, rgba(56, 189, 248, 0.12), transparent 44%), linear-gradient(315deg, rgba(250, 204, 21, 0.1), transparent 46%), #0f1418'
+      borderColor: 'var(--atelier-line)',
+      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.12), transparent 44%), var(--atelier-bg)'
     },
     '&[data-embed="link-library"][data-visual="glyph"]::after': {
       inset: '18%',
       transform: 'rotate(45deg)',
-      borderColor: 'rgba(56, 189, 248, 0.62)'
+      borderColor: 'rgba(229, 226, 225, 0.62)'
     },
     '&[data-embed="piano-chords"]': {
-      borderColor: '#5b526d',
-      bg: 'linear-gradient(135deg, rgba(250, 250, 240, 0.11), transparent 36%), linear-gradient(315deg, rgba(168, 85, 247, 0.14), transparent 48%), #131119'
+      borderColor: 'var(--atelier-line)',
+      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.08), transparent 36%), linear-gradient(315deg, rgba(229, 226, 225, 0.12), transparent 48%), var(--atelier-bg)'
     },
     '&[data-embed="piano-chords"][data-visual="glyph"]::after': {
       inset: '18% 12%',
-      borderColor: 'rgba(196, 181, 253, 0.62)',
+      borderColor: 'rgba(229, 226, 225, 0.62)',
       boxShadow:
-        'inset 1.25rem 0 0 rgba(229, 226, 225, 0.06), inset 2.5rem 0 0 rgba(19, 17, 25, 0.7), inset 3.75rem 0 0 rgba(229, 226, 225, 0.06)'
+        'inset 1.25rem 0 0 rgba(229, 226, 225, 0.06), inset 2.5rem 0 0 rgba(19, 19, 19, 0.7), inset 3.75rem 0 0 rgba(229, 226, 225, 0.06)'
     },
     '&[data-embed="field-notes"]': {
-      borderColor: '#5d4d34',
-      bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.12), transparent 40%), linear-gradient(315deg, rgba(255, 213, 151, 0.08), transparent 48%), #121110'
+      borderColor: 'var(--atelier-line)',
+      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.12), transparent 40%), linear-gradient(315deg, rgba(229, 226, 225, 0.08), transparent 48%), var(--atelier-bg)'
     },
     '&[data-embed="field-notes"][data-visual="glyph"]::after': {
       inset: '14% 20%',
-      borderColor: 'rgba(255, 176, 0, 0.64)'
+      borderColor: 'rgba(229, 226, 225, 0.64)'
     }
   }),
   detailBanner: css({
@@ -179,20 +186,13 @@ export const hobbyStyles = {
     w: 'full',
     h: 'full',
     minH: '26rem',
-    filter: 'saturate(1.12) contrast(1.04) brightness(0.74)'
-  }),
-  detailVisualGlyph: css({
-    zIndex: '1',
-    pos: 'relative',
-    transform: 'scale(1.18)',
-    color: '#ffb000',
-    opacity: '0.34'
+    filter: 'var(--atelier-image-rest)'
   }),
   detailVisualLettermark: css({
     zIndex: '1',
     pos: 'relative',
-    color: '#ffb000',
-    fontFamily: 'Newsreader, serif',
+    color: 'var(--atelier-fg-muted)',
+    fontFamily: 'var(--font-display)',
     fontSize: 'clamp(4rem, 10vw, 7rem)',
     lineHeight: '1',
     opacity: '0.3',
@@ -202,10 +202,10 @@ export const hobbyStyles = {
   detailBody: css({
     display: 'grid',
     gap: '8',
-    gridTemplateColumns: { base: '1fr', md: 'minmax(0, 8fr) minmax(18rem, 4fr)' },
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) 22rem' },
     mt: '8',
     '&[data-has-aside="false"]': {
-      gridTemplateColumns: '1fr'
+      gridTemplateColumns: 'minmax(0, 1fr)'
     }
   }),
   detailMain: css({
@@ -221,30 +221,28 @@ export const hobbyStyles = {
     minW: '0',
     md: {
       pos: 'sticky',
-      top: '6'
+      // Clears the 64px fixed header; at 24px the panel sat behind it, clipped.
+      top: '24'
     }
   }),
   detailSurface: css({
-    border: '1px solid #524533',
+    border: '1px solid var(--atelier-line)',
     minW: '0',
     p: 'clamp(1.5rem, 3vw, 2rem)',
-    bg: '#1c1b1b'
+    bg: 'var(--atelier-surface-low)'
   }),
   detailPanel: css({
-    border: '1px solid #524533',
+    border: '1px solid var(--atelier-line)',
     p: 'clamp(1.5rem, 3vw, 2rem)',
-    bg: '#131313'
+    bg: 'var(--atelier-bg)'
   }),
   detailPanelTitle: css({
     m: '0 0 1rem',
-    color: '#ffb000',
-    fontFamily: 'JetBrains Mono, monospace',
+    color: 'var(--atelier-outline)',
+    fontFamily: 'var(--font-code)',
     fontSize: '10px',
     letterSpacing: '0.12em',
     textTransform: 'uppercase'
-  }),
-  detailPanelTitleCyan: css({
-    color: '#2dd4bf'
   }),
   detailNested: css({
     display: 'grid',
@@ -254,112 +252,50 @@ export const hobbyStyles = {
       gap: '4',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderBottom: '1px solid #524533',
+      borderBottom: '1px solid var(--atelier-line)',
       minH: '44px',
-      color: '#c7c6c6',
+      color: 'var(--atelier-fg-muted)',
       textDecoration: 'none'
     },
     '& a:hover, & a[aria-current="page"]': {
-      color: '#ffb000'
+      color: 'var(--atelier-accent)'
     },
     '& a span:first-child': {
       overflowWrap: 'anywhere'
     },
     '& a span:last-child': {
-      color: '#9f8e78',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-outline)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     }
   }),
-  detailMuted: css({
-    m: '0',
-    color: '#9f8e78',
-    fontSize: '0.875rem',
-    lineHeight: '1.8'
-  }),
   embed: css({
     pos: 'relative',
-    border: '1px solid #524533',
+    border: '1px solid var(--atelier-line)',
     minW: '0',
     p: 'clamp(1.5rem, 3vw, 2.5rem)',
-    color: '#e5e2e1',
-    bg: 'linear-gradient(135deg, rgba(45, 212, 191, 0.08), transparent 42%), linear-gradient(315deg, rgba(255, 176, 0, 0.08), transparent 46%), #131313',
+    color: 'var(--atelier-fg)',
+    bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.06), transparent 46%), var(--atelier-bg)',
     overflow: 'hidden',
     '&::before': {
       inset: '0 auto 0 0',
       pos: 'absolute',
       w: '4px',
-      bg: '#2dd4bf',
+      bg: 'var(--atelier-accent)',
       content: '""'
     },
-    '&[data-embed="photo-gallery"]': {
-      borderColor: '#765c2f',
-      bg: 'radial-gradient(circle at 18% 0%, rgba(245, 158, 11, 0.22), transparent 34%), linear-gradient(135deg, rgba(255, 176, 0, 0.1), transparent 48%), #15120d',
-      '&::before': {
-        bg: '#f59e0b'
-      }
-    },
-    '&[data-embed="twitter-feed"]': {
-      borderColor: '#25576a',
-      bg: 'radial-gradient(circle at 82% 8%, rgba(56, 189, 248, 0.18), transparent 32%), linear-gradient(135deg, rgba(14, 165, 233, 0.1), transparent 48%), #0d1417',
-      '&::before': {
-        bg: '#38bdf8'
-      }
-    },
-    '&[data-embed="rubik-algorithms"]': {
-      borderColor: '#5d3348',
-      bg: 'linear-gradient(135deg, rgba(239, 68, 68, 0.16), transparent 36%), linear-gradient(225deg, rgba(34, 197, 94, 0.12), transparent 42%), linear-gradient(315deg, rgba(59, 130, 246, 0.12), transparent 48%), #130f12',
-      '&::before': {
-        bg: '#ef4444'
-      }
-    },
-    '&[data-embed="typing-stats"]': {
-      borderColor: '#275e58',
-      bg: 'linear-gradient(135deg, rgba(20, 184, 166, 0.16), transparent 42%), linear-gradient(315deg, rgba(99, 102, 241, 0.12), transparent 46%), #0c1414',
-      '&::before': {
-        bg: '#14b8a6'
-      }
-    },
-    '&[data-embed="darts-board"]': {
-      borderColor: '#4f5f32',
-      bg: 'radial-gradient(circle at 75% 15%, rgba(132, 204, 22, 0.14), transparent 34%), linear-gradient(135deg, rgba(220, 38, 38, 0.1), transparent 42%), #11140d',
-      '&::before': {
-        bg: '#84cc16'
-      }
-    },
-    '&[data-embed="link-library"]': {
-      borderColor: '#345b6f',
-      bg: 'linear-gradient(135deg, rgba(56, 189, 248, 0.12), transparent 44%), linear-gradient(315deg, rgba(250, 204, 21, 0.1), transparent 46%), #0f1418',
-      '&::before': {
-        bg: '#38bdf8'
-      }
-    },
-    '&[data-embed="piano-chords"]': {
-      borderColor: '#5b526d',
-      bg: 'linear-gradient(135deg, rgba(250, 250, 240, 0.11), transparent 36%), linear-gradient(315deg, rgba(168, 85, 247, 0.14), transparent 48%), #131119',
-      '&::before': {
-        bg: '#c4b5fd'
-      }
-    },
-    '&[data-embed="field-notes"]': {
-      borderColor: '#5d4d34',
-      bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.12), transparent 40%), linear-gradient(315deg, rgba(45, 212, 191, 0.07), transparent 48%), #121110',
-      '&::before': {
-        bg: '#ffb000'
-      }
-    },
     '&[data-status="inactive"]': {
-      borderColor: '#4b453d',
-      bg: 'linear-gradient(135deg, rgba(159, 142, 120, 0.12), transparent 44%), #111111',
+      borderColor: 'var(--atelier-surface-highest)',
+      bg: 'var(--atelier-surface-lowest)',
       '&::before': {
-        bg: '#9f8e78'
+        bg: 'var(--atelier-outline)'
       }
     }
   }),
   embedHeader: css({
-    borderBottom: '1px solid #524533',
+    borderBottom: '1px solid var(--atelier-line)',
     pb: '4',
     '& h2': {
       m: '0',
@@ -371,36 +307,36 @@ export const hobbyStyles = {
   embedSummary: css({
     maxW: '52rem',
     my: '6',
-    color: '#c7c6c6',
+    color: 'var(--atelier-fg-muted)',
     fontSize: '1.05rem',
     lineHeight: '1.7'
   }),
   gallery: css({
     display: 'grid',
     gap: '4',
-    gridTemplateColumns: { base: '1fr', md: 'minmax(0, 1fr) 7rem' },
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) 7rem' },
     '&[data-has-rail="false"]': {
-      gridTemplateColumns: '1fr'
+      gridTemplateColumns: 'minmax(0, 1fr)'
     }
   }),
   galleryStage: css({
-    border: '1px solid #524533',
+    border: '1px solid var(--atelier-line)',
     minH: '22rem',
-    bg: '#0e0e0e',
+    bg: 'var(--atelier-surface-lowest)',
     overflow: 'hidden',
     '& img': {
       objectFit: 'cover',
       w: 'full',
       h: 'full',
       minH: '22rem',
-      filter: 'saturate(1.12) contrast(1.04)'
+      filter: 'var(--atelier-image-rest)'
     }
   }),
   galleryFallback: css({
     display: 'grid',
     gap: '3',
     minH: '22rem',
-    color: '#ffb000',
+    color: 'var(--atelier-accent)',
     textAlign: 'center',
     placeItems: 'center'
   }),
@@ -410,10 +346,10 @@ export const hobbyStyles = {
     alignContent: 'center',
     minH: '22rem',
     p: '6',
-    color: '#ffb000',
+    color: 'var(--atelier-accent)',
     textAlign: 'center',
     '& strong': {
-      color: '#e5e2e1',
+      color: 'var(--atelier-fg)',
       fontSize: '1rem'
     },
     '& div': {
@@ -425,17 +361,17 @@ export const hobbyStyles = {
       display: 'inline-flex',
       justifyContent: 'center',
       alignItems: 'center',
-      border: '1px solid #524533',
+      border: '1px solid var(--atelier-line)',
       minH: '44px',
       px: '3',
-      color: '#ffb000',
+      color: 'var(--atelier-accent)',
       textDecoration: 'none',
-      fontFamily: 'JetBrains Mono, monospace',
+      fontFamily: 'var(--font-code)',
       fontSize: '11px',
       letterSpacing: '0.02em',
       overflowWrap: 'anywhere',
       _hover: {
-        borderColor: '#ffb000',
+        borderColor: 'var(--atelier-accent)',
         bg: 'rgba(255, 176, 0, 0.08)'
       }
     }
@@ -443,21 +379,21 @@ export const hobbyStyles = {
   galleryRail: css({
     display: 'grid',
     gap: '3',
-    gridTemplateColumns: { base: 'repeat(3, 1fr)', md: '1fr' },
+    gridTemplateColumns: { base: 'repeat(3, minmax(0, 1fr))', md: 'minmax(0, 1fr)' },
     '& button': {
       cursor: 'pointer',
-      border: '1px solid #524533',
+      border: '1px solid var(--atelier-line)',
       minH: '44px',
-      color: '#c7c6c6',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-fg-muted)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
-      bg: '#131313'
+      bg: 'var(--atelier-bg)'
     },
     '& button[data-active="true"]': {
-      borderColor: '#ffb000',
-      color: '#ffb000'
+      borderColor: 'var(--atelier-accent)',
+      color: 'var(--atelier-accent)'
     },
     '& img': {
       objectFit: 'cover',
@@ -468,16 +404,16 @@ export const hobbyStyles = {
   feed: css({
     display: 'grid',
     gap: '1px',
-    gridTemplateColumns: { base: '1fr', md: 'repeat(3, 1fr)' },
-    border: '1px solid #524533',
-    bg: '#524533',
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'repeat(3, minmax(0, 1fr))' },
+    border: '1px solid var(--atelier-line)',
+    bg: 'var(--atelier-line)',
     '& article': {
       p: '5',
-      bg: '#131313'
+      bg: 'var(--atelier-bg)'
     },
     '& span': {
-      color: '#9f8e78',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-outline)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
@@ -485,15 +421,15 @@ export const hobbyStyles = {
     '& p': {
       mt: '4',
       mb: '0',
-      color: '#c7c6c6',
+      color: 'var(--atelier-fg-muted)',
       lineHeight: '1.65'
     },
     '& a': {
-      color: '#ffb000',
+      color: 'var(--atelier-accent)',
       textDecoration: 'none',
       overflowWrap: 'anywhere',
       _hover: {
-        color: '#e5e2e1'
+        color: 'var(--atelier-fg)'
       }
     }
   }),
@@ -504,41 +440,41 @@ export const hobbyStyles = {
   algorithm: css({
     display: 'grid',
     gap: '4',
-    gridTemplateColumns: { base: '1fr', md: '15rem minmax(0, 1fr)' }
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: '15rem minmax(0, 1fr)' }
   }),
   algorithmTabs: css({
     display: 'grid',
     gap: '3',
     '& button': {
       cursor: 'pointer',
-      border: '1px solid #524533',
+      border: '1px solid var(--atelier-line)',
       minH: '44px',
-      color: '#c7c6c6',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-fg-muted)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
-      bg: '#131313'
+      bg: 'var(--atelier-bg)'
     },
     '& button[data-active="true"]': {
-      borderColor: '#ffb000',
-      color: '#ffb000'
+      borderColor: 'var(--atelier-accent)',
+      color: 'var(--atelier-accent)'
     }
   }),
   algorithmViewer: css({
-    border: '1px solid #524533',
+    border: '1px solid var(--atelier-line)',
     p: 'clamp(1.5rem, 4vw, 3rem)',
-    bg: '#0e0e0e',
+    bg: 'var(--atelier-surface-lowest)',
     '& p': {
       m: '0 0 1rem',
-      color: '#ffb000',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-accent)',
+      fontFamily: 'var(--font-code)',
       fontSize: 'clamp(1.5rem, 4vw, 3rem)',
       overflowWrap: 'anywhere'
     },
     '& span': {
-      color: '#9f8e78',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-outline)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
@@ -548,43 +484,43 @@ export const hobbyStyles = {
       alignItems: 'center',
       minH: '44px',
       mt: '6',
-      color: '#ffb000',
+      color: 'var(--atelier-accent)',
       textDecoration: 'none',
-      fontFamily: 'JetBrains Mono, monospace',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       fontWeight: '700',
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
       _hover: {
-        color: '#e5e2e1'
+        color: 'var(--atelier-fg)'
       }
     }
   }),
   algorithmResources: css({
     display: 'grid',
     gap: '1px',
-    gridTemplateColumns: { base: '1fr', md: 'repeat(2, 1fr)' },
-    border: '1px solid #524533',
-    bg: '#524533',
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' },
+    border: '1px solid var(--atelier-line)',
+    bg: 'var(--atelier-line)',
     '& a': {
       display: 'grid',
       gap: '2',
       minH: '44px',
       p: '4',
-      color: '#c7c6c6',
+      color: 'var(--atelier-fg-muted)',
       textDecoration: 'none',
-      bg: '#131313',
+      bg: 'var(--atelier-bg)',
       _hover: {
-        color: '#ffb000',
-        bg: '#1c1b1b'
+        color: 'var(--atelier-accent)',
+        bg: 'var(--atelier-surface-low)'
       }
     },
     '& a:last-of-type:nth-of-type(odd)': {
       gridColumn: { md: '1 / -1' }
     },
     '& span': {
-      color: '#ffb000',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-accent)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
@@ -595,31 +531,6 @@ export const hobbyStyles = {
       overflowWrap: 'anywhere'
     }
   }),
-  stats: css({
-    display: 'grid',
-    gap: '1px',
-    gridTemplateColumns: { base: '1fr', md: 'repeat(4, 1fr)' },
-    border: '1px solid #524533',
-    bg: '#524533',
-    '& div': {
-      p: '5',
-      bg: '#131313'
-    },
-    '& span': {
-      color: '#9f8e78',
-      fontFamily: 'JetBrains Mono, monospace',
-      fontSize: '10px',
-      letterSpacing: '0.12em',
-      textTransform: 'uppercase'
-    },
-    '& strong': {
-      display: 'block',
-      mt: '3',
-      color: '#2dd4bf',
-      fontFamily: 'JetBrains Mono, monospace',
-      fontSize: 'clamp(1.5rem, 4vw, 2.5rem)'
-    }
-  }),
   sourceModule: css({
     display: 'grid',
     gap: '4'
@@ -627,28 +538,28 @@ export const hobbyStyles = {
   sourceLinks: css({
     display: 'grid',
     gap: '1px',
-    gridTemplateColumns: { base: '1fr', md: 'repeat(2, 1fr)' },
-    border: '1px solid #524533',
-    bg: '#524533',
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' },
+    border: '1px solid var(--atelier-line)',
+    bg: 'var(--atelier-line)',
     '& a': {
       display: 'grid',
       gap: '2',
       minH: '44px',
       p: '4',
-      color: '#c7c6c6',
+      color: 'var(--atelier-fg-muted)',
       textDecoration: 'none',
-      bg: '#0e0e0e',
+      bg: 'var(--atelier-surface-lowest)',
       _hover: {
-        color: '#ffb000',
-        bg: '#1c1b1b'
+        color: 'var(--atelier-accent)',
+        bg: 'var(--atelier-surface-low)'
       }
     },
     '& a:last-of-type:nth-of-type(odd)': {
       gridColumn: { md: '1 / -1' }
     },
     '& span': {
-      color: '#ffb000',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-accent)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
@@ -661,35 +572,35 @@ export const hobbyStyles = {
     }
   }),
   sourceEmpty: css({
-    border: '1px solid #524533',
+    border: '1px solid var(--atelier-line)',
     m: '0',
     p: '5',
-    color: '#9f8e78',
-    fontFamily: 'JetBrains Mono, monospace',
+    color: 'var(--atelier-outline)',
+    fontFamily: 'var(--font-code)',
     fontSize: '10px',
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
-    bg: '#131313'
+    bg: 'var(--atelier-bg)'
   }),
   dartsBoard: css({
     display: 'grid',
     gap: '4',
     alignItems: 'stretch',
-    gridTemplateColumns: { base: '1fr', lg: '16rem minmax(0, 1fr)' }
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', lg: '16rem minmax(0, 1fr)' }
   }),
   dartsTarget: css({
     pos: 'relative',
-    border: '1px solid #524533',
+    border: '1px solid var(--atelier-line)',
     minH: '16rem',
-    bg: '#0e0e0e',
+    bg: 'var(--atelier-surface-lowest)',
     overflow: 'hidden',
     '&::before': {
       inset: '1.5rem',
       pos: 'absolute',
-      border: '2px solid #ffb000',
+      border: '2px solid var(--atelier-accent)',
       rounded: 'full',
       boxShadow:
-        'inset 0 0 0 1.5rem rgba(255, 176, 0, 0.08), inset 0 0 0 3rem #131313, inset 0 0 0 3.25rem #2dd4bf',
+        'inset 0 0 0 1.5rem rgba(255, 176, 0, 0.08), inset 0 0 0 3rem var(--atelier-bg), inset 0 0 0 3.25rem var(--atelier-accent-soft)',
       content: '""'
     },
     '& span': {
@@ -699,7 +610,7 @@ export const hobbyStyles = {
       transformOrigin: '50% 0',
       w: '2px',
       h: '44%',
-      bg: '#524533'
+      bg: 'var(--atelier-line)'
     },
     '& span:nth-child(1)': {
       transform: 'rotate(0deg)'
@@ -714,16 +625,16 @@ export const hobbyStyles = {
   dartsStats: css({
     display: 'grid',
     gap: '1px',
-    gridTemplateColumns: { base: '1fr', md: 'repeat(3, 1fr)' },
-    border: '1px solid #524533',
-    bg: '#524533',
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'repeat(3, minmax(0, 1fr))' },
+    border: '1px solid var(--atelier-line)',
+    bg: 'var(--atelier-line)',
     '& div': {
       p: '5',
-      bg: '#131313'
+      bg: 'var(--atelier-bg)'
     },
     '& span': {
-      color: '#9f8e78',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-outline)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
@@ -731,8 +642,8 @@ export const hobbyStyles = {
     '& strong': {
       display: 'block',
       mt: '3',
-      color: '#ffb000',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-accent)',
+      fontFamily: 'var(--font-code)',
       fontSize: 'clamp(1.5rem, 3vw, 2rem)',
       whiteSpace: 'nowrap'
     }
@@ -741,23 +652,23 @@ export const hobbyStyles = {
     display: 'grid',
     gap: '1px',
     gridColumn: { lg: '1 / -1' },
-    gridTemplateColumns: { base: '1fr', md: 'repeat(3, 1fr)' },
-    border: '1px solid #524533',
-    bg: '#524533',
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'repeat(3, minmax(0, 1fr))' },
+    border: '1px solid var(--atelier-line)',
+    bg: 'var(--atelier-line)',
     '& section': {
       p: '5',
-      bg: '#0e0e0e'
+      bg: 'var(--atelier-surface-lowest)'
     },
     '& span': {
-      color: '#2dd4bf',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-outline)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     },
     '& p': {
       m: '0.75rem 0 0',
-      color: '#c7c6c6',
+      color: 'var(--atelier-fg-muted)',
       lineHeight: '1.5',
       overflowWrap: 'anywhere'
     }
@@ -765,40 +676,40 @@ export const hobbyStyles = {
   linkLibrary: css({
     display: 'grid',
     gap: '1px',
-    gridTemplateColumns: { base: '1fr', md: 'repeat(2, 1fr)' },
-    border: '1px solid #524533',
-    bg: '#524533',
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' },
+    border: '1px solid var(--atelier-line)',
+    bg: 'var(--atelier-line)',
     '& a': {
       display: 'grid',
       gap: '2',
       minH: '44px',
       p: '5',
-      color: '#c7c6c6',
+      color: 'var(--atelier-fg-muted)',
       textDecoration: 'none',
-      bg: '#131313',
+      bg: 'var(--atelier-bg)',
       _hover: {
-        color: '#ffb000',
-        bg: '#1c1b1b'
+        color: 'var(--atelier-accent)',
+        bg: 'var(--atelier-surface-low)'
       }
     },
     '& a:last-of-type:nth-of-type(odd)': {
       gridColumn: { md: '1 / -1' }
     },
     '& span': {
-      color: '#ffb000',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-accent)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     },
     '& strong': {
-      color: '#e5e2e1',
+      color: 'var(--atelier-fg)',
       fontWeight: 'normal',
       overflowWrap: 'anywhere'
     },
     '& small': {
-      color: '#9f8e78',
-      fontFamily: 'JetBrains Mono, monospace',
+      color: 'var(--atelier-outline)',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.08em',
       textTransform: 'uppercase',
@@ -808,56 +719,56 @@ export const hobbyStyles = {
       gridColumn: '1 / -1',
       m: '0',
       p: '5',
-      color: '#9f8e78',
-      bg: '#131313'
+      color: 'var(--atelier-outline)',
+      bg: 'var(--atelier-bg)'
     }
   }),
   pianoKeys: css({
     display: 'grid',
-    gridTemplateColumns: 'repeat(14, 1fr)',
-    border: '1px solid #524533',
+    gridTemplateColumns: 'repeat(14, minmax(0, 1fr))',
+    border: '1px solid var(--atelier-line)',
     h: '10rem',
-    bg: '#e5e2e1',
+    bg: 'var(--atelier-fg)',
     overflow: 'hidden',
     '& span': {
       pos: 'relative',
-      borderRight: '1px solid #c7c6c6'
+      borderRight: '1px solid var(--atelier-fg-muted)'
     },
     '& span[data-black="true"]::before': {
       inset: '0 18% 44%',
       pos: 'absolute',
-      bg: '#131313',
+      bg: 'var(--atelier-bg)',
       content: '""'
     }
   }),
   pianoControls: css({
     display: 'grid',
     gap: '3',
-    gridTemplateColumns: { base: '1fr', md: 'repeat(4, 1fr)' },
+    gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'repeat(4, minmax(0, 1fr))' },
     mt: '4',
     '& button, & a': {
       cursor: 'pointer',
       display: 'inline-flex',
       justifyContent: 'center',
       alignItems: 'center',
-      border: '1px solid #524533',
+      border: '1px solid var(--atelier-line)',
       minH: '44px',
-      color: '#c7c6c6',
+      color: 'var(--atelier-fg-muted)',
       textDecoration: 'none',
-      fontFamily: 'JetBrains Mono, monospace',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
-      bg: '#131313',
+      bg: 'var(--atelier-bg)',
       _hover: {
-        borderColor: '#ffb000',
-        color: '#ffb000'
+        borderColor: 'var(--atelier-accent)',
+        color: 'var(--atelier-accent)'
       }
     }
   }),
   pianoStatus: css({
-    color: '#9f8e78',
-    fontFamily: 'JetBrains Mono, monospace',
+    color: 'var(--atelier-outline)',
+    fontFamily: 'var(--font-code)',
     fontSize: '10px',
     letterSpacing: '0.12em',
     textTransform: 'uppercase'
@@ -867,18 +778,18 @@ export const hobbyStyles = {
     gap: '5',
     minH: '22rem',
     p: '6',
-    color: '#ffb000',
+    color: 'var(--atelier-accent)',
     textAlign: 'center',
     placeItems: 'center',
     '& p': {
       m: '0',
-      color: '#e5e2e1',
+      color: 'var(--atelier-fg)',
       fontSize: 'lg'
     },
     '& strong': {
       display: 'block',
       mt: '2',
-      color: '#ffb000',
+      color: 'var(--atelier-accent)',
       fontFamily: 'var(--font-display)',
       fontSize: 'clamp(1.4rem, 4vw, 2.5rem)',
       letterSpacing: '0',
@@ -895,19 +806,19 @@ export const hobbyStyles = {
     '& nav a': {
       display: 'inline-flex',
       alignItems: 'center',
-      border: '1px solid #524533',
+      border: '1px solid var(--atelier-line)',
       minH: '44px',
       px: '4',
-      color: '#c7c6c6',
+      color: 'var(--atelier-fg-muted)',
       textDecoration: 'none',
-      fontFamily: 'JetBrains Mono, monospace',
+      fontFamily: 'var(--font-code)',
       fontSize: '10px',
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
-      bg: '#131313',
+      bg: 'var(--atelier-bg)',
       _hover: {
-        borderColor: '#ffb000',
-        color: '#ffb000'
+        borderColor: 'var(--atelier-accent)',
+        color: 'var(--atelier-accent)'
       }
     }
   })

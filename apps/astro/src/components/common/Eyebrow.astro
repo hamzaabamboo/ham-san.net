@@ -1,0 +1,31 @@
+---
+import { Box } from 'styled-system/jsx';
+import { Text } from '~/components/ui/text';
+
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<Box
+  display="inline-flex"
+  alignItems="center"
+  w="fit-content"
+  px="3"
+  py="1"
+  bg="var(--atelier-surface-highest)"
+  border="1px solid"
+  borderColor="var(--atelier-line)"
+>
+  <Text
+    fontFamily="var(--font-code)"
+    fontSize="10px"
+    textTransform="uppercase"
+    letterSpacing="0.12em"
+    color="var(--atelier-accent)"
+  >
+    {label}
+  </Text>
+</Box>

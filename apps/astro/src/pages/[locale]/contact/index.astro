@@ -1,4 +1,5 @@
 ---
+import { Glyph } from '~/components/ui/glyph';
 import { Box, Container, Grid, Stack, Wrap } from 'styled-system/jsx';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
@@ -7,6 +8,8 @@ import { InteractiveNamecard } from '~/components/namecard/InteractiveNamecard';
 import { NAMECARDS } from '~/constants/namecard';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
+import SectionHeading from '~/components/common/SectionHeading.astro';
 
 export const prerender = false;
 
@@ -18,6 +21,9 @@ if (!validateLocale(locale)) {
 
 const t = useTranslations(locale);
 const pageTitle = `${t('common.contact')} | ${t('common.name')}`;
+
+// No request-time data on this page; it was previously uncacheable.
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 
 const items = [
   { label: 'GITHUB', value: 'hamzaabamboo', url: 'https://github.com/hamzaabamboo' },
@@ -40,78 +46,78 @@ const items = [
 <MainLayout title={pageTitle} description={t('contact.intro')}>
   <Container w="full" maxW="breakpoint-xl" py="8" className="page-shell">
     <Stack gap="12">
-      <Stack
-        gap="4"
-        borderLeftWidth="2px"
-        borderLeftStyle="solid"
-        borderLeftColor="#ffb000"
-        pl="8"
-        py="4"
-      >
+      <Stack gap="4" className="page-header-rule" py="4">
+        <Eyebrow label={t('common.contact')} />
         <Heading
           as="h1"
-          fontSize={{ base: '5xl', md: '8xl' }}
-          fontStyle="italic"
+          fontSize={{ base: '5xl', md: '7xl' }}
           lineHeight="tight"
           letterSpacing="tighter"
         >
-          {t('contact.hero-prefix') + t('contact.hero-separator')}<Box as="span" color="#ffb000"
-            >{t('contact.hero-highlight')}</Box
+          {t('contact.hero-prefix') + t('contact.hero-separator')}<Box
+            as="span"
+            color="var(--atelier-accent)">{t('contact.hero-highlight')}</Box
           >{t('contact.hero-suffix')}
         </Heading>
-        <Text color="#c7c6c6" fontSize="xl" maxW="2xl" lineHeight="relaxed" mt="2">
+        <Text color="var(--atelier-fg-muted)" fontSize="xl" maxW="2xl" lineHeight="relaxed" mt="2">
           {t('contact.intro')}
         </Text>
       </Stack>
 
       <Grid
-        gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
+        gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
         gap="1px"
-        bg="#524533"
+        bg="var(--atelier-line)"
         border="1px solid"
-        borderColor="#524533"
+        borderColor="var(--atelier-line)"
       >
-        <Stack bg="#131313" p="5" gap="2">
+        <Stack bg="var(--atelier-bg)" p="5" gap="2" role="region" aria-label={t('contact.direct')}>
           <Text
-            fontFamily="JetBrains Mono, monospace"
+            fontFamily="var(--font-code)"
             fontSize="10px"
             textTransform="uppercase"
-            color="#9f8e78"
+            color="var(--atelier-outline)"
           >
             {t('contact.direct')}
           </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="sm" color="#ffb000">
+          <Text fontFamily="var(--font-code)" fontSize="sm" color="var(--atelier-accent)">
             hello@ham-san.net
           </Text>
         </Stack>
-        <Stack className="contact-panel" p="5" gap="2">
+        <Stack
+          className="contact-panel"
+          p="5"
+          gap="2"
+          role="region"
+          aria-label={t('contact.namecards-count')}
+        >
           <Text
-            fontFamily="JetBrains Mono, monospace"
+            fontFamily="var(--font-code)"
             fontSize="10px"
             textTransform="uppercase"
-            color="#9f8e78"
+            color="var(--atelier-outline)"
           >
             {t('contact.namecards-count')}
           </Text>
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="3xl" color="#ffb000">
+          <Text fontFamily="var(--font-code)" fontSize="3xl" color="var(--atelier-accent)">
             {NAMECARDS.length}
           </Text>
         </Stack>
       </Grid>
 
-      <Grid gridTemplateColumns={{ base: '1fr', lg: '3fr 9fr' }} gap="12">
+      <Stack gap="16">
         <Stack gap="12" minW="0">
-          <Stack gap="4">
+          <Stack gap="4" role="region" aria-label={t('contact.social-connectors')}>
             <Text
-              fontFamily="JetBrains Mono, monospace"
+              fontFamily="var(--font-code)"
               fontSize="10px"
               textTransform="uppercase"
               letterSpacing="0.2em"
-              color="#9f8e78"
+              color="var(--atelier-outline)"
             >
               {t('contact.social-connectors')}
             </Text>
-            <Grid gridTemplateColumns="1fr" gap="2">
+            <Grid gridTemplateColumns="repeat(auto-fit, minmax(min(100%, 320px), 1fr))" gap="2">
               {
                 items.map((item) => (
                   <Link
@@ -120,8 +126,9 @@ const items = [
                     rel={item.url.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
                     display="flex"
                     flexDirection="column"
+                    alignItems="flex-start"
                     border="1px solid"
-                    borderColor="#524533"
+                    borderColor="var(--atelier-line)"
                     p="4"
                     className="group contact-social-card"
                   >
@@ -129,9 +136,9 @@ const items = [
                       {item.label}
                     </Text>
                     <Text
-                      fontFamily="JetBrains Mono, monospace"
+                      fontFamily="var(--font-code)"
                       fontSize="10px"
-                      color="#9f8e78"
+                      color="var(--atelier-outline)"
                       mt="1"
                       overflowWrap="anywhere"
                     >
@@ -146,30 +153,21 @@ const items = [
 
         <Stack gap="16" minW="0">
           <Stack gap="6">
-            <Wrap
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom="1px solid"
-              borderColor="#524533"
-              pb="4"
-            >
-              <Heading
-                as="h2"
-                fontSize="2xl"
-                fontWeight="extrabold"
-                textTransform="uppercase"
-                letterSpacing="tighter"
-                fontStyle="normal"
-              >
-                {t('contact.namecards')}
-              </Heading>
-            </Wrap>
-            <Stack
+            <SectionHeading label={t('contact.namecards')} />
+            {
+              /* Full width with the variant list beside the card. Capping the stage to 40rem
+                left an empty right half under a heading rule that runs edge to edge; leaving
+                it uncapped floated a 344px card in a 1120px box. The list gives the space a
+                job. */
+            }
+            <Grid
               className="contact-namecard-stage"
+              gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'auto minmax(0, 1fr)' }}
+              gap={{ base: '6', md: '10' }}
+              alignItems="start"
               border="1px solid"
-              borderColor="#524533"
+              borderColor="var(--atelier-line)"
               p={{ base: '6', md: '8' }}
-              alignItems="center"
               overflow="hidden"
             >
               <Box maxW="full" className="contact-namecard-preview">
@@ -183,53 +181,86 @@ const items = [
                   <InteractiveNamecard data={NAMECARDS[0]} />
                 </Link>
               </Box>
-              <Wrap
-                w="full"
-                pt="5"
-                mt="2"
-                borderTop="1px solid"
-                borderColor="#524533"
-                justifyContent="space-between"
-                color="#9f8e78"
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                textTransform="uppercase"
-              >
-                <Text>{t('contact.default-card')}</Text>
+              <Stack gap="0" minW="0">
+                <Text
+                  fontFamily="var(--font-code)"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  letterSpacing="0.12em"
+                  color="var(--atelier-outline)"
+                  pb="3"
+                  borderBottom="1px solid"
+                  borderColor="var(--atelier-line)"
+                >
+                  {t('contact.default-card')}
+                </Text>
+                {
+                  NAMECARDS.map((card) => (
+                    <Link
+                      href={`/${locale}/namecard/${card.variant}`}
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      gap="4"
+                      py="3"
+                      borderBottom="1px solid"
+                      borderColor="var(--atelier-line)"
+                      fontFamily="var(--font-code)"
+                      fontSize="11px"
+                      textTransform="uppercase"
+                      letterSpacing="0.08em"
+                      color="var(--atelier-fg-muted)"
+                      _hover={{ color: 'var(--atelier-accent)' }}
+                    >
+                      <Text>{card.variant}</Text>
+                      <Glyph name="north_east" />
+                    </Link>
+                  ))
+                }
                 <Link
                   href={`/${locale}/namecard/all`}
-                  color="#ffd597"
+                  color="var(--atelier-accent)"
                   textTransform="uppercase"
                   fontSize="10px"
-                  fontFamily="JetBrains Mono, monospace"
+                  letterSpacing="0.12em"
+                  fontFamily="var(--font-code)"
+                  pt="4"
                 >
                   {t('name-card.view-other-namecards')}
                 </Link>
-              </Wrap>
-            </Stack>
+              </Stack>
+            </Grid>
           </Stack>
 
-          <Stack border="1px solid" borderColor="#524533" bg="#0e0e0e" overflow="hidden">
+          <Stack
+            border="1px solid"
+            borderColor="var(--atelier-line)"
+            bg="var(--atelier-surface-lowest)"
+            overflow="hidden"
+          >
             <Wrap
               justifyContent="space-between"
               alignItems="center"
               px="8"
-              py="3"
-              bg="#353534"
+              py="5"
               borderBottom="1px solid"
-              borderColor="#524533"
+              borderColor="var(--atelier-line)"
             >
-              <Text fontWeight="bold" fontSize="xs" textTransform="uppercase" letterSpacing="0.2em">
+              <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="normal">
                 {t('contact.form-heading')}
-              </Text>
+              </Heading>
             </Wrap>
             <form
+              aria-label={t('contact.form-heading')}
               class="contact-form"
               action="mailto:hello@ham-san.net"
               method="post"
               enctype="text/plain"
             >
-              <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
+              <Grid
+                gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
+                gap="8"
+              >
                 <Stack gap="2">
                   <label for="contact-name" class="contact-label">
                     {t('contact.field-name')}
@@ -292,47 +323,52 @@ const items = [
               </Stack>
               <button class="contact-submit-btn">
                 {t('contact.execute-transmission')}
-                <span class="material-symbols-outlined" style="font-size: 16px;" aria-hidden="true"
-                  >send</span
-                >
+                <Glyph name="send" style={{ fontSize: '16px' }} />
               </button>
             </form>
           </Stack>
         </Stack>
-      </Grid>
+      </Stack>
 
-      <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="8">
-        <Stack border="1px solid" borderColor="#524533" p="6">
+      <Grid
+        gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
+        gap="8"
+      >
+        <Stack border="1px solid" borderColor="var(--atelier-line)" p="6">
           <Text
             fontWeight="bold"
             fontSize="sm"
             textTransform="uppercase"
             letterSpacing="0.2em"
-            color="#ffd597"
+            color="var(--atelier-accent-soft)"
             mb="4"
           >
             {t('contact.security-brief')}
           </Text>
-          <Text color="#c7c6c6" fontSize="sm" lineHeight="relaxed">
+          <Text color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="relaxed">
             {t('contact.security-brief-body')}
           </Text>
         </Stack>
-        <Stack border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6">
+        <Stack border="1px solid" borderColor="var(--atelier-line)" p="6">
           <Text
             fontWeight="bold"
             fontSize="sm"
             textTransform="uppercase"
             letterSpacing="0.2em"
-            color="#ffd597"
+            color="var(--atelier-accent-soft)"
             mb="4"
           >
             {t('contact.office-hours')}
           </Text>
+          {
+            /* Its sibling card sets the same kind of note in Manrope 14px; this one was
+              JetBrains Mono 10px, so two identically framed cards side by side read as two
+              different components. Mono stays on the clock, which needs tabular figures. */
+          }
           <Text
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            color="#c7c6c6"
-            lineHeight="2.2"
+            fontSize="sm"
+            color="var(--atelier-fg-muted)"
+            lineHeight="1.7"
             whiteSpace="pre-line"
           >
             {t('contact.office-hours-body')}
@@ -340,9 +376,9 @@ const items = [
           <Text
             id="contact-utc-time"
             data-label={t('contact.current-time-label')}
-            fontFamily="JetBrains Mono, monospace"
+            fontFamily="var(--font-code)"
             fontSize="10px"
-            color="#c7c6c6"
+            color="var(--atelier-fg-muted)"
             lineHeight="2.2"
           />
         </Stack>

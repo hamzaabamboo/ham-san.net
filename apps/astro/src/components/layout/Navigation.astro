@@ -7,6 +7,7 @@ import { Sidebar } from './Sidebar';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const embeddedRoomPage = Astro.url.searchParams.get('roomEmbed') === '1';
 
 const getURLWithLanguage = (value: string) => {
   return `/${lang}${value}`;
@@ -21,18 +22,27 @@ const NAVIGATION_LINKS = [
   { label: t('common.note'), value: '/notes' },
   { label: t('common.hobbies'), value: '/hobbies' },
   { label: t('common.event'), value: '/events' },
+  { label: t('common.photos'), value: '/photos' },
+  { label: t('common.room'), value: '/room' },
   { label: t('common.about-me'), value: '/about' },
   { label: t('common.contact'), value: '/contact' }
 ];
 ---
 
 <script>
+  let ticking = false;
   const updateNav = () => {
+    ticking = false;
     const nav = document.getElementById('main-nav');
     if (!nav) return;
     nav.classList.toggle('scrolled', window.scrollY > 50);
   };
-  window.addEventListener('scroll', updateNav);
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateNav);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
   document.addEventListener('astro:page-load', updateNav);
   updateNav();
 </script>
@@ -70,12 +80,23 @@ const NAVIGATION_LINKS = [
           ))
       }
     </div>
-    <Sidebar
-      links={NAVIGATION_LINKS}
-      locale={lang}
-      pathname={Astro.url.pathname}
-      search={Astro.url.search}
-      client:visible
-    />
+    {
+      !embeddedRoomPage && (
+        <Sidebar
+          links={NAVIGATION_LINKS}
+          locale={lang}
+          locales={Object.keys(languages)}
+          labels={{
+            menu: t('common.menu'),
+            menuOpen: t('common.menu-open'),
+            menuClose: t('common.menu-close'),
+            language: t('common.language')
+          }}
+          pathname={Astro.url.pathname}
+          search={Astro.url.search}
+          client:visible
+        />
+      )
+    }
   </div>
 </nav>

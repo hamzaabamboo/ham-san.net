@@ -55,12 +55,28 @@ describe('truncateLinkLabel', () => {
   });
 
   test('truncates on a word boundary and joins the ellipsis', () => {
-    const result = truncateLinkLabel(
-      'Lens review-Tamron SP 70-300 mm f 4-5.6 Di VC USD Image resolution',
-      52
-    );
-    expect(result.endsWith('⁠…')).toBe(true);
-    expect(result.length).toBeLessThanOrEqual(54);
-    expect(result).toContain('Tamron');
+    // Pin the exact string. The previous assertions — ends with the ellipsis, is short
+    // enough, contains a word from the front — all held with the boundary logic deleted
+    // entirely, so the test passed by construction and proved nothing about boundaries.
+    expect(
+      truncateLinkLabel('Lens review-Tamron SP 70-300 mm f 4-5.6 Di VC USD Image resolution', 52)
+    ).toBe('Lens review-Tamron SP 70-300 mm f 4-5.6 Di VC USD\u2060…');
+  });
+
+  test('an EARLY space is not treated as a word boundary', () => {
+    // The `> max * 0.6` gate itself: with a space at index 2, slicing there would return the
+    // stub "ab…". Relaxing the gate to `lastSpace > 0` must fail here — the two cases below
+    // cannot see that mutation, because in both of them the gate and `> 0` agree.
+    expect(
+      truncateLinkLabel('ab cdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuv', 52)
+    ).toBe('ab cdefghijklmnopqrstuvwxyz0123456789abcdefghijklmno\u2060…');
+  });
+
+  test('a label with no late space is cut mid-token rather than gutted', () => {
+    // The other side of the `lastSpace > max * 0.6` gate: with no space to fall back on the
+    // function must still fill the budget instead of returning a stub.
+    expect(
+      truncateLinkLabel('averyveryverylongsingletokenwithnospacesatallgoesonandonandon', 52)
+    ).toBe('averyveryverylongsingletokenwithnospacesatallgoesona\u2060…');
   });
 });

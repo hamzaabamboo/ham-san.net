@@ -1,5 +1,4 @@
 {
-  "other": "Other",
   "busiest-months": "Busiest months",
   "show-all": "Show all",
   "aria-hero-stats": "Headline event statistics",
@@ -12,5 +11,7 @@
   "aria-highlight-totals": "Highlight totals",
   "aria-chart-grid": "Chart panels",
   "aria-metrics-strip": "Secondary event statistics",
-  "aria-analytics": "Event analytics charts"
+  "aria-analytics": "Event analytics charts",
+  "aria-heatmap": "Calendar of days attended, one cell per day, shaded by how many events that day.",
+  "aria-heatmap-scroll": "Scrollable calendar grid"
 }

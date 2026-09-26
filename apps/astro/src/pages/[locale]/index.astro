@@ -1,7 +1,7 @@
 ---
+import { Glyph } from '~/components/ui/glyph';
 import { Box, Container, Flex, Grid, Stack } from 'styled-system/jsx';
-import { getMediaUrl } from 'utils/media';
-import SpecLabel from '~/components/common/SpecLabel';
+import { resolveMedia } from 'utils/media';
 import { Heading } from '~/components/ui/heading';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
@@ -9,6 +9,8 @@ import type { ProjectPreviewFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import StatusRow from '~/components/home/StatusRow.astro';
+import SectionHeading from '~/components/common/SectionHeading.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { projectMonogram } from '~/utils/monogram';
@@ -27,7 +29,6 @@ const pageTitle = `${t('common.home')} | ${t('common.name')}`;
 
 const cmsLocale = locale === 'ja' ? 'ja' : 'en';
 
-let homepageData: any = null;
 let projects: ProjectPreviewFragment[] = [];
 let homeUnavailable = false;
 
@@ -35,24 +36,15 @@ try {
   const data = await withLastGood(`home:${cmsLocale}`, () =>
     graphQLSdk.fetchHomePage({ locale: cmsLocale })
   );
-  homepageData = data?.homepage;
   const rawProjects = data?.projects ?? [];
   projects = rawProjects
     .map((p) => pickLocale(p, locale))
     .filter((p): p is ProjectPreviewFragment => !!p)
     .map((p) => cleanProjectCopy(p));
 } catch {
-  homepageData = null;
   projects = [];
   homeUnavailable = true;
 }
-
-const introImage =
-  getMediaUrl(
-    homepageData?.introductionImage?.url,
-    { height: 700 },
-    import.meta.env.PUBLIC_API_URL
-  ) || null;
 
 const heroProjects = projects.slice(0, 3);
 const yearPartFormatter = new Intl.DateTimeFormat(locale, {
@@ -77,40 +69,28 @@ Astro.response.headers.set(
   <Container maxW="breakpoint-xl" className="page-shell">
     <Stack py={{ base: '8', md: '10' }} gap="0">
       <Grid
-        gridTemplateColumns={{ base: '1fr', lg: 'minmax(0, 1.6fr) 400px' }}
+        gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(0, 1.6fr) 400px' }}
         gap="12"
-        px={{ base: '0', lg: '6' }}
-        py={{ base: '20', lg: '32' }}
+        py={{ base: '14', lg: '24' }}
         borderBottom="1px solid"
-        borderColor="#524533"
+        borderColor="var(--atelier-line)"
       >
         <Stack gap="8">
-          <Box
-            display="inline-flex"
-            alignItems="center"
-            px="3"
-            py="1"
-            bg="#353534"
-            border="1px solid"
-            borderColor="#524533"
-            fontFamily="JetBrains Mono, monospace"
-            fontSize="10px"
-            textTransform="uppercase"
-            letterSpacing="0.12em"
-            color="#ffd597"
-            w="fit-content"
-          >
-            {t('home.operational-status')}
-          </Box>
+          <Eyebrow label={t('home.operational-status')} />
           <Heading
             as="h1"
-            fontSize={{ base: '5xl', md: '6xl', lg: '7xl' }}
+            fontSize={{ base: '5xl', md: '5xl', lg: '5xl' }}
             lineHeight={locale === 'th' ? '1.15' : locale === 'ja' ? '1.05' : '0.95'}
-            fontStyle="italic"
             style={locale === 'ja' ? { wordBreak: 'auto-phrase' } : undefined}
           >
             {t('home.hero-heading-prefix')}
-            <Box as="span" display="block" color="#ffb000">
+            {
+              /* The two halves render on separate lines but concatenate in textContent,
+                so copy-paste and any title derived from the h1 ran the words together.
+                Japanese needs no separator: its prefix already ends in a full stop. */
+            }
+            {locale === 'ja' ? '' : ' '}
+            <Box as="span" display="block" fontStyle="italic" color="var(--atelier-accent)">
               {t('home.hero-heading-emphasis')}
             </Box>
           </Heading>
@@ -128,144 +108,110 @@ Astro.response.headers.set(
           </Flex>
         </Stack>
         <Stack gap="2">
+          {
+            /* The hero used to render `introductionImage` from the CMS. The asset in place is
+              a stock clip-art illustration on a white ground: in a grayscale-plus-amber
+              system it renders as the brightest block on the page and beats the amber CTA
+              it sits beside. No filter fixes that — the treatment is already applied. A
+              typographic specimen is on-system and needs no asset. To restore the image,
+              render `introImage` here again; `resolveMedia` still resolves it. */
+          }
           <Box
             position="relative"
             border="1px solid"
-            borderColor="#524533"
-            p="4"
-            bg="#0e0e0e"
+            borderColor="var(--atelier-line)"
+            bg="var(--atelier-surface-lowest)"
+            className="fallback-grid-lines"
             overflow="hidden"
-            minH={{ base: '360px', lg: 'auto' }}
+            display="grid"
+            alignContent="space-between"
+            gap="6"
+            p={{ base: '6', lg: '8' }}
+            minH={{ base: '20rem', lg: '26rem' }}
           >
-            <Box aspectRatio="1 / 1" overflow="hidden" position="relative">
-              {
-                introImage ? (
-                  <img
-                    src={introImage}
-                    alt={t('home.profile-image-alt')}
-                    width="1200"
-                    height="1200"
-                    fetchpriority="high"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      filter: 'saturate(1.12) contrast(1.04)',
-                      opacity: 0.92
-                    }}
-                  />
-                ) : (
-                  <Box
-                    position="relative"
-                    w="100%"
-                    h="100%"
-                    bg="#0e0e0e"
-                    className="fallback-grid-lines"
-                    overflow="hidden"
-                  >
-                    <Box
-                      position="absolute"
-                      bottom="-20px"
-                      right="-10px"
-                      fontFamily="Newsreader, serif"
-                      fontStyle="italic"
-                      fontSize="280px"
-                      lineHeight="1"
-                      color="#e5e2e1"
-                      opacity="0.04"
-                      userSelect="none"
-                      pointerEvents="none"
-                      aria-hidden="true"
-                    >
-                      H
-                    </Box>
-                    <Box
-                      position="absolute"
-                      top="50%"
-                      left="50%"
-                      transform="translate(-50%, -50%)"
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="10px"
-                      textTransform="uppercase"
-                      letterSpacing="0.15em"
-                      color="#524533"
-                      textAlign="center"
-                    >
-                      {t('home.no-photo')}
-                    </Box>
-                  </Box>
-                )
-              }
+            <Text className="brand-plate-label" color="var(--atelier-outline)">
+              {t('common.name')}
+            </Text>
+            <Box
+              fontFamily="var(--font-display)"
+              fontStyle="italic"
+              fontSize={{ base: '7rem', lg: '9rem' }}
+              lineHeight="0.8"
+              color="var(--atelier-fg)"
+              opacity="0.12"
+              userSelect="none"
+              aria-hidden="true"
+              justifySelf="end"
+            >
+              H
             </Box>
+            <Box h="1px" bg="var(--atelier-line)" />
           </Box>
         </Stack>
       </Grid>
 
-      <Box px={{ base: '0', lg: '6' }}>
+      <Box>
         <StatusRow locale={locale} />
       </Box>
 
-      <Box
-        px={{ base: '0', lg: '6' }}
-        py={{ base: '8', lg: '16' }}
-        borderBottom="1px solid"
-        borderColor="#524533"
-      >
+      <Box py={{ base: '8', lg: '16' }} borderBottom="1px solid" borderColor="var(--atelier-line)">
         <Stack gap="2" mb="12">
-          <Text fontFamily="JetBrains Mono, monospace" fontSize="xs" color="#ffd597"
-            >{t('home.about-me')}</Text
-          >
-          <Heading as="h2" fontSize="5xl" fontStyle="italic">{t('home.bench-heading')}</Heading>
-          <Text color="#9f8e78" fontSize="sm" maxW="lg">
+          <SectionHeading label={t('home.bench-heading')} />
+          <Text color="var(--atelier-outline)" fontSize="sm" maxW="lg">
             {t('home.bench-subtitle')}
           </Text>
         </Stack>
-        <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(12, 1fr)' }} gap="6">
+        <Grid
+          gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(12, minmax(0, 1fr))' }}
+          gap="6"
+        >
           <Box
             gridColumn={{ base: 'span 1', md: 'span 7' }}
             position="relative"
             border="1px solid"
-            borderColor="#524533"
-            bg="#1c1b1b"
+            borderColor="var(--atelier-line)"
+            bg="var(--atelier-surface-low)"
             p="8"
             className="blocky-shadow-sm"
           >
             <Stack gap="6">
-              <Heading as="h3" fontSize="4xl" fontStyle="italic">
+              <Heading as="h3" fontSize={{ base: 'lg', md: 'xl' }}>
                 {t('home.bench-manifesto-heading')}{locale === 'ja' ? '' : ' '}
-                <Box as="span" fontStyle="italic">{t('home.bench-manifesto-emphasis')}</Box>
+                <Box as="span" color="var(--atelier-accent)" fontStyle="italic"
+                  >{t('home.bench-manifesto-emphasis')}</Box
+                >
               </Heading>
-              <Text color="#c7c6c6" lineHeight="relaxed">
+              <Text color="var(--atelier-fg-muted)" lineHeight="relaxed">
                 {t('home.bench-manifesto-body')}
               </Text>
               <Flex gap="2" wrap="wrap">
                 <Box
                   px="3"
                   py="1"
-                  bg="#353534"
+                  bg="var(--atelier-surface-highest)"
                   border="1px solid"
-                  borderColor="#524533"
-                  fontFamily="JetBrains Mono, monospace"
+                  borderColor="var(--atelier-line)"
+                  fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase">{t('home.bench-principle-clear')}</Box
                 >
                 <Box
                   px="3"
                   py="1"
-                  bg="#353534"
+                  bg="var(--atelier-surface-highest)"
                   border="1px solid"
-                  borderColor="#524533"
-                  fontFamily="JetBrains Mono, monospace"
+                  borderColor="var(--atelier-line)"
+                  fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase">{t('home.bench-principle-useful')}</Box
                 >
                 <Box
                   px="3"
                   py="1"
-                  bg="#353534"
+                  bg="var(--atelier-surface-highest)"
                   border="1px solid"
-                  borderColor="#524533"
-                  fontFamily="JetBrains Mono, monospace"
+                  borderColor="var(--atelier-line)"
+                  fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase">{t('home.bench-principle-maintainable')}</Box
                 >
@@ -277,42 +223,41 @@ Astro.response.headers.set(
             gridColumn={{ base: 'span 1', md: 'span 5' }}
             position="relative"
             border="1px solid"
-            borderColor="#524533"
-            bg="#1c1b1b"
+            borderColor="var(--atelier-line)"
+            bg="var(--atelier-surface-low)"
             p="8"
             className="blocky-shadow-sm"
           >
-            <SpecLabel>{t('home.bench-tools-label')}</SpecLabel>
-            <Grid mt="6" gridTemplateColumns="1fr 1fr" gap="4">
-              <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e"
+            <Grid gridTemplateColumns="minmax(0, 1fr) minmax(0, 1fr)" gap="4">
+              <Stack borderLeft="2px solid" borderLeftColor="var(--atelier-line)" pl="4" gap="1">
+                <Text fontFamily="var(--font-code)" fontSize="10px" color="var(--atelier-outline)"
                   >{t('home.bench-tools-frontend')}</Text
                 >
-                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg"
+                <Text fontFamily="var(--font-body)" fontWeight="bold" fontSize="lg"
                   >React / Next.js</Text
                 >
               </Stack>
-              <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e"
+              <Stack borderLeft="2px solid" borderLeftColor="var(--atelier-line)" pl="4" gap="1">
+                <Text fontFamily="var(--font-code)" fontSize="10px" color="var(--atelier-outline)"
                   >{t('home.bench-tools-styling')}</Text
                 >
-                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg"
+                <Text fontFamily="var(--font-body)" fontWeight="bold" fontSize="lg"
                   >Tailwind CSS</Text
                 >
               </Stack>
-              <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e"
+              <Stack borderLeft="2px solid" borderLeftColor="var(--atelier-line)" pl="4" gap="1">
+                <Text fontFamily="var(--font-code)" fontSize="10px" color="var(--atelier-outline)"
                   >{t('home.bench-tools-design')}</Text
                 >
-                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg"
+                <Text fontFamily="var(--font-body)" fontWeight="bold" fontSize="lg"
                   >Figma / WebGL</Text
                 >
               </Stack>
-              <Stack borderLeft="2px solid" borderLeftColor="#ffb000" pl="4" gap="1">
-                <Text fontFamily="JetBrains Mono, monospace" fontSize="10px" color="#4c4e4e"
+              <Stack borderLeft="2px solid" borderLeftColor="var(--atelier-line)" pl="4" gap="1">
+                <Text fontFamily="var(--font-code)" fontSize="10px" color="var(--atelier-outline)"
                   >{t('home.bench-tools-scripting')}</Text
                 >
-                <Text fontFamily="Manrope, sans-serif" fontWeight="bold" fontSize="lg"
+                <Text fontFamily="var(--font-body)" fontWeight="bold" fontSize="lg"
                   >Node.js / Python</Text
                 >
               </Stack>
@@ -321,42 +266,41 @@ Astro.response.headers.set(
         </Grid>
       </Box>
 
-      <Box
-        px={{ base: '0', lg: '6' }}
-        py={{ base: '16', lg: '20' }}
-        borderTop="1px solid"
-        borderColor="#524533"
-      >
-        <Box mb="12" borderBottom="1px solid" borderColor="#524533" pb="6">
-          <Heading as="h2" fontSize="5xl" fontStyle="italic">
-            {t('home.featured-projects')}
-          </Heading>
+      <Box py={{ base: '16', lg: '20' }}>
+        {
+          /* Inline rule, matching "Life" below and the section headers on /projects, /tags,
+            /about and /events. A full-width underline was a second section-header idiom on
+            the same page. */
+        }
+        <Box mb="12">
+          <SectionHeading label={t('home.featured-projects')} />
         </Box>
         {
           heroProjects.length > 0 ? (
             <Grid
-              gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+              gridTemplateColumns={{
+                base: 'minmax(0, 1fr)',
+                md: 'repeat(2, minmax(0, 1fr))',
+                lg: 'repeat(3, minmax(0, 1fr))'
+              }}
               gap="0"
               borderTop="1px solid"
               borderLeft="1px solid"
-              borderColor="#524533"
+              borderColor="var(--atelier-line)"
               mb="20"
             >
               {heroProjects.map((project) => {
-                const imgSrc = project.banner?.url
-                  ? getMediaUrl(project.banner.url, { height: 600 }, import.meta.env.PUBLIC_API_URL)
-                  : project.media?.[0]?.url
-                    ? getMediaUrl(
-                        project.media[0].url,
-                        { height: 600 },
-                        import.meta.env.PUBLIC_API_URL
-                      )
-                    : null;
+                const imgSrc =
+                  resolveMedia(
+                    project.banner ?? project.media?.[0],
+                    400,
+                    import.meta.env.PUBLIC_API_URL
+                  )?.src ?? null;
                 return (
                   <a
                     href={`/${locale}/projects/${project.slug}`}
                     class="project-card"
-                    style="display:flex;flex-direction:column;height:100%;border-right:1px solid #524533;border-bottom:1px solid #524533;overflow:hidden;background:#131313;cursor:pointer;text-decoration:none;color:inherit"
+                    style="display:flex;flex-direction:column;height:100%;border-right:1px solid var(--atelier-line);border-bottom:1px solid var(--atelier-line);overflow:hidden;background:var(--atelier-bg);cursor:pointer;text-decoration:none;color:inherit"
                   >
                     <Box
                       position="relative"
@@ -369,7 +313,7 @@ Astro.response.headers.set(
                           <img
                             src={imgSrc}
                             alt=""
-                            style="width:100%;height:100%;object-fit:cover;filter:saturate(1.08) contrast(1.04);transition:filter 500ms, transform 500ms"
+                            style="width:100%;height:100%;object-fit:cover;filter:var(--atelier-image-rest);transition:filter 500ms, transform 500ms"
                             class="project-card-img"
                             width="600"
                             height="600"
@@ -378,7 +322,7 @@ Astro.response.headers.set(
                           <Box
                             position="absolute"
                             inset="0"
-                            bg="linear-gradient(180deg, rgba(14,14,14,0.06), rgba(14,14,14,0.36))"
+                            bg="linear-gradient(180deg, rgba(19,19,19,0.32), rgba(19,19,19,0.72)), linear-gradient(135deg, rgba(255,176,0,0.10), transparent 60%)"
                             className="project-card-overlay"
                             style={{ transition: 'opacity 300ms' }}
                           />
@@ -388,18 +332,18 @@ Astro.response.headers.set(
                           position="relative"
                           w="100%"
                           h="100%"
-                          bg="#0e0e0e"
+                          bg="var(--atelier-surface-lowest)"
                           className="fallback-grid-lines"
                         >
                           <Box
                             position="absolute"
                             bottom="-10px"
                             right="0"
-                            fontFamily="Newsreader, serif"
+                            fontFamily="var(--font-display)"
                             fontStyle="italic"
                             fontSize="140px"
                             lineHeight="1"
-                            color="#e5e2e1"
+                            color="var(--atelier-fg)"
                             opacity="0.05"
                             userSelect="none"
                             pointerEvents="none"
@@ -413,7 +357,7 @@ Astro.response.headers.set(
                             left="0"
                             right="0"
                             h="2px"
-                            bg="#ffb000"
+                            bg="var(--atelier-accent)"
                             opacity="0.3"
                           />
                         </Box>
@@ -421,30 +365,26 @@ Astro.response.headers.set(
                     </Box>
                     <Box p="6" display="flex" flexDirection="column" flex="1">
                       <Flex justify="space-between" align="start" mb="2">
-                        <Text
-                          fontFamily="Manrope, sans-serif"
+                        <Heading
+                          as="h3"
+                          fontFamily="var(--font-body)"
                           fontWeight="bold"
-                          fontSize="xl"
+                          fontSize={{ base: 'md', md: 'xl' }}
+                          fontStyle="normal"
                           textTransform="uppercase"
                           letterSpacing="0"
                         >
                           {project.title}
-                        </Text>
+                        </Heading>
                       </Flex>
-                      <Text
-                        color="#c7c6c6"
-                        fontSize="sm"
-                        fontFamily="Newsreader, serif"
-                        fontStyle="italic"
-                        mb="6"
-                      >
+                      <Text color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="1.7" mb="6">
                         {project.description}
                       </Text>
                       <Flex
                         mt="auto"
                         pt="4"
                         borderTop="1px solid"
-                        borderColor="#524533"
+                        borderColor="var(--atelier-line)"
                         justify="space-between"
                         align="center"
                         opacity="0.5"
@@ -455,16 +395,10 @@ Astro.response.headers.set(
                           transition: 'opacity 300ms'
                         }}
                       >
-                        <Text fontFamily="JetBrains Mono, monospace" fontSize="10px">
+                        <Text fontFamily="var(--font-code)" fontSize="10px">
                           {yearLabel(project.date?.slice(0, 4)) ?? t('common.projects')}
                         </Text>
-                        <span
-                          class="material-symbols-outlined"
-                          style="font-size:14px"
-                          aria-hidden="true"
-                        >
-                          north_east
-                        </span>
+                        <Glyph name="north_east" style={{ fontSize: '14px' }} />
                       </Flex>
                     </Box>
                   </a>
@@ -474,77 +408,91 @@ Astro.response.headers.set(
           ) : (
             <Box
               border="1px solid"
-              borderColor="#524533"
-              bg="#1c1b1b"
+              borderColor="var(--atelier-line)"
+              bg="var(--atelier-surface-low)"
               p={{ base: '8', md: '12' }}
               mb="20"
               textAlign="center"
             >
               <Text
-                fontFamily="JetBrains Mono, monospace"
+                fontFamily="var(--font-code)"
                 fontSize="10px"
                 textTransform="uppercase"
                 letterSpacing="0.15em"
-                color="#9f8e78"
+                color="var(--atelier-outline)"
                 mb="4"
               >
                 {t('project.status-unavailable')}
               </Text>
-              <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }} fontStyle="italic" mb="3">
+              <Heading as="h3" fontSize={{ base: 'xl', md: '2xl' }} mb="3">
                 {t('home.projects-empty-title')}
               </Heading>
-              <Text color="#524533" fontSize="sm">
+              <Text color="var(--atelier-outline)" fontSize="sm">
                 {t('home.projects-empty-description')}
               </Text>
             </Box>
           )
         }
         <Stack gap="8">
-          <Flex align="center" gap="4">
-            <Heading as="h2" fontSize="4xl" fontStyle="italic">
-              {t('home.life-heading')}
-            </Heading>
-            <Box h="1px" flex="1" bg="#524533" />
-          </Flex>
-          <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap="6">
-            <a
-              href={`/${locale}/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284`}
-              class="card-hover-amber"
-              style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid #524533;background-color:#1c1b1b;text-decoration:none;color:inherit"
-            >
-              <span
-                class="material-symbols-outlined"
-                style="color: #FFB000; font-size: 2.25rem;"
-                aria-hidden="true">dark_mode</span
-              >
-              <Text
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                textTransform="uppercase"
-                letterSpacing="0"
-              >
-                {t('home.life-darkroom')}
-              </Text>
-            </a>
-            <a
-              href={`/${locale}/hobbies`}
-              class="card-hover-amber"
-              style="display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid #524533;background-color:#1c1b1b;text-decoration:none;color:inherit"
-            >
-              <span
-                class="material-symbols-outlined"
-                style="color: #FFB000; font-size: 2.25rem;"
-                aria-hidden="true">category</span
-              >
-              <Text
-                fontFamily="JetBrains Mono, monospace"
-                fontSize="10px"
-                textTransform="uppercase"
-                letterSpacing="0"
-              >
-                {t('home.life-skill-toys')}
-              </Text>
-            </a>
+          <SectionHeading label={t('home.life-heading')} />
+          <Grid
+            gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
+            gap="6"
+          >
+            {
+              /* Were two 60px strips holding a 16px icon and a 10px mono label — the page
+                closed on its weakest block, after three rich project cards. Same anatomy as
+                those cards: plate, title in the display face, one meta line. */
+            }
+            {
+              [
+                {
+                  href: `/${locale}/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284`,
+                  icon: 'photo_camera' as const,
+                  label: t('home.life-darkroom')
+                },
+                {
+                  href: `/${locale}/hobbies`,
+                  icon: 'category' as const,
+                  label: t('home.life-skill-toys')
+                }
+              ].map((entry) => (
+                <a
+                  href={entry.href}
+                  class="card-hover-amber group"
+                  style="display:block;border:1px solid var(--atelier-line);background-color:var(--atelier-bg);text-decoration:none;color:inherit"
+                >
+                  <Box
+                    className="fallback-grid-lines"
+                    borderBottom="1px solid"
+                    borderColor="var(--atelier-line)"
+                    bg="var(--atelier-surface-lowest)"
+                    display="grid"
+                    placeItems="center"
+                    h="7rem"
+                  >
+                    <Glyph name={entry.icon} className="atelier-icon-lg" />
+                  </Box>
+                  <Stack gap="3" p="5">
+                    <Heading as="h3" fontSize="2xl" lineHeight="1.1">
+                      {entry.label}
+                    </Heading>
+                    <Flex
+                      gap="2"
+                      alignItems="center"
+                      color="var(--atelier-accent)"
+                      fontFamily="var(--font-code)"
+                      fontSize="10px"
+                      letterSpacing="0.12em"
+                      textTransform="uppercase"
+                    >
+                      <Text>{t('common.open')}</Text>
+                      <Glyph name="north_east" />
+                    </Flex>
+                  </Stack>
+                </a>
+              ))
+            }
           </Grid>
         </Stack>
       </Box>

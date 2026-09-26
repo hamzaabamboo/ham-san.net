@@ -3,6 +3,9 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "baseUrl": "src",
+    // `baseUrl` is deprecated-as-error in this TS version, which made `compile` die on the
+    // config before type-checking a single file. The `paths` above resolve against it.
+    "ignoreDeprecations": "6.0",
     "jsxImportSource": "react",
     "paths": {
       "~/*": ["./*"],

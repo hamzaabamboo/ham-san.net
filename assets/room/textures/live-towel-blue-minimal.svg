@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <pattern id="grain" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M0 2h12M0 8h12" stroke="#ffffff" stroke-opacity=".08" stroke-width="1"/>
+      <path d="M2 0v12M8 0v12" stroke="#051b36" stroke-opacity=".08" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="field" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#082b55"/>
+      <stop offset=".52" stop-color="#0b4b80"/>
+      <stop offset="1" stop-color="#0b315d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#field)"/>
+  <path d="M0 180 C150 110 290 250 430 180 S740 120 1024 210 V310 C820 230 660 300 500 255 S190 240 0 330Z" fill="#49a8c4" fill-opacity=".55"/>
+  <path d="M0 720 C150 640 300 800 470 710 S780 650 1024 760 V870 C820 780 680 860 500 795 S200 770 0 880Z" fill="#f0c85a" fill-opacity=".84"/>
+  <path d="M0 420 C190 350 320 485 520 410 S820 370 1024 455" fill="none" stroke="#ef6b63" stroke-width="18" stroke-linecap="round"/>
+  <g fill="#fff4cf" stroke="#082b55" stroke-width="8">
+    <path d="M110 130 l18 38 42 5-31 28 8 42-37-20-38 20 8-42-31-28 42-5z"/>
+    <path d="M790 160 l14 30 33 4-24 22 6 33-29-16-30 16 6-33-24-22 33-4z"/>
+    <path d="M160 650 l15 31 34 4-25 23 6 34-30-16-30 16 6-34-25-23 34-4z"/>
+    <path d="M820 690 l18 38 42 5-31 28 8 42-37-20-38 20 8-42-31-28 42-5z"/>
+  </g>
+  <g transform="translate(440 290)" fill="#fff4cf" stroke="#082b55" stroke-width="9" stroke-linejoin="round">
+    <circle cx="72" cy="48" r="42"/>
+    <path d="M28 98 Q72 74 116 98 L140 210 L72 258 L4 210Z"/>
+    <path d="M12 130 L-28 194 M132 130 L172 194" fill="none" stroke-linecap="round"/>
+    <path d="M48 250 L22 322 M96 250 L122 322" fill="none" stroke-linecap="round"/>
+    <path d="M12 200 Q72 240 132 200" fill="none"/>
+  </g>
+  <g transform="translate(170 820) scale(.58)" fill="#f5e7bf" stroke="#0b315d" stroke-width="10" stroke-linejoin="round">
+    <circle cx="72" cy="48" r="42"/>
+    <path d="M28 98 Q72 74 116 98 L140 210 L72 258 L4 210Z"/>
+    <path d="M12 130 L-28 194 M132 130 L172 194 M48 250 L22 322 M96 250 L122 322" fill="none" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(740 820) scale(.58)" fill="#f5e7bf" stroke="#0b315d" stroke-width="10" stroke-linejoin="round">
+    <circle cx="72" cy="48" r="42"/>
+    <path d="M28 98 Q72 74 116 98 L140 210 L72 258 L4 210Z"/>
+    <path d="M12 130 L-28 194 M132 130 L172 194 M48 250 L22 322 M96 250 L122 322" fill="none" stroke-linecap="round"/>
+  </g>
+  <rect width="1024" height="1024" fill="url(#grain)"/>
+</svg>

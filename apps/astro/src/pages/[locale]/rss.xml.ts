@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { escapeXml } from 'utils/xml';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import { makeExcerpt } from '~/utils/excerpt';
 import { outlineClient } from '~/utils/outline-api';
@@ -22,8 +23,7 @@ export const GET: APIRoute = async ({ params }) => {
     requireOutlineOk(shareRequest, 'shares.list');
 
     const articles = shareRequest.data?.data ?? [];
-    const esc = (s: string) =>
-      s.replace(/[<>&]/g, (c) => (c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&amp;'));
+    const esc = escapeXml;
 
     items = articles
       .map((share) => {
@@ -34,12 +34,12 @@ export const GET: APIRoute = async ({ params }) => {
         const title = s.documentTitle ?? t('note.untitled');
         const pubDate = s.createdAt ? new Date(s.createdAt).toUTCString() : undefined;
         const link = `${SITE_URL}/${locale}/notes/${s.id ?? ''}`;
-        const description = esc(makeExcerpt(s.documentSummary, 280) ?? '');
+        const description = makeExcerpt(s.documentSummary, 280) ?? '';
 
         return `    <item>
       <title>${esc(title)}</title>
-      <link>${link}</link>${pubDate ? `\n      <pubDate>${pubDate}</pubDate>` : ''}
-      <description>${description}</description>
+      <link>${esc(link)}</link>${pubDate ? `\n      <pubDate>${pubDate}</pubDate>` : ''}
+      <description>${esc(description)}</description>
     </item>`;
       })
       .join('\n');
@@ -50,11 +50,16 @@ export const GET: APIRoute = async ({ params }) => {
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${t('note.rss-title')}</title>
+    <title>${escapeXml(t('note.rss-title'))}</title>
     <link>${SITE_URL}/${locale}/notes</link>
-    <description>${t('note.rss-description')}</description>
+    <description>${escapeXml(t('note.rss-description'))}</description>
     <language>${locale}</language>
     <atom:link href="${SITE_URL}/${locale}/rss.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>${SITE_URL}/favicon-64.png</url>
+      <title>${escapeXml(t('note.rss-title'))}</title>
+      <link>${SITE_URL}/${locale}/notes</link>
+    </image>
 ${items}
   </channel>
 </rss>`;
@@ -63,7 +68,8 @@ ${items}
     status: cmsUnavailable ? 503 : 200,
     headers: {
       'Content-Type': 'application/rss+xml; charset=utf-8',
-      'Cache-Control': cmsUnavailable ? 'no-store' : 'public, max-age=3600'
+      'Cache-Control': cmsUnavailable ? 'no-store' : 'public, max-age=3600',
+      'CDN-Cache-Control': cmsUnavailable ? 'no-store' : 'public, max-age=3600, must-revalidate'
     }
   });
 };

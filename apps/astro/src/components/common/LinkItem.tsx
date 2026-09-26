@@ -56,17 +56,22 @@ export const LinkItem = ({
       justifyContent="space-between"
       alignItems="center"
       border="1px solid"
-      borderColor="#524533"
+      borderColor="var(--atelier-line)"
       py="3"
       px="4"
-      bg="#131313"
+      bg="var(--atelier-bg)"
     >
       <Wrap gap="3" alignItems="center" minW="0">
-        <Text as="span" color="#ffb000" fontSize="lg">
+        <Text as="span" color="var(--atelier-accent)" fontSize="lg">
           {Icon && <Icon />}
         </Text>
         <Stack gap="0" minW="0">
-          <Text color="#9f8e78" fontSize="10px" letterSpacing="0.12em" textTransform="uppercase">
+          <Text
+            color="var(--atelier-outline)"
+            fontSize="10px"
+            letterSpacing="0.12em"
+            textTransform="uppercase"
+          >
             {data.title}
           </Text>
           <Link
@@ -74,7 +79,7 @@ export const LinkItem = ({
             href={data.url ?? ''}
             target="_blank"
             rel="noreferrer"
-            fontFamily="JetBrains Mono, monospace"
+            fontFamily="var(--font-code)"
             overflowWrap="anywhere"
           >
             {text}

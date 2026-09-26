@@ -27,7 +27,7 @@ const destinations = [
   </div>
   <div class="room-stage" data-room-stage aria-label={copy.scene}></div>
   <header class="room-header">
-    <a class="room-brand" href={`/${locale}/overview`}>{t('common.name')}<span>{copy.room}</span></a
+    <a class="room-brand" href={`/${locale}`}>{t('common.name')}<span>{copy.room}</span></a
     >
     <div class="room-time"><span data-room-time></span><span>Tokyo</span></div>
     <div class="room-light-control" data-room-light-control hidden>
@@ -54,7 +54,7 @@ const destinations = [
     <p>{copy.intro}</p>
     <button class="room-enter" data-room-enter disabled>{copy.loading}</button>
     <p class="room-status" data-room-status role="status">{copy.loadingDescription}</p>
-    <a class="room-text-link" href={`/${locale}/overview`}>{copy.conventional} ↗</a>
+    <a class="room-text-link" href={`/${locale}`}>{copy.conventional} ↗</a>
   </section>
   <div class="room-reticle" data-room-reticle hidden aria-hidden="true">+</div>
   <div class="room-target-labels" data-room-target-labels hidden></div>

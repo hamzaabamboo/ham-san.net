@@ -1,0 +1,294 @@
+---
+import MainLayout from '~/layouts/MainLayout.astro';
+import PageMasthead from '~/components/common/PageMasthead.astro';
+import { Container } from 'styled-system/jsx';
+import { useTranslations, validateLocale } from '~/i18n/utils';
+import { kamekoAccount, kamekoEntries, kamekoFetchedAt, type KamekoEntry } from '~/utils/kameko';
+import '~/styles/photos.css';
+
+export const prerender = false;
+
+const { locale } = Astro.params;
+
+if (!validateLocale(locale)) {
+  return Astro.redirect('/404');
+}
+
+const t = useTranslations(locale);
+const pageTitle = `${t('photos.title')} | ${t('common.name')}`;
+
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, must-revalidate');
+
+const params = Astro.url.searchParams;
+const person = params.get('person')?.trim() ?? '';
+const eventFilter = params.get('event')?.trim() ?? '';
+const tag = params.get('tag')?.trim() ?? '';
+const query = params.get('q')?.trim() ?? '';
+
+const personKey = (subject: KamekoEntry['subjects'][number]) => subject.handle ?? subject.name;
+const searchText = (entry: KamekoEntry) =>
+  [
+    entry.event,
+    entry.caption,
+    ...entry.tags,
+    ...entry.subjects.flatMap((subject) => [subject.name, subject.handle ?? ''])
+  ]
+    .join(' ')
+    .toLowerCase();
+
+const entries = kamekoEntries.filter(
+  (entry) =>
+    (!person ||
+      entry.subjects.some(
+        (subject) => personKey(subject).toLowerCase() === person.toLowerCase()
+      )) &&
+    (!eventFilter || entry.event === eventFilter) &&
+    (!tag || entry.tags.includes(tag)) &&
+    (!query || searchText(entry).includes(query.toLowerCase()))
+);
+
+const countBy = <T,>(items: T[], keyOf: (item: T) => string) =>
+  [
+    ...items.reduce((counts, item) => {
+      const key = keyOf(item);
+      if (key) counts.set(key, (counts.get(key) ?? 0) + 1);
+      return counts;
+    }, new Map<string, number>())
+  ].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+const people = [
+  ...kamekoEntries
+    .flatMap((entry) => entry.subjects)
+    .reduce((map, subject) => {
+      const key = personKey(subject);
+      const current = map.get(key);
+      map.set(key, { name: subject.name, count: (current?.count ?? 0) + 1 });
+      return map;
+    }, new Map<string, { name: string; count: number }>())
+].sort((a, b) => b[1].count - a[1].count || a[1].name.localeCompare(b[1].name));
+const events = countBy(kamekoEntries, (entry) => entry.event);
+const tags = countBy(
+  kamekoEntries.flatMap((entry) => entry.tags),
+  (item) => item
+);
+const photoTotal = kamekoEntries.reduce((sum, entry) => sum + entry.media.length, 0);
+const filtered = Boolean(person || eventFilter || tag || query);
+
+const pagePath = `/${locale}/photos`;
+const hrefWith = (key: 'person' | 'event' | 'tag', value: string) => {
+  const next = new URLSearchParams(params);
+  if (value) next.set(key, value);
+  else next.delete(key);
+  const search = next.toString();
+  return search ? `${pagePath}?${search}` : pagePath;
+};
+const dateFormatter = new Intl.DateTimeFormat(locale, {
+  dateStyle: 'medium',
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
+});
+const formatDate = (value: string) => dateFormatter.format(new Date(`${value}T00:00:00+09:00`));
+const mediaUrl = (url: string, size: 'small' | 'medium' | 'large') =>
+  `${url}?format=jpg&name=${size}`;
+const describe = (entry: KamekoEntry) =>
+  [entry.subjects.map((subject) => subject.name).join(', '), entry.event, formatDate(entry.shotOn)]
+    .filter(Boolean)
+    .join(' · ');
+---
+
+<MainLayout title={pageTitle} description={t('photos.lede')}>
+  <Container maxW="breakpoint-xl" className="page-shell">
+    <div class="kameko">
+      <PageMasthead
+        eyebrow="#カメコしてみた"
+        heading={t('photos.heading')}
+        lede={t('photos.lede')}
+      />
+
+      <dl class="kameko__stats">
+        <div><dt>{t('photos.stat-posts')}</dt><dd>{kamekoEntries.length}</dd></div>
+        <div><dt>{t('photos.stat-photos')}</dt><dd>{photoTotal}</dd></div>
+        <div><dt>{t('photos.stat-people')}</dt><dd>{people.length}</dd></div>
+        <div><dt>{t('photos.stat-events')}</dt><dd>{events.length}</dd></div>
+      </dl>
+
+      <section class="kameko__filters" aria-label={t('photos.aria-filters')}>
+        <form class="kameko__search" method="get" action={pagePath} role="search">
+          {person && <input type="hidden" name="person" value={person} />}
+          {eventFilter && <input type="hidden" name="event" value={eventFilter} />}
+          {tag && <input type="hidden" name="tag" value={tag} />}
+          <label for="kameko-search">{t('photos.search-label')}</label>
+          <input
+            id="kameko-search"
+            name="q"
+            type="search"
+            value={query}
+            placeholder={t('photos.search-placeholder')}
+            autocomplete="off"
+          />
+        </form>
+
+        <div class="kameko__facet">
+          <h2>{t('photos.filter-people')}</h2>
+          <div>
+            <a href={hrefWith('person', '')} aria-current={!person ? 'true' : undefined}>
+              {t('photos.filter-all')}
+            </a>
+            {
+              people.map(([key, item]) => (
+                <a
+                  href={hrefWith('person', key)}
+                  aria-current={person.toLowerCase() === key.toLowerCase() ? 'true' : undefined}
+                >
+                  {item.name}
+                  <span>{item.count}</span>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+
+        <details class="kameko__facet" open={Boolean(eventFilter) || undefined}>
+          <summary>
+            {t('photos.filter-events')}
+            <span>{events.length}</span>
+          </summary>
+          <div>
+            <a href={hrefWith('event', '')} aria-current={!eventFilter ? 'true' : undefined}>
+              {t('photos.filter-all')}
+            </a>
+            {
+              events.map(([name, count]) => (
+                <a
+                  href={hrefWith('event', name)}
+                  aria-current={eventFilter === name ? 'true' : undefined}
+                >
+                  {name}
+                  <span>{count}</span>
+                </a>
+              ))
+            }
+          </div>
+        </details>
+
+        <details class="kameko__facet" open={Boolean(tag) || undefined}>
+          <summary>
+            {t('photos.filter-tags')}
+            <span>{tags.length}</span>
+          </summary>
+          <div>
+            <a href={hrefWith('tag', '')} aria-current={!tag ? 'true' : undefined}>
+              {t('photos.filter-all')}
+            </a>
+            {
+              tags.map(([name, count]) => (
+                <a href={hrefWith('tag', name)} aria-current={tag === name ? 'true' : undefined}>
+                  #{name}
+                  <span>{count}</span>
+                </a>
+              ))
+            }
+          </div>
+        </details>
+
+        <p class="kameko__result-line" role="status">
+          <strong>{entries.length}</strong>
+          {t('photos.results')}
+          {filtered && <a href={pagePath}>{t('photos.clear')}</a>}
+        </p>
+      </section>
+
+      {
+        entries.length === 0 ? (
+          <p class="kameko__empty">{t('photos.empty')}</p>
+        ) : (
+          <ul class="kameko__grid" aria-label={t('photos.aria-grid')}>
+            {entries.map((entry) => {
+              const cover = entry.media[0];
+              return (
+                <li class="kameko-card" data-kameko-card>
+                  <a
+                    class="kameko-card__frame"
+                    href={entry.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={mediaUrl(cover.url, 'small')}
+                      srcset={`${mediaUrl(cover.url, 'small')} 680w, ${mediaUrl(cover.url, 'medium')} 1200w`}
+                      sizes="(min-width: 1100px) 25vw, (min-width: 700px) 33vw, 50vw"
+                      alt={cover.alt ?? describe(entry)}
+                      width={cover.width ?? undefined}
+                      height={cover.height ?? undefined}
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                      referrerpolicy="no-referrer"
+                      data-kameko-image
+                    />
+                    {entry.media.length > 1 && (
+                      <span class="kameko-card__count">
+                        {entry.media.length} {t('photos.photos-count')}
+                      </span>
+                    )}
+                    <span class="kameko-card__open">{t('photos.open-on-x')} ↗</span>
+                  </a>
+                  <div class="kameko-card__meta">
+                    {entry.subjects.length > 0 && (
+                      <p class="kameko-card__people">
+                        {entry.subjects.map((subject) => (
+                          <a href={hrefWith('person', personKey(subject))}>{subject.name}</a>
+                        ))}
+                      </p>
+                    )}
+                    <p class="kameko-card__event">
+                      <time datetime={entry.shotOn}>{formatDate(entry.shotOn)}</time>
+                      {entry.event && <a href={hrefWith('event', entry.event)}>{entry.event}</a>}
+                    </p>
+                    {entry.caption && <p class="kameko-card__caption">{entry.caption}</p>}
+                    {entry.tags.length > 0 && (
+                      <p class="kameko-card__tags">
+                        {entry.tags.map((name) => (
+                          <a href={hrefWith('tag', name)}>#{name}</a>
+                        ))}
+                      </p>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )
+      }
+
+      <footer class="kameko__source">
+        <p>{t('photos.source-note')}</p>
+        <p>
+          {t('photos.posted-by')}
+          <a href={`https://x.com/${kamekoAccount}`} target="_blank" rel="noopener noreferrer">
+            @{kamekoAccount}
+          </a>
+          {
+            kamekoFetchedAt && (
+              <>
+                {' · '}
+                {t('photos.updated')} {formatDate(kamekoFetchedAt.slice(0, 10))}
+              </>
+            )
+          }
+        </p>
+      </footer>
+    </div>
+  </Container>
+</MainLayout>
+
+<script>
+  const hideRemoved = (image: HTMLImageElement) =>
+    image.closest<HTMLElement>('[data-kameko-card]')?.setAttribute('hidden', '');
+  document.querySelectorAll<HTMLImageElement>('[data-kameko-image]').forEach((image) => {
+    if (image.complete && image.naturalWidth === 0) hideRemoved(image);
+    image.addEventListener('error', () => hideRemoved(image), { once: true });
+    image.addEventListener('contextmenu', (event) => event.preventDefault());
+    image.addEventListener('dragstart', (event) => event.preventDefault());
+  });
+</script>

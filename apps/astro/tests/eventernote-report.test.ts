@@ -216,9 +216,11 @@ describe('eventernote report', () => {
     };
     const now = new Date('2026-05-06T00:00:00+09:00').getTime();
 
-    const unbounded = buildEventernoteReport(hydrated, yearEvents, now).favoriteArtistAttendance.find(
-      (item) => item.name === 'Aqours'
-    );
+    const unbounded = buildEventernoteReport(
+      hydrated,
+      yearEvents,
+      now
+    ).favoriteArtistAttendance.find((item) => item.name === 'Aqours');
     expect(unbounded).toMatchObject({ attended: 1, total: 3, missed: 2, pct: expect.any(Number) });
 
     const boundedEnd = buildEventernoteReport(

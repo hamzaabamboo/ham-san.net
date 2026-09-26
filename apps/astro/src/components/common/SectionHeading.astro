@@ -1,0 +1,18 @@
+---
+import { Box, Flex } from 'styled-system/jsx';
+import { Heading } from '~/components/ui/heading';
+
+interface Props {
+  label: string;
+  id?: string;
+}
+
+const { label, id } = Astro.props;
+---
+
+<Flex align="center" gap="4" overflow="hidden">
+  <Heading as="h2" id={id} fontSize={{ base: '3xl', md: '4xl' }} flexShrink="0" fontStyle="normal">
+    {label}
+  </Heading>
+  <Box h="1px" flex="1" bg="var(--atelier-line)" />
+</Flex>

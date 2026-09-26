@@ -10,15 +10,19 @@ const t = useTranslations(lang);
 
 <MainLayout title={`404 | ${t('common.page-not-found')}`}>
   <Container maxW="breakpoint-xl" className="page-shell">
-    <Flex minH="70vh" alignItems="center" justifyContent="center" px={{ base: '6', md: '10' }}>
-      <Stack gap="0" alignItems="center" textAlign="center" maxW="520px">
+    {
+      /* Every other page is built on a hard left-aligned spine; centring made this the one
+        page from a different site, and the CTA lost the structural anchor the rest uses. */
+    }
+    <Flex minH="70vh" alignItems="center">
+      <Stack gap="0" maxW="520px">
         <Text
-          fontFamily="Newsreader, serif"
+          fontFamily="var(--font-display)"
           fontWeight="400"
           fontStyle="italic"
           lineHeight="1"
           fontSize={{ base: '7xl', md: '8xl' }}
-          color="#e5e2e1"
+          color="var(--atelier-fg)"
           mb="4"
         >
           404
@@ -26,28 +30,27 @@ const t = useTranslations(lang);
 
         <Text
           as="h1"
-          fontFamily="Newsreader, serif"
+          fontFamily="var(--font-display)"
           fontWeight="400"
-          fontStyle="italic"
           lineHeight="1.2"
           fontSize={{ base: '2xl', md: '3xl' }}
-          color="#e5e2e1"
+          color="var(--atelier-fg)"
           mb="6"
         >
           {t('common.not-found-heading')}
         </Text>
 
         <Text
-          fontFamily="Manrope, sans-serif"
+          fontFamily="var(--font-body)"
           fontSize="14px"
           lineHeight="1.7"
-          color="#c7c6c6"
+          color="var(--atelier-fg-muted)"
           mb="10"
         >
           {t('common.not-found-description')}
         </Text>
 
-        <Flex gap="3" flexWrap="wrap" justifyContent="center">
+        <Flex gap="3" flexWrap="wrap">
           <a href={`/${lang}/`} class="not-found-cta"> {t('common.return-home')} </a>
           <a href={`/${lang}/projects`} class="not-found-link"> {t('common.projects')} </a>
           <a href={`/${lang}/contact`} class="not-found-link"> {t('common.contact')} </a>
@@ -59,12 +62,12 @@ const t = useTranslations(lang);
 
 <style>
   .not-found-cta {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-code);
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #432c00;
-    background: #ffb000;
+    color: var(--atelier-on-accent);
+    background: var(--atelier-accent);
     padding: 10px 20px;
     text-decoration: none;
     transition: opacity 0.15s ease;
@@ -73,12 +76,12 @@ const t = useTranslations(lang);
     opacity: 0.85;
   }
   .not-found-link {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-code);
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #c7c6c6;
-    border: 1px solid #524533;
+    color: var(--atelier-fg-muted);
+    border: 1px solid var(--atelier-line);
     padding: 10px 20px;
     text-decoration: none;
     transition:
@@ -86,7 +89,7 @@ const t = useTranslations(lang);
       color 0.15s ease;
   }
   .not-found-link:hover {
-    border-color: #9f8e78;
-    color: #e5e2e1;
+    border-color: var(--atelier-outline);
+    color: var(--atelier-fg);
   }
 </style>

@@ -1,4 +1,5 @@
 ---
+import { Glyph } from '~/components/ui/glyph';
 import { Box, Container, Grid, Stack } from 'styled-system/jsx';
 import { cleanArticleContent, getArticleBanner } from 'outline/article';
 import { Heading } from '~/components/ui/heading';
@@ -6,6 +7,7 @@ import { Markdown, createHeadingSlugger } from '~/components/lib/Markdown';
 import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import { withLastGood } from '~/utils/cms-cache';
 import { outlineClient, outlineServerUrl } from '~/utils/outline-api';
 import { requireOutlineOk } from '~/utils/outline-response';
@@ -23,6 +25,8 @@ const t = useTranslations(locale);
 const [shareId, maybeDocSegment, maybeDocId] = slugParts;
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = `/${locale}/api/outline-asset`;
+const unitGap = locale === 'ja' ? '' : ' ';
+const numberFormatter = new Intl.NumberFormat(locale);
 const resolveOutlineAssetUrl = (rawUrl?: string) => {
   if (!rawUrl) return rawUrl;
   if (/^(?:[a-z]+:)?\/\//i.test(rawUrl) || rawUrl.startsWith('data:')) return rawUrl;
@@ -135,6 +139,11 @@ const nextSibling =
 
 const slugger = createHeadingSlugger();
 let inFence = false;
+// A contents rail holding one or two entries costs a 220px column for the whole scroll and
+// tells the reader nothing they cannot see in the heading above. Below that, the article
+// takes the width back.
+const CONTENTS_MIN_ENTRIES = 3;
+
 const headings = (content ?? '')
   .split('\n')
   .filter((line) => {
@@ -152,6 +161,8 @@ const headings = (content ?? '')
     return { level: match[1].length, text, id, idx };
   })
   .filter((h) => !!h && h.level <= 3) as { level: number; text: string; id: string; idx: number }[];
+
+const showContents = headings.length >= CONTENTS_MIN_ENTRIES;
 
 const contentLines = (content ?? '').split('\n');
 const firstContentIndex = contentLines.findIndex((line) => line.trim().length > 0);
@@ -189,81 +200,81 @@ const tags = (note as any)?.tags ?? [];
             gap="4"
             borderLeftWidth="2px"
             borderLeftStyle="solid"
-            borderLeftColor="#ffb000"
+            borderLeftColor="var(--atelier-accent)"
             pl="6"
           >
             <Text
-              fontFamily="JetBrains Mono, monospace"
+              fontFamily="var(--font-code)"
               fontSize="10px"
               textTransform="uppercase"
               letterSpacing="0.12em"
-              color="#ffd597"
+              color="var(--atelier-accent-soft)"
             >
               {noteMissing ? t('note.status-not-found') : t('note.status-unavailable')}
             </Text>
-            <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} fontStyle="italic">
+            <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }}>
               {noteMissing ? t('note.not-found-title') : t('note.empty-title')}
             </Heading>
-            <Text color="#c7c6c6" fontSize="lg" maxW="2xl" lineHeight="1.7">
+            <Text color="var(--atelier-fg-muted)" fontSize="lg" maxW="2xl" lineHeight="1.7">
               {noteMissing ? t('note.not-found-description') : t('note.empty-description')}
             </Text>
             <Box>
               <a href={`/${locale}/notes`} class="note-cta-button group">
                 <span>{t('note.back-to-posts')}</span>
-                <span class="material-symbols-outlined note-cta-icon" aria-hidden="true">
-                  arrow_back
-                </span>
+                <Glyph name="arrow_back" className="note-cta-icon" />
               </a>
             </Box>
           </Stack>
         </Stack>
       ) : (
-        <Grid
-          gridTemplateColumns={{ base: 'minmax(0, 1fr)', xl: '220px minmax(0, 1fr) 280px' }}
-          gap="10"
-          minW="0"
-        >
-          <Stack gap="8" hideBelow="xl">
-            <Box position="sticky" top="32">
-              <Box borderLeft="1px solid" borderLeftColor="#524533" pl="4" position="relative">
-                <Box position="absolute" top="0" left="-1px" w="1px" h="8" bg="#ffb000" />
+        <div class="note-layout" data-contents={showContents || undefined}>
+          {/* Sticky on the grid child, mirroring the DETAILS rail below. Nested inside a
+              static Stack of equal height it had zero travel, so the CONTENTS rail scrolled
+              away while the right rail on the same page stayed pinned. */}
+          <Stack gap="8" hideBelow="xl" hidden={!showContents} position="sticky" top="24">
+            <Box>
+              <Box
+                borderLeft="1px solid"
+                borderLeftColor="var(--atelier-line)"
+                pl="4"
+                position="relative"
+              >
+                <Box
+                  position="absolute"
+                  top="0"
+                  left="-1px"
+                  w="1px"
+                  h="8"
+                  bg="var(--atelier-accent)"
+                />
                 <Text
-                  fontFamily="JetBrains Mono, monospace"
+                  fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase"
-                  color="#9f8e78"
+                  color="var(--atelier-outline)"
                   mb="4"
                 >
                   {t('note.contents')}
                 </Text>
                 <Stack gap="4">
-                  {headings.length > 0 ? (
-                    headings.map((h, idx) => (
-                      <a href={`#${h.id}`}>
-                        <Text
-                          fontFamily="JetBrains Mono, monospace"
-                          fontSize="11px"
-                          color={idx === 0 ? '#ffb000' : '#d7c4ac'}
-                          _hover={{ color: '#ffb000' }}
-                          transition="colors"
-                          transitionDuration="fast"
-                          textTransform="uppercase"
-                          letterSpacing="-0.02em"
-                        >
-                          {h.text}
-                        </Text>
-                      </a>
-                    ))
-                  ) : (
-                    <Text
-                      fontFamily="JetBrains Mono, monospace"
-                      fontSize="11px"
-                      color="#ffb000"
-                      textTransform="uppercase"
-                    >
-                      {note.title}
-                    </Text>
-                  )}
+                  {headings.length > 0
+                    ? headings.map((h) => (
+                        <a href={`#${h.id}`} class="note-toc-link" data-toc-for={h.id}>
+                          <Text
+                            fontFamily="var(--font-code)"
+                            fontSize="11px"
+                            color="var(--atelier-fg-muted)"
+                            _hover={{ color: 'var(--atelier-accent)' }}
+                            transition="colors"
+                            transitionDuration="fast"
+                            textTransform="uppercase"
+                            letterSpacing="-0.02em"
+                          >
+                            {h.text}
+                          </Text>
+                        </a>
+                      ))
+                    : null}
                 </Stack>
               </Box>
             </Box>
@@ -271,28 +282,10 @@ const tags = (note as any)?.tags ?? [];
 
           <Stack gap="10" minW="0">
             <Stack gap="6" mb="4">
-              <Box
-                px="2"
-                py="1"
-                bg="#353534"
-                border="1px solid"
-                borderColor="#524533"
-                w="fit-content"
-              >
-                <Text
-                  fontFamily="JetBrains Mono, monospace"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  color="#ffb000"
-                  letterSpacing="0.12em"
-                >
-                  {t('note.note-label')}
-                </Text>
-              </Box>
+              <Eyebrow label={t('note.note-label')} />
               <Heading
                 as="h1"
                 fontSize={{ base: '5xl', md: '7xl' }}
-                fontStyle="italic"
                 lineHeight="tight"
                 letterSpacing="-0.04em"
                 overflowWrap="anywhere"
@@ -301,9 +294,9 @@ const tags = (note as any)?.tags ?? [];
               </Heading>
               {lede && (
                 <Text
-                  fontFamily="Newsreader, serif"
+                  fontFamily="var(--font-display)"
                   fontSize="xl"
-                  color="#d7c4ac"
+                  color="var(--atelier-fg-muted)"
                   fontStyle="italic"
                   lineHeight="relaxed"
                   maxW="xl"
@@ -319,7 +312,7 @@ const tags = (note as any)?.tags ?? [];
                 w="full"
                 maxW="full"
                 border="1px solid"
-                borderColor="#524533"
+                borderColor="var(--atelier-line)"
                 overflow="hidden"
                 className="note-hero-frame"
                 mb="4"
@@ -335,7 +328,7 @@ const tags = (note as any)?.tags ?? [];
                   position="absolute"
                   inset="0"
                   bgGradient="to-t"
-                  gradientFrom="#131313"
+                  gradientFrom="var(--atelier-bg)"
                   gradientTo="transparent"
                   opacity="0.6"
                 />
@@ -352,39 +345,43 @@ const tags = (note as any)?.tags ?? [];
             )}
 
             {siblingsUnavailable && (
-              <Box border="1px solid" borderColor="#765c2f" bg="#1c1b1b" p="4">
-                <Text color="#ffd597">{t('note.status-unavailable')}</Text>
+              <Box
+                border="1px solid"
+                borderColor="var(--atelier-line)"
+                bg="var(--atelier-surface-low)"
+                p="4"
+              >
+                <Text color="var(--atelier-accent-soft)">{t('note.status-unavailable')}</Text>
               </Box>
             )}
 
             {(prevSibling || nextSibling) && (
               <Grid
-                gridTemplateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
+                gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
                 gap="8"
                 pt="12"
                 borderTop="1px solid"
-                borderColor="#524533"
+                borderColor="var(--atelier-line)"
               >
                 {prevSibling ? (
                   <a href={`/${locale}/notes/${shareId}/doc/${prevSibling.id}`} class="group">
                     <Box
                       border="1px solid"
-                      borderColor="#524533"
+                      borderColor="var(--atelier-line)"
                       p="6"
                       className="blocky-shadow blocky-shadow-hover"
                     >
                       <Text
-                        fontFamily="JetBrains Mono, monospace"
+                        fontFamily="var(--font-code)"
                         fontSize="10px"
                         textTransform="uppercase"
-                        color="#9f8e78"
+                        color="var(--atelier-outline)"
                         mb="2"
                       >
                         {t('note.previous-entry')}
                       </Text>
                       <Text
                         fontSize="xl"
-                        fontStyle="italic"
                         className="group-hover-amber"
                         transition="colors"
                         transitionDuration="fast"
@@ -400,23 +397,22 @@ const tags = (note as any)?.tags ?? [];
                   <a href={`/${locale}/notes/${shareId}/doc/${nextSibling.id}`} class="group">
                     <Box
                       border="1px solid"
-                      borderColor="#524533"
+                      borderColor="var(--atelier-line)"
                       p="6"
                       textAlign="right"
                       className="blocky-shadow blocky-shadow-hover"
                     >
                       <Text
-                        fontFamily="JetBrains Mono, monospace"
+                        fontFamily="var(--font-code)"
                         fontSize="10px"
                         textTransform="uppercase"
-                        color="#9f8e78"
+                        color="var(--atelier-outline)"
                         mb="2"
                       >
                         {t('note.next-entry')}
                       </Text>
                       <Text
                         fontSize="xl"
-                        fontStyle="italic"
                         className="group-hover-amber"
                         transition="colors"
                         transitionDuration="fast"
@@ -432,23 +428,29 @@ const tags = (note as any)?.tags ?? [];
             )}
           </Stack>
 
-          <Stack gap="6" position="sticky" top="32">
-            <Box border="1px solid" borderColor="#524533" bg="#1c1b1b" p="6" position="relative">
+          <Stack gap="6" position="sticky" top="24">
+            <Box
+              border="1px solid"
+              borderColor="var(--atelier-line)"
+              bg="var(--atelier-surface-low)"
+              p="6"
+              position="relative"
+            >
               <Box
                 position="absolute"
                 top="-12px"
                 left="-4px"
-                bg="#353534"
+                bg="var(--atelier-surface-highest)"
                 border="1px solid"
-                borderColor="#524533"
+                borderColor="var(--atelier-line)"
                 px="2"
                 py="0.5"
               >
                 <Text
-                  fontFamily="JetBrains Mono, monospace"
+                  fontFamily="var(--font-code)"
                   fontSize="9px"
                   textTransform="uppercase"
-                  color="#ffb000"
+                  color="var(--atelier-accent)"
                 >
                   {t('note.details')}
                 </Text>
@@ -457,33 +459,33 @@ const tags = (note as any)?.tags ?? [];
                 {formattedDate && (
                   <Box>
                     <Text
-                      fontFamily="JetBrains Mono, monospace"
+                      fontFamily="var(--font-code)"
                       fontSize="10px"
                       textTransform="uppercase"
-                      color="#9f8e78"
+                      color="var(--atelier-outline)"
                       letterSpacing="0.12em"
                       mb="1"
                     >
                       {t('note.published')}
                     </Text>
-                    <Text fontFamily="JetBrains Mono, monospace" fontSize="xs">
+                    <Text fontFamily="var(--font-code)" fontSize="xs">
                       {formattedDate}
                     </Text>
                   </Box>
                 )}
                 <Box>
                   <Text
-                    fontFamily="JetBrains Mono, monospace"
+                    fontFamily="var(--font-code)"
                     fontSize="10px"
                     textTransform="uppercase"
-                    color="#9f8e78"
+                    color="var(--atelier-outline)"
                     letterSpacing="0.12em"
                     mb="1"
                   >
                     {t('note.collection')}
                   </Text>
                   <Text
-                    color="#ffb000"
+                    color="var(--atelier-accent)"
                     fontWeight="bold"
                     textTransform="uppercase"
                     letterSpacing="-0.04em"
@@ -496,30 +498,26 @@ const tags = (note as any)?.tags ?? [];
                 </Box>
                 <Box>
                   <Text
-                    fontFamily="JetBrains Mono, monospace"
+                    fontFamily="var(--font-code)"
                     fontSize="10px"
                     textTransform="uppercase"
-                    color="#9f8e78"
+                    color="var(--atelier-outline)"
                     letterSpacing="0.12em"
                     mb="1"
                   >
                     {t('note.reading-time')}
                   </Text>
-                  <Text
-                    fontFamily="JetBrains Mono, monospace"
-                    fontSize="xs"
-                    textTransform="uppercase"
-                  >
-                    {`${readingMinutes} ${t('note.min-read')} / ${wordCount} ${t('note.words')}`}
+                  <Text fontFamily="var(--font-code)" fontSize="xs" textTransform="uppercase">
+                    {`${numberFormatter.format(readingMinutes)}${unitGap}${t('note.min-read')} / ${numberFormatter.format(wordCount)}${unitGap}${t('note.words')}`}
                   </Text>
                 </Box>
                 {tags.length > 0 && (
                   <Box>
                     <Text
-                      fontFamily="JetBrains Mono, monospace"
+                      fontFamily="var(--font-code)"
                       fontSize="10px"
                       textTransform="uppercase"
-                      color="#9f8e78"
+                      color="var(--atelier-outline)"
                       letterSpacing="0.12em"
                       mb="2"
                     >
@@ -527,11 +525,17 @@ const tags = (note as any)?.tags ?? [];
                     </Text>
                     <Box display="flex" flexWrap="wrap" gap="2">
                       {tags.map((tag: string) => (
-                        <Box bg="#353534" px="2" py="1" border="1px solid" borderColor="#524533">
+                        <Box
+                          bg="var(--atelier-surface-highest)"
+                          px="2"
+                          py="1"
+                          border="1px solid"
+                          borderColor="var(--atelier-line)"
+                        >
                           <Text
-                            fontFamily="JetBrains Mono, monospace"
+                            fontFamily="var(--font-code)"
                             fontSize="9px"
-                            color="#dbdbdb"
+                            color="var(--atelier-fg-muted)"
                           >
                             #{tag.toUpperCase()}
                           </Text>
@@ -546,9 +550,7 @@ const tags = (note as any)?.tags ?? [];
             <Stack gap="4">
               <a href={`/${locale}/notes`} class="note-cta-button group">
                 <span>{t('note.back-to-posts')}</span>
-                <span class="material-symbols-outlined note-cta-icon" aria-hidden="true">
-                  arrow_back
-                </span>
+                <Glyph name="arrow_back" className="note-cta-icon" />
               </a>
               <a
                 href={outlineUrl}
@@ -557,14 +559,57 @@ const tags = (note as any)?.tags ?? [];
                 class="note-cta-button group"
               >
                 <span>{t('note.read-in-outline')}</span>
-                <span class="material-symbols-outlined note-cta-icon" aria-hidden="true">
-                  open_in_new
-                </span>
+                <Glyph name="open_in_new" className="note-cta-icon" />
               </a>
             </Stack>
           </Stack>
-        </Grid>
+        </div>
       )
     }
   </Container>
 </MainLayout>
+
+<script>
+  // The rail used to hardcode the accent onto entry 0, so on a 28,000px note it claimed you
+  // were in section 1 while you were eleven sections down. Track the heading actually in
+  // view and mark it with `aria-current` so it is announced, not just coloured.
+  // Position-based rather than IntersectionObserver: an observer band thin enough to pick a
+  // single heading is one a jump-scroll can land entirely outside, leaving nothing marked.
+  const wireNoteToc = () => {
+    const links = Array.from(document.querySelectorAll('.note-toc-link')) as HTMLAnchorElement[];
+    if (links.length === 0) return;
+
+    const pairs = links
+      .map((link) => ({ link, target: document.getElementById(link.dataset.tocFor ?? '') }))
+      .filter((pair): pair is { link: HTMLAnchorElement; target: HTMLElement } => !!pair.target);
+    if (pairs.length === 0) return;
+
+    let queued = false;
+    const sync = () => {
+      queued = false;
+      // The last heading whose top has passed under the fixed nav; before the first one, the
+      // first entry stands in so the rail is never blank.
+      let active = pairs[0];
+      for (const pair of pairs) {
+        if (pair.target.getBoundingClientRect().top <= 88) active = pair;
+      }
+      for (const { link } of pairs) {
+        if (link === active.link) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      }
+    };
+
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(sync);
+    };
+
+    sync();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  };
+
+  wireNoteToc();
+  document.addEventListener('astro:page-load', wireNoteToc);
+</script>

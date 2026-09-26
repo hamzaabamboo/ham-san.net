@@ -48,7 +48,7 @@ const config = tseslint.config(
   {
     rules: {
       '@pandacss/no-unsafe-token-fn-usage': 'off',
-      '@pandacss/no-hardcoded-color': 'off',
+      '@pandacss/no-hardcoded-color': 'warn',
       '@pandacss/file-not-included': 'off',
       '@pandacss/no-config-function-in-source': 'off'
     }

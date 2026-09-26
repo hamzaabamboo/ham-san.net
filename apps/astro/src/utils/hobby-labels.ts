@@ -164,5 +164,8 @@ export const getHobbyCountLabel = ({
   const key = count === 1 ? metricCopyKeys[type].singular : metricCopyKeys[type].plural;
   const template = String(t(`hobbies.${key}`));
   const value = new Intl.NumberFormat(locale || 'en').format(count);
-  return template.includes('{count}') ? template.replace('{count}', value) : `${value} ${template}`;
+  // No bare-concatenation fallback: `${value} ${template}` silently emits English word
+  // order for a locale that lost the placeholder, which is the defect class this session
+  // closed four times. A missing placeholder must be visible, not degraded.
+  return template.replace('{count}', value);
 };

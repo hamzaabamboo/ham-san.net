@@ -1,5 +1,5 @@
 ---
-import { BrandMark } from '~/components/brand/BrandMark';
+import { Glyph, type GlyphName } from '~/components/ui/glyph';
 import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -14,19 +14,16 @@ const SIDEBAR_LINKS = [
   { label: t('common.note'), value: '/notes', icon: 'description' },
   { label: t('common.hobbies'), value: '/hobbies', icon: 'photo_camera' },
   { label: t('common.event'), value: '/events', icon: 'event' },
+  { label: t('common.photos'), value: '/photos', icon: 'photo_library' },
+  { label: t('common.room'), value: '/room', icon: 'weekend' },
   { label: t('common.about-me'), value: '/about', icon: 'person' },
   { label: t('common.contact'), value: '/contact', icon: 'mail' }
-];
+] satisfies { label: string; value: string; icon: GlyphName }[];
 ---
 
 <aside class="shell-sidebar">
   <div class="shell-sidebar-header">
-    <BrandMark />
-    <p
-      style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9f8e78;margin-top:0.25rem"
-    >
-      {t('common.menu')}
-    </p>
+    <p class="shell-sidebar-env-label">{t('common.menu')}</p>
   </div>
 
   <nav class="shell-sidebar-nav" aria-label={t('common.menu')}>
@@ -42,9 +39,7 @@ const SIDEBAR_LINKS = [
             class="shell-sidebar-link"
             aria-current={isCurrent ? 'page' : undefined}
           >
-            <span class="material-symbols-outlined shell-sidebar-link-icon" aria-hidden="true">
-              {icon}
-            </span>
+            <Glyph name={icon} className="shell-sidebar-link-icon" />
             <span class="shell-sidebar-link-label">{label}</span>
           </a>
         );
@@ -56,9 +51,11 @@ const SIDEBAR_LINKS = [
     <div class="shell-sidebar-env">
       <span class="shell-sidebar-env-label">{t('common.language')}</span>
       <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.75rem">
-        <span style="width:0.5rem;height:0.5rem;background-color:#ffb000;display:block"></span>
         <span
-          style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#e5e2e1"
+          style="width:0.5rem;height:0.5rem;background-color:var(--atelier-accent);display:block"
+        ></span>
+        <span
+          style="font-family:var(--font-code);font-size:10px;text-transform:uppercase;color:var(--atelier-fg)"
           >{lang.toUpperCase()}</span
         >
       </div>

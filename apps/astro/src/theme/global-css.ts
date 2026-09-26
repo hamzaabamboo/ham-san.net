@@ -21,10 +21,10 @@ export const globalCss = defineGlobalStyles({
     bg: 'accent.a4'
   },
   html: {
-    colorPalette: 'blue'
+    colorPalette: 'amber'
   },
   mark: {
-    bg: 'blue.a3',
-    color: 'inherit'
+    bg: 'var(--atelier-accent)',
+    color: 'var(--atelier-bg)'
   }
 });

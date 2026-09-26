@@ -90,16 +90,23 @@ export const alert = defineSlotRecipe({
     },
     status: {
       info: {
-        root: { colorPalette: 'blue' }
+        root: { colorPalette: 'amber' }
       },
       warning: {
-        root: { colorPalette: 'orange' }
+        root: { colorPalette: 'amber' }
       },
       success: {
-        root: { colorPalette: 'green' }
+        root: { colorPalette: 'amber' }
       },
       error: {
-        root: { colorPalette: 'red' }
+        // The system permits one signal colour, so info/warning/success share the accent.
+        // An error must still be distinguishable from a success, and the palette already
+        // carries a danger token for exactly that.
+        root: {
+          colorPalette: 'amber',
+          borderColor: 'var(--atelier-danger)',
+          color: 'var(--atelier-danger)'
+        }
       },
       neutral: {}
     }

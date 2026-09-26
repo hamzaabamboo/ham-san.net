@@ -1,0 +1,28 @@
+---
+import { Stack } from 'styled-system/jsx';
+import Eyebrow from '~/components/common/Eyebrow.astro';
+import { Heading } from '~/components/ui/heading';
+import { Text } from '~/components/ui/text';
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  lede?: string;
+}
+
+const { eyebrow, heading, lede } = Astro.props;
+---
+
+<Stack gap="4" className="page-header-rule" py="2">
+  <Eyebrow label={eyebrow} />
+  <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} lineHeight="0.92">
+    {heading}
+  </Heading>
+  {
+    lede && (
+      <Text color="var(--atelier-fg-muted)" fontSize="lg" maxW="2xl" lineHeight="1.7">
+        {lede}
+      </Text>
+    )
+  }
+</Stack>

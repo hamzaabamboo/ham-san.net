@@ -137,3 +137,10 @@ styled-system
 .idx
 
 dogfood-output
+
+############################
+# Room reference media
+############################
+
+/conductor/evidence/room-references/
+/assets/room/room-photo-comparison.png

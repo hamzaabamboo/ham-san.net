@@ -1,0 +1,362 @@
+.kameko {
+  display: grid;
+  gap: 2.5rem;
+  padding-block: 2.5rem 4rem;
+  color: var(--atelier-fg);
+}
+
+.kameko__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--atelier-line);
+  margin: 0;
+}
+
+.kameko__stats > div {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.25rem;
+}
+
+.kameko__stats > div + div {
+  border-left: 1px solid var(--atelier-line);
+}
+
+.kameko__stats dt {
+  color: var(--atelier-fg-muted);
+  font-family: var(--font-code);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kameko__stats dd {
+  margin: 0;
+  color: var(--atelier-accent);
+  font-family: var(--font-code);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.kameko__filters {
+  display: grid;
+  gap: 1.25rem;
+  border-top: 1px solid var(--atelier-line);
+  padding-top: 1.5rem;
+}
+
+.kameko__search {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 32rem;
+}
+
+.kameko__search label,
+.kameko__facet h2,
+.kameko__facet summary {
+  color: var(--atelier-fg-muted);
+  font-family: var(--font-code);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.kameko__search input {
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-surface-lowest);
+  color: var(--atelier-fg);
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+}
+
+.kameko__search input:focus-visible {
+  outline: 2px solid var(--atelier-accent);
+  outline-offset: 1px;
+}
+
+.kameko__facet {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.kameko__facet summary {
+  display: flex;
+  list-style: none;
+  align-items: baseline;
+  gap: 0.5rem;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.kameko__facet summary::-webkit-details-marker {
+  display: none;
+}
+
+.kameko__facet summary::before {
+  content: '+';
+  width: 0.8rem;
+  color: var(--atelier-accent);
+}
+
+.kameko__facet[open] summary::before {
+  content: '−';
+}
+
+.kameko__facet summary span {
+  color: var(--atelier-accent);
+}
+
+.kameko__facet summary:focus-visible {
+  outline: 2px solid var(--atelier-accent);
+  outline-offset: 3px;
+}
+
+.kameko__facet[open] summary {
+  margin-bottom: 0.6rem;
+}
+
+.kameko__facet > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.kameko__facet a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  border: 1px solid var(--atelier-line);
+  padding: 0.35rem 0.65rem;
+  color: var(--atelier-fg);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.kameko__facet a span {
+  color: var(--atelier-fg-muted);
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+}
+
+.kameko__facet a:hover {
+  border-color: var(--atelier-outline);
+  background: var(--atelier-surface-low);
+}
+
+.kameko__facet a[aria-current='true'] {
+  border-color: var(--atelier-accent);
+  background: var(--atelier-accent);
+  color: var(--atelier-on-accent);
+}
+
+.kameko__facet a[aria-current='true'] span {
+  color: var(--atelier-on-accent);
+}
+
+.kameko__result-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--atelier-fg-muted);
+}
+
+.kameko__result-line strong {
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
+}
+
+.kameko__result-line a,
+.kameko__source a {
+  color: var(--atelier-accent);
+}
+
+.kameko__empty {
+  border: 1px dashed var(--atelier-line);
+  padding: 3rem 1.5rem;
+  color: var(--atelier-fg-muted);
+  text-align: center;
+}
+
+.kameko__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kameko-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-surface-lowest);
+}
+
+.kameko-card__frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--atelier-image-plate);
+}
+
+.kameko-card__frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  transition: transform 240ms ease;
+}
+
+.kameko-card__frame:hover img,
+.kameko-card__frame:focus-visible img {
+  transform: scale(1.02);
+}
+
+.kameko-card__frame:focus-visible {
+  outline: 2px solid var(--atelier-accent);
+  outline-offset: 2px;
+}
+
+.kameko-card__count,
+.kameko-card__open {
+  position: absolute;
+  padding: 0.25rem 0.5rem;
+  background: var(--atelier-bg);
+  color: var(--atelier-fg);
+  font-family: var(--font-code);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+
+.kameko-card__count {
+  top: 0.6rem;
+  right: 0.6rem;
+}
+
+.kameko-card__open {
+  bottom: 0.6rem;
+  left: 0.6rem;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.kameko-card__frame:hover .kameko-card__open,
+.kameko-card__frame:focus-visible .kameko-card__open {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .kameko-card__open {
+    opacity: 1;
+  }
+}
+
+.kameko-card__meta {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  padding: 0.85rem 0.95rem 1rem;
+}
+
+.kameko-card__meta p {
+  margin: 0;
+}
+
+.kameko-card__people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.75rem;
+  font-weight: 600;
+}
+
+.kameko-card__people a,
+.kameko-card__event a,
+.kameko-card__tags a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.kameko-card__people a:hover,
+.kameko-card__event a:hover,
+.kameko-card__tags a:hover {
+  color: var(--atelier-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.kameko-card__event {
+  display: grid;
+  gap: 0.15rem;
+  color: var(--atelier-fg-muted);
+  font-size: 0.85rem;
+}
+
+.kameko-card__event time {
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+.kameko-card__caption {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  white-space: pre-line;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.kameko-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.6rem;
+  color: var(--atelier-fg-muted);
+  font-size: 0.78rem;
+}
+
+.kameko__source {
+  display: grid;
+  gap: 0.35rem;
+  border-top: 1px solid var(--atelier-line);
+  padding-top: 1.25rem;
+  color: var(--atelier-fg-muted);
+  font-size: 0.85rem;
+}
+
+.kameko__source p {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .kameko__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kameko__stats > div:nth-child(3) {
+    border-left: 0;
+  }
+
+  .kameko__stats > div:nth-child(n + 3) {
+    border-top: 1px solid var(--atelier-line);
+  }
+
+  .kameko__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .kameko-card__meta {
+    padding: 0.65rem 0.7rem 0.8rem;
+  }
+}

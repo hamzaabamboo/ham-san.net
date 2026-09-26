@@ -1,31 +1,53 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { BrandMark } from '~/components/brand/BrandMark';
-import { Languages, languages } from '~/i18n/ui';
-import { useTranslations } from '~/i18n/utils';
+import {
+  MdOutlineClose,
+  MdOutlineDescription,
+  MdOutlineEvent,
+  MdOutlineLink,
+  MdOutlineMail,
+  MdOutlineMenu,
+  MdOutlinePerson,
+  MdOutlinePhotoCamera,
+  MdOutlinePhotoLibrary,
+  MdOutlineWeekend,
+  MdOutlineWorkOutline
+} from 'react-icons/md';
+// Value imports from ~/i18n/ui drag all three locales of all ten namespaces into this
+// island's chunk. Labels and locale codes arrive resolved from the server instead.
+import type { Languages } from '~/i18n/ui';
 import { localizePath } from '~/i18n/path';
 
-const ICONS: Record<string, string> = {
-  '/projects': 'work',
-  '/notes': 'description',
-  '/hobbies': 'photo_camera',
-  '/events': 'event',
-  '/about': 'person',
-  '/contact': 'mail'
-};
+// Only the icons this drawer can draw, imported directly. The shared map indexes one
+// object literal holding all 25, so Rollup cannot tree-shake per icon and the island
+// shipped ~12 KB gzip of path data to draw eight.
+const ICONS = {
+  '/projects': MdOutlineWorkOutline,
+  '/notes': MdOutlineDescription,
+  '/hobbies': MdOutlinePhotoCamera,
+  '/events': MdOutlineEvent,
+  '/photos': MdOutlinePhotoLibrary,
+  '/room': MdOutlineWeekend,
+  '/about': MdOutlinePerson,
+  '/contact': MdOutlineMail
+} as const;
 
 export const Sidebar = ({
   locale = 'en',
   pathname,
   search,
-  links
+  links,
+  locales,
+  labels
 }: {
   locale: Languages;
   pathname: string;
   search: string;
   links: { label: string; value: string }[];
+  locales: string[];
+  labels: { menu: string; menuOpen: string; menuClose: string; language: string };
 }) => {
-  const t = useTranslations(locale);
   const [open, setOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -117,15 +139,11 @@ export const Sidebar = ({
         ref={triggerRef}
         onClick={() => setOpen(true)}
         className="shell-drawer-trigger"
-        aria-label={t('common.menu-open')}
+        aria-label={labels.menuOpen}
+        aria-haspopup="dialog"
+        aria-expanded={open}
       >
-        <span
-          className="material-symbols-outlined"
-          style={{ fontSize: '1.25rem' }}
-          aria-hidden="true"
-        >
-          menu
-        </span>
+        <MdOutlineMenu aria-hidden="true" style={{ fontSize: '1.25rem' }} />
       </button>
 
       {open &&
@@ -134,12 +152,12 @@ export const Sidebar = ({
             className="shell-drawer-portal"
             role="dialog"
             aria-modal="true"
-            aria-label={t('common.menu')}
+            aria-label={labels.menu}
           >
             <button
               className="shell-drawer-overlay"
               onClick={() => setOpen(false)}
-              aria-label={t('common.menu-close')}
+              aria-label={labels.menuClose}
               tabIndex={-1}
             />
             <div className="shell-drawer">
@@ -149,20 +167,18 @@ export const Sidebar = ({
                   ref={closeButtonRef}
                   onClick={() => setOpen(false)}
                   className="shell-drawer-close"
-                  aria-label={t('common.menu-close')}
+                  aria-label={labels.menuClose}
                 >
-                  <span className="material-symbols-outlined" aria-hidden="true">
-                    close
-                  </span>
+                  <MdOutlineClose aria-hidden="true" />
                 </button>
               </div>
 
-              <nav className="shell-drawer-nav" aria-label={t('common.menu')}>
+              <nav className="shell-drawer-nav" aria-label={labels.menu}>
                 {links.map(({ label, value }) => {
                   const fullPath = getURLWithLanguage(value);
                   const isCurrent =
                     value === '/' ? pathname === fullPath : pathname.startsWith(fullPath);
-                  const icon = ICONS[value] || 'link';
+                  const LinkIcon = ICONS[value as keyof typeof ICONS] ?? MdOutlineLink;
 
                   return (
                     <a
@@ -170,14 +186,10 @@ export const Sidebar = ({
                       href={fullPath}
                       className="shell-drawer-link"
                       data-active={isCurrent ? 'true' : 'false'}
+                      aria-current={isCurrent ? 'page' : undefined}
                       data-astro-reload
                     >
-                      <span
-                        className="material-symbols-outlined shell-sidebar-link-icon"
-                        aria-hidden="true"
-                      >
-                        {icon}
-                      </span>
+                      <LinkIcon className="shell-sidebar-link-icon" aria-hidden="true" />
                       <span className="shell-sidebar-link-label">{label}</span>
                     </a>
                   );
@@ -185,14 +197,15 @@ export const Sidebar = ({
               </nav>
 
               <div className="shell-drawer-locale">
-                <span className="shell-drawer-locale-label">{t('common.language')}</span>
+                <span className="shell-drawer-locale-label">{labels.language}</span>
                 <div className="shell-drawer-locale-list">
-                  {Object.keys(languages).map((code) => (
+                  {locales.map((code) => (
                     <a
                       key={code}
                       href={getCurrentURLWithLanguage(code)}
                       className="shell-drawer-locale-btn"
                       data-active={code === locale ? 'true' : 'false'}
+                      aria-current={code === locale ? 'true' : undefined}
                     >
                       {code}
                     </a>

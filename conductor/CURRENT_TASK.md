@@ -18,6 +18,10 @@ The historical checkpoint manifest was verified before continuation. Its only mi
 
 2026-09-26 progress: dart corner, penlight wall, PC wall, shelves, low table, entry and closet zones rebuilt by hand from the owner photos over rounds 2–5 (details in tools/room-harness/evidence/build/item-audit-20260926/README.md and round4/README.md). Settled layout kept.
 
+## Photos gallery (2026-09-27, uncommitted)
+
+`/[locale]/photos` renders `apps/astro/src/constants/kameko-posts.json` (post metadata only; images hotlinked from pbs.twimg.com, each card links to its X post, cards hide if the image is gone). Included: posts by @HamP_punipuni tagged #カメコしてみた, #百瀬安由未, or #蓮ノ空 with #zweigen/#ツェーゲン, with photos and at least one named person (parser in `src/utils/kameko.ts`). Refresh: `cd apps/astro && TWEETAPI_IO_API_KEY=… bun run fetch:kameko` (incremental, 1 request, skips known IDs); `KAMEKO_DEEP=1` is a full paid sweep — only with owner approval and a credit estimate. Key lives in with-meets-reminder/.env; never write it to this repo.
+
 ## Latest settled model requirements
 
 - Each acrylic stand has distinct artwork; 126 visible print assemblies currently map to 126 IDs.

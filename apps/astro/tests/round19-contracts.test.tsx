@@ -196,7 +196,12 @@ test('carousel renders semantic controls with descriptive localized image labels
   expect(html).toContain('width="320" height="180"');
   expect(source).toContain('<styled.button');
   expect(source).toContain('aria-pressed={idx === index}');
-  expect(source).toContain("'&:hover': { borderColor: '#ffb000' }");
+  // Selection, not hover, carries the accent: hover louder than the selected state left the
+  // only control (the arrows and dots are hidden below four slides) ambiguous, and a
+  // background-only selection was invisible on a thumbnail whose image filled its box.
+  expect(source).toContain("'&:hover': { borderColor: 'var(--atelier-outline)' }");
+  expect(source).toContain("borderColor: 'var(--atelier-accent)'");
+  expect(source).toContain('\'&[aria-pressed="true"]::after\'');
   expect(source).toContain('aria-label={`${gotoSlideLabel} ${idx + 1}`}');
   expect(source).toContain('alt={`${slideLabel} ${index + 1}`}');
   expect(source).toContain('page={index}');

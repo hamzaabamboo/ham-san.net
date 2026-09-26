@@ -22,7 +22,10 @@ describe('projectMonogram', () => {
   });
 
   test('handles non-latin titles', () => {
-    expect(projectMonogram('ぼっちラブカシミュレーター (Bocchi Loveca Simulator)')).toBe('ぼB');
+    // This asserted 'ぼB' — one kana plus one Latin capital, which rendered at 96px in a
+    // Latin display serif as broken text. A monogram must stay in one script; the Latin
+    // run wins when the title has one. Script-specific cases live in monogram-script.test.
+    expect(projectMonogram('ぼっちラブカシミュレーター (Bocchi Loveca Simulator)')).toBe('BL');
   });
 
   test('falls back to P for empty titles', () => {

@@ -1,13 +1,8 @@
-import { purple } from '~/theme/colors/purple';
-import { orange } from '~/theme/colors/orange';
 import { defineConfig } from '@pandacss/dev';
 import { theme } from './src/theme';
 import { globalCss } from './src/theme/global-css';
 import { conditions } from './src/theme/conditions';
-import { blue } from './src/theme/colors/blue';
 import { mauve } from './src/theme/colors/mauve';
-import { red } from './src/theme/colors/red';
-import { green } from './src/theme/colors/green';
 import { amber } from './src/theme/colors/amber';
 
 export default defineConfig({
@@ -34,7 +29,11 @@ export default defineConfig({
 
   staticCss: {
     recipes: {
-      // text: ['*']
+      // `TagBadge` passes `size` as a variable, so panda cannot extract it statically and
+      // emitted CSS for the default variant only. `.badge--size_sm` matched NO rule at all:
+      // the sm chips rendered with zero padding at the inherited 14px — larger than the md
+      // chip's 12px, with the glyphs touching the 1px border on all four sides.
+      badge: [{ size: ['sm', 'md'], variant: ['outline'] }]
     },
     css: [
       {
@@ -54,14 +53,9 @@ export default defineConfig({
         colors: {
           ...theme.semanticTokens?.colors,
           accent: amber,
-          blue: blue,
           gray: mauve,
           mauve: mauve,
-          red: red,
-          green: green,
-          amber: amber,
-          orange: orange,
-          purple: purple
+          amber: amber
         },
         radii: {
           l1: { value: '{radii.md}' },

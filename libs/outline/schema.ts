@@ -84,6 +84,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/apiKeys.create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create an API key
+         * @description Create a new personal API key for the authenticated user. The full key `value` is only returned in this response and cannot be retrieved again, so it should be stored securely.
+         */
+        post: operations["apiKeysCreate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/apiKeys.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List API keys
+         * @description List API keys for the authenticated user, or for all users in the workspace when called by an administrator. The secret key `value` is never included in this response.
+         */
+        post: operations["apiKeysList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/apiKeys.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete an API key
+         * @description Permanently revoke an API key. Any requests made with the key afterwards will be rejected.
+         */
+        post: operations["apiKeysDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/attachments.create": {
         parameters: {
             query?: never;
@@ -144,6 +204,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/attachments.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List all attachments
+         * @description List all attachments in the workspace, optionally filtered by the document or user they are associated with.
+         */
+        post: operations["attachmentsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/attachments.createFromUrl": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create an attachment from a URL
+         * @description Fetch a file from a remote URL and store it as an attachment. Unlike `attachments.create`, the server downloads and uploads the file, so the returned attachment is immediately available.
+         */
+        post: operations["attachmentsCreateFromUrl"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth.info": {
         parameters: {
             query?: never;
@@ -178,6 +278,26 @@ export interface paths {
          * @description Retrieve authentication options
          */
         post: operations["authConfig"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Sign out
+         * @description Sign out the authenticated user. This rotates the user's token secret, immediately invalidating all existing API tokens and sessions for that user.
+         */
+        post: operations["authDelete"];
         delete?: never;
         options?: never;
         head?: never;
@@ -258,6 +378,31 @@ export interface paths {
          * @description Create a new collection with the specified name, description, icon, color, and permission settings. Collections are used to organize documents.
          */
         post: operations["collectionsCreate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/collections.duplicate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Duplicate a collection
+         * @description Duplicate an existing collection along with its published documents. The
+         *     original collection's settings – icon, color, permission, sharing, and
+         *     sorting – are preserved on the copy. Draft and archived documents are
+         *     not duplicated. Document duplication runs asynchronously in the
+         *     background, so the copy may initially be returned before all of its
+         *     documents have been created.
+         */
+        post: operations["collectionsDuplicate"];
         delete?: never;
         options?: never;
         head?: never;
@@ -464,6 +609,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/collections.archive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Archive a collection
+         * @description Archiving a collection hides it, and all of the documents within it, from the sidebar and search results. Archived collections can be restored at a later date.
+         */
+        post: operations["collectionsArchive"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/collections.restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Restore an archived collection
+         * @description Restore a previously archived collection, making it and the documents within it visible in the sidebar and search results once again.
+         */
+        post: operations["collectionsRestore"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/collections.move": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Move a collection
+         * @description Move a collection to a new position in the sidebar. Collections are ordered using a fractional index; provide the new index to reposition the collection relative to its siblings.
+         */
+        post: operations["collectionsMove"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/collections.import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Import documents into a new collection
+         * @description Import a file that was previously uploaded through `attachments.create` and create a new collection from its contents. The endpoint returns a `FileOperation` that can be queried to track the progress of the import.
+         */
+        post: operations["collectionsImport"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/comments.create": {
         parameters: {
             query?: never;
@@ -515,7 +740,7 @@ export interface paths {
         put?: never;
         /**
          * Update a comment
-         * @description Update a comment
+         * @description Update a comment, either `data` or `text` is required.
          */
         post: operations["commentsUpdate"];
         delete?: never;
@@ -558,6 +783,86 @@ export interface paths {
          * @description This method will list all comments matching the given properties.
          */
         post: operations["commentsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/comments.resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resolve a comment
+         * @description Mark a comment thread as resolved. Resolved comments are hidden from the document by default and indicate that the discussion has been dealt with.
+         */
+        post: operations["commentsResolve"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/comments.unresolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Unresolve a comment
+         * @description Mark a previously resolved comment thread as unresolved, making it visible on the document again.
+         */
+        post: operations["commentsUnresolve"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/comments.add_reaction": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add a reaction to a comment
+         * @description Add an emoji reaction to a comment on behalf of the authenticated user.
+         */
+        post: operations["commentsAddReaction"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/comments.remove_reaction": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Remove a reaction from a comment
+         * @description Remove an emoji reaction that the authenticated user previously added to a comment.
+         */
+        post: operations["commentsRemoveReaction"];
         delete?: never;
         options?: never;
         head?: never;
@@ -735,7 +1040,7 @@ export interface paths {
         put?: never;
         /**
          * Export a document.
-         * @description Export a document in Markdown, HTML, or PDF format. The response format is determined by the Accept header. Optionally include child documents in the export as a zip file.
+         * @description Export a document in Markdown, HTML, PDF, or TextBundle format. The response format is determined by the Accept header (`text/markdown`, `text/html`, `application/pdf`, or `application/x-textbundle`). Optionally include child documents in the export as a zip file.
          */
         post: operations["documentsExport"];
         delete?: never;
@@ -1364,6 +1669,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/groupMemberships.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List group memberships
+         * @description List the documents that have been shared with groups the authenticated user belongs to, along with the associated group membership records.
+         */
+        post: operations["groupMembershipsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/groups.info": {
         parameters: {
             query?: never;
@@ -1524,6 +1849,126 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/groups.update_user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update a group member
+         * @description Update the role of an existing member of a group, for example to promote them to a group admin or demote them back to a regular member.
+         */
+        post: operations["groupsUpdateUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notifications.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List notifications
+         * @description List the authenticated user's notifications, most recent first, optionally filtered by event type or archived status.
+         */
+        post: operations["notificationsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notifications.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update a notification
+         * @description Update a single notification, for example to mark it as viewed or archived by setting the relevant timestamp.
+         */
+        post: operations["notificationsUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notifications.update_all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update all notifications
+         * @description Update all of the authenticated user's notifications at once, for example to mark them all as viewed or archived.
+         */
+        post: operations["notificationsUpdateAll"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauthAuthentications.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List accessible OAuth authentications
+         * @description List all OAuth authentications for the current user. These represent the third-party applications that the user has authorized to access their account.
+         */
+        post: operations["oauthAuthenticationsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauthAuthentications.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete an OAuth authentiation
+         * @description Revoke an OAuth authentication, removing the third-party application's access to the user's account.
+         */
+        post: operations["oauthAuthenticationsDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/oauthClients.info": {
         parameters: {
             query?: never;
@@ -1644,7 +2089,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/oauthAuthentications.list": {
+    "/pins.create": {
         parameters: {
             query?: never;
             header?: never;
@@ -1654,17 +2099,17 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * List accessible OAuth authentications
-         * @description List all OAuth authentications for the current user. These represent the third-party applications that the user has authorized to access their account.
+         * Pin a document
+         * @description Pin a document to the top of a collection or to the home screen. Pinned documents are visible to all members of the workspace. Provide a `collectionId` to pin within a collection, or omit it to pin to the home screen.
          */
-        post: operations["oauthAuthenticationsList"];
+        post: operations["pinsCreate"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/oauthAuthentications.delete": {
+    "/pins.info": {
         parameters: {
             query?: never;
             header?: never;
@@ -1674,10 +2119,90 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Delete an OAuth authentiation
-         * @description Revoke an OAuth authentication, removing the third-party application's access to the user's account.
+         * Retrieve a pin
+         * @description Retrieve the pin for a document, either within a collection or on the home screen.
          */
-        post: operations["oauthAuthenticationsDelete"];
+        post: operations["pinsInfo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pins.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List pins
+         * @description List the pinned documents for a collection, or for the home screen when no `collectionId` is provided.
+         */
+        post: operations["pinsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pins.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update a pin
+         * @description Update the position of an existing pin, used to reorder pinned documents.
+         */
+        post: operations["pinsUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pins.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete a pin
+         * @description Remove a pin, un-pinning the document from its collection or the home screen. The document itself is not affected.
+         */
+        post: operations["pinsDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reactions.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List reactions
+         * @description List the emoji reactions that have been added to a comment.
+         */
+        post: operations["reactionsList"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1718,6 +2243,66 @@ export interface paths {
          * @description List all revisions for a specific document. Revisions represent historical snapshots of a document's content and can be used to track changes over time. The `data` and `text` fields are omitted from listed revisions for performance; use `revisions.info` to retrieve the full content of a specific revision.
          */
         post: operations["revisionsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/revisions.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update a revision
+         * @description Update the details of a revision. Currently only the name of the revision can be changed, which is used to label significant versions of a document.
+         */
+        post: operations["revisionsUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/revisions.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete a revision
+         * @description Delete a specific revision of a document. The latest revision of a document cannot be deleted.
+         */
+        post: operations["revisionsDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/revisions.export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Export a revision
+         * @description Triggers an export of a single revision to a file. The endpoint returns a `FileOperation` that can be queried to track the progress of the export and get the url for the final file.
+         */
+        post: operations["revisionsExport"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1904,6 +2489,266 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/subscriptions.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List subscriptions
+         * @description List the authenticated user's subscriptions for a given document or collection.
+         */
+        post: operations["subscriptionsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/subscriptions.info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve a subscription
+         * @description Retrieve the authenticated user's subscription for a specific document or collection, if one exists.
+         */
+        post: operations["subscriptionsInfo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/subscriptions.create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a subscription
+         * @description Subscribe the authenticated user to a document or collection so that they receive notifications when it changes. Provide exactly one of `documentId` or `collectionId`.
+         */
+        post: operations["subscriptionsCreate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/subscriptions.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete a subscription
+         * @description Unsubscribe the authenticated user from a document or collection by the subscription's identifier.
+         */
+        post: operations["subscriptionsDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a template
+         * @description Create a new template that can be used as a starting point for new documents. Templates can optionally be scoped to a specific collection.
+         */
+        post: operations["templatesCreate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List all templates
+         * @description List all templates available to the current user. Optionally filter by collection. Templates not associated with a collection are workspace-wide.
+         */
+        post: operations["templatesList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Retrieve a template
+         * @description Retrieve a template by its unique identifier.
+         */
+        post: operations["templatesInfo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update a template
+         * @description Update an existing template by its unique identifier.
+         */
+        post: operations["templatesUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete a template
+         * @description Delete a template by its unique identifier. This will soft-delete the template, it can be restored later.
+         */
+        post: operations["templatesDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Restore a template
+         * @description Restore a previously deleted template by its unique identifier.
+         */
+        post: operations["templatesRestore"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/templates.duplicate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Duplicate a template
+         * @description Create a copy of an existing template. Optionally override the title and target collection.
+         */
+        post: operations["templatesDuplicate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/userMemberships.list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * List document memberships
+         * @description List the documents that have been shared directly with the authenticated user, along with the associated membership records.
+         */
+        post: operations["userMembershipsList"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/userMemberships.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update a document membership
+         * @description Update the authenticated user's membership of a shared document, used to reorder documents in the sidebar.
+         */
+        post: operations["userMembershipsUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users.invite": {
         parameters: {
             query?: never;
@@ -2064,6 +2909,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/users.updateEmail": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update a user's email
+         * @description Begin the process of changing a user's email address. For security the email is not changed immediately; a confirmation link is sent to the new address and the change only takes effect once that link is followed.
+         */
+        post: operations["usersUpdateEmail"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users.resendInvite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resend a user invite
+         * @description Resend the invitation email to a user who has been invited but has not yet signed in. Only applies to users in the invited state.
+         */
+        post: operations["usersResendInvite"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users.notificationsSubscribe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Subscribe to a notification type
+         * @description Enable a specific type of notification for the authenticated user. This controls which events the user receives email and in-app notifications for.
+         */
+        post: operations["usersNotificationsSubscribe"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users.notificationsUnsubscribe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Unsubscribe from a notification type
+         * @description Disable a specific type of notification for the authenticated user.
+         */
+        post: operations["usersNotificationsUnsubscribe"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/views.list": {
         parameters: {
             query?: never;
@@ -2084,7 +3009,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/views.create": {
+    "/webhookSubscriptions.list": {
         parameters: {
             query?: never;
             header?: never;
@@ -2094,17 +3019,17 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Create a view
-         * @description Creates a new view for a document. This is documented in the interests of thoroughness however it is recommended that views are not created from outside of the Outline UI.
+         * List all webhook subscriptions
+         * @description List all webhook subscriptions for the workspace. Only workspace administrators can access this endpoint.
          */
-        post: operations["viewsCreate"];
+        post: operations["webhookSubscriptionsList"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/templates.create": {
+    "/webhookSubscriptions.create": {
         parameters: {
             query?: never;
             header?: never;
@@ -2114,17 +3039,17 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Create a template
-         * @description Create a new template that can be used as a starting point for new documents. Templates can optionally be scoped to a specific collection.
+         * Create a webhook subscription
+         * @description Create a webhook subscription for the workspace. Only workspace administrators can access this endpoint.
          */
-        post: operations["templatesCreate"];
+        post: operations["webhookSubscriptionsCreate"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/templates.list": {
+    "/webhookSubscriptions.update": {
         parameters: {
             query?: never;
             header?: never;
@@ -2134,17 +3059,17 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * List all templates
-         * @description List all templates available to the current user. Optionally filter by collection. Templates not associated with a collection are workspace-wide.
+         * Update a webhook subscription
+         * @description Update an existing webhook subscription. Updating a disabled subscription enables it again. Only workspace administrators can access this endpoint.
          */
-        post: operations["templatesList"];
+        post: operations["webhookSubscriptionsUpdate"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/templates.info": {
+    "/webhookSubscriptions.delete": {
         parameters: {
             query?: never;
             header?: never;
@@ -2154,90 +3079,10 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Retrieve a template
-         * @description Retrieve a template by its unique identifier.
+         * Delete a webhook subscription
+         * @description Delete a webhook subscription. Only workspace administrators can access this endpoint.
          */
-        post: operations["templatesInfo"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/templates.update": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Update a template
-         * @description Update an existing template by its unique identifier.
-         */
-        post: operations["templatesUpdate"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/templates.delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete a template
-         * @description Delete a template by its unique identifier. This will soft-delete the template, it can be restored later.
-         */
-        post: operations["templatesDelete"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/templates.restore": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Restore a template
-         * @description Restore a previously deleted template by its unique identifier.
-         */
-        post: operations["templatesRestore"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/templates.duplicate": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Duplicate a template
-         * @description Create a copy of an existing template. Optionally override the title and target collection.
-         */
-        post: operations["templatesDuplicate"];
+        post: operations["webhookSubscriptionsDelete"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2338,6 +3183,82 @@ export interface components {
              */
             direction?: "ASC" | "DESC";
         };
+        /** @description A single filter node, either a leaf condition matching a document field or a group combining nested filters with a logical operator. */
+        DocumentFilter: {
+            /**
+             * @description Name of the document field to filter on.
+             * @enum {string}
+             */
+            field: "createdAt" | "updatedAt" | "publishedAt" | "archivedAt" | "title" | "templateId" | "collectionId" | "userId" | "documentId" | "parentDocumentId";
+            /**
+             * @description Comparison operator to apply. Note that some fields only accept a subset of operators – for example `userId` and `documentId` only support `eq` and `in`.
+             * @enum {string}
+             */
+            operator: "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "contains" | "startsWith" | "endsWith" | "containsStrict" | "startsWithStrict" | "endsWithStrict" | "in" | "notIn" | "isNull" | "isNotNull";
+            /** @description Value to compare against. May be a string, number, boolean or array of these depending on the field and operator. Date fields accept an ISO 8601 date or an ISO 8601 duration (relative to now). Omit for `isNull` and `isNotNull`. */
+            value?: unknown;
+        } | {
+            /** @enum {string} */
+            operator: "AND" | "OR";
+            filters: components["schemas"]["DocumentFilter"][];
+        };
+        /** @description A single filter node for `/documents.deleted`, either a leaf condition matching a supported field or a group combining nested filters with a logical operator. */
+        DocumentsDeletedFilter: {
+            /**
+             * @description Name of the field to filter on.
+             * @enum {string}
+             */
+            field: "deletedAt" | "deletedById";
+            /**
+             * @description Comparison operator to apply. `deletedById` only supports `eq` and `in`.
+             * @enum {string}
+             */
+            operator: "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "in" | "notIn" | "isNull" | "isNotNull";
+            /** @description Value to compare against. `deletedAt` accepts an ISO 8601 date or an ISO 8601 duration (relative to now); `deletedById` accepts a user UUID (or an array of UUIDs with `in`/`notIn`). Omit for `isNull` and `isNotNull`. */
+            value?: unknown;
+        } | {
+            /** @enum {string} */
+            operator: "AND" | "OR";
+            filters: components["schemas"]["DocumentsDeletedFilter"][];
+        };
+        /** @description A single filter node for `/collections.list`, either a leaf condition matching a collection field or a group combining nested filters with a logical operator. */
+        CollectionFilter: {
+            /**
+             * @description Name of the collection field to filter on.
+             * @enum {string}
+             */
+            field: "name" | "createdAt" | "updatedAt" | "archivedAt" | "createdById" | "permission";
+            /**
+             * @description Comparison operator to apply. Note that some fields only accept a subset of operators – for example `permission` only supports `eq`, `neq`, `in`, `notIn`, `isNull` and `isNotNull`.
+             * @enum {string}
+             */
+            operator: "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "contains" | "startsWith" | "endsWith" | "containsStrict" | "startsWithStrict" | "endsWithStrict" | "in" | "notIn" | "isNull" | "isNotNull";
+            /** @description Value to compare against. May be a string, boolean or array of these depending on the field and operator. Date fields accept an ISO 8601 date or an ISO 8601 duration (relative to now). `permission` accepts a `Permission` enum value (or an array with `in`/`notIn`). Omit for `isNull` and `isNotNull`. */
+            value?: unknown;
+        } | {
+            /** @enum {string} */
+            operator: "AND" | "OR";
+            filters: components["schemas"]["CollectionFilter"][];
+        };
+        /** @description A single filter node for `/users.list`, either a leaf condition matching a user field or a group combining nested filters with a logical operator. */
+        UserFilter: {
+            /**
+             * @description Name of the user field to filter on.
+             * @enum {string}
+             */
+            field: "id" | "name" | "email" | "role" | "createdAt" | "updatedAt" | "lastActiveAt" | "suspendedAt";
+            /**
+             * @description Comparison operator to apply. Note that some fields only accept a subset of operators – `id` and `role` only support `eq`, `neq`, `in` and `notIn`.
+             * @enum {string}
+             */
+            operator: "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "contains" | "startsWith" | "endsWith" | "containsStrict" | "startsWithStrict" | "endsWithStrict" | "in" | "notIn" | "isNull" | "isNotNull";
+            /** @description Value to compare against. May be a string, number, boolean or array of these depending on the field and operator. Date fields accept an ISO 8601 date or an ISO 8601 duration (relative to now). `role` accepts one of the values in `UserRole`. Omit for `isNull` and `isNotNull`. */
+            value?: unknown;
+        } | {
+            /** @enum {string} */
+            operator: "AND" | "OR";
+            filters: components["schemas"]["UserFilter"][];
+        };
         NavigationNode: {
             /**
              * Format: uuid
@@ -2425,6 +3346,8 @@ export interface components {
              */
             readonly archivedAt?: string | null;
             archivedBy?: components["schemas"]["User"];
+            /** @description The reason the collection was archived or deleted, if one was provided. */
+            readonly deprecatedReason?: string | null;
             /** @description Metadata about the external source this collection was imported from, if any. */
             sourceMetadata?: {
                 externalId?: string;
@@ -2641,6 +3564,18 @@ export interface components {
              * @description The date and time that this object was deleted
              */
             readonly deletedAt?: string | null;
+            /** @description The user who deleted this document, if any. Only present on deleted documents. */
+            deletedBy?: components["schemas"]["User"] | null;
+            /** @description The reason the document was archived or deleted, if one was provided. */
+            readonly deprecatedReason?: string | null;
+            /** @description Document-level display preferences. */
+            preferences?: {
+                /**
+                 * @description Numbering style applied to the document's headings when rendered.
+                 * @enum {string}
+                 */
+                headingPrefix?: "none" | "numeric" | "alphanumeric" | "outline";
+            } | null;
         };
         /** @description A rollup of activity counts for a document over a daily or weekly period. */
         DocumentInsight: {
@@ -2690,6 +3625,11 @@ export interface components {
              * @description The user that performed the action.
              */
             readonly actorId?: string;
+            /**
+             * @description The authentication method used to perform the action.
+             * @enum {string|null}
+             */
+            readonly authType?: "api" | "app" | "mcp" | "oauth" | null;
             /**
              * @description The ip address the action was performed from. This field is only returned when the `auditLog` boolean is true.
              * @example 60.169.88.100
@@ -2852,7 +3792,7 @@ export interface components {
              */
             readonly clientId?: string;
             /**
-             * @description The client secret for the OAuth client.
+             * @description The client secret for the OAuth client. Only returned when the request is authenticated with a credential whose scope permits managing OAuth clients.
              * @example ol_sk_rapdv31...
              */
             readonly clientSecret?: string;
@@ -2963,6 +3903,14 @@ export interface components {
              * @description Date and time when this revision was deleted, if applicable.
              */
             readonly deletedAt?: string | null;
+            /** @description Metadata about how the revision was created, if any. */
+            readonly sourceMetadata?: {
+                /**
+                 * @description The authentication method used to create the revision.
+                 * @enum {string|null}
+                 */
+                readonly authType?: "api" | "app" | "mcp" | "oauth" | null;
+            } | null;
         };
         RevisionDetail: components["schemas"]["Revision"] & {
             /** @description The body of the revision as a Prosemirror document. */
@@ -3044,7 +3992,8 @@ export interface components {
              * @description Date and time when this share was created
              */
             readonly createdAt?: string;
-            createdBy?: components["schemas"]["User"];
+            /** @description The user that created the share. Only returned to viewers with access to read the share; omitted from responses to unauthenticated viewers of a published share, and when the creating user has been deleted. */
+            readonly createdBy?: components["schemas"]["User"] | null;
             /**
              * Format: date-time
              * @description Date and time when this share was edited
@@ -3183,6 +4132,8 @@ export interface components {
              * @description The date and time that this user was deleted, if applicable.
              */
             readonly deletedAt?: string | null;
+            /** @description The user that invited this user, if they were invited. Only included in responses to admin users. */
+            readonly invitedBy?: components["schemas"]["User"] | null;
         };
         Invite: {
             /** @description The full name of the user being invited */
@@ -3245,7 +4196,7 @@ export interface components {
              * @example app
              * @enum {string}
              */
-            readonly source?: "api" | "app";
+            readonly source?: "api" | "app" | "mcp";
             /**
              * Format: date-time
              * @description The date and time that this object was created
@@ -3373,6 +4324,56 @@ export interface components {
              */
             readonly publishedAt?: string | null;
         };
+        WebhookSubscription: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the webhook subscription.
+             */
+            readonly id?: string;
+            /**
+             * @description The descriptive name of the webhook subscription.
+             * @example Production webhook
+             */
+            name?: string;
+            /**
+             * Format: uri
+             * @description The URL that receives webhook requests.
+             * @example https://example.com/webhooks/outline
+             */
+            url?: string;
+            /**
+             * @description The optional secret used to sign webhook requests.
+             * @example ol_whs_1234567890abcdef
+             */
+            secret?: string | null;
+            /**
+             * @description Event names or namespaces that trigger the webhook. `*` subscribes to all events.
+             * @example [
+             *       "documents.create",
+             *       "documents.update"
+             *     ]
+             */
+            events?: string[];
+            /** @description Whether the webhook subscription is enabled. */
+            readonly enabled?: boolean;
+            /** @description The user who created the webhook subscription, if available. */
+            readonly createdBy?: components["schemas"]["User"];
+            /**
+             * Format: uuid
+             * @description Identifier for the user who created the webhook subscription.
+             */
+            readonly createdById?: string;
+            /**
+             * Format: date-time
+             * @description The date and time that the webhook subscription was created.
+             */
+            readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description The date and time that the webhook subscription was last changed.
+             */
+            readonly updatedAt?: string;
+        };
         View: {
             /** @description Unique identifier for the object. */
             readonly id?: string;
@@ -3402,6 +4403,191 @@ export interface components {
              */
             readonly userId?: string;
             user?: components["schemas"]["User"];
+        };
+        ApiKey: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /** @description A user provided name for the API key. */
+            name?: string;
+            /** @description An optional list of scopes that restrict which endpoints the key can access. When `null` the key has access to all endpoints available to the user. */
+            scope?: string[] | null;
+            /** @description The last four characters of the key, used to help identify it. */
+            readonly last4?: string;
+            /** @description The full secret value of the key. Only returned once, in the response to `apiKeys.create`. */
+            readonly value?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this key expires, if ever.
+             */
+            expiresAt?: string | null;
+            /**
+             * Format: date-time
+             * @description Date and time when this key was last used.
+             */
+            readonly lastActiveAt?: string | null;
+            /**
+             * Format: date-time
+             * @description Date and time when this key was created.
+             */
+            readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this key was last updated.
+             */
+            readonly updatedAt?: string;
+        };
+        Pin: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the pinned document.
+             */
+            documentId?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the collection the document is pinned to. When `null` the document is pinned to the home screen.
+             */
+            collectionId?: string | null;
+            /** @description The position of the pin, used for ordering. */
+            index?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this pin was created.
+             */
+            readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this pin was last updated.
+             */
+            readonly updatedAt?: string;
+        };
+        Subscription: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the subscribed user.
+             */
+            readonly userId?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the subscribed document, if any.
+             */
+            documentId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier for the subscribed collection, if any.
+             */
+            collectionId?: string | null;
+            /**
+             * @description The type of event that is subscribed to.
+             * @example documents
+             */
+            event?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this subscription was created.
+             */
+            readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this subscription was last updated.
+             */
+            readonly updatedAt?: string;
+        };
+        Notification: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /** @description The type of event that triggered the notification. */
+            event?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the user the notification belongs to.
+             */
+            readonly userId?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the user that triggered the notification, if any.
+             */
+            actorId?: string | null;
+            actor?: components["schemas"]["User"];
+            /**
+             * Format: uuid
+             * @description Identifier for the associated document, if any.
+             */
+            documentId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated collection, if any.
+             */
+            collectionId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated comment, if any.
+             */
+            commentId?: string | null;
+            /**
+             * Format: uuid
+             * @description Identifier for the associated revision, if any.
+             */
+            revisionId?: string | null;
+            /**
+             * Format: date-time
+             * @description Date and time the notification was marked as viewed, if it has been.
+             */
+            viewedAt?: string | null;
+            /**
+             * Format: date-time
+             * @description Date and time the notification was archived, if it has been.
+             */
+            archivedAt?: string | null;
+            /**
+             * Format: date-time
+             * @description Date and time when this notification was created.
+             */
+            readonly createdAt?: string;
+        };
+        Reaction: {
+            /**
+             * Format: uuid
+             * @description Unique identifier for the object.
+             */
+            readonly id?: string;
+            /** @description The native emoji that was reacted with. */
+            emoji?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the comment this reaction belongs to.
+             */
+            readonly commentId?: string;
+            /**
+             * Format: uuid
+             * @description Identifier for the user that added the reaction.
+             */
+            readonly userId?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this reaction was created.
+             */
+            readonly createdAt?: string;
+            /**
+             * Format: date-time
+             * @description Date and time when this reaction was last updated.
+             */
+            readonly updatedAt?: string;
         };
     };
     responses: {
@@ -3641,6 +4827,123 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    apiKeysCreate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description A name to identify the API key. */
+                    name: string;
+                    /**
+                     * Format: date-time
+                     * @description An optional date and time when the key should expire.
+                     */
+                    expiresAt?: string;
+                    /** @description An optional list of scopes to restrict which endpoints the key can access. */
+                    scope?: string[];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ApiKey"];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    apiKeysList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /**
+                     * Format: uuid
+                     * @description Filter to keys belonging to this user (admin only).
+                     */
+                    userId?: string;
+                    /** @description Filter to keys whose name matches this search term. */
+                    query?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ApiKey"][];
+                        pagination?: components["schemas"]["Pagination"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    apiKeysDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the API key.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     attachmentsCreate: {
         parameters: {
             query?: never;
@@ -3781,6 +5084,95 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    attachmentsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /**
+                     * Format: uuid
+                     * @description Filter to attachments associated with this document.
+                     */
+                    documentId?: string;
+                    /**
+                     * Format: uuid
+                     * @description Filter to attachments uploaded by this user.
+                     */
+                    userId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Attachment"][];
+                        pagination?: components["schemas"]["Pagination"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    attachmentsCreateFromUrl: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uri
+                     * @description The remote URL to fetch the file from.
+                     */
+                    url: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the associated document, if any.
+                     */
+                    documentId?: string;
+                    /**
+                     * Format: uuid
+                     * @description An optional client-generated identifier for the attachment.
+                     */
+                    id?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Attachment"];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     authInfo: {
         parameters: {
             query?: never;
@@ -3838,6 +5230,35 @@ export interface operations {
                     };
                 };
             };
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    authDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": Record<string, never>;
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
             429: components["responses"]["RateLimited"];
         };
     };
@@ -3925,9 +5346,17 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
-                    /** @description If set, will filter the results by collection name. */
+                    /** @description Structured filter expression, evaluated as an AND of top-level entries. Cannot be combined with the deprecated `query` or `statusFilter` parameters. */
+                    filters?: components["schemas"]["CollectionFilter"][];
+                    /**
+                     * @deprecated
+                     * @description If set, will filter the results by collection name. Deprecated – prefer the `filters` parameter.
+                     */
                     query?: string;
-                    /** @description An optional array of statuses to filter by. */
+                    /**
+                     * @deprecated
+                     * @description An optional array of statuses to filter by. Deprecated – prefer the `filters` parameter.
+                     */
                     statusFilter?: components["schemas"]["CollectionStatus"][];
                 };
             };
@@ -4005,6 +5434,46 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    collectionsDuplicate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the collection to duplicate.
+                     */
+                    id: string;
+                    /** @description An optional name for the new collection. If omitted, the original collection's name is reused. */
+                    name?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Collection"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     collectionsUpdate: {
         parameters: {
             query?: never;
@@ -4039,6 +5508,8 @@ export interface operations {
                      * @example false
                      */
                     sharing?: boolean;
+                    /** @description The reason the collection was archived. Can only be updated on an archived collection. */
+                    deprecatedReason?: string | null;
                 };
             };
         };
@@ -4334,6 +5805,8 @@ export interface operations {
                 "application/json": {
                     /** Format: uuid */
                     id: string;
+                    /** @description An optional reason for deleting the collection. This is stored and returned as `deprecatedReason`. */
+                    reason?: string | null;
                 };
             };
         };
@@ -4367,7 +5840,7 @@ export interface operations {
             content: {
                 "application/json": {
                     /** @enum {string} */
-                    format?: "outline-markdown" | "json" | "html";
+                    format?: "outline-markdown" | "json" | "html" | "okf";
                     /** Format: uuid */
                     id: string;
                 };
@@ -4404,7 +5877,7 @@ export interface operations {
             content: {
                 "application/json": {
                     /** @enum {string} */
-                    format?: "outline-markdown" | "json" | "html";
+                    format?: "outline-markdown" | "json" | "html" | "okf";
                     /**
                      * @description Whether to include attachments in the export.
                      * @default true
@@ -4432,6 +5905,174 @@ export interface operations {
                     };
                 };
             };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    collectionsArchive: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the collection.
+                     */
+                    id: string;
+                    /** @description An optional reason for archiving the collection. This is stored and returned as `deprecatedReason`. */
+                    reason?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Collection"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    collectionsRestore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the collection.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Collection"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    collectionsMove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the collection.
+                     */
+                    id: string;
+                    /** @description The fractional index to move the collection to, used for ordering in the sidebar. */
+                    index: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                        data?: {
+                            /** @description The fractional index the collection was moved to. */
+                            index?: string;
+                        };
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    collectionsImport: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the attachment that contains the file to import.
+                     */
+                    attachmentId: string;
+                    /**
+                     * @description The format of the file being imported.
+                     * @default outline-markdown
+                     * @enum {string}
+                     */
+                    format?: "outline-markdown" | "json";
+                    permission?: components["schemas"]["Permission"];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            fileOperation?: components["schemas"]["FileOperation"];
+                        };
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
             404: components["responses"]["NotFound"];
@@ -4536,7 +6177,13 @@ export interface operations {
                 "application/json": {
                     /** Format: uuid */
                     id: string;
-                    data: Record<string, never>;
+                    /** @description The body of the comment. */
+                    data?: Record<string, never>;
+                    /**
+                     * @description The body of the comment in markdown.
+                     * @example Sounds great
+                     */
+                    text?: string;
                 };
             };
         };
@@ -4634,6 +6281,162 @@ export interface operations {
             };
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    commentsResolve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the comment.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Comment"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    commentsUnresolve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the comment.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Comment"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    commentsAddReaction: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the comment.
+                     */
+                    id: string;
+                    /** @description A native emoji to react with, for example `😄`. */
+                    emoji: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    commentsRemoveReaction: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the comment.
+                     */
+                    id: string;
+                    /** @description The native emoji reaction to remove, for example `😄`. */
+                    emoji: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
             429: components["responses"]["RateLimited"];
         };
     };
@@ -4931,7 +6734,7 @@ export interface operations {
         requestBody?: {
             content: {
                 "multipart/form-data": {
-                    /** @description Plain text, markdown, docx, csv, tsv, and html format are supported. */
+                    /** @description Plain text, markdown, docx, pdf, csv, tsv, html, mhtml (or mht) web pages, eml email messages, and textbundle/textpack bundles are supported. */
                     file: Record<string, never>;
                     /**
                      * Format: uuid
@@ -5020,21 +6823,32 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /** @description Structured filter expression, evaluated as an AND of top-level entries. Cannot be combined with the deprecated `collectionId`, `userId`, `parentDocumentId` or `statusFilter` parameters. */
+                    filters?: components["schemas"]["DocumentFilter"][];
                     /**
                      * Format: uuid
-                     * @description Optionally filter to a specific collection
+                     * @deprecated
+                     * @description Optionally filter to a specific collection. Deprecated – prefer the `filters` parameter.
                      */
                     collectionId?: string;
                     /**
                      * Format: uuid
-                     * @description Optionally filter to documents created by a specific user
+                     * @deprecated
+                     * @description Optionally filter to documents created by a specific user. Deprecated – prefer the `filters` parameter.
                      */
                     userId?: string;
                     /** Format: uuid */
                     backlinkDocumentId?: string;
-                    /** Format: uuid */
+                    /**
+                     * Format: uuid
+                     * @deprecated
+                     * @description Optionally filter to child documents of a specific parent. Deprecated – prefer the `filters` parameter.
+                     */
                     parentDocumentId?: string;
-                    /** @description Document statuses to include in results */
+                    /**
+                     * @deprecated
+                     * @description Document statuses to include in results. Deprecated – prefer the `filters` parameter.
+                     */
                     statusFilter?: ("draft" | "archived" | "published")[];
                 };
             };
@@ -5236,25 +7050,34 @@ export interface operations {
                 "application/json": components["schemas"]["Pagination"] & {
                     /** @description Search query to match against document titles */
                     query: string;
+                    /** @description Structured filter expression, evaluated as an AND of top-level entries. Cannot be combined with the deprecated `collectionId`, `userId`, `documentId`, `dateFilter` or `statusFilter` parameters. */
+                    filters?: components["schemas"]["DocumentFilter"][];
                     /**
                      * Format: uuid
-                     * @description Filter to a specific collection
+                     * @deprecated
+                     * @description Filter to a specific collection. Deprecated – prefer the `filters` parameter.
                      */
                     collectionId?: string;
                     /**
                      * Format: uuid
-                     * @description Filter results based on user
+                     * @deprecated
+                     * @description Filter results based on user. Deprecated – prefer the `filters` parameter.
                      */
                     userId?: string;
                     /**
                      * Format: uuid
-                     * @description Filter results based on content within a document and its children
+                     * @deprecated
+                     * @description Filter results based on content within a document and its children. Deprecated – prefer the `filters` parameter.
                      */
                     documentId?: string;
-                    /** @description Document statuses to include in results */
+                    /**
+                     * @deprecated
+                     * @description Document statuses to include in results. Deprecated – prefer the `filters` parameter.
+                     */
                     statusFilter?: ("draft" | "archived" | "published")[];
                     /**
-                     * @description Any documents that have not been updated within the specified period will be filtered out
+                     * @deprecated
+                     * @description Any documents that have not been updated within the specified period will be filtered out. Deprecated – prefer the `filters` parameter with a date field and an ISO 8601 duration value.
                      * @enum {string}
                      */
                     dateFilter?: "day" | "week" | "month" | "year";
@@ -5304,25 +7127,34 @@ export interface operations {
                 "application/json": components["schemas"]["Pagination"] & {
                     /** @example hiring */
                     query?: string;
+                    /** @description Structured filter expression, evaluated as an AND of top-level entries. Cannot be combined with the deprecated `collectionId`, `userId`, `documentId`, `dateFilter` or `statusFilter` parameters. */
+                    filters?: components["schemas"]["DocumentFilter"][];
                     /**
                      * Format: uuid
-                     * @description Any documents that have not been edited by the user identifier will be filtered out
+                     * @deprecated
+                     * @description Any documents that have not been edited by the user identifier will be filtered out. Deprecated – prefer the `filters` parameter.
                      */
                     userId?: string;
                     /**
                      * Format: uuid
-                     * @description A collection to search within
+                     * @deprecated
+                     * @description A collection to search within. Deprecated – prefer the `filters` parameter.
                      */
                     collectionId?: string;
                     /**
                      * Format: uuid
-                     * @description A document to search within
+                     * @deprecated
+                     * @description A document to search within. Deprecated – prefer the `filters` parameter.
                      */
                     documentId?: string;
-                    /** @description Document statuses to include in results */
+                    /**
+                     * @deprecated
+                     * @description Document statuses to include in results. Deprecated – prefer the `filters` parameter.
+                     */
                     statusFilter?: ("draft" | "archived" | "published")[];
                     /**
-                     * @description Any documents that have not been updated within the specified period will be filtered out
+                     * @deprecated
+                     * @description Any documents that have not been updated within the specified period will be filtered out. Deprecated – prefer the `filters` parameter with a date field and an ISO 8601 duration value.
                      * @example month
                      * @enum {string}
                      */
@@ -5423,6 +7255,14 @@ export interface operations {
                     publish?: boolean;
                     /** @description Whether the document should be displayed in full width */
                     fullWidth?: boolean;
+                    /** @description Document-level display preferences. Only the fields supplied are updated; existing values for other preferences are preserved. Pass `null` to clear all preferences. */
+                    preferences?: {
+                        /**
+                         * @description Numbering style applied to the document's headings when rendered.
+                         * @enum {string}
+                         */
+                        headingPrefix?: "none" | "numeric" | "alphanumeric" | "outline";
+                    } | null;
                     /**
                      * Format: date-time
                      * @description Optionally set the created date in the past
@@ -5488,6 +7328,14 @@ export interface operations {
                     color?: string | null;
                     /** @description Whether the document should be displayed in full width */
                     fullWidth?: boolean;
+                    /** @description Document-level display preferences. Only the fields supplied are updated; existing values for other preferences are preserved. Pass `null` to clear all preferences. */
+                    preferences?: {
+                        /**
+                         * @description Numbering style applied to the document's headings when rendered.
+                         * @enum {string}
+                         */
+                        headingPrefix?: "none" | "numeric" | "alphanumeric" | "outline";
+                    } | null;
                     /**
                      * Format: uuid
                      * @description Identifier for the template this document is based on
@@ -5505,6 +7353,8 @@ export interface operations {
                     findText?: string;
                     /** @description Whether this document should be published and made visible to other workspace members, if a draft */
                     publish?: boolean;
+                    /** @description If set, the update is rejected with a 409 response when the document's current revision number does not match this value. Use this for optimistic concurrency control to avoid overwriting changes made since the client last loaded the document. */
+                    lastRevision?: number;
                     /** @description Data attributes to be updated. Attributes not included will be removed from the document. */
                     dataAttributes?: {
                         /**
@@ -5518,6 +7368,8 @@ export interface operations {
                          */
                         value: string | boolean | number;
                     }[] | null;
+                    /** @description The reason the document was archived or deleted. Can only be updated on an archived or deleted document. */
+                    deprecatedReason?: string | null;
                 };
             };
         };
@@ -5538,6 +7390,13 @@ export interface operations {
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
             404: components["responses"]["NotFound"];
+            /** @description The provided `lastRevision` did not match the document's current revision, indicating a conflicting update. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
             429: components["responses"]["RateLimited"];
         };
     };
@@ -5687,6 +7546,8 @@ export interface operations {
                      * @example hDYep1TPAM
                      */
                     id: string;
+                    /** @description An optional reason for archiving the document. This is stored and returned as `deprecatedReason`. */
+                    reason?: string | null;
                 };
             };
         };
@@ -5778,6 +7639,8 @@ export interface operations {
                      * @example false
                      */
                     permanent?: boolean;
+                    /** @description An optional reason for deleting the document. This is stored and returned as `deprecatedReason`. */
+                    reason?: string | null;
                 };
             };
         };
@@ -6014,7 +7877,10 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"];
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /** @description Structured filter expression, evaluated as an AND of top-level entries. Supported fields are `deletedAt` (date) and `deletedById` (uuid, identifier of the user who deleted the document). */
+                    filters?: components["schemas"]["DocumentsDeletedFilter"][];
+                };
             };
         };
         responses: {
@@ -6426,6 +8292,47 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    groupMembershipsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & {
+                    /**
+                     * Format: uuid
+                     * @description Filter to memberships for a specific group.
+                     */
+                    groupId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            groupMemberships?: components["schemas"]["GroupMembership"][];
+                            groups?: components["schemas"]["Group"][];
+                            documents?: components["schemas"]["Document"][];
+                        };
+                        pagination?: components["schemas"]["Pagination"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     groupsInfo: {
         parameters: {
             query?: never;
@@ -6526,6 +8433,8 @@ export interface operations {
                 "application/json": {
                     /** @example Designers */
                     name: string;
+                    /** @description A short description of the group. */
+                    description?: string | null;
                 };
             };
         };
@@ -6745,6 +8654,249 @@ export interface operations {
                         data?: {
                             groups?: components["schemas"]["Group"][];
                         };
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    groupsUpdateUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the group
+                     */
+                    id: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the user whose membership should be updated
+                     */
+                    userId: string;
+                    /**
+                     * @description The permission the user should have within the group
+                     * @enum {string}
+                     */
+                    permission: "member" | "admin";
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            users?: components["schemas"]["User"][];
+                            groups?: components["schemas"]["Group"][];
+                            groupMemberships?: components["schemas"]["GroupMembership"][];
+                        };
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    notificationsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & {
+                    /** @description Filter to notifications of a specific event type. */
+                    eventType?: string;
+                    /** @description When true, only archived notifications are returned. */
+                    archived?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Notification"][];
+                        pagination?: components["schemas"]["Pagination"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    notificationsUpdate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the notification.
+                     */
+                    id: string;
+                    /**
+                     * Format: date-time
+                     * @description The date and time the notification was viewed, or `null` to mark it unviewed.
+                     */
+                    viewedAt?: string | null;
+                    /**
+                     * Format: date-time
+                     * @description The date and time the notification was archived, or `null` to unarchive it.
+                     */
+                    archivedAt?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Notification"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    notificationsUpdateAll: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: date-time
+                     * @description The date and time to mark notifications viewed, or `null` to mark them unviewed.
+                     */
+                    viewedAt?: string | null;
+                    /**
+                     * Format: date-time
+                     * @description The date and time to archive notifications, or `null` to unarchive them.
+                     */
+                    archivedAt?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthAuthenticationsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["OAuthAuthentication"][];
+                        policies?: components["schemas"]["Policy"][];
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    oauthAuthenticationsDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** Format: uuid */
+                    oauthClientId: string;
+                    scope?: string[];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
                     };
                 };
             };
@@ -7035,7 +9187,7 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
-    oauthAuthenticationsList: {
+    pinsCreate: {
         parameters: {
             query?: never;
             header?: never;
@@ -7044,7 +9196,20 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Pagination"];
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the document to pin.
+                     */
+                    documentId: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to pin the document to. Omit to pin to the home screen.
+                     */
+                    collectionId?: string | null;
+                    /** @description An optional fractional index to control the position of the pin. */
+                    index?: string;
+                };
             };
         };
         responses: {
@@ -7055,18 +9220,19 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["OAuthAuthentication"][];
+                        data?: components["schemas"]["Pin"];
                         policies?: components["schemas"]["Policy"][];
-                        pagination?: components["schemas"]["Pagination"];
                     };
                 };
             };
+            400: components["responses"]["Validation"];
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
             429: components["responses"]["RateLimited"];
         };
     };
-    oauthAuthenticationsDelete: {
+    pinsInfo: {
         parameters: {
             query?: never;
             header?: never;
@@ -7076,9 +9242,130 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** Format: uuid */
-                    oauthClientId: string;
-                    scope?: string[];
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the pinned document.
+                     */
+                    documentId: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection. Omit to retrieve the home screen pin.
+                     */
+                    collectionId?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Pin"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    pinsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & {
+                    /**
+                     * Format: uuid
+                     * @description The collection to list pins for. Omit to list home screen pins.
+                     */
+                    collectionId?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Pin"][];
+                        pagination?: components["schemas"]["Pagination"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    pinsUpdate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the pin.
+                     */
+                    id: string;
+                    /** @description The fractional index to move the pin to. */
+                    index: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Pin"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    pinsDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the pin.
+                     */
+                    id: string;
                 };
             };
         };
@@ -7099,6 +9386,44 @@ export interface operations {
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
             404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    reactionsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & {
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the comment to list reactions for.
+                     */
+                    commentId: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Reaction"][];
+                        pagination?: components["schemas"]["Pagination"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
             429: components["responses"]["RateLimited"];
         };
     };
@@ -7174,7 +9499,7 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
-    sharesInfo: {
+    revisionsUpdate: {
         parameters: {
             query?: never;
             header?: never;
@@ -7186,8 +9511,121 @@ export interface operations {
                 "application/json": {
                     /**
                      * Format: uuid
-                     * @description Unique identifier for the share.
+                     * @description Unique identifier for the revision.
                      */
+                    id: string;
+                    /** @description The name of the revision, or `null` to remove an existing name. */
+                    name: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Revision"];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    revisionsDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the revision.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    revisionsExport: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the revision.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            fileOperation?: components["schemas"]["FileOperation"];
+                        };
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    sharesInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the share. Either the UUID or the share slug is acceptable. */
                     id?: string;
                     /**
                      * Format: uuid
@@ -7512,6 +9950,554 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    subscriptionsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & {
+                    /**
+                     * @description The type of event that is subscribed to.
+                     * @enum {string}
+                     */
+                    event: "documents";
+                    /**
+                     * Format: uuid
+                     * @description Filter to subscriptions for this document. Provide exactly one of documentId or collectionId.
+                     */
+                    documentId?: string;
+                    /**
+                     * Format: uuid
+                     * @description Filter to subscriptions for this collection. Provide exactly one of documentId or collectionId.
+                     */
+                    collectionId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Subscription"][];
+                        pagination?: components["schemas"]["Pagination"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    subscriptionsInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description The type of event that is subscribed to.
+                     * @enum {string}
+                     */
+                    event: "documents";
+                    /**
+                     * Format: uuid
+                     * @description The subscribed document. Provide exactly one of documentId or collectionId.
+                     */
+                    documentId?: string;
+                    /**
+                     * Format: uuid
+                     * @description The subscribed collection. Provide exactly one of documentId or collectionId.
+                     */
+                    collectionId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Subscription"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    subscriptionsCreate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description The type of event to subscribe to.
+                     * @enum {string}
+                     */
+                    event: "documents";
+                    /**
+                     * Format: uuid
+                     * @description The document to subscribe to. Provide exactly one of documentId or collectionId.
+                     */
+                    documentId?: string;
+                    /**
+                     * Format: uuid
+                     * @description The collection to subscribe to. Provide exactly one of documentId or collectionId.
+                     */
+                    collectionId?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Subscription"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    subscriptionsDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the subscription.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesCreate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Optionally provide a specific UUID for the template.
+                     */
+                    id?: string;
+                    /** @description The title of the template. Required when publishing. */
+                    title?: string;
+                    /** @description The body of the template as a Prosemirror document. Required when publishing. */
+                    data?: Record<string, never>;
+                    /** @description An emoji to use as the template icon. */
+                    icon?: string | null;
+                    /** @description The color of the template icon in hex format. */
+                    color?: string | null;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to which the template belongs.
+                     */
+                    collectionId?: string;
+                    /**
+                     * @description Whether the template is available to other members. Set to false to create a draft that is only visible to its creator.
+                     * @default true
+                     */
+                    publish?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
+                    /**
+                     * Format: uuid
+                     * @description Optionally filter to a specific collection
+                     */
+                    collectionId?: string;
+                    /** @description Search query to filter templates by title */
+                    query?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"][];
+                        policies?: components["schemas"]["Policy"][];
+                        pagination?: components["schemas"]["Pagination"];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesUpdate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                    /** @description The title of the template. */
+                    title?: string;
+                    /** @description The body of the template as a Prosemirror document. */
+                    data?: Record<string, never>;
+                    /** @description An emoji to use as the template icon. */
+                    icon?: string | null;
+                    /** @description The color of the template icon in hex format. */
+                    color?: string | null;
+                    /** @description Whether the template should be displayed full width. */
+                    fullWidth?: boolean;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to which the template belongs. Set to null for a workspace-wide template.
+                     */
+                    collectionId?: string | null;
+                    /** @description Set to true to publish a draft template so it becomes available to other members. */
+                    publish?: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesRestore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    templatesDuplicate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /** @description Unique identifier for the template to duplicate. Either the UUID or the urlId is acceptable. */
+                    id: string;
+                    /** @description Override the title of the duplicated template. */
+                    title?: string;
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the collection to place the duplicated template in. If not provided, uses the original template's collection.
+                     */
+                    collectionId?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Template"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    userMembershipsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Pagination"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: {
+                            memberships?: components["schemas"]["Membership"][];
+                            documents?: components["schemas"]["Document"][];
+                        };
+                        pagination?: components["schemas"]["Pagination"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    userMembershipsUpdate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the membership.
+                     */
+                    id: string;
+                    /** @description The fractional index to move the document to in the sidebar. */
+                    index: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["Membership"];
+                        policies?: components["schemas"]["Policy"][];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     usersInvite: {
         parameters: {
             query?: never;
@@ -7597,8 +10583,11 @@ export interface operations {
                 "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
                     /** @example jane */
                     query?: string;
+                    /** @description Structured filter expression, evaluated as an AND of top-level entries. Cannot be combined with the deprecated `emails`, `role` or `filter` parameters. */
+                    filters?: components["schemas"]["UserFilter"][];
                     /**
-                     * @description Array of emails
+                     * @deprecated
+                     * @description Array of emails. Deprecated – prefer the `filters` parameter with an `email` field and the `in` operator.
                      * @example [
                      *       "jane.crandall@mail.com",
                      *       "prudence.crandall@mail.com"
@@ -7606,10 +10595,15 @@ export interface operations {
                      */
                     emails?: string[];
                     /**
-                     * @description The status to filter by
+                     * @deprecated
+                     * @description The status to filter by. Deprecated – prefer the `filters` parameter (for example filter on `suspendedAt` or `lastActiveAt`).
                      * @enum {string}
                      */
                     filter?: "all" | "invited" | "active" | "suspended";
+                    /**
+                     * @deprecated
+                     * @description The role to filter by. Deprecated – prefer the `filters` parameter with a `role` field.
+                     */
                     role?: components["schemas"]["UserRole"];
                 };
             };
@@ -7648,6 +10642,11 @@ export interface operations {
                     language?: string;
                     /** Format: uri */
                     avatarUrl?: string;
+                    /** @description User-level preference flags. Only the fields supplied are updated; existing values for other preferences are preserved. */
+                    preferences?: {
+                        /** @description The order in which the top-level sections appear in the sidebar of the app UI. */
+                        sidebarSectionOrder?: ("starred" | "shared" | "collections")[];
+                    };
                 };
             };
         };
@@ -7819,6 +10818,159 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
+    usersUpdateEmail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: email
+                     * @description The new email address to change to.
+                     */
+                    email: string;
+                    /**
+                     * Format: uuid
+                     * @description The user to update. Defaults to the authenticated user. Changing another user's email requires admin permission.
+                     */
+                    id?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    usersResendInvite: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: uuid
+                     * @description Identifier for the invited user.
+                     */
+                    id: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example true */
+                        success?: boolean;
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    usersNotificationsSubscribe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description The notification event type to subscribe to.
+                     * @enum {string}
+                     */
+                    eventType?: "documents.publish" | "documents.update" | "documents.add_user" | "collections.add_user" | "revisions.create" | "collections.create" | "comments.create" | "comments.resolve" | "reactions.create" | "documents.mentioned" | "comments.mentioned" | "documents.group_mentioned" | "comments.group_mentioned" | "emails.invite_accepted" | "emails.onboarding" | "emails.features" | "emails.export_completed" | "access_requests.create";
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["User"];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    usersNotificationsUnsubscribe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description The notification event type to unsubscribe from.
+                     * @enum {string}
+                     */
+                    eventType?: "documents.publish" | "documents.update" | "documents.add_user" | "collections.add_user" | "revisions.create" | "collections.create" | "comments.create" | "comments.resolve" | "reactions.create" | "documents.mentioned" | "comments.mentioned" | "documents.group_mentioned" | "comments.group_mentioned" | "emails.invite_accepted" | "emails.onboarding" | "emails.features" | "emails.export_completed" | "access_requests.create";
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["User"];
+                    };
+                };
+            };
+            400: components["responses"]["Validation"];
+            401: components["responses"]["Unauthenticated"];
+            403: components["responses"]["Unauthorized"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
     viewsList: {
         parameters: {
             query?: never;
@@ -7859,90 +11011,7 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
-    viewsCreate: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /** Format: uuid */
-                    documentId: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["View"];
-                    };
-                };
-            };
-            401: components["responses"]["Unauthenticated"];
-            403: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            429: components["responses"]["RateLimited"];
-        };
-    };
-    templatesCreate: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: uuid
-                     * @description Optionally provide a specific UUID for the template.
-                     */
-                    id?: string;
-                    /** @description The title of the template. */
-                    title: string;
-                    /** @description The body of the template as a Prosemirror document. */
-                    data: Record<string, never>;
-                    /** @description An emoji to use as the template icon. */
-                    icon?: string | null;
-                    /** @description The color of the template icon in hex format. */
-                    color?: string | null;
-                    /**
-                     * Format: uuid
-                     * @description Identifier for the collection to which the template belongs.
-                     */
-                    collectionId?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["Template"];
-                        policies?: components["schemas"]["Policy"][];
-                    };
-                };
-            };
-            400: components["responses"]["Validation"];
-            401: components["responses"]["Unauthenticated"];
-            403: components["responses"]["Unauthorized"];
-            429: components["responses"]["RateLimited"];
-        };
-    };
-    templatesList: {
+    webhookSubscriptionsList: {
         parameters: {
             query?: never;
             header?: never;
@@ -7952,12 +11021,7 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": components["schemas"]["Pagination"] & components["schemas"]["Sorting"] & {
-                    /**
-                     * Format: uuid
-                     * @description Optionally filter to a specific collection
-                     */
-                    collectionId?: string;
-                    /** @description Search query to filter templates by title */
+                    /** @description Search query to filter webhook subscriptions by name. */
                     query?: string;
                 };
             };
@@ -7970,18 +11034,18 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Template"][];
-                        policies?: components["schemas"]["Policy"][];
+                        data?: components["schemas"]["WebhookSubscription"][];
                         pagination?: components["schemas"]["Pagination"];
                     };
                 };
             };
+            400: components["responses"]["Validation"];
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
             429: components["responses"]["RateLimited"];
         };
     };
-    templatesInfo: {
+    webhookSubscriptionsCreate: {
         parameters: {
             query?: never;
             header?: never;
@@ -7991,8 +11055,30 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
-                    id: string;
+                    /**
+                     * @description A descriptive name for the webhook subscription.
+                     * @example Production webhook
+                     */
+                    name: string;
+                    /**
+                     * Format: uri
+                     * @description The URL that receives webhook requests. Cloud-hosted workspaces require an HTTPS URL.
+                     * @example https://example.com/webhooks/outline
+                     */
+                    url: string;
+                    /**
+                     * @description An optional secret used to sign webhook requests.
+                     * @example ol_whs_1234567890abcdef
+                     */
+                    secret?: string | null;
+                    /**
+                     * @description Event names or namespaces that trigger the webhook. Use `*` to subscribe to all events.
+                     * @example [
+                     *       "documents.create",
+                     *       "documents.update"
+                     *     ]
+                     */
+                    events: string[];
                 };
             };
         };
@@ -8004,19 +11090,17 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Template"];
-                        policies?: components["schemas"]["Policy"][];
+                        data?: components["schemas"]["WebhookSubscription"];
                     };
                 };
             };
             400: components["responses"]["Validation"];
             401: components["responses"]["Unauthenticated"];
             403: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
             429: components["responses"]["RateLimited"];
         };
     };
-    templatesUpdate: {
+    webhookSubscriptionsUpdate: {
         parameters: {
             query?: never;
             header?: never;
@@ -8026,23 +11110,35 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
-                    id: string;
-                    /** @description The title of the template. */
-                    title?: string;
-                    /** @description The body of the template as a Prosemirror document. */
-                    data?: Record<string, never>;
-                    /** @description An emoji to use as the template icon. */
-                    icon?: string | null;
-                    /** @description The color of the template icon in hex format. */
-                    color?: string | null;
-                    /** @description Whether the template should be displayed full width. */
-                    fullWidth?: boolean;
                     /**
                      * Format: uuid
-                     * @description Identifier for the collection to which the template belongs. Set to null for a workspace-wide template.
+                     * @description Unique identifier for the webhook subscription.
                      */
-                    collectionId?: string | null;
+                    id: string;
+                    /**
+                     * @description A descriptive name for the webhook subscription.
+                     * @example Production webhook
+                     */
+                    name: string;
+                    /**
+                     * Format: uri
+                     * @description The URL that receives webhook requests. Cloud-hosted workspaces require an HTTPS URL.
+                     * @example https://example.com/webhooks/outline
+                     */
+                    url: string;
+                    /**
+                     * @description An optional secret used to sign webhook requests.
+                     * @example ol_whs_1234567890abcdef
+                     */
+                    secret?: string | null;
+                    /**
+                     * @description Event names or namespaces that trigger the webhook. Use `*` to subscribe to all events.
+                     * @example [
+                     *       "documents.create",
+                     *       "documents.update"
+                     *     ]
+                     */
+                    events: string[];
                 };
             };
         };
@@ -8054,8 +11150,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Template"];
-                        policies?: components["schemas"]["Policy"][];
+                        data?: components["schemas"]["WebhookSubscription"];
                     };
                 };
             };
@@ -8066,7 +11161,7 @@ export interface operations {
             429: components["responses"]["RateLimited"];
         };
     };
-    templatesDelete: {
+    webhookSubscriptionsDelete: {
         parameters: {
             query?: never;
             header?: never;
@@ -8076,7 +11171,10 @@ export interface operations {
         requestBody?: {
             content: {
                 "application/json": {
-                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
+                    /**
+                     * Format: uuid
+                     * @description Unique identifier for the webhook subscription.
+                     */
                     id: string;
                 };
             };
@@ -8089,84 +11187,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @example true */
                         success?: boolean;
-                    };
-                };
-            };
-            400: components["responses"]["Validation"];
-            401: components["responses"]["Unauthenticated"];
-            403: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            429: components["responses"]["RateLimited"];
-        };
-    };
-    templatesRestore: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /** @description Unique identifier for the template. Either the UUID or the urlId is acceptable. */
-                    id: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["Template"];
-                        policies?: components["schemas"]["Policy"][];
-                    };
-                };
-            };
-            400: components["responses"]["Validation"];
-            401: components["responses"]["Unauthenticated"];
-            403: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-            429: components["responses"]["RateLimited"];
-        };
-    };
-    templatesDuplicate: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /** @description Unique identifier for the template to duplicate. Either the UUID or the urlId is acceptable. */
-                    id: string;
-                    /** @description Override the title of the duplicated template. */
-                    title?: string;
-                    /**
-                     * Format: uuid
-                     * @description Identifier for the collection to place the duplicated template in. If not provided, uses the original template's collection.
-                     */
-                    collectionId?: string | null;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["Template"];
-                        policies?: components["schemas"]["Policy"][];
                     };
                 };
             };
