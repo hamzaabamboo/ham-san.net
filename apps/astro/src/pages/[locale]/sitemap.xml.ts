@@ -15,7 +15,9 @@ const STATIC_ROUTES = [
   '/about',
   '/contact',
   '/tags',
-  '/events'
+  '/events',
+  '/photos',
+  '/room'
 ];
 
 export const GET: APIRoute = async () => {

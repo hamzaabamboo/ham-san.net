@@ -228,26 +228,18 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
             </p>
           </div>
 
-          <div
-            class={hobbyStyles.detailVisual}
-            data-embed={embedType}
-            data-visual={banner ? 'image' : 'glyph'}
-          >
-            {banner ? (
+          {banner && (
+            <div class={hobbyStyles.detailVisual} data-embed={embedType} data-visual="image">
               <img
                 src={banner}
                 alt=""
                 width="1200"
                 height="900"
                 class={hobbyStyles.detailBanner}
-                onerror="this.closest('[data-visual]')?.setAttribute('data-visual', 'glyph'); this.remove()"
+                onerror="this.closest('[data-visual]')?.remove()"
               />
-            ) : (
-              <span class={hobbyStyles.detailVisualLettermark} aria-hidden="true">
-                {(data?.title ?? '?').charAt(0).toUpperCase()}
-              </span>
-            )}
-          </div>
+            </div>
+          )}
         </section>
       )
     }

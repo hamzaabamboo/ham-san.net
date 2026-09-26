@@ -69,11 +69,7 @@ if (projectsUnavailable) {
 <MainLayout title={pageTitle} description={t('project.intro')}>
   <Container maxW="breakpoint-xl" className="page-shell">
     <Stack py="10" gap="16">
-      <PageMasthead
-        eyebrow={t('project.projects')}
-        heading={t('project.page-heading')}
-        lede={t('project.intro')}
-      />
+      <PageMasthead heading={t('project.page-heading')} lede={t('project.intro')} />
 
       <Grid
         gridTemplateColumns={{ base: 'repeat(3, minmax(0, 1fr))' }}
@@ -286,22 +282,8 @@ if (projectsUnavailable) {
                             mt="auto"
                             className="view-execution-link"
                           >
-                            <Text
-                              fontFamily="var(--font-code)"
-                              fontSize="11px"
-                              textTransform="uppercase"
-                              letterSpacing="0.08em"
-                              color="var(--atelier-accent)"
-                            >
+                            <Text color="var(--atelier-accent)" fontSize="sm" fontWeight="bold">
                               {t('project.view-execution')}
-                            </Text>
-                            <Text
-                              color="var(--atelier-accent)"
-                              fontSize="sm"
-                              transition="margin-left 0.2s ease"
-                              className="arrow-icon"
-                            >
-                              →
                             </Text>
                           </Flex>
                         </Stack>

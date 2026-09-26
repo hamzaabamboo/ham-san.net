@@ -12,7 +12,6 @@ import { Enum_Tag_Type } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
-import Eyebrow from '~/components/common/Eyebrow.astro';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { sortTags } from '~/utils/tags';
 
@@ -118,7 +117,6 @@ Astro.response.headers.set(
     <Stack py="10" gap="12">
       <Stack className="page-header-rule" py="4">
         <Box mb="4">
-          <Eyebrow label={t('about-me.eyebrow')} />
         </Box>
         <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} lineHeight="0.95" mb="4">
           {t('about-me.hero-title')}

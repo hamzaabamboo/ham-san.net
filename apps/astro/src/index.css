@@ -665,9 +665,8 @@ html:lang(th) a {
   color: var(--atelier-on-accent);
   font-family: var(--font-body);
   font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  padding: 1.25rem 3rem;
+  font-size: 1rem;
+  padding: 1.1rem 2.5rem;
   border: none;
   cursor: pointer;
   transition:

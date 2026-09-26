@@ -209,8 +209,7 @@ const describe = (entry: KamekoEntry) =>
                   href={tile.entry.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-kameko-open={index}
-                  aria-label={`${t('photos.view-photo')}: ${describe(tile.entry)}`}
+                  aria-label={`${t('photos.open-on-x')}: ${describe(tile.entry)}`}
                 >
                   <img
                     src={mediaUrl(tile.media.url, 'small')}
@@ -232,6 +231,21 @@ const describe = (entry: KamekoEntry) =>
                     {tile.entry.event && <span class="kameko-tile__event">{tile.entry.event}</span>}
                   </span>
                 </a>
+                <button
+                  type="button"
+                  class="kameko-tile__expand"
+                  data-kameko-open={index}
+                  aria-label={`${t('photos.view-photo')}: ${describe(tile.entry)}`}
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path
+                      d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    />
+                  </svg>
+                </button>
               </li>
             ))}
           </ul>
@@ -334,12 +348,8 @@ const describe = (entry: KamekoEntry) =>
     if (!viewer.open) viewer.showModal();
   };
 
-  document.querySelectorAll<HTMLAnchorElement>('[data-kameko-open]').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
-      event.preventDefault();
-      show(Number(link.dataset.kamekoOpen));
-    });
+  document.querySelectorAll<HTMLButtonElement>('[data-kameko-open]').forEach((button) => {
+    button.addEventListener('click', () => show(Number(button.dataset.kamekoOpen)));
   });
 
   viewer?.querySelector('[data-viewer-close]')?.addEventListener('click', () => viewer.close());

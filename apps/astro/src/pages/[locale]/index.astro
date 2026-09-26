@@ -125,6 +125,7 @@ Astro.response.headers.set(
                 target="_blank"
                 rel="noopener noreferrer"
                 class="home-hero-photo-frame"
+                style={`aspect-ratio: ${heroPhoto.media[0].width} / ${heroPhoto.media[0].height}`}
               >
                 <img
                   src={`${heroPhoto.media[0].url}?format=jpg&name=medium`}
@@ -417,7 +418,13 @@ Astro.response.headers.set(
               <ul class="home-photos">
                 {recentPhotos.map((entry) => (
                   <li>
-                    <a href={entry.url} target="_blank" rel="noopener noreferrer" data-kameko-card>
+                    <a
+                      href={entry.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-kameko-card
+                      style={`--ar: ${entry.media[0].width} / ${entry.media[0].height}`}
+                    >
                       <img
                         src={`${entry.media[0].url}?format=jpg&name=small`}
                         alt={entry.subjects.map((subject) => subject.name).join(', ')}

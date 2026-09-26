@@ -7,7 +7,6 @@
 
 .home-hero-photo-frame {
   display: block;
-  aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 1px solid var(--atelier-line);
   background: var(--atelier-surface-lowest);
@@ -63,6 +62,7 @@
 .home-photos {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
   gap: 1rem;
   margin: 0;
   padding: 0;
@@ -77,7 +77,7 @@
 }
 
 .home-photos img {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: var(--ar);
   border: 1px solid var(--atelier-line);
   background: var(--atelier-surface-lowest);
 }

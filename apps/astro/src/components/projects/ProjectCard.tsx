@@ -1,4 +1,4 @@
-import { FaArrowRight, FaGithub, FaGlobe } from 'react-icons/fa';
+import { FaGithub, FaGlobe } from 'react-icons/fa';
 import { Box, Stack, styled, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { resolveMedia } from 'utils/media';
@@ -163,13 +163,10 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               alignItems="center"
               marginTop="auto"
               color="var(--atelier-accent)"
-              fontFamily="var(--font-code)"
-              fontSize="10px"
-              letterSpacing="0.12em"
-              textTransform="uppercase"
+              fontSize="sm"
+              fontWeight="bold"
             >
               <Text>{t('project.open-project')}</Text>
-              <FaArrowRight />
             </Wrap>
           </Stack>
         </Stack>

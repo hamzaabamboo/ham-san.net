@@ -527,20 +527,15 @@ describe('round 30', () => {
 
 describe('round 31', () => {
   test('every page eyebrow comes from one chip', async () => {
-    // Four detail pages carried four treatments — a chip, plain small-caps, an indented
-    // amber rule and a status word — while /contact had none and its peer /about did.
-    for (const page of [
-      'notes/[...slug]/index',
-      'projects/[slug]/index',
-      'tags/[slug]/index',
-      'contact/index'
-    ]) {
+    // Detail pages carry a context chip (the section they belong to); index pages do not
+    // repeat their own name above the title.
+    for (const page of ['notes/[...slug]/index', 'projects/[slug]/index', 'tags/[slug]/index']) {
       const source = await read(`apps/astro/src/pages/[locale]/${page}.astro`);
       expect(`${page} ${source.includes('<Eyebrow ')}`).toBe(`${page} true`);
     }
     // And the masthead composes the same chip, so there is one definition of it.
     const masthead = await read('apps/astro/src/components/common/PageMasthead.astro');
-    expect(masthead).toContain('<Eyebrow label={eyebrow} />');
+    expect(masthead).toContain('{eyebrow && <Eyebrow label={eyebrow} />}');
   });
 
   test('an odd tag group is not orphaned in a half column', async () => {
@@ -906,15 +901,7 @@ describe('no page hand-rolls the eyebrow chip', () => {
   });
 
   test('the heroes that carry an eyebrow use the component', async () => {
-    for (const page of [
-      'about/index',
-      'projects/index',
-      'contact/index',
-      'notes/index',
-      'hobbies/index',
-      'tags/index',
-      'events/index'
-    ]) {
+    for (const page of ['events/index', 'photos/index']) {
       const source = await read(`apps/astro/src/pages/[locale]/${page}.astro`);
       // No trailing space in the match: prettier wraps multi-prop JSX onto the next line.
       const usesDirectly = /<Eyebrow[\s/>]/.test(source);
