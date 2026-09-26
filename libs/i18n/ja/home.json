@@ -9,14 +9,6 @@
   "find-out-more": "もっと見る",
   "view-my-work": "仕事を見る",
   "explore-hobbies": "趣味を探る",
-  "life-heading": "暮らし",
-  "life-darkroom": "暗室プリント / 400 ISO",
-  "life-skill-toys": "スキルトイ / けん玉 / フロー",
-  "operational-status": "個人サイト",
-  "status-current-phase": "今の作業",
-  "status-phase-title": "ホームページ更新",
-  "status-availability": "稼働状況",
-  "status-availability-title": "フリーランス案件を受付中。",
   "projects-empty-title": "プロジェクトは現在利用できません",
   "projects-empty-description": "接続が戻ると、プロジェクトが再表示されます。",
   "bench-heading": "仕事の進め方",
@@ -30,5 +22,7 @@
   "bench-tools-frontend": "フロントエンド",
   "bench-tools-styling": "スタイリング",
   "bench-tools-design": "デザイン",
-  "bench-tools-scripting": "スクリプト"
+  "bench-tools-scripting": "スクリプト",
+  "photos-heading": "最近の写真",
+  "photos-all": "すべての写真"
 }

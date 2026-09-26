@@ -343,47 +343,6 @@ Astro.response.headers.set(
                   }
                 </Wrap>
               </Stack>
-              <Box
-                position="relative"
-                border="1px solid"
-                borderColor="var(--atelier-line)"
-                minH="28"
-                overflow="hidden"
-                className="fallback-grid-lines"
-              >
-                <Box
-                  position="absolute"
-                  inset="4"
-                  border="1px solid"
-                  borderColor="var(--atelier-line)"
-                />
-                {
-                  /* Sat outside the frame it belongs to, with the italic descender crossing
-                    the bottom rule — in a hard-edged language with no other overhangs that
-                    reads as clipping, not as a bleed. */
-                }
-                <Text
-                  position="absolute"
-                  left="7"
-                  bottom="6"
-                  fontFamily="var(--font-display)"
-                  fontSize="5xl"
-                  fontStyle="italic"
-                  lineHeight="1.15"
-                >
-                  Ham
-                </Text>
-                <Text
-                  position="absolute"
-                  right="6"
-                  top="6"
-                  fontFamily="var(--font-code)"
-                  fontSize="10px"
-                  color="var(--atelier-accent)"
-                >
-                  WEB / UI
-                </Text>
-              </Box>
             </Stack>
           </Box>
           <Stack

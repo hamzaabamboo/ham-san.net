@@ -7,6 +7,6 @@ test('nullable CMS labels are localized in Japanese and Thai', () => {
 
   expect(ja('common.records-pending')).toBe('記録待ち');
   expect(th('hobbies.untitled')).toBe('ไม่มีชื่อ');
-  expect(ja('home.operational-status')).not.toBe('operational-status');
+  expect(ja('home.photos-heading')).not.toBe('photos-heading');
   expect(th('contact.placeholder-message')).toEndWith('…');
 });

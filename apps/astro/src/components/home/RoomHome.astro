@@ -1,4 +1,5 @@
 ---
+import { BrandMark } from '~/components/brand/BrandMark';
 import { useTranslations } from '~/i18n/utils';
 import { roomCopy } from './room-copy';
 
@@ -27,8 +28,7 @@ const destinations = [
   </div>
   <div class="room-stage" data-room-stage aria-label={copy.scene}></div>
   <header class="room-header">
-    <a class="room-brand" href={`/${locale}`}>{t('common.name')}<span>{copy.room}</span></a
-    >
+    <a class="room-brand" href={`/${locale}`} aria-label={t('common.name')}><BrandMark /></a>
     <div class="room-time"><span data-room-time></span><span>Tokyo</span></div>
     <div class="room-light-control" data-room-light-control hidden>
       <button type="button" data-room-light-toggle aria-pressed="false">{copy.light}</button>
@@ -159,7 +159,7 @@ const destinations = [
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: saturate(0.85) contrast(0.95);
+    filter: var(--atelier-image-preview);
   }
   .room-stage {
     position: absolute;
@@ -210,22 +210,18 @@ const destinations = [
     background: var(--atelier-accent);
   }
   .room-brand {
-    display: grid;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--atelier-fg);
-    font-size: 1.3rem;
-    font-weight: 700;
     text-decoration: none;
     text-shadow: 0 1px 8px var(--atelier-bg);
   }
-  .room-brand span,
   .room-time,
   .room-languages {
     font-family: var(--font-code);
     font-size: 0.7rem;
     letter-spacing: 0.08em;
-  }
-  .room-brand span {
-    font-weight: 400;
   }
   .room-time {
     display: grid;
@@ -290,7 +286,7 @@ const destinations = [
     padding: 0.8rem 1.3rem;
     background: var(--atelier-accent);
     color: var(--atelier-bg);
-    font-weight: 600;
+    font-weight: 700;
     min-height: 44px;
   }
   .room-enter:disabled {
@@ -324,7 +320,7 @@ const destinations = [
     visibility: hidden;
   }
   .room-home:has(.room-panel[open]) .room-stage {
-    filter: brightness(0.52) saturate(0.72) blur(1px);
+    filter: var(--atelier-image-dimmed);
   }
   .room-controls nav {
     display: flex;
@@ -382,7 +378,7 @@ const destinations = [
     color: var(--atelier-bg);
     background: var(--atelier-accent);
     border-color: var(--atelier-accent);
-    font-weight: 600;
+    font-weight: 700;
     opacity: 1;
     transform: translate(-50%, -100%) scale(1.04);
   }
@@ -696,7 +692,7 @@ const destinations = [
       padding: 0.5rem 0.8rem;
     }
     .room-darts-playfield {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       width: min(18rem, 100%);
     }
   }

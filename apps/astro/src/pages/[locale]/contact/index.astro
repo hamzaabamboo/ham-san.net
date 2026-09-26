@@ -54,10 +54,12 @@ const items = [
           lineHeight="tight"
           letterSpacing="tighter"
         >
-          {t('contact.hero-prefix') + t('contact.hero-separator')}<Box
-            as="span"
-            color="var(--atelier-accent)">{t('contact.hero-highlight')}</Box
-          >{t('contact.hero-suffix')}
+          {
+            t('contact.hero-prefix') +
+              t('contact.hero-separator') +
+              t('contact.hero-highlight') +
+              t('contact.hero-suffix')
+          }
         </Heading>
         <Text color="var(--atelier-fg-muted)" fontSize="xl" maxW="2xl" lineHeight="relaxed" mt="2">
           {t('contact.intro')}

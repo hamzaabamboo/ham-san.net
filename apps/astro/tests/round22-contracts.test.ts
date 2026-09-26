@@ -240,13 +240,14 @@ describe('round 24: nothing renders as an unfinished page', () => {
   });
 
   test('the homepage hero does not render a CMS illustration', async () => {
-    // The asset in place is stock clip art on a white ground: in a grayscale-plus-amber
-    // system it was the brightest block on the page and beat the amber CTA beside it.
-    // Comments stripped first: the note explaining the removal names the field it removed.
+    // The CMS asset was stock clip art on a white ground. The hero now shows the latest
+    // gallery portrait, hotlinked from X, so every hero image must be a gallery image.
     const page = stripComments(await read('apps/astro/src/pages/[locale]/index.astro'));
-    const hero = page.slice(0, page.indexOf('<StatusRow'));
-    expect(hero).not.toContain('<img');
+    const hero = page.slice(0, page.indexOf('<SectionHeading'));
     expect(hero).not.toContain('introductionImage');
+    expect((hero.match(/<img/g) ?? []).length).toBe(
+      (hero.match(/data-kameko-image/g) ?? []).length
+    );
   });
 
   test('a note card anchors its meta line to the bottom', async () => {
@@ -284,10 +285,6 @@ describe('round 25: composition', () => {
     // 344, under a rule that began at 288 — the landing page was the one misaligned route.
     const page = await read('apps/astro/src/pages/[locale]/index.astro');
     expect(page).not.toContain("px={{ base: '0', lg: '6' }}");
-    const status = await read('apps/astro/src/components/home/StatusRow.astro');
-    expect(status).not.toMatch(
-      /<Stack\s+p=\{\{ base: '5', sm: '8' \}\}\s+gap="3"\s+minW="0"\s+borderRight/
-    );
   });
 
   test('hobby detail sits on the same gutter as every other route', async () => {
@@ -433,13 +430,12 @@ describe('round 28', () => {
     expect(layout.slice(0, 220)).toContain('align-items: start');
   });
 
-  test('the wordmark plate is not caught by the locale letter-spacing exemption', async () => {
-    // `[class*='ls_0.']` matches any element carrying a letter-spacing utility and kills its
-    // `text-transform` too, so the plate read HAM on /en and Ham on /ja and /th.
-    const page = await read('apps/astro/src/pages/[locale]/index.astro');
-    expect(page).toContain('className="brand-plate-label"');
+  test('the wordmark renders as set, not uppercased by the bar', async () => {
+    // The wordmark is "Ham" in the display face on every locale; the bar must not restyle it.
+    const mark = await read('apps/astro/src/components/brand/BrandMark.tsx');
+    expect(mark).toContain('fontFamily="var(--font-display)"');
     const css = stripComments(await read('apps/astro/src/index.css'));
-    expect(css).toMatch(/\.brand-plate-label \{[^}]*text-transform: uppercase/);
+    expect(css).not.toMatch(/\.shell-nav-brand \{[^}]*text-transform/);
   });
 
   test('a lone markdown hard-break escape does not reach the page', async () => {
@@ -643,7 +639,7 @@ describe('round 33', () => {
     // A full-width underline on Featured projects against an inline rule on Life — two forms
     // on one page, and the inline rule is the sitewide one.
     const page = await read('apps/astro/src/pages/[locale]/index.astro');
-    const headers = page.slice(page.indexOf('<StatusRow'));
+    const headers = page.slice(page.indexOf('<SectionHeading'));
     expect(headers).not.toMatch(/borderBottom="1px solid"[\s\S]{0,120}as="h2"/);
     expect(headers).not.toMatch(/borderBottom="1px solid"[\s\S]{0,120}as="h2"/);
     // Round 34 moved the rule into `SectionHeading`, so counting the literal element would
@@ -830,18 +826,14 @@ describe('round 40', () => {
     expect(page).toContain("aria-current={isCurrent ? 'true' : undefined}");
   });
 
-  test('both sidebar eyebrows share one treatment', async () => {
-    // "Menu" was an inline style with no `text-transform`, beside an uppercase "LANGUAGE".
-    // Reusing the class also inherits the lang(ja)/lang(th) uppercase suppression.
+  test('the rail carries navigation only', async () => {
+    // A "Menu" chip labelled the obvious and a passive locale readout repeated the bar's
+    // switcher, which now marks the current language itself.
     const sidebar = await read('apps/astro/src/components/layout/DesktopSidebar.astro');
-    // Scoped to the header's own element: the footer carries a separate inline style for the
-    // locale VALUE, which is a different role and legitimately keeps its own treatment.
-    const header = sidebar.slice(
-      sidebar.indexOf('shell-sidebar-header'),
-      sidebar.indexOf('shell-sidebar-nav')
-    );
-    expect(header).toContain('class="shell-sidebar-env-label"');
-    expect(header).not.toContain('font-family:var(--font-code)');
+    expect(sidebar).not.toContain('shell-sidebar-header');
+    expect(sidebar).not.toContain('shell-sidebar-env');
+    const nav = await read('apps/astro/src/components/layout/Navigation.astro');
+    expect(nav).toContain("aria-current={code === lang ? 'true' : undefined}");
   });
 
   test('the skip link lands content clear of the fixed nav', async () => {
@@ -915,7 +907,6 @@ describe('no page hand-rolls the eyebrow chip', () => {
 
   test('the heroes that carry an eyebrow use the component', async () => {
     for (const page of [
-      'index',
       'about/index',
       'projects/index',
       'contact/index',

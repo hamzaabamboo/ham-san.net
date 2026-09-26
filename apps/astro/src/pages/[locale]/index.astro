@@ -8,13 +8,12 @@ import { graphQLSdk } from '~/graphql';
 import type { ProjectPreviewFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
-import StatusRow from '~/components/home/StatusRow.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
-import Eyebrow from '~/components/common/Eyebrow.astro';
 import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
-import { projectMonogram } from '~/utils/monogram';
 import { cleanProjectCopy } from '~/utils/project-copy';
+import { kamekoEntries } from '~/utils/kameko';
+import '~/styles/home.css';
 
 export const prerender = false;
 
@@ -46,7 +45,18 @@ try {
   homeUnavailable = true;
 }
 
-const heroProjects = projects.slice(0, 3);
+const heroProjects = [
+  ...projects.filter((project) => project.banner ?? project.media?.[0]),
+  ...projects.filter((project) => !(project.banner ?? project.media?.[0]))
+].slice(0, 3);
+const [heroPhoto, ...otherPhotos] = kamekoEntries;
+const recentPhotos = otherPhotos
+  .filter(
+    (entry, index, list) =>
+      entry.subjects[0]?.name !== heroPhoto?.subjects[0]?.name &&
+      list.findIndex((other) => other.subjects[0]?.name === entry.subjects[0]?.name) === index
+  )
+  .slice(0, 4);
 const yearPartFormatter = new Intl.DateTimeFormat(locale, {
   year: 'numeric',
   timeZone: 'Asia/Tokyo',
@@ -70,13 +80,13 @@ Astro.response.headers.set(
     <Stack py={{ base: '8', md: '10' }} gap="0">
       <Grid
         gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(0, 1.6fr) 400px' }}
+        alignItems="center"
         gap="12"
         py={{ base: '14', lg: '24' }}
         borderBottom="1px solid"
         borderColor="var(--atelier-line)"
       >
         <Stack gap="8">
-          <Eyebrow label={t('home.operational-status')} />
           <Heading
             as="h1"
             fontSize={{ base: '5xl', md: '5xl', lg: '5xl' }}
@@ -90,7 +100,7 @@ Astro.response.headers.set(
                 Japanese needs no separator: its prefix already ends in a full stop. */
             }
             {locale === 'ja' ? '' : ' '}
-            <Box as="span" display="block" fontStyle="italic" color="var(--atelier-accent)">
+            <Box as="span" display="block">
               {t('home.hero-heading-emphasis')}
             </Box>
           </Heading>
@@ -107,52 +117,38 @@ Astro.response.headers.set(
             </a>
           </Flex>
         </Stack>
-        <Stack gap="2">
-          {
-            /* The hero used to render `introductionImage` from the CMS. The asset in place is
-              a stock clip-art illustration on a white ground: in a grayscale-plus-amber
-              system it renders as the brightest block on the page and beats the amber CTA
-              it sits beside. No filter fixes that — the treatment is already applied. A
-              typographic specimen is on-system and needs no asset. To restore the image,
-              render `introImage` here again; `resolveMedia` still resolves it. */
-          }
-          <Box
-            position="relative"
-            border="1px solid"
-            borderColor="var(--atelier-line)"
-            bg="var(--atelier-surface-lowest)"
-            className="fallback-grid-lines"
-            overflow="hidden"
-            display="grid"
-            alignContent="space-between"
-            gap="6"
-            p={{ base: '6', lg: '8' }}
-            minH={{ base: '20rem', lg: '26rem' }}
-          >
-            <Text className="brand-plate-label" color="var(--atelier-outline)">
-              {t('common.name')}
-            </Text>
-            <Box
-              fontFamily="var(--font-display)"
-              fontStyle="italic"
-              fontSize={{ base: '7rem', lg: '9rem' }}
-              lineHeight="0.8"
-              color="var(--atelier-fg)"
-              opacity="0.12"
-              userSelect="none"
-              aria-hidden="true"
-              justifySelf="end"
-            >
-              H
-            </Box>
-            <Box h="1px" bg="var(--atelier-line)" />
-          </Box>
-        </Stack>
+        {
+          heroPhoto && (
+            <figure class="home-hero-photo">
+              <a
+                href={heroPhoto.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="home-hero-photo-frame"
+              >
+                <img
+                  src={`${heroPhoto.media[0].url}?format=jpg&name=medium`}
+                  alt={heroPhoto.subjects.map((subject) => subject.name).join(', ')}
+                  width={heroPhoto.media[0].width ?? undefined}
+                  height={heroPhoto.media[0].height ?? undefined}
+                  decoding="async"
+                  fetchpriority="high"
+                  draggable="false"
+                  referrerpolicy="no-referrer"
+                  data-kameko-image
+                />
+              </a>
+              <figcaption>
+                <span class="home-hero-photo-name">
+                  {heroPhoto.subjects.map((subject) => subject.name).join('、')}
+                </span>
+                <span class="home-hero-photo-meta">{heroPhoto.event}</span>
+                <a href={`/${locale}/photos`}>{t('home.photos-all')}</a>
+              </figcaption>
+            </figure>
+          )
+        }
       </Grid>
-
-      <Box>
-        <StatusRow locale={locale} />
-      </Box>
 
       <Box py={{ base: '8', lg: '16' }} borderBottom="1px solid" borderColor="var(--atelier-line)">
         <Stack gap="2" mb="12">
@@ -177,9 +173,7 @@ Astro.response.headers.set(
             <Stack gap="6">
               <Heading as="h3" fontSize={{ base: 'lg', md: 'xl' }}>
                 {t('home.bench-manifesto-heading')}{locale === 'ja' ? '' : ' '}
-                <Box as="span" color="var(--atelier-accent)" fontStyle="italic"
-                  >{t('home.bench-manifesto-emphasis')}</Box
-                >
+                {t('home.bench-manifesto-emphasis')}
               </Heading>
               <Text color="var(--atelier-fg-muted)" lineHeight="relaxed">
                 {t('home.bench-manifesto-body')}
@@ -191,9 +185,7 @@ Astro.response.headers.set(
                   bg="var(--atelier-surface-highest)"
                   border="1px solid"
                   borderColor="var(--atelier-line)"
-                  fontFamily="var(--font-code)"
-                  fontSize="10px"
-                  textTransform="uppercase">{t('home.bench-principle-clear')}</Box
+                  fontSize="xs">{t('home.bench-principle-clear')}</Box
                 >
                 <Box
                   px="3"
@@ -201,9 +193,7 @@ Astro.response.headers.set(
                   bg="var(--atelier-surface-highest)"
                   border="1px solid"
                   borderColor="var(--atelier-line)"
-                  fontFamily="var(--font-code)"
-                  fontSize="10px"
-                  textTransform="uppercase">{t('home.bench-principle-useful')}</Box
+                  fontSize="xs">{t('home.bench-principle-useful')}</Box
                 >
                 <Box
                   px="3"
@@ -211,9 +201,7 @@ Astro.response.headers.set(
                   bg="var(--atelier-surface-highest)"
                   border="1px solid"
                   borderColor="var(--atelier-line)"
-                  fontFamily="var(--font-code)"
-                  fontSize="10px"
-                  textTransform="uppercase">{t('home.bench-principle-maintainable')}</Box
+                  fontSize="xs">{t('home.bench-principle-maintainable')}</Box
                 >
               </Flex>
             </Stack>
@@ -337,22 +325,6 @@ Astro.response.headers.set(
                         >
                           <Box
                             position="absolute"
-                            bottom="-10px"
-                            right="0"
-                            fontFamily="var(--font-display)"
-                            fontStyle="italic"
-                            fontSize="140px"
-                            lineHeight="1"
-                            color="var(--atelier-fg)"
-                            opacity="0.05"
-                            userSelect="none"
-                            pointerEvents="none"
-                            aria-hidden="true"
-                          >
-                            {projectMonogram(project.title)}
-                          </Box>
-                          <Box
-                            position="absolute"
                             bottom="0"
                             left="0"
                             right="0"
@@ -433,69 +405,47 @@ Astro.response.headers.set(
             </Box>
           )
         }
-        <Stack gap="8">
-          <SectionHeading label={t('home.life-heading')} />
-          <Grid
-            gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
-            gap="6"
-          >
-            {
-              /* Were two 60px strips holding a 16px icon and a 10px mono label — the page
-                closed on its weakest block, after three rich project cards. Same anatomy as
-                those cards: plate, title in the display face, one meta line. */
-            }
-            {
-              [
-                {
-                  href: `/${locale}/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284`,
-                  icon: 'photo_camera' as const,
-                  label: t('home.life-darkroom')
-                },
-                {
-                  href: `/${locale}/hobbies`,
-                  icon: 'category' as const,
-                  label: t('home.life-skill-toys')
-                }
-              ].map((entry) => (
-                <a
-                  href={entry.href}
-                  class="card-hover-amber group"
-                  style="display:block;border:1px solid var(--atelier-line);background-color:var(--atelier-bg);text-decoration:none;color:inherit"
-                >
-                  <Box
-                    className="fallback-grid-lines"
-                    borderBottom="1px solid"
-                    borderColor="var(--atelier-line)"
-                    bg="var(--atelier-surface-lowest)"
-                    display="grid"
-                    placeItems="center"
-                    h="7rem"
-                  >
-                    <Glyph name={entry.icon} className="atelier-icon-lg" />
-                  </Box>
-                  <Stack gap="3" p="5">
-                    <Heading as="h3" fontSize="2xl" lineHeight="1.1">
-                      {entry.label}
-                    </Heading>
-                    <Flex
-                      gap="2"
-                      alignItems="center"
-                      color="var(--atelier-accent)"
-                      fontFamily="var(--font-code)"
-                      fontSize="10px"
-                      letterSpacing="0.12em"
-                      textTransform="uppercase"
-                    >
-                      <Text>{t('common.open')}</Text>
-                      <Glyph name="north_east" />
-                    </Flex>
-                  </Stack>
+        {
+          recentPhotos.length > 0 && (
+            <Stack gap="8">
+              <Flex justify="space-between" align="baseline" gap="4" wrap="wrap">
+                <SectionHeading label={t('home.photos-heading')} />
+                <a href={`/${locale}/photos`} class="home-photos-all">
+                  {t('home.photos-all')}
                 </a>
-              ))
-            }
-          </Grid>
-        </Stack>
+              </Flex>
+              <ul class="home-photos">
+                {recentPhotos.map((entry) => (
+                  <li>
+                    <a href={entry.url} target="_blank" rel="noopener noreferrer" data-kameko-card>
+                      <img
+                        src={`${entry.media[0].url}?format=jpg&name=small`}
+                        alt={entry.subjects.map((subject) => subject.name).join(', ')}
+                        loading="lazy"
+                        decoding="async"
+                        draggable="false"
+                        referrerpolicy="no-referrer"
+                        data-kameko-image
+                      />
+                      <span>{entry.subjects.map((subject) => subject.name).join('、')}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </Stack>
+          )
+        }
       </Box>
     </Stack>
   </Container>
 </MainLayout>
+
+<script>
+  document.querySelectorAll<HTMLImageElement>('[data-kameko-image]').forEach((image) => {
+    const hide = () => image.closest<HTMLElement>('li, figure')?.setAttribute('hidden', '');
+    if (image.complete && image.naturalWidth === 0) hide();
+    image.addEventListener('error', hide, { once: true });
+    image.addEventListener('contextmenu', (event) => event.preventDefault());
+    image.addEventListener('dragstart', (event) => event.preventDefault());
+  });
+</script>

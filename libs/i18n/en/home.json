@@ -9,14 +9,6 @@
   "find-out-more": "Find out more",
   "view-my-work": "View my work",
   "explore-hobbies": "Explore my hobbies",
-  "life-heading": "Life",
-  "life-darkroom": "Darkroom Printing / 400 ISO",
-  "life-skill-toys": "Skill Toys / Kendama / Flow",
-  "operational-status": "Personal site",
-  "status-current-phase": "Current focus",
-  "status-phase-title": "Homepage refresh",
-  "status-availability": "Availability",
-  "status-availability-title": "Open to freelance work.",
   "projects-empty-title": "Projects unavailable",
   "projects-empty-description": "Projects will show up again when the content connection is back.",
   "bench-heading": "How I work",
@@ -30,5 +22,7 @@
   "bench-tools-frontend": "Frontend",
   "bench-tools-styling": "Styling",
   "bench-tools-design": "Design",
-  "bench-tools-scripting": "Scripting"
+  "bench-tools-scripting": "Scripting",
+  "photos-heading": "Recent photos",
+  "photos-all": "All photos"
 }

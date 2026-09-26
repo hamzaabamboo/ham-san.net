@@ -48,7 +48,7 @@ const NAVIGATION_LINKS = [
 </script>
 
 <nav id="main-nav" class="shell-nav" aria-label={t('common.primary-nav')}>
-  <a href={getURLWithLanguage('/')} class="shell-nav-brand">
+  <a href={getURLWithLanguage('/')} class="shell-nav-brand" aria-label={t('common.name')}>
     <BrandMark />
   </a>
 
@@ -71,13 +71,18 @@ const NAVIGATION_LINKS = [
   <div class="shell-nav-actions">
     <div class="shell-nav-lang-group">
       {
-        Object.entries(languages)
-          .filter((entry) => entry[0] !== lang)
-          .map((entry) => (
-            <a href={getCurrentURLWithLanguage(entry[0])} class="shell-nav-lang">
-              {entry[0]}
-            </a>
-          ))
+        Object.entries(languages).map(([code, name]) => (
+          <a
+            href={getCurrentURLWithLanguage(code)}
+            class="shell-nav-lang"
+            lang={code}
+            hreflang={code}
+            title={name}
+            aria-current={code === lang ? 'true' : undefined}
+          >
+            {code}
+          </a>
+        ))
       }
     </div>
     {

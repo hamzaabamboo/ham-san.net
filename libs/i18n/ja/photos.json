@@ -2,10 +2,6 @@
   "title": "写真",
   "heading": "写真",
   "lede": "#⁠カメコしてみた と、以前の #⁠蓮ノ空 × #⁠zweigen でXに投稿したイベントのポートレートです。写真はXから直接表示され、元の投稿にリンクしています。",
-  "stat-posts": "投稿",
-  "stat-photos": "写真",
-  "stat-people": "人物",
-  "stat-events": "イベント",
   "filter-people": "人物",
   "filter-events": "イベント",
   "filter-tags": "タグ",
@@ -21,5 +17,9 @@
   "posted-by": "投稿",
   "aria-filters": "写真の絞り込み",
   "aria-grid": "写真一覧",
-  "results": "件"
+  "viewer-close": "閉じる",
+  "viewer-prev": "前の写真",
+  "viewer-next": "次の写真",
+  "posts-count": "投稿",
+  "view-photo": "写真を見る"
 }

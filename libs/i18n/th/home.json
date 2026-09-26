@@ -9,14 +9,6 @@
   "find-out-more": "ดูเพิ่มเติม",
   "view-my-work": "ดูผลงาน",
   "explore-hobbies": "สำรวจงานอดิเรก",
-  "life-heading": "ชีวิต",
-  "life-darkroom": "อัดภาพห้องมืด / 400 ISO",
-  "life-skill-toys": "สกิลทอย / เคนดามะ / โฟลว์",
-  "operational-status": "เว็บส่วนตัว",
-  "status-current-phase": "งานตอนนี้",
-  "status-phase-title": "ปรับหน้าแรก",
-  "status-availability": "สถานะรับงาน",
-  "status-availability-title": "เปิดรับงานฟรีแลนซ์",
   "projects-empty-title": "โปรเจกต์ยังไม่พร้อมใช้งาน",
   "projects-empty-description": "โปรเจกต์จะกลับมาแสดงเมื่อเชื่อมต่อข้อมูลได้อีกครั้ง",
   "bench-heading": "วิธีทำงาน",
@@ -30,5 +22,7 @@
   "bench-tools-frontend": "ฟรอนต์เอนด์",
   "bench-tools-styling": "สไตล์",
   "bench-tools-design": "ดีไซน์",
-  "bench-tools-scripting": "สคริปต์"
+  "bench-tools-scripting": "สคริปต์",
+  "photos-heading": "รูปล่าสุด",
+  "photos-all": "รูปทั้งหมด"
 }

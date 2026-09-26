@@ -400,7 +400,7 @@ describe('cache headers', () => {
 
     // Pin the exact corpus size: a mutation that drops a file out of the scan set must
     // fail on the count, not slip under a `greaterThan` floor with one file of margin.
-    expect(scanned).toBe(14);
+    expect(scanned).toBe(15);
     expect(missing).toEqual([]);
     expect(beforeCatch).toEqual([]);
     expect(badValue).toEqual([]);
@@ -665,7 +665,7 @@ describe('icons resolve to the glyph they name', () => {
         }
       }
     }
-    expect(matched).toBeGreaterThanOrEqual(5);
+    expect(matched).toBeGreaterThanOrEqual(4);
     expect(undefinedClasses).toEqual([]);
 
     // ...and the three /events icon groups keep an explicit size after the font removal.

@@ -90,6 +90,8 @@
     /* Surfaces that rest at true colour because they have no hover to recover from: the
        project detail banner is the page's primary product screenshot. */
     --atelier-image-plate: contrast(1.04);
+    --atelier-image-preview: saturate(0.85) contrast(0.95);
+    --atelier-image-dimmed: brightness(0.52) saturate(0.72) blur(1px);
     font-family: var(--font-body);
     background:
       linear-gradient(rgba(82, 69, 51, 0.14) 1px, transparent 1px),
@@ -246,14 +248,13 @@ html:lang(th) .event-report__highlight-grid p {
 .home-hero-cta {
   display: inline-flex;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.95rem 1.75rem;
   border: 1px solid var(--atelier-line);
   font-family: var(--font-body);
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   text-decoration: none;
-  text-transform: uppercase;
 }
 
 /* Stacked at 390 the two CTAs were 183px and 238px, both left-aligned, so the hero's most
@@ -965,15 +966,13 @@ html:lang(th) a {
 .shell-nav-brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   min-width: 44px;
   min-height: 44px;
-  font-family: var(--font-body);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.875rem;
   text-decoration: none;
+}
+.shell-nav-brand:focus-visible {
+  outline: 2px solid var(--atelier-accent);
+  outline-offset: 4px;
 }
 
 .shell-nav-links {
@@ -1067,6 +1066,13 @@ html:lang(th) a {
 .shell-nav-lang:hover {
   color: var(--atelier-accent);
 }
+.shell-nav-lang[aria-current='true'] {
+  color: var(--atelier-fg);
+  text-decoration: underline;
+  text-decoration-color: var(--atelier-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.45em;
+}
 
 .shell-sidebar {
   position: fixed;
@@ -1098,7 +1104,7 @@ html:lang(th) a {
 
 .shell-sidebar-nav {
   flex: 1;
-  padding: 1rem 0;
+  padding: 1.25rem 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -1143,9 +1149,8 @@ html:lang(th) a {
 
 .shell-sidebar-link-label {
   font-family: var(--font-body);
-  text-transform: uppercase;
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  letter-spacing: 0;
 }
 
 .shell-sidebar-footer {

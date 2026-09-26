@@ -2,10 +2,6 @@
   "title": "รูปภาพ",
   "heading": "รูปภาพ",
   "lede": "ภาพพอร์ตเทรตจากอีเวนต์ที่ผมถ่ายและโพสต์บน X ด้วย #⁠カメコしてみた รวมถึงโพสต์เก่าที่ติด #⁠蓮ノ空 × #⁠zweigen ทุกรูปแสดงจาก X โดยตรงและลิงก์ไปยังโพสต์ต้นฉบับ",
-  "stat-posts": "โพสต์",
-  "stat-photos": "รูป",
-  "stat-people": "บุคคล",
-  "stat-events": "อีเวนต์",
   "filter-people": "บุคคล",
   "filter-events": "อีเวนต์",
   "filter-tags": "แท็ก",
@@ -21,5 +17,9 @@
   "posted-by": "โพสต์โดย",
   "aria-filters": "ตัวกรองรูปภาพ",
   "aria-grid": "รายการรูปภาพ",
-  "results": "รายการ"
+  "viewer-close": "ปิด",
+  "viewer-prev": "รูปก่อนหน้า",
+  "viewer-next": "รูปถัดไป",
+  "posts-count": "โพสต์",
+  "view-photo": "ดูรูป"
 }

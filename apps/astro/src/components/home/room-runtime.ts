@@ -2025,7 +2025,7 @@ export const initRoom = (root: HTMLElement) => {
       renderer.shadowMap.needsUpdate = true;
       enterButton.disabled = false;
       enterButton.textContent = copy.enter;
-      status.textContent = copy.enter;
+      status.textContent = '';
     },
     undefined,
     () => {

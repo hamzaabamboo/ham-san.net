@@ -18,9 +18,11 @@ The historical checkpoint manifest was verified before continuation. Its only mi
 
 2026-09-26 progress: dart corner, penlight wall, PC wall, shelves, low table, entry and closet zones rebuilt by hand from the owner photos over rounds 2–5 (details in tools/room-harness/evidence/build/item-audit-20260926/README.md and round4/README.md). Settled layout kept.
 
-## Photos gallery (2026-09-27, uncommitted)
+## Site polish and photos (2026-09-27, branch `dev`)
 
 `/[locale]/photos` renders `apps/astro/src/constants/kameko-posts.json` (post metadata only; images hotlinked from pbs.twimg.com, each card links to its X post, cards hide if the image is gone). Included: posts by @HamP_punipuni tagged #カメコしてみた, #百瀬安由未, or #蓮ノ空 with #zweigen/#ツェーゲン, with photos and at least one named person (parser in `src/utils/kameko.ts`). Refresh: `cd apps/astro && TWEETAPI_IO_API_KEY=… bun run fetch:kameko` (incremental, 1 request, skips known IDs); `KAMEKO_DEEP=1` is a full paid sweep — only with owner approval and a credit estimate. Key lives in with-meets-reminder/.env; never write it to this repo.
+
+Site polish: room moved to `/[locale]/room`, home is the conventional page (`[locale]/index.astro`, ex-overview). New brand mark (block H between two amber framing corners) in `BrandMark.tsx`; sources and renders in `apps/astro/scripts/brand/` → `public/favicon.svg`, `favicon-64.png`, `apple-touch-icon.png`, `og-default.png`. Placeholder visuals removed (home ghost-H panel, Life icon cards, hobby/project monogram tiles, about name plate, StatusRow, room design prototype route); home hero and Recent photos use gallery portraits. Contract tests updated to the new decisions; `bun test apps/astro/tests` 362/362, `bun run build` 0 errors.
 
 ## Latest settled model requirements
 
@@ -76,13 +78,9 @@ All following work remains open unless this checkpoint state above provides exac
 | BUILD-HARNESS | AUTH-05,GEO-10,VAL-01,VAL-02,AST-*,DELTA-10 | Native working; current check-build exits zero; raw physics warnings remain | `tools/room-harness/build/`, native `.blend`, local public GLB, `PHOTO_*` cameras |
 | FINAL-01 | VAL-02 | Not complete; room/model/runtime acceptance open | Run upper-view geometry audit, photo closeups, current GLB/browser proof, independent review, then required build/lint/checks. |
 
-## Resume sequence after renewed modeling direction
+## Resume sequence
 
-1. Verify integrity and native state.
-2. Reconcile owner-authorized table placement with PC-RUBIK contract; rename case material to compatible `Room/AcrylicClear case polished` without changing physical shader. Done.
-3. Save → native physics → native audit → native export → UV strip → public copy → check-build. Done: physics raw warnings remain 20 floating/11 wall/70 intersections, structured failures remain zero, and check-build exits 0.
-4. Render final shrine/table with readable lighting and no specular obstruction; inspect all stand UVs and full case containment. Current-head shrine/table views are refreshed and inspected after the shelf pass.
-5. Continue broader room requirements with source-grounded evidence. Current next slice: broader shelf-density audit; final top-display, clean full-shelf and open-bay riser proofs are current; native save/physics/audit/export/strip/copy/check-build are green; browser/servers/external writes require their own current authority.
+Model steps 1–5 of the September pass are done (see Checkpoint state). Browser pass 2026-09-26 verified darts, mobile tap, room controls, examine overlays and locales (evidence README under `tools/room-harness/evidence/browser-20260926/`). Next: owner review of the polish pass on `dev`.
 
 ## Handoff gates and coverage
 
@@ -90,4 +88,4 @@ All following work remains open unless this checkpoint state above provides exac
 - Full handoff reread 1–175, 176–350, 351–518/EOF after writing. Current scene/scripts, source/export hashes, failed gate, original index and historical handoff reconciled. Final integrity/staged/commit verification is recorded by the checkpoint artifacts and actual Git tree.
 - Detailed source/skill/history coverage and remaining gaps are in handoff section 13. Only exact current-project session tool records were extracted; no reasoning/raw user messages or unrelated-project histories persisted.
 - Historical coverage: model-design-spec 1–512/EOF, reference-map 1–110/EOF, physics 1–172/EOF, audit 1–105/EOF, UV strip 1–104/EOF. Broader room-spec not fully reread by this lead; no whole-product audit claim.
-- No browser session, development server, review post, deployment, push or commit in this continuation. Existing checks were reused; no new tests were created. Model remains unfinished; current native/export proof is a recoverability and model-slice boundary only.
+- Commits exist on `room/remodel-2026-09-26` and `dev`; nothing pushed or deployed. Dev servers and browser sessions are started only for owner-requested checks and stopped afterwards.
