@@ -19,7 +19,7 @@ Request ledger (current session, in order):
 6. Art must resemble the owner's items: generate only from crops of the owner's photos or approved atlas; re-check against the original image.
 7. Plush must not look creepy: nesoberi rebuilt (sleeping faces); owner re-check pending.
 - Source: assets/room/room-v2.blend; export via assets/room/export_room_v2.py -> webp -> meshopt -> apps/astro/public/models/room.glb; check-build failed must be 0.
-- Council result (2026-09-28): external Codex rounds 1-6 on all 54 item sheets + 12 owner photos; findings 25 -> 11 -> 8 -> 4 -> 7 -> 2; the 2 camera findings disputed with room-hobby-map.md line 22 and a focused external re-check returned 0 findings. Every finding was verified against render/photo before fixing (commits 1a889cd..338f46e). check-build failed 0; apps/astro bun run build complete.
+- Council result (2026-09-28): external Codex review on all 54 item sheets + 12 owner photos + spec/maps, 12 rounds, every finding verified before fixing or rejecting; final round on HEAD f69cb81 = 0 findings. check-build failed 0; bun run build complete.
 - Browser proof (2026-09-28, agent-browser, dev server stopped after): /en/room loads, Enter room, Projects and Hobbies examine panels load and close; nav fixes in cc73c3d. Dev-only: the Netlify Edge Functions local server fails (Deno --allow-scripts mismatch) and Astro's transparent error overlay blocks clicks before entering the room; not present in production builds. Owner visual review pending.
 - Non-actions: no push/deploy/merge, no dev server start, no macOS automation, no Artifact publishing, no Codex runs inside the repo.
 - Disk: exports one at a time; delete room-v2-web.glb and the webp intermediate right after.
