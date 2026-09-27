@@ -665,7 +665,7 @@ describe('icons resolve to the glyph they name', () => {
         }
       }
     }
-    expect(matched).toBeGreaterThanOrEqual(4);
+    expect(matched).toBeGreaterThanOrEqual(5);
     expect(undefinedClasses).toEqual([]);
 
     // ...and the three /events icon groups keep an explicit size after the font removal.

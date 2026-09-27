@@ -11,7 +11,7 @@ This is the catalogue of Ham's web projects and experiments: active work first, 
 ## Anatomy
 
 ```
-Work & Experiments.                          (h1, no eyebrow)
+Work & Experiments.                          (h1, amber eyebrow chip above)
 Web projects, small tools, and experiments I have worked on.
 ┌ Active 18 ┬ Inactive 24 ┬ Latest 2025 ┐
 Active ─────────────────────────────────────────────
@@ -36,6 +36,6 @@ Active cards show a 16:9 screenshot (optional), title, year, category chip, tech
 
 ## Rules
 
-- There are no monogram plates or watermark letters. A project without a screenshot renders as a text card (removed 2026-09-27).
+- A project without a screenshot renders a grid-line plate with its display-face monogram (spec 03 fallback art).
 - A screenshot that fails to load removes its frame (`onerror`).
 - Screenshots sit in the graphite rest treatment and come to colour on hover (`--atelier-image-rest` and `--atelier-image-hover`).

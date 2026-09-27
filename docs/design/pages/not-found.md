@@ -19,6 +19,6 @@ The requested route does not exist or has been relocated.
 
 ## Rules
 
-- Buttons are sentence case in the body face (not mono caps). The primary button is amber and the others are outlined.
+- Buttons are tracked uppercase in the body face. The primary button is amber and the others are outlined.
 - The copy states what happened and where to go; it doesn't apologise.
 - Detail routes (projects, tags, hobbies, notes, namecards) redirect here for unknown IDs.

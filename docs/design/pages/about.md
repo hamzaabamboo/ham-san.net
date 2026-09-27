@@ -11,7 +11,7 @@ This is the professional profile: what Ham does, where Ham has worked, education
 ## Anatomy
 
 ```
-A generalist who builds for the web.        (h1, no eyebrow)
+A generalist who builds for the web.        (h1, amber eyebrow chip above)
 lede
 ┌ sidebar ─────────────┐  Experience ─────────────────────
 │ Current stack chips  │  ● Frontend Engineer   card
@@ -41,6 +41,6 @@ Focus · Location · Availability · Contact (credentials grid)
 
 ## Rules
 
-- No decorative name plate. The "Ham / WEB / UI" wireframe box was removed on 2026-09-27.
-- No page eyebrow. The h1 is the page's name.
+- The "Profile" eyebrow chip sits above the h1.
+- The left column keeps the "Ham / WEB / UI" wireframe name plate (dossier framing, spec 04).
 - Availability and focus copy must be Ham's own statement; re-confirm it with Ham before changing it.

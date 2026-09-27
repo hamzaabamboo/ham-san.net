@@ -1,4 +1,5 @@
 ---
+import { Glyph } from '~/components/ui/glyph';
 import { Box, Container, Flex, Grid, Stack } from 'styled-system/jsx';
 import { resolveMedia } from 'utils/media';
 import { Heading } from '~/components/ui/heading';
@@ -7,9 +8,12 @@ import { graphQLSdk } from '~/graphql';
 import type { ProjectPreviewFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import StatusRow from '~/components/home/StatusRow.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
+import { projectMonogram } from '~/utils/monogram';
 import { cleanProjectCopy } from '~/utils/project-copy';
 import { kamekoEntries } from '~/utils/kameko';
 import '~/styles/home.css';
@@ -56,6 +60,12 @@ const recentPhotos = otherPhotos
       list.findIndex((other) => other.subjects[0]?.name === entry.subjects[0]?.name) === index
   )
   .slice(0, 4);
+const subjectNames = (entry: (typeof kamekoEntries)[number]) =>
+  entry.subjects.map((subject) => subject.name);
+const photoRatio = (entry: (typeof kamekoEntries)[number]) => {
+  const { width, height } = entry.media[0];
+  return width && height ? `${width} / ${height}` : '4 / 5';
+};
 const yearPartFormatter = new Intl.DateTimeFormat(locale, {
   year: 'numeric',
   timeZone: 'Asia/Tokyo',
@@ -79,11 +89,13 @@ Astro.response.headers.set(
     <Stack py={{ base: '8', md: '10' }} gap="0">
       <Grid
         gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(0, 1.6fr) 400px' }}
-        alignItems="center"
         gap="12"
         py={{ base: '14', lg: '24' }}
+        borderBottom="1px solid"
+        borderColor="var(--atelier-line)"
       >
         <Stack gap="8">
+          <Eyebrow label={t('home.operational-status')} />
           <Heading
             as="h1"
             fontSize={{ base: '5xl', md: '5xl', lg: '5xl' }}
@@ -97,7 +109,7 @@ Astro.response.headers.set(
                 Japanese needs no separator: its prefix already ends in a full stop. */
             }
             {locale === 'ja' ? '' : ' '}
-            <Box as="span" display="block">
+            <Box as="span" display="block" fontStyle="italic" color="var(--atelier-accent)">
               {t('home.hero-heading-emphasis')}
             </Box>
           </Heading>
@@ -115,18 +127,18 @@ Astro.response.headers.set(
           </Flex>
         </Stack>
         {
-          heroPhoto && (
+          heroPhoto ? (
             <figure class="home-hero-photo">
               <a
                 href={heroPhoto.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="home-hero-photo-frame"
-                style={`aspect-ratio: ${heroPhoto.media[0].width} / ${heroPhoto.media[0].height}`}
+                style={`aspect-ratio:${photoRatio(heroPhoto)}`}
               >
                 <img
                   src={`${heroPhoto.media[0].url}?format=jpg&name=medium`}
-                  alt={heroPhoto.subjects.map((subject) => subject.name).join(', ')}
+                  alt={subjectNames(heroPhoto).join(', ')}
                   width={heroPhoto.media[0].width ?? undefined}
                   height={heroPhoto.media[0].height ?? undefined}
                   decoding="async"
@@ -135,22 +147,39 @@ Astro.response.headers.set(
                   referrerpolicy="no-referrer"
                   data-kameko-image
                 />
+                <span class="home-hero-photo-chip">{t('home.photos-latest')}</span>
               </a>
               <figcaption>
-                <span class="home-hero-photo-name">
-                  {heroPhoto.subjects.map((subject) => subject.name).join('、')}
+                <span class="home-hero-photo-name">{subjectNames(heroPhoto).join('、')}</span>
+                <span class="home-hero-photo-meta">
+                  <span>{heroPhoto.event}</span>
+                  <a href={`/${locale}/photos`}>{t('home.photos-all')}</a>
                 </span>
-                <span class="home-hero-photo-meta">{heroPhoto.event}</span>
               </figcaption>
             </figure>
+          ) : (
+            <Box
+              border="1px solid"
+              borderColor="var(--atelier-line)"
+              bg="var(--atelier-surface-lowest)"
+              className="fallback-grid-lines"
+              minH={{ base: '20rem', lg: '26rem' }}
+            />
           )
         }
       </Grid>
 
-      <Box py={{ base: '8', lg: '16' }}>
-        <Box mb="12">
+      <Box>
+        <StatusRow locale={locale} />
+      </Box>
+
+      <Box py={{ base: '8', lg: '16' }} borderBottom="1px solid" borderColor="var(--atelier-line)">
+        <Stack gap="2" mb="12">
           <SectionHeading label={t('home.bench-heading')} />
-        </Box>
+          <Text color="var(--atelier-outline)" fontSize="sm" maxW="lg">
+            {t('home.bench-subtitle')}
+          </Text>
+        </Stack>
         <Grid
           gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(12, minmax(0, 1fr))' }}
           gap="6"
@@ -167,7 +196,9 @@ Astro.response.headers.set(
             <Stack gap="6">
               <Heading as="h3" fontSize={{ base: 'lg', md: 'xl' }}>
                 {t('home.bench-manifesto-heading')}{locale === 'ja' ? '' : ' '}
-                {t('home.bench-manifesto-emphasis')}
+                <Box as="span" color="var(--atelier-accent)" fontStyle="italic"
+                  >{t('home.bench-manifesto-emphasis')}</Box
+                >
               </Heading>
               <Text color="var(--atelier-fg-muted)" lineHeight="relaxed">
                 {t('home.bench-manifesto-body')}
@@ -179,7 +210,9 @@ Astro.response.headers.set(
                   bg="var(--atelier-surface-highest)"
                   border="1px solid"
                   borderColor="var(--atelier-line)"
-                  fontSize="xs">{t('home.bench-principle-clear')}</Box
+                  fontFamily="var(--font-code)"
+                  fontSize="10px"
+                  textTransform="uppercase">{t('home.bench-principle-clear')}</Box
                 >
                 <Box
                   px="3"
@@ -187,7 +220,9 @@ Astro.response.headers.set(
                   bg="var(--atelier-surface-highest)"
                   border="1px solid"
                   borderColor="var(--atelier-line)"
-                  fontSize="xs">{t('home.bench-principle-useful')}</Box
+                  fontFamily="var(--font-code)"
+                  fontSize="10px"
+                  textTransform="uppercase">{t('home.bench-principle-useful')}</Box
                 >
                 <Box
                   px="3"
@@ -195,7 +230,9 @@ Astro.response.headers.set(
                   bg="var(--atelier-surface-highest)"
                   border="1px solid"
                   borderColor="var(--atelier-line)"
-                  fontSize="xs">{t('home.bench-principle-maintainable')}</Box
+                  fontFamily="var(--font-code)"
+                  fontSize="10px"
+                  textTransform="uppercase">{t('home.bench-principle-maintainable')}</Box
                 >
               </Flex>
             </Stack>
@@ -286,7 +323,7 @@ Astro.response.headers.set(
                   >
                     <Box
                       position="relative"
-                      aspectRatio="16 / 10"
+                      aspectRatio="1 / 1"
                       overflow="hidden"
                       className="group"
                     >
@@ -319,6 +356,22 @@ Astro.response.headers.set(
                         >
                           <Box
                             position="absolute"
+                            bottom="-10px"
+                            right="0"
+                            fontFamily="var(--font-display)"
+                            fontStyle="italic"
+                            fontSize="140px"
+                            lineHeight="1"
+                            color="var(--atelier-fg)"
+                            opacity="0.05"
+                            userSelect="none"
+                            pointerEvents="none"
+                            aria-hidden="true"
+                          >
+                            {projectMonogram(project.title)}
+                          </Box>
+                          <Box
+                            position="absolute"
                             bottom="0"
                             left="0"
                             right="0"
@@ -331,7 +384,15 @@ Astro.response.headers.set(
                     </Box>
                     <Box p="6" display="flex" flexDirection="column" flex="1">
                       <Flex justify="space-between" align="start" mb="2">
-                        <Heading as="h3" fontSize={{ base: 'xl', md: '2xl' }} lineHeight="1.15">
+                        <Heading
+                          as="h3"
+                          fontFamily="var(--font-body)"
+                          fontWeight="bold"
+                          fontSize={{ base: 'md', md: 'xl' }}
+                          fontStyle="normal"
+                          textTransform="uppercase"
+                          letterSpacing="0"
+                        >
                           {project.title}
                         </Heading>
                       </Flex>
@@ -356,6 +417,7 @@ Astro.response.headers.set(
                         <Text fontFamily="var(--font-code)" fontSize="10px">
                           {yearLabel(project.date?.slice(0, 4)) ?? t('common.projects')}
                         </Text>
+                        <Glyph name="north_east" style={{ fontSize: '14px' }} />
                       </Flex>
                     </Box>
                   </a>
@@ -390,41 +452,97 @@ Astro.response.headers.set(
             </Box>
           )
         }
+        <Stack gap="8">
+          <SectionHeading label={t('home.life-heading')} />
+          <Grid
+            gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
+            gap="6"
+          >
+            {
+              /* Were two 60px strips holding a 16px icon and a 10px mono label — the page
+                closed on its weakest block, after three rich project cards. Same anatomy as
+                those cards: plate, title in the display face, one meta line. */
+            }
+            {
+              [
+                {
+                  href: `/${locale}/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284`,
+                  icon: 'photo_camera' as const,
+                  label: t('home.life-darkroom')
+                },
+                {
+                  href: `/${locale}/hobbies`,
+                  icon: 'category' as const,
+                  label: t('home.life-skill-toys')
+                }
+              ].map((entry) => (
+                <a
+                  href={entry.href}
+                  class="card-hover-amber group"
+                  style="display:block;border:1px solid var(--atelier-line);background-color:var(--atelier-bg);text-decoration:none;color:inherit"
+                >
+                  <Box
+                    className="fallback-grid-lines"
+                    borderBottom="1px solid"
+                    borderColor="var(--atelier-line)"
+                    bg="var(--atelier-surface-lowest)"
+                    display="grid"
+                    placeItems="center"
+                    h="7rem"
+                  >
+                    <Glyph name={entry.icon} className="atelier-icon-lg" />
+                  </Box>
+                  <Stack gap="3" p="5">
+                    <Heading as="h3" fontSize="2xl" lineHeight="1.1">
+                      {entry.label}
+                    </Heading>
+                    <Flex
+                      gap="2"
+                      alignItems="center"
+                      color="var(--atelier-accent)"
+                      fontFamily="var(--font-code)"
+                      fontSize="10px"
+                      letterSpacing="0.12em"
+                      textTransform="uppercase"
+                    >
+                      <Text>{t('common.open')}</Text>
+                      <Glyph name="north_east" />
+                    </Flex>
+                  </Stack>
+                </a>
+              ))
+            }
+          </Grid>
+        </Stack>
         {
           recentPhotos.length > 0 && (
-            <Stack gap="8">
-              <Flex align="center" gap="6">
-                <Box flex="1" minW="0">
-                  <SectionHeading label={t('home.photos-heading')} />
-                </Box>
-                <a href={`/${locale}/photos`} class="home-photos-all">
-                  {t('home.photos-all')}
-                </a>
-              </Flex>
+            <Stack gap="8" mt="16">
+              <SectionHeading label={t('home.photos-heading')} />
               <ul class="home-photos">
                 {recentPhotos.map((entry) => (
                   <li>
-                    <a
-                      href={entry.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-kameko-card
-                      style={`--ar: ${entry.media[0].width} / ${entry.media[0].height}`}
-                    >
-                      <img
-                        src={`${entry.media[0].url}?format=jpg&name=small`}
-                        alt={entry.subjects.map((subject) => subject.name).join(', ')}
-                        loading="lazy"
-                        decoding="async"
-                        draggable="false"
-                        referrerpolicy="no-referrer"
-                        data-kameko-image
-                      />
-                      <span>{entry.subjects.map((subject) => subject.name).join('、')}</span>
+                    <a href={entry.url} target="_blank" rel="noopener noreferrer">
+                      <span class="home-photos-frame" style={`aspect-ratio:${photoRatio(entry)}`}>
+                        <img
+                          src={`${entry.media[0].url}?format=jpg&name=small`}
+                          alt={subjectNames(entry).join(', ')}
+                          loading="lazy"
+                          decoding="async"
+                          draggable="false"
+                          referrerpolicy="no-referrer"
+                          data-kameko-image
+                        />
+                      </span>
+                      <span class="home-photos-name">{subjectNames(entry).join('、')}</span>
+                      <span class="home-photos-event">{entry.event}</span>
                     </a>
                   </li>
                 ))}
               </ul>
+              <a href={`/${locale}/photos`} class="home-photos-all">
+                {t('home.photos-all')}
+                <Glyph name="north_east" />
+              </a>
             </Stack>
           )
         }

@@ -37,6 +37,6 @@ Name  Email / Subject / Message / [Send message]
 ## Rules
 
 - The h1 is one colour; there is no amber "me."
-- There's no page eyebrow.
-- The submit button and panel headings are sentence case in the body face ("Send message", "Before you send", "Replies").
+- The "Contact" eyebrow chip sits above the h1, and "me." is amber, as in comp 12.
+- The submit button and panel headings are tracked uppercase.
 - Namecard previews use Ham's own card artwork and are not restyled to the site palette.

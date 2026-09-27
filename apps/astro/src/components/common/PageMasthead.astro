@@ -5,7 +5,7 @@ import { Heading } from '~/components/ui/heading';
 import { Text } from '~/components/ui/text';
 
 interface Props {
-  eyebrow?: string;
+  eyebrow: string;
   heading: string;
   lede?: string;
 }
@@ -14,7 +14,7 @@ const { eyebrow, heading, lede } = Astro.props;
 ---
 
 <Stack gap="4" className="page-header-rule" py="2">
-  {eyebrow && <Eyebrow label={eyebrow} />}
+  <Eyebrow label={eyebrow} />
   <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} lineHeight="0.92">
     {heading}
   </Heading>

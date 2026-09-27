@@ -9,9 +9,18 @@
   "find-out-more": "Find out more",
   "view-my-work": "View my work",
   "explore-hobbies": "Explore my hobbies",
+  "life-heading": "Life",
+  "life-darkroom": "Darkroom Printing / 400 ISO",
+  "life-skill-toys": "Skill Toys / Kendama / Flow",
+  "operational-status": "Personal site",
+  "status-current-phase": "Current focus",
+  "status-phase-title": "Homepage refresh",
+  "status-availability": "Availability",
+  "status-availability-title": "Open to freelance work.",
   "projects-empty-title": "Projects unavailable",
   "projects-empty-description": "Projects will show up again when the content connection is back.",
   "bench-heading": "How I work",
+  "bench-subtitle": "A short version of what I care about when building.",
   "bench-manifesto-heading": "Good design is",
   "bench-manifesto-emphasis": "practical.",
   "bench-manifesto-body": "I try to make interfaces easy to understand, quick to use, and honest about what they do.",
@@ -23,5 +32,6 @@
   "bench-tools-design": "Design",
   "bench-tools-scripting": "Scripting",
   "photos-heading": "Recent photos",
-  "photos-all": "All photos"
+  "photos-all": "All photos",
+  "photos-latest": "Latest capture"
 }

@@ -248,13 +248,14 @@ html:lang(th) .event-report__highlight-grid p {
 .home-hero-cta {
   display: inline-flex;
   align-items: center;
-  padding: 0.95rem 1.75rem;
+  padding: 1rem 2rem;
   border: 1px solid var(--atelier-line);
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0;
+  letter-spacing: 0.1em;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 /* Stacked at 390 the two CTAs were 183px and 238px, both left-aligned, so the hero's most
@@ -676,8 +677,9 @@ html:lang(th) a {
   color: var(--atelier-on-accent);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 1rem;
-  padding: 1.1rem 2.5rem;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  padding: 1.25rem 3rem;
   border: none;
   cursor: pointer;
   transition:
@@ -1114,7 +1116,7 @@ html:lang(th) a {
 
 .shell-sidebar-nav {
   flex: 1;
-  padding: 1.25rem 0;
+  padding: 1rem 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -1159,8 +1161,9 @@ html:lang(th) a {
 
 .shell-sidebar-link-label {
   font-family: var(--font-body);
-  font-size: 0.875rem;
-  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.1em;
 }
 
 .shell-sidebar-footer {

@@ -1,0 +1,64 @@
+---
+import { Box, Grid, HStack, Stack } from 'styled-system/jsx';
+import { Heading } from '~/components/ui/heading';
+import { Text } from '~/components/ui/text';
+import type { Languages } from '~/i18n/ui';
+import { useTranslations } from '~/i18n/utils';
+
+interface Props {
+  locale: Languages;
+}
+
+const { locale } = Astro.props as Props;
+const t = useTranslations(locale);
+---
+
+<Grid gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}>
+  {
+    /* No left padding on the first cell: its rule starts on the content edge, so padded text
+      sat 32px inboard of the line above it. */
+  }
+  <Stack
+    py={{ base: '5', sm: '8' }}
+    pr={{ base: '5', sm: '8' }}
+    gap="3"
+    minW="0"
+    borderRight={{ md: '1px solid' }}
+    borderBottom={{ base: '1px solid', md: 'none' }}
+    borderColor="var(--atelier-line)"
+  >
+    <Text
+      fontFamily="var(--font-code)"
+      fontSize="xs"
+      textTransform="uppercase"
+      letterSpacing="widest"
+      color="var(--atelier-outline)">{t('home.status-current-phase')}</Text
+    >
+    <Heading fontSize={{ base: '2xl', md: '3xl' }}>{t('home.status-phase-title')}</Heading>
+  </Stack>
+
+  <Stack p={{ base: '5', sm: '8' }} gap="3" minW="0">
+    <Text
+      fontFamily="var(--font-code)"
+      fontSize="xs"
+      textTransform="uppercase"
+      letterSpacing="widest"
+      color="var(--atelier-outline)">{t('home.status-availability')}</Text
+    >
+    <HStack gap="3" alignItems="start">
+      <Box position="relative" w="3" h="3" mt="2.5" flexShrink="0">
+        <Box w="3" h="3" bg="var(--atelier-accent)" />
+        <Box
+          position="absolute"
+          inset="0"
+          w="3"
+          h="3"
+          bg="var(--atelier-accent)"
+          className="animate-ping"
+          opacity="0.5"
+        />
+      </Box>
+      <Heading fontSize={{ base: '2xl', md: '3xl' }}>{t('home.status-availability-title')}</Heading>
+    </HStack>
+  </Stack>
+</Grid>

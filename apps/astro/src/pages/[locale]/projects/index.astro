@@ -8,6 +8,7 @@ import { graphQLSdk } from '~/graphql';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
+import { projectMonogram } from '~/utils/monogram';
 import { cleanProjectCopy } from '~/utils/project-copy';
 import { groupProjectsByActivity, requireProjects } from '~/utils/project-groups';
 import MainLayout from '~/layouts/MainLayout.astro';
@@ -69,7 +70,11 @@ if (projectsUnavailable) {
 <MainLayout title={pageTitle} description={t('project.intro')}>
   <Container maxW="breakpoint-xl" className="page-shell">
     <Stack py="10" gap="16">
-      <PageMasthead heading={t('project.page-heading')} lede={t('project.intro')} />
+      <PageMasthead
+        eyebrow={t('project.projects')}
+        heading={t('project.page-heading')}
+        lede={t('project.intro')}
+      />
 
       <Grid
         gridTemplateColumns={{ base: 'repeat(3, minmax(0, 1fr))' }}
@@ -198,10 +203,34 @@ if (projectsUnavailable) {
                                 loading={isLcp ? 'eager' : 'lazy'}
                                 fetchpriority={isLcp ? 'high' : undefined}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                onerror="this.parentElement.remove()"
                               />
                             </Box>
-                          ) : null}
+                          ) : (
+                            <Box
+                              position="relative"
+                              aspectRatio="16 / 9"
+                              border="1px solid"
+                              borderColor="var(--atelier-line)"
+                              overflow="hidden"
+                              className="fallback-grid-lines"
+                              display="grid"
+                              placeItems="center"
+                              mb="6"
+                              aria-hidden="true"
+                            >
+                              <Box
+                                fontFamily="var(--font-display)"
+                                fontStyle="italic"
+                                fontSize="96px"
+                                lineHeight="1"
+                                color="var(--atelier-outline)"
+                                opacity="0.3"
+                                userSelect="none"
+                              >
+                                {projectMonogram(project.title)}
+                              </Box>
+                            </Box>
+                          )}
                           <Flex justifyContent="space-between" alignItems="start" mb="2" gap="3">
                             <Heading
                               as="h3"
@@ -282,8 +311,22 @@ if (projectsUnavailable) {
                             mt="auto"
                             className="view-execution-link"
                           >
-                            <Text color="var(--atelier-accent)" fontSize="sm" fontWeight="bold">
+                            <Text
+                              fontFamily="var(--font-code)"
+                              fontSize="11px"
+                              textTransform="uppercase"
+                              letterSpacing="0.08em"
+                              color="var(--atelier-accent)"
+                            >
                               {t('project.view-execution')}
+                            </Text>
+                            <Text
+                              color="var(--atelier-accent)"
+                              fontSize="sm"
+                              transition="margin-left 0.2s ease"
+                              className="arrow-icon"
+                            >
+                              →
                             </Text>
                           </Flex>
                         </Stack>
@@ -322,6 +365,22 @@ if (projectsUnavailable) {
                         textDecorationLine="none"
                         className="group blocky-shadow blocky-shadow-hover"
                       >
+                        <Box
+                          position="absolute"
+                          bottom="-24px"
+                          right="-8px"
+                          fontFamily="var(--font-display)"
+                          fontStyle="italic"
+                          fontSize="120px"
+                          lineHeight="1"
+                          color="var(--atelier-fg)"
+                          opacity="0.04"
+                          userSelect="none"
+                          pointerEvents="none"
+                          aria-hidden="true"
+                        >
+                          {projectMonogram(project.title)}
+                        </Box>
                         <Flex justifyContent="space-between" alignItems="center" mb="2" gap="3">
                           <Heading
                             as="h3"

@@ -1,14 +1,20 @@
 # ham-san.net design system
 
-This is the reference for how every page on ham-san.net looks and behaves. Each page has its own document in [`pages/`](pages/). The palette follows the Atelier design system in `stitch_exports/4878703984446574546/01_design-system.md`. This document records the decisions made on top of it, including the 2026-09-27 polish pass.
+This is the reference for how every page on ham-san.net looks and behaves. Each page has its own document in [`pages/`](pages/). The palette follows the Atelier design system in `stitch_exports/4878703984446574546/01_design-system.md`. The owner's approved sources win over any generic style advice:
+
+- `stitch_exports/4878703984446574546/01_design-system.md` (tokens and rules);
+- the comp PNGs listed in `stitch_exports/4878703984446574546/manifest.md` (02/07 home, 03/08 about, 04 projects, 05/11 hobbies, 09 note, 12 contact, 06/10 brand);
+- `specs/01-design-language.md` to `specs/05-localization-quality.md`.
+
+Compare a page against its comp before changing its chrome. A pass that removed the Atelier chrome on 2026-09-27 was reverted the same day.
 
 ## Principles
 
-1. **Real content or nothing.** Never show a placeholder that pretends to be content: no ghost letters, monogram tiles, empty image plates or icon-in-a-box cards. When an item has no image, the layout drops the image slot instead of filling it.
-2. **Photography carries the personality.** The site belongs to a web builder who also shoots event portraits. Where a page needs imagery, it uses Ham's own photos from the gallery before any decoration.
-3. **Amber is a signal, not decoration.** `--atelier-accent` marks interactive or current things: primary buttons, the current language, the active rail item, links inside text, and the brand frame. It is never used to colour one word of a headline.
-4. **Say it once.** A page title is not preceded by a chip that repeats it. Chips exist only where they add context (a detail page naming its section, a status, a hashtag).
-5. **Sentence case.** Buttons, links, navigation and section titles are in sentence case in the body or display face. Tracked uppercase mono is reserved for small data labels (dates, counts, tag pills, metadata).
+1. **Dense architectural composition.** Pages read as blueprints: exposed 1 px `--atelier-line` borders, hard-edged modules, strict 0 px radius, grayscale surfaces. The home page has a strong identity block, a status row and supporting modules (spec 02).
+2. **Atelier chrome is the brand.** Every page title has a small mono eyebrow chip in amber. Labels, chips, rail links, buttons and footer links are tracked uppercase (mono for data, body face for buttons and rail). Headlines may carry one italic amber phrase, as in the comps.
+3. **Deliberate fallback art.** Missing media renders designed fallback art: grid-line plates with a display-face monogram (hobbies, projects). Never an empty box, never a broken image (spec 03).
+4. **Photography where the comps have a photo.** The home hero's image slot shows Ham's latest named gallery portrait with a "Latest capture" chip; the home ends with Recent photos.
+5. **Amber is the only signal colour.** No second hue.
 6. **Link to the source.** Photos are shown straight from X and every one links to its original post. Nothing is re-hosted.
 
 ## Brand
@@ -100,20 +106,20 @@ Weights must be ones the font request actually serves; `apps/astro/tests/atelier
 
 | Component | File | Contract |
 | --- | --- | --- |
-| `PageMasthead` | `components/common/PageMasthead.astro` | Optional `eyebrow`, `heading` (h1), optional `lede`. Index pages pass no eyebrow. |
-| `Eyebrow` | `components/common/Eyebrow.astro` | Small mono chip. Only used for context: detail page section, hobby status, events kicker, photo hashtag. |
+| `PageMasthead` | `components/common/PageMasthead.astro` | `eyebrow` chip, `heading` (h1), optional `lede`. Every index page passes an eyebrow. |
+| `Eyebrow` | `components/common/Eyebrow.astro` | Small amber mono chip above every page title and hero. |
 | `SectionHeading` | `components/common/SectionHeading.astro` | h2 in the display face followed by a hairline rule. The only section-title form on the site. |
 | `BrandMark` | `components/brand/BrandMark.tsx` | Mark plus wordmark. Must stay crisp at 32 px (`shapeRendering="crispEdges"`). |
-| Buttons | `.home-hero-cta`, `.contact-submit-btn`, `.not-found-*` | Sentence case, body face, 1rem, weight 700. Primary is amber on `--atelier-on-accent`. |
+| Buttons | `.home-hero-cta`, `.contact-submit-btn`, `.not-found-*` | Uppercase, tracked 0.1em, body face, weight 700. Primary is amber on `--atelier-on-accent` with the blocky shadow. |
 | Chips/pills | status, tags, meta | Mono 10–12 px uppercase, 1 px `--atelier-line` border. |
-| Project card | `components/projects/ProjectCard.tsx`, projects page | Image only when the project has one; otherwise a text card. The link reads "Open project" / "View project" in sentence case. |
+| Project card | `components/projects/ProjectCard.tsx`, projects page | Screenshot when the project has one; otherwise a grid-line plate with the project monogram. |
 | Gallery tile | `pages/[locale]/photos/index.astro` | Justified collage tile at the photo's real aspect ratio, linking to the X post, with an expand button that opens the viewer. |
 
 ## Imagery and third-party content
 
 - **Gallery photos** come from `apps/astro/src/constants/kameko-posts.json` (post metadata only) and load from `pbs.twimg.com`. Every tile links to the original post on X. The page adds `referrerpolicy="no-referrer"` and `draggable="false"`, blocks the context menu on images, and hides a tile whose image fails to load, so posts deleted on X drop off the site.
 - **The home hero** shows the latest named portrait, and the home "Recent photos" strip shows the newest photo of each other person. Both link to X.
-- **CMS images** (projects, hobbies) come from the Strapi/Outline APIs. When an image fails to load, its frame is removed; no fallback art is drawn.
+- **CMS images** (projects, hobbies) come from the Strapi/Outline APIs. A missing image renders the grid-line monogram plate.
 - **The gallery cache** is refreshed with `cd apps/astro && TWEETAPI_IO_API_KEY=… bun run fetch:kameko`. This is one request per run and never refetches a known post. `KAMEKO_DEEP=1` is a paid full sweep that needs the owner's approval.
 
 ## Motion

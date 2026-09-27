@@ -11,7 +11,7 @@ This is the list of public notes from Ham's Outline knowledge base: chord charts
 ## Anatomy
 
 ```
-Notes                                        (h1, no eyebrow)
+Notes                                        (h1, amber eyebrow chip above)
 Public notes from my personal knowledge base …
 ┌ Total notes 32 ┬ Collections 7 ┬ Latest June 2026 ┐
 ┌ Latest note (page 1 only) ──────────────────────────┐

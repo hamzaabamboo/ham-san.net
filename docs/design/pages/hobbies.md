@@ -11,17 +11,17 @@ This is an index of Ham's hobbies (camera, typing, music, darts, Rubik's, postur
 ## Anatomy
 
 ```
-Hobbies                                     (h1, no eyebrow)
+Hobbies                                     (h1, amber eyebrow chip above)
 Camera, music, typing, puzzles, darts, maps, and reference notes.
 ──────────────────────────────────────────────────────────────
-Camera                          [ACTIVE] [UPDATED …] [12 LINKS · 3 PAGES]
+[C] Camera                      [ACTIVE] [UPDATED …] [12 LINKS · 3 PAGES]
 Wishlist / Research
 ──────────────────────────────────────────────────────────────
-Pen Spinning                    [INACTIVE] [UPDATED …]
+[P] Pen Spinning                [INACTIVE] [UPDATED …]
 ──────────────────────────────────────────────────────────────
 ```
 
-Each row shows an optional content-type label, the title (display face), a description (only when the hobby has source content) and meta pills for status, last updated, and link and page counts.
+Each row starts with an image tile (the hobby's image, or a grid-line plate with its display-face initial), then an optional content-type label, the title (display face), a description (only when the hobby has source content) and meta pills for status, last updated, and link and page counts.
 
 ## Data and caching
 
@@ -35,6 +35,6 @@ Each row shows an optional content-type label, the title (display face), a descr
 
 ## Rules
 
-- There are no image tiles or ghost-letter tiles. The list is a typographic index. The tile column was removed on 2026-09-27 because most hobbies have no image and letter art read as placeholder.
-- Hobbies without source content show no description ("Parked note…" filler is gone); the status pill carries the state.
+- Missing media renders the grid-line letter plate: deliberate fallback art, never an empty box (spec 03, comp 11).
+- Hobbies without source content show the `hobbies.overview-empty-page` description.
 - Row hover: a faint amber wash and underlined title, both driven from `hobbyRow` and `hobbyCardTitle`.

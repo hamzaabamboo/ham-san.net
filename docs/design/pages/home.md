@@ -10,30 +10,39 @@ This is the first page a visitor sees. It says who Ham is in one sentence, shows
 
 ## Anatomy
 
+Reference comps: `stitch_exports/4878703984446574546/02_the-personal-workshop-homepage.png` and `07_the-builders-workshop-homepage.png`.
+
 ```
 ┌──────────────────────────────────────────┬───────────────┐
-│ Building for the web,                    │ ┌───────────┐ │
-│ driven by curiosity.                     │ │ latest    │ │
-│                                          │ │ portrait  │ │
-│ I spend as much time in a darkroom …     │ │ (own ratio)│ │
-│                                          │ └───────────┘ │
-│ [View my work]  [Explore my hobbies]     │ Name          │
-│                                          │ Event         │
-├──────────────────────────────────────────┴───────────────┤
+│ [PERSONAL SITE]                          │┌[LATEST CAPTURE]┐
+│ Building for the web,                    ││ latest named  │
+│ driven by curiosity.   (italic amber)    ││ portrait      │
+│ I spend as much time in a darkroom …     │├───────────────┤
+│ [VIEW MY WORK]  [EXPLORE MY HOBBIES]     ││ Name (italic) │
+│                                          ││ EVENT  ALL PHOTOS
+├──────────────────────────┬───────────────┴───────────────┤
+│ CURRENT FOCUS            │ AVAILABILITY                  │
+│ Homepage refresh         │ ■ Open to freelance work.     │
+├──────────────────────────┴───────────────────────────────┤
 │ How I work ───────────────────────────────────────────── │
 │ ┌ Good design is practical. ─────┐ ┌ tools ───────────┐  │
-│ └ Clear  Useful  Maintainable ───┘ └──────────────────┘  │
+│ └ CLEAR  USEFUL  MAINTAINABLE ───┘ └──────────────────┘  │
 │ Featured projects ────────────────────────────────────── │
 │ [card] [card] [card]                                     │
-│ Recent photos ──────────────────────────── All photos    │
+│ Life ─────────────────────────────────────────────────── │
+│ [Darkroom printing]  [Skill toys]                        │
+│ Recent photos ────────────────────────────────────────── │
 │ [photo] [photo] [photo] [photo]                          │
+│ ALL PHOTOS ↗                                             │
 └──────────────────────────────────────────────────────────┘
 ```
 
-1. **Hero.** The h1 is `home.hero-heading-prefix` plus `home.hero-heading-emphasis`: two lines in one colour with no accent phrase. Below it come the subtitle `home.hero-subtitle`, the primary CTA `home.view-my-work` → `/projects` and the secondary CTA `home.explore-hobbies` → `/hobbies`. The right column is a figure showing the newest named gallery portrait, with the person's name and the event. "All photos" appears once, beside the Recent photos heading.
-2. **How I work** (`SectionHeading home.bench-heading`, no subtitle). A manifesto card with three principle chips (sentence case) beside a tools card.
-3. **Featured projects** (`home.featured-projects`). Up to 3 projects, preferring ones with a screenshot, in a 16:10 frame. Titles are in the display face, as set (not uppercased). There's no arrow glyph. On touch devices screenshots show at true colour, since there is no hover to recover it.
-4. **Recent photos** (`home.photos-heading`). The newest photo of each of up to four other people, excluding the hero's person.
+1. **Hero.** `Eyebrow home.operational-status`, then the h1: `home.hero-heading-prefix` plus `home.hero-heading-emphasis` on its own line in italic amber. Subtitle `home.hero-subtitle`, primary CTA `home.view-my-work` → `/projects`, secondary CTA `home.explore-hobbies` → `/hobbies` (uppercase). The right column is a bordered figure: the newest named gallery portrait at its own aspect ratio with a `home.photos-latest` chip, then the name in italic display and a mono meta row (event, "All photos").
+2. **Status row** (`StatusRow`). Current focus and availability, mono labels, pinging amber square.
+3. **How I work** (`SectionHeading home.bench-heading` with `home.bench-subtitle`). A manifesto card (one amber italic phrase) with three uppercase mono principle chips beside a tools card.
+4. **Featured projects** (`home.featured-projects`). Up to 3 projects, preferring ones with a screenshot; a project without one gets the grid-line monogram plate.
+5. **Life** (`home.life-heading`). Two grid-line plate cards with a glyph, a display-face title and an amber mono "Open" link.
+6. **Recent photos** (`home.photos-heading`). The newest photo of each of up to four other people, excluding the hero's person, as bordered cards with the name and a mono event line; "All photos" link below.
 
 ## Data and caching
 
@@ -61,9 +70,6 @@ This is the first page a visitor sees. It says who Ham is in one sentence, shows
 
 ## Rules
 
-- Sections are separated by spacing only; there are no full-width divider lines. Every section title is a `SectionHeading` (display h2 plus inline rule). A trailing action link sits after the rule.
-- The footer links are sentence case in the body face.
-
+- Follow the comps: eyebrow chip, italic amber emphasis line, 1 px `--atelier-line` borders between hero, status row and sections.
 - The hero never shows CMS clip art (`introductionImage`). Any hero `<img>` must be a gallery image (`data-kameko-image`); `tests/round22-contracts` checks this.
-- No eyebrow chip, no status row, no availability claim unless Ham states one.
-- Photos are never cropped: the hero frame and every Recent photos item take `aspect-ratio` from the photo's real width and height.
+- Photos are never cropped: the hero frame and every Recent photos frame take `aspect-ratio` from the photo's real width and height.

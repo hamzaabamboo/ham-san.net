@@ -11,7 +11,7 @@ This page gives an overview of Ham's skills and technologies, grouped by domain,
 ## Anatomy
 
 ```
-Tags                                          (h1, no eyebrow)
+Tags                                          (h1, amber eyebrow chip above)
 Skills, domains, and recurring themes …
 FRONTEND ──────────────────────────────────────────────── (full width)
 [REACT (28)] [VUE (3)] [NEXT.JS (13)] …

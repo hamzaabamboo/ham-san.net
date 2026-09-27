@@ -8,6 +8,7 @@ import { InteractiveNamecard } from '~/components/namecard/InteractiveNamecard';
 import { NAMECARDS } from '~/constants/namecard';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
 
 export const prerender = false;
@@ -46,18 +47,17 @@ const items = [
   <Container w="full" maxW="breakpoint-xl" py="8" className="page-shell">
     <Stack gap="12">
       <Stack gap="4" className="page-header-rule" py="4">
+        <Eyebrow label={t('common.contact')} />
         <Heading
           as="h1"
           fontSize={{ base: '5xl', md: '7xl' }}
           lineHeight="tight"
           letterSpacing="tighter"
         >
-          {
-            t('contact.hero-prefix') +
-              t('contact.hero-separator') +
-              t('contact.hero-highlight') +
-              t('contact.hero-suffix')
-          }
+          {t('contact.hero-prefix') + t('contact.hero-separator')}<Box
+            as="span"
+            color="var(--atelier-accent)">{t('contact.hero-highlight')}</Box
+          >{t('contact.hero-suffix')}
         </Heading>
         <Text color="var(--atelier-fg-muted)" fontSize="xl" maxW="2xl" lineHeight="relaxed" mt="2">
           {t('contact.intro')}
@@ -321,7 +321,10 @@ const items = [
                   style="min-height: 180px; resize: vertical;"
                   required></textarea>
               </Stack>
-              <button class="contact-submit-btn">{t('contact.execute-transmission')}</button>
+              <button class="contact-submit-btn">
+                {t('contact.execute-transmission')}
+                <Glyph name="send" style={{ fontSize: '16px' }} />
+              </button>
             </form>
           </Stack>
         </Stack>
@@ -332,7 +335,14 @@ const items = [
         gap="8"
       >
         <Stack border="1px solid" borderColor="var(--atelier-line)" p="6">
-          <Text fontWeight="bold" fontSize="md" color="var(--atelier-fg)" mb="3">
+          <Text
+            fontWeight="bold"
+            fontSize="sm"
+            textTransform="uppercase"
+            letterSpacing="0.2em"
+            color="var(--atelier-accent-soft)"
+            mb="4"
+          >
             {t('contact.security-brief')}
           </Text>
           <Text color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="relaxed">
@@ -340,7 +350,14 @@ const items = [
           </Text>
         </Stack>
         <Stack border="1px solid" borderColor="var(--atelier-line)" p="6">
-          <Text fontWeight="bold" fontSize="md" color="var(--atelier-fg)" mb="3">
+          <Text
+            fontWeight="bold"
+            fontSize="sm"
+            textTransform="uppercase"
+            letterSpacing="0.2em"
+            color="var(--atelier-accent-soft)"
+            mb="4"
+          >
             {t('contact.office-hours')}
           </Text>
           {

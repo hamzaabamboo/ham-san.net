@@ -9,9 +9,18 @@
   "find-out-more": "もっと見る",
   "view-my-work": "仕事を見る",
   "explore-hobbies": "趣味を探る",
+  "life-heading": "暮らし",
+  "life-darkroom": "暗室プリント / 400 ISO",
+  "life-skill-toys": "スキルトイ / けん玉 / フロー",
+  "operational-status": "個人サイト",
+  "status-current-phase": "今の作業",
+  "status-phase-title": "ホームページ更新",
+  "status-availability": "稼働状況",
+  "status-availability-title": "フリーランス案件を受付中。",
   "projects-empty-title": "プロジェクトは現在利用できません",
   "projects-empty-description": "接続が戻ると、プロジェクトが再表示されます。",
   "bench-heading": "仕事の進め方",
+  "bench-subtitle": "作るときに大事にしていること。",
   "bench-manifesto-heading": "良いデザインは",
   "bench-manifesto-emphasis": "実用的。",
   "bench-manifesto-body": "分かりやすく、速く、挙動が素直な画面を作るようにしています。",
@@ -23,5 +32,6 @@
   "bench-tools-design": "デザイン",
   "bench-tools-scripting": "スクリプト",
   "photos-heading": "最近の写真",
-  "photos-all": "すべての写真"
+  "photos-all": "すべての写真",
+  "photos-latest": "最新の一枚"
 }

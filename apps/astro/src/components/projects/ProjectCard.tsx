@@ -1,7 +1,8 @@
-import { FaGithub, FaGlobe } from 'react-icons/fa';
-import { Box, Stack, styled, Wrap } from 'styled-system/jsx';
+import { FaArrowRight, FaGithub, FaGlobe } from 'react-icons/fa';
+import { Box, Center, Stack, styled, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { resolveMedia } from 'utils/media';
+import { projectMonogram } from '~/utils/monogram';
 import { Enum_Componentutilslink_Type } from '~/graphql/generated/client';
 import { Languages } from '~/i18n/ui';
 import { useTranslations } from '~/i18n/utils';
@@ -125,7 +126,40 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                 filter="var(--atelier-image-rest)"
                 _groupHover={{ transform: 'scale(1.03)', filter: 'var(--atelier-image-hover)' }}
               />
-            ) : null}
+            ) : (
+              <Box
+                className="fallback-grid-lines"
+                position="relative"
+                aspectRatio="4 / 3"
+                overflow="hidden"
+              >
+                <Center inset="0" position="absolute">
+                  <Text
+                    color="var(--atelier-fg)"
+                    fontFamily="var(--font-display)"
+                    fontSize="96px"
+                    lineHeight="1"
+                    opacity="0.06"
+                    userSelect="none"
+                    transition="opacity 0.3s ease"
+                    fontStyle="italic"
+                    _groupHover={{ opacity: 0.1 }}
+                  >
+                    {projectMonogram(title)}
+                  </Text>
+                </Center>
+                <Box
+                  position="absolute"
+                  left="0"
+                  right="0"
+                  bottom="0"
+                  h="2px"
+                  bg="var(--atelier-line)"
+                  transition="background-color 0.3s ease"
+                  _groupHover={{ bg: 'var(--atelier-accent)' }}
+                />
+              </Box>
+            )}
           </Box>
           <Stack flex="1" gap="3" p="5">
             {/* Reserves two lines: in a narrow column "Side Project | October 2020" wraps
@@ -163,10 +197,13 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               alignItems="center"
               marginTop="auto"
               color="var(--atelier-accent)"
-              fontSize="sm"
-              fontWeight="bold"
+              fontFamily="var(--font-code)"
+              fontSize="10px"
+              letterSpacing="0.12em"
+              textTransform="uppercase"
             >
               <Text>{t('project.open-project')}</Text>
+              <FaArrowRight />
             </Wrap>
           </Stack>
         </Stack>

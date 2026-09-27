@@ -12,6 +12,7 @@ import { Enum_Tag_Type } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { sortTags } from '~/utils/tags';
 
@@ -117,6 +118,7 @@ Astro.response.headers.set(
     <Stack py="10" gap="12">
       <Stack className="page-header-rule" py="4">
         <Box mb="4">
+          <Eyebrow label={t('about-me.eyebrow')} />
         </Box>
         <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} lineHeight="0.95" mb="4">
           {t('about-me.hero-title')}
@@ -341,6 +343,47 @@ Astro.response.headers.set(
                   }
                 </Wrap>
               </Stack>
+              <Box
+                position="relative"
+                border="1px solid"
+                borderColor="var(--atelier-line)"
+                minH="28"
+                overflow="hidden"
+                className="fallback-grid-lines"
+              >
+                <Box
+                  position="absolute"
+                  inset="4"
+                  border="1px solid"
+                  borderColor="var(--atelier-line)"
+                />
+                {
+                  /* Sat outside the frame it belongs to, with the italic descender crossing
+                    the bottom rule — in a hard-edged language with no other overhangs that
+                    reads as clipping, not as a bleed. */
+                }
+                <Text
+                  position="absolute"
+                  left="7"
+                  bottom="6"
+                  fontFamily="var(--font-display)"
+                  fontSize="5xl"
+                  fontStyle="italic"
+                  lineHeight="1.15"
+                >
+                  Ham
+                </Text>
+                <Text
+                  position="absolute"
+                  right="6"
+                  top="6"
+                  fontFamily="var(--font-code)"
+                  fontSize="10px"
+                  color="var(--atelier-accent)"
+                >
+                  WEB / UI
+                </Text>
+              </Box>
             </Stack>
           </Box>
           <Stack
