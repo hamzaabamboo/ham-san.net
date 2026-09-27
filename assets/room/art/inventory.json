@@ -1,0 +1,11870 @@
+[
+ {
+  "object": "Monitor screen",
+  "material": "Monitor forest display",
+  "image": "monitor-forest-wallpaper.png",
+  "image_px": [
+   1672,
+   941
+  ],
+  "uv_rect_px": [
+   0,
+   15,
+   1672,
+   926
+  ],
+  "world_w_m": 0.6515,
+  "world_h_m": 0.3548,
+  "faces": 1,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Laptop display",
+  "material": "Laptop actual projects display",
+  "image": "laptop-projects-display.png",
+  "image_px": [
+   1344,
+   800
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1344,
+   800
+  ],
+  "world_w_m": 0.3111,
+  "world_h_m": 0.1852,
+  "faces": 1,
+  "normal": [
+   0.978,
+   0.0,
+   0.208
+  ]
+ },
+ {
+  "object": "Desk charcoal workpad",
+  "material": "Room/Desk mat chalk doodles",
+  "image": "desk-mat-chalk-doodles.png",
+  "image_px": [
+   1024,
+   768
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   768
+  ],
+  "world_w_m": 0.3481,
+  "world_h_m": 0.3401,
+  "faces": 6,
+  "normal": [
+   0.0,
+   0.0,
+   -1.0
+  ]
+ },
+ {
+  "object": "Tablet glass",
+  "material": "Tablet actual notes display",
+  "image": "tablet-notes-display.png",
+  "image_px": [
+   984,
+   800
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   984,
+   800
+  ],
+  "world_w_m": 0.2592,
+  "world_h_m": 0.2111,
+  "faces": 1,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Desk handwritten sheet",
+  "material": "Room/Desk message sheet",
+  "image": "desk-message-sheet.png",
+  "image_px": [
+   640,
+   930
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   640,
+   930
+  ],
+  "world_w_m": 0.76,
+  "world_h_m": 0.96,
+  "faces": 1,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Closet anime illustrated print",
+  "material": "Restored illustrated poster set",
+  "image": "illustrated-posters-minimal.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   715,
+   0,
+   1166,
+   627
+  ],
+  "world_w_m": 0.54,
+  "world_h_m": 0.74,
+  "faces": 1,
+  "normal": [
+   0.0,
+   1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Closet portrait illustrated print",
+  "material": "Restored illustrated poster set",
+  "image": "illustrated-posters-minimal.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   695,
+   627,
+   1186,
+   1254
+  ],
+  "world_w_m": 0.4,
+  "world_h_m": 0.5338,
+  "faces": 1,
+  "normal": [
+   0.0,
+   0.998,
+   0.056
+  ]
+ },
+ {
+  "object": "Folded towel 1",
+  "material": "Room/Live towel print 1",
+  "image": "live-towel-photo-atlas.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   1536
+  ],
+  "world_w_m": 0.1588,
+  "world_h_m": 0.5631,
+  "faces": 1152,
+  "normal": [
+   0.931,
+   0.365,
+   -0.005
+  ]
+ },
+ {
+  "object": "Folded towel 2",
+  "material": "Room/Live towel print 2",
+  "image": "live-towel-photo-atlas.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   1536
+  ],
+  "world_w_m": 0.1894,
+  "world_h_m": 0.982,
+  "faces": 1152,
+  "normal": [
+   0.953,
+   0.28,
+   -0.118
+  ]
+ },
+ {
+  "object": "Live wall uchiwa face",
+  "material": "Room/Uchiwa sunburst heart print",
+  "image": "uchiwa-sunburst-heart.png",
+  "image_px": [
+   512,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   512,
+   512
+  ],
+  "world_w_m": 0.201,
+  "world_h_m": 0.189,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   -0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Folded towel 3",
+  "material": "Room/Live towel print 3",
+  "image": "live-towel-photo-atlas.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   1536
+  ],
+  "world_w_m": 0.1546,
+  "world_h_m": 0.9683,
+  "faces": 1152,
+  "normal": [
+   0.945,
+   0.292,
+   0.145
+  ]
+ },
+ {
+  "object": "Folded towel 4",
+  "material": "Room/Live towel print 4",
+  "image": "live-towel-photo-atlas.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   1536
+  ],
+  "world_w_m": 0.1431,
+  "world_h_m": 0.7822,
+  "faces": 1152,
+  "normal": [
+   0.968,
+   0.238,
+   0.075
+  ]
+ },
+ {
+  "object": "Album stack u2-1-1-01",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   192,
+   0,
+   256,
+   512
+  ],
+  "world_w_m": 0.0938,
+  "world_h_m": 0.006,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-1-02",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   832,
+   0,
+   896,
+   512
+  ],
+  "world_w_m": 0.0938,
+  "world_h_m": 0.009,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-1-03",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   512
+  ],
+  "world_w_m": 0.0938,
+  "world_h_m": 0.009,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-1-04",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   512
+  ],
+  "world_w_m": 0.096,
+  "world_h_m": 0.006,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-1-05",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   576,
+   0,
+   640,
+   512
+  ],
+  "world_w_m": 0.0938,
+  "world_h_m": 0.0075,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-1-06",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   192,
+   0,
+   256,
+   512
+  ],
+  "world_w_m": 0.0938,
+  "world_h_m": 0.006,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-2-01",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   640,
+   0,
+   704,
+   512
+  ],
+  "world_w_m": 0.096,
+  "world_h_m": 0.009,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-2-02",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   512
+  ],
+  "world_w_m": 0.0938,
+  "world_h_m": 0.0075,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-2-03",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.096,
+  "world_h_m": 0.0075,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-2-04",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   64,
+   0,
+   128,
+   512
+  ],
+  "world_w_m": 0.096,
+  "world_h_m": 0.0075,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-3-01",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.096,
+  "world_h_m": 0.009,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-3-02",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   64,
+   0,
+   128,
+   512
+  ],
+  "world_w_m": 0.096,
+  "world_h_m": 0.006,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-3-03",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.096,
+  "world_h_m": 0.009,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-3-04",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   576,
+   0,
+   640,
+   512
+  ],
+  "world_w_m": 0.0938,
+  "world_h_m": 0.0075,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-3-05",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.0938,
+  "world_h_m": 0.006,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-3-06",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.096,
+  "world_h_m": 0.006,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-3-07",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.096,
+  "world_h_m": 0.0075,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album stack u2-1-3-08",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0938,
+  "world_h_m": 0.006,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r1 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   333,
+   635,
+   443,
+   934
+  ],
+  "world_w_m": 0.0444,
+  "world_h_m": 0.1206,
+  "faces": 110,
+  "normal": [
+   -0.998,
+   -0.061,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r1 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   337,
+   637,
+   447,
+   934
+  ],
+  "world_w_m": 0.0419,
+  "world_h_m": 0.1131,
+  "faces": 125,
+  "normal": [
+   -0.992,
+   0.13,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r1 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   495,
+   633,
+   615,
+   931
+  ],
+  "world_w_m": 0.0486,
+  "world_h_m": 0.1206,
+  "faces": 161,
+  "normal": [
+   -1.0,
+   0.025,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r1 s4 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   461,
+   643,
+   625,
+   947
+  ],
+  "world_w_m": 0.061,
+  "world_h_m": 0.1131,
+  "faces": 152,
+  "normal": [
+   -0.99,
+   0.144,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r1 s5 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   498,
+   634,
+   612,
+   935
+  ],
+  "world_w_m": 0.0514,
+  "world_h_m": 0.1357,
+  "faces": 122,
+  "normal": [
+   -1.0,
+   -0.007,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r2 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   475,
+   637,
+   649,
+   935
+  ],
+  "world_w_m": 0.0616,
+  "world_h_m": 0.1055,
+  "faces": 194,
+  "normal": [
+   -1.0,
+   -0.019,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r2 s2 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   635,
+   632,
+   781,
+   934
+  ],
+  "world_w_m": 0.0474,
+  "world_h_m": 0.098,
+  "faces": 137,
+  "normal": [
+   -0.994,
+   -0.108,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r2 s3 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   643,
+   656,
+   775,
+   947
+  ],
+  "world_w_m": 0.0513,
+  "world_h_m": 0.1131,
+  "faces": 170,
+  "normal": [
+   -1.0,
+   0.019,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r2 s4 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   632,
+   634,
+   780,
+   932
+  ],
+  "world_w_m": 0.0562,
+  "world_h_m": 0.1131,
+  "faces": 173,
+  "normal": [
+   -0.983,
+   -0.183,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r3 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   657,
+   633,
+   787,
+   936
+  ],
+  "world_w_m": 0.0388,
+  "world_h_m": 0.0904,
+  "faces": 131,
+  "normal": [
+   -0.978,
+   -0.207,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r3 s2 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   809,
+   632,
+   907,
+   933
+  ],
+  "world_w_m": 0.027,
+  "world_h_m": 0.0829,
+  "faces": 125,
+  "normal": [
+   -1.0,
+   -0.006,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r3 s3 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   779,
+   654,
+   946,
+   947
+  ],
+  "world_w_m": 0.0516,
+  "world_h_m": 0.0904,
+  "faces": 173,
+  "normal": [
+   -0.987,
+   -0.158,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r1 s1 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   336,
+   967,
+   457,
+   1247
+  ],
+  "world_w_m": 0.0521,
+  "world_h_m": 0.1206,
+  "faces": 128,
+  "normal": [
+   -0.999,
+   0.035,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r1 s2 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   315,
+   944,
+   460,
+   1243
+  ],
+  "world_w_m": 0.0621,
+  "world_h_m": 0.1281,
+  "faces": 164,
+  "normal": [
+   -0.995,
+   -0.1,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r1 s3 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   342,
+   946,
+   441,
+   1239
+  ],
+  "world_w_m": 0.0458,
+  "world_h_m": 0.1357,
+  "faces": 89,
+  "normal": [
+   -0.996,
+   -0.085,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r1 s4 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   494,
+   945,
+   617,
+   1233
+  ],
+  "world_w_m": 0.0483,
+  "world_h_m": 0.1131,
+  "faces": 182,
+  "normal": [
+   -0.989,
+   0.148,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r1 s5 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   468,
+   967,
+   594,
+   1250
+  ],
+  "world_w_m": 0.0537,
+  "world_h_m": 0.1206,
+  "faces": 143,
+  "normal": [
+   -0.997,
+   -0.078,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r2 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   469,
+   943,
+   616,
+   1243
+  ],
+  "world_w_m": 0.0517,
+  "world_h_m": 0.1055,
+  "faces": 128,
+  "normal": [
+   -0.998,
+   0.07,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r2 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   485,
+   947,
+   608,
+   1239
+  ],
+  "world_w_m": 0.0476,
+  "world_h_m": 0.1131,
+  "faces": 113,
+  "normal": [
+   -1.0,
+   -0.006,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r2 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   664,
+   945,
+   773,
+   1238
+  ],
+  "world_w_m": 0.0393,
+  "world_h_m": 0.1055,
+  "faces": 101,
+  "normal": [
+   -0.979,
+   -0.202,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r2 s4 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   636,
+   966,
+   768,
+   1246
+  ],
+  "world_w_m": 0.0497,
+  "world_h_m": 0.1055,
+  "faces": 131,
+  "normal": [
+   -1.0,
+   0.031,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r3 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   643,
+   944,
+   763,
+   1243
+  ],
+  "world_w_m": 0.0363,
+  "world_h_m": 0.0905,
+  "faces": 152,
+  "normal": [
+   -0.978,
+   -0.209,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r3 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   630,
+   947,
+   782,
+   1240
+  ],
+  "world_w_m": 0.043,
+  "world_h_m": 0.0829,
+  "faces": 104,
+  "normal": [
+   -0.976,
+   -0.218,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r3 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   808,
+   944,
+   923,
+   1234
+  ],
+  "world_w_m": 0.0329,
+  "world_h_m": 0.0829,
+  "faces": 173,
+  "normal": [
+   -0.988,
+   0.152,
+   0.0
+  ]
+ },
+ {
+  "object": "Penlight 01 tube",
+  "material": "Room/Penlight glitter tube yellow",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0316,
+  "world_h_m": 0.1654,
+  "faces": 16,
+  "normal": [
+   0.223,
+   0.973,
+   0.059
+  ]
+ },
+ {
+  "object": "Penlight 02 tube",
+  "material": "Room/Penlight glitter tube yellow",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0312,
+  "world_h_m": 0.1653,
+  "faces": 16,
+  "normal": [
+   0.223,
+   0.974,
+   0.05
+  ]
+ },
+ {
+  "object": "Penlight 03 tube",
+  "material": "Room/Penlight glitter tube white",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0304,
+  "world_h_m": 0.1652,
+  "faces": 16,
+  "normal": [
+   0.901,
+   0.434,
+   0.003
+  ]
+ },
+ {
+  "object": "Penlight 04 tube",
+  "material": "Room/Penlight glitter tube black",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0335,
+  "world_h_m": 0.1657,
+  "faces": 16,
+  "normal": [
+   0.901,
+   0.434,
+   -0.012
+  ]
+ },
+ {
+  "object": "Penlight 05 tube",
+  "material": "Room/Penlight glitter tube black",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0378,
+  "world_h_m": 0.1663,
+  "faces": 16,
+  "normal": [
+   0.901,
+   0.433,
+   0.025
+  ]
+ },
+ {
+  "object": "Penlight 06 tube",
+  "material": "Room/Penlight glitter tube magenta",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0309,
+  "world_h_m": 0.1653,
+  "faces": 16,
+  "normal": [
+   0.901,
+   0.434,
+   0.004
+  ]
+ },
+ {
+  "object": "Penlight 07 tube",
+  "material": "Room/Penlight glitter tube yellow",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0313,
+  "world_h_m": 0.1653,
+  "faces": 16,
+  "normal": [
+   0.223,
+   0.974,
+   0.052
+  ]
+ },
+ {
+  "object": "Penlight 08 tube",
+  "material": "Room/Penlight glitter tube white",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0366,
+  "world_h_m": 0.1661,
+  "faces": 16,
+  "normal": [
+   0.901,
+   0.433,
+   0.021
+  ]
+ },
+ {
+  "object": "Penlight 09 tube",
+  "material": "Room/Penlight glitter tube white",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0295,
+  "world_h_m": 0.165,
+  "faces": 16,
+  "normal": [
+   0.901,
+   0.434,
+   0.001
+  ]
+ },
+ {
+  "object": "Penlight 10 tube",
+  "material": "Room/Penlight glitter tube yellow",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0298,
+  "world_h_m": 0.1651,
+  "faces": 16,
+  "normal": [
+   0.223,
+   0.975,
+   -0.012
+  ]
+ },
+ {
+  "object": "Penlight 11 tube",
+  "material": "Room/Penlight glitter tube yellow",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0299,
+  "world_h_m": 0.1651,
+  "faces": 16,
+  "normal": [
+   0.223,
+   0.975,
+   0.014
+  ]
+ },
+ {
+  "object": "Idol u2r3 r4 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   800,
+   620,
+   949,
+   938
+  ],
+  "world_w_m": 0.0565,
+  "world_h_m": 0.1206,
+  "faces": 212,
+  "normal": [
+   -0.984,
+   -0.179,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r4 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   800,
+   638,
+   967,
+   935
+  ],
+  "world_w_m": 0.0593,
+  "world_h_m": 0.1055,
+  "faces": 149,
+  "normal": [
+   -1.0,
+   -0.028,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r4 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   966,
+   633,
+   1073,
+   933
+  ],
+  "world_w_m": 0.043,
+  "world_h_m": 0.1206,
+  "faces": 101,
+  "normal": [
+   -0.992,
+   -0.125,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r4 s4 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   951,
+   648,
+   1094,
+   947
+  ],
+  "world_w_m": 0.0505,
+  "world_h_m": 0.1055,
+  "faces": 155,
+  "normal": [
+   -0.978,
+   0.208,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r4 s5 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   967,
+   636,
+   1090,
+   933
+  ],
+  "world_w_m": 0.0437,
+  "world_h_m": 0.1055,
+  "faces": 134,
+  "normal": [
+   -0.988,
+   -0.157,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r5 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   986,
+   639,
+   1089,
+   932
+  ],
+  "world_w_m": 0.0318,
+  "world_h_m": 0.0904,
+  "faces": 149,
+  "normal": [
+   -0.992,
+   0.124,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r5 s2 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1128,
+   632,
+   1238,
+   933
+  ],
+  "world_w_m": 0.0331,
+  "world_h_m": 0.0904,
+  "faces": 113,
+  "normal": [
+   -1.0,
+   -0.007,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r5 s3 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1117,
+   650,
+   1240,
+   947
+  ],
+  "world_w_m": 0.0375,
+  "world_h_m": 0.0904,
+  "faces": 125,
+  "normal": [
+   -1.0,
+   -0.019,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r5 s4 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1125,
+   635,
+   1226,
+   935
+  ],
+  "world_w_m": 0.0279,
+  "world_h_m": 0.0829,
+  "faces": 122,
+  "normal": [
+   -0.994,
+   -0.108,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r4 s1 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   802,
+   969,
+   931,
+   1244
+  ],
+  "world_w_m": 0.0566,
+  "world_h_m": 0.1206,
+  "faces": 197,
+  "normal": [
+   -1.0,
+   0.019,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r4 s2 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   804,
+   945,
+   918,
+   1243
+  ],
+  "world_w_m": 0.0461,
+  "world_h_m": 0.1206,
+  "faces": 116,
+  "normal": [
+   -0.983,
+   -0.183,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r4 s3 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   806,
+   942,
+   912,
+   1239
+  ],
+  "world_w_m": 0.043,
+  "world_h_m": 0.1206,
+  "faces": 128,
+  "normal": [
+   -0.978,
+   -0.207,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r4 s4 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   971,
+   945,
+   1064,
+   1237
+  ],
+  "world_w_m": 0.036,
+  "world_h_m": 0.1131,
+  "faces": 98,
+  "normal": [
+   -1.0,
+   -0.006,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r4 s5 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   949,
+   970,
+   1088,
+   1247
+  ],
+  "world_w_m": 0.0605,
+  "world_h_m": 0.1206,
+  "faces": 179,
+  "normal": [
+   -0.987,
+   -0.158,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r5 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   924,
+   945,
+   1086,
+   1241
+  ],
+  "world_w_m": 0.0452,
+  "world_h_m": 0.0826,
+  "faces": 131,
+  "normal": [
+   -0.999,
+   0.035,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r5 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   953,
+   947,
+   1078,
+   1237
+  ],
+  "world_w_m": 0.0357,
+  "world_h_m": 0.0829,
+  "faces": 161,
+  "normal": [
+   -0.995,
+   -0.1,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r5 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1125,
+   944,
+   1218,
+   1238
+  ],
+  "world_w_m": 0.0286,
+  "world_h_m": 0.0905,
+  "faces": 83,
+  "normal": [
+   -0.996,
+   -0.085,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r4 r5 s4 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1114,
+   959,
+   1239,
+   1246
+  ],
+  "world_w_m": 0.0394,
+  "world_h_m": 0.0905,
+  "faces": 167,
+  "normal": [
+   -0.989,
+   0.148,
+   0.0
+  ]
+ },
+ {
+  "object": "Window tapestry fabric",
+  "material": "Restored illustrated poster set",
+  "image": "illustrated-posters-minimal.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   104,
+   19,
+   523,
+   1235
+  ],
+  "world_w_m": 0.5931,
+  "world_h_m": 1.66,
+  "faces": 960,
+  "normal": [
+   -0.151,
+   -0.989,
+   -0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 01",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 02",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   64,
+   0,
+   128,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 03",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 04",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   192,
+   0,
+   256,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 05",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 06",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 07",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   384,
+   0,
+   448,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 08",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 09",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 10",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   576,
+   0,
+   640,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 11",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   640,
+   0,
+   704,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 12",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   704,
+   0,
+   768,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 13",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 14",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   832,
+   0,
+   896,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 15",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   896,
+   0,
+   960,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 16",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 17",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 18",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   64,
+   0,
+   128,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 19",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 20",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   192,
+   0,
+   256,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 21",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 22",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 23",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   384,
+   0,
+   448,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 24",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 25",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 26",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   576,
+   0,
+   640,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 27",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   640,
+   0,
+   704,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 28",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   704,
+   0,
+   768,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 29",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 30",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   832,
+   0,
+   896,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 31",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   896,
+   0,
+   960,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 32",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 33",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 34",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   64,
+   0,
+   128,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 35",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 36",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   192,
+   0,
+   256,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 37",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 38",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 39",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   384,
+   0,
+   448,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 40",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 41",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 42",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   576,
+   0,
+   640,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 43",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   640,
+   0,
+   704,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 44",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   704,
+   0,
+   768,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 45",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 46",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   832,
+   0,
+   896,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 47",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   896,
+   0,
+   960,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 48",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine 49",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1111,
+   639,
+   1230,
+   933
+  ],
+  "world_w_m": 0.0282,
+  "world_h_m": 0.0697,
+  "faces": 164,
+  "normal": [
+   -0.998,
+   -0.061,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s2 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   21,
+   963,
+   151,
+   1243
+  ],
+  "world_w_m": 0.0304,
+  "world_h_m": 0.0656,
+  "faces": 176,
+  "normal": [
+   -0.992,
+   0.13,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s3 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   20,
+   943,
+   143,
+   1245
+  ],
+  "world_w_m": 0.0285,
+  "world_h_m": 0.0699,
+  "faces": 107,
+  "normal": [
+   -1.0,
+   0.025,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s4 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   17,
+   947,
+   146,
+   1239
+  ],
+  "world_w_m": 0.029,
+  "world_h_m": 0.0656,
+  "faces": 155,
+  "normal": [
+   -0.99,
+   0.144,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s5 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   189,
+   946,
+   292,
+   1236
+  ],
+  "world_w_m": 0.0279,
+  "world_h_m": 0.0787,
+  "faces": 140,
+  "normal": [
+   -1.0,
+   -0.007,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s6 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   173,
+   961,
+   304,
+   1245
+  ],
+  "world_w_m": 0.0323,
+  "world_h_m": 0.0699,
+  "faces": 149,
+  "normal": [
+   -0.998,
+   -0.061,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s7 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   196,
+   944,
+   293,
+   1243
+  ],
+  "world_w_m": 0.0213,
+  "world_h_m": 0.0656,
+  "faces": 101,
+  "normal": [
+   -0.992,
+   0.13,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s8 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   183,
+   950,
+   312,
+   1239
+  ],
+  "world_w_m": 0.0312,
+  "world_h_m": 0.0699,
+  "faces": 113,
+  "normal": [
+   -1.0,
+   0.025,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s9 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   347,
+   942,
+   445,
+   1238
+  ],
+  "world_w_m": 0.0217,
+  "world_h_m": 0.0656,
+  "faces": 104,
+  "normal": [
+   -0.99,
+   0.144,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol u2r3 r6 s10 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   27,
+   946,
+   142,
+   1238
+  ],
+  "world_w_m": 0.031,
+  "world_h_m": 0.0787,
+  "faces": 110,
+  "normal": [
+   -1.0,
+   -0.007,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 01",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 02",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   640,
+   0,
+   704,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0975,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 03",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 04",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   704,
+   0,
+   768,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 05",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 06",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0975,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 07",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 08",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 09",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 10",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   640,
+   0,
+   704,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 11",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0975,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 12",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0975,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 13",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   64,
+   0,
+   128,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0975,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 14",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 15",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   64,
+   0,
+   128,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0975,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 16",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0975,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 17",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   192,
+   0,
+   256,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 18",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   64,
+   0,
+   128,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 19",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   192,
+   0,
+   256,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 20",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 21",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   640,
+   0,
+   704,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 22",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 23",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 24",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 25",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0938,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album cd spine u3-4 26",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0072,
+  "world_h_m": 0.0975,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Booklet lean u2-1 1",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   3
+  ],
+  "world_w_m": 0.0038,
+  "world_h_m": 0.1125,
+  "faces": 1,
+  "normal": [
+   -0.247,
+   0.0,
+   0.969
+  ]
+ },
+ {
+  "object": "Booklet lean u2-1 2",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   3
+  ],
+  "world_w_m": 0.0038,
+  "world_h_m": 0.1125,
+  "faces": 1,
+  "normal": [
+   -0.247,
+   0.0,
+   0.969
+  ]
+ },
+ {
+  "object": "Booklet lean u2-1 3",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   704,
+   0,
+   768,
+   3
+  ],
+  "world_w_m": 0.0038,
+  "world_h_m": 0.1125,
+  "faces": 1,
+  "normal": [
+   -0.247,
+   0.0,
+   0.969
+  ]
+ },
+ {
+  "object": "Booklet lean u2-1 4",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   448,
+   0,
+   512,
+   3
+  ],
+  "world_w_m": 0.0038,
+  "world_h_m": 0.1125,
+  "faces": 1,
+  "normal": [
+   -0.247,
+   0.0,
+   0.969
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r1 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   35,
+   12,
+   141,
+   312
+  ],
+  "world_w_m": 0.0399,
+  "world_h_m": 0.1131,
+  "faces": 110,
+  "normal": [
+   -0.991,
+   -0.135,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r1 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   20,
+   17,
+   133,
+   311
+  ],
+  "world_w_m": 0.0493,
+  "world_h_m": 0.1281,
+  "faces": 77,
+  "normal": [
+   -0.993,
+   -0.118,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r1 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   185,
+   9,
+   307,
+   307
+  ],
+  "world_w_m": 0.0525,
+  "world_h_m": 0.1281,
+  "faces": 137,
+  "normal": [
+   -0.996,
+   -0.085,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r2 s1 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   177,
+   14,
+   305,
+   313
+  ],
+  "world_w_m": 0.0387,
+  "world_h_m": 0.0905,
+  "faces": 197,
+  "normal": [
+   -0.995,
+   -0.095,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r2 s2 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   166,
+   11,
+   315,
+   313
+  ],
+  "world_w_m": 0.0483,
+  "world_h_m": 0.098,
+  "faces": 128,
+  "normal": [
+   -1.0,
+   0.003,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r2 s3 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   183,
+   18,
+   285,
+   311
+  ],
+  "world_w_m": 0.0341,
+  "world_h_m": 0.098,
+  "faces": 131,
+  "normal": [
+   -0.997,
+   0.074,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r1 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   471,
+   10,
+   611,
+   311
+  ],
+  "world_w_m": 0.0596,
+  "world_h_m": 0.1281,
+  "faces": 134,
+  "normal": [
+   -1.0,
+   0.013,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r1 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   506,
+   10,
+   600,
+   310
+  ],
+  "world_w_m": 0.0401,
+  "world_h_m": 0.1281,
+  "faces": 101,
+  "normal": [
+   -1.0,
+   -0.023,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r1 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   636,
+   8,
+   768,
+   308
+  ],
+  "world_w_m": 0.0497,
+  "world_h_m": 0.1131,
+  "faces": 125,
+  "normal": [
+   -0.999,
+   0.041,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r2 s1 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   640,
+   23,
+   764,
+   314
+  ],
+  "world_w_m": 0.045,
+  "world_h_m": 0.1055,
+  "faces": 146,
+  "normal": [
+   -0.992,
+   -0.125,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r2 s2 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   645,
+   10,
+   760,
+   313
+  ],
+  "world_w_m": 0.0372,
+  "world_h_m": 0.098,
+  "faces": 134,
+  "normal": [
+   -0.992,
+   -0.128,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r2 s3 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   627,
+   18,
+   792,
+   312
+  ],
+  "world_w_m": 0.055,
+  "world_h_m": 0.098,
+  "faces": 119,
+  "normal": [
+   -0.996,
+   -0.091,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r1 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   964,
+   10,
+   1077,
+   313
+  ],
+  "world_w_m": 0.0478,
+  "world_h_m": 0.1281,
+  "faces": 122,
+  "normal": [
+   -0.994,
+   0.107,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r1 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   991,
+   18,
+   1070,
+   311
+  ],
+  "world_w_m": 0.0305,
+  "world_h_m": 0.1131,
+  "faces": 113,
+  "normal": [
+   -0.998,
+   -0.06,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r1 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1110,
+   7,
+   1228,
+   308
+  ],
+  "world_w_m": 0.0502,
+  "world_h_m": 0.1281,
+  "faces": 149,
+  "normal": [
+   -0.992,
+   -0.128,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r2 s1 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1119,
+   22,
+   1233,
+   317
+  ],
+  "world_w_m": 0.0379,
+  "world_h_m": 0.098,
+  "faces": 116,
+  "normal": [
+   -0.996,
+   0.089,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r2 s2 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1134,
+   9,
+   1232,
+   312
+  ],
+  "world_w_m": 0.0317,
+  "world_h_m": 0.098,
+  "faces": 110,
+  "normal": [
+   -0.994,
+   0.105,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r2 s3 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1136,
+   17,
+   1228,
+   307
+  ],
+  "world_w_m": 0.0335,
+  "world_h_m": 0.1055,
+  "faces": 89,
+  "normal": [
+   -0.992,
+   -0.128,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r1 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   135,
+   323,
+   313,
+   625
+  ],
+  "world_w_m": 0.0755,
+  "world_h_m": 0.1281,
+  "faces": 188,
+  "normal": [
+   -0.995,
+   -0.099,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r1 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   170,
+   327,
+   299,
+   622
+  ],
+  "world_w_m": 0.0527,
+  "world_h_m": 0.1206,
+  "faces": 146,
+  "normal": [
+   -1.0,
+   0.018,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r1 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   320,
+   322,
+   464,
+   621
+  ],
+  "world_w_m": 0.0617,
+  "world_h_m": 0.1281,
+  "faces": 107,
+  "normal": [
+   -1.0,
+   0.014,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r2 s1 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   333,
+   327,
+   455,
+   632
+  ],
+  "world_w_m": 0.0392,
+  "world_h_m": 0.098,
+  "faces": 155,
+  "normal": [
+   -0.997,
+   -0.074,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r2 s2 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   339,
+   322,
+   456,
+   623
+  ],
+  "world_w_m": 0.0381,
+  "world_h_m": 0.098,
+  "faces": 134,
+  "normal": [
+   -0.992,
+   -0.125,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r2 s3 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   334,
+   327,
+   452,
+   621
+  ],
+  "world_w_m": 0.0362,
+  "world_h_m": 0.0901,
+  "faces": 173,
+  "normal": [
+   -1.0,
+   -0.024,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r1 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   655,
+   323,
+   757,
+   625
+  ],
+  "world_w_m": 0.0433,
+  "world_h_m": 0.1281,
+  "faces": 98,
+  "normal": [
+   -0.995,
+   0.103,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r1 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   652,
+   325,
+   768,
+   621
+  ],
+  "world_w_m": 0.0473,
+  "world_h_m": 0.1206,
+  "faces": 119,
+  "normal": [
+   -1.0,
+   -0.022,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r1 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   812,
+   321,
+   925,
+   623
+  ],
+  "world_w_m": 0.0451,
+  "world_h_m": 0.1206,
+  "faces": 128,
+  "normal": [
+   -0.991,
+   -0.131,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r2 s1 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   789,
+   337,
+   936,
+   632
+  ],
+  "world_w_m": 0.0488,
+  "world_h_m": 0.098,
+  "faces": 125,
+  "normal": [
+   -0.991,
+   -0.13,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r2 s2 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   796,
+   323,
+   935,
+   624
+  ],
+  "world_w_m": 0.0487,
+  "world_h_m": 0.1055,
+  "faces": 161,
+  "normal": [
+   -1.0,
+   0.026,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r2 s3 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   821,
+   327,
+   904,
+   624
+  ],
+  "world_w_m": 0.0253,
+  "world_h_m": 0.0905,
+  "faces": 98,
+  "normal": [
+   -0.999,
+   0.037,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r1 s1 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1104,
+   325,
+   1242,
+   625
+  ],
+  "world_w_m": 0.052,
+  "world_h_m": 0.1131,
+  "faces": 128,
+  "normal": [
+   -1.0,
+   0.007,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r1 s2 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1129,
+   320,
+   1228,
+   624
+  ],
+  "world_w_m": 0.0417,
+  "world_h_m": 0.1281,
+  "faces": 125,
+  "normal": [
+   -0.999,
+   0.052,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r1 s3 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   26,
+   634,
+   144,
+   933
+  ],
+  "world_w_m": 0.0446,
+  "world_h_m": 0.1131,
+  "faces": 152,
+  "normal": [
+   -1.0,
+   -0.021,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r2 s1 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   636,
+   147,
+   942
+  ],
+  "world_w_m": 0.0361,
+  "world_h_m": 0.0905,
+  "faces": 191,
+  "normal": [
+   -0.992,
+   0.129,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r2 s2 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   37,
+   635,
+   115,
+   934
+  ],
+  "world_w_m": 0.0256,
+  "world_h_m": 0.098,
+  "faces": 89,
+  "normal": [
+   -0.999,
+   -0.044,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r2 s3 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   13,
+   635,
+   141,
+   936
+  ],
+  "world_w_m": 0.0385,
+  "world_h_m": 0.0905,
+  "faces": 164,
+  "normal": [
+   -1.0,
+   -0.013,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r3 s1 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   335,
+   9,
+   457,
+   309
+  ],
+  "world_w_m": 0.0521,
+  "world_h_m": 0.1281,
+  "faces": 119,
+  "normal": [
+   -0.996,
+   -0.09,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r3 s2 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   317,
+   23,
+   441,
+   311
+  ],
+  "world_w_m": 0.0617,
+  "world_h_m": 0.1432,
+  "faces": 170,
+  "normal": [
+   -0.997,
+   -0.079,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r3 s3 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   341,
+   8,
+   436,
+   312
+  ],
+  "world_w_m": 0.0448,
+  "world_h_m": 0.1432,
+  "faces": 92,
+  "normal": [
+   -0.998,
+   -0.057,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r3 s1 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   810,
+   10,
+   944,
+   307
+  ],
+  "world_w_m": 0.0646,
+  "world_h_m": 0.1432,
+  "faces": 122,
+  "normal": [
+   -0.995,
+   0.099,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r3 s2 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   792,
+   29,
+   934,
+   315
+  ],
+  "world_w_m": 0.0636,
+  "world_h_m": 0.1281,
+  "faces": 122,
+  "normal": [
+   -0.998,
+   -0.063,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r3 s3 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   828,
+   9,
+   906,
+   312
+  ],
+  "world_w_m": 0.0349,
+  "world_h_m": 0.1357,
+  "faces": 116,
+  "normal": [
+   -1.0,
+   0.002,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r3 s1 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   29,
+   321,
+   146,
+   623
+  ],
+  "world_w_m": 0.0526,
+  "world_h_m": 0.1357,
+  "faces": 191,
+  "normal": [
+   -1.0,
+   -0.003,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r3 s2 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   21,
+   326,
+   153,
+   634
+  ],
+  "world_w_m": 0.0549,
+  "world_h_m": 0.1281,
+  "faces": 206,
+  "normal": [
+   -0.997,
+   0.082,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r3 s3 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   12,
+   319,
+   144,
+   623
+  ],
+  "world_w_m": 0.0622,
+  "world_h_m": 0.1432,
+  "faces": 119,
+  "normal": [
+   -1.0,
+   0.009,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r3 s1 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   473,
+   320,
+   623,
+   623
+  ],
+  "world_w_m": 0.0634,
+  "world_h_m": 0.1281,
+  "faces": 140,
+  "normal": [
+   -1.0,
+   0.027,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r3 s2 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   490,
+   337,
+   611,
+   631
+  ],
+  "world_w_m": 0.0558,
+  "world_h_m": 0.1357,
+  "faces": 173,
+  "normal": [
+   -0.997,
+   -0.078,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r3 s3 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   475,
+   322,
+   621,
+   625
+  ],
+  "world_w_m": 0.069,
+  "world_h_m": 0.1432,
+  "faces": 158,
+  "normal": [
+   -1.0,
+   0.015,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r3 s1 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   980,
+   322,
+   1070,
+   622
+  ],
+  "world_w_m": 0.0407,
+  "world_h_m": 0.1357,
+  "faces": 122,
+  "normal": [
+   -0.996,
+   -0.085,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r3 s2 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   949,
+   340,
+   1123,
+   633
+  ],
+  "world_w_m": 0.0806,
+  "world_h_m": 0.1357,
+  "faces": 158,
+  "normal": [
+   -0.998,
+   -0.061,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r3 s3 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   972,
+   325,
+   1098,
+   624
+  ],
+  "world_w_m": 0.0604,
+  "world_h_m": 0.1432,
+  "faces": 119,
+  "normal": [
+   -0.998,
+   -0.064,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r3 s1 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   156,
+   634,
+   324,
+   934
+  ],
+  "world_w_m": 0.0802,
+  "world_h_m": 0.1432,
+  "faces": 152,
+  "normal": [
+   -0.997,
+   0.071,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r3 s2 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   166,
+   651,
+   306,
+   946
+  ],
+  "world_w_m": 0.0608,
+  "world_h_m": 0.1281,
+  "faces": 155,
+  "normal": [
+   -0.999,
+   -0.04,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r3 s3 print",
+  "material": "Room/AcrylicPrint unique c",
+  "image": "acrylic-unique-c.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   151,
+   634,
+   305,
+   935
+  ],
+  "world_w_m": 0.0733,
+  "world_h_m": 0.1432,
+  "faces": 170,
+  "normal": [
+   -0.996,
+   -0.086,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-01",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   576,
+   0,
+   640,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.19,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-02",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.24,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-03",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.22,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-04",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   192,
+   0,
+   256,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.24,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-05",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.24,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-06",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   384,
+   0,
+   448,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.22,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-07",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   384,
+   0,
+   448,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.22,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-08",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   640,
+   0,
+   704,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.22,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-09",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.24,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-10",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.21,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-11",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.21,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-12",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.24,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-13",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   704,
+   0,
+   768,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.22,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-14",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   384,
+   0,
+   448,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.22,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-15",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.21,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-16",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.21,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-17",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.24,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-18",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.19,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-19",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.21,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-20",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.19,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-21",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.19,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-22",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.19,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-23",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   576,
+   0,
+   640,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.21,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-24",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.19,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-25",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   832,
+   0,
+   896,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.22,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine u2-1-26",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.19,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall framed portrait print insert",
+  "material": "Room/Framed print atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   627,
+   314,
+   940,
+   627
+  ],
+  "world_w_m": 0.1481,
+  "world_h_m": 0.2518,
+  "faces": 6,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Desk group poster atlas print",
+  "material": "Room/Framed print atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   251,
+   314,
+   1003,
+   1254
+  ],
+  "world_w_m": 0.5703,
+  "world_h_m": 0.7126,
+  "faces": 1,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r4 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   332,
+   17,
+   446,
+   311
+  ],
+  "world_w_m": 0.0438,
+  "world_h_m": 0.1131,
+  "faces": 119,
+  "normal": [
+   -0.991,
+   -0.135,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r4 s2 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   484,
+   4,
+   612,
+   309
+  ],
+  "world_w_m": 0.0538,
+  "world_h_m": 0.1281,
+  "faces": 95,
+  "normal": [
+   -0.993,
+   -0.118,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l1 r4 s3 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   466,
+   20,
+   637,
+   312
+  ],
+  "world_w_m": 0.075,
+  "world_h_m": 0.1281,
+  "faces": 236,
+  "normal": [
+   -0.996,
+   -0.085,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r4 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   806,
+   15,
+   929,
+   309
+  ],
+  "world_w_m": 0.0536,
+  "world_h_m": 0.1281,
+  "faces": 128,
+  "normal": [
+   -1.0,
+   0.013,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r4 s2 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   975,
+   8,
+   1058,
+   305
+  ],
+  "world_w_m": 0.0358,
+  "world_h_m": 0.1281,
+  "faces": 95,
+  "normal": [
+   -1.0,
+   -0.023,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c1 l2 r4 s3 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   959,
+   21,
+   1082,
+   312
+  ],
+  "world_w_m": 0.0478,
+  "world_h_m": 0.1131,
+  "faces": 200,
+  "normal": [
+   -0.999,
+   0.041,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r4 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   27,
+   324,
+   129,
+   622
+  ],
+  "world_w_m": 0.0439,
+  "world_h_m": 0.1281,
+  "faces": 146,
+  "normal": [
+   -0.994,
+   0.107,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r4 s2 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   195,
+   320,
+   284,
+   622
+  ],
+  "world_w_m": 0.0333,
+  "world_h_m": 0.1131,
+  "faces": 101,
+  "normal": [
+   -0.998,
+   -0.06,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l1 r4 s3 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   184,
+   333,
+   301,
+   631
+  ],
+  "world_w_m": 0.0503,
+  "world_h_m": 0.1281,
+  "faces": 161,
+  "normal": [
+   -0.992,
+   -0.128,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r4 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   506,
+   327,
+   607,
+   622
+  ],
+  "world_w_m": 0.0439,
+  "world_h_m": 0.1281,
+  "faces": 149,
+  "normal": [
+   -0.995,
+   -0.099,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r4 s2 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   648,
+   321,
+   755,
+   622
+  ],
+  "world_w_m": 0.0429,
+  "world_h_m": 0.1206,
+  "faces": 140,
+  "normal": [
+   -1.0,
+   0.018,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c2 l2 r4 s3 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   640,
+   331,
+   776,
+   636
+  ],
+  "world_w_m": 0.0571,
+  "world_h_m": 0.1281,
+  "faces": 143,
+  "normal": [
+   -1.0,
+   0.014,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r4 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   946,
+   327,
+   1077,
+   624
+  ],
+  "world_w_m": 0.0565,
+  "world_h_m": 0.1281,
+  "faces": 146,
+  "normal": [
+   -0.995,
+   0.103,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r4 s2 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1100,
+   320,
+   1233,
+   622
+  ],
+  "world_w_m": 0.0531,
+  "world_h_m": 0.1206,
+  "faces": 134,
+  "normal": [
+   -1.0,
+   -0.022,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l1 r4 s3 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   1115,
+   335,
+   1235,
+   633
+  ],
+  "world_w_m": 0.0486,
+  "world_h_m": 0.1206,
+  "faces": 143,
+  "normal": [
+   -0.991,
+   -0.131,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r4 s1 print",
+  "material": "Room/AcrylicPrint unique d",
+  "image": "acrylic-unique-d.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   176,
+   637,
+   296,
+   936
+  ],
+  "world_w_m": 0.0454,
+  "world_h_m": 0.1131,
+  "faces": 110,
+  "normal": [
+   -1.0,
+   0.007,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r4 s2 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   359,
+   633,
+   433,
+   933
+  ],
+  "world_w_m": 0.0316,
+  "world_h_m": 0.1281,
+  "faces": 95,
+  "normal": [
+   -0.999,
+   0.052,
+   0.0
+  ]
+ },
+ {
+  "object": "Idol case c3 l2 r4 s3 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   337,
+   650,
+   454,
+   947
+  ],
+  "world_w_m": 0.0445,
+  "world_h_m": 0.1131,
+  "faces": 143,
+  "normal": [
+   -1.0,
+   -0.021,
+   0.0
+  ]
+ },
+ {
+  "object": "Desk end rack print 1",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   956,
+   549,
+   1229
+  ],
+  "world_w_m": 0.12,
+  "world_h_m": 0.149,
+  "faces": 6,
+  "normal": [
+   0.99,
+   -0.0,
+   0.14
+  ]
+ },
+ {
+  "object": "Desk end rack print 2",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   956,
+   1176,
+   1229
+  ],
+  "world_w_m": 0.12,
+  "world_h_m": 0.224,
+  "faces": 6,
+  "normal": [
+   0.99,
+   -0.0,
+   0.14
+  ]
+ },
+ {
+  "object": "Desk end rack stand 1 print",
+  "material": "Room/AcrylicPrint unique a",
+  "image": "acrylic-unique-a.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   39,
+   12,
+   146,
+   308
+  ],
+  "world_w_m": 0.0436,
+  "world_h_m": 0.1206,
+  "faces": 110,
+  "normal": [
+   0.998,
+   0.061,
+   0.0
+  ]
+ },
+ {
+  "object": "Desk end rack stand 2 print",
+  "material": "Room/AcrylicPrint unique b",
+  "image": "acrylic-unique-b.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   17,
+   22,
+   151,
+   315
+  ],
+  "world_w_m": 0.062,
+  "world_h_m": 0.1357,
+  "faces": 182,
+  "normal": [
+   1.0,
+   0.007,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine unit oak photo frame print",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   16,
+   862,
+   1229
+  ],
+  "world_w_m": 0.11,
+  "world_h_m": 0.16,
+  "faces": 6,
+  "normal": [
+   -0.978,
+   0.0,
+   -0.208
+  ]
+ },
+ {
+  "object": "Desk handwritten sheet 2",
+  "material": "Room/Desk form sheet landscape",
+  "image": "desk-form-sheet-landscape.png",
+  "image_px": [
+   768,
+   548
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   768,
+   548
+  ],
+  "world_w_m": 0.42,
+  "world_h_m": 0.3,
+  "faces": 1,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Top display photo frame print",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   945,
+   4,
+   1250,
+   333
+  ],
+  "world_w_m": 0.1617,
+  "world_h_m": 0.184,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   -0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Top display photo frame.001 print",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   317,
+   341,
+   623,
+   668
+  ],
+  "world_w_m": 0.1617,
+  "world_h_m": 0.2654,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   -0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Top display photo frame.002 print",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   317,
+   676,
+   623,
+   982
+  ],
+  "world_w_m": 0.1617,
+  "world_h_m": 0.1988,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   -0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Top display photo frame.003 print",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   945,
+   990,
+   1250,
+   1250
+  ],
+  "world_w_m": 0.1617,
+  "world_h_m": 0.2951,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   -0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Shelf cover display face",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   956,
+   1176,
+   1229
+  ],
+  "world_w_m": 0.2,
+  "world_h_m": 0.29,
+  "faces": 6,
+  "normal": [
+   -0.995,
+   0.0,
+   -0.105
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 01",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   576,
+   0,
+   640,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.1873,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 02",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.2333,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 03",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.2227,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 04",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   192,
+   0,
+   256,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.2318,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 05",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.2407,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 06",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   384,
+   0,
+   448,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.2176,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 07",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   384,
+   0,
+   448,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.2122,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 08",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   640,
+   0,
+   704,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.2201,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 09",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.2311,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 10",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   320,
+   0,
+   384,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.2089,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 11",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.2028,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 12",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.2321,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 13",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   704,
+   0,
+   768,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.2187,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 14",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   384,
+   0,
+   448,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.2258,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 15",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.2037,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 16",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   256,
+   0,
+   320,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.2054,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 17",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.2424,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 18",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   768,
+   0,
+   832,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.1968,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 19",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   64,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.2113,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 20",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   128,
+   0,
+   192,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.1884,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 21",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   960,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.0171,
+  "world_h_m": 0.1972,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 22",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   512,
+   0,
+   576,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.1831,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Album spine cabinet mid 23",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   576,
+   0,
+   640,
+   512
+  ],
+  "world_w_m": 0.0209,
+  "world_h_m": 0.216,
+  "faces": 1,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0051,
+  "world_h_m": 0.2955,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.001",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.0052,
+  "world_h_m": 0.2874,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.002",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0043,
+  "world_h_m": 0.284,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.003",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.0048,
+  "world_h_m": 0.272,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.004",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0063,
+  "world_h_m": 0.2604,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.005",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0107,
+  "world_h_m": 0.2527,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.006",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   69,
+   0,
+   123,
+   512
+  ],
+  "world_w_m": 0.0062,
+  "world_h_m": 0.2697,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.007",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.0062,
+  "world_h_m": 0.2729,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.008",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.0184,
+  "world_h_m": 0.2248,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.009",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.0047,
+  "world_h_m": 0.2894,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.010",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.011,
+  "world_h_m": 0.2296,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.011",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.0135,
+  "world_h_m": 0.2311,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.012",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.0094,
+  "world_h_m": 0.2324,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.013",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.0096,
+  "world_h_m": 0.2018,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.014",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0222,
+  "world_h_m": 0.2501,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.015",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.006,
+  "world_h_m": 0.2394,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.016",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0185,
+  "world_h_m": 0.2025,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.017",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.0123,
+  "world_h_m": 0.2503,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A2.018",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0055,
+  "world_h_m": 0.2442,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0177,
+  "world_h_m": 0.2216,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.001",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0049,
+  "world_h_m": 0.2602,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.002",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   69,
+   0,
+   123,
+   512
+  ],
+  "world_w_m": 0.0104,
+  "world_h_m": 0.2022,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.003",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.0099,
+  "world_h_m": 0.2544,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.004",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.0046,
+  "world_h_m": 0.2601,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.005",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.0201,
+  "world_h_m": 0.2632,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.006",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.0061,
+  "world_h_m": 0.2671,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.007",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.0194,
+  "world_h_m": 0.2266,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.008",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.0173,
+  "world_h_m": 0.264,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.009",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.0218,
+  "world_h_m": 0.2467,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.010",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0059,
+  "world_h_m": 0.2924,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.011",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.0179,
+  "world_h_m": 0.2257,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.012",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0044,
+  "world_h_m": 0.3021,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.013",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.0116,
+  "world_h_m": 0.2465,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.014",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0055,
+  "world_h_m": 0.2431,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.015",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.0058,
+  "world_h_m": 0.2742,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.016",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0172,
+  "world_h_m": 0.2615,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A3.017",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0217,
+  "world_h_m": 0.2043,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.0061,
+  "world_h_m": 0.2677,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.001",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.0211,
+  "world_h_m": 0.2538,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.002",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.0212,
+  "world_h_m": 0.2433,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.003",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.0055,
+  "world_h_m": 0.256,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.004",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.025,
+  "world_h_m": 0.2286,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.005",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.0051,
+  "world_h_m": 0.2327,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.006",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.0059,
+  "world_h_m": 0.2729,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.007",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0226,
+  "world_h_m": 0.2406,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.008",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.0242,
+  "world_h_m": 0.2345,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.009",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0052,
+  "world_h_m": 0.2242,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.010",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.023,
+  "world_h_m": 0.2388,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.011",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0049,
+  "world_h_m": 0.252,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.012",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.0046,
+  "world_h_m": 0.2465,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.013",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0234,
+  "world_h_m": 0.2551,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.014",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0226,
+  "world_h_m": 0.2523,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.015",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   69,
+   0,
+   123,
+   512
+  ],
+  "world_w_m": 0.012,
+  "world_h_m": 0.2004,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.016",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.006,
+  "world_h_m": 0.249,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.017",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.0213,
+  "world_h_m": 0.2151,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.018",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.0136,
+  "world_h_m": 0.2284,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.019",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.0107,
+  "world_h_m": 0.2403,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.020",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.0049,
+  "world_h_m": 0.2781,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.021",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.0053,
+  "world_h_m": 0.2773,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.022",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.0046,
+  "world_h_m": 0.2335,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.023",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.012,
+  "world_h_m": 0.2362,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.024",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.0055,
+  "world_h_m": 0.2735,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.025",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0059,
+  "world_h_m": 0.2632,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.026",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.0044,
+  "world_h_m": 0.2535,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.027",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0093,
+  "world_h_m": 0.2408,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Magazine run mixed A4.028",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.005,
+  "world_h_m": 0.2658,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.008,
+  "world_h_m": 0.1386,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.001",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0088,
+  "world_h_m": 0.1664,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.002",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.0096,
+  "world_h_m": 0.1564,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.003",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0115,
+  "world_h_m": 0.1551,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.004",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.01,
+  "world_h_m": 0.162,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.005",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0096,
+  "world_h_m": 0.1621,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.006",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.0101,
+  "world_h_m": 0.1601,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.007",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0118,
+  "world_h_m": 0.1379,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.008",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0082,
+  "world_h_m": 0.1356,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.009",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   69,
+   0,
+   123,
+   512
+  ],
+  "world_w_m": 0.0123,
+  "world_h_m": 0.1698,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.010",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.0102,
+  "world_h_m": 0.1741,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.011",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.012,
+  "world_h_m": 0.1594,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.012",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.01,
+  "world_h_m": 0.1759,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.013",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.0122,
+  "world_h_m": 0.1442,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.014",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.011,
+  "world_h_m": 0.1629,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.015",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.0108,
+  "world_h_m": 0.1708,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.016",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.0121,
+  "world_h_m": 0.1573,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.017",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0115,
+  "world_h_m": 0.17,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.018",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.0111,
+  "world_h_m": 0.1579,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.019",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0101,
+  "world_h_m": 0.1575,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.020",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.1595,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.021",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0102,
+  "world_h_m": 0.1571,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.022",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.0103,
+  "world_h_m": 0.1514,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.023",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0106,
+  "world_h_m": 0.1547,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.024",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0109,
+  "world_h_m": 0.1647,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.025",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   69,
+   0,
+   123,
+   512
+  ],
+  "world_w_m": 0.013,
+  "world_h_m": 0.1711,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.026",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.0128,
+  "world_h_m": 0.1716,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.027",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.0109,
+  "world_h_m": 0.145,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.028",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.0131,
+  "world_h_m": 0.1431,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.029",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.0087,
+  "world_h_m": 0.1359,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.030",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.0133,
+  "world_h_m": 0.1368,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-1 mixed.031",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.011,
+  "world_h_m": 0.1756,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0125,
+  "world_h_m": 0.1421,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.001",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.0094,
+  "world_h_m": 0.1336,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.002",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0096,
+  "world_h_m": 0.1457,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.003",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.012,
+  "world_h_m": 0.1512,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.004",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0117,
+  "world_h_m": 0.1447,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.005",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.0099,
+  "world_h_m": 0.1317,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.006",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0097,
+  "world_h_m": 0.142,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.007",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0106,
+  "world_h_m": 0.1347,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.008",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   69,
+   0,
+   123,
+   512
+  ],
+  "world_w_m": 0.0104,
+  "world_h_m": 0.1444,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.009",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.01,
+  "world_h_m": 0.122,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.010",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.0095,
+  "world_h_m": 0.1395,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.011",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.0112,
+  "world_h_m": 0.1394,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.012",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.0122,
+  "world_h_m": 0.1414,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.013",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.1525,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.014",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.0135,
+  "world_h_m": 0.153,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.015",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.0111,
+  "world_h_m": 0.1449,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.016",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0112,
+  "world_h_m": 0.1363,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.017",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.1308,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.018",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0109,
+  "world_h_m": 0.131,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.019",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.0109,
+  "world_h_m": 0.1529,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.020",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0128,
+  "world_h_m": 0.1447,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.021",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.0097,
+  "world_h_m": 0.148,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.022",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0113,
+  "world_h_m": 0.1527,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.023",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0124,
+  "world_h_m": 0.1574,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.024",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   69,
+   0,
+   123,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.1694,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.025",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.0105,
+  "world_h_m": 0.1542,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.026",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.0099,
+  "world_h_m": 0.1794,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.027",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.0105,
+  "world_h_m": 0.1748,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.028",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.0121,
+  "world_h_m": 0.1293,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.029",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.0105,
+  "world_h_m": 0.1342,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.030",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.0111,
+  "world_h_m": 0.1296,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.031",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.0086,
+  "world_h_m": 0.1414,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-2 mixed.032",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0092,
+  "world_h_m": 0.122,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0098,
+  "world_h_m": 0.1544,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.001",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.0132,
+  "world_h_m": 0.1425,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.002",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0107,
+  "world_h_m": 0.1705,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.003",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.0104,
+  "world_h_m": 0.1584,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.004",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0117,
+  "world_h_m": 0.1463,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.005",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0102,
+  "world_h_m": 0.1443,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.006",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   69,
+   0,
+   123,
+   512
+  ],
+  "world_w_m": 0.0132,
+  "world_h_m": 0.1583,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.007",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.0113,
+  "world_h_m": 0.1344,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.008",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.0123,
+  "world_h_m": 0.122,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.009",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.1354,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.010",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.0105,
+  "world_h_m": 0.1301,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.011",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.0115,
+  "world_h_m": 0.1616,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.012",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.0097,
+  "world_h_m": 0.1422,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.013",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.0093,
+  "world_h_m": 0.1685,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.014",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0132,
+  "world_h_m": 0.1651,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.015",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.0108,
+  "world_h_m": 0.1549,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.016",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0089,
+  "world_h_m": 0.1587,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.017",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   773,
+   0,
+   827,
+   512
+  ],
+  "world_w_m": 0.0127,
+  "world_h_m": 0.1506,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.018",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   837,
+   0,
+   891,
+   512
+  ],
+  "world_w_m": 0.0094,
+  "world_h_m": 0.1369,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.019",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   901,
+   0,
+   955,
+   512
+  ],
+  "world_w_m": 0.011,
+  "world_h_m": 0.1713,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.020",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   965,
+   0,
+   1019,
+   512
+  ],
+  "world_w_m": 0.0113,
+  "world_h_m": 0.1519,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.021",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   5,
+   0,
+   59,
+   512
+  ],
+  "world_w_m": 0.0125,
+  "world_h_m": 0.1393,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.022",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   69,
+   0,
+   123,
+   512
+  ],
+  "world_w_m": 0.0125,
+  "world_h_m": 0.1786,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.023",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   133,
+   0,
+   187,
+   512
+  ],
+  "world_w_m": 0.0129,
+  "world_h_m": 0.1558,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.024",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   197,
+   0,
+   251,
+   512
+  ],
+  "world_w_m": 0.0114,
+  "world_h_m": 0.1477,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.025",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   261,
+   0,
+   315,
+   512
+  ],
+  "world_w_m": 0.0121,
+  "world_h_m": 0.1477,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.026",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   325,
+   0,
+   379,
+   512
+  ],
+  "world_w_m": 0.0123,
+  "world_h_m": 0.1516,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.027",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   389,
+   0,
+   443,
+   512
+  ],
+  "world_w_m": 0.0094,
+  "world_h_m": 0.173,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.028",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   453,
+   0,
+   507,
+   512
+  ],
+  "world_w_m": 0.0079,
+  "world_h_m": 0.17,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.029",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   517,
+   0,
+   571,
+   512
+  ],
+  "world_w_m": 0.0102,
+  "world_h_m": 0.127,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.030",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   581,
+   0,
+   635,
+   512
+  ],
+  "world_w_m": 0.0096,
+  "world_h_m": 0.139,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.031",
+  "material": "Room/Shelf spine print A",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   645,
+   0,
+   699,
+   512
+  ],
+  "world_w_m": 0.0113,
+  "world_h_m": 0.1368,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Manga run u3-3 mixed.032",
+  "material": "Room/Shelf spine print B",
+  "image": "book-spine-reference-atlas.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   709,
+   0,
+   763,
+   512
+  ],
+  "world_w_m": 0.0108,
+  "world_h_m": 0.1404,
+  "faces": 5,
+  "normal": [
+   1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Folded towel 5",
+  "material": "Room/Live towel print 5",
+  "image": "live-towel-atlas-b.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   1536
+  ],
+  "world_w_m": 0.1355,
+  "world_h_m": 0.5356,
+  "faces": 1152,
+  "normal": [
+   0.975,
+   -0.216,
+   0.045
+  ]
+ },
+ {
+  "object": "Folded towel 6",
+  "material": "Room/Live towel print 6",
+  "image": "live-towel-atlas-b.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   1536
+  ],
+  "world_w_m": 0.1365,
+  "world_h_m": 0.5369,
+  "faces": 1152,
+  "normal": [
+   0.976,
+   -0.217,
+   0.014
+  ]
+ },
+ {
+  "object": "Folded towel 7",
+  "material": "Room/Live towel print 7",
+  "image": "live-towel-atlas-b.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   1536
+  ],
+  "world_w_m": 0.1374,
+  "world_h_m": 0.5369,
+  "faces": 1152,
+  "normal": [
+   0.976,
+   0.216,
+   -0.038
+  ]
+ },
+ {
+  "object": "Folded towel 8",
+  "material": "Room/Live towel print 8",
+  "image": "live-towel-atlas-b.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   1536
+  ],
+  "world_w_m": 0.1379,
+  "world_h_m": 0.5365,
+  "faces": 1152,
+  "normal": [
+   0.975,
+   0.216,
+   -0.052
+  ]
+ },
+ {
+  "object": "Pennant flag cloth",
+  "material": "Room/Pennant peach band",
+  "image": "pennant-peach-band.png",
+  "image_px": [
+   512,
+   768
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   512,
+   768
+  ],
+  "world_w_m": 0.1447,
+  "world_h_m": 0.815,
+  "faces": 120,
+  "normal": [
+   0.845,
+   -0.526,
+   -0.094
+  ]
+ },
+ {
+  "object": "Darts stand floral banner",
+  "material": "Room/Dart banner floral",
+  "image": "plush-panel-dart-banner.png",
+  "image_px": [
+   1024,
+   512
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   512
+  ],
+  "world_w_m": 0.6542,
+  "world_h_m": 0.2684,
+  "faces": 160,
+  "normal": [
+   0.231,
+   -0.972,
+   0.053
+  ]
+ },
+ {
+  "object": "Darts stand photo card print",
+  "material": "Room/Photo card holder print",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   627,
+   314,
+   940,
+   627
+  ],
+  "world_w_m": 0.08,
+  "world_h_m": 0.12,
+  "faces": 1,
+  "normal": [
+   0.0,
+   -1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Dart corner leaning framed print",
+  "material": "Room/Framed print atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   314,
+   314
+  ],
+  "world_w_m": 0.5,
+  "world_h_m": 0.7,
+  "faces": 1,
+  "normal": [
+   0.049,
+   -0.986,
+   -0.159
+  ]
+ },
+ {
+  "object": "Penlight 32 tube",
+  "material": "Room/Penlight glitter tube lavender",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0297,
+  "world_h_m": 0.1651,
+  "faces": 16,
+  "normal": [
+   0.223,
+   0.975,
+   -0.009
+  ]
+ },
+ {
+  "object": "Penlight 33 tube",
+  "material": "Room/Penlight glitter tube orange",
+  "image": "penlight-glitter-insert.png",
+  "image_px": [
+   256,
+   512
+  ],
+  "uv_rect_px": [
+   9,
+   0,
+   247,
+   512
+  ],
+  "world_w_m": 0.0311,
+  "world_h_m": 0.1653,
+  "faces": 16,
+  "normal": [
+   0.223,
+   0.974,
+   -0.046
+  ]
+ },
+ {
+  "object": "Projector corner keychain 1",
+  "material": "Room/Keychain acrylic print",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   314,
+   314
+  ],
+  "world_w_m": 0.03,
+  "world_h_m": 0.05,
+  "faces": 1,
+  "normal": [
+   0.0,
+   -1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Projector corner keychain 2",
+  "material": "Room/Keychain acrylic print",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   940,
+   0,
+   1254,
+   314
+  ],
+  "world_w_m": 0.03,
+  "world_h_m": 0.05,
+  "faces": 1,
+  "normal": [
+   0.0,
+   -1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Projector corner keychain 3",
+  "material": "Room/Keychain acrylic print",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   627,
+   314,
+   940,
+   627
+  ],
+  "world_w_m": 0.03,
+  "world_h_m": 0.05,
+  "faces": 1,
+  "normal": [
+   0.0,
+   -1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Projector corner keychain 4",
+  "material": "Room/Keychain acrylic print",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   314,
+   627,
+   627,
+   940
+  ],
+  "world_w_m": 0.03,
+  "world_h_m": 0.05,
+  "faces": 1,
+  "normal": [
+   0.0,
+   -1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Projector corner keychain 5",
+  "material": "Room/Keychain acrylic print",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   0,
+   940,
+   314,
+   1254
+  ],
+  "world_w_m": 0.03,
+  "world_h_m": 0.05,
+  "faces": 1,
+  "normal": [
+   0.0,
+   -1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Projector corner keychain 6",
+  "material": "Room/Keychain acrylic print",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   940,
+   940,
+   1254,
+   1254
+  ],
+  "world_w_m": 0.03,
+  "world_h_m": 0.05,
+  "faces": 1,
+  "normal": [
+   0.0,
+   -1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Projector corner keychain 7",
+  "material": "Room/Keychain acrylic print",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   627,
+   0,
+   940,
+   314
+  ],
+  "world_w_m": 0.03,
+  "world_h_m": 0.05,
+  "faces": 1,
+  "normal": [
+   0.0,
+   -1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Projector corner photo print",
+  "material": "Room/Framed print atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   314,
+   314,
+   627,
+   627
+  ],
+  "world_w_m": 0.1,
+  "world_h_m": 0.14,
+  "faces": 1,
+  "normal": [
+   -0.099,
+   0.984,
+   -0.149
+  ]
+ },
+ {
+  "object": "Projector corner yellow tote",
+  "material": "Room/Tote yellow stripe",
+  "image": "tote-yellow-stripe.png",
+  "image_px": [
+   256,
+   256
+  ],
+  "uv_rect_px": [
+   107,
+   0,
+   113,
+   256
+  ],
+  "world_w_m": 0.325,
+  "world_h_m": 0.2734,
+  "faces": 150,
+  "normal": [
+   0.0,
+   -0.992,
+   -0.126
+  ]
+ },
+ {
+  "object": "Floor rug kilim",
+  "material": "Room/Rug kilim teal",
+  "image": "rug-kilim-teal.png",
+  "image_px": [
+   512,
+   768
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   512,
+   768
+  ],
+  "world_w_m": 0.585,
+  "world_h_m": 0.8475,
+  "faces": 1,
+  "normal": [
+   0.0,
+   0.0,
+   1.0
+  ]
+ },
+ {
+  "object": "Darts stand pouch acrylic print",
+  "material": "Room/Keychain acrylic print",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   314,
+   314,
+   627,
+   627
+  ],
+  "world_w_m": 0.09,
+  "world_h_m": 0.11,
+  "faces": 1,
+  "normal": [
+   0.0,
+   -1.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Folded towel 1 fold flap",
+  "material": "Room/Live towel print 1",
+  "image": "live-towel-photo-atlas.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   215
+  ],
+  "world_w_m": 0.1487,
+  "world_h_m": 0.1403,
+  "faces": 18,
+  "normal": [
+   -0.991,
+   -0.132,
+   0.014
+  ]
+ },
+ {
+  "object": "Folded towel 2 fold flap",
+  "material": "Room/Live towel print 2",
+  "image": "live-towel-photo-atlas.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   215
+  ],
+  "world_w_m": 0.1726,
+  "world_h_m": 0.1403,
+  "faces": 18,
+  "normal": [
+   -0.993,
+   0.114,
+   -0.014
+  ]
+ },
+ {
+  "object": "Folded towel 3 fold flap",
+  "material": "Room/Live towel print 3",
+  "image": "live-towel-photo-atlas.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   215
+  ],
+  "world_w_m": 0.1311,
+  "world_h_m": 0.1403,
+  "faces": 18,
+  "normal": [
+   -0.989,
+   0.149,
+   0.014
+  ]
+ },
+ {
+  "object": "Folded towel 4 fold flap",
+  "material": "Room/Live towel print 4",
+  "image": "live-towel-photo-atlas.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   215
+  ],
+  "world_w_m": 0.1403,
+  "world_h_m": 0.1403,
+  "faces": 18,
+  "normal": [
+   -0.99,
+   0.14,
+   -0.014
+  ]
+ },
+ {
+  "object": "Folded towel 5 fold flap",
+  "material": "Room/Live towel print 5",
+  "image": "live-towel-atlas-b.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   215
+  ],
+  "world_w_m": 0.1306,
+  "world_h_m": 0.1403,
+  "faces": 18,
+  "normal": [
+   -0.989,
+   -0.15,
+   0.014
+  ]
+ },
+ {
+  "object": "Folded towel 6 fold flap",
+  "material": "Room/Live towel print 6",
+  "image": "live-towel-atlas-b.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   215
+  ],
+  "world_w_m": 0.1306,
+  "world_h_m": 0.1403,
+  "faces": 18,
+  "normal": [
+   -0.989,
+   -0.15,
+   0.014
+  ]
+ },
+ {
+  "object": "Folded towel 7 fold flap",
+  "material": "Room/Live towel print 7",
+  "image": "live-towel-atlas-b.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   215
+  ],
+  "world_w_m": 0.1306,
+  "world_h_m": 0.1403,
+  "faces": 18,
+  "normal": [
+   -0.989,
+   0.15,
+   0.014
+  ]
+ },
+ {
+  "object": "Folded towel 8 fold flap",
+  "material": "Room/Live towel print 8",
+  "image": "live-towel-atlas-b.png",
+  "image_px": [
+   1024,
+   1536
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   1024,
+   215
+  ],
+  "world_w_m": 0.1306,
+  "world_h_m": 0.1403,
+  "faces": 18,
+  "normal": [
+   -0.989,
+   0.15,
+   -0.014
+  ]
+ },
+ {
+  "object": "Playing card deck back print",
+  "material": "Room/Card back red print",
+  "image": "card-back-red.png",
+  "image_px": [
+   256,
+   360
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   256,
+   360
+  ],
+  "world_w_m": 0.056,
+  "world_h_m": 0.0558,
+  "faces": 1,
+  "normal": [
+   0.0,
+   0.0,
+   1.0
+  ]
+ },
+ {
+  "object": "Skill toy cardistry deck back print",
+  "material": "Room/Card back red print",
+  "image": "card-back-red.png",
+  "image_px": [
+   256,
+   360
+  ],
+  "uv_rect_px": [
+   0,
+   0,
+   256,
+   360
+  ],
+  "world_w_m": 0.05,
+  "world_h_m": 0.0544,
+  "faces": 1,
+  "normal": [
+   0.0,
+   0.0,
+   1.0
+  ]
+ },
+ {
+  "object": "Notes top sheet handwriting",
+  "material": "Room/Desk message sheet",
+  "image": "desk-message-sheet.png",
+  "image_px": [
+   640,
+   930
+  ],
+  "uv_rect_px": [
+   32,
+   47,
+   608,
+   418
+  ],
+  "world_w_m": 0.2713,
+  "world_h_m": 0.1978,
+  "faces": 1,
+  "normal": [
+   0.0,
+   0.0,
+   1.0
+  ]
+ },
+ {
+  "object": "Wall goods card 01",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   956,
+   549,
+   1229
+  ],
+  "world_w_m": 0.0825,
+  "world_h_m": 0.1275,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 02",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   16,
+   235,
+   1229
+  ],
+  "world_w_m": 0.0675,
+  "world_h_m": 0.1125,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 03",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   956,
+   1176,
+   1229
+  ],
+  "world_w_m": 0.0675,
+  "world_h_m": 0.1275,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 04",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   329,
+   862,
+   1229
+  ],
+  "world_w_m": 0.0975,
+  "world_h_m": 0.1275,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 05",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   16,
+   862,
+   1229
+  ],
+  "world_w_m": 0.0675,
+  "world_h_m": 0.1275,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 06",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   956,
+   1176,
+   1229
+  ],
+  "world_w_m": 0.0975,
+  "world_h_m": 0.1125,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 07",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   16,
+   235,
+   1229
+  ],
+  "world_w_m": 0.0675,
+  "world_h_m": 0.09,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 08",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   643,
+   862,
+   1229
+  ],
+  "world_w_m": 0.0975,
+  "world_h_m": 0.1275,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 09",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   329,
+   549,
+   1229
+  ],
+  "world_w_m": 0.0825,
+  "world_h_m": 0.09,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 10",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   16,
+   235,
+   1229
+  ],
+  "world_w_m": 0.0675,
+  "world_h_m": 0.1125,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 11",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   329,
+   862,
+   1229
+  ],
+  "world_w_m": 0.0975,
+  "world_h_m": 0.1275,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 12",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   16,
+   235,
+   1229
+  ],
+  "world_w_m": 0.0675,
+  "world_h_m": 0.09,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "object": "Wall goods card 13",
+  "material": "Room/Wall card atlas",
+  "image": "acrylic-insert-minimal-atlas.png",
+  "image_px": [
+   1254,
+   1254
+  ],
+  "uv_rect_px": [
+   25,
+   643,
+   862,
+   1229
+  ],
+  "world_w_m": 0.0975,
+  "world_h_m": 0.1275,
+  "faces": 6,
+  "normal": [
+   -1.0,
+   0.0,
+   0.0
+  ]
+ }
+]

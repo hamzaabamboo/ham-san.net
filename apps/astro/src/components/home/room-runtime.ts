@@ -704,15 +704,13 @@ export const initRoom = (root: HTMLElement) => {
   const curtainTargets = new Map<string, number>();
   const curtainAmounts = new Map<string, number>();
   const curtainMotion: CurtainMotion[] = [];
-  const panoramaTextures: Record<'day' | 'night', THREE.Texture | null> = {
-    day: null,
-    night: null
-  };
-
+  const backdrops: THREE.Object3D[] = [];
   const syncVisibleBackdrop = () => {
-    const panorama = panoramaTextures[nightPhase ? 'night' : 'day'];
-    scene.background = panorama;
-    sky.visible = !panorama;
+    scene.background = null;
+    sky.visible = true;
+    backdrops.forEach((object) => {
+      object.visible = (object.userData.roomBackdrop === 'night') === nightPhase;
+    });
   };
 
   const updateSkyPhase = (night: boolean) => {
@@ -760,21 +758,6 @@ export const initRoom = (root: HTMLElement) => {
     scene.add(sky);
     syncVisibleBackdrop();
   };
-
-  for (const phase of ['day', 'night'] as const) {
-    new THREE.TextureLoader().load(`/models/residential-${phase}-panorama.webp`, (texture) => {
-      if (disposed) {
-        texture.dispose();
-        return;
-      }
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.mapping = THREE.EquirectangularReflectionMapping;
-      texture.needsUpdate = true;
-      panoramaTextures[phase]?.dispose();
-      panoramaTextures[phase] = texture;
-      syncVisibleBackdrop();
-    });
-  }
 
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
@@ -2059,6 +2042,10 @@ export const initRoom = (root: HTMLElement) => {
       }
       room = gltf.scene;
       room.traverse((object) => {
+        if (object.userData?.roomBackdrop) backdrops.push(object);
+      });
+      syncVisibleBackdrop();
+      room.traverse((object) => {
         if (object instanceof THREE.PointLight && penlightNamePattern.test(object.name)) {
           object.visible = true;
           object.castShadow = false;
@@ -2085,7 +2072,7 @@ export const initRoom = (root: HTMLElement) => {
             }
           );
         });
-        object.castShadow = materials.every(isOpaqueMaterial);
+        object.castShadow = !object.userData?.roomBackdrop && materials.every(isOpaqueMaterial);
         object.receiveShadow = materials.some(isOpaqueMaterial);
       });
       applyModelMetadata(room);
@@ -2212,10 +2199,6 @@ export const initRoom = (root: HTMLElement) => {
     room?.traverse(disposeObject);
     interactionRoot.traverse(disposeObject);
     scene.background = null;
-    panoramaTextures.day?.dispose();
-    panoramaTextures.night?.dispose();
-    panoramaTextures.day = null;
-    panoramaTextures.night = null;
     environmentTarget?.dispose();
     pmremGenerator.dispose();
     disposeObject(sky);
