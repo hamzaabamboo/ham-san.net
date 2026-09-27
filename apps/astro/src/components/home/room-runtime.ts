@@ -635,7 +635,7 @@ export const initRoom = (root: HTMLElement) => {
 
   const ambient = new THREE.HemisphereLight(
     new THREE.Color(1, 0.93, 0.83),
-    new THREE.Color('sienna'),
+    new THREE.Color(0.66, 0.56, 0.46),
     0.9
   );
   const topWindowSunPosition = new THREE.Vector3(-1.6, 2.7, -2.8);
@@ -1306,7 +1306,7 @@ export const initRoom = (root: HTMLElement) => {
     updateCurtainControl();
     ambient.intensity = night ? 1 : 1.3;
     if (night) ambient.groundColor.setRGB(0.45, 0.4, 0.34);
-    else ambient.groundColor.set('sienna');
+    else ambient.groundColor.setRGB(0.66, 0.56, 0.46);
     daylight.intensity = night ? 0.025 : 4.2;
     warmLight.intensity = leftOn ? 11 : 0;
     frontWarmLight.intensity = rightOn ? 13 : 0;
