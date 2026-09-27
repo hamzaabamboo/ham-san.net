@@ -6,7 +6,7 @@ from mathutils import Vector
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(bpy.data.filepath)))
 OUT = os.path.join(REPO, 'assets', 'room', 'room-v2-web.glb')
-EXCLUDED_COLLECTIONS = {'Blockout'}
+EXCLUDED_COLLECTIONS = {'Blockout', 'Plush v4', 'Plush v5 nesoberi'}
 
 
 def world_bounds(objects):
