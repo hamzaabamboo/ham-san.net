@@ -166,13 +166,17 @@
  },
  "DART-ACCESSORIES": {
   "prefix": [
-   "Dart "
+   "Dart 1",
+   "Dart 2",
+   "Dart 3",
+   "Dart holder"
   ],
-  "exclude": [
-   "Dart rack",
-   "Dart stand",
-   "Dart board"
-  ]
+  "eye": [
+   1.47,
+   1.29,
+   1.35
+  ],
+  "lens": 50
  },
  "DART-MAT": {
   "prefix": [
