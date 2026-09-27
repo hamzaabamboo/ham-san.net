@@ -89,7 +89,8 @@ def export():
     set_open_preview(0.0)
     bpy.ops.object.select_all(action='DESELECT')
     for o in bpy.context.scene.objects:
-        if o.type not in ('MESH', 'EMPTY') or o.hide_render:
+        spill = o.type == 'LIGHT' and o.name.startswith('Penlight spill')
+        if (o.type not in ('MESH', 'EMPTY') and not spill) or o.hide_render:
             continue
         if any(c.name in EXCLUDED_COLLECTIONS for c in o.users_collection):
             continue
@@ -103,7 +104,7 @@ def export():
         export_yup=True,
         export_morph=False,
         export_cameras=False,
-        export_lights=False,
+        export_lights=True,
     )
     set_open_preview(1.0)
     if night:
