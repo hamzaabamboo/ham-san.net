@@ -60,6 +60,7 @@ def render(item_id):
     scene.camera = camera
     scene.render.resolution_x = 800
     scene.render.resolution_y = 800
-    scene.render.filepath = os.path.join(HERE, 'current', f'{item_id}.png')
+    scene.render.image_settings.file_format = 'JPEG'
+    scene.render.filepath = os.path.join(HERE, 'current', f'{item_id}.jpg')
     bpy.ops.render.render(write_still=True)
     return {'item': item_id, 'objects': len(objects)}

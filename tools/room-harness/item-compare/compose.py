@@ -23,12 +23,15 @@ def compose(item_id, photos):
     photo = photos.get(item_id)
     if photo:
         tiles.append(tile(os.path.join(HERE, 'photos', f'{item_id}.jpg'), f'photo {photo["file"]}'))
-    tiles.append(tile(os.path.join(HERE, 'current', f'{item_id}.png'), 'current Blender render'))
+    current = os.path.join(HERE, 'current', f'{item_id}.jpg')
+    if not os.path.exists(current):
+        current = os.path.join(HERE, 'current', f'{item_id}.png')
+    tiles.append(tile(current, 'current Blender render'))
     sheet = Image.new('RGB', (SIZE * len(tiles), SIZE + 28))
     for index, image in enumerate(tiles):
         sheet.paste(image, (index * SIZE, 0))
     os.makedirs(os.path.join(HERE, 'sheets'), exist_ok=True)
-    sheet.save(os.path.join(HERE, 'sheets', f'{item_id}.png'))
+    sheet.save(os.path.join(HERE, 'sheets', f'{item_id}.jpg'), quality=85)
 
 
 if __name__ == '__main__':
