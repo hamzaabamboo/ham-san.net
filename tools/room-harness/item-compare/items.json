@@ -326,7 +326,13 @@
    "Live towel",
    "Towel hook"
   ],
-  "view": "right"
+  "view": "right",
+  "eye": [
+   2.55,
+   -0.35,
+   1.25
+  ],
+  "lens": 28
  },
  "UCHIWA-FLAG": {
   "prefix": [
