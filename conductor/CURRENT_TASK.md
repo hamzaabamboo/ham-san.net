@@ -8,18 +8,20 @@ Continuation of the room-model checkpoint under the current user request. This s
 
 Start with [2026-09-26 handoff](../docs/HANDOFF_2026-09-26.md) sections 1–3 and 10; older base: [intern handoff](../docs/HANDOFF_2026-09-10_SHRINE_MODEL.md). Exact prior calls: [action appendix](../docs/room-model-handoff-2026-09-10/actions.md). This file is the only live tracker; handoffs and receipts are historical checkpoint evidence.
 
-## Active slice (2026-09-28): item-by-item mockup match
+## Active slice (2026-09-28): item-by-item mockup match + council
 
-- Target: every model item matches its numbered panel in `apps/astro/public/room-concept/room-item-atlas-*.png` (the per-item "mockup") and the room board `room-source-grounded-v4-source-first.png`, with shape/material/density checked against owner photos; placement stays owner-floorplan-v2.
-- Source: `assets/room/room-v2.blend`; export `assets/room/export_room_v2.py` -> webp -> meshopt -> `apps/astro/public/models/room.glb`; check-build must report failed 0.
-- Deliverable: per-item comparison images (atlas panel | photo crop | current render) under `tools/room-harness/item-compare/` (untracked media), then the-council review repeated until every external reviewer passes.
-- Known worst gap: plush. Atlas darts-plush panels 5-6 = lying nesoberi (flattened body, big head, closed sleeping eyes, blush, fuzzy fabric); current rack plush sit upright with open anime eyes.
-- Done today: tone calibration vs photo 015010154 (wall paint, curtain, rug, dart mat, world fill, sun colour); commits a02a7c4..ce46162 (penlight wall, genkan, cabling, camera kit, table props, tapestries, flag, frosted window, towels, uchiwa, ticket, spill lights, lens cap, banner, pouch).
-- Done 2026-09-28 (commits 39b68ce..57a573d): nesoberi plush (rack/table/shelf top), PC wall group poster + message/doodle sheets from photo 033330798, lower-wall posters restored from the approved atlas, chair, dartboard catch ring, towels 1-5 from photo 033141015, beanbag, low table, stands 1-13 and 17-48 redrawn as the owner's character from photo 033111450 (Codex `-i` crop, run only in scratch dirs).
-- Since then (to 5d07360): all stands redrawn, closet/entry/keyboard stand/monitor/soundbar/keycaps, namecard print, yoyo/pen/cards, plush rack density. Item harness: 54 sheets in tools/room-harness/item-compare/sheets (JPEG, untracked media).
-- Council: round 1 done (3 reviewers, verified claims fixed); round 2 running on all 54 sheets. Iterate fix -> re-render -> re-review until every item passes.
-- Disk: keep exports one at a time and delete room-v2-web.glb and the webp intermediate right after; no more Codex image runs unless space allows.
-- Non-actions: no push/deploy/merge, no dev server start, no macOS automation, no Artifact publishing.
+Request ledger (current session, in order):
+1. Model and texture every spec item per floorplan + spec; Blender scene must match what it should be — in progress.
+2. Goal: room complete, photo-perfect to the mockup/spec panels, no compromise — in progress.
+3. Detailed per-item spec rendering and 1:1 implementation; full image item-by-item comparison; fully working room model — comparison sheets exist for all 54 items (tools/room-harness/item-compare/sheets, untracked media); keep updating after every fix.
+4. Council until all EXTERNAL models say it is good — round 1-2 used internal subagents only; external-model round (Codex CLI, read-only, scratch dir) still required; signed VERDICT per the-council skill; verify every finding before fixing.
+5. Work systematically with a feedback loop: one item, render, look, fix, re-render — no batch autopilot, no guessing, no procedural slop.
+6. Art must resemble the owner's items: generate only from crops of the owner's photos or approved atlas; re-check against the original image.
+7. Plush must not look creepy: nesoberi rebuilt (sleeping faces); owner re-check pending.
+- Source: assets/room/room-v2.blend; export via assets/room/export_room_v2.py -> webp -> meshopt -> apps/astro/public/models/room.glb; check-build failed must be 0.
+- Next action: collect council round 2, verify and fix confirmed findings, then run the external (Codex) council pass on the sheets; iterate until clean.
+- Non-actions: no push/deploy/merge, no dev server start, no macOS automation, no Artifact publishing, no Codex runs inside the repo.
+- Disk: exports one at a time; delete room-v2-web.glb and the webp intermediate right after.
 - Archived checkpoint detail: [room-checkpoint-archive-2026-09-10.md](room-checkpoint-archive-2026-09-10.md).
 
 ## Site polish and photos (2026-09-27, branch `dev`)
