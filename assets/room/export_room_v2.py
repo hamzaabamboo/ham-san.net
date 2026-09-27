@@ -39,7 +39,7 @@ def navigation():
     groups = {}
     for o in bpy.data.objects:
         target = o.get('roomTarget')
-        if target and target != 'light' and o.type == 'MESH' and not o.hide_render:
+        if target and target != 'light' and o.type == 'MESH' and not o.hide_render and not o.get('roomNavIgnore'):
             groups.setdefault(target, []).append(o)
     room_centre = Vector((0.75, 0.0, 1.1))
     targets = {}
