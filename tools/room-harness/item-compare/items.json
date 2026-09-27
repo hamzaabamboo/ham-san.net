@@ -200,8 +200,14 @@
  },
  "NESOBERI": {
   "prefix": [
-   "Rack neso t1 1"
-  ]
+   "Rack neso t1 0"
+  ],
+  "eye": [
+   0.78,
+   1.05,
+   0.35
+  ],
+  "lens": 50
  },
  "SHELF-FRAME": {
   "prefix": [
@@ -323,7 +329,12 @@
    "Live wall uchiwa",
    "Cheer flag"
   ],
-  "view": "right"
+  "eye": [
+   2.7,
+   -0.55,
+   1.5
+  ],
+  "lens": 18
  },
  "LOW-TABLE": {
   "prefix": [
