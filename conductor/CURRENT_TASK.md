@@ -19,7 +19,8 @@ Request ledger (current session, in order):
 6. Art must resemble the owner's items: generate only from crops of the owner's photos or approved atlas; re-check against the original image.
 7. Plush must not look creepy: nesoberi rebuilt (sleeping faces); owner re-check pending.
 - Source: assets/room/room-v2.blend; export via assets/room/export_room_v2.py -> webp -> meshopt -> apps/astro/public/models/room.glb; check-build failed must be 0.
-- Next action: collect council round 2, verify and fix confirmed findings, then run the external (Codex) council pass on the sheets; iterate until clean.
+- Council result (2026-09-28): external Codex rounds 1-6 on all 54 item sheets + 12 owner photos; findings 25 -> 11 -> 8 -> 4 -> 7 -> 2; the 2 camera findings disputed with room-hobby-map.md line 22 and a focused external re-check returned 0 findings. Every finding was verified against render/photo before fixing (commits 1a889cd..338f46e). check-build failed 0; apps/astro bun run build complete.
+- Unverified: /room not checked in a browser this session (project rule: no dev server for room work unless the owner asks). Owner visual review pending.
 - Non-actions: no push/deploy/merge, no dev server start, no macOS automation, no Artifact publishing, no Codex runs inside the repo.
 - Disk: exports one at a time; delete room-v2-web.glb and the webp intermediate right after.
 - Archived checkpoint detail: [room-checkpoint-archive-2026-09-10.md](room-checkpoint-archive-2026-09-10.md).
