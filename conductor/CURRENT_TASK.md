@@ -24,6 +24,10 @@ The historical checkpoint manifest was verified before continuation. Its only mi
 
 Site polish: room moved to `/[locale]/room`, home is the conventional page (`[locale]/index.astro`, ex-overview). New brand mark (block H between two amber framing corners) in `BrandMark.tsx`; sources and renders in `apps/astro/scripts/brand/` → `public/favicon.svg`, `favicon-64.png`, `apple-touch-icon.png`, `og-default.png`. Placeholder visuals removed (home ghost-H panel, Life icon cards, hobby/project monogram tiles, about name plate, StatusRow, room design prototype route); home hero and Recent photos use gallery portraits. Design docs: `docs/design/README.md` + `docs/design/pages/*.md` (every route). Contract tests updated; `bun test apps/astro/tests` 362/362, `bun run build` 0 errors. Next: owner runs `/ask-matt` for whole-codebase documentation.
 
+## Room render fidelity (2026-09-27, branch `dev`)
+
+Target: `apps/astro/public/room-concept/room-source-grounded-v4-source-first.png` (warm sun, soft contact shadows). Runtime changes in `room-runtime.ts`: Neutral tone mapping, warm hemisphere and golden sun (day ambient 1.3, sun 4.2, day environment 0.55), GTAO pass on fine pointers, shadow map refreshed while curtains move. Fixed: curtains never opened with the meshopt GLB (quantised Int16 positions; now baked to float parent space on load) and raised-window curtain metadata was offset 1.5 m (open centre now derived from geometry bounds plus the authored open offset), which had thrown the gathered panel over the dartboard. Loading preview `room-preview.webp` re-rendered from the current model. Public GLB is the webp+meshopt 9.3 MB build; check-build failed 0. Owner reference screenshots on the Desktop and screencapture temp are unreadable (macOS privacy); ask for them inside the repo.
+
 ## Latest settled model requirements
 
 - Each acrylic stand has distinct artwork; 126 visible print assemblies currently map to 126 IDs.

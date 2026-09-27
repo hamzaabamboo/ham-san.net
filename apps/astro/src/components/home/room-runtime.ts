@@ -1,6 +1,11 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { Sky } from 'three/addons/objects/Sky.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { roomCopy } from './room-copy';
 import {
   dartsScoreForRing,
@@ -585,7 +590,7 @@ export const initRoom = (root: HTMLElement) => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(stage.clientWidth, stage.clientHeight, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.0;
   renderer.domElement.tabIndex = 0;
   renderer.domElement.setAttribute('aria-label', copy.scene);
@@ -596,6 +601,24 @@ export const initRoom = (root: HTMLElement) => {
   camera.rotation.order = 'YXZ';
   camera.position.set(...initialPosition);
   let compositionActive = false;
+
+  let composer: EffectComposer | undefined;
+  if (!coarsePointer) {
+    composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const ambientOcclusion = new GTAOPass(scene, camera, stage.clientWidth, stage.clientHeight);
+    ambientOcclusion.updateGtaoMaterial({
+      radius: 0.35,
+      distanceFallOff: 1,
+      thickness: 1,
+      scale: 1
+    });
+    ambientOcclusion.blendIntensity = 0.85;
+    composer.addPass(ambientOcclusion);
+    composer.addPass(new OutputPass());
+    composer.setPixelRatio(renderer.getPixelRatio());
+    composer.setSize(stage.clientWidth, stage.clientHeight);
+  }
 
   const updateCameraComposition = () => {
     const width = Math.max(stage.clientWidth, 1);
@@ -611,13 +634,13 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const ambient = new THREE.HemisphereLight(
-    new THREE.Color('white'),
+    new THREE.Color(1, 0.93, 0.83),
     new THREE.Color('sienna'),
     0.9
   );
   const topWindowSunPosition = new THREE.Vector3(-1.6, 2.7, -2.8);
   const topWindowLightTarget = new THREE.Vector3(0, 0, -0.45);
-  const daylight = new THREE.DirectionalLight(new THREE.Color(1, 0.97, 0.92), 2.4);
+  const daylight = new THREE.DirectionalLight(new THREE.Color(1, 0.86, 0.68), 2.4);
   daylight.position.copy(topWindowSunPosition);
   daylight.target.position.copy(topWindowLightTarget);
   daylight.castShadow = true;
@@ -727,7 +750,7 @@ export const initRoom = (root: HTMLElement) => {
       const previousTarget = environmentTarget;
       environmentTarget = nextTarget;
       scene.environment = nextTarget.texture;
-      scene.environmentIntensity = night ? 0.3 : 2;
+      scene.environmentIntensity = night ? 0.3 : 0.55;
       previousTarget?.dispose();
     } catch {
       scene.environment = environmentTarget?.texture ?? null;
@@ -739,7 +762,7 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   for (const phase of ['day', 'night'] as const) {
-    new THREE.TextureLoader().load(`/models/residential-${phase}-panorama.png`, (texture) => {
+    new THREE.TextureLoader().load(`/models/residential-${phase}-panorama.webp`, (texture) => {
       if (disposed) {
         texture.dispose();
         return;
@@ -1075,12 +1098,46 @@ export const initRoom = (root: HTMLElement) => {
     updatePhase();
   };
 
+  const bakeToParentSpace = (object: THREE.Mesh) => {
+    object.updateMatrix();
+    const normalMatrix = new THREE.Matrix3().getNormalMatrix(object.matrix);
+    const vertex = new THREE.Vector3();
+    const source = object.geometry.getAttribute('position');
+    const positions = new Float32Array(source.count * 3);
+    for (let index = 0; index < source.count; index += 1) {
+      vertex
+        .fromBufferAttribute(source, index)
+        .applyMatrix4(object.matrix)
+        .toArray(positions, index * 3);
+    }
+    object.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const sourceNormals = object.geometry.getAttribute('normal');
+    if (sourceNormals) {
+      const normals = new Float32Array(sourceNormals.count * 3);
+      for (let index = 0; index < sourceNormals.count; index += 1) {
+        vertex
+          .fromBufferAttribute(sourceNormals, index)
+          .applyMatrix3(normalMatrix)
+          .normalize()
+          .toArray(normals, index * 3);
+      }
+      object.geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
+    }
+    object.position.set(0, 0, 0);
+    object.quaternion.identity();
+    object.scale.set(1, 1, 1);
+    object.updateMatrix();
+    object.geometry.computeBoundingBox();
+    object.geometry.computeBoundingSphere();
+  };
+
   const captureCurtains = (loadedRoom: THREE.Group) => {
     curtainMotion.length = 0;
     loadedRoom.traverse((object) => {
       if (!(object instanceof THREE.Mesh)) return;
       const curtainId = object.userData?.roomCurtain;
       if (typeof curtainId !== 'string') return;
+      bakeToParentSpace(object);
       const attribute = object.geometry.getAttribute('position');
       if (!(attribute instanceof THREE.BufferAttribute)) return;
       const normalAttribute = object.geometry.getAttribute('normal');
@@ -1088,11 +1145,19 @@ export const initRoom = (root: HTMLElement) => {
         const number = typeof value === 'number' ? value : Number(value);
         return Number.isFinite(number) ? number : undefined;
       };
-      const closedCenter = numberValue(object.userData.roomCurtainClosedCenter);
-      const openCenter = numberValue(object.userData.roomCurtainOpenCenter);
+      const authoredClosedCenter = numberValue(object.userData.roomCurtainClosedCenter);
+      const authoredOpenCenter = numberValue(object.userData.roomCurtainOpenCenter);
       const gatheredScale = numberValue(object.userData.roomCurtainGatheredScale);
-      if (closedCenter === undefined || openCenter === undefined || gatheredScale === undefined)
+      const bounds = object.geometry.boundingBox;
+      if (
+        authoredClosedCenter === undefined ||
+        authoredOpenCenter === undefined ||
+        gatheredScale === undefined ||
+        !bounds
+      )
         return;
+      const closedCenter = (bounds.min.x + bounds.max.x) / 2;
+      const openCenter = closedCenter + authoredOpenCenter - authoredClosedCenter;
       const closed = Float32Array.from(attribute.array as ArrayLike<number>);
       const open = new Float32Array(closed.length);
       for (let index = 0; index < attribute.count; index += 1) {
@@ -1133,10 +1198,13 @@ export const initRoom = (root: HTMLElement) => {
   const updateCurtains = (delta: number) => {
     curtainMotion.forEach(
       ({ object, id, attribute, normalAttribute, open, closed, openNormals, closedNormals }) => {
-        const amount = curtainAmounts.get(id) ?? 0;
+        const previousAmount = curtainAmounts.get(id);
+        const amount = previousAmount ?? 0;
         const target = curtainTargets.get(id) ?? 0;
         const nextAmount = amount + (target - amount) * Math.min(delta * 4, 1);
+        if (previousAmount !== undefined && Math.abs(nextAmount - previousAmount) < 0.0005) return;
         curtainAmounts.set(id, nextAmount);
+        renderer.shadowMap.needsUpdate = true;
         for (let index = 0; index < attribute.count; index += 1) {
           const offset = index * 3;
           attribute.array[offset] = open[offset] + (closed[offset] - open[offset]) * nextAmount;
@@ -1253,10 +1321,10 @@ export const initRoom = (root: HTMLElement) => {
     lightAuto.hidden =
       manualPhase === undefined && leftLightManual === undefined && rightLightManual === undefined;
     updateCurtainControl();
-    ambient.intensity = night ? 1 : 0.6;
+    ambient.intensity = night ? 1 : 1.3;
     if (night) ambient.groundColor.setRGB(0.45, 0.4, 0.34);
     else ambient.groundColor.set('sienna');
-    daylight.intensity = night ? 0.025 : 1.6;
+    daylight.intensity = night ? 0.025 : 4.2;
     warmLight.intensity = leftOn ? 11 : 0;
     frontWarmLight.intensity = rightOn ? 13 : 0;
     const daylightShadows = !night;
@@ -1756,6 +1824,7 @@ export const initRoom = (root: HTMLElement) => {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height, false);
+    composer?.setSize(width, height);
     updateCameraComposition();
     updateHelp();
   };
@@ -1980,6 +2049,7 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const loader = new GLTFLoader();
+  loader.setMeshoptDecoder(MeshoptDecoder);
   loader.load(
     '/models/room.glb',
     (gltf) => {
@@ -2009,9 +2079,11 @@ export const initRoom = (root: HTMLElement) => {
         materials.forEach(configureArchitecturalGlass);
         materials.forEach((material) => {
           if (!(material instanceof THREE.MeshStandardMaterial)) return;
-          [material.map, material.normalMap, material.roughnessMap, material.emissiveMap].forEach((texture) => {
-            if (texture) texture.anisotropy = maxAnisotropy;
-          });
+          [material.map, material.normalMap, material.roughnessMap, material.emissiveMap].forEach(
+            (texture) => {
+              if (texture) texture.anisotropy = maxAnisotropy;
+            }
+          );
         });
         object.castShadow = materials.every(isOpaqueMaterial);
         object.receiveShadow = materials.some(isOpaqueMaterial);
@@ -2087,7 +2159,8 @@ export const initRoom = (root: HTMLElement) => {
     updateCloset(delta);
     camera.updateMatrixWorld();
     updateTargetLabels(now);
-    renderer.render(scene, camera);
+    if (composer) composer.render();
+    else renderer.render(scene, camera);
     frameRequest = window.requestAnimationFrame(frameLoop);
   };
 
@@ -2147,6 +2220,7 @@ export const initRoom = (root: HTMLElement) => {
     pmremGenerator.dispose();
     disposeObject(sky);
     targetLabelsRoot.replaceChildren();
+    composer?.dispose();
     renderer.dispose();
     if (renderer.domElement.parentElement === stage) stage.replaceChildren();
   };

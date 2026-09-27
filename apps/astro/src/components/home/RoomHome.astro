@@ -24,7 +24,7 @@ const destinations = [
   data-room-blocked={copy.blocked}
 >
   <div class="room-static-preview" data-room-preview aria-hidden="true">
-    <img src="/models/room-preview.png" alt="" />
+    <img src="/models/room-preview.webp" alt="" />
   </div>
   <div class="room-stage" data-room-stage aria-label={copy.scene}></div>
   <header class="room-header">
@@ -41,7 +41,7 @@ const destinations = [
     <nav class="room-languages" aria-label={t('common.language')}>
       {
         (['en', 'ja', 'th'] as const).map((lang) => (
-          <a href={`/${lang}/`} aria-current={lang === locale ? 'page' : undefined}>
+          <a href={`/${lang}/room`} aria-current={lang === locale ? 'page' : undefined}>
             {lang.toUpperCase()}
           </a>
         ))

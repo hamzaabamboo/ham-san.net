@@ -12,7 +12,7 @@ const paths = {
   export: 'assets/room/room-web-current.glb',
   lean: 'assets/room/room-web-lean.glb',
   public: 'apps/astro/public/models/room.glb',
-  detailedRegression: 'apps/astro/public/models/room-detailed-regression.glb',
+  detailedRegression: 'tools/room-harness/fixtures/room-detailed-regression.glb',
   poster: 'assets/room/textures/illustrated-posters-minimal.png',
   spec: 'conductor/room-spec.md',
   task: 'conductor/CURRENT_TASK.md'

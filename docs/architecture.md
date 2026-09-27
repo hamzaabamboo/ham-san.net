@@ -53,9 +53,9 @@ Order matters; each step reads the previous step's output.
 2. Save, then in Blender run `tools/room-harness/build/physics_audit.py` and `audit_scene.py`. They write `physics-latest.json` and `audit-latest.json`.
 3. In Blender, run `assets/room/export_room_web.py`. It writes `assets/room/room-web-current.glb`, keeping `room*` custom properties such as `roomTarget` and `roomNavigation`.
 4. `node assets/room/strip_unused_uv.mjs assets/room/room-web-current.glb assets/room/room-web-lean.glb`
-5. `cp assets/room/room-web-lean.glb apps/astro/public/models/room.glb`
+5. Compress for the web and publish: `bunx @gltf-transform/cli webp assets/room/room-web-lean.glb /tmp/room-webp.glb --quality 88`, then `bunx @gltf-transform/cli meshopt /tmp/room-webp.glb apps/astro/public/models/room.glb --level medium` (about 47 MB to 9 MB). Do not use `gltf-transform optimize`: its flatten, join and simplify steps drop node names and `room*` extras. Meshopt quantises vertices, so the runtime loads with `MeshoptDecoder` and bakes animated curtain meshes back to float parent-space vertices before moving them.
 6. `node tools/room-harness/build/check-build.mjs --json` checks the audit against `build-plan.json`. It must report `failed: 0`.
-7. The browser: `src/components/home/room-runtime.ts` (Three.js) loads `/models/room.glb`. It reads `Floor base.roomNavigation` for entry, colliders and close-up targets, and `roomTarget` for clickable objects. Pure logic such as the day/night phase and darts scoring lives in `room-logic.ts` and is unit-tested.
+7. The browser: `src/components/home/room-runtime.ts` (Three.js) loads `/models/room.glb`. Desktop pointers render through a GTAO ambient-occlusion pass; touch devices render directly. It reads `Floor base.roomNavigation` for entry, colliders and close-up targets, and `roomTarget` for clickable objects. Pure logic such as the day/night phase and darts scoring lives in `room-logic.ts` and is unit-tested.
 
 Requirements for the room live in `conductor/room-spec.md` and `conductor/room-model-design-spec.md`. The live task record is `conductor/CURRENT_TASK.md`.
 
