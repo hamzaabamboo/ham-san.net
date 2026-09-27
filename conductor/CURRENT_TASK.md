@@ -16,9 +16,9 @@ Start with [2026-09-26 handoff](../docs/HANDOFF_2026-09-26.md) sections 1–3 an
 - Known worst gap: plush. Atlas darts-plush panels 5-6 = lying nesoberi (flattened body, big head, closed sleeping eyes, blush, fuzzy fabric); current rack plush sit upright with open anime eyes.
 - Done today: tone calibration vs photo 015010154 (wall paint, curtain, rug, dart mat, world fill, sun colour); commits a02a7c4..ce46162 (penlight wall, genkan, cabling, camera kit, table props, tapestries, flag, frosted window, towels, uchiwa, ticket, spill lights, lens cap, banner, pouch).
 - Done 2026-09-28 (commits 39b68ce..57a573d): nesoberi plush (rack/table/shelf top), PC wall group poster + message/doodle sheets from photo 033330798, lower-wall posters restored from the approved atlas, chair, dartboard catch ring, towels 1-5 from photo 033141015, beanbag, low table, stands 1-13 and 17-48 redrawn as the owner's character from photo 033111450 (Codex `-i` crop, run only in scratch dirs).
-- Open: stands 14-16 (b01 incomplete); stands 49-64 and the kanata-* set (batches b06-b10, partial PNGs in scratchpad/gen, not reviewed); closet/entry/keyboard/monitor/desk/curtain/ceiling sheets; the-council review.
-- Blocker: disk at ~0.4 GB free; ~/.codex/sessions is 15 GB (today's image runs ~0.43 GB). Owner decides on freeing space before more Codex image runs or exports.
-- Next action: after space is freed, review b06-b10 outputs, install, export, then continue item sheets from CLOSET.
+- Since then (to 5d07360): all stands redrawn, closet/entry/keyboard stand/monitor/soundbar/keycaps, namecard print, yoyo/pen/cards, plush rack density. Item harness: 54 sheets in tools/room-harness/item-compare/sheets (JPEG, untracked media).
+- Council: round 1 done (3 reviewers, verified claims fixed); round 2 running on all 54 sheets. Iterate fix -> re-render -> re-review until every item passes.
+- Disk: keep exports one at a time and delete room-v2-web.glb and the webp intermediate right after; no more Codex image runs unless space allows.
 - Non-actions: no push/deploy/merge, no dev server start, no macOS automation, no Artifact publishing.
 - Archived checkpoint detail: [room-checkpoint-archive-2026-09-10.md](room-checkpoint-archive-2026-09-10.md).
 
