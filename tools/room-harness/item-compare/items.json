@@ -1,56 +1,429 @@
 {
-  "GEO-SHELL": {"prefix": ["Room shell", "Floor", "Skirting"], "view": "top"},
-  "GEO-BALCONY": {"prefix": ["Balcony sliding", "Balcony slab", "Balcony parapet", "Balcony rail", "Outdoor AC"]},
-  "GEO-BALCONY-CURTAIN": {"prefix": ["Balcony curtain", "Balcony sheer"]},
-  "GEO-REAR-WINDOW": {"prefix": ["Raised window", "Window curtain"]},
-  "LIT-CEILING": {"prefix": ["Ceiling light", "Room light"], "view": "below"},
-  "PC-DESK": {"prefix": ["Desk top", "Desk column", "Desk crossbar", "Desk foot"]},
-  "PC-MONITOR": {"prefix": ["Monitor"]},
-  "PC-LAPTOP-TABLET": {"prefix": ["Laptop", "Tablet"]},
-  "PC-INPUT": {"prefix": ["Keyboard", "Mouse"], "exclude": ["Keyboard black", "Keyboard body", "Keyboard stand", "Keyboard white"]},
-  "PC-SUPPORT": {"prefix": ["PC cable", "PC desk", "PC power", "PC wall"]},
-  "PC-CHAIR": {"prefix": ["Chair"]},
-  "PC-RUBIK": {"prefix": ["Rubik"]},
-  "PC-NOTES": {"prefix": ["Notes"]},
-  "PC-NAMECARD": {"prefix": ["Namecard"]},
-  "PC-CAMERA": {"prefix": ["Camera Nikon", "Camera Tamron", "Camera lens"]},
-  "PC-POSTER-NOTES": {"prefix": ["Poster group", "Poster notes", "Desk wall"]},
-  "KEYBOARD-STAND": {"prefix": ["Keyboard body", "Keyboard black", "Keyboard white", "Keyboard stand"]},
-  "DART-STAND": {"prefix": ["Dart rack", "Dart stand"]},
-  "DART-BOARD": {"prefix": ["Dartboard", "Dart board"]},
-  "DART-ACCESSORIES": {"prefix": ["Dart "], "exclude": ["Dart rack", "Dart stand", "Dart board"]},
-  "DART-MAT": {"prefix": ["Darts mat"], "view": "top"},
-  "PLUSH-RACK": {"prefix": ["Rack v", "Dart rack", "Carrot plush", "Dragon", "Rack clear", "Rack hanging", "Rack pouch"]},
-  "NESOBERI": {"prefix": ["Rack v4 orange 1"]},
-  "SHELF-FRAME": {"prefix": ["Shelf U"]},
-  "SHELF-BOARD": {"prefix": ["Shelf U1"]},
-  "SHELF-TEAL-BACK": {"prefix": ["Cube bay", "Bay r"]},
-  "BOOK-MANGA": {"prefix": ["Manga U"]},
-  "BOOK-MAGAZINE": {"prefix": ["Magazine U", "Magazines U"]},
-  "BOOK-FOLDER": {"prefix": ["Binders U", "Clear files", "U file"]},
-  "BOOK-ALBUM": {"prefix": ["Albums U", "Photobooks U"]},
-  "ACRYLIC-CASE": {"prefix": ["Cube case", "Case top"]},
-  "ACRYLIC-STAND": {"prefix": ["Case stand"]},
-  "ACRYLIC-CONTENTS": {"prefix": ["Cube case r1 c1", "Case stand 0"]},
-  "SHELF-FRAME-ART": {"prefix": ["Shelf leaning", "Top frame"]},
-  "SHELF-TOP-PLUSH": {"prefix": ["Shelf top plush"]},
-  "PENLIGHT-GRID": {"prefix": ["Penlight wire", "Penlight row", "Lanyard row", "Penlight holder"]},
-  "PENLIGHT": {"prefix": ["Penlight row2 0"]},
-  "LIVE-TOWEL": {"prefix": ["Live towel", "Towel hook"]},
-  "UCHIWA-FLAG": {"prefix": ["Live wall uchiwa", "Cheer flag"]},
-  "LOW-TABLE": {"prefix": ["Low table leg", "Low table top"]},
-  "TABLE-CONTENTS": {"prefix": ["Low table", "Skill toy", "Kendama", "Rubik"]},
-  "BEANBAG": {"prefix": ["Beanbag"]},
-  "CHAIR-MAT": {"prefix": ["Desk rug"], "view": "top"},
-  "CLOSET": {"prefix": ["Closet"]},
-  "ENTRY": {"prefix": ["Entry door", "Genkan"]},
-  "LOWER-POSTER": {"prefix": ["Poster yellow", "Print portrait"]},
-  "HOBBY-PIANO": {"prefix": ["Keyboard body", "Keyboard black", "Keyboard white", "Keyboard stand"]},
-  "HOBBY-YOYO": {"prefix": ["Skill toy yoyo"]},
-  "HOBBY-KENDAMA": {"prefix": ["Kendama"]},
-  "HOBBY-CARDISTRY": {"prefix": ["Skill toy card"]},
-  "HOBBY-PENSPIN": {"prefix": ["Skill toy penspinning"]},
-  "HOBBY-RUBIK": {"prefix": ["Rubik"]},
-  "HOBBY-CAMERA": {"prefix": ["Camera Nikon", "Camera Tamron", "Camera lens"]},
-  "EVENT-TICKET": {"prefix": ["Event ticket", "Live wall uchiwa"]}
+ "GEO-SHELL": {
+  "prefix": [
+   "Room shell",
+   "Floor",
+   "Skirting"
+  ],
+  "view": "top",
+  "eye": [
+   0.9,
+   -1.7,
+   2.2
+  ],
+  "lens": 14
+ },
+ "GEO-BALCONY": {
+  "prefix": [
+   "Balcony sliding",
+   "Balcony slab",
+   "Balcony parapet",
+   "Balcony rail",
+   "Outdoor AC"
+  ],
+  "eye": [
+   -0.6,
+   -0.4,
+   1.4
+  ],
+  "lens": 22
+ },
+ "GEO-BALCONY-CURTAIN": {
+  "prefix": [
+   "Balcony curtain",
+   "Balcony sheer"
+  ],
+  "eye": [
+   -0.6,
+   -0.6,
+   1.35
+  ],
+  "lens": 22
+ },
+ "GEO-REAR-WINDOW": {
+  "prefix": [
+   "Raised window",
+   "Window curtain"
+  ],
+  "eye": [
+   2.3,
+   -0.4,
+   1.4
+  ],
+  "lens": 24
+ },
+ "LIT-CEILING": {
+  "prefix": [
+   "Ceiling light",
+   "Room light"
+  ],
+  "view": "below",
+  "eye": [
+   0.8,
+   -1.5,
+   1.3
+  ],
+  "lens": 16
+ },
+ "PC-DESK": {
+  "prefix": [
+   "Desk top",
+   "Desk column",
+   "Desk crossbar",
+   "Desk foot"
+  ]
+ },
+ "PC-MONITOR": {
+  "prefix": [
+   "Monitor"
+  ]
+ },
+ "PC-LAPTOP-TABLET": {
+  "prefix": [
+   "Laptop",
+   "Tablet"
+  ]
+ },
+ "PC-INPUT": {
+  "prefix": [
+   "Keyboard",
+   "Mouse"
+  ],
+  "exclude": [
+   "Keyboard black",
+   "Keyboard body",
+   "Keyboard stand",
+   "Keyboard white"
+  ]
+ },
+ "PC-SUPPORT": {
+  "prefix": [
+   "PC cable",
+   "PC desk",
+   "PC power",
+   "PC wall"
+  ]
+ },
+ "PC-CHAIR": {
+  "prefix": [
+   "Chair"
+  ]
+ },
+ "PC-RUBIK": {
+  "prefix": [
+   "Rubik"
+  ]
+ },
+ "PC-NOTES": {
+  "prefix": [
+   "Notes"
+  ]
+ },
+ "PC-NAMECARD": {
+  "prefix": [
+   "Namecard"
+  ]
+ },
+ "PC-CAMERA": {
+  "prefix": [
+   "Camera Nikon",
+   "Camera Tamron",
+   "Camera lens"
+  ]
+ },
+ "PC-POSTER-NOTES": {
+  "prefix": [
+   "Poster group",
+   "Poster notes",
+   "Desk wall"
+  ],
+  "eye": [
+   0.3,
+   0.9,
+   1.45
+  ],
+  "lens": 24
+ },
+ "KEYBOARD-STAND": {
+  "prefix": [
+   "Keyboard body",
+   "Keyboard black",
+   "Keyboard white",
+   "Keyboard stand"
+  ]
+ },
+ "DART-STAND": {
+  "prefix": [
+   "Dart rack",
+   "Dart stand"
+  ]
+ },
+ "DART-BOARD": {
+  "prefix": [
+   "Dartboard",
+   "Dart board"
+  ]
+ },
+ "DART-ACCESSORIES": {
+  "prefix": [
+   "Dart "
+  ],
+  "exclude": [
+   "Dart rack",
+   "Dart stand",
+   "Dart board"
+  ]
+ },
+ "DART-MAT": {
+  "prefix": [
+   "Darts mat"
+  ],
+  "view": "top",
+  "eye": [
+   0.8,
+   -1.0,
+   1.5
+  ],
+  "lens": 24
+ },
+ "PLUSH-RACK": {
+  "prefix": [
+   "Rack v",
+   "Rack neso",
+   "Dart rack",
+   "Carrot plush",
+   "Dragon",
+   "Rack clear",
+   "Rack hanging",
+   "Rack pouch"
+  ]
+ },
+ "NESOBERI": {
+  "prefix": [
+   "Rack neso t1 1"
+  ]
+ },
+ "SHELF-FRAME": {
+  "prefix": [
+   "Shelf U"
+  ],
+  "view": "right"
+ },
+ "SHELF-BOARD": {
+  "prefix": [
+   "Shelf U1"
+  ],
+  "view": "right"
+ },
+ "SHELF-TEAL-BACK": {
+  "prefix": [
+   "Cube bay",
+   "Bay r"
+  ],
+  "view": "right"
+ },
+ "BOOK-MANGA": {
+  "prefix": [
+   "Manga U"
+  ],
+  "view": "right"
+ },
+ "BOOK-MAGAZINE": {
+  "prefix": [
+   "Magazine U",
+   "Magazines U"
+  ],
+  "view": "right"
+ },
+ "BOOK-FOLDER": {
+  "prefix": [
+   "Binders U",
+   "Clear files",
+   "U file"
+  ],
+  "view": "right"
+ },
+ "BOOK-ALBUM": {
+  "prefix": [
+   "Albums U",
+   "Photobooks U"
+  ],
+  "view": "right"
+ },
+ "ACRYLIC-CASE": {
+  "prefix": [
+   "Cube case",
+   "Case top"
+  ],
+  "view": "right"
+ },
+ "ACRYLIC-STAND": {
+  "prefix": [
+   "Case stand 1",
+   "Case stand 2"
+  ],
+  "view": "right"
+ },
+ "ACRYLIC-CONTENTS": {
+  "prefix": [
+   "Cube case r1c1"
+  ],
+  "view": "right"
+ },
+ "SHELF-FRAME-ART": {
+  "prefix": [
+   "Shelf leaning",
+   "Top frame"
+  ],
+  "view": "right"
+ },
+ "SHELF-TOP-PLUSH": {
+  "prefix": [
+   "Shelf top neso",
+   "Shelf top plush"
+  ],
+  "view": "right"
+ },
+ "PENLIGHT-GRID": {
+  "prefix": [
+   "Penlight wire",
+   "Penlight row",
+   "Lanyard row",
+   "Penlight holder"
+  ],
+  "view": "right"
+ },
+ "PENLIGHT": {
+  "prefix": [
+   "Penlight row2 0"
+  ],
+  "view": "right"
+ },
+ "LIVE-TOWEL": {
+  "prefix": [
+   "Live towel",
+   "Towel hook"
+  ],
+  "view": "right"
+ },
+ "UCHIWA-FLAG": {
+  "prefix": [
+   "Live wall uchiwa",
+   "Cheer flag"
+  ],
+  "view": "right"
+ },
+ "LOW-TABLE": {
+  "prefix": [
+   "Low table leg",
+   "Low table top"
+  ]
+ },
+ "TABLE-CONTENTS": {
+  "prefix": [
+   "Low table",
+   "Skill toy",
+   "Kendama",
+   "Rubik"
+  ]
+ },
+ "BEANBAG": {
+  "prefix": [
+   "Beanbag"
+  ]
+ },
+ "CHAIR-MAT": {
+  "prefix": [
+   "Desk rug"
+  ],
+  "view": "top",
+  "eye": [
+   0.4,
+   0.2,
+   1.6
+  ],
+  "lens": 24
+ },
+ "CLOSET": {
+  "prefix": [
+   "Closet"
+  ],
+  "eye": [
+   1.3,
+   0.4,
+   1.25
+  ],
+  "lens": 28
+ },
+ "ENTRY": {
+  "prefix": [
+   "Entry door",
+   "Genkan"
+  ],
+  "eye": [
+   -0.6,
+   0.2,
+   1.3
+  ],
+  "lens": 26
+ },
+ "LOWER-POSTER": {
+  "prefix": [
+   "Poster yellow",
+   "Print portrait"
+  ],
+  "eye": [
+   0.35,
+   0.2,
+   1.45
+  ],
+  "lens": 26
+ },
+ "HOBBY-PIANO": {
+  "prefix": [
+   "Keyboard body",
+   "Keyboard black",
+   "Keyboard white",
+   "Keyboard stand"
+  ]
+ },
+ "HOBBY-YOYO": {
+  "prefix": [
+   "Skill toy yoyo"
+  ]
+ },
+ "HOBBY-KENDAMA": {
+  "prefix": [
+   "Kendama"
+  ]
+ },
+ "HOBBY-CARDISTRY": {
+  "prefix": [
+   "Skill toy card"
+  ]
+ },
+ "HOBBY-PENSPIN": {
+  "prefix": [
+   "Skill toy penspinning"
+  ]
+ },
+ "HOBBY-RUBIK": {
+  "prefix": [
+   "Rubik"
+  ]
+ },
+ "HOBBY-CAMERA": {
+  "prefix": [
+   "Camera Nikon",
+   "Camera Tamron",
+   "Camera lens"
+  ]
+ },
+ "EVENT-TICKET": {
+  "prefix": [
+   "Event ticket",
+   "Live wall uchiwa"
+  ],
+  "view": "right"
+ }
 }
