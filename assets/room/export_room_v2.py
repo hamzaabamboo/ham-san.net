@@ -54,7 +54,7 @@ def navigation():
     if 'closet' in targets:
         targets['closet'] = {'position': targets['closet']['position']}
     colliders = [
-        collider('desk', meshes('Desk ')),
+        collider('desk', [o for o in meshes('Desk ') if not o.name.startswith(('Desk rug', 'Desk wall', 'Desk headphone'))]),
         collider('chair', meshes('Chair ')),
         collider('shelf', meshes('Shelf U')),
         collider('floor-table', meshes('Low table')),

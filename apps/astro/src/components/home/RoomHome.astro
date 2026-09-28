@@ -56,7 +56,7 @@ const destinations = [
     <p class="room-status" data-room-status role="status">{copy.loadingDescription}</p>
     <a class="room-text-link" href={`/${locale}`}>{copy.conventional} ↗</a>
   </section>
-  <div class="room-reticle" data-room-reticle hidden aria-hidden="true">+</div>
+  <div class="room-reticle" data-room-reticle hidden aria-hidden="true"></div>
   <div class="room-target-labels" data-room-target-labels hidden></div>
   <div class="room-hint" data-room-hint hidden aria-live="polite"></div>
   <footer class="room-controls">
@@ -85,34 +85,6 @@ const destinations = [
     </header>
     <nav class="room-panel-tabs" data-room-tabs aria-label={copy.related}></nav>
     <p class="room-panel-status" data-room-panel-status role="status">{copy.loadingDescription}</p>
-    <section class="room-darts-game" data-room-darts hidden aria-labelledby="room-darts-title">
-      <h3 id="room-darts-title">{copy.darts}</h3>
-      <p>{copy.dartsIntro}</p>
-      <div class="room-darts-scoreboard" aria-live="polite">
-        <span>{copy.dartsScore}: <strong data-room-darts-score>0</strong></span>
-        <span>{copy.dartsThrows}: <strong data-room-darts-throws>0</strong></span>
-      </div>
-      <div class="room-darts-playfield">
-        <button
-          type="button"
-          class="room-darts-target"
-          data-room-darts-target
-          aria-label={copy.dartsBoard}
-        >
-          <span class="room-darts-target-ring room-darts-target-ring-single"></span>
-          <span class="room-darts-target-ring room-darts-target-ring-outer"></span>
-          <span class="room-darts-target-ring room-darts-target-ring-bull"></span>
-          <span class="room-darts-crosshair" data-room-darts-crosshair hidden>+</span>
-        </button>
-        <div class="room-darts-actions">
-          <p data-room-darts-result role="status">{copy.dartsReady}</p>
-          <button type="button" data-room-darts-throw disabled>{copy.dartsThrow}</button>
-        </div>
-      </div>
-      <button class="room-darts-reset" type="button" data-room-darts-reset>{copy.dartsReset}</button
-      >
-    </section>
-    <section class="room-game" data-room-game hidden></section>
     <iframe data-room-frame title={copy.content} referrerpolicy="same-origin"></iframe>
   </dialog>
 </main>
@@ -342,10 +314,37 @@ const destinations = [
     position: absolute;
     top: 50%;
     left: 50%;
+    z-index: 3;
+    width: 1.6rem;
+    height: 1.6rem;
     transform: translate(-50%, -50%);
     pointer-events: none;
-    color: var(--atelier-fg);
-    text-shadow: 0 1px 4px var(--atelier-bg);
+    border: 2px solid var(--atelier-fg);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--atelier-bg), inset 0 0 0 1px var(--atelier-bg);
+    transition:
+      width 120ms ease,
+      height 120ms ease,
+      border-color 120ms ease;
+  }
+  .room-reticle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: var(--atelier-fg);
+  }
+  .room-reticle[data-target] {
+    width: 2.4rem;
+    height: 2.4rem;
+    border-color: var(--atelier-accent);
+  }
+  .room-reticle[data-target]::after {
+    background: var(--atelier-accent);
   }
   .room-target-labels {
     position: absolute;
@@ -511,331 +510,6 @@ const destinations = [
     font-size: 0.75rem;
     color: var(--atelier-fg-muted);
   }
-  .room-game {
-    display: grid;
-    gap: 0.9rem;
-    align-content: start;
-    flex: 1;
-    min-height: 0;
-    overflow: auto;
-    padding: 1.25rem 1.5rem 1.5rem;
-    outline: 0;
-  }
-  .room-game[hidden] {
-    display: none;
-  }
-  .room-game :global(.room-game-intro) {
-    color: var(--atelier-fg-muted);
-    font-size: 0.85rem;
-  }
-  .room-game :global(.room-game-stats) {
-    font-family: var(--font-code);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    color: var(--atelier-accent-soft);
-    min-height: 1.2em;
-  }
-  .room-game :global(.room-game-stage) {
-    position: relative;
-    border: 1px solid var(--atelier-line);
-    background: color-mix(in srgb, var(--atelier-bg) 70%, transparent);
-    min-height: 12rem;
-  }
-  .room-game :global(.room-game-canvas) {
-    display: block;
-    width: 100%;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-  .room-game :global(.room-game-controls) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    align-items: center;
-  }
-  .room-game :global(.room-game-button),
-  .room-game :global(.room-game-chip) {
-    padding: 0.55rem 0.9rem;
-    border: 1px solid var(--atelier-line);
-    color: var(--atelier-fg);
-    background: transparent;
-    font-family: var(--font-code);
-    font-size: 0.75rem;
-    cursor: pointer;
-  }
-  .room-game :global(.room-game-chip) {
-    min-width: 2.6rem;
-    padding: 0.45rem 0.5rem;
-  }
-  .room-game :global(.room-game-button:hover),
-  .room-game :global(.room-game-chip:hover) {
-    border-color: var(--atelier-accent);
-    color: var(--atelier-accent);
-  }
-  .room-game :global(.room-game-piano) {
-    position: relative;
-    height: 11rem;
-    margin: 1rem;
-  }
-  .room-game :global(.room-game-key) {
-    position: absolute;
-    top: 0;
-    left: calc(var(--key-index) * 10%);
-    width: 10%;
-    height: 100%;
-    border: 1px solid var(--atelier-line);
-    background: var(--atelier-fg);
-    color: var(--atelier-bg);
-    cursor: pointer;
-  }
-  .room-game :global(.room-game-key::after) {
-    content: attr(data-label);
-    position: absolute;
-    bottom: 0.4rem;
-    left: 0;
-    right: 0;
-    font-family: var(--font-code);
-    font-size: 0.65rem;
-  }
-  .room-game :global(.room-game-key-black) {
-    z-index: 1;
-    width: 6%;
-    height: 62%;
-    background: var(--atelier-bg);
-    color: var(--atelier-fg);
-  }
-  .room-game :global(.room-game-key[data-next]) {
-    box-shadow: inset 0 -0.45rem 0 var(--atelier-accent);
-  }
-  .room-game :global(.room-game-key[data-active]) {
-    background: var(--atelier-accent);
-  }
-  .room-game :global(.room-game-typing-text) {
-    padding: 1.2rem;
-    font-family: var(--font-code);
-    font-size: 1.15rem;
-    line-height: 1.7;
-    color: var(--atelier-fg-muted);
-  }
-  .room-game :global(.room-game-typing-text [data-state='ok']) {
-    color: var(--atelier-fg);
-  }
-  .room-game :global(.room-game-typing-text [data-state='bad']) {
-    color: var(--atelier-bg);
-    background: var(--atelier-accent);
-  }
-  .room-game :global(.room-game-typing-text [data-state='cursor']) {
-    border-bottom: 2px solid var(--atelier-accent);
-  }
-  .room-game :global(.room-game-typing-input) {
-    width: calc(100% - 2.4rem);
-    margin: 0 1.2rem 1.2rem;
-    padding: 0.6rem 0.8rem;
-    border: 1px solid var(--atelier-line);
-    background: transparent;
-    color: var(--atelier-fg);
-    font-family: var(--font-code);
-  }
-  .room-game :global(.room-game-rubik) {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: repeat(9, 1fr);
-    gap: 3px;
-    width: min(100%, 30rem);
-    aspect-ratio: 12 / 9;
-    margin: 1rem auto;
-  }
-  .room-game :global(.room-game-sticker) {
-    border-radius: 3px;
-  }
-  .room-game :global(.room-game-rubik-moves) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    width: 100%;
-  }
-  .room-game :global(.room-game-cards) {
-    position: relative;
-    height: 13rem;
-    --shuffle-speed: 400ms;
-  }
-  .room-game :global(.room-game-card) {
-    position: absolute;
-    top: 1.5rem;
-    left: calc(50% - 13rem + var(--slot) * 9rem);
-    width: 8rem;
-    height: 10rem;
-    border: 1px solid var(--atelier-line);
-    border-radius: 0.6rem;
-    background: var(--atelier-fg);
-    color: var(--atelier-accent);
-    font-size: 2rem;
-    cursor: pointer;
-    transition: left var(--shuffle-speed) ease-in-out;
-  }
-  .room-game :global(.room-game-card[data-face='back']) {
-    background:
-      repeating-linear-gradient(45deg, var(--atelier-accent) 0 6px, transparent 6px 12px),
-      var(--atelier-bg);
-  }
-  .room-game :global(.room-game-pads) {
-    display: flex;
-    gap: 0.5rem;
-  }
-  .room-game :global(.room-game-pad) {
-    width: 3rem;
-    height: 3rem;
-    border: 0;
-    border-radius: 50%;
-    color: var(--atelier-bg);
-    font-family: var(--font-code);
-    cursor: pointer;
-  }
-  .room-darts-game {
-    display: grid;
-    gap: 1rem;
-    align-content: center;
-    justify-items: center;
-    flex: 1;
-    min-height: 0;
-    padding: 1.5rem;
-    background:
-      radial-gradient(
-        circle at 50% 38%,
-        color-mix(in srgb, var(--atelier-accent) 9%, transparent),
-        transparent 42%
-      ),
-      color-mix(in srgb, var(--atelier-bg) 88%, var(--atelier-surface));
-  }
-  .room-darts-game h3,
-  .room-darts-game p {
-    margin: 0;
-  }
-  .room-darts-game p {
-    color: var(--atelier-fg-muted);
-    font-size: 0.78rem;
-  }
-  .room-darts-scoreboard {
-    display: flex;
-    gap: 1rem;
-    color: var(--atelier-fg-muted);
-    font-family: var(--font-code);
-    font-size: 0.72rem;
-  }
-  .room-darts-scoreboard strong {
-    color: var(--atelier-accent-soft);
-    font-size: 1rem;
-  }
-  .room-darts-playfield {
-    display: grid;
-    grid-template-columns: minmax(12rem, 18rem) minmax(10rem, 14rem);
-    align-items: center;
-    gap: 1.4rem;
-    width: min(36rem, 100%);
-  }
-  .room-darts-target {
-    position: relative;
-    display: grid;
-    width: 100%;
-    aspect-ratio: 1;
-    padding: 0;
-    overflow: hidden;
-    border: 0.65rem solid #20252a;
-    border-radius: 50%;
-    background: repeating-conic-gradient(from -9deg, #edf0ee 0deg 9deg, #23282c 9deg 18deg);
-    box-shadow:
-      0 0 0 0.2rem #515a60,
-      0 1.25rem 2rem rgb(0 0 0 / 32%),
-      inset 0 0 0 0.18rem rgb(255 255 255 / 25%);
-    cursor: crosshair;
-  }
-  .room-darts-target::before,
-  .room-darts-target::after,
-  .room-darts-target-ring {
-    position: absolute;
-    inset: 12%;
-    border: 0.25rem solid #bd665e;
-    border-radius: 50%;
-    pointer-events: none;
-  }
-  .room-darts-target::after {
-    inset: 35%;
-    border-color: #568b84;
-  }
-  .room-darts-target::before {
-    inset: 47%;
-    border-color: #bd665e;
-    background: #bd665e;
-  }
-  .room-darts-target-ring-single {
-    inset: 27%;
-    border-color: #568b84;
-  }
-  .room-darts-target-ring-outer {
-    inset: 35%;
-    border-color: #bd665e;
-  }
-  .room-darts-target-ring-bull {
-    inset: 44%;
-    border-color: #bd665e;
-    background: #bd665e;
-  }
-  .room-darts-crosshair {
-    position: absolute;
-    z-index: 1;
-    display: grid;
-    width: 1.35rem;
-    height: 1.35rem;
-    place-items: center;
-    margin: -0.675rem 0 0 -0.675rem;
-    color: var(--atelier-bg);
-    border: 1px solid var(--atelier-accent);
-    border-radius: 50%;
-    background: var(--atelier-accent);
-    font-family: var(--font-code);
-    font-size: 0.85rem;
-    pointer-events: none;
-  }
-  .room-darts-actions {
-    display: grid;
-    gap: 0.8rem;
-  }
-  .room-darts-actions p {
-    min-height: 2.5rem;
-    margin: 0;
-    color: var(--atelier-fg-muted);
-    font-size: 0.78rem;
-  }
-  .room-darts-actions button {
-    min-height: 3rem;
-    color: var(--atelier-fg);
-    border: 1px solid var(--atelier-line);
-    background: color-mix(in srgb, var(--atelier-surface-highest) 72%, transparent);
-    font-family: var(--font-code);
-    font-size: 0.72rem;
-    transition:
-      transform 140ms ease,
-      border-color 140ms ease,
-      background-color 140ms ease;
-  }
-  .room-darts-actions button:hover:not(:disabled),
-  .room-darts-actions button:focus-visible,
-  .room-darts-target:hover,
-  .room-darts-target:focus-visible {
-    border-color: var(--atelier-accent);
-    background: color-mix(in srgb, var(--atelier-accent) 20%, var(--atelier-bg));
-    transform: translateY(-2px);
-  }
-  .room-darts-actions button:disabled {
-    cursor: not-allowed;
-    opacity: 0.45;
-  }
-  .room-darts-reset {
-    min-height: 40px;
-    padding-inline: 1rem;
-    color: var(--atelier-fg);
-    border: 1px solid var(--atelier-line);
-  }
   [hidden] {
     display: none !important;
   }
@@ -871,10 +545,6 @@ const destinations = [
     }
     .room-panel-header {
       padding: 0.5rem 0.8rem;
-    }
-    .room-darts-playfield {
-      grid-template-columns: minmax(0, 1fr);
-      width: min(18rem, 100%);
     }
   }
 </style>

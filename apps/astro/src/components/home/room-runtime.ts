@@ -7,13 +7,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { roomCopy } from './room-copy';
-import { isMinigame, mountMinigame } from './room-minigames';
-import {
-  dartsScoreForRing,
-  roomPhaseForTokyoHour,
-  type DartsRing,
-  type RoomPhase
-} from './room-logic';
+import { roomPhaseForTokyoHour, type RoomPhase } from './room-logic';
 
 type Locale = keyof typeof roomCopy;
 type HobbyTargetId =
@@ -382,15 +376,6 @@ export const initRoom = (root: HTMLElement) => {
   const lieDownButton = root.querySelector<HTMLButtonElement>('[data-room-lie-down]');
   const closetButton = root.querySelector<HTMLButtonElement>('[data-room-closet]');
   const panelKicker = root.querySelector<HTMLElement>('[data-room-panel-kicker]');
-  const dartsGame = root.querySelector<HTMLElement>('[data-room-darts]');
-  const dartsScore = root.querySelector<HTMLElement>('[data-room-darts-score]');
-  const dartsThrows = root.querySelector<HTMLElement>('[data-room-darts-throws]');
-  const dartsTarget = root.querySelector<HTMLButtonElement>('[data-room-darts-target]');
-  const dartsCrosshair = root.querySelector<HTMLElement>('[data-room-darts-crosshair]');
-  const dartsThrowButton = root.querySelector<HTMLButtonElement>('[data-room-darts-throw]');
-  const dartsResult = root.querySelector<HTMLElement>('[data-room-darts-result]');
-  const dartsReset = root.querySelector<HTMLButtonElement>('[data-room-darts-reset]');
-  const gameHost = root.querySelector<HTMLElement>('[data-room-game]');
 
   if (
     !stage ||
@@ -418,16 +403,7 @@ export const initRoom = (root: HTMLElement) => {
     !curtainAuto ||
     !lieDownButton ||
     !closetButton ||
-    !panelKicker ||
-    !dartsGame ||
-    !dartsScore ||
-    !dartsThrows ||
-    !dartsTarget ||
-    !dartsCrosshair ||
-    !dartsThrowButton ||
-    !dartsResult ||
-    !dartsReset ||
-    !gameHost
+    !panelKicker
   ) {
     return;
   }
@@ -835,9 +811,6 @@ export const initRoom = (root: HTMLElement) => {
   let frameRequest = 0;
   let clockTimer = 0;
   let frameFocusTimer = 0;
-  let dartsTotal = 0;
-  let dartsThrowCount = 0;
-  let dartsAim: { ring: DartsRing; x: number; y: number } | null = null;
 
   const setLookAt = (target: THREE.Vector3) => {
     const direction = target.clone().sub(camera.position);
@@ -899,9 +872,33 @@ export const initRoom = (root: HTMLElement) => {
     new THREE.Vector3(...getTargetDefinition(id)!.position);
 
   let highlightedTarget: TargetId | undefined;
+  const targetMeshes = new Map<TargetId, THREE.Mesh[]>();
+  const highlightOverlays: THREE.Mesh[] = [];
+  const highlightMaterial = new THREE.MeshBasicMaterial({
+    color: new THREE.Color(getComputedStyle(root).getPropertyValue('--atelier-accent').trim()),
+    transparent: true,
+    opacity: 0.2,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -1
+  });
+  const applyModelHighlight = (target?: TargetId) => {
+    highlightOverlays.splice(0).forEach((overlay) => overlay.removeFromParent());
+    if (!target) return;
+    targetMeshes.get(target)?.forEach((mesh) => {
+      const overlay = new THREE.Mesh(mesh.geometry, highlightMaterial);
+      overlay.raycast = () => {};
+      mesh.add(overlay);
+      highlightOverlays.push(overlay);
+    });
+  };
   const setHighlightedTarget = (target?: TargetId) => {
     if (highlightedTarget === target) return;
     highlightedTarget = target;
+    applyModelHighlight(target);
+    reticle.toggleAttribute('data-target', Boolean(target));
     targetLabels.forEach((label, id) => {
       if (id === target) label.dataset.roomTargetHover = '';
       else delete label.dataset.roomTargetHover;
@@ -914,6 +911,7 @@ export const initRoom = (root: HTMLElement) => {
   const labelCameraQuaternion = new THREE.Quaternion();
   const labelProjectionMatrix = new THREE.Matrix4();
   let lastLabelVisibilityCheck = -Infinity;
+  let lastCenterCheck = -Infinity;
 
   const updateTargetLabels = (now: number) => {
     const visible = Boolean(room && entered && !focusActive);
@@ -1035,28 +1033,6 @@ export const initRoom = (root: HTMLElement) => {
     const before = camera.position.clone();
     moveAlong(direction.x, direction.z);
     if (camera.position.distanceToSquared(before) < 0.0001) moveTarget = null;
-  };
-
-  const updateDartsScore = () => {
-    dartsScore.textContent = String(dartsTotal);
-    dartsThrows.textContent = String(dartsThrowCount);
-  };
-
-  const dartsLabelFor = (ring: DartsRing) => {
-    if (ring === 'bullseye') return copy.dartsBullseye;
-    if (ring === 'outer') return copy.dartsOuter;
-    if (ring === 'single') return copy.dartsSingle;
-    return copy.dartsMiss;
-  };
-
-  const resetDarts = () => {
-    dartsTotal = 0;
-    dartsThrowCount = 0;
-    dartsAim = null;
-    dartsCrosshair.hidden = true;
-    dartsThrowButton.disabled = true;
-    dartsResult.textContent = copy.dartsReady;
-    updateDartsScore();
   };
 
   const toggleManualLight = () => {
@@ -1361,12 +1337,16 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const targetFromPointer = (event: PointerEvent) => {
-    if (!room) return undefined;
     const rect = renderer.domElement.getBoundingClientRect();
-    pointer.set(
+    return targetAt(
       ((event.clientX - rect.left) / rect.width) * 2 - 1,
       -((event.clientY - rect.top) / rect.height) * 2 + 1
     );
+  };
+
+  const targetAt = (x: number, y: number) => {
+    if (!room) return undefined;
+    pointer.set(x, y);
     raycaster.setFromCamera(pointer, camera);
     const intersections = raycaster.intersectObjects([room, interactionRoot], true);
     const hotspot = intersections.find(
@@ -1525,8 +1505,6 @@ export const initRoom = (root: HTMLElement) => {
     }
   };
 
-  let disposeGame = () => {};
-
   const loadContent = async (id: ContentId) => {
     const request = ++contentRequest;
     if (id === 'hobbies' || isHobbyTarget(id) || isMusicChild(id)) await hobbyRoutesReady;
@@ -1535,30 +1513,14 @@ export const initRoom = (root: HTMLElement) => {
     panelKicker.textContent = copy.examine;
     fullPage.href = toUrl(pathFor(id));
     renderTabs(id);
-    disposeGame();
-    gameHost.hidden = true;
-    if (id === 'darts') {
-      frame.hidden = true;
-      dartsGame.hidden = false;
-      panelStatus.hidden = true;
-      resetDarts();
-    } else if (isMinigame(id)) {
-      frame.hidden = true;
-      dartsGame.hidden = true;
-      panelStatus.hidden = true;
-      gameHost.hidden = false;
-      disposeGame = mountMinigame(gameHost, id, copy.games);
-    } else {
-      frame.hidden = false;
-      dartsGame.hidden = true;
-      panelStatus.hidden = false;
-      panelStatus.textContent = copy.loadingDescription;
-      frame.src = toFrameUrl(pathFor(id));
-    }
+    frame.hidden = false;
+    panelStatus.hidden = false;
+    panelStatus.textContent = copy.loadingDescription;
+    frame.src = toFrameUrl(pathFor(id));
     if (!panel.open) panel.showModal();
     if (frameFocusTimer) window.clearTimeout(frameFocusTimer);
     frameFocusTimer = window.setTimeout(() => {
-      if (!disposed && !frame.hidden) frame.focus();
+      if (!disposed) frame.focus();
     }, 0);
   };
 
@@ -1574,10 +1536,6 @@ export const initRoom = (root: HTMLElement) => {
     if (panel.open) panel.close();
     frame.src = 'about:blank';
     frame.hidden = false;
-    dartsGame.hidden = true;
-    disposeGame();
-    disposeGame = () => {};
-    gameHost.hidden = true;
     panelTabs.replaceChildren();
     if (!savedPose) {
       focusActive = false;
@@ -1738,9 +1696,13 @@ export const initRoom = (root: HTMLElement) => {
 
   const onPointerDown = (event: PointerEvent) => {
     if (!entered || focusActive || event.button > 0) return;
+    if (pointerLocked) {
+      const target = targetAt(0, 0);
+      if (target) focusTarget(target);
+      return;
+    }
     setHint();
-    if (!pointerLocked && !targetFromPointer(event)) requestPointerLock();
-    if (pointerLocked) return;
+    if (!targetFromPointer(event)) requestPointerLock();
     pointerState = { id: event.pointerId, x: event.clientX, y: event.clientY, dragging: false };
     if (!document.pointerLockElement) {
       try {
@@ -1853,42 +1815,6 @@ export const initRoom = (root: HTMLElement) => {
   const onCurtainAuto = () => restoreAutomaticCurtains();
   const onLieDownClick = () => (resting ? stopRest() : startRest());
   const onClosetClick = () => toggleCloset();
-  const onDartsTargetClick = (event: MouseEvent) => {
-    const bounds = dartsTarget.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-    const distance = Math.hypot(x, y) / 0.5;
-    const ring: DartsRing =
-      distance <= 0.18
-        ? 'bullseye'
-        : distance <= 0.36
-          ? 'outer'
-          : distance <= 0.78
-            ? 'single'
-            : 'miss';
-    dartsAim = { ring, x, y };
-    dartsCrosshair.style.left = `${(x + 0.5) * 100}%`;
-    dartsCrosshair.style.top = `${(y + 0.5) * 100}%`;
-    dartsCrosshair.hidden = false;
-    dartsThrowButton.disabled = false;
-    dartsResult.textContent = `${copy.dartsAim}: ${dartsLabelFor(ring)}`;
-  };
-  const onDartsThrow = () => {
-    if (!dartsAim) {
-      dartsResult.textContent = copy.dartsReady;
-      return;
-    }
-    const { ring } = dartsAim;
-    const score = dartsScoreForRing(ring);
-    dartsTotal += score;
-    dartsThrowCount += 1;
-    dartsResult.textContent = `${copy.dartsResult}: ${dartsLabelFor(ring)} · +${score}`;
-    dartsAim = null;
-    dartsCrosshair.hidden = true;
-    dartsThrowButton.disabled = true;
-    updateDartsScore();
-  };
-  const onDartsReset = () => resetDarts();
   const onPanelCancel = (event: Event) => {
     event.preventDefault();
     closePanel();
@@ -1914,9 +1840,6 @@ export const initRoom = (root: HTMLElement) => {
   curtainAuto.addEventListener('click', onCurtainAuto);
   lieDownButton.addEventListener('click', onLieDownClick);
   closetButton.addEventListener('click', onClosetClick);
-  dartsTarget.addEventListener('click', onDartsTargetClick);
-  dartsThrowButton.addEventListener('click', onDartsThrow);
-  dartsReset.addEventListener('click', onDartsReset);
   root.querySelectorAll<HTMLAnchorElement>('[data-room-destination]').forEach((link) => {
     const onDestinationClick = (event: MouseEvent) => {
       const id = link.dataset.roomDestination as TargetId | undefined;
@@ -2066,6 +1989,12 @@ export const initRoom = (root: HTMLElement) => {
       room = gltf.scene;
       room.traverse((object) => {
         if (object.userData?.roomBackdrop) backdrops.push(object);
+        if (!(object instanceof THREE.Mesh)) return;
+        const target = getRoomTarget(object);
+        if (!target) return;
+        const list = targetMeshes.get(target) ?? [];
+        list.push(object);
+        targetMeshes.set(target, list);
       });
       syncVisibleBackdrop();
       room.traverse((object) => {
@@ -2169,6 +2098,10 @@ export const initRoom = (root: HTMLElement) => {
     updateCloset(delta);
     camera.updateMatrixWorld();
     updateTargetLabels(now);
+    if (pointerLocked && entered && !focusActive && now - lastCenterCheck > 90) {
+      lastCenterCheck = now;
+      setHint(targetAt(0, 0));
+    }
     if (composer) composer.render();
     else renderer.render(scene, camera);
     frameRequest = window.requestAnimationFrame(frameLoop);
@@ -2181,7 +2114,6 @@ export const initRoom = (root: HTMLElement) => {
     if (disposed) return;
     disposed = true;
     contentRequest += 1;
-    disposeGame();
     hobbyRoutesController.abort();
     keys.clear();
     pointerState = null;
@@ -2199,9 +2131,6 @@ export const initRoom = (root: HTMLElement) => {
     curtainAuto.removeEventListener('click', onCurtainAuto);
     lieDownButton.removeEventListener('click', onLieDownClick);
     closetButton.removeEventListener('click', onClosetClick);
-    dartsTarget.removeEventListener('click', onDartsTargetClick);
-    dartsThrowButton.removeEventListener('click', onDartsThrow);
-    dartsReset.removeEventListener('click', onDartsReset);
     destinationHandlers.forEach((handler, link) => link.removeEventListener('click', handler));
     closeButton?.removeEventListener('click', onCloseClick);
     panel.removeEventListener('cancel', onPanelCancel);
