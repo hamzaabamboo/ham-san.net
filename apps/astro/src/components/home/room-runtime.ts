@@ -7,6 +7,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { roomCopy } from './room-copy';
+import { isMinigame, mountMinigame } from './room-minigames';
 import {
   dartsScoreForRing,
   roomPhaseForTokyoHour,
@@ -33,6 +34,7 @@ type TargetId =
   | 'namecard'
   | 'events'
   | 'photos'
+  | 'penlight'
   | 'light'
   | 'closet';
 type ContentId = TargetId | MusicChildId | 'about' | 'contact';
@@ -113,6 +115,7 @@ const targetDefinitions: TargetDefinition[] = [
   { id: 'hobbies', position: [1.72, 1.2, -3.3], path: 'hobbies' },
   { id: 'events', position: [1.15, 1.22, -3.17], path: 'events' },
   { id: 'photos', position: [0.436, 0.923, 1.703], volume: [0.46, 0.3, 0.4], path: 'photos' },
+  { id: 'penlight', position: [3.2, 1.62, 1.15], volume: [0.12, 0.45, 0.95], path: 'events' },
   { id: 'light', position: [-1.86, 1.24, -2.45], volume: [0.3, 0.34, 0.12], path: '' },
   {
     id: 'closet',
@@ -171,6 +174,7 @@ const defaultFocusPositions: Record<TargetId, [number, number, number]> = {
   hobbies: [1, 1.5, -2.05],
   events: [1.15, 1.55, -2],
   photos: [0.58, 1.27, 0.95],
+  penlight: [2.25, 1.6, 1.15],
   light: [-1.86, 1.35, -2.15],
   darts: [-1.35, 1.5, -2.3],
   piano: [-1.35, 1.5, -2.3],
@@ -386,6 +390,7 @@ export const initRoom = (root: HTMLElement) => {
   const dartsThrowButton = root.querySelector<HTMLButtonElement>('[data-room-darts-throw]');
   const dartsResult = root.querySelector<HTMLElement>('[data-room-darts-result]');
   const dartsReset = root.querySelector<HTMLButtonElement>('[data-room-darts-reset]');
+  const gameHost = root.querySelector<HTMLElement>('[data-room-game]');
 
   if (
     !stage ||
@@ -421,7 +426,8 @@ export const initRoom = (root: HTMLElement) => {
     !dartsCrosshair ||
     !dartsThrowButton ||
     !dartsResult ||
-    !dartsReset
+    !dartsReset ||
+    !gameHost
   ) {
     return;
   }
@@ -438,6 +444,7 @@ export const initRoom = (root: HTMLElement) => {
   const labelFor = (id: ContentId) => {
     if (isHobbyTarget(id)) return copy[id];
     if (id === 'light') return copy.light;
+    if (id === 'penlight') return copy.penlight;
     if (id === 'closet') return copy.closet;
     if (id === 'about') return copy.about;
     if (id === 'contact') return copy.contact;
@@ -1518,6 +1525,8 @@ export const initRoom = (root: HTMLElement) => {
     }
   };
 
+  let disposeGame = () => {};
+
   const loadContent = async (id: ContentId) => {
     const request = ++contentRequest;
     if (id === 'hobbies' || isHobbyTarget(id) || isMusicChild(id)) await hobbyRoutesReady;
@@ -1526,11 +1535,19 @@ export const initRoom = (root: HTMLElement) => {
     panelKicker.textContent = copy.examine;
     fullPage.href = toUrl(pathFor(id));
     renderTabs(id);
+    disposeGame();
+    gameHost.hidden = true;
     if (id === 'darts') {
       frame.hidden = true;
       dartsGame.hidden = false;
       panelStatus.hidden = true;
       resetDarts();
+    } else if (isMinigame(id)) {
+      frame.hidden = true;
+      dartsGame.hidden = true;
+      panelStatus.hidden = true;
+      gameHost.hidden = false;
+      disposeGame = mountMinigame(gameHost, id, copy.games);
     } else {
       frame.hidden = false;
       dartsGame.hidden = true;
@@ -1541,7 +1558,7 @@ export const initRoom = (root: HTMLElement) => {
     if (!panel.open) panel.showModal();
     if (frameFocusTimer) window.clearTimeout(frameFocusTimer);
     frameFocusTimer = window.setTimeout(() => {
-      if (!disposed) frame.focus();
+      if (!disposed && !frame.hidden) frame.focus();
     }, 0);
   };
 
@@ -1558,6 +1575,9 @@ export const initRoom = (root: HTMLElement) => {
     frame.src = 'about:blank';
     frame.hidden = false;
     dartsGame.hidden = true;
+    disposeGame();
+    disposeGame = () => {};
+    gameHost.hidden = true;
     panelTabs.replaceChildren();
     if (!savedPose) {
       focusActive = false;
@@ -2161,6 +2181,7 @@ export const initRoom = (root: HTMLElement) => {
     if (disposed) return;
     disposed = true;
     contentRequest += 1;
+    disposeGame();
     hobbyRoutesController.abort();
     keys.clear();
     pointerState = null;

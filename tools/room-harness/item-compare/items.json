@@ -210,14 +210,14 @@
  },
  "NESOBERI": {
   "prefix": [
-   "Rack neso t1 0"
+   "Rack neso t2"
   ],
   "eye": [
-   0.78,
-   1.05,
-   0.35
+   0.85,
+   0.75,
+   0.75
   ],
-  "lens": 50
+  "lens": 32
  },
  "SHELF-FRAME": {
   "prefix": [
@@ -338,15 +338,16 @@
  "LIVE-TOWEL": {
   "prefix": [
    "Live towel",
-   "Towel hook"
+   "Towel hook",
+   "Event ticket"
   ],
   "view": "right",
   "eye": [
-   2.55,
-   -0.35,
-   1.25
+   2.0,
+   -1.15,
+   1.0
   ],
-  "lens": 28
+  "lens": 20
  },
  "UCHIWA-FLAG": {
   "prefix": [

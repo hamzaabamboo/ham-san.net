@@ -112,6 +112,7 @@ const destinations = [
       <button class="room-darts-reset" type="button" data-room-darts-reset>{copy.dartsReset}</button
       >
     </section>
+    <section class="room-game" data-room-game hidden></section>
     <iframe data-room-frame title={copy.content} referrerpolicy="same-origin"></iframe>
   </dialog>
 </main>
@@ -509,6 +510,186 @@ const destinations = [
     padding: 0.5rem 1.2rem;
     font-size: 0.75rem;
     color: var(--atelier-fg-muted);
+  }
+  .room-game {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 1.25rem 1.5rem 1.5rem;
+    outline: 0;
+  }
+  .room-game[hidden] {
+    display: none;
+  }
+  .room-game :global(.room-game-intro) {
+    color: var(--atelier-fg-muted);
+    font-size: 0.85rem;
+  }
+  .room-game :global(.room-game-stats) {
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--atelier-accent-soft);
+    min-height: 1.2em;
+  }
+  .room-game :global(.room-game-stage) {
+    position: relative;
+    border: 1px solid var(--atelier-line);
+    background: color-mix(in srgb, var(--atelier-bg) 70%, transparent);
+    min-height: 12rem;
+  }
+  .room-game :global(.room-game-canvas) {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .room-game :global(.room-game-controls) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+  }
+  .room-game :global(.room-game-button),
+  .room-game :global(.room-game-chip) {
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--atelier-line);
+    color: var(--atelier-fg);
+    background: transparent;
+    font-family: var(--font-code);
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+  .room-game :global(.room-game-chip) {
+    min-width: 2.6rem;
+    padding: 0.45rem 0.5rem;
+  }
+  .room-game :global(.room-game-button:hover),
+  .room-game :global(.room-game-chip:hover) {
+    border-color: var(--atelier-accent);
+    color: var(--atelier-accent);
+  }
+  .room-game :global(.room-game-piano) {
+    position: relative;
+    height: 11rem;
+    margin: 1rem;
+  }
+  .room-game :global(.room-game-key) {
+    position: absolute;
+    top: 0;
+    left: calc(var(--key-index) * 10%);
+    width: 10%;
+    height: 100%;
+    border: 1px solid var(--atelier-line);
+    background: var(--atelier-fg);
+    color: var(--atelier-bg);
+    cursor: pointer;
+  }
+  .room-game :global(.room-game-key::after) {
+    content: attr(data-label);
+    position: absolute;
+    bottom: 0.4rem;
+    left: 0;
+    right: 0;
+    font-family: var(--font-code);
+    font-size: 0.65rem;
+  }
+  .room-game :global(.room-game-key-black) {
+    z-index: 1;
+    width: 6%;
+    height: 62%;
+    background: var(--atelier-bg);
+    color: var(--atelier-fg);
+  }
+  .room-game :global(.room-game-key[data-next]) {
+    box-shadow: inset 0 -0.45rem 0 var(--atelier-accent);
+  }
+  .room-game :global(.room-game-key[data-active]) {
+    background: var(--atelier-accent);
+  }
+  .room-game :global(.room-game-typing-text) {
+    padding: 1.2rem;
+    font-family: var(--font-code);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--atelier-fg-muted);
+  }
+  .room-game :global(.room-game-typing-text [data-state='ok']) {
+    color: var(--atelier-fg);
+  }
+  .room-game :global(.room-game-typing-text [data-state='bad']) {
+    color: var(--atelier-bg);
+    background: var(--atelier-accent);
+  }
+  .room-game :global(.room-game-typing-text [data-state='cursor']) {
+    border-bottom: 2px solid var(--atelier-accent);
+  }
+  .room-game :global(.room-game-typing-input) {
+    width: calc(100% - 2.4rem);
+    margin: 0 1.2rem 1.2rem;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--atelier-line);
+    background: transparent;
+    color: var(--atelier-fg);
+    font-family: var(--font-code);
+  }
+  .room-game :global(.room-game-rubik) {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    gap: 3px;
+    width: min(100%, 30rem);
+    aspect-ratio: 12 / 9;
+    margin: 1rem auto;
+  }
+  .room-game :global(.room-game-sticker) {
+    border-radius: 3px;
+  }
+  .room-game :global(.room-game-rubik-moves) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    width: 100%;
+  }
+  .room-game :global(.room-game-cards) {
+    position: relative;
+    height: 13rem;
+    --shuffle-speed: 400ms;
+  }
+  .room-game :global(.room-game-card) {
+    position: absolute;
+    top: 1.5rem;
+    left: calc(50% - 13rem + var(--slot) * 9rem);
+    width: 8rem;
+    height: 10rem;
+    border: 1px solid var(--atelier-line);
+    border-radius: 0.6rem;
+    background: var(--atelier-fg);
+    color: var(--atelier-accent);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: left var(--shuffle-speed) ease-in-out;
+  }
+  .room-game :global(.room-game-card[data-face='back']) {
+    background:
+      repeating-linear-gradient(45deg, var(--atelier-accent) 0 6px, transparent 6px 12px),
+      var(--atelier-bg);
+  }
+  .room-game :global(.room-game-pads) {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .room-game :global(.room-game-pad) {
+    width: 3rem;
+    height: 3rem;
+    border: 0;
+    border-radius: 50%;
+    color: var(--atelier-bg);
+    font-family: var(--font-code);
+    cursor: pointer;
   }
   .room-darts-game {
     display: grid;
