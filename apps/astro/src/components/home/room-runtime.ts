@@ -2196,6 +2196,11 @@ export const initRoom = (root: HTMLElement) => {
         list.push(object);
         targetMeshes.set(target, list);
       });
+      targetLabels.forEach((label, id) => {
+        if (targetMeshes.has(id)) return;
+        label.remove();
+        targetLabels.delete(id);
+      });
       syncVisibleBackdrop();
       room.traverse((object) => {
         if (object instanceof THREE.PointLight && penlightNamePattern.test(object.name)) {
