@@ -198,19 +198,30 @@
  },
  "PLUSH-RACK": {
   "prefix": [
-   "Rack v",
-   "Rack neso",
    "Dart rack",
-   "Carrot plush",
-   "Dragon",
-   "Rack clear",
-   "Rack hanging",
-   "Rack pouch"
+   "Chibi blonde",
+   "Chibi pink",
+   "Chibi brown",
+   "Cat white ",
+   "Cat grey ",
+   "Dog yellow",
+   "Mascot orange",
+   "Oval",
+   "Tote",
+   "Mega neso",
+   "Mochi white",
+   "Rack bag",
+   "Rack tote",
+   "Juggling ball",
+   "Rack kendama",
+   "Carrot plush"
   ]
  },
  "NESOBERI": {
   "prefix": [
-   "Rack neso t2"
+   "Mega neso",
+   "Chibi brown",
+   "Mochi white"
   ],
   "eye": [
    0.85,
@@ -311,14 +322,14 @@
  },
  "SHELF-TOP-PLUSH": {
   "prefix": [
-   "Shelf top neso"
+   "Twin chibi"
   ],
   "eye": [
-   2.55,
-   0.25,
-   2.05
+   2.45,
+   0.2,
+   1.95
   ],
-  "lens": 35
+  "lens": 50
  },
  "PENLIGHT-GRID": {
   "prefix": [

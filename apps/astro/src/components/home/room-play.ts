@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export type PlayId = 'darts' | 'rubik' | 'piano' | 'typing';
+export type PlayId = 'darts' | 'rubik' | 'piano' | 'typing' | 'yoyo';
 
 export type PlayCopy = {
   exit: string;
@@ -31,6 +31,16 @@ export type PlayCopy = {
     accuracy: string;
     best: string;
     newRace: string;
+  };
+  yoyo: {
+    intro: string;
+    sleep: string;
+    best: string;
+    around: string;
+    walk: string;
+    binds: string;
+    dead: string;
+    rewind: string;
   };
   rubik: {
     intro: string;
@@ -67,7 +77,7 @@ export type PlaySession = {
   dispose: () => void;
 };
 
-const playIds: readonly PlayId[] = ['darts', 'rubik', 'piano', 'typing'];
+const playIds: readonly PlayId[] = ['darts', 'rubik', 'piano', 'typing', 'yoyo'];
 
 export const isPlayable = (id: string): id is PlayId => playIds.includes(id as PlayId);
 
@@ -1326,11 +1336,278 @@ const typing = (context: PlayContext): PlaySession => {
   };
 };
 
+const yoyo = (context: PlayContext): PlaySession => {
+  const { scene, camera, room, stats, controls, copy } = context;
+  const body = findNode(room, 'Skill toy yoyo');
+  const tableString = findNode(room, 'Skill toy yoyo string');
+  const home = body
+    ? {
+        parent: body.parent!,
+        position: body.position.clone(),
+        quaternion: body.quaternion.clone(),
+        scale: body.scale.clone()
+      }
+    : null;
+  const toy =
+    body ??
+    new THREE.Mesh(
+      new THREE.CylinderGeometry(0.035, 0.035, 0.03, 24),
+      new THREE.MeshStandardMaterial({ color: 'teal' })
+    );
+  const worldScale = toy.getWorldScale(new THREE.Vector3());
+  scene.attach(toy);
+  toy.scale.copy(worldScale);
+  if (tableString) tableString.visible = false;
+  const box = new THREE.Box3().setFromObject(toy);
+  const size = box.getSize(new THREE.Vector3());
+  const radius = Math.max(size.x, size.y, size.z) / 2;
+  const localAxle = new THREE.Vector3(0, 0, 1);
+  const localCenter = new THREE.Box3()
+    .setFromObject(toy)
+    .getCenter(new THREE.Vector3())
+    .sub(toy.position)
+    .applyQuaternion(toy.quaternion.clone().invert())
+    .divide(toy.scale);
+  const stringMaterial = new THREE.LineBasicMaterial({ color: 'white' });
+  const stringGeometry = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(),
+    new THREE.Vector3()
+  ]);
+  const string = new THREE.Line(stringGeometry, stringMaterial);
+  scene.add(string);
+  const maxLength = 0.75;
+  const gravity = new THREE.Vector3(0, -9.81, 0);
+  const aim = new THREE.Vector2(0, -0.1);
+  const hand = new THREE.Vector3();
+  const lastHand = new THREE.Vector3();
+  const handVelocity = new THREE.Vector3();
+  const position = new THREE.Vector3();
+  const velocity = new THREE.Vector3();
+  let state: 'hand' | 'out' | 'return' | 'dead' = 'hand';
+  let length = 0;
+  let spin = 0;
+  let spinAngle = 0;
+  let sleepTime = 0;
+  let bestSleep = 0;
+  let arounds = 0;
+  let binds = 0;
+  let walk = 0;
+  const swingAngles = [0, 0];
+  const swingTotals = [0, 0];
+  let initialised = false;
+  const right = new THREE.Vector3();
+  const up = new THREE.Vector3();
+  const forward = new THREE.Vector3();
+  const updateHand = () => {
+    camera.getWorldDirection(forward);
+    right.crossVectors(forward, camera.up).normalize();
+    up.crossVectors(right, forward).normalize();
+    hand
+      .copy(camera.position)
+      .addScaledVector(forward, 1.05)
+      .addScaledVector(right, aim.x * 0.5)
+      .addScaledVector(up, aim.y * 0.4 + 0.22);
+  };
+  const render = () => {
+    const label =
+      state === 'dead'
+        ? copy.yoyo.dead
+        : state === 'out' && length >= maxLength - 0.001
+          ? `${copy.yoyo.sleep} ${sleepTime.toFixed(1)}s`
+          : '';
+    stats.textContent = `${label ? `${label} · ` : ''}${copy.yoyo.best} ${bestSleep.toFixed(1)}s · ${copy.yoyo.around} ${arounds} · ${copy.yoyo.walk} ${walk.toFixed(1)}m · ${copy.yoyo.binds} ${binds}`;
+  };
+  const throwYoyo = () => {
+    if (state !== 'hand') return;
+    state = 'out';
+    length = 0.02;
+    spin = 95;
+    sleepTime = 0;
+    swingAngles.fill(0);
+    swingTotals.fill(0);
+    position.copy(hand);
+    velocity
+      .copy(handVelocity)
+      .add(new THREE.Vector3(0, -2.4, 0))
+      .addScaledVector(forward.clone().setY(0).normalize(), 0.25);
+    playTone(330, 0.06, 0.05);
+  };
+  const bind = () => {
+    if (state !== 'out') return;
+    if (spin < 25) return;
+    state = 'return';
+    binds += 1;
+    bestSleep = Math.max(bestSleep, sleepTime);
+    playTone(660, 0.05, 0.05);
+  };
+  const rewind = () => {
+    state = 'hand';
+    length = 0;
+    spin = 0;
+    position.copy(hand);
+    velocity.set(0, 0, 0);
+  };
+  const orient = () => {
+    const target = right.clone();
+    const base = new THREE.Quaternion().setFromUnitVectors(localAxle, new THREE.Vector3(1, 0, 0));
+    const toRight = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(1, 0, 0), target);
+    const spinQuaternion = new THREE.Quaternion().setFromAxisAngle(localAxle, spinAngle);
+    toy.quaternion.copy(toRight).multiply(base).multiply(spinQuaternion);
+  };
+  controls.append(button(copy.yoyo.rewind, rewind));
+  render();
+  let renderAt = 0;
+  return {
+    pose: {
+      position: new THREE.Vector3(1.2, 1.2, 1.7),
+      lookAt: new THREE.Vector3(1.2, 0.72, 0.5)
+    },
+    intro: copy.yoyo.intro,
+    update: (dt) => {
+      const step = Math.min(dt, 1 / 30);
+      updateHand();
+      if (!initialised) {
+        lastHand.copy(hand);
+        position.copy(hand);
+        initialised = true;
+      }
+      const rawVelocity = hand.clone().sub(lastHand).divideScalar(Math.max(step, 1e-3));
+      handVelocity.lerp(rawVelocity, Math.min(1, step / 0.08));
+      lastHand.copy(hand);
+      if (state === 'hand') {
+        position.copy(hand);
+        velocity.set(0, 0, 0);
+      } else {
+        const substeps = 4;
+        const h = step / substeps;
+        for (let index = 0; index < substeps; index += 1) {
+          if (state === 'return') {
+            length = Math.max(0, length - h * (0.6 + spin * 0.02));
+            if (length <= 0.02) {
+              state = 'hand';
+              break;
+            }
+          }
+          velocity.addScaledVector(gravity, h);
+          if (state === 'out' && length >= maxLength - 0.001) {
+            const along = position.clone().sub(hand).normalize();
+            const tangential = handVelocity
+              .clone()
+              .addScaledVector(along, -handVelocity.dot(along));
+            velocity.addScaledVector(tangential, 9 * h);
+          }
+          velocity.multiplyScalar(1 - 0.08 * h);
+          position.addScaledVector(velocity, h);
+          const offset = position.clone().sub(hand);
+          const distance = offset.length();
+          if (state === 'out' && length < maxLength)
+            length = Math.min(maxLength, Math.max(length, distance));
+          if (distance > length && distance > 1e-5) {
+            const normal = offset.divideScalar(distance);
+            position.copy(hand).addScaledVector(normal, length);
+            const outward = velocity.dot(normal);
+            if (outward > 0) velocity.addScaledVector(normal, -outward);
+          }
+          if (position.y < radius) {
+            position.y = radius;
+            if (velocity.y < 0) velocity.y = 0;
+            if (spin > 25 && state === 'out') {
+              const roll = forward.clone().setY(0).normalize();
+              velocity.addScaledVector(roll, 1.4 * h * (spin / 95));
+              walk += velocity.clone().setY(0).length() * h;
+              spin -= 12 * h;
+            } else {
+              velocity.x *= 1 - 4 * h;
+              velocity.z *= 1 - 4 * h;
+            }
+          }
+        }
+        if (state === 'out') {
+          const upward = handVelocity.dot(up);
+          const hanging = position.clone().sub(hand).dot(up) < -0.6 * length;
+          if (length >= maxLength - 0.001 && hanging && upward > 3.2) bind();
+          spin = Math.max(0, spin - dt * (length >= maxLength - 0.001 ? 9 : 3));
+          if (length >= maxLength - 0.001) sleepTime += dt;
+          if (spin <= 0.5 && length >= maxLength - 0.001) {
+            state = 'dead';
+            bestSleep = Math.max(bestSleep, sleepTime);
+            playTone(140, 0.12, 0.05);
+          }
+          const offset = position.clone().sub(hand);
+          const angles = [
+            Math.atan2(offset.dot(forward), -offset.dot(up)),
+            Math.atan2(offset.dot(right), -offset.dot(up))
+          ];
+          angles.forEach((angle, plane) => {
+            let delta = angle - swingAngles[plane];
+            if (delta > Math.PI) delta -= Math.PI * 2;
+            if (delta < -Math.PI) delta += Math.PI * 2;
+            swingTotals[plane] += delta;
+            swingAngles[plane] = angle;
+            if (Math.abs(swingTotals[plane]) >= Math.PI * 2) {
+              arounds += 1;
+              swingTotals[0] = 0;
+              swingTotals[1] = 0;
+              playTone(880, 0.08, 0.06);
+            }
+          });
+        }
+        if (state === 'dead') spin = 0;
+      }
+      spinAngle += spin * dt;
+      orient();
+      toy.position
+        .copy(position)
+        .sub(localCenter.clone().multiply(toy.scale).applyQuaternion(toy.quaternion));
+      const points = stringGeometry.attributes.position as THREE.BufferAttribute;
+      points.setXYZ(0, hand.x, hand.y, hand.z);
+      points.setXYZ(1, position.x, position.y, position.z);
+      points.needsUpdate = true;
+      const now = performance.now();
+      if (now > renderAt) {
+        renderAt = now + 100;
+        render();
+      }
+    },
+    pointerDown: (ndc) => {
+      aim.copy(ndc);
+      if (state === 'hand') throwYoyo();
+      else if (state === 'out') bind();
+      else if (state === 'dead') rewind();
+    },
+    pointerMove: (ndc) => aim.copy(ndc),
+    pointerUp: () => {},
+    keyDown: (event) => {
+      if (event.key !== ' ') return false;
+      if (!event.repeat) {
+        if (state === 'hand') throwYoyo();
+        else if (state === 'out') bind();
+        else if (state === 'dead') rewind();
+      }
+      return true;
+    },
+    keyUp: (event) => event.key === ' ',
+    dispose: () => {
+      string.removeFromParent();
+      stringGeometry.dispose();
+      stringMaterial.dispose();
+      if (tableString) tableString.visible = true;
+      if (body && home) {
+        home.parent.add(body);
+        body.position.copy(home.position);
+        body.quaternion.copy(home.quaternion);
+        body.scale.copy(home.scale);
+      } else toy.removeFromParent();
+    }
+  };
+};
+
 const sessions: Record<PlayId, (context: PlayContext) => PlaySession> = {
   darts,
   rubik,
   piano,
-  typing
+  typing,
+  yoyo
 };
 
 export const startPlay = (id: PlayId, context: PlayContext) => sessions[id](context);

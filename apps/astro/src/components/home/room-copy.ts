@@ -87,6 +87,17 @@ export const roomCopy = {
         best: 'Best',
         newRace: 'New race'
       },
+      yoyo: {
+        intro:
+          'The yoyo hangs from your hand, which follows the pointer. Click or press Space to throw; it sleeps at the end of the string. Click again or flick the hand up to bind it back. Swing the hand in circles for around-the-worlds, drop it to the floor while it spins to walk the dog.',
+        sleep: 'Sleeping',
+        best: 'Best sleep',
+        around: 'Around the world',
+        walk: 'Walk the dog',
+        binds: 'Binds',
+        dead: 'Out of spin',
+        rewind: 'Rewind'
+      },
       rubik: {
         intro:
           "csTimer keyboard: J F = U U', I K = R R', D E = L L', H G = F F', S L = D D', W O = B B', ; A = y y', T B = x x', P Q = z z'. Or drag across the cube. Space scrambles and the timer starts on your first turn.",
@@ -189,6 +200,17 @@ export const roomCopy = {
         best: 'ベスト',
         newRace: '新しいレース'
       },
+      yoyo: {
+        intro:
+          'ヨーヨーは手にぶら下がり、手はポインターに追従します。クリックかスペースで投げると糸の先でスリープ。もう一度クリックするか手を上に振るとバインドで戻ります。手を回せばループ・ザ・ワールド、回転中に床へ下ろせば犬の散歩。',
+        sleep: 'スリープ中',
+        best: '最長スリープ',
+        around: 'ループ・ザ・ワールド',
+        walk: '犬の散歩',
+        binds: 'バインド',
+        dead: '回転切れ',
+        rewind: '巻き戻す'
+      },
       rubik: {
         intro:
           "csTimer キー配置：J F = U U'、I K = R R'、D E = L L'、H G = F F'、S L = D D'、W O = B B'、; A = y y'、T B = x x'、P Q = z z'。キューブをドラッグしても回せます。スペースでスクランブル、最初の一手で計測開始。",
@@ -290,6 +312,17 @@ export const roomCopy = {
         accuracy: 'ความแม่นยำ',
         best: 'ดีที่สุด',
         newRace: 'แข่งใหม่'
+      },
+      yoyo: {
+        intro:
+          'โยโย่ห้อยจากมือ มือเคลื่อนตามเมาส์ คลิกหรือกด Space เพื่อโยน มันจะหมุนค้างที่ปลายเชือก คลิกอีกครั้งหรือสะบัดมือขึ้นเพื่อดึงกลับ หมุนมือเป็นวงเพื่อทำ around the world ปล่อยลงพื้นขณะหมุนเพื่อทำ walk the dog',
+        sleep: 'กำลังหมุนค้าง',
+        best: 'หมุนค้างนานสุด',
+        around: 'Around the world',
+        walk: 'Walk the dog',
+        binds: 'ดึงกลับ',
+        dead: 'หมดแรงหมุน',
+        rewind: 'ม้วนกลับ'
       },
       rubik: {
         intro:
