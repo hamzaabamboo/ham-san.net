@@ -74,6 +74,19 @@ export const roomCopy = {
         octave: 'Octave',
         sustain: 'Sustain'
       },
+      typing: {
+        intro:
+          'Race three typists on the monitor. Type the passage exactly; mistakes turn red and must be fixed with Backspace. Enter starts the next race.',
+        ready: 'Get ready',
+        go: 'Go!',
+        you: 'You',
+        finished: 'Finished',
+        place: 'Place',
+        wpm: 'WPM',
+        accuracy: 'Accuracy',
+        best: 'Best',
+        newRace: 'New race'
+      },
       rubik: {
         intro:
           "csTimer keyboard: J F = U U', I K = R R', D E = L L', H G = F F', S L = D D', W O = B B', ; A = y y', T B = x x', P Q = z z'. Or drag across the cube. Space scrambles and the timer starts on your first turn.",
@@ -163,6 +176,19 @@ export const roomCopy = {
         octave: 'オクターブ',
         sustain: 'サステイン'
       },
+      typing: {
+        intro:
+          'モニター上で3人のタイピストと競争。文章を正確に入力し、赤いミスはBackspaceで直す。Enterで次のレース。',
+        ready: '用意',
+        go: 'スタート！',
+        you: 'あなた',
+        finished: 'ゴール',
+        place: '順位',
+        wpm: 'WPM',
+        accuracy: '正確さ',
+        best: 'ベスト',
+        newRace: '新しいレース'
+      },
       rubik: {
         intro:
           "csTimer キー配置：J F = U U'、I K = R R'、D E = L L'、H G = F F'、S L = D D'、W O = B B'、; A = y y'、T B = x x'、P Q = z z'。キューブをドラッグしても回せます。スペースでスクランブル、最初の一手で計測開始。",
@@ -251,6 +277,19 @@ export const roomCopy = {
         chord: 'คอร์ด',
         octave: 'อ็อกเทฟ',
         sustain: 'ซัสเทน'
+      },
+      typing: {
+        intro:
+          'แข่งพิมพ์กับอีกสามคนบนจอ พิมพ์ข้อความให้ตรง ตัวที่ผิดจะเป็นสีแดงและต้องแก้ด้วย Backspace กด Enter เพื่อเริ่มรอบใหม่',
+        ready: 'เตรียมตัว',
+        go: 'เริ่ม!',
+        you: 'คุณ',
+        finished: 'เข้าเส้นชัย',
+        place: 'อันดับ',
+        wpm: 'WPM',
+        accuracy: 'ความแม่นยำ',
+        best: 'ดีที่สุด',
+        newRace: 'แข่งใหม่'
       },
       rubik: {
         intro:

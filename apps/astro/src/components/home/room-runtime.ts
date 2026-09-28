@@ -38,7 +38,6 @@ type Pose = { position: THREE.Vector3; yaw: number; pitch: number };
 type TargetDefinition = {
   id: TargetId;
   position: [number, number, number];
-  volume?: [number, number, number];
   path: string;
   label?: false;
 };
@@ -101,24 +100,22 @@ const musicChildTitles: Record<MusicChildId, readonly string[]> = {
 };
 
 const targetDefinitions: TargetDefinition[] = [
-  { id: 'projects', position: [-2.65, 1.4, 0.55], volume: [0.85, 1.35, 1.15], path: 'projects' },
-  { id: 'notes', position: [-2.08, 0.85, 1.59], volume: [0.7, 0.28, 0.56], path: 'notes' },
+  { id: 'projects', position: [-2.65, 1.4, 0.55], path: 'projects' },
+  { id: 'notes', position: [-2.08, 0.85, 1.59], path: 'notes' },
   {
     id: 'namecard',
     position: [-1.82, 0.81, 1.15],
-    volume: [0.42, 0.2, 0.34],
     path: 'namecard/default'
   },
   { id: 'hobbies', position: [1.72, 1.2, -3.3], path: 'hobbies' },
   { id: 'events', position: [1.15, 1.22, -3.17], path: 'events' },
-  { id: 'photos', position: [0.436, 0.923, 1.703], volume: [0.46, 0.3, 0.4], path: 'photos' },
-  { id: 'penlight', position: [3.2, 1.62, 1.15], volume: [0.12, 0.45, 0.95], path: 'events' },
+  { id: 'photos', position: [0.436, 0.923, 1.703], path: 'photos' },
+  { id: 'penlight', position: [3.2, 1.62, 1.15], path: 'events' },
   { id: 'nesoberi', position: [0.8, 0.6, -1.6], path: '', label: false },
-  { id: 'light', position: [-1.86, 1.24, -2.45], volume: [0.3, 0.34, 0.12], path: '' },
+  { id: 'light', position: [-1.86, 1.24, -2.45], path: '' },
   {
     id: 'closet',
     position: [2.42, 1.25, -2.45],
-    volume: [1.4, 2.35, 0.35],
     path: ''
   },
   { id: 'darts', position: [-2.4, 1.97, -3.64], path: 'hobbies' },
@@ -126,7 +123,6 @@ const targetDefinitions: TargetDefinition[] = [
   {
     id: 'typing',
     position: [-3.205, 0.8235, -1.201],
-    volume: [0.42, 0.06, 0.42],
     path: 'hobbies'
   },
   { id: 'rubik', position: [-2.47, 0.89, 1.28], path: 'hobbies' },
@@ -777,25 +773,6 @@ export const initRoom = (root: HTMLElement) => {
   const resolvedTargetPositions = new Map<TargetId, THREE.Vector3>();
   const resolvedFocusPositions = new Map<TargetId, THREE.Vector3>();
   const authoredTargetPositions = new Set<TargetId>();
-  const targetVolumes = new Map<TargetId, THREE.Object3D>();
-  targetDefinitions.forEach((target) => {
-    if (!target.volume) return;
-    const [width, height, depth] = target.volume;
-    const volume = new THREE.Mesh(
-      new THREE.BoxGeometry(width, height, depth),
-      new THREE.MeshBasicMaterial({
-        color: new THREE.Color('white'),
-        transparent: true,
-        opacity: 0,
-        depthWrite: false
-      })
-    );
-    volume.position.set(...target.position);
-    volume.userData.roomTarget = target.id;
-    volume.userData.roomHotspot = target.id === 'namecard';
-    interactionRoot.add(volume);
-    targetVolumes.set(target.id, volume);
-  });
 
   let room: THREE.Group | null = null;
   let entered = false;
@@ -1390,11 +1367,6 @@ export const initRoom = (root: HTMLElement) => {
     pointer.set(x, y);
     raycaster.setFromCamera(pointer, camera);
     const intersections = raycaster.intersectObjects([room, interactionRoot], true);
-    const hotspot = intersections.find(
-      (intersection) =>
-        getRoomTarget(intersection.object) && intersection.object.userData?.roomHotspot === true
-    );
-    if (hotspot) return getRoomTarget(hotspot.object);
     for (const intersection of intersections) {
       const target = getRoomTarget(intersection.object);
       lastHitObject = intersection.object;
@@ -2202,7 +2174,6 @@ export const initRoom = (root: HTMLElement) => {
     targetBounds.forEach((objectBounds, target) => {
       const center = objectBounds.getCenter(new THREE.Vector3());
       if (!authoredTargetPositions.has(target)) resolvedTargetPositions.set(target, center);
-      targetVolumes.get(target)?.position.copy(resolvedTargetPositions.get(target) ?? center);
     });
   };
 

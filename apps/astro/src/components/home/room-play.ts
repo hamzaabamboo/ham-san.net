@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export type PlayId = 'darts' | 'rubik' | 'piano';
+export type PlayId = 'darts' | 'rubik' | 'piano' | 'typing';
 
 export type PlayCopy = {
   exit: string;
@@ -19,6 +19,18 @@ export type PlayCopy = {
     chord: string;
     octave: string;
     sustain: string;
+  };
+  typing: {
+    intro: string;
+    ready: string;
+    go: string;
+    you: string;
+    finished: string;
+    place: string;
+    wpm: string;
+    accuracy: string;
+    best: string;
+    newRace: string;
   };
   rubik: {
     intro: string;
@@ -55,7 +67,7 @@ export type PlaySession = {
   dispose: () => void;
 };
 
-const playIds: readonly PlayId[] = ['darts', 'rubik', 'piano'];
+const playIds: readonly PlayId[] = ['darts', 'rubik', 'piano', 'typing'];
 
 export const isPlayable = (id: string): id is PlayId => playIds.includes(id as PlayId);
 
@@ -976,6 +988,349 @@ const piano = (context: PlayContext): PlaySession => {
   };
 };
 
-const sessions: Record<PlayId, (context: PlayContext) => PlaySession> = { darts, rubik, piano };
+const passages = [
+  'The room is small, but every shelf has a story. A dartboard on one wall, a keyboard on a stand, and a stack of notes that never quite gets filed.',
+  'Good tools disappear when you use them. The best keyboard is the one you stop noticing, because your thoughts land on the screen before you finish having them.',
+  'Ship the small thing first. Watch someone use it, write down what confused them, and fix that before you add anything new. Repeat until it feels obvious.',
+  'A cube scrambled twenty times still has a solution under twenty moves. Most problems are like that: messy on the surface, and quiet once you find the right order.',
+  'Late at night the city outside the balcony goes blue and still. The monitor hums, the penlights rest on their rack, and there is time for one more race.',
+  'Practice is not repetition. It is noticing the one thing that went wrong, slowing down right there, and doing it again until it is no longer the weak spot.'
+];
+
+const keycapCodes: Record<string, [number, number]> = {
+  Space: [0, 3],
+  ShiftLeft: [1, 0],
+  ShiftRight: [1, 11],
+  CapsLock: [2, 0],
+  Enter: [2, 12],
+  Tab: [3, 0],
+  Backquote: [4, 0],
+  Minus: [4, 11],
+  Equal: [4, 12],
+  Backspace: [4, 13],
+  BracketLeft: [3, 11],
+  BracketRight: [3, 12],
+  Backslash: [3, 13],
+  Semicolon: [2, 10],
+  Quote: [2, 11],
+  Comma: [1, 8],
+  Period: [1, 9],
+  Slash: [1, 10]
+};
+'qwertyuiop'
+  .split('')
+  .forEach((letter, index) => (keycapCodes[`Key${letter.toUpperCase()}`] = [3, index + 1]));
+'asdfghjkl'
+  .split('')
+  .forEach((letter, index) => (keycapCodes[`Key${letter.toUpperCase()}`] = [2, index + 1]));
+'zxcvbnm'
+  .split('')
+  .forEach((letter, index) => (keycapCodes[`Key${letter.toUpperCase()}`] = [1, index + 1]));
+'1234567890'.split('').forEach((digit, index) => (keycapCodes[`Digit${digit}`] = [4, index + 1]));
+
+const typing = (context: PlayContext): PlaySession => {
+  const { room, stats, controls, copy } = context;
+  const css = (name: string) => getComputedStyle(stats).getPropertyValue(name).trim();
+  const palette = {
+    bg: css('--atelier-surface-lowest'),
+    fg: css('--atelier-fg'),
+    muted: css('--atelier-fg-muted'),
+    line: css('--atelier-line'),
+    accent: css('--atelier-accent'),
+    danger: css('--atelier-danger')
+  };
+  const font = css('--font-code') || 'monospace';
+  const keycaps = new Map<
+    string,
+    {
+      node: THREE.Object3D;
+      rest: THREE.Vector3;
+      down: THREE.Vector3;
+      depth: number;
+      held: boolean;
+      material?: THREE.MeshStandardMaterial;
+      original?: THREE.Material;
+    }
+  >();
+  const glow = new THREE.Color(palette.accent);
+  room.traverse((object) => {
+    const match = object.name.replace(/[ _]/g, '').match(/^Keyboardkeyr(\d)c(\d+)$/);
+    if (!match || !(object instanceof THREE.Mesh)) return;
+    const parent = object.parent!;
+    const world = object.getWorldPosition(new THREE.Vector3());
+    const down = parent
+      .worldToLocal(world.clone().add(new THREE.Vector3(0, -0.003, 0)))
+      .sub(parent.worldToLocal(world.clone()));
+    const original = object.material as THREE.MeshStandardMaterial;
+    const material = original.clone();
+    object.material = material;
+    keycaps.set(`${Number(match[1])}-${Number(match[2])}`, {
+      node: object,
+      rest: object.position.clone(),
+      down,
+      depth: 0,
+      held: false,
+      material,
+      original
+    });
+  });
+  const keycapFor = (code: string) => {
+    const place = keycapCodes[code];
+    return place ? keycaps.get(`${place[0]}-${place[1]}`) : undefined;
+  };
+  const screen = findNode(room, 'Monitor screen image') as THREE.Mesh | undefined;
+  const canvas = document.createElement('canvas');
+  canvas.width = 1280;
+  canvas.height = 720;
+  const paint = canvas.getContext('2d')!;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.flipY = false;
+  texture.anisotropy = 8;
+  const screenMaterial = new THREE.MeshBasicMaterial({ map: texture, toneMapped: false });
+  const screenOriginal = screen?.material;
+  if (screen) screen.material = screenMaterial;
+  const bots = [
+    { name: 'Kameko', wpm: 48 },
+    { name: 'Neso', wpm: 67 },
+    { name: 'Steno', wpm: 92 }
+  ];
+  let passage = '';
+  let typed = '';
+  let phase: 'countdown' | 'racing' | 'done' = 'countdown';
+  let countdown = 3;
+  let startedAt = 0;
+  let finishedAt = 0;
+  let keystrokes = 0;
+  let mistakes = 0;
+  let best = 0;
+  let botProgress: { progress: number; pace: number; finishedAt: number }[] = [];
+  let place = 0;
+  let redrawAt = 0;
+  const correctLength = () => {
+    let index = 0;
+    while (index < typed.length && typed[index] === passage[index]) index += 1;
+    return index;
+  };
+  const elapsed = () => ((phase === 'done' ? finishedAt : performance.now()) - startedAt) / 1000;
+  const wpm = () => {
+    const seconds = elapsed();
+    return seconds > 0.5 ? Math.round(correctLength() / 5 / (seconds / 60)) : 0;
+  };
+  const accuracy = () =>
+    keystrokes ? Math.max(0, Math.round(((keystrokes - mistakes) / keystrokes) * 100)) : 100;
+  const newRace = () => {
+    let next = passage;
+    while (next === passage) next = passages[Math.floor(Math.random() * passages.length)];
+    passage = next;
+    typed = '';
+    phase = 'countdown';
+    countdown = 3;
+    keystrokes = 0;
+    mistakes = 0;
+    place = 0;
+    botProgress = bots.map((bot) => ({
+      progress: 0,
+      pace: (bot.wpm * (0.85 + Math.random() * 0.3) * 5) / 60,
+      finishedAt: 0
+    }));
+    draw();
+  };
+  const wrapLines = (text: string, width: number) => {
+    const words = text.split(' ');
+    const lines: { text: string; start: number }[] = [];
+    let line = '';
+    let start = 0;
+    let cursor = 0;
+    words.forEach((word, index) => {
+      const candidate = line ? `${line} ${word}` : word;
+      if (paint.measureText(candidate).width > width && line) {
+        lines.push({ text: `${line} `, start });
+        start = cursor;
+        line = word;
+      } else line = candidate;
+      cursor += word.length + (index < words.length - 1 ? 1 : 0);
+    });
+    lines.push({ text: line, start });
+    return lines;
+  };
+  const draw = () => {
+    const { width, height } = canvas;
+    paint.fillStyle = palette.bg;
+    paint.fillRect(0, 0, width, height);
+    const lanes = [
+      { name: copy.typing.you, progress: correctLength() / Math.max(passage.length, 1), you: true },
+      ...bots.map((bot, index) => ({
+        name: bot.name,
+        progress: Math.min(1, botProgress[index].progress / Math.max(passage.length, 1)),
+        you: false
+      }))
+    ];
+    paint.font = `600 26px ${font}`;
+    paint.textBaseline = 'middle';
+    lanes.forEach((lane, index) => {
+      const y = 60 + index * 52;
+      paint.fillStyle = lane.you ? palette.accent : palette.muted;
+      paint.fillText(lane.name, 60, y);
+      paint.fillStyle = palette.line;
+      paint.fillRect(220, y - 2, 900, 4);
+      paint.fillStyle = lane.you ? palette.accent : palette.fg;
+      paint.beginPath();
+      paint.arc(220 + 900 * lane.progress, y, 12, 0, Math.PI * 2);
+      paint.fill();
+    });
+    paint.font = `500 38px ${font}`;
+    paint.textBaseline = 'alphabetic';
+    const lines = wrapLines(passage, width - 120);
+    const good = correctLength();
+    lines.forEach((line, row) => {
+      let x = 60;
+      const y = 320 + row * 56;
+      line.text.split('').forEach((character, offset) => {
+        const index = line.start + offset;
+        const typedCharacter = typed[index];
+        paint.fillStyle =
+          index < good
+            ? palette.accent
+            : typedCharacter !== undefined
+              ? palette.danger
+              : palette.fg;
+        if (typedCharacter !== undefined && index >= good) {
+          paint.globalAlpha = 0.25;
+          paint.fillRect(x, y - 36, paint.measureText(character).width, 46);
+          paint.globalAlpha = 1;
+        }
+        paint.fillText(character, x, y);
+        if (
+          index === typed.length &&
+          phase === 'racing' &&
+          Math.floor(performance.now() / 500) % 2 === 0
+        ) {
+          paint.fillStyle = palette.accent;
+          paint.fillRect(x, y + 8, paint.measureText(character).width, 4);
+        }
+        x += paint.measureText(character).width;
+      });
+    });
+    paint.font = `600 34px ${font}`;
+    paint.fillStyle = palette.fg;
+    const footer =
+      phase === 'countdown'
+        ? countdown > 0
+          ? `${copy.typing.ready} ${Math.ceil(countdown)}`
+          : copy.typing.go
+        : phase === 'done'
+          ? `${copy.typing.finished} · ${copy.typing.place} ${place} · ${wpm()} ${copy.typing.wpm} · ${accuracy()}%`
+          : `${wpm()} ${copy.typing.wpm} · ${accuracy()}%`;
+    paint.fillText(footer, 60, height - 50);
+    texture.needsUpdate = true;
+    stats.textContent = `${wpm()} ${copy.typing.wpm} · ${copy.typing.accuracy} ${accuracy()}% · ${copy.typing.best} ${best || '—'}`;
+  };
+  const finish = () => {
+    phase = 'done';
+    finishedAt = performance.now();
+    place = 1 + botProgress.filter((bot) => bot.finishedAt && bot.finishedAt < finishedAt).length;
+    best = Math.max(best, wpm());
+    playTone(place === 1 ? 880 : 520, 0.2, 0.08);
+    draw();
+  };
+  controls.append(button(copy.typing.newRace, newRace));
+  newRace();
+  const center = screen
+    ? new THREE.Box3().setFromObject(screen).getCenter(new THREE.Vector3())
+    : new THREE.Vector3(-1.66, 1.15, -0.84);
+  return {
+    pose: {
+      position: center.clone().add(new THREE.Vector3(0.98, 0.14, -0.12)),
+      lookAt: center.clone().add(new THREE.Vector3(0.1, -0.24, -0.12))
+    },
+    intro: copy.typing.intro,
+    update: (dt) => {
+      const now = performance.now();
+      if (phase === 'countdown') {
+        const before = Math.ceil(countdown);
+        countdown -= dt;
+        if (Math.ceil(countdown) !== before && countdown > 0) playTone(440, 0.08, 0.06);
+        if (countdown <= 0) {
+          phase = 'racing';
+          startedAt = now;
+          playTone(880, 0.12, 0.08);
+        }
+      }
+      if (phase !== 'countdown') {
+        botProgress.forEach((bot) => {
+          if (bot.progress >= passage.length) return;
+          bot.progress += bot.pace * dt * (0.6 + Math.random() * 0.8);
+          if (bot.progress >= passage.length) bot.finishedAt = now;
+        });
+      }
+      keycaps.forEach((key) => {
+        const target = key.held ? 1 : 0;
+        key.depth += (target - key.depth) * Math.min(1, dt * (target ? 45 : 16));
+        key.node.position.copy(key.rest).addScaledVector(key.down, key.depth);
+        key.material?.emissive.copy(glow).multiplyScalar(key.depth * 0.6);
+      });
+      if (now > redrawAt) {
+        redrawAt = now + 50;
+        draw();
+      }
+    },
+    pointerDown: () => {},
+    pointerMove: () => {},
+    pointerUp: () => {},
+    keyDown: (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return false;
+      const key = keycapFor(event.code);
+      if (key) key.held = true;
+      if (event.key === 'Enter' && phase === 'done') {
+        newRace();
+        return true;
+      }
+      if (phase !== 'racing') return Boolean(key) || event.key.length === 1;
+      if (event.key === 'Backspace') {
+        typed = typed.slice(0, -1);
+        draw();
+        return true;
+      }
+      if (event.key.length !== 1) return Boolean(key);
+      if (typed.length - correctLength() >= 8) return true;
+      keystrokes += 1;
+      const expected = passage[typed.length];
+      typed += event.key;
+      if (event.key !== expected || typed.length - 1 > correctLength()) {
+        mistakes += 1;
+        playTone(140, 0.05, 0.05);
+      }
+      if (correctLength() === passage.length) finish();
+      else draw();
+      return true;
+    },
+    keyUp: (event) => {
+      const key = keycapFor(event.code);
+      if (!key) return false;
+      key.held = false;
+      return true;
+    },
+    dispose: () => {
+      keycaps.forEach((key) => {
+        key.node.position.copy(key.rest);
+        if (key.original) {
+          key.material?.dispose();
+          (key.node as THREE.Mesh).material = key.original;
+        }
+      });
+      if (screen && screenOriginal) screen.material = screenOriginal;
+      screenMaterial.dispose();
+      texture.dispose();
+    }
+  };
+};
+
+const sessions: Record<PlayId, (context: PlayContext) => PlaySession> = {
+  darts,
+  rubik,
+  piano,
+  typing
+};
 
 export const startPlay = (id: PlayId, context: PlayContext) => sessions[id](context);
