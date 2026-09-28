@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export type PlayId = 'darts';
+export type PlayId = 'darts' | 'rubik';
 
 export type PlayCopy = {
   exit: string;
@@ -13,6 +13,16 @@ export type PlayCopy = {
     win: string;
     newGame: string;
     miss: string;
+  };
+  rubik: {
+    intro: string;
+    scramble: string;
+    reset: string;
+    time: string;
+    best: string;
+    ao5: string;
+    solved: string;
+    moves: string;
   };
 };
 
@@ -39,7 +49,7 @@ export type PlaySession = {
   dispose: () => void;
 };
 
-const playIds: readonly PlayId[] = ['darts'];
+const playIds: readonly PlayId[] = ['darts', 'rubik'];
 
 export const isPlayable = (id: string): id is PlayId => playIds.includes(id as PlayId);
 
@@ -283,6 +293,325 @@ const darts = (context: PlayContext): PlaySession => {
   };
 };
 
-const sessions: Record<PlayId, (context: PlayContext) => PlaySession> = { darts };
+const cstimerKeys: Record<string, string> = {
+  j: 'U',
+  f: "U'",
+  h: 'F',
+  g: "F'",
+  i: 'R',
+  k: "R'",
+  d: 'L',
+  e: "L'",
+  s: 'D',
+  l: "D'",
+  w: 'B',
+  o: "B'",
+  ';': 'y',
+  a: "y'",
+  t: 'x',
+  y: 'x',
+  b: "x'",
+  n: "x'",
+  p: 'z',
+  q: "z'",
+  u: 'r',
+  m: "r'",
+  v: 'l',
+  r: "l'",
+  x: "M'",
+  '.': "M'",
+  '5': 'M',
+  '6': 'M',
+  z: 'd',
+  '/': "d'",
+  c: "u'",
+  ',': 'u'
+};
+
+const scrambleSequence = () => {
+  const faces = ['U', 'D', 'R', 'L', 'F', 'B'];
+  const axis = (face: string) => Math.floor(faces.indexOf(face) / 2);
+  const moves: string[] = [];
+  while (moves.length < 20) {
+    const face = faces[Math.floor(Math.random() * 6)];
+    const last = moves[moves.length - 1]?.[0];
+    const beforeLast = moves[moves.length - 2]?.[0];
+    if (face === last) continue;
+    if (last && beforeLast && axis(face) === axis(last) && axis(face) === axis(beforeLast))
+      continue;
+    moves.push(`${face}${['', "'", '2'][Math.floor(Math.random() * 3)]}`);
+  }
+  return moves;
+};
+
+const rubik = (context: PlayContext): PlaySession => {
+  const { scene, camera, room, stats, controls, copy } = context;
+  const cubies: THREE.Object3D[] = [];
+  const stickers: THREE.Mesh[] = [];
+  room.traverse((object) => {
+    const name = object.name.replace(/[ _]/g, '');
+    if (!(object instanceof THREE.Mesh) || !object.visible) return;
+    if (name.startsWith('Rubikcubie')) cubies.push(object);
+    else if (name.startsWith('Rubiksticker')) stickers.push(object);
+  });
+  const center = new THREE.Vector3();
+  cubies.forEach((cubie) => center.add(cubie.getWorldPosition(new THREE.Vector3())));
+  center.divideScalar(Math.max(cubies.length, 1));
+  const spacing = 0.019;
+  const homes = new Map<THREE.Object3D, THREE.Object3D>();
+  stickers.forEach((sticker) => {
+    const position = sticker.getWorldPosition(new THREE.Vector3());
+    let nearest = cubies[0];
+    let distance = Infinity;
+    cubies.forEach((cubie) => {
+      const d = cubie.getWorldPosition(new THREE.Vector3()).distanceTo(position);
+      if (d < distance) {
+        distance = d;
+        nearest = cubie;
+      }
+    });
+    homes.set(sticker, sticker.parent!);
+    nearest.attach(sticker);
+  });
+  const faceNormals: Record<string, THREE.Vector3> = {
+    U: new THREE.Vector3(0, 1, 0),
+    D: new THREE.Vector3(0, -1, 0),
+    F: new THREE.Vector3(-1, 0, 0),
+    B: new THREE.Vector3(1, 0, 0),
+    R: new THREE.Vector3(0, 0, 1),
+    L: new THREE.Vector3(0, 0, -1)
+  };
+  const moveKinds: Record<string, { face: string; layers: number[] }> = {
+    U: { face: 'U', layers: [1] },
+    D: { face: 'D', layers: [1] },
+    F: { face: 'F', layers: [1] },
+    B: { face: 'B', layers: [1] },
+    R: { face: 'R', layers: [1] },
+    L: { face: 'L', layers: [1] },
+    M: { face: 'L', layers: [0] },
+    E: { face: 'D', layers: [0] },
+    S: { face: 'F', layers: [0] },
+    u: { face: 'U', layers: [1, 0] },
+    d: { face: 'D', layers: [1, 0] },
+    f: { face: 'F', layers: [1, 0] },
+    b: { face: 'B', layers: [1, 0] },
+    r: { face: 'R', layers: [1, 0] },
+    l: { face: 'L', layers: [1, 0] },
+    x: { face: 'R', layers: [1, 0, -1] },
+    y: { face: 'U', layers: [1, 0, -1] },
+    z: { face: 'F', layers: [1, 0, -1] }
+  };
+  const gridOf = (cubie: THREE.Object3D) =>
+    cubie.getWorldPosition(new THREE.Vector3()).sub(center).divideScalar(spacing).round();
+  const queue: { axis: THREE.Vector3; layers: number[]; angle: number; animate: boolean }[] = [];
+  let turning: {
+    pivot: THREE.Object3D;
+    members: THREE.Object3D[];
+    parents: THREE.Object3D[];
+    angle: number;
+    axis: THREE.Vector3;
+    t: number;
+  } | null = null;
+  const beginTurn = () => {
+    const next = queue.shift();
+    if (!next) return;
+    const pivot = new THREE.Object3D();
+    pivot.position.copy(center);
+    scene.add(pivot);
+    pivot.updateMatrixWorld();
+    const members = cubies.filter((cubie) =>
+      next.layers.includes(Math.round(gridOf(cubie).dot(next.axis)))
+    );
+    const parents = members.map((cubie) => cubie.parent!);
+    members.forEach((cubie) => pivot.attach(cubie));
+    turning = {
+      pivot,
+      members,
+      parents,
+      angle: next.angle,
+      axis: next.axis,
+      t: next.animate ? 0 : 1
+    };
+    if (!next.animate) finishTurn();
+  };
+  const finishTurn = () => {
+    if (!turning) return;
+    turning.pivot.quaternion.setFromAxisAngle(turning.axis, turning.angle);
+    turning.pivot.updateMatrixWorld();
+    turning.members.forEach((cubie, index) => turning!.parents[index].attach(cubie));
+    turning.pivot.removeFromParent();
+    turning = null;
+    afterTurn();
+  };
+  const enqueue = (move: string, animate = true) => {
+    const kind = moveKinds[move[0]];
+    if (!kind) return;
+    const quarters = move.endsWith('2') ? 2 : 1;
+    const direction = move.includes("'") ? 1 : -1;
+    queue.push({
+      axis: faceNormals[kind.face].clone(),
+      layers: kind.layers,
+      angle: direction * quarters * (Math.PI / 2),
+      animate
+    });
+    if (!animate) while (queue.length && !turning) beginTurn();
+    else if (!turning) beginTurn();
+    if (!'xyz'.includes(move[0])) countMove();
+  };
+  let state: 'idle' | 'ready' | 'solving' | 'solved' = 'idle';
+  let startedAt = 0;
+  let moves = 0;
+  let scrambleText = '';
+  const times: number[] = [];
+  const countMove = () => {
+    if (state === 'ready') {
+      state = 'solving';
+      startedAt = performance.now();
+      moves = 0;
+    }
+    if (state === 'solving') moves += 1;
+  };
+  const solved = () => {
+    const faces = new Map<string, Set<string>>();
+    stickers.forEach((sticker) => {
+      const cubie = sticker.parent!;
+      const normal = sticker
+        .getWorldPosition(new THREE.Vector3())
+        .sub(cubie.getWorldPosition(new THREE.Vector3()));
+      const axis = [normal.x, normal.y, normal.z].map((value) => Math.abs(value));
+      const index = axis.indexOf(Math.max(...axis));
+      const key = `${index}${Math.sign([normal.x, normal.y, normal.z][index])}`;
+      const material = Array.isArray(sticker.material) ? sticker.material[0] : sticker.material;
+      const set = faces.get(key) ?? new Set<string>();
+      set.add(material.name);
+      faces.set(key, set);
+    });
+    return [...faces.values()].every((set) => set.size === 1);
+  };
+  const afterTurn = () => {
+    if (state === 'solving' && !queue.length && solved()) {
+      state = 'solved';
+      times.push((performance.now() - startedAt) / 1000);
+    }
+    if (queue.length) beginTurn();
+  };
+  const scramble = () => {
+    const sequence = scrambleSequence();
+    scrambleText = sequence.join(' ');
+    sequence.forEach((move) => {
+      const kind = moveKinds[move[0]];
+      const quarters = move.endsWith('2') ? 2 : 1;
+      const direction = move.includes("'") ? 1 : -1;
+      queue.push({
+        axis: faceNormals[kind.face].clone(),
+        layers: kind.layers,
+        angle: direction * quarters * (Math.PI / 2),
+        animate: false
+      });
+    });
+    while (queue.length) beginTurn();
+    state = 'ready';
+    moves = 0;
+  };
+  const render = () => {
+    const elapsed =
+      state === 'solving'
+        ? (performance.now() - startedAt) / 1000
+        : state === 'solved'
+          ? times[times.length - 1]
+          : 0;
+    const best = times.length ? Math.min(...times).toFixed(2) : '—';
+    const last = times.slice(-5);
+    const ao5 =
+      last.length === 5
+        ? (
+            (last.reduce((sum, t) => sum + t, 0) - Math.max(...last) - Math.min(...last)) /
+            3
+          ).toFixed(2)
+        : '—';
+    stats.textContent = `${state === 'solved' ? `${copy.rubik.solved} · ` : ''}${copy.rubik.time} ${elapsed.toFixed(2)} · ${copy.rubik.moves} ${moves} · ${copy.rubik.best} ${best} · ${copy.rubik.ao5} ${ao5}${scrambleText && state !== 'solved' ? `\n${scrambleText}` : ''}`;
+  };
+  const raycaster = new THREE.Raycaster();
+  let drag: { cubie: THREE.Object3D; point: THREE.Vector3; normal: THREE.Vector3 } | null = null;
+  const pick = (ndc: THREE.Vector2) => {
+    raycaster.setFromCamera(ndc, camera);
+    const hit = raycaster.intersectObjects([...cubies, ...stickers], false)[0];
+    if (!hit || !hit.face) return null;
+    const cubie = cubies.includes(hit.object) ? hit.object : hit.object.parent!;
+    const normal = hit.face.normal.clone().transformDirection(hit.object.matrixWorld);
+    const axis = [normal.x, normal.y, normal.z].map((value) => Math.abs(value));
+    const index = axis.indexOf(Math.max(...axis));
+    const snapped = new THREE.Vector3();
+    snapped.setComponent(index, Math.sign(normal.getComponent(index)));
+    return { cubie, point: hit.point.clone(), normal: snapped };
+  };
+  const snapAxis = (vector: THREE.Vector3) => {
+    const values = [vector.x, vector.y, vector.z].map((value) => Math.abs(value));
+    const index = values.indexOf(Math.max(...values));
+    const axis = new THREE.Vector3();
+    axis.setComponent(index, 1);
+    return axis;
+  };
+  controls.append(button(copy.rubik.scramble, scramble));
+  render();
+  return {
+    pose: {
+      position: center.clone().add(new THREE.Vector3(-0.2, 0.17, 0.1)),
+      lookAt: center.clone()
+    },
+    intro: copy.rubik.intro,
+    update: (dt) => {
+      if (turning) {
+        turning.t = Math.min(1, turning.t + dt / 0.11);
+        turning.pivot.quaternion.setFromAxisAngle(turning.axis, turning.angle * turning.t);
+        if (turning.t >= 1) finishTurn();
+      }
+      render();
+    },
+    pointerDown: (ndc) => {
+      drag = pick(ndc);
+    },
+    pointerMove: () => {},
+    pointerUp: (ndc) => {
+      if (!drag) return;
+      raycaster.setFromCamera(ndc, camera);
+      const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(drag.normal, drag.point);
+      const end = new THREE.Vector3();
+      const start = drag;
+      drag = null;
+      if (!raycaster.ray.intersectPlane(plane, end)) return;
+      const movement = end.sub(start.point);
+      if (movement.length() < 0.006) return;
+      const axis = snapAxis(new THREE.Vector3().crossVectors(start.normal, movement));
+      const layer = Math.round(gridOf(start.cubie).dot(axis));
+      const lever = start.point.clone().sub(center);
+      const sign = Math.sign(new THREE.Vector3().crossVectors(axis, lever).dot(movement)) || 1;
+      queue.push({ axis, layers: [layer], angle: sign * (Math.PI / 2), animate: true });
+      if (!turning) beginTurn();
+      countMove();
+    },
+    keyDown: (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return false;
+      if (event.key === ' ') {
+        scramble();
+        return true;
+      }
+      const move = cstimerKeys[event.key.toLowerCase()];
+      if (!move) return false;
+      enqueue(move);
+      return true;
+    },
+    keyUp: () => false,
+    dispose: () => {
+      while (queue.length || turning) {
+        if (turning) finishTurn();
+        else beginTurn();
+      }
+      stickers.forEach((sticker) => homes.get(sticker)?.attach(sticker));
+    }
+  };
+};
+
+const sessions: Record<PlayId, (context: PlayContext) => PlaySession> = { darts, rubik };
 
 export const startPlay = (id: PlayId, context: PlayContext) => sessions[id](context);

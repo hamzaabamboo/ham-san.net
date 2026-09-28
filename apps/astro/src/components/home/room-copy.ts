@@ -66,6 +66,17 @@ export const roomCopy = {
         win: 'Checkout!',
         newGame: 'New game',
         miss: 'Miss'
+      },
+      rubik: {
+        intro:
+          "csTimer keyboard: J F = U U', I K = R R', D E = L L', H G = F F', S L = D D', W O = B B', ; A = y y', T B = x x', P Q = z z'. Or drag across the cube. Space scrambles and the timer starts on your first turn.",
+        scramble: 'Scramble',
+        reset: 'Reset',
+        time: 'Time',
+        best: 'Best',
+        ao5: 'ao5',
+        solved: 'Solved',
+        moves: 'Moves'
       }
     },
     blocked: 'Arrow keys look around. WASD moves through the room.'
@@ -137,6 +148,17 @@ export const roomCopy = {
         win: 'フィニッシュ！',
         newGame: '新しいゲーム',
         miss: 'ミス'
+      },
+      rubik: {
+        intro:
+          "csTimer キー配置：J F = U U'、I K = R R'、D E = L L'、H G = F F'、S L = D D'、W O = B B'、; A = y y'、T B = x x'、P Q = z z'。キューブをドラッグしても回せます。スペースでスクランブル、最初の一手で計測開始。",
+        scramble: 'スクランブル',
+        reset: 'リセット',
+        time: 'タイム',
+        best: 'ベスト',
+        ao5: 'ao5',
+        solved: '完成',
+        moves: '手数'
       }
     },
     blocked: '矢印キーで見回せます。WASDで部屋を移動できます。'
@@ -208,6 +230,17 @@ export const roomCopy = {
         win: 'ปิดเกม!',
         newGame: 'เริ่มใหม่',
         miss: 'พลาด'
+      },
+      rubik: {
+        intro:
+          "คีย์แบบ csTimer: J F = U U', I K = R R', D E = L L', H G = F F', S L = D D', W O = B B', ; A = y y', T B = x x', P Q = z z' หรือลากบนลูกบาศก์เพื่อหมุน กด Space เพื่อสุ่มสลับ จับเวลาเริ่มเมื่อหมุนครั้งแรก",
+        scramble: 'สุ่มสลับ',
+        reset: 'รีเซ็ต',
+        time: 'เวลา',
+        best: 'ดีที่สุด',
+        ao5: 'ao5',
+        solved: 'สำเร็จ',
+        moves: 'จำนวนครั้ง'
       }
     },
     blocked: 'ใช้ปุ่มลูกศรเพื่อมองรอบห้อง ใช้ WASD เพื่อเดิน'
