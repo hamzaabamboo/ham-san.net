@@ -32,6 +32,7 @@ type TargetId =
   | HobbyTargetId
   | 'namecard'
   | 'events'
+  | 'photos'
   | 'light'
   | 'closet';
 type ContentId = TargetId | MusicChildId | 'about' | 'contact';
@@ -111,6 +112,7 @@ const targetDefinitions: TargetDefinition[] = [
   },
   { id: 'hobbies', position: [1.72, 1.2, -3.3], path: 'hobbies' },
   { id: 'events', position: [1.15, 1.22, -3.17], path: 'events' },
+  { id: 'photos', position: [0.436, 0.923, 1.703], volume: [0.46, 0.3, 0.4], path: 'photos' },
   { id: 'light', position: [-1.86, 1.24, -2.45], volume: [0.3, 0.34, 0.12], path: '' },
   {
     id: 'closet',
@@ -168,6 +170,7 @@ const defaultFocusPositions: Record<TargetId, [number, number, number]> = {
   namecard: [-0.7, 1.2, 1.2],
   hobbies: [1, 1.5, -2.05],
   events: [1.15, 1.55, -2],
+  photos: [0.58, 1.27, 0.95],
   light: [-1.86, 1.35, -2.15],
   darts: [-1.35, 1.5, -2.3],
   piano: [-1.35, 1.5, -2.3],
