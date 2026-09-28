@@ -22,11 +22,11 @@
    "Outdoor AC"
   ],
   "eye": [
-   -0.6,
-   -0.4,
+   -1.2,
+   1.3,
    1.4
   ],
-  "lens": 22
+  "lens": 18
  },
  "GEO-BALCONY-CURTAIN": {
   "prefix": [
@@ -98,11 +98,17 @@
  },
  "PC-SUPPORT": {
   "prefix": [
+   "PC wall outlet",
+   "PC power strip",
    "PC cable",
-   "PC desk",
-   "PC power",
-   "PC wall"
-  ]
+   "PC desk cable grommet"
+  ],
+  "eye": [
+   -1.0,
+   1.1,
+   0.55
+  ],
+  "lens": 28
  },
  "PC-CHAIR": {
   "prefix": [
@@ -240,15 +246,15 @@
  },
  "BOOK-MANGA": {
   "prefix": [
-   "Manga U"
+   "Books U1 shelf 2",
+   "Bay media 00"
   ],
-  "view": "right",
   "eye": [
    2.2,
    1.05,
-   1.3
+   0.75
   ],
-  "lens": 40
+  "lens": 30
  },
  "BOOK-MAGAZINE": {
   "prefix": [
@@ -267,8 +273,7 @@
  },
  "BOOK-ALBUM": {
   "prefix": [
-   "Albums U",
-   "Photobooks U"
+   "Photobooks U1"
   ],
   "view": "right"
  },
@@ -281,10 +286,14 @@
  },
  "ACRYLIC-STAND": {
   "prefix": [
-   "Case stand 1",
-   "Case stand 2"
+   "Bay r1"
   ],
-  "view": "right"
+  "eye": [
+   2.25,
+   0.8,
+   1.75
+  ],
+  "lens": 30
  },
  "ACRYLIC-CONTENTS": {
   "prefix": [
@@ -294,17 +303,22 @@
  },
  "SHELF-FRAME-ART": {
   "prefix": [
-   "Shelf leaning",
-   "Top frame"
+   "Top frame",
+   "Shelf top frame",
+   "Shelf leaning photo frame"
   ],
   "view": "right"
  },
  "SHELF-TOP-PLUSH": {
   "prefix": [
-   "Shelf top neso",
-   "Shelf top plush"
+   "Shelf top neso"
   ],
-  "view": "right"
+  "eye": [
+   2.55,
+   0.25,
+   2.05
+  ],
+  "lens": 35
  },
  "PENLIGHT-GRID": {
   "prefix": [
@@ -336,15 +350,15 @@
  },
  "UCHIWA-FLAG": {
   "prefix": [
-   "Live wall uchiwa",
-   "Cheer flag"
+   "Cheer flag",
+   "Live wall uchiwa"
   ],
   "eye": [
-   2.25,
-   -0.75,
-   1.3
+   2.45,
+   -0.7,
+   1.55
   ],
-  "lens": 15
+  "lens": 18
  },
  "LOW-TABLE": {
   "prefix": [
