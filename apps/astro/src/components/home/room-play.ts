@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export type PlayId = 'darts' | 'rubik';
+export type PlayId = 'darts' | 'rubik' | 'piano';
 
 export type PlayCopy = {
   exit: string;
@@ -13,6 +13,12 @@ export type PlayCopy = {
     win: string;
     newGame: string;
     miss: string;
+  };
+  piano: {
+    intro: string;
+    chord: string;
+    octave: string;
+    sustain: string;
   };
   rubik: {
     intro: string;
@@ -49,7 +55,7 @@ export type PlaySession = {
   dispose: () => void;
 };
 
-const playIds: readonly PlayId[] = ['darts', 'rubik'];
+const playIds: readonly PlayId[] = ['darts', 'rubik', 'piano'];
 
 export const isPlayable = (id: string): id is PlayId => playIds.includes(id as PlayId);
 
@@ -612,6 +618,364 @@ const rubik = (context: PlayContext): PlaySession => {
   };
 };
 
-const sessions: Record<PlayId, (context: PlayContext) => PlaySession> = { darts, rubik };
+const noteNames = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+
+const chordShapes: [string, number[]][] = [
+  ['', [0, 4, 7]],
+  ['m', [0, 3, 7]],
+  ['dim', [0, 3, 6]],
+  ['aug', [0, 4, 8]],
+  ['sus2', [0, 2, 7]],
+  ['sus4', [0, 5, 7]],
+  ['5', [0, 7]],
+  ['7', [0, 4, 7, 10]],
+  ['maj7', [0, 4, 7, 11]],
+  ['m7', [0, 3, 7, 10]],
+  ['mMaj7', [0, 3, 7, 11]],
+  ['m7b5', [0, 3, 6, 10]],
+  ['dim7', [0, 3, 6, 9]],
+  ['6', [0, 4, 7, 9]],
+  ['m6', [0, 3, 7, 9]],
+  ['add9', [0, 2, 4, 7]],
+  ['m(add9)', [0, 2, 3, 7]],
+  ['9', [0, 2, 4, 7, 10]],
+  ['maj9', [0, 2, 4, 7, 11]],
+  ['m9', [0, 2, 3, 7, 10]],
+  ['7sus4', [0, 5, 7, 10]]
+];
+
+export const chordName = (notes: number[]) => {
+  if (!notes.length) return '';
+  const sorted = [...notes].sort((a, b) => a - b);
+  const classes = [...new Set(sorted.map((note) => note % 12))];
+  const bass = sorted[0] % 12;
+  if (classes.length === 1) return noteNames[bass];
+  const roots = [bass, ...classes.filter((note) => note !== bass)];
+  for (const root of roots) {
+    const intervals = classes.map((note) => (note - root + 12) % 12).sort((a, b) => a - b);
+    const match = chordShapes.find(
+      ([, shape]) =>
+        shape.length === intervals.length &&
+        shape.every((value, index) => value === intervals[index])
+    );
+    if (match) return `${noteNames[root]}${match[0]}${root === bass ? '' : `/${noteNames[bass]}`}`;
+  }
+  return sorted.map((note) => noteNames[note % 12]).join(' ');
+};
+
+const trackerKeys: Record<string, number> = {
+  z: 0,
+  s: 1,
+  x: 2,
+  d: 3,
+  c: 4,
+  v: 5,
+  g: 6,
+  b: 7,
+  h: 8,
+  n: 9,
+  j: 10,
+  m: 11,
+  ',': 12,
+  l: 13,
+  '.': 14,
+  ';': 15,
+  '/': 16,
+  q: 12,
+  '2': 13,
+  w: 14,
+  '3': 15,
+  e: 16,
+  r: 17,
+  '5': 18,
+  t: 19,
+  '6': 20,
+  y: 21,
+  '7': 22,
+  u: 23,
+  i: 24,
+  '9': 25,
+  o: 26,
+  '0': 27,
+  p: 28,
+  '[': 29,
+  '=': 30,
+  ']': 31
+};
+
+const chordPads: [string, number[]][] = [
+  ['C', [48, 52, 55, 60]],
+  ['Am', [45, 52, 57, 60]],
+  ['F', [41, 53, 57, 60]],
+  ['G', [43, 55, 59, 62]],
+  ['Em', [40, 52, 55, 59]],
+  ['Dm7', [50, 53, 57, 60]],
+  ['Fmaj7', [41, 52, 57, 60]],
+  ['G7', [43, 53, 59, 62]]
+];
+
+const piano = (context: PlayContext): PlaySession => {
+  const { camera, room, stats, controls, copy } = context;
+  const keyNodes: { node: THREE.Object3D; center: THREE.Vector3; black: boolean }[] = [];
+  room.traverse((object) => {
+    const name = object.name.replace(/[ _]/g, '');
+    const white = /^Keyboardwhitekey\d+$/.test(name);
+    const black = /^Keyboardblackkey\d+-?\d+$/.test(name);
+    if (!white && !black) return;
+    const center = new THREE.Box3().setFromObject(object).getCenter(new THREE.Vector3());
+    keyNodes.push({ node: object, center, black });
+  });
+  keyNodes.sort((a, b) => b.center.z - a.center.z);
+  const lowest = 36;
+  const keys = keyNodes.map((entry, index) => {
+    const parent = entry.node.parent!;
+    const world = entry.node.getWorldPosition(new THREE.Vector3());
+    const down = parent
+      .worldToLocal(world.clone().add(new THREE.Vector3(0, entry.black ? -0.007 : -0.008, 0)))
+      .sub(parent.worldToLocal(world.clone()));
+    return {
+      ...entry,
+      note: lowest + index,
+      rest: entry.node.position.clone(),
+      down,
+      depth: 0,
+      held: 0
+    };
+  });
+  const glow = new THREE.Color(getComputedStyle(stats).getPropertyValue('--atelier-accent').trim());
+  const tinted = keys.map((key) => {
+    const materials: THREE.MeshStandardMaterial[] = [];
+    key.node.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)) return;
+      const original = object.material as THREE.MeshStandardMaterial;
+      const material = original.clone();
+      object.userData.pianoMaterial = original;
+      object.material = material;
+      materials.push(material);
+    });
+    return { key, materials };
+  });
+  const byNote = new Map(keys.map((key) => [key.note, key]));
+  const meshToKey = new Map<THREE.Object3D, (typeof keys)[number]>();
+  keys.forEach((key) => key.node.traverse((object) => meshToKey.set(object, key)));
+  audio ??= new AudioContext();
+  const sound = audio;
+  if (sound.state === 'suspended') void sound.resume();
+  const master = sound.createGain();
+  master.gain.value = 0.5;
+  const compressor = sound.createDynamicsCompressor();
+  master.connect(compressor).connect(sound.destination);
+  const voices = new Map<
+    number,
+    { gain: GainNode; stop: (at: number) => void; released: boolean }
+  >();
+  const sounding = new Set<number>();
+  let sustain = false;
+  let octave = 0;
+  let lastChord = '';
+  const frequency = (note: number) => 440 * 2 ** ((note - 69) / 12);
+  const strike = (note: number, velocity = 0.8) => {
+    voices.get(note)?.stop(sound.currentTime + 0.03);
+    const now = sound.currentTime;
+    const f = frequency(note);
+    const gain = sound.createGain();
+    const decay = 1.2 + 3.5 * (1 - (note - 36) / 60);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.22 * velocity, now + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.09 * velocity, now + 0.25);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+    const filter = sound.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(Math.min(12000, f * 9), now);
+    filter.frequency.exponentialRampToValueAtTime(Math.min(9000, f * 3), now + 0.6);
+    filter.connect(gain).connect(master);
+    const partials: [number, number, OscillatorType][] = [
+      [1, 0.6, 'triangle'],
+      [2, 0.25, 'sine'],
+      [3, 0.12, 'sine'],
+      [1.003, 0.3, 'sawtooth']
+    ];
+    const oscillators = partials.map(([ratio, level, type]) => {
+      const oscillator = sound.createOscillator();
+      oscillator.type = type;
+      oscillator.frequency.value = f * ratio;
+      const partial = sound.createGain();
+      partial.gain.value = level * (type === 'sawtooth' ? 0.25 : 1);
+      oscillator.connect(partial).connect(filter);
+      oscillator.start(now);
+      oscillator.stop(now + decay + 0.1);
+      return oscillator;
+    });
+    const voice = {
+      gain,
+      released: false,
+      stop: (at: number) => {
+        gain.gain.cancelScheduledValues(at);
+        gain.gain.setTargetAtTime(0, at, 0.08);
+        oscillators.forEach((oscillator) => oscillator.stop(at + 0.5));
+        voices.delete(note);
+      }
+    };
+    voices.set(note, voice);
+  };
+  const noteOn = (note: number, velocity = 0.8) => {
+    if (!byNote.has(note)) return;
+    const key = byNote.get(note)!;
+    key.held += 1;
+    strike(note, velocity);
+    sounding.add(note);
+    render();
+  };
+  const noteOff = (note: number) => {
+    const key = byNote.get(note);
+    if (!key || key.held === 0) return;
+    key.held -= 1;
+    if (key.held > 0) return;
+    const voice = voices.get(note);
+    if (voice && !sustain) voice.stop(sound.currentTime);
+    else if (voice) voice.released = true;
+    if (!sustain) sounding.delete(note);
+    render();
+  };
+  const setSustain = (value: boolean) => {
+    sustain = value;
+    sustainButton.setAttribute('aria-pressed', String(value));
+    if (!value) {
+      voices.forEach((voice, note) => {
+        if (voice.released && !byNote.get(note)?.held) {
+          voice.stop(sound.currentTime);
+          sounding.delete(note);
+        }
+      });
+    }
+    render();
+  };
+  const render = () => {
+    const held = keys.filter((key) => key.held > 0).map((key) => key.note);
+    const chord = chordName(held.length ? held : [...sounding]);
+    if (chord) lastChord = chord;
+    stats.textContent = `${copy.piano.chord} ${chord || lastChord || '—'} · ${copy.piano.octave} ${4 + octave} · ${copy.piano.sustain} ${sustain ? 'ON' : 'OFF'}`;
+  };
+  const raycaster = new THREE.Raycaster();
+  const pick = (ndc: THREE.Vector2) => {
+    raycaster.setFromCamera(ndc, camera);
+    const hits = raycaster.intersectObjects(
+      keys.map((key) => key.node),
+      true
+    );
+    for (const hit of hits) {
+      const key = meshToKey.get(hit.object);
+      if (key) return key;
+    }
+    return undefined;
+  };
+  let pointerNote: number | undefined;
+  const pressedKeys = new Map<string, number>();
+  const sustainButton = button(copy.piano.sustain, () => setSustain(!sustain));
+  sustainButton.setAttribute('aria-pressed', 'false');
+  controls.append(sustainButton);
+  chordPads.forEach(([label, notes]) => {
+    const pad = button(label, () => {});
+    const release = () => {
+      if (pad.dataset.down !== '1') return;
+      pad.dataset.down = '';
+      notes.forEach(noteOff);
+    };
+    pad.addEventListener('pointerdown', (event) => {
+      event.stopPropagation();
+      pad.dataset.down = '1';
+      notes.forEach((note, index) => setTimeout(() => noteOn(note, 0.7), index * 12));
+    });
+    pad.addEventListener('pointerup', release);
+    pad.addEventListener('pointerleave', release);
+    controls.append(pad);
+  });
+  const keyboardCenter = keys.length
+    ? keys.reduce((sum, key) => sum.add(key.center), new THREE.Vector3()).divideScalar(keys.length)
+    : new THREE.Vector3(-1.41, 0.83, 0.54);
+  render();
+  return {
+    pose: {
+      position: keyboardCenter.clone().add(new THREE.Vector3(0.52, 0.42, 0)),
+      lookAt: keyboardCenter.clone().add(new THREE.Vector3(0.02, 0, 0))
+    },
+    intro: copy.piano.intro,
+    update: (dt) => {
+      keys.forEach((key) => {
+        const target = key.held > 0 ? 1 : 0;
+        key.depth += (target - key.depth) * Math.min(1, dt * (target ? 40 : 18));
+        key.node.position.copy(key.rest).addScaledVector(key.down, key.depth);
+      });
+      tinted.forEach(({ key, materials }) =>
+        materials.forEach((material) =>
+          material.emissive?.copy(glow).multiplyScalar(key.depth * (key.black ? 0.9 : 0.55))
+        )
+      );
+    },
+    pointerDown: (ndc) => {
+      const key = pick(ndc);
+      if (!key) return;
+      pointerNote = key.note;
+      noteOn(key.note, 0.6 + Math.random() * 0.2 + (key.black ? 0 : 0.1));
+    },
+    pointerMove: (ndc) => {
+      if (pointerNote === undefined) return;
+      const key = pick(ndc);
+      if (!key || key.note === pointerNote) return;
+      noteOff(pointerNote);
+      pointerNote = key.note;
+      noteOn(key.note, 0.65);
+    },
+    pointerUp: () => {
+      if (pointerNote !== undefined) noteOff(pointerNote);
+      pointerNote = undefined;
+    },
+    keyDown: (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return false;
+      if (event.key === ' ') {
+        if (!event.repeat) setSustain(true);
+        return true;
+      }
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        octave = Math.max(-1, Math.min(2, octave + (event.key === 'ArrowLeft' ? -1 : 1)));
+        render();
+        return true;
+      }
+      const offset = trackerKeys[event.key.toLowerCase()];
+      if (offset === undefined) return false;
+      if (event.repeat || pressedKeys.has(event.code)) return true;
+      const note = 48 + octave * 12 + offset;
+      pressedKeys.set(event.code, note);
+      noteOn(note);
+      return true;
+    },
+    keyUp: (event) => {
+      if (event.key === ' ') {
+        setSustain(false);
+        return true;
+      }
+      const note = pressedKeys.get(event.code);
+      if (note === undefined) return false;
+      pressedKeys.delete(event.code);
+      noteOff(note);
+      return true;
+    },
+    dispose: () => {
+      voices.forEach((voice) => voice.stop(sound.currentTime));
+      keys.forEach((key) => key.node.position.copy(key.rest));
+      keys.forEach((key) =>
+        key.node.traverse((object) => {
+          if (!(object instanceof THREE.Mesh) || !object.userData.pianoMaterial) return;
+          (object.material as THREE.Material).dispose();
+          object.material = object.userData.pianoMaterial;
+          delete object.userData.pianoMaterial;
+        })
+      );
+      setTimeout(() => master.disconnect(), 800);
+    }
+  };
+};
+
+const sessions: Record<PlayId, (context: PlayContext) => PlaySession> = { darts, rubik, piano };
 
 export const startPlay = (id: PlayId, context: PlayContext) => sessions[id](context);

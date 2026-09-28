@@ -67,6 +67,13 @@ export const roomCopy = {
         newGame: 'New game',
         miss: 'Miss'
       },
+      piano: {
+        intro:
+          'Click or tap the keys, drag for a glissando. Keyboard: Z–M row is C3, Q–U row is C4, black keys on S D G H J and 2 3 5 6 7. Hold Space for sustain, ← → shift octave. Chord pads play full chords.',
+        chord: 'Chord',
+        octave: 'Octave',
+        sustain: 'Sustain'
+      },
       rubik: {
         intro:
           "csTimer keyboard: J F = U U', I K = R R', D E = L L', H G = F F', S L = D D', W O = B B', ; A = y y', T B = x x', P Q = z z'. Or drag across the cube. Space scrambles and the timer starts on your first turn.",
@@ -149,6 +156,13 @@ export const roomCopy = {
         newGame: '新しいゲーム',
         miss: 'ミス'
       },
+      piano: {
+        intro:
+          '鍵盤をクリックまたはタップ、ドラッグでグリッサンド。キーボード：Z〜M の列が C3、Q〜U の列が C4、黒鍵は S D G H J と 2 3 5 6 7。スペース長押しでサステイン、← → でオクターブ移動。コードパッドで和音を鳴らせます。',
+        chord: 'コード',
+        octave: 'オクターブ',
+        sustain: 'サステイン'
+      },
       rubik: {
         intro:
           "csTimer キー配置：J F = U U'、I K = R R'、D E = L L'、H G = F F'、S L = D D'、W O = B B'、; A = y y'、T B = x x'、P Q = z z'。キューブをドラッグしても回せます。スペースでスクランブル、最初の一手で計測開始。",
@@ -230,6 +244,13 @@ export const roomCopy = {
         win: 'ปิดเกม!',
         newGame: 'เริ่มใหม่',
         miss: 'พลาด'
+      },
+      piano: {
+        intro:
+          'คลิกหรือแตะคีย์ ลากเพื่อกลิสซานโด คีย์บอร์ด: แถว Z–M คือ C3 แถว Q–U คือ C4 คีย์ดำคือ S D G H J และ 2 3 5 6 7 กด Space ค้างเพื่อซัสเทน ← → เลื่อนอ็อกเทฟ ปุ่มคอร์ดเล่นทั้งคอร์ด',
+        chord: 'คอร์ด',
+        octave: 'อ็อกเทฟ',
+        sustain: 'ซัสเทน'
       },
       rubik: {
         intro:
