@@ -74,6 +74,16 @@ const destinations = [
       <button data-room-exit hidden>{copy.exit}</button>
     </nav>
   </footer>
+  <section class="room-play" data-room-play hidden aria-live="polite">
+    <p class="room-play-title" data-room-play-title></p>
+    <p class="room-play-intro" data-room-play-intro></p>
+    <p class="room-play-stats" data-room-play-stats></p>
+    <div class="room-play-controls" data-room-play-controls></div>
+    <div class="room-play-actions">
+      <button type="button" data-room-play-page>{copy.play.openPage}</button>
+      <button type="button" data-room-play-exit>{copy.play.exit}</button>
+    </div>
+  </section>
   <dialog class="room-panel" data-room-panel aria-labelledby="room-panel-title">
     <header class="room-panel-header">
       <div>
@@ -309,6 +319,64 @@ const destinations = [
   .room-controls a:hover,
   .room-controls button:hover {
     color: var(--atelier-accent);
+  }
+  .room-play {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 4;
+    display: grid;
+    gap: 0.45rem;
+    width: min(24rem, calc(100% - 3rem));
+    padding: 1rem 1.1rem;
+    background: color-mix(in srgb, var(--atelier-bg) 88%, transparent);
+    border: 1px solid var(--atelier-line);
+    backdrop-filter: blur(10px);
+  }
+  .room-play[hidden] {
+    display: none;
+  }
+  .room-play-title {
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--atelier-accent-soft);
+  }
+  .room-play-intro {
+    font-size: 0.82rem;
+    color: var(--atelier-fg-muted);
+  }
+  .room-play-stats {
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    color: var(--atelier-fg);
+  }
+  .room-play-controls,
+  .room-play-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .room-play-actions button,
+  .room-play-controls :global(.room-play-button) {
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--atelier-line);
+    color: var(--atelier-fg);
+    background: transparent;
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    cursor: pointer;
+  }
+  .room-play-actions button:hover,
+  .room-play-controls :global(.room-play-button:hover) {
+    border-color: var(--atelier-accent);
+    color: var(--atelier-accent);
+  }
+  .room-home[data-room-play] .room-controls,
+  .room-home[data-room-play] .room-reticle,
+  .room-home[data-room-play] .room-hint {
+    visibility: hidden;
   }
   .room-reticle {
     position: absolute;

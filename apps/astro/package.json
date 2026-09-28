@@ -28,6 +28,7 @@
     "@astrojs/netlify": "^7.0.11",
     "@astrojs/node": "^10.1.2",
     "@astrojs/react": "^5.0.6",
+    "@dimforge/rapier3d-compat": "0.12.0",
     "@types/lodash": "^4.17.24",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",

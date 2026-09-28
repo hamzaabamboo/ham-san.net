@@ -52,7 +52,22 @@ export const roomCopy = {
     penspinning: 'Pen Spinning',
     kendama: 'Kendama',
     cardistry: 'Cardistry / Magic',
+    nesoberi: 'Nesoberi',
     penlight: 'Penlights',
+    play: {
+      exit: 'Back to the room',
+      openPage: 'Open page',
+      darts: {
+        intro:
+          'Aim with the pointer. Press and hold to wind up, release to throw. Space works too. 301, finish on a double.',
+        remaining: 'Left',
+        round: 'Round',
+        bust: 'Bust',
+        win: 'Checkout!',
+        newGame: 'New game',
+        miss: 'Miss'
+      }
+    },
     blocked: 'Arrow keys look around. WASD moves through the room.'
   },
   ja: {
@@ -108,7 +123,22 @@ export const roomCopy = {
     penspinning: 'ペンスピニング',
     kendama: 'けん玉',
     cardistry: 'カーディストリー / マジック',
+    nesoberi: '寝そべり',
     penlight: 'ペンライト',
+    play: {
+      exit: '部屋に戻る',
+      openPage: 'ページを開く',
+      darts: {
+        intro:
+          'ポインターで狙い、押して構え、離して投げる。スペースキーでも可。301、ダブルで上がり。',
+        remaining: '残り',
+        round: 'ラウンド',
+        bust: 'バースト',
+        win: 'フィニッシュ！',
+        newGame: '新しいゲーム',
+        miss: 'ミス'
+      }
+    },
     blocked: '矢印キーで見回せます。WASDで部屋を移動できます。'
   },
   th: {
@@ -164,7 +194,22 @@ export const roomCopy = {
     penspinning: 'เพนสปินนิ่ง',
     kendama: 'เคนดามะ',
     cardistry: 'คาร์ดิสทรี / มายากล',
+    nesoberi: 'ตุ๊กตาเนโซเบริ',
     penlight: 'แท่งไฟเชียร์',
+    play: {
+      exit: 'กลับไปที่ห้อง',
+      openPage: 'เปิดหน้า',
+      darts: {
+        intro:
+          'เล็งด้วยเมาส์ กดค้างเพื่อง้าง ปล่อยเพื่อปา หรือใช้ Space ก็ได้ เกม 301 ต้องจบด้วยช่องดับเบิล',
+        remaining: 'เหลือ',
+        round: 'รอบ',
+        bust: 'บัสต์',
+        win: 'ปิดเกม!',
+        newGame: 'เริ่มใหม่',
+        miss: 'พลาด'
+      }
+    },
     blocked: 'ใช้ปุ่มลูกศรเพื่อมองรอบห้อง ใช้ WASD เพื่อเดิน'
   }
 };

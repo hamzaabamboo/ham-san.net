@@ -8,6 +8,7 @@ import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { roomCopy } from './room-copy';
 import { roomPhaseForTokyoHour, type RoomPhase } from './room-logic';
+import { isPlayable, startPlay, type PlayId, type PlaySession } from './room-play';
 
 type Locale = keyof typeof roomCopy;
 type HobbyTargetId =
@@ -29,6 +30,7 @@ type TargetId =
   | 'events'
   | 'photos'
   | 'penlight'
+  | 'nesoberi'
   | 'light'
   | 'closet';
 type ContentId = TargetId | MusicChildId | 'about' | 'contact';
@@ -38,6 +40,7 @@ type TargetDefinition = {
   position: [number, number, number];
   volume?: [number, number, number];
   path: string;
+  label?: false;
 };
 type ContentLink = { id: ContentId; label: string; path: string };
 type CurtainMotion = {
@@ -110,6 +113,7 @@ const targetDefinitions: TargetDefinition[] = [
   { id: 'events', position: [1.15, 1.22, -3.17], path: 'events' },
   { id: 'photos', position: [0.436, 0.923, 1.703], volume: [0.46, 0.3, 0.4], path: 'photos' },
   { id: 'penlight', position: [3.2, 1.62, 1.15], volume: [0.12, 0.45, 0.95], path: 'events' },
+  { id: 'nesoberi', position: [0.8, 0.6, -1.6], path: '', label: false },
   { id: 'light', position: [-1.86, 1.24, -2.45], volume: [0.3, 0.34, 0.12], path: '' },
   {
     id: 'closet',
@@ -168,6 +172,7 @@ const defaultFocusPositions: Record<TargetId, [number, number, number]> = {
   hobbies: [1, 1.5, -2.05],
   events: [1.15, 1.55, -2],
   photos: [0.58, 1.27, 0.95],
+  nesoberi: [0.8, 1.2, -0.4],
   penlight: [2.25, 1.6, 1.15],
   light: [-1.86, 1.35, -2.15],
   darts: [-1.35, 1.5, -2.3],
@@ -376,6 +381,13 @@ export const initRoom = (root: HTMLElement) => {
   const lieDownButton = root.querySelector<HTMLButtonElement>('[data-room-lie-down]');
   const closetButton = root.querySelector<HTMLButtonElement>('[data-room-closet]');
   const panelKicker = root.querySelector<HTMLElement>('[data-room-panel-kicker]');
+  const playHud = root.querySelector<HTMLElement>('[data-room-play]');
+  const playTitle = root.querySelector<HTMLElement>('[data-room-play-title]');
+  const playIntro = root.querySelector<HTMLElement>('[data-room-play-intro]');
+  const playStats = root.querySelector<HTMLElement>('[data-room-play-stats]');
+  const playControls = root.querySelector<HTMLElement>('[data-room-play-controls]');
+  const playPage = root.querySelector<HTMLButtonElement>('[data-room-play-page]');
+  const playExit = root.querySelector<HTMLButtonElement>('[data-room-play-exit]');
 
   if (
     !stage ||
@@ -403,7 +415,14 @@ export const initRoom = (root: HTMLElement) => {
     !curtainAuto ||
     !lieDownButton ||
     !closetButton ||
-    !panelKicker
+    !panelKicker ||
+    !playHud ||
+    !playTitle ||
+    !playIntro ||
+    !playStats ||
+    !playControls ||
+    !playPage ||
+    !playExit
   ) {
     return;
   }
@@ -421,6 +440,7 @@ export const initRoom = (root: HTMLElement) => {
     if (isHobbyTarget(id)) return copy[id];
     if (id === 'light') return copy.light;
     if (id === 'penlight') return copy.penlight;
+    if (id === 'nesoberi') return copy.nesoberi;
     if (id === 'closet') return copy.closet;
     if (id === 'about') return copy.about;
     if (id === 'contact') return copy.contact;
@@ -455,6 +475,7 @@ export const initRoom = (root: HTMLElement) => {
   const toFrameUrl = (path: string) => `${toUrl(path)}?roomEmbed=1`;
   const targetLabels = new Map<TargetId, HTMLElement>();
   targetDefinitions.forEach((target) => {
+    if (target.label === false) return;
     const label = document.createElement('button');
     label.type = 'button';
     label.setAttribute('aria-label', labelFor(target.id));
@@ -785,6 +806,25 @@ export const initRoom = (root: HTMLElement) => {
   let closetOpen = false;
   let contentRequest = 0;
   let savedPose: Pose | null = null;
+  let play: { id: PlayId; session: PlaySession; active: boolean } | null = null;
+  let lastHitObject: THREE.Object3D | null = null;
+  const pats: { object: THREE.Object3D; base: THREE.Vector3; t: number }[] = [];
+  const hearts: { sprite: THREE.Sprite; t: number; velocity: THREE.Vector3 }[] = [];
+  const heartTexture = (() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const context = canvas.getContext('2d');
+    if (context) {
+      context.fillStyle = getComputedStyle(root).getPropertyValue('--atelier-accent').trim();
+      context.beginPath();
+      context.moveTo(32, 54);
+      context.bezierCurveTo(4, 34, 8, 8, 32, 20);
+      context.bezierCurveTo(56, 8, 60, 34, 32, 54);
+      context.fill();
+    }
+    return new THREE.CanvasTexture(canvas);
+  })();
   let transition: {
     from: Pose;
     to: Pose;
@@ -1345,6 +1385,7 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const targetAt = (x: number, y: number) => {
+    lastHitObject = null;
     if (!room) return undefined;
     pointer.set(x, y);
     raycaster.setFromCamera(pointer, camera);
@@ -1356,6 +1397,7 @@ export const initRoom = (root: HTMLElement) => {
     if (hotspot) return getRoomTarget(hotspot.object);
     for (const intersection of intersections) {
       const target = getRoomTarget(intersection.object);
+      lastHitObject = intersection.object;
       if (target) return target;
       if (isOpaqueObject(intersection.object)) return undefined;
     }
@@ -1553,6 +1595,152 @@ export const initRoom = (root: HTMLElement) => {
     });
   };
 
+  const patPlush = () => {
+    let object: THREE.Object3D | null = lastHitObject;
+    while (object && object.userData?.roomTarget !== 'nesoberi') object = object.parent;
+    if (!object || pats.some((pat) => pat.object === object)) return;
+    pats.push({ object, base: object.scale.clone(), t: 0 });
+    const bounds = new THREE.Box3().setFromObject(object);
+    for (let index = 0; index < 3; index += 1) {
+      const sprite = new THREE.Sprite(
+        new THREE.SpriteMaterial({ map: heartTexture, transparent: true, depthWrite: false })
+      );
+      sprite.scale.setScalar(0.06);
+      sprite.position.set(
+        (bounds.min.x + bounds.max.x) / 2 + (index - 1) * 0.05,
+        bounds.max.y + 0.02,
+        (bounds.min.z + bounds.max.z) / 2
+      );
+      scene.add(sprite);
+      hearts.push({
+        sprite,
+        t: -index * 0.12,
+        velocity: new THREE.Vector3((index - 1) * 0.04, 0.22, 0)
+      });
+    }
+    const context = new AudioContext();
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    oscillator.frequency.setValueAtTime(520, context.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(340, context.currentTime + 0.18);
+    gain.gain.setValueAtTime(0.08, context.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.25);
+    oscillator.connect(gain).connect(context.destination);
+    oscillator.start();
+    oscillator.stop(context.currentTime + 0.26);
+    oscillator.onended = () => void context.close();
+  };
+
+  const updatePats = (delta: number) => {
+    for (let index = pats.length - 1; index >= 0; index -= 1) {
+      const pat = pats[index];
+      pat.t += delta;
+      const phase = Math.min(1, pat.t / 0.55);
+      const squash = Math.sin(phase * Math.PI * 2) * (1 - phase) * 0.22;
+      pat.object.scale.set(
+        pat.base.x * (1 + squash * 0.5),
+        pat.base.y * (1 - squash),
+        pat.base.z * (1 + squash * 0.5)
+      );
+      if (phase >= 1) {
+        pat.object.scale.copy(pat.base);
+        pats.splice(index, 1);
+      }
+    }
+    for (let index = hearts.length - 1; index >= 0; index -= 1) {
+      const heart = hearts[index];
+      heart.t += delta;
+      if (heart.t < 0) continue;
+      heart.sprite.position.addScaledVector(heart.velocity, delta);
+      (heart.sprite.material as THREE.SpriteMaterial).opacity = Math.max(0, 1 - heart.t / 1.1);
+      if (heart.t >= 1.1) {
+        heart.sprite.removeFromParent();
+        heart.sprite.material.dispose();
+        hearts.splice(index, 1);
+      }
+    }
+  };
+
+  const poseLookingAt = (position: THREE.Vector3, lookAt: THREE.Vector3): Pose => {
+    const direction = lookAt.clone().sub(position);
+    return {
+      position: position.clone(),
+      yaw: Math.atan2(-direction.x, -direction.z),
+      pitch: Math.atan2(direction.y, Math.hypot(direction.x, direction.z))
+    };
+  };
+
+  const clearPlay = () => {
+    if (!play) return;
+    play.session.dispose();
+    play = null;
+    playHud.hidden = true;
+    playControls.replaceChildren();
+    delete root.dataset.roomPlay;
+    renderer.domElement.style.cursor = 'grab';
+  };
+
+  const startPlaySession = (id: PlayId) => {
+    if (!room) return;
+    keys.clear();
+    lookKeys.clear();
+    moveTarget = null;
+    savedPose = currentPose();
+    focusActive = true;
+    setHint();
+    playControls.replaceChildren();
+    playStats.textContent = '';
+    playTitle.textContent = labelFor(id);
+    const session = startPlay(id, {
+      scene,
+      camera,
+      room,
+      stats: playStats,
+      controls: playControls,
+      copy: copy.play
+    });
+    playIntro.textContent = session.intro;
+    play = { id, session, active: false };
+    root.dataset.roomPlay = id;
+    playHud.hidden = false;
+    renderer.domElement.style.cursor = 'crosshair';
+    setTransition(poseLookingAt(session.pose.position, session.pose.lookAt), focusDuration, () => {
+      if (play?.session === session) play.active = true;
+    });
+  };
+
+  const exitPlay = () => {
+    if (!play) return;
+    clearPlay();
+    if (!savedPose) {
+      focusActive = false;
+      setHint();
+      return;
+    }
+    setTransition(savedPose, returnDuration, () => {
+      focusActive = false;
+      savedPose = null;
+      setHint();
+    });
+  };
+
+  const openPlayPage = () => {
+    if (!play) return;
+    const id = play.id;
+    clearPlay();
+    root.dataset.roomExamine = id;
+    setComposition(true);
+    setTransition(focusPose(id), focusDuration, () => loadContent(id));
+  };
+
+  const playPointer = (event: PointerEvent) => {
+    const rect = renderer.domElement.getBoundingClientRect();
+    return new THREE.Vector2(
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1
+    );
+  };
+
   const startRest = () => {
     if (!entered || resting || focusActive || panel.open) return;
     releasePointerLock();
@@ -1613,6 +1801,14 @@ export const initRoom = (root: HTMLElement) => {
       toggleCloset();
       return;
     }
+    if (id === 'nesoberi') {
+      patPlush();
+      return;
+    }
+    if (isPlayable(id)) {
+      startPlaySession(id);
+      return;
+    }
     keys.clear();
     savedPose = currentPose();
     focusActive = true;
@@ -1650,6 +1846,7 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const exitRoom = () => {
+    clearPlay();
     releasePointerLock();
     keys.clear();
     lookKeys.clear();
@@ -1695,6 +1892,13 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const onPointerDown = (event: PointerEvent) => {
+    if (play?.active && event.button === 0) {
+      try {
+        renderer.domElement.setPointerCapture(event.pointerId);
+      } catch {}
+      play.session.pointerDown(playPointer(event));
+      return;
+    }
     if (!entered || focusActive || event.button > 0) return;
     if (pointerLocked) {
       const target = targetAt(0, 0);
@@ -1713,6 +1917,10 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const onPointerMove = (event: PointerEvent) => {
+    if (play?.active) {
+      play.session.pointerMove(playPointer(event));
+      return;
+    }
     if (!entered || focusActive) return;
     if (pointerLocked) {
       if (!event.movementX && !event.movementY) return;
@@ -1739,6 +1947,12 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const onPointerUp = (event: PointerEvent) => {
+    if (play?.active) {
+      if (renderer.domElement.hasPointerCapture(event.pointerId))
+        renderer.domElement.releasePointerCapture(event.pointerId);
+      play.session.pointerUp(playPointer(event));
+      return;
+    }
     if (pointerLocked) return;
     if (!pointerState || pointerState.id !== event.pointerId) return;
     const wasDragging = pointerState.dragging;
@@ -1758,6 +1972,15 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const onKeyDown = (event: KeyboardEvent) => {
+    if (play && event.key === 'Escape') {
+      event.preventDefault();
+      exitPlay();
+      return;
+    }
+    if (play?.active && play.session.keyDown(event)) {
+      event.preventDefault();
+      return;
+    }
     if (event.key === 'Escape' && resting) {
       event.preventDefault();
       stopRest();
@@ -1782,6 +2005,10 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const onKeyUp = (event: KeyboardEvent) => {
+    if (play?.active && play.session.keyUp(event)) {
+      event.preventDefault();
+      return;
+    }
     keys.delete(event.key.toLowerCase());
     lookKeys.delete(event.key.toLowerCase());
   };
@@ -1839,6 +2066,8 @@ export const initRoom = (root: HTMLElement) => {
   curtainButton.addEventListener('click', onCurtainToggle);
   curtainAuto.addEventListener('click', onCurtainAuto);
   lieDownButton.addEventListener('click', onLieDownClick);
+  playExit.addEventListener('click', exitPlay);
+  playPage.addEventListener('click', openPlayPage);
   closetButton.addEventListener('click', onClosetClick);
   root.querySelectorAll<HTMLAnchorElement>('[data-room-destination]').forEach((link) => {
     const onDestinationClick = (event: MouseEvent) => {
@@ -2094,6 +2323,8 @@ export const initRoom = (root: HTMLElement) => {
         moveToward(moveTarget, 2.4 * delta);
       }
     }
+    if (play?.active) play.session.update(delta);
+    updatePats(delta);
     updateCurtains(delta);
     updateCloset(delta);
     camera.updateMatrixWorld();
@@ -2114,6 +2345,7 @@ export const initRoom = (root: HTMLElement) => {
     if (disposed) return;
     disposed = true;
     contentRequest += 1;
+    clearPlay();
     hobbyRoutesController.abort();
     keys.clear();
     pointerState = null;
@@ -2130,6 +2362,8 @@ export const initRoom = (root: HTMLElement) => {
     curtainButton.removeEventListener('click', onCurtainToggle);
     curtainAuto.removeEventListener('click', onCurtainAuto);
     lieDownButton.removeEventListener('click', onLieDownClick);
+    playExit.removeEventListener('click', exitPlay);
+    playPage.removeEventListener('click', openPlayPage);
     closetButton.removeEventListener('click', onClosetClick);
     destinationHandlers.forEach((handler, link) => link.removeEventListener('click', handler));
     closeButton?.removeEventListener('click', onCloseClick);
