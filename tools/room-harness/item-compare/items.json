@@ -214,14 +214,16 @@
    "Rack tote",
    "Juggling ball",
    "Rack kendama",
-   "Carrot plush"
+   "Carrot plush",
+   "Bear striped"
   ]
  },
  "NESOBERI": {
   "prefix": [
    "Mega neso",
    "Chibi brown",
-   "Mochi white"
+   "Mochi white",
+   "Bear striped"
   ],
   "eye": [
    0.85,
@@ -284,7 +286,8 @@
  },
  "BOOK-ALBUM": {
   "prefix": [
-   "Photobooks U1"
+   "Bay media 02",
+   "Bay media 10"
   ],
   "view": "right"
  },
@@ -336,7 +339,8 @@
    "Penlight wire",
    "Penlight row",
    "Lanyard row",
-   "Penlight holder"
+   "Penlight holder",
+   "Penlight grid pole"
   ],
   "view": "right"
  },
