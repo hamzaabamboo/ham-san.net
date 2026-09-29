@@ -18,7 +18,8 @@ const posterObjects = [
 ]
 const boundPaths = [
   'assets/room/room.blend',
-  'assets/room/textures/illustrated-posters.png',
+  'assets/room/room-web-candidate.glb',
+  'assets/room/textures/illustrated-posters-minimal.png',
   'conductor/room-spec.md',
   'apps/astro/src/components/home/room-runtime.ts',
   'apps/astro/src/components/home/room-copy.ts',
@@ -66,7 +67,7 @@ async function makeFixture(taskRequirements = ids) {
   }
   await mkdir(join(root, 'apps/astro/public/models'), { recursive: true })
   const model = glb()
-  for (const path of ['assets/room/room-web-current.glb', 'assets/room/room-web-lean.glb', 'apps/astro/public/models/room.glb']) {
+  for (const path of ['assets/room/room-web-candidate.glb', 'assets/room/room-web-current.glb', 'assets/room/room-web-lean.glb', 'apps/astro/public/models/room.glb']) {
     const fullPath = join(root, path)
     await mkdir(dirname(fullPath), { recursive: true })
     await writeFile(fullPath, model)
