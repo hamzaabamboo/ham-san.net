@@ -9,7 +9,7 @@ Run from the repository root.
 ```sh
 bun tools/room-harness/check.mjs
 bun tools/room-harness/check.mjs --evidence tools/room-harness/evidence/room-receipt.json
-GOMAXPROCS=1 UV_THREADPOOL_SIZE=1 bun tools/room-harness/check.test.mjs
+GOMAXPROCS=1 UV_THREADPOOL_SIZE=1 bun tools/room-harness/check.contract.mjs
 ```
 
 Exit codes:
