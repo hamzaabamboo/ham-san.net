@@ -31,7 +31,7 @@ RUN ln -s ../../../apps/api/node_modules ./node_modules
 EXPOSE 1337
 CMD ["bun", "run", "start"]
 
-FROM node:22-bookworm-slim AS astro
+FROM node:22-alpine AS astro
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
