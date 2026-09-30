@@ -18,3 +18,7 @@ dogfood-output
 public/uploads
 stitch_exports
 *.log
+assets
+tools
+conductor
+docs
