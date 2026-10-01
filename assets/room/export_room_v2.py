@@ -58,7 +58,7 @@ def navigation():
         collider('chair', meshes('Chair ')),
         collider('shelf', meshes('Shelf U')),
         collider('floor-table', meshes('Low table')),
-        collider('darts-stand', meshes('Dart rack') + meshes('Dart board cabinet')),
+        collider('darts-stand', meshes('Dart rack') + meshes('Dart board cabinet') + meshes('Carrot plush')),
         collider('piano', meshes('Keyboard body') + meshes('Keyboard stand')),
         collider('beanbag', meshes('Beanbag')),
         collider('penlight-rack', meshes('Penlight wire grid')),

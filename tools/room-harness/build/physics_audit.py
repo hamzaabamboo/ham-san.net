@@ -2,11 +2,25 @@ import bpy
 import json
 import os
 import re
+import hashlib
+from datetime import datetime, timezone
 from mathutils import Vector
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(bpy.data.filepath), '..', '..'))
 OUT = os.path.join(REPO, 'tools', 'room-harness', 'build', 'physics-latest.json')
-home = bpy.data.collections['RoomHome']
+SCOPE = globals().get('AUDIT_SCOPE', 'collection')
+if SCOPE not in {'collection', 'scene'}:
+    raise ValueError(f'Unknown audit scope: {SCOPE}')
+home = bpy.context.scene.collection if SCOPE == 'scene' else bpy.data.collections.get('RoomHome')
+if home is None:
+    raise RuntimeError('Physical audit source collection is absent')
+EXCLUDED_COLLECTIONS = {'Blockout', 'Plush v4', 'Plush v5 nesoberi'}
+bpy.context.view_layer.update()
+depsgraph = bpy.context.evaluated_depsgraph_get()
+source_hash = hashlib.sha256()
+with open(bpy.data.filepath, 'rb') as handle:
+    for chunk in iter(lambda: handle.read(1024 * 1024), b''):
+        source_hash.update(chunk)
 
 def _b(name_pred):
     for o in home.all_objects:
@@ -14,21 +28,38 @@ def _b(name_pred):
             c = [o.matrix_world @ Vector(v) for v in o.bound_box]
             return [min(v[i] for v in c) for i in range(3)], [max(v[i] for v in c) for i in range(3)]
     return None
-_r = _b(lambda n: n == 'Right wall'); _l = _b(lambda n: n == 'Left continuous desk wall'); _e = _b(lambda n: n == 'Entry wall'); _w = _b(lambda n: n == 'Window wall central pier')
-_floor = _b(lambda n: n == 'Floor base')
-WALL = {'xmin': (_l[1][0] if _l else -3.965), 'xmax': (_r[0][0] if _r else 3.94), 'ymin': (_e[1][1] if _e else -2.53), 'ymax': (_w[0][1] if _w else 2.535), 'zmin': -0.005, 'zmax': 2.92}
-EXTERIOR = re.compile(r'^(Balcony|Condenser|Rear frosted|Raised window|Window wall|Right wall|Entry wall|Left continuous|Room ceiling|Floor|Web |Skirting|Genkan|Closet|Wall AC|Room light|Ceiling diffuser|Penlight spill|Light$|Balcony gathered)', re.I)
+shell = bpy.data.objects.get('Room shell')
+floor = bpy.data.objects.get('Floor')
+if shell is None or floor is None:
+    raise RuntimeError('Production shell and floor are required for room boundaries')
+shell_points = [shell.matrix_world @ v.co for v in shell.data.vertices]
+floor_points = [floor.matrix_world @ v.co for v in floor.data.vertices]
+WALL = {
+    'xmin': min(v.x for v in shell_points), 'xmax': max(v.x for v in shell_points),
+    'ymin': min(v.y for v in shell_points), 'ymax': max(v.y for v in shell_points),
+    'zmin': max(v.z for v in floor_points), 'zmax': max(v.z for v in shell_points),
+}
+EXTERIOR = re.compile(r'^(Room shell$|Outdoor AC|Backdrop |Balcony|Condenser|Rear frosted|Raised window|Window wall|Right wall|Entry wall|Left continuous|Room ceiling|Floor|Web |Skirting|Genkan|Closet|Wall AC|Room light|Ceiling diffuser|Penlight spill|Light$|Balcony gathered)', re.I)
 SHELL = re.compile(r'wall|ceiling|floor|skirting|plinth|board|upright|frame|shelf|rack|stand |riser|case c\d l\d (floor|back|left|right|front|lid)|track|rail|grid|mount|desk straight top|Standing desk|Low hobby table|Darts stand|Display cabinet|Modular shelf|sill|lintel|jamb|threshold|mat\b|rug|beanbag|curtain|tapestry|poster|print|note|sheet|card|towel|pennant|uchiwa|glass|panel|clip|hook|lanyard|strap|cable|grommet|outlet', re.I)
 
 
 def aabb(o):
-    c = [o.matrix_world @ Vector(v) for v in o.bound_box]
-    return [min(v[i] for v in c) for i in range(3)], [max(v[i] for v in c) for i in range(3)]
+    evaluated = o.evaluated_get(depsgraph)
+    mesh = evaluated.to_mesh()
+    try:
+        points = [evaluated.matrix_world @ v.co for v in mesh.vertices]
+        if not points:
+            raise RuntimeError(f'Physical audit mesh has no vertices: {o.name}')
+        return [min(v[i] for v in points) for i in range(3)], [max(v[i] for v in points) for i in range(3)]
+    finally:
+        evaluated.to_mesh_clear()
 
 
 objs = []
 for o in home.all_objects:
     if o.type not in ('MESH', 'CURVE') or o.hide_render:
+        continue
+    if any(c.name in EXCLUDED_COLLECTIONS for c in o.users_collection):
         continue
     lo, hi = aabb(o)
     objs.append({'name': o.name, 'lo': lo, 'hi': hi, 'vol': max((hi[0]-lo[0])*(hi[1]-lo[1])*(hi[2]-lo[2]), 1e-9), 'curve': o.type == 'CURVE'})
@@ -64,9 +95,7 @@ for a in objs:
             # hanging / wall-mounted objects: touching a wall plane counts
         if not supported:
             near_wall = (a['hi'][0] > WALL['xmax'] - 0.06) or (a['lo'][0] < WALL['xmin'] + 0.06) or (a['hi'][1] > WALL['ymax'] - 0.06) or (a['lo'][1] < WALL['ymin'] + 0.06)
-            # objects embedded inside a larger object (contents inside cases/cabinets) count as supported by that container floor
-            inside = any(b is not a and b['lo'][0] <= a['lo'][0] + 0.02 and b['hi'][0] >= a['hi'][0] - 0.02 and b['lo'][1] <= a['lo'][1] + 0.02 and b['hi'][1] >= a['hi'][1] - 0.02 and b['lo'][2] <= bottom + 0.02 and b['hi'][2] >= a['hi'][2] - 0.05 for b in objs)
-            if not near_wall and not inside:
+            if not near_wall:
                 floating.append({'name': a['name'], 'bottom': round(bottom, 3), 'lo': [round(v,3) for v in a['lo']], 'hi': [round(v,3) for v in a['hi']]})
 
 # pairwise intersections among content objects (skip shell-like names)
@@ -97,7 +126,7 @@ for a in content:
         if frac > 0.05 and min(ox, oy, oz) > 0.004:
             intersections.append({'a': a['name'], 'b': b['name'], 'frac': round(frac, 2), 'kind': 'structure'})
 
-SURF = re.compile(r'shelf|board|desk .*top|table top|plinth|Floor base|riser|step|panel|top$|lid$', re.I)
+SURF = re.compile(r'shelf|board|desk .*top|table top|plinth|^Floor$|riser|step|panel|top$|lid$', re.I)
 surfs = [o for o in objs if SURF.search(o['name'])]
 sinks = []
 for a in objs:
@@ -110,7 +139,7 @@ for a in objs:
             sinks.append({'a': a['name'], 'b': b['name'], 'sink': round(sink, 3)})
 sinks.sort(key=lambda x: -x['sink'])
 
-FURN = re.compile(r'^(Desk straight top|Low hobby table|Modular shelf (board|upright|continuous back)|Display cabinet (shelf|side|back)|Darts stand (shelf|upright)|Wire rack (shelf \d|upright)|Monitor riser$|Standing desk|Closet interior|Clear case c\d l\d (floor|lid|left|right|back|front)|Keyboard playing)', re.I)
+FURN = re.compile(r'^(Desk top|Desk column|Desk crossbar|Desk foot|Low table (top|leg)|Shelf U|Dart rack|Monitor riser|Cube case .* (floor|lid|left|right|back|front)|Keyboard (body|stand))', re.I)
 FURN_SKIP = re.compile(r'wall|ceiling|floor|Skirting|curtain|Genkan|Room |Web |grid|cable|string|tether|cord|lanyard|strap|clip|hook|Balcony|Window|Entry|Closet|Idol|Clear case|Acrylic|Modular|Display cabinet|Darts stand|Wire rack|Standing desk|Keyboard playing|Monitor riser|Monitor shelf foot|Low hobby table|Desk straight|plinth|teal back|riser|step|seam|shell|brace|Chair leg|Piano|support pin', re.I)
 furn = [o for o in objs if FURN.match(o['name'])]
 for a in objs:
@@ -122,34 +151,36 @@ for a in objs:
 
 intersections.sort(key=lambda x: -x['frac'])
 COLLIDER_SOURCES = {
-    'desk': ['Desk straight top', 'Standing desk T foot', 'Standing desk T foot.001'],
-    'chair': ['Chair moulded shell', 'Chair leg front left', 'Chair leg rear right'],
-    'chair-2': ['Chair moulded shell 2', 'Chair leg front left 2', 'Chair leg rear right 2'],
-    'wire-rack': ['Wire rack upright 1', 'Wire rack upright 4'],
-    'box-tall': ['Cardboard box tall'],
-    'boxes': ['Cardboard box large'],
-    'darts-stand': ['Darts stand post front 1', 'Darts stand post rear 2', 'Darts stand shelf'],
-    'floor-table': ['Low hobby table top'],
-    'beanbag': ['Beanbag tailored shell'],
-    'piano': ['Piano case'],
-    'desk-end-rack': ['Desk end wire rack upright 1', 'Desk end wire rack upright 4'],
-    'foam-roller': ['Foam roller'],
+    'desk': lambda n: n.startswith('Desk ') and not n.startswith(('Desk rug', 'Desk wall', 'Desk headphone')),
+    'chair': lambda n: n.startswith('Chair '),
+    'shelf': lambda n: n.startswith('Shelf U'),
+    'darts-stand': lambda n: n.startswith(('Dart rack', 'Dart board cabinet')),
+    'floor-table': lambda n: n.startswith('Low table'),
+    'beanbag': lambda n: n.startswith('Beanbag'),
+    'piano': lambda n: n.startswith(('Keyboard body', 'Keyboard stand')),
+    'penlight-rack': lambda n: n.startswith('Penlight wire grid'),
+    'closet': lambda n: n.startswith(('Closet side wall', 'Closet door')),
 }
 collider_drift = []
-_fb = bpy.data.objects.get('Floor base')
-if _fb is not None and 'roomNavigation' in _fb:
+_fb = floor
+if 'roomNavigation' in _fb:
     _nav = json.loads(_fb['roomNavigation'])
     _cols = {c['id']: c for c in _nav.get('colliders', [])}
     _by = {o['name']: o for o in objs}
-    for cid, names in COLLIDER_SOURCES.items():
-        src = [_by[n] for n in names if n in _by]
-        if not src: continue
-        x0 = min(o['lo'][0] for o in src); x1 = max(o['hi'][0] for o in src); y0 = min(o['lo'][1] for o in src); y1 = max(o['hi'][1] for o in src)
+    for cid, predicate in COLLIDER_SOURCES.items():
+        src = [o for o in objs if predicate(o['name'])]
+        if not src:
+            collider_drift.append({'id': cid, 'source_missing': True})
+            continue
+        points = [bpy.data.objects[o['name']].matrix_world @ Vector(corner) for o in src for corner in bpy.data.objects[o['name']].bound_box]
+        x0 = min(v.x for v in points); x1 = max(v.x for v in points); y0 = min(v.y for v in points); y1 = max(v.y for v in points)
         c = _cols.get(cid)
         if c is None:
             collider_drift.append({'id': cid, 'missing': True}); continue
-        d = max(abs(c['minX'] - x0), abs(c['maxX'] - x1), abs(c['minZ'] + y1), abs(c['maxZ'] + y0))
-        if d > 0.02: collider_drift.append({'id': cid, 'drift': round(d, 3)})
+        d = max(abs(c['minX'] - (x0 - 0.03)), abs(c['maxX'] - (x1 + 0.03)), abs(c['minZ'] + y1 + 0.03), abs(c['maxZ'] + y0 - 0.03))
+        if d > 0.001: collider_drift.append({'id': cid, 'drift': round(d, 4)})
+else:
+    collider_drift.append({'id': 'navigation', 'missing': True})
 
 CURVE_THIN = re.compile(r'string|tether|cord|lanyard|strap|wire|grid|cable|hook|ring$|clip|Floor base|oak floor|Room |wall|ceiling|Skirting|curtain|Genkan|seam|uchiwa|Microphone|yoyo|grommet|bracket|pull', re.I)
 _dg = bpy.context.evaluated_depsgraph_get()
@@ -166,7 +197,21 @@ for _cv in home.all_objects:
     if _vs and (min(v.x for v in _vs) < WALL['xmin'] - 0.001 or max(v.x for v in _vs) > WALL['xmax'] + 0.001 or min(v.y for v in _vs) < WALL['ymin'] - 0.001 or max(v.y for v in _vs) > WALL['ymax'] + 0.001 or min(v.z for v in _vs) < 0.013):
         curve_hits.append({'curve': _cv.name, 'solid': 'wall/floor', 'verts': 1})
 
-payload = {'objects': len(objs), 'floating': floating, 'wall_penetration': wall_pen, 'intersections': intersections, 'sinks': sinks, 'collider_drift': collider_drift, 'curve_hits': curve_hits}
+payload = {
+    'source_file': bpy.data.filepath,
+    'source_sha256': source_hash.hexdigest(),
+    'source_is_dirty': bpy.data.is_dirty,
+    'source_scope': SCOPE,
+    'source_collection': home.name,
+    'source_present': True,
+    'generated_at': datetime.now(timezone.utc).isoformat(),
+    'method': 'aabb-screening',
+    'room_bounds': WALL,
+    'excluded_collections': sorted(EXCLUDED_COLLECTIONS),
+    'objects': len(objs), 'floating': floating, 'wall_penetration': wall_pen,
+    'intersections': intersections, 'sinks': sinks,
+    'collider_drift': collider_drift, 'curve_hits': curve_hits
+}
 with open(OUT, 'w', encoding='utf-8') as h:
     json.dump(payload, h, indent=1)
 result = {'floating': len(floating), 'wall_penetration': len(wall_pen), 'intersections': len(intersections), 'sinks': len(sinks), 'collider_drift': len(collider_drift), 'curve_hits': len(curve_hits), 'written': OUT}

@@ -1,0 +1,373 @@
+{
+  "generator": "../../parametric_acrylic.py",
+  "parameters": {
+    "thickness": 0.003,
+    "border_m": 0.00065,
+    "tab_width_m": 0.004,
+    "base_width": 0.05,
+    "base_depth": 0.04,
+    "base_height": 0.008
+  },
+  "inputs": [
+    {
+      "id": "stand-01",
+      "png": "stand-01.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-02",
+      "png": "stand-02.png",
+      "clean_candidate": "stand-02-print-v2.png"
+    },
+    {
+      "id": "stand-03",
+      "png": "stand-03.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-04",
+      "png": "stand-04.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-05",
+      "png": "stand-05.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-06",
+      "png": "stand-06.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-07",
+      "png": "stand-07.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-08",
+      "png": "stand-08.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-09",
+      "png": "stand-09.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-10",
+      "png": "stand-10.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-11",
+      "png": "stand-11.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-12",
+      "png": "stand-12.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-13",
+      "png": "stand-13.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-14",
+      "png": "stand-14.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-15",
+      "png": "stand-15.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-16",
+      "png": "stand-16.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-17",
+      "png": "stand-17.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-18",
+      "png": "stand-18.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-19",
+      "png": "stand-19.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-20",
+      "png": "stand-20.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-21",
+      "png": "stand-21.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-22",
+      "png": "stand-22.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-23",
+      "png": "stand-23.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-24",
+      "png": "stand-24.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-25",
+      "png": "stand-25.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-26",
+      "png": "stand-26.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-27",
+      "png": "stand-27.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-28",
+      "png": "stand-28.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-29",
+      "png": "stand-29.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-30",
+      "png": "stand-30.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-31",
+      "png": "stand-31.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-32",
+      "png": "stand-32.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-33",
+      "png": "stand-33.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-34",
+      "png": "stand-34.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-35",
+      "png": "stand-35.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-36",
+      "png": "stand-36.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-37",
+      "png": "stand-37.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-38",
+      "png": "stand-38.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-39",
+      "png": "stand-39.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-40",
+      "png": "stand-40.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-41",
+      "png": "stand-41.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-42",
+      "png": "stand-42.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-43",
+      "png": "stand-43.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-44",
+      "png": "stand-44.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-45",
+      "png": "stand-45.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-46",
+      "png": "stand-46.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-47",
+      "png": "stand-47.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-48",
+      "png": "stand-48.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-49",
+      "png": "stand-49.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-50",
+      "png": "stand-50.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-51",
+      "png": "stand-51.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-52",
+      "png": "stand-52.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-53",
+      "png": "stand-53.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-54",
+      "png": "stand-54.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-55",
+      "png": "stand-55.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-56",
+      "png": "stand-56.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-57",
+      "png": "stand-57.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-58",
+      "png": "stand-58.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-59",
+      "png": "stand-59.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-60",
+      "png": "stand-60.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-61",
+      "png": "stand-61.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-62",
+      "png": "stand-62.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-63",
+      "png": "stand-63.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-64",
+      "png": "stand-64.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-65",
+      "png": "stand-65.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-66",
+      "png": "stand-66.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-67",
+      "png": "stand-67.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-68",
+      "png": "stand-68.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-69",
+      "png": "stand-69.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-70",
+      "png": "stand-70.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-71",
+      "png": "stand-71.png",
+      "clean_candidate": null
+    },
+    {
+      "id": "stand-72",
+      "png": "stand-72.png",
+      "clean_candidate": null
+    }
+  ]
+}

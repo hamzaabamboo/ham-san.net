@@ -29,6 +29,7 @@ type TargetId =
   | 'namecard'
   | 'events'
   | 'photos'
+  | 'juggling'
   | 'penlight'
   | 'nesoberi'
   | 'light'
@@ -111,6 +112,7 @@ const targetDefinitions: TargetDefinition[] = [
   { id: 'events', position: [1.15, 1.22, -3.17], path: 'events' },
   { id: 'photos', position: [0.436, 0.923, 1.703], path: 'photos' },
   { id: 'penlight', position: [3.2, 1.62, 1.15], path: 'events' },
+  { id: 'juggling', position: [0.935, 0.2875, -1.64], path: 'hobbies' },
   { id: 'nesoberi', position: [0.8, 0.6, -1.6], path: '', label: false },
   { id: 'light', position: [-1.86, 1.24, -2.45], path: '' },
   {
@@ -170,6 +172,7 @@ const defaultFocusPositions: Record<TargetId, [number, number, number]> = {
   photos: [0.58, 1.27, 0.95],
   nesoberi: [0.8, 1.2, -0.4],
   penlight: [2.25, 1.6, 1.15],
+  juggling: [0.935, 0.8, -0.8],
   light: [-1.86, 1.35, -2.15],
   darts: [-1.35, 1.5, -2.3],
   piano: [-1.35, 1.5, -2.3],
@@ -436,6 +439,7 @@ export const initRoom = (root: HTMLElement) => {
     if (isHobbyTarget(id)) return copy[id];
     if (id === 'light') return copy.light;
     if (id === 'penlight') return copy.penlight;
+    if (id === 'juggling') return copy.juggling;
     if (id === 'nesoberi') return copy.nesoberi;
     if (id === 'closet') return copy.closet;
     if (id === 'about') return copy.about;
@@ -855,13 +859,13 @@ export const initRoom = (root: HTMLElement) => {
       root.dataset.roomPointerLock = 'locked';
       return;
     }
-    renderer.domElement.style.cursor = 'grab';
+    renderer.domElement.style.cursor = play ? 'none' : 'grab';
     delete root.dataset.roomPointerLock;
   };
 
   const onPointerLockError = () => {
     pointerLocked = false;
-    renderer.domElement.style.cursor = 'grab';
+    renderer.domElement.style.cursor = play ? 'none' : 'grab';
     root.dataset.roomPointerLock = 'denied';
     if (entered && !focusActive) {
       hint.textContent = copy.controls;
@@ -1663,19 +1667,31 @@ export const initRoom = (root: HTMLElement) => {
     playControls.replaceChildren();
     playStats.textContent = '';
     playTitle.textContent = labelFor(id);
-    const session = startPlay(id, {
-      scene,
-      camera,
-      room,
-      stats: playStats,
-      controls: playControls,
-      copy: copy.play
-    });
+    let session: PlaySession;
+    try {
+      session = startPlay(id, {
+        scene,
+        camera,
+        room,
+        stats: playStats,
+        controls: playControls,
+        copy: copy.play
+      });
+    } catch (error) {
+      console.error('Room interaction failed', id, error);
+      focusActive = false;
+      savedPose = null;
+      playControls.replaceChildren();
+      playStats.textContent = '';
+      hint.textContent = copy.playFailed;
+      hint.hidden = false;
+      return;
+    }
     playIntro.textContent = session.intro;
     play = { id, session, active: false };
     root.dataset.roomPlay = id;
     playHud.hidden = false;
-    renderer.domElement.style.cursor = 'crosshair';
+    renderer.domElement.style.cursor = 'none';
     setTransition(poseLookingAt(session.pose.position, session.pose.lookAt), focusDuration, () => {
       if (play?.session === session) play.active = true;
     });
@@ -1939,7 +1955,7 @@ export const initRoom = (root: HTMLElement) => {
   const onPointerCancel = () => {
     if (pointerLocked) return;
     pointerState = null;
-    renderer.domElement.style.cursor = 'grab';
+    renderer.domElement.style.cursor = play ? 'none' : 'grab';
     setHint();
   };
 

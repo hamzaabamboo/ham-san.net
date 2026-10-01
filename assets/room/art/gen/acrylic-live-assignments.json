@@ -1,0 +1,442 @@
+{
+  "assignments": [
+    {
+      "object": "Case stand 01",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-01.png"
+    },
+    {
+      "object": "Case stand 02",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-02.png"
+    },
+    {
+      "object": "Case stand 03",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-03.png"
+    },
+    {
+      "object": "Case stand 04",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-04.png"
+    },
+    {
+      "object": "Case stand 05",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-05.png"
+    },
+    {
+      "object": "Case stand 06",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-06.png"
+    },
+    {
+      "object": "Case stand 07",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-07.png"
+    },
+    {
+      "object": "Case stand 08",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-08.png"
+    },
+    {
+      "object": "Case stand 09",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-09.png"
+    },
+    {
+      "object": "Case stand 10",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-10.png"
+    },
+    {
+      "object": "Case stand 11",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-11.png"
+    },
+    {
+      "object": "Case stand 12",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-12.png"
+    },
+    {
+      "object": "Case stand 13",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-13.png"
+    },
+    {
+      "object": "Case stand 14",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-14.png"
+    },
+    {
+      "object": "Case stand 15",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-15.png"
+    },
+    {
+      "object": "Case stand 16",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-16.png"
+    },
+    {
+      "object": "Case stand 17",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-17.png"
+    },
+    {
+      "object": "Case stand 18",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-18.png"
+    },
+    {
+      "object": "Case stand 19",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-19.png"
+    },
+    {
+      "object": "Case stand 20",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-20.png"
+    },
+    {
+      "object": "Case stand 21",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-21.png"
+    },
+    {
+      "object": "Case stand 22",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-22.png"
+    },
+    {
+      "object": "Case stand 23",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-23.png"
+    },
+    {
+      "object": "Case stand 24",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-24.png"
+    },
+    {
+      "object": "Case stand 25",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-25.png"
+    },
+    {
+      "object": "Case stand 26",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-26.png"
+    },
+    {
+      "object": "Case stand 27",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-27.png"
+    },
+    {
+      "object": "Case stand 28",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-28.png"
+    },
+    {
+      "object": "Case stand 29",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-29.png"
+    },
+    {
+      "object": "Case stand 30",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-30.png"
+    },
+    {
+      "object": "Case stand 31",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-31.png"
+    },
+    {
+      "object": "Case stand 32",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-32.png"
+    },
+    {
+      "object": "Case stand 33",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-33.png"
+    },
+    {
+      "object": "Case stand 34",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-34.png"
+    },
+    {
+      "object": "Case stand 35",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-35.png"
+    },
+    {
+      "object": "Case stand 36",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-36.png"
+    },
+    {
+      "object": "Case stand 37",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-37.png"
+    },
+    {
+      "object": "Case stand 38",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-38.png"
+    },
+    {
+      "object": "Case stand 39",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-39.png"
+    },
+    {
+      "object": "Case stand 40",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-40.png"
+    },
+    {
+      "object": "Case stand 41",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-41.png"
+    },
+    {
+      "object": "Case stand 42",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-42.png"
+    },
+    {
+      "object": "Case stand 43",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-43.png"
+    },
+    {
+      "object": "Case stand 44",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-44.png"
+    },
+    {
+      "object": "Case stand 45",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-45.png"
+    },
+    {
+      "object": "Case stand 46",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-46.png"
+    },
+    {
+      "object": "Case stand 47",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-47.png"
+    },
+    {
+      "object": "Case stand 48",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-48.png"
+    },
+    {
+      "object": "Case stand 49",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-49.png"
+    },
+    {
+      "object": "Case stand 50",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-50.png"
+    },
+    {
+      "object": "Case stand 51",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-51.png"
+    },
+    {
+      "object": "Case stand 52",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-52.png"
+    },
+    {
+      "object": "Case stand 53",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-53.png"
+    },
+    {
+      "object": "Case stand 54",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-54.png"
+    },
+    {
+      "object": "Case stand 55",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-55.png"
+    },
+    {
+      "object": "Case stand 56",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-56.png"
+    },
+    {
+      "object": "Case stand 57",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-57.png"
+    },
+    {
+      "object": "Case stand 58",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-58.png"
+    },
+    {
+      "object": "Case stand 59",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-59.png"
+    },
+    {
+      "object": "Case stand 60",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-60.png"
+    },
+    {
+      "object": "Case stand 61",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-61.png"
+    },
+    {
+      "object": "Case stand 62",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-62.png"
+    },
+    {
+      "object": "Case stand 63",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-63.png"
+    },
+    {
+      "object": "Case stand 64",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-64.png"
+    },
+    {
+      "object": "Bay r10 stand 0",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-65.png"
+    },
+    {
+      "object": "Bay r10 stand 1",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-66.png"
+    },
+    {
+      "object": "Bay r10 stand 2",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-67.png"
+    },
+    {
+      "object": "Bay r10 stand 3",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-68.png"
+    },
+    {
+      "object": "Bay r10 stand 4",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-69.png"
+    },
+    {
+      "object": "Bay r11 stand 0",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-70.png"
+    },
+    {
+      "object": "Bay r11 stand 1",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-71.png"
+    },
+    {
+      "object": "Bay r11 stand 2",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-72.png"
+    },
+    {
+      "object": "Bay r11 stand 3",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-73-cutout.png"
+    },
+    {
+      "object": "Bay r11 stand 4",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-74.png"
+    },
+    {
+      "object": "Bay r12 stand 0",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-75.png"
+    },
+    {
+      "object": "Bay r12 stand 1",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-76.png"
+    },
+    {
+      "object": "Bay r12 stand 2",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-77.png"
+    },
+    {
+      "object": "Bay r12 stand 3",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-78.png"
+    },
+    {
+      "object": "Bay r12 stand 4",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-79.png"
+    },
+    {
+      "object": "Bay r13 stand 0",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-80.png"
+    },
+    {
+      "object": "Bay r13 stand 1",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-81.png"
+    },
+    {
+      "object": "Bay r13 stand 2",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-82.png"
+    },
+    {
+      "object": "Bay r13 stand 3",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-83.png"
+    },
+    {
+      "object": "Bay r13 stand 4",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-84.png"
+    },
+    {
+      "object": "Bay r20 stand 0",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-85.png"
+    },
+    {
+      "object": "Bay r20 stand 1",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-42.png"
+    },
+    {
+      "object": "Bay r20 stand 2",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-43.png"
+    },
+    {
+      "object": "Bay r20 stand 3",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-44.png"
+    },
+    {
+      "object": "Bay r20 stand 4",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-45.png"
+    },
+    {
+      "object": "Bay r21 stand 0",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-46.png"
+    },
+    {
+      "object": "Bay r21 stand 1",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-47.png"
+    },
+    {
+      "object": "Bay r21 stand 2",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-48.png"
+    },
+    {
+      "object": "Bay r21 stand 3",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-49.png"
+    },
+    {
+      "object": "Bay r21 stand 4",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-50.png"
+    },
+    {
+      "object": "Bay r22 stand 0",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-51.png"
+    },
+    {
+      "object": "Bay r22 stand 1",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-52.png"
+    },
+    {
+      "object": "Bay r22 stand 2",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-53.png"
+    },
+    {
+      "object": "Bay r22 stand 3",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-54.png"
+    },
+    {
+      "object": "Bay r22 stand 4",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-55.png"
+    },
+    {
+      "object": "Bay r23 stand 0",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-56.png"
+    },
+    {
+      "object": "Bay r23 stand 1",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-01.png"
+    },
+    {
+      "object": "Bay r23 stand 2",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-02.png"
+    },
+    {
+      "object": "Bay r23 stand 3",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-03.png"
+    },
+    {
+      "object": "Bay r23 stand 4",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-04.png"
+    },
+    {
+      "object": "Bay r30 stand 0",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-06.png"
+    },
+    {
+      "object": "Bay r30 stand 1",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-07.png"
+    },
+    {
+      "object": "Bay r30 stand 2",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-08.png"
+    },
+    {
+      "object": "Bay r30 stand 3",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-09.png"
+    },
+    {
+      "object": "Bay r30 stand 4",
+      "png": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/art/gen/stand-10.png"
+    }
+  ],
+  "stands": 109,
+  "unique_pngs": 85
+}

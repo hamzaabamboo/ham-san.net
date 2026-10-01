@@ -1,1237 +1,5504 @@
 {
- "objects": 2040,
+ "source_file": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/room-v2.blend",
+ "source_sha256": "8568164da58110742a09c621d3dd1844be18289fbda7242ae7f5cc9ceb81ba00",
+ "source_is_dirty": false,
+ "source_scope": "scene",
+ "source_collection": "Scene Collection",
+ "source_present": true,
+ "generated_at": "2026-10-01T16:48:23.516580+00:00",
+ "method": "aabb-screening",
+ "room_bounds": {
+  "xmin": -1.78000009059906,
+  "xmax": 3.2699999809265137,
+  "ymin": -1.850000023841858,
+  "ymax": 1.899999976158142,
+  "zmin": 0.0,
+  "zmax": 2.3499999046325684
+ },
+ "excluded_collections": [
+  "Blockout",
+  "Plush v4",
+  "Plush v5 nesoberi"
+ ],
+ "objects": 1164,
  "floating": [
   {
-   "name": "Monitor bezel",
-   "bottom": 0.756,
+   "name": "Desk top bracket 1",
+   "bottom": 0.665,
    "lo": [
-    -1.703,
-    0.586,
-    0.756
+    -1.72,
+    0.115,
+    0.665
    ],
    "hi": [
-    -1.66,
-    1.289,
-    1.16
+    -1.13,
+    0.165,
+    0.695
+   ]
+  },
+  {
+   "name": "Desk top bracket 2",
+   "bottom": 0.665,
+   "lo": [
+    -1.72,
+    1.405,
+    0.665
+   ],
+   "hi": [
+    -1.13,
+    1.455,
+    0.695
+   ]
+  },
+  {
+   "name": "Desk crossbar",
+   "bottom": 0.625,
+   "lo": [
+    -1.395,
+    0.17,
+    0.625
+   ],
+   "hi": [
+    -1.355,
+    1.4,
+    0.675
+   ]
+  },
+  {
+   "name": "Monitor bezel",
+   "bottom": 0.959,
+   "lo": [
+    -1.686,
+    0.52,
+    0.959
+   ],
+   "hi": [
+    -1.664,
+    1.16,
+    1.339
+   ]
+  },
+  {
+   "name": "Mic shock mount",
+   "bottom": 1.086,
+   "lo": [
+    -1.479,
+    1.121,
+    1.086
+   ],
+   "hi": [
+    -1.401,
+    1.199,
+    1.094
    ]
   },
   {
    "name": "Microphone",
-   "bottom": 0.845,
+   "bottom": 0.99,
    "lo": [
-    -1.414,
-    0.257,
-    0.845
+    -1.462,
+    1.138,
+    0.99
    ],
    "hi": [
-    -1.304,
-    0.315,
-    0.957
+    -1.418,
+    1.182,
+    1.11
    ]
   },
   {
-   "name": "Standing desk cross brace",
-   "bottom": 0.442,
+   "name": "Mic arm lower spring hook 2",
+   "bottom": 1.098,
    "lo": [
-    -1.634,
-    0.115,
-    0.442
+    -1.669,
+    1.365,
+    1.098
    ],
    "hi": [
-    -1.595,
-    1.434,
-    0.486
+    -1.654,
+    1.388,
+    1.18
    ]
   },
   {
-   "name": "Darts stand shelf",
-   "bottom": 0.163,
+   "name": "Mic arm upper rail 1",
+   "bottom": 1.13,
    "lo": [
-    0.435,
-    1.482,
-    0.163
+    -1.66,
+    1.155,
+    1.13
    ],
    "hi": [
-    1.154,
-    1.786,
-    0.174
+    -1.436,
+    1.36,
+    1.198
    ]
   },
   {
-   "name": "Darts stand shelf.002",
-   "bottom": 0.514,
+   "name": "Mic arm upper rail 2",
+   "bottom": 1.102,
    "lo": [
-    0.435,
-    1.482,
-    0.514
+    -1.664,
+    1.16,
+    1.102
    ],
    "hi": [
-    1.154,
-    1.786,
-    0.525
+    -1.44,
+    1.365,
+    1.17
    ]
   },
   {
-   "name": "Darts stand shelf.003",
-   "bottom": 0.889,
+   "name": "Mic arm upper tension spring",
+   "bottom": 1.13,
    "lo": [
-    0.435,
-    1.482,
-    0.889
+    -1.616,
+    1.207,
+    1.13
    ],
    "hi": [
-    1.154,
-    1.786,
+    -1.477,
+    1.334,
+    1.173
+   ]
+  },
+  {
+   "name": "Mic arm upper spring hook 2",
+   "bottom": 1.119,
+   "lo": [
+    -1.479,
+    1.165,
+    1.119
+   ],
+   "hi": [
+    -1.434,
+    1.211,
+    1.134
+   ]
+  },
+  {
+   "name": "Desk fan motor hub",
+   "bottom": 0.9,
+   "lo": [
+    -1.67,
+    0.332,
     0.9
-   ]
-  },
-  {
-   "name": "Low hobby table top",
-   "bottom": 0.336,
-   "lo": [
-    1.68,
-    0.297,
-    0.336
    ],
    "hi": [
-    2.28,
-    0.897,
-    0.385
+    -1.644,
+    0.355,
+    0.926
    ]
   },
   {
-   "name": "Darts accessory barrel",
-   "bottom": 1.854,
+   "name": "Mouse v2 recessed wheel",
+   "bottom": 0.745,
    "lo": [
-    0.743,
-    1.73,
-    1.854
+    -1.312,
+    1.243,
+    0.745
    ],
    "hi": [
-    0.757,
-    1.812,
-    1.869
+    -1.296,
+    1.251,
+    0.761
    ]
   },
   {
-   "name": "Darts accessory barrel.001",
-   "bottom": 1.816,
+   "name": "Desk fan rear grille 7",
+   "bottom": 0.924,
    "lo": [
-    0.788,
-    1.73,
-    1.816
+    -1.68,
+    0.335,
+    0.924
    ],
    "hi": [
-    0.803,
-    1.812,
-    1.831
+    -1.672,
+    0.357,
+    0.966
    ]
   },
   {
-   "name": "Darts accessory barrel.002",
-   "bottom": 1.873,
+   "name": "Desk fan rear grille 8",
+   "bottom": 0.922,
    "lo": [
-    0.838,
-    1.73,
-    1.873
+    -1.68,
+    0.33,
+    0.922
    ],
    "hi": [
-    0.852,
-    1.812,
-    1.888
+    -1.671,
+    0.345,
+    0.967
    ]
   },
   {
-   "name": "Chair moulded shell",
-   "bottom": 0.33,
+   "name": "Desk fan rear grille 26",
+   "bottom": 0.876,
    "lo": [
-    -1.047,
-    0.593,
-    0.33
+    -1.672,
+    0.359,
+    0.876
    ],
    "hi": [
-    -0.637,
-    0.956,
-    0.703
+    -1.665,
+    0.389,
+    0.912
    ]
   },
   {
-   "name": "Chair brace front",
-   "bottom": 0.096,
+   "name": "Desk fan rear grille 27",
+   "bottom": 0.887,
    "lo": [
-    -1.011,
-    0.926,
-    0.096
+    -1.673,
+    0.358,
+    0.887
    ],
    "hi": [
-    -0.685,
-    0.938,
-    0.108
+    -1.666,
+    0.396,
+    0.916
    ]
   },
   {
-   "name": "Chair brace rear",
-   "bottom": 0.096,
+   "name": "Chair back pad",
+   "bottom": 0.638,
    "lo": [
-    -1.011,
-    0.612,
-    0.096
+    -0.453,
+    0.657,
+    0.638
    ],
    "hi": [
-    -0.685,
-    0.624,
-    0.108
+    -0.405,
+    0.903,
+    0.864
    ]
   },
   {
-   "name": "Dart rack bin kendama ken",
-   "bottom": 0.33,
+   "name": "Dart board cabinet",
+   "bottom": 1.21,
    "lo": [
+    0.49,
+    1.75,
+    1.21
+   ],
+   "hi": [
+    1.1,
+    1.83,
+    1.83
+   ]
+  },
+  {
+   "name": "Dartboard",
+   "bottom": 1.315,
+   "lo": [
+    0.57,
+    1.745,
+    1.315
+   ],
+   "hi": [
+    1.02,
+    1.78,
+    1.765
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 01",
+   "bottom": 1.7,
+   "lo": [
+    0.768,
+    1.743,
+    1.7
+   ],
+   "hi": [
+    0.822,
+    1.743,
+    1.71
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 02",
+   "bottom": 1.684,
+   "lo": [
+    0.82,
+    1.743,
+    1.684
+   ],
+   "hi": [
     0.872,
-    1.576,
-    0.33
-   ],
-   "hi": [
-    0.929,
-    1.645,
-    0.456
+    1.743,
+    1.708
    ]
   },
   {
-   "name": "Cardboard box small",
-   "bottom": 0.29,
+   "name": "Dartboard ring 1 seg 03",
+   "bottom": 1.655,
    "lo": [
-    -0.56,
-    1.6,
-    0.29
+    0.869,
+    1.743,
+    1.655
    ],
    "hi": [
-    -0.3,
-    1.82,
-    0.45
+    0.915,
+    1.743,
+    1.691
    ]
   },
   {
-   "name": "Folded towel 3 hem",
-   "bottom": 0.3,
+   "name": "Dartboard ring 1 seg 04",
+   "bottom": 1.614,
    "lo": [
-    3.166,
-    -0.902,
-    0.3
+    0.91,
+    1.743,
+    1.614
    ],
    "hi": [
-    3.17,
-    -0.78,
-    0.306
+    0.946,
+    1.743,
+    1.66
    ]
   },
   {
-   "name": "Folded towel 5",
-   "bottom": 0.695,
+   "name": "Dartboard ring 1 seg 05",
+   "bottom": 1.565,
    "lo": [
-    3.096,
-    -1.381,
-    0.695
+    0.939,
+    1.743,
+    1.565
    ],
    "hi": [
-    3.16,
-    -1.249,
-    1.235
+    0.963,
+    1.743,
+    1.617
    ]
   },
   {
-   "name": "Folded towel 6",
-   "bottom": 0.695,
+   "name": "Dartboard ring 1 seg 06",
+   "bottom": 1.513,
    "lo": [
-    3.094,
-    -1.196,
-    0.695
+    0.955,
+    1.743,
+    1.513
    ],
    "hi": [
-    3.165,
-    -1.064,
-    1.235
+    0.965,
+    1.743,
+    1.567
    ]
   },
   {
-   "name": "Folded towel 7",
-   "bottom": 0.695,
+   "name": "Dartboard ring 1 seg 07",
+   "bottom": 1.463,
    "lo": [
-    3.106,
-    -1.01,
-    0.695
+    0.939,
+    1.743,
+    1.463
    ],
    "hi": [
-    3.171,
-    -0.877,
-    1.235
+    0.963,
+    1.743,
+    1.515
    ]
   },
   {
-   "name": "Darts stand shelf top basket",
-   "bottom": 1.12,
+   "name": "Dartboard ring 1 seg 08",
+   "bottom": 1.42,
    "lo": [
-    0.435,
-    1.482,
-    1.12
+    0.91,
+    1.743,
+    1.42
    ],
    "hi": [
-    1.154,
-    1.786,
-    1.131
+    0.946,
+    1.743,
+    1.466
    ]
   },
   {
-   "name": "Darts stand backing rail 1",
-   "bottom": 1.55,
+   "name": "Dartboard ring 1 seg 09",
+   "bottom": 1.389,
    "lo": [
-    0.447,
-    1.79,
-    1.55
+    0.869,
+    1.743,
+    1.389
    ],
    "hi": [
-    1.142,
-    1.81,
+    0.915,
+    1.743,
+    1.425
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 10",
+   "bottom": 1.372,
+   "lo": [
+    0.82,
+    1.743,
+    1.372
+   ],
+   "hi": [
+    0.872,
+    1.743,
+    1.396
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 11",
+   "bottom": 1.37,
+   "lo": [
+    0.768,
+    1.743,
+    1.37
+   ],
+   "hi": [
+    0.822,
+    1.743,
+    1.38
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 12",
+   "bottom": 1.372,
+   "lo": [
+    0.718,
+    1.743,
+    1.372
+   ],
+   "hi": [
+    0.77,
+    1.743,
+    1.396
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 13",
+   "bottom": 1.389,
+   "lo": [
+    0.675,
+    1.743,
+    1.389
+   ],
+   "hi": [
+    0.721,
+    1.743,
+    1.425
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 14",
+   "bottom": 1.42,
+   "lo": [
+    0.644,
+    1.743,
+    1.42
+   ],
+   "hi": [
+    0.68,
+    1.743,
+    1.466
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 15",
+   "bottom": 1.463,
+   "lo": [
+    0.627,
+    1.743,
+    1.463
+   ],
+   "hi": [
+    0.651,
+    1.743,
+    1.515
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 16",
+   "bottom": 1.513,
+   "lo": [
+    0.625,
+    1.743,
+    1.513
+   ],
+   "hi": [
+    0.635,
+    1.743,
+    1.567
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 17",
+   "bottom": 1.565,
+   "lo": [
+    0.627,
+    1.743,
+    1.565
+   ],
+   "hi": [
+    0.651,
+    1.743,
+    1.617
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 18",
+   "bottom": 1.614,
+   "lo": [
+    0.644,
+    1.743,
+    1.614
+   ],
+   "hi": [
+    0.68,
+    1.743,
+    1.66
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 19",
+   "bottom": 1.655,
+   "lo": [
+    0.675,
+    1.743,
+    1.655
+   ],
+   "hi": [
+    0.721,
+    1.743,
+    1.691
+   ]
+  },
+  {
+   "name": "Dartboard ring 1 seg 20",
+   "bottom": 1.684,
+   "lo": [
+    0.718,
+    1.743,
+    1.684
+   ],
+   "hi": [
+    0.77,
+    1.743,
+    1.708
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 01",
+   "bottom": 1.646,
+   "lo": [
+    0.77,
+    1.743,
+    1.646
+   ],
+   "hi": [
+    0.82,
+    1.743,
+    1.702
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 02",
+   "bottom": 1.635,
+   "lo": [
+    0.812,
+    1.743,
+    1.635
+   ],
+   "hi": [
+    0.869,
+    1.743,
+    1.7
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 03",
+   "bottom": 1.616,
+   "lo": [
+    0.844,
+    1.743,
+    1.616
+   ],
+   "hi": [
+    0.91,
+    1.743,
+    1.684
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 04",
+   "bottom": 1.589,
+   "lo": [
+    0.871,
+    1.743,
+    1.589
+   ],
+   "hi": [
+    0.939,
+    1.743,
+    1.655
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 05",
+   "bottom": 1.557,
+   "lo": [
+    0.89,
+    1.743,
+    1.557
+   ],
+   "hi": [
+    0.955,
+    1.743,
+    1.614
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 06",
+   "bottom": 1.515,
+   "lo": [
+    0.901,
+    1.743,
+    1.515
+   ],
+   "hi": [
+    0.957,
+    1.743,
+    1.565
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 07",
+   "bottom": 1.466,
+   "lo": [
+    0.89,
+    1.743,
+    1.466
+   ],
+   "hi": [
+    0.955,
+    1.743,
+    1.523
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 08",
+   "bottom": 1.425,
+   "lo": [
+    0.871,
+    1.743,
+    1.425
+   ],
+   "hi": [
+    0.939,
+    1.743,
+    1.491
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 09",
+   "bottom": 1.396,
+   "lo": [
+    0.844,
+    1.743,
+    1.396
+   ],
+   "hi": [
+    0.91,
+    1.743,
+    1.464
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 10",
+   "bottom": 1.38,
+   "lo": [
+    0.812,
+    1.743,
+    1.38
+   ],
+   "hi": [
+    0.869,
+    1.743,
+    1.445
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 11",
+   "bottom": 1.378,
+   "lo": [
+    0.77,
+    1.743,
+    1.378
+   ],
+   "hi": [
+    0.82,
+    1.743,
+    1.434
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 12",
+   "bottom": 1.38,
+   "lo": [
+    0.721,
+    1.743,
+    1.38
+   ],
+   "hi": [
+    0.778,
+    1.743,
+    1.445
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 13",
+   "bottom": 1.396,
+   "lo": [
+    0.68,
+    1.743,
+    1.396
+   ],
+   "hi": [
+    0.746,
+    1.743,
+    1.464
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 14",
+   "bottom": 1.425,
+   "lo": [
+    0.651,
+    1.743,
+    1.425
+   ],
+   "hi": [
+    0.719,
+    1.743,
+    1.491
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 15",
+   "bottom": 1.466,
+   "lo": [
+    0.635,
+    1.743,
+    1.466
+   ],
+   "hi": [
+    0.7,
+    1.743,
+    1.523
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 16",
+   "bottom": 1.515,
+   "lo": [
+    0.633,
+    1.743,
+    1.515
+   ],
+   "hi": [
+    0.689,
+    1.743,
+    1.565
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 17",
+   "bottom": 1.557,
+   "lo": [
+    0.635,
+    1.743,
+    1.557
+   ],
+   "hi": [
+    0.7,
+    1.743,
+    1.614
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 18",
+   "bottom": 1.589,
+   "lo": [
+    0.651,
+    1.743,
+    1.589
+   ],
+   "hi": [
+    0.719,
+    1.743,
+    1.655
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 19",
+   "bottom": 1.616,
+   "lo": [
+    0.68,
+    1.743,
+    1.616
+   ],
+   "hi": [
+    0.746,
+    1.743,
+    1.684
+   ]
+  },
+  {
+   "name": "Dartboard ring 2 seg 20",
+   "bottom": 1.635,
+   "lo": [
+    0.721,
+    1.743,
+    1.635
+   ],
+   "hi": [
+    0.778,
+    1.743,
+    1.7
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 01",
+   "bottom": 1.638,
+   "lo": [
+    0.778,
+    1.743,
+    1.638
+   ],
+   "hi": [
+    0.812,
+    1.743,
+    1.647
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 02",
+   "bottom": 1.628,
+   "lo": [
+    0.81,
+    1.743,
+    1.628
+   ],
+   "hi": [
+    0.844,
+    1.743,
+    1.646
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 03",
+   "bottom": 1.61,
+   "lo": [
+    0.84,
+    1.743,
+    1.61
+   ],
+   "hi": [
+    0.871,
+    1.743,
+    1.635
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 04",
+   "bottom": 1.585,
+   "lo": [
+    0.865,
+    1.743,
+    1.585
+   ],
+   "hi": [
+    0.89,
+    1.743,
+    1.616
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 05",
+   "bottom": 1.555,
+   "lo": [
+    0.883,
+    1.743,
+    1.555
+   ],
+   "hi": [
+    0.901,
+    1.743,
+    1.589
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 06",
+   "bottom": 1.523,
+   "lo": [
+    0.893,
+    1.743,
+    1.523
+   ],
+   "hi": [
+    0.902,
+    1.743,
+    1.557
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 07",
+   "bottom": 1.491,
+   "lo": [
+    0.883,
+    1.743,
+    1.491
+   ],
+   "hi": [
+    0.901,
+    1.743,
+    1.525
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 08",
+   "bottom": 1.464,
+   "lo": [
+    0.865,
+    1.743,
+    1.464
+   ],
+   "hi": [
+    0.89,
+    1.743,
+    1.495
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 09",
+   "bottom": 1.445,
+   "lo": [
+    0.84,
+    1.743,
+    1.445
+   ],
+   "hi": [
+    0.871,
+    1.743,
+    1.47
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 10",
+   "bottom": 1.434,
+   "lo": [
+    0.81,
+    1.743,
+    1.434
+   ],
+   "hi": [
+    0.844,
+    1.743,
+    1.452
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 11",
+   "bottom": 1.433,
+   "lo": [
+    0.778,
+    1.743,
+    1.433
+   ],
+   "hi": [
+    0.812,
+    1.743,
+    1.442
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 12",
+   "bottom": 1.434,
+   "lo": [
+    0.746,
+    1.743,
+    1.434
+   ],
+   "hi": [
+    0.78,
+    1.743,
+    1.452
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 13",
+   "bottom": 1.445,
+   "lo": [
+    0.719,
+    1.743,
+    1.445
+   ],
+   "hi": [
+    0.75,
+    1.743,
+    1.47
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 14",
+   "bottom": 1.464,
+   "lo": [
+    0.7,
+    1.743,
+    1.464
+   ],
+   "hi": [
+    0.725,
+    1.743,
+    1.495
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 15",
+   "bottom": 1.491,
+   "lo": [
+    0.689,
+    1.743,
+    1.491
+   ],
+   "hi": [
+    0.707,
+    1.743,
+    1.525
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 16",
+   "bottom": 1.523,
+   "lo": [
+    0.688,
+    1.743,
+    1.523
+   ],
+   "hi": [
+    0.697,
+    1.743,
+    1.557
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 17",
+   "bottom": 1.555,
+   "lo": [
+    0.689,
+    1.743,
+    1.555
+   ],
+   "hi": [
+    0.707,
+    1.743,
+    1.589
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 18",
+   "bottom": 1.585,
+   "lo": [
+    0.7,
+    1.743,
+    1.585
+   ],
+   "hi": [
+    0.725,
+    1.743,
+    1.616
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 19",
+   "bottom": 1.61,
+   "lo": [
+    0.719,
+    1.743,
+    1.61
+   ],
+   "hi": [
+    0.75,
+    1.743,
+    1.635
+   ]
+  },
+  {
+   "name": "Dartboard ring 3 seg 20",
+   "bottom": 1.628,
+   "lo": [
+    0.746,
+    1.743,
+    1.628
+   ],
+   "hi": [
+    0.78,
+    1.743,
+    1.646
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 01",
+   "bottom": 1.556,
+   "lo": [
+    0.78,
+    1.743,
+    1.556
+   ],
+   "hi": [
+    0.81,
+    1.743,
+    1.639
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 02",
+   "bottom": 1.554,
+   "lo": [
+    0.798,
+    1.743,
+    1.554
+   ],
+   "hi": [
+    0.84,
+    1.743,
+    1.638
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 03",
+   "bottom": 1.551,
+   "lo": [
+    0.802,
+    1.743,
+    1.551
+   ],
+   "hi": [
+    0.865,
+    1.743,
+    1.628
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 04",
+   "bottom": 1.547,
+   "lo": [
+    0.806,
+    1.743,
+    1.547
+   ],
+   "hi": [
+    0.883,
+    1.743,
+    1.61
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 05",
+   "bottom": 1.543,
+   "lo": [
+    0.809,
+    1.743,
+    1.543
+   ],
+   "hi": [
+    0.893,
+    1.743,
+    1.585
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 06",
+   "bottom": 1.525,
+   "lo": [
+    0.811,
+    1.743,
+    1.525
+   ],
+   "hi": [
+    0.894,
+    1.743,
+    1.555
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 07",
+   "bottom": 1.495,
+   "lo": [
+    0.809,
+    1.743,
+    1.495
+   ],
+   "hi": [
+    0.893,
+    1.743,
+    1.537
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 08",
+   "bottom": 1.47,
+   "lo": [
+    0.806,
+    1.743,
+    1.47
+   ],
+   "hi": [
+    0.883,
+    1.743,
+    1.533
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 09",
+   "bottom": 1.452,
+   "lo": [
+    0.802,
+    1.743,
+    1.452
+   ],
+   "hi": [
+    0.865,
+    1.743,
+    1.529
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 10",
+   "bottom": 1.442,
+   "lo": [
+    0.798,
+    1.743,
+    1.442
+   ],
+   "hi": [
+    0.84,
+    1.743,
+    1.526
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 11",
+   "bottom": 1.441,
+   "lo": [
+    0.78,
+    1.743,
+    1.441
+   ],
+   "hi": [
+    0.81,
+    1.743,
+    1.524
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 12",
+   "bottom": 1.442,
+   "lo": [
+    0.75,
+    1.743,
+    1.442
+   ],
+   "hi": [
+    0.792,
+    1.743,
+    1.526
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 13",
+   "bottom": 1.452,
+   "lo": [
+    0.725,
+    1.743,
+    1.452
+   ],
+   "hi": [
+    0.788,
+    1.743,
+    1.529
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 14",
+   "bottom": 1.47,
+   "lo": [
+    0.707,
+    1.743,
+    1.47
+   ],
+   "hi": [
+    0.784,
+    1.743,
+    1.533
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 15",
+   "bottom": 1.495,
+   "lo": [
+    0.697,
+    1.743,
+    1.495
+   ],
+   "hi": [
+    0.781,
+    1.743,
+    1.537
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 16",
+   "bottom": 1.525,
+   "lo": [
+    0.696,
+    1.743,
+    1.525
+   ],
+   "hi": [
+    0.779,
+    1.743,
+    1.555
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 17",
+   "bottom": 1.543,
+   "lo": [
+    0.697,
+    1.743,
+    1.543
+   ],
+   "hi": [
+    0.781,
+    1.743,
+    1.585
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 18",
+   "bottom": 1.547,
+   "lo": [
+    0.707,
+    1.743,
+    1.547
+   ],
+   "hi": [
+    0.784,
+    1.743,
+    1.61
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 19",
+   "bottom": 1.551,
+   "lo": [
+    0.725,
+    1.743,
+    1.551
+   ],
+   "hi": [
+    0.788,
+    1.743,
+    1.628
+   ]
+  },
+  {
+   "name": "Dartboard ring 4 seg 20",
+   "bottom": 1.554,
+   "lo": [
+    0.75,
+    1.743,
+    1.554
+   ],
+   "hi": [
+    0.792,
+    1.743,
+    1.638
+   ]
+  },
+  {
+   "name": "Dartboard outer bull",
+   "bottom": 1.524,
+   "lo": [
+    0.779,
+    1.743,
+    1.524
+   ],
+   "hi": [
+    0.811,
+    1.743,
+    1.556
+   ]
+  },
+  {
+   "name": "Dartboard bull",
+   "bottom": 1.534,
+   "lo": [
+    0.789,
+    1.742,
+    1.534
+   ],
+   "hi": [
+    0.801,
+    1.742,
+    1.546
+   ]
+  },
+  {
+   "name": "Dartboard numbers",
+   "bottom": 1.256,
+   "lo": [
+    0.511,
+    1.73,
+    1.256
+   ],
+   "hi": [
+    1.079,
+    1.73,
+    1.824
+   ]
+  },
+  {
+   "name": "Dart 4",
+   "bottom": 1.518,
+   "lo": [
+    0.752,
+    1.601,
+    1.518
+   ],
+   "hi": [
+    0.793,
+    1.752,
+    1.56
+   ]
+  },
+  {
+   "name": "Dart 5",
+   "bottom": 1.528,
+   "lo": [
+    0.801,
+    1.601,
+    1.528
+   ],
+   "hi": [
+    0.843,
+    1.752,
     1.57
    ]
   },
   {
-   "name": "Darts stand backing rail 2",
-   "bottom": 2.08,
+   "name": "Dart 6",
+   "bottom": 1.514,
    "lo": [
-    0.447,
-    1.79,
-    2.08
-   ],
-   "hi": [
-    1.142,
-    1.81,
-    2.1
-   ]
-  },
-  {
-   "name": "Darts stand header plate",
-   "bottom": 1.21,
-   "lo": [
-    0.464,
-    1.784,
-    1.21
-   ],
-   "hi": [
-    1.125,
-    1.796,
-    1.3
-   ]
-  },
-  {
-   "name": "Projector body.001",
-   "bottom": 1.505,
-   "lo": [
-    -0.6,
-    -1.778,
-    1.505
-   ],
-   "hi": [
-    -0.36,
-    -1.648,
-    1.615
-   ]
-  },
-  {
-   "name": "Projector corner console screen",
-   "bottom": 1.016,
-   "lo": [
-    -0.65,
-    -1.619,
-    1.016
-   ],
-   "hi": [
-    -0.48,
-    -1.607,
-    1.116
-   ]
-  },
-  {
-   "name": "Projector corner joycon left",
-   "bottom": 1.016,
-   "lo": [
-    -0.685,
-    -1.62,
-    1.016
-   ],
-   "hi": [
-    -0.65,
-    -1.606,
-    1.116
-   ]
-  },
-  {
-   "name": "Projector corner joycon right",
-   "bottom": 1.016,
-   "lo": [
-    -0.48,
-    -1.62,
-    1.016
-   ],
-   "hi": [
-    -0.444,
-    -1.606,
-    1.116
-   ]
-  },
-  {
-   "name": "Projector corner yellow tote",
-   "bottom": 0.55,
-   "lo": [
-    -0.862,
-    -1.449,
-    0.55
-   ],
-   "hi": [
-    -0.538,
-    -1.413,
-    0.826
-   ]
-  },
-  {
-   "name": "Projector corner tote handle",
-   "bottom": 0.806,
-   "lo": [
-    -0.833,
-    -1.436,
-    0.806
-   ],
-   "hi": [
-    -0.597,
-    -1.426,
-    0.905
-   ]
-  },
-  {
-   "name": "Cardboard box small top tape",
-   "bottom": 0.429,
-   "lo": [
-    0.11,
-    1.379,
-    0.429
-   ],
-   "hi": [
-    0.16,
+    0.773,
     1.601,
-    0.431
-   ]
-  },
-  {
-   "name": "Nesoberi sewn hat plush",
-   "bottom": 0.93,
-   "lo": [
-    1.152,
-    1.47,
-    0.93
+    1.514
    ],
    "hi": [
-    1.324,
-    1.568,
-    1.103
+    0.815,
+    1.752,
+    1.556
    ]
   },
   {
-   "name": "Folded towel 3 fold flap",
-   "bottom": 1.147,
+   "name": "Shelf leaning photo frame picture",
+   "bottom": 0.923,
    "lo": [
-    3.156,
-    -0.907,
-    1.147
-   ],
-   "hi": [
-    3.167,
-    -0.775,
-    1.287
-   ]
-  },
-  {
-   "name": "Nesoberi sewn hat plush cone",
-   "bottom": 0.961,
-   "lo": [
-    1.183,
+    2.985,
     1.415,
-    0.961
+    0.923
    ],
    "hi": [
-    1.293,
-    1.495,
-    1.071
-   ]
-  }
- ],
- "wall_penetration": [
-  {
-   "name": "Rear window sill wall",
-   "sides": [
-    "y+"
-   ],
-   "lo": [
-    1.851,
-    1.9,
-    0.012
-   ],
-   "hi": [
-    2.999,
-    1.989,
-    0.649
+    3.039,
+    1.625,
+    1.178
    ]
   },
   {
-   "name": "Rear window lintel",
-   "sides": [
-    "y+"
-   ],
+   "name": "U4 cup noodle band",
+   "bottom": 1.165,
    "lo": [
-    1.851,
-    1.9,
-    1.864
+    2.952,
+    0.698,
+    1.165
    ],
    "hi": [
-    2.999,
-    1.989,
+    3.057,
+    0.803,
+    1.195
+   ]
+  },
+  {
+   "name": "Clear binder top straps",
+   "bottom": 0.994,
+   "lo": [
+    2.919,
+    0.711,
+    0.994
+   ],
+   "hi": [
+    2.945,
+    1.039,
+    1.05
+   ]
+  },
+  {
+   "name": "Clear binder metal snaps",
+   "bottom": 1.0,
+   "lo": [
+    2.918,
+    0.733,
+    1.0
+   ],
+   "hi": [
+    2.919,
+    1.025,
+    1.005
+   ]
+  },
+  {
+   "name": "Low table top",
+   "bottom": 0.31,
+   "lo": [
+    1.675,
+    0.3,
+    0.31
+   ],
+   "hi": [
+    2.295,
+    0.92,
+    0.36
+   ]
+  },
+  {
+   "name": "Window curtain rail",
+   "bottom": 2.217,
+   "lo": [
+    1.15,
+    1.798,
+    2.217
+   ],
+   "hi": [
+    3.138,
+    1.822,
+    2.241
+   ]
+  },
+  {
+   "name": "Window curtain left",
+   "bottom": 0.12,
+   "lo": [
+    1.168,
+    1.76,
+    0.12
+   ],
+   "hi": [
+    1.588,
+    1.825,
+    2.22
+   ]
+  },
+  {
+   "name": "Window curtain right",
+   "bottom": 0.12,
+   "lo": [
+    2.715,
+    1.759,
+    0.12
+   ],
+   "hi": [
+    3.122,
+    1.825,
+    2.22
+   ]
+  },
+  {
+   "name": "AC louver",
+   "bottom": 1.989,
+   "lo": [
+    -1.585,
+    0.69,
+    1.989
+   ],
+   "hi": [
+    -1.545,
+    1.41,
+    2.041
+   ]
+  },
+  {
+   "name": "Ceiling light 1 rim",
+   "bottom": 2.3,
+   "lo": [
+    -0.85,
+    0.25,
+    2.3
+   ],
+   "hi": [
+    -0.25,
+    0.85,
     2.35
    ]
   },
   {
-   "name": "Rear deep sill",
-   "sides": [
-    "y+"
-   ],
+   "name": "Ceiling light 1 diffuser",
+   "bottom": 2.268,
    "lo": [
-    1.83,
-    1.752,
+    -0.82,
+    0.28,
+    2.268
+   ],
+   "hi": [
+    -0.28,
+    0.82,
+    2.332
+   ]
+  },
+  {
+   "name": "Ceiling light 2 rim",
+   "bottom": 2.3,
+   "lo": [
+    1.69,
+    -0.16,
+    2.3
+   ],
+   "hi": [
+    2.21,
+    0.36,
+    2.35
+   ]
+  },
+  {
+   "name": "Ceiling light 2 diffuser",
+   "bottom": 2.272,
+   "lo": [
+    1.716,
+    -0.134,
+    2.272
+   ],
+   "hi": [
+    2.184,
+    0.334,
+    2.328
+   ]
+  },
+  {
+   "name": "Cheer flag pole",
+   "bottom": 1.221,
+   "lo": [
+    3.105,
+    -1.771,
+    1.221
+   ],
+   "hi": [
+    3.186,
+    -1.444,
+    2.089
+   ]
+  },
+  {
+   "name": "Cheer flag cloth",
+   "bottom": 1.507,
+   "lo": [
+    2.864,
+    -1.768,
+    1.507
+   ],
+   "hi": [
+    3.16,
+    -1.608,
+    2.063
+   ]
+  },
+  {
+   "name": "Live towel 2",
+   "bottom": 0.624,
+   "lo": [
+    3.188,
+    -1.419,
+    0.624
+   ],
+   "hi": [
+    3.202,
+    -1.162,
+    1.399
+   ]
+  },
+  {
+   "name": "Live towel 4",
+   "bottom": 0.953,
+   "lo": [
+    3.188,
+    -1.059,
+    0.953
+   ],
+   "hi": [
+    3.201,
+    -0.802,
+    1.401
+   ]
+  },
+  {
+   "name": "Live towel fold 1",
+   "bottom": 1.042,
+   "lo": [
+    3.136,
+    -0.94,
+    1.042
+   ],
+   "hi": [
+    3.17,
+    -0.74,
+    1.402
+   ]
+  },
+  {
+   "name": "Live towel fold 2",
+   "bottom": 1.082,
+   "lo": [
+    3.136,
+    -1.395,
+    1.082
+   ],
+   "hi": [
+    3.17,
+    -1.205,
+    1.402
+   ]
+  },
+  {
+   "name": "Live towel 2 clip",
+   "bottom": 1.369,
+   "lo": [
+    3.175,
+    -1.306,
+    1.369
+   ],
+   "hi": [
+    3.192,
+    -1.274,
+    1.419
+   ]
+  },
+  {
+   "name": "Live towel 4 clip",
+   "bottom": 1.369,
+   "lo": [
+    3.175,
+    -0.946,
+    1.369
+   ],
+   "hi": [
+    3.191,
+    -0.914,
+    1.419
+   ]
+  },
+  {
+   "name": "Tapestry blue dress",
+   "bottom": 0.595,
+   "lo": [
+    2.555,
+    1.762,
+    0.595
+   ],
+   "hi": [
+    3.005,
+    1.762,
+    1.945
+   ]
+  },
+  {
+   "name": "Monitor screen image",
+   "bottom": 0.98,
+   "lo": [
+    -1.664,
+    0.528,
+    0.98
+   ],
+   "hi": [
+    -1.664,
+    1.152,
+    1.331
+   ]
+  },
+  {
+   "name": "Skill toy yoyo hub -1",
+   "bottom": 0.396,
+   "lo": [
+    1.897,
+    0.355,
+    0.396
+   ],
+   "hi": [
+    1.908,
+    0.371,
+    0.413
+   ]
+  },
+  {
+   "name": "Striped tote",
+   "bottom": 0.434,
+   "lo": [
+    0.159,
+    -1.399,
+    0.434
+   ],
+   "hi": [
+    0.44,
+    -1.316,
+    0.835
+   ]
+  },
+  {
+   "name": "Camera lens cap",
+   "bottom": 0.742,
+   "lo": [
+    0.351,
+    -1.673,
+    0.742
+   ],
+   "hi": [
+    0.418,
+    -1.653,
+    0.809
+   ]
+  },
+  {
+   "name": "Striped tote handle 2",
+   "bottom": 0.831,
+   "lo": [
+    0.223,
+    -1.517,
+    0.831
+   ],
+   "hi": [
+    0.377,
+    -1.395,
+    0.978
+   ]
+  },
+  {
+   "name": "Bay r11 stand 0 base",
+   "bottom": 1.505,
+   "lo": [
+    3.031,
+    0.556,
+    1.505
+   ],
+   "hi": [
+    3.119,
+    0.644,
+    1.512
+   ]
+  },
+  {
+   "name": "Bay r11 stand 1 base",
+   "bottom": 1.505,
+   "lo": [
+    3.031,
+    0.654,
+    1.505
+   ],
+   "hi": [
+    3.119,
+    0.741,
+    1.512
+   ]
+  },
+  {
+   "name": "Bay r11 stand 2 base",
+   "bottom": 1.505,
+   "lo": [
+    3.031,
+    0.751,
+    1.505
+   ],
+   "hi": [
+    3.119,
+    0.839,
+    1.512
+   ]
+  },
+  {
+   "name": "Bay r11 stand 3 base",
+   "bottom": 1.505,
+   "lo": [
+    3.031,
+    0.849,
+    1.505
+   ],
+   "hi": [
+    3.119,
+    0.936,
+    1.512
+   ]
+  },
+  {
+   "name": "Bay r11 stand 4 base",
+   "bottom": 1.505,
+   "lo": [
+    3.031,
+    0.946,
+    1.505
+   ],
+   "hi": [
+    3.119,
+    1.034,
+    1.512
+   ]
+  },
+  {
+   "name": "Bay r22 stand 0 base",
+   "bottom": 1.8,
+   "lo": [
+    2.996,
+    1.111,
+    1.8
+   ],
+   "hi": [
+    3.084,
+    1.199,
+    1.806
+   ]
+  },
+  {
+   "name": "Bay r22 stand 1 base",
+   "bottom": 1.8,
+   "lo": [
+    2.996,
+    1.219,
+    1.8
+   ],
+   "hi": [
+    3.084,
+    1.306,
+    1.806
+   ]
+  },
+  {
+   "name": "Bay r22 stand 2 base",
+   "bottom": 1.8,
+   "lo": [
+    2.996,
+    1.326,
+    1.8
+   ],
+   "hi": [
+    3.084,
+    1.414,
+    1.806
+   ]
+  },
+  {
+   "name": "Bay r22 stand 3 base",
+   "bottom": 1.8,
+   "lo": [
+    2.996,
+    1.434,
+    1.8
+   ],
+   "hi": [
+    3.084,
+    1.521,
+    1.806
+   ]
+  },
+  {
+   "name": "Bay r22 stand 4 base",
+   "bottom": 1.8,
+   "lo": [
+    2.996,
+    1.541,
+    1.8
+   ],
+   "hi": [
+    3.084,
+    1.629,
+    1.806
+   ]
+  },
+  {
+   "name": "Bay r23 stand 0 base",
+   "bottom": 1.85,
+   "lo": [
+    3.076,
+    1.111,
+    1.85
+   ],
+   "hi": [
+    3.164,
+    1.199,
+    1.856
+   ]
+  },
+  {
+   "name": "Bay r23 stand 1 base",
+   "bottom": 1.85,
+   "lo": [
+    3.076,
+    1.219,
+    1.85
+   ],
+   "hi": [
+    3.164,
+    1.306,
+    1.856
+   ]
+  },
+  {
+   "name": "Bay r23 stand 2 base",
+   "bottom": 1.85,
+   "lo": [
+    3.076,
+    1.326,
+    1.85
+   ],
+   "hi": [
+    3.164,
+    1.414,
+    1.856
+   ]
+  },
+  {
+   "name": "Bay r23 stand 3 base",
+   "bottom": 1.85,
+   "lo": [
+    3.076,
+    1.434,
+    1.85
+   ],
+   "hi": [
+    3.164,
+    1.521,
+    1.856
+   ]
+  },
+  {
+   "name": "Bay r23 stand 4 base",
+   "bottom": 1.85,
+   "lo": [
+    3.076,
+    1.541,
+    1.85
+   ],
+   "hi": [
+    3.164,
+    1.629,
+    1.856
+   ]
+  },
+  {
+   "name": "Juggling ball 0",
+   "bottom": 0.257,
+   "lo": [
+    0.871,
+    1.56,
+    0.257
+   ],
+   "hi": [
+    0.937,
+    1.626,
+    0.323
+   ]
+  },
+  {
+   "name": "Juggling ball 1",
+   "bottom": 0.251,
+   "lo": [
+    0.953,
+    1.627,
+    0.251
+   ],
+   "hi": [
+    1.019,
+    1.693,
+    0.317
+   ]
+  },
+  {
+   "name": "Rack kendama ken",
+   "bottom": 0.19,
+   "lo": [
+    0.845,
+    1.608,
+    0.19
+   ],
+   "hi": [
+    0.97,
+    1.707,
+    0.363
+   ]
+  },
+  {
+   "name": "Rack kendama string",
+   "bottom": 0.212,
+   "lo": [
+    0.885,
+    1.645,
+    0.212
+   ],
+   "hi": [
+    0.931,
+    1.787,
+    0.332
+   ]
+  },
+  {
+   "name": "Twin chibi A collar",
+   "bottom": 1.82,
+   "lo": [
+    2.971,
+    0.397,
+    1.82
+   ],
+   "hi": [
+    3.027,
+    0.463,
+    1.845
+   ]
+  },
+  {
+   "name": "Twin chibi A fringe",
+   "bottom": 1.871,
+   "lo": [
+    2.951,
+    0.378,
+    1.871
+   ],
+   "hi": [
+    2.977,
+    0.466,
+    1.9
+   ]
+  },
+  {
+   "name": "Twin chibi A hair",
+   "bottom": 1.804,
+   "lo": [
+    2.945,
+    0.351,
+    1.804
+   ],
+   "hi": [
+    3.06,
+    0.51,
+    1.943
+   ]
+  },
+  {
+   "name": "Twin chibi B arm 1",
+   "bottom": 1.791,
+   "lo": [
+    3.082,
+    0.447,
+    1.791
+   ],
+   "hi": [
+    3.118,
+    0.49,
+    1.846
+   ]
+  },
+  {
+   "name": "Twin chibi B collar",
+   "bottom": 1.83,
+   "lo": [
+    3.081,
+    0.471,
+    1.83
+   ],
+   "hi": [
+    3.146,
+    0.549,
+    1.859
+   ]
+  },
+  {
+   "name": "Twin chibi B fringe",
+   "bottom": 1.89,
+   "lo": [
+    3.059,
+    0.465,
+    1.89
+   ],
+   "hi": [
+    3.084,
+    0.569,
+    1.924
+   ]
+  },
+  {
+   "name": "Twin chibi B hair",
+   "bottom": 1.81,
+   "lo": [
+    3.052,
+    0.415,
+    1.81
+   ],
+   "hi": [
+    3.184,
+    0.604,
+    1.974
+   ]
+  },
+  {
+   "name": "Twin chibi B hand -1",
+   "bottom": 1.786,
+   "lo": [
+    3.094,
+    0.55,
+    1.786
+   ],
+   "hi": [
+    3.12,
+    0.576,
+    1.811
+   ]
+  },
+  {
+   "name": "Twin chibi B hand 1",
+   "bottom": 1.786,
+   "lo": [
+    3.078,
+    0.448,
+    1.786
+   ],
+   "hi": [
+    3.104,
+    0.474,
+    1.811
+   ]
+  },
+  {
+   "name": "Twin chibi B head",
+   "bottom": 1.838,
+   "lo": [
+    3.061,
+    0.427,
+    1.838
+   ],
+   "hi": [
+    3.173,
+    0.593,
+    1.961
+   ]
+  },
+  {
+   "name": "Twin chibi B leg -1",
+   "bottom": 1.766,
+   "lo": [
+    3.051,
+    0.516,
+    1.766
+   ],
+   "hi": [
+    3.116,
+    0.551,
+    1.797
+   ]
+  },
+  {
+   "name": "Twin chibi A tail -1",
+   "bottom": 1.796,
+   "lo": [
+    2.981,
+    0.49,
+    1.796
+   ],
+   "hi": [
+    3.011,
+    0.528,
+    1.887
+   ]
+  },
+  {
+   "name": "Twin chibi A bow -1",
+   "bottom": 1.911,
+   "lo": [
+    2.981,
+    0.482,
+    1.911
+   ],
+   "hi": [
+    2.997,
+    0.508,
+    1.932
+   ]
+  },
+  {
+   "name": "Twin chibi A tail 1",
+   "bottom": 1.796,
+   "lo": [
+    3.012,
+    0.337,
+    1.796
+   ],
+   "hi": [
+    3.042,
+    0.375,
+    1.887
+   ]
+  },
+  {
+   "name": "Twin chibi A bow 1",
+   "bottom": 1.911,
+   "lo": [
+    3.007,
+    0.352,
+    1.911
+   ],
+   "hi": [
+    3.023,
+    0.379,
+    1.932
+   ]
+  },
+  {
+   "name": "Twin chibi B tail -1",
+   "bottom": 1.802,
+   "lo": [
+    3.124,
+    0.577,
+    1.802
+   ],
+   "hi": [
+    3.161,
+    0.621,
+    1.909
+   ]
+  },
+  {
+   "name": "Twin chibi B bow -1",
+   "bottom": 1.937,
+   "lo": [
+    3.12,
+    0.571,
+    1.937
+   ],
+   "hi": [
+    3.138,
+    0.602,
+    1.962
+   ]
+  },
+  {
+   "name": "Twin chibi B tail 1",
+   "bottom": 1.802,
+   "lo": [
+    3.097,
+    0.395,
+    1.802
+   ],
+   "hi": [
+    3.133,
+    0.439,
+    1.909
+   ]
+  },
+  {
+   "name": "Twin chibi B bow 1",
+   "bottom": 1.937,
+   "lo": [
+    3.096,
+    0.417,
+    1.937
+   ],
+   "hi": [
+    3.115,
+    0.448,
+    1.962
+   ]
+  },
+  {
+   "name": "Sombrero sewn rim ribbon base",
+   "bottom": 0.632,
+   "lo": [
+    0.929,
+    1.453,
+    0.632
+   ],
+   "hi": [
+    1.149,
+    1.456,
+    0.819
+   ]
+  },
+  {
+   "name": "Sombrero hollow crown and brim",
+   "bottom": 0.631,
+   "lo": [
+    0.93,
+    1.374,
+    0.631
+   ],
+   "hi": [
+    1.152,
+    1.469,
+    0.819
+   ]
+  },
+  {
+   "name": "Sombrero pinched ribbon fold panels",
+   "bottom": 0.623,
+   "lo": [
+    0.92,
+    1.44,
     0.623
    ],
    "hi": [
-    3.02,
-    1.915,
-    0.66
+    1.16,
+    1.459,
+    0.827
    ]
   },
   {
-   "name": "Staggered oak floor",
-   "sides": [
-    "x+",
-    "y-",
-    "y+"
-   ],
+   "name": "Sombrero crown seam",
+   "bottom": 0.686,
    "lo": [
-    -1.736,
-    -1.869,
-    0.014
+    1.039,
+    1.374,
+    0.686
    ],
    "hi": [
-    3.314,
-    1.92,
-    0.014
+    1.04,
+    1.459,
+    0.724
    ]
   },
   {
-   "name": "Entry door leaf",
-   "sides": [
-    "y-"
-   ],
+   "name": "Sombrero crown band",
+   "bottom": 0.686,
    "lo": [
-    -1.602,
-    -1.911,
-    0.02
+    0.992,
+    1.448,
+    0.686
    ],
    "hi": [
-    -0.99,
-    -1.878,
-    1.72
-   ]
-  },
-  {
-   "name": "Entry door jamb",
-   "sides": [
-    "y-"
-   ],
-   "lo": [
-    -1.644,
-    -1.907,
-    0.012
-   ],
-   "hi": [
-    -1.596,
-    -1.843,
-    1.787
-   ]
-  },
-  {
-   "name": "Entry door jamb.001",
-   "sides": [
-    "y-"
-   ],
-   "lo": [
-    -0.996,
-    -1.907,
-    0.012
-   ],
-   "hi": [
-    -0.948,
-    -1.843,
-    1.787
-   ]
-  },
-  {
-   "name": "Entry door lintel",
-   "sides": [
-    "y-"
-   ],
-   "lo": [
-    -1.635,
-    -1.907,
-    1.722
-   ],
-   "hi": [
-    -0.957,
-    -1.843,
-    1.775
-   ]
-  },
-  {
-   "name": "Entry door threshold",
-   "sides": [
-    "y-"
-   ],
-   "lo": [
-    -1.607,
-    -1.916,
-    0.02
-   ],
-   "hi": [
-    -0.985,
-    -1.819,
-    0.026
-   ]
-  },
-  {
-   "name": "Entry lever backplate",
-   "sides": [
-    "y-"
-   ],
-   "lo": [
-    -1.074,
-    -1.875,
-    0.896
-   ],
-   "hi": [
-    -1.041,
-    -1.864,
-    1.024
-   ]
-  },
-  {
-   "name": "Rear window daylight backdrop",
-   "sides": [
-    "y+"
-   ],
-   "lo": [
-    1.862,
-    1.958,
-    0.55
-   ],
-   "hi": [
-    2.988,
-    1.962,
-    1.95
+    1.087,
+    1.46,
+    0.766
    ]
   }
  ],
+ "wall_penetration": [],
  "intersections": [
   {
-   "a": "PC monitor ventilation slot 01",
-   "b": "Monitor bezel",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 8",
    "frac": 1.0
   },
   {
-   "a": "PC monitor ventilation slot 02",
-   "b": "Monitor bezel",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 7",
    "frac": 1.0
   },
   {
-   "a": "PC monitor ventilation slot 03",
-   "b": "Monitor bezel",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 9",
    "frac": 1.0
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille ring 4",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 6",
    "frac": 1.0
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille spoke 7",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 10",
    "frac": 1.0
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille spoke 6",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 5",
    "frac": 1.0
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille spoke 8",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 11",
    "frac": 1.0
   },
   {
-   "a": "Mouse",
-   "b": "Mouse wheel recess lining",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 4",
    "frac": 1.0
   },
   {
-   "a": "Mouse",
-   "b": "Mouse scroll wheel",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 3",
    "frac": 1.0
   },
   {
-   "a": "Mouse",
-   "b": "Mouse thumb scroll wheel",
+   "a": "Desk fan shell",
+   "b": "Desk fan folding hinge",
    "frac": 1.0
   },
   {
-   "a": "Mouse",
-   "b": "Mouse wheel mode button",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 12",
    "frac": 1.0
   },
   {
-   "a": "Mouse",
-   "b": "Mouse thumb button 1",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 2",
    "frac": 1.0
   },
   {
-   "a": "Mouse",
-   "b": "Mouse thumb button 2",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 13",
    "frac": 1.0
   },
   {
-   "a": "Chair moulded shell",
-   "b": "Chair moulded shell seat pad",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 1",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn tote mochi head 5",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 28",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn tote mochi head 6",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 14",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn tote mochi head 2",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 27",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn clear tote band 1",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 26",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn clear tote band 2",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 15",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn tote mochi head 1",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 25",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn tote mochi head 6",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 24",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn tote mochi head 2",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 16",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn tote mochi head 7",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 23",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn tote mochi head 3",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 22",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn lying ginger pillow",
-   "b": "Nesoberi sewn lying ginger pillow side lock",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 17",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn lying dark pillow",
-   "b": "Nesoberi sewn lying dark pillow side lock",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 21",
    "frac": 1.0
   },
   {
-   "a": "Nesoberi sewn lying orange pillow",
-   "b": "Nesoberi sewn lying orange pillow side lock",
+   "a": "Desk fan shell",
+   "b": "Desk fan rotor",
    "frac": 1.0
   },
   {
-   "a": "Skill toy kendama turned ken",
-   "b": "Skill toy kendama center collar",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 18",
    "frac": 1.0
   },
   {
-   "a": "Desk Rubik stickers",
-   "b": "Desk Rubik cube core",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 20",
    "frac": 1.0
   },
   {
-   "a": "Camera gear Nikon DX 18-105mm lens hood",
-   "b": "Camera gear Nikon DX 18-105mm lens front ring",
+   "a": "Desk fan shell",
+   "b": "Desk fan rear grille 19",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan motor hub",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 8",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 7",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 9",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 6",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 10",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 5",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 11",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 4",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 12",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 3",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 13",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan center hub",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 2",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 14",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 28",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 27",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 26",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 15",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 25",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 24",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 16",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 17",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 18",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 20",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 19",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan rotor",
+   "b": "Desk fan rear grille 18",
+   "frac": 1.0
+  },
+  {
+   "a": "Desk fan rotor",
+   "b": "Desk fan rear grille 19",
    "frac": 1.0
   },
   {
    "a": "Laptop lid",
-   "b": "Laptop display",
+   "b": "Laptop screen image",
+   "frac": 1.0
+  },
+  {
+   "a": "Clear pen holder01",
+   "b": "Scissors pivot",
+   "frac": 1.0
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop top control strip",
+   "frac": 1.0
+  },
+  {
+   "a": "Tablet v2 blue edge",
+   "b": "Tablet v2 body",
+   "frac": 1.0
+  },
+  {
+   "a": "Tablet v2 blue edge",
+   "b": "Tablet v2 screen",
+   "frac": 1.0
+  },
+  {
+   "a": "Tablet v2 body",
+   "b": "Tablet v2 screen",
+   "frac": 1.0
+  },
+  {
+   "a": "Gold pen frosted hollow cap",
+   "b": "Interpreted pen tip",
+   "frac": 1.0
+  },
+  {
+   "a": "Gold pen frosted hollow cap",
+   "b": "Interpreted pen grip",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse v2 body",
+   "b": "Mouse v2 recessed wheel",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse v2 body",
+   "b": "Mouse v2 horizontal thumb wheel",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse v2 body",
+   "b": "Mouse v2 inset side button 0",
+   "frac": 1.0
+  },
+  {
+   "a": "Mouse v2 body",
+   "b": "Mouse v2 inset side button 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Chair shell",
+   "b": "Chair back pad",
+   "frac": 1.0
+  },
+  {
+   "a": "Camera Nikon DX 18-105 lens",
+   "b": "Camera lens cap",
+   "frac": 1.0
+  },
+  {
+   "a": "geometry_0.002",
+   "b": "Plush11 Left whisker 2",
+   "frac": 1.0
+  },
+  {
+   "a": "geometry_0.002",
+   "b": "Plush11 Left whisker 1",
+   "frac": 1.0
+  },
+  {
+   "a": "geometry_0.002",
+   "b": "Plush11 Left whisker 3",
+   "frac": 1.0
+  },
+  {
+   "a": "geometry_0.002",
+   "b": "Plush11 hollow crown loop",
+   "frac": 1.0
+  },
+  {
+   "a": "geometry_0.002",
+   "b": "Plush11 Right whisker 3",
+   "frac": 1.0
+  },
+  {
+   "a": "geometry_0.001",
+   "b": "Plush12 hollow crown loop",
+   "frac": 1.0
+  },
+  {
+   "a": "geometry_0.001",
+   "b": "Plush12 Right whisker 2",
+   "frac": 1.0
+  },
+  {
+   "a": "geometry_0.001",
+   "b": "Plush12 Right whisker 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Plush12 Right whisker 2",
+   "b": "Plush12 Right whisker 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Sombrero sewn rim ribbon base",
+   "b": "Sombrero hollow crown and brim",
+   "frac": 1.0
+  },
+  {
+   "a": "Sombrero hollow crown and brim",
+   "b": "Sombrero crown band",
+   "frac": 1.0
+  },
+  {
+   "a": "Sombrero hollow crown and brim",
+   "b": "Sombrero crown seam",
+   "frac": 1.0
+  },
+  {
+   "a": "Skill toy yoyo",
+   "b": "Skill toy yoyo cup 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Skill toy yoyo",
+   "b": "Skill toy yoyo hub 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Skill toy yoyo",
+   "b": "Skill toy yoyo axle",
+   "frac": 1.0
+  },
+  {
+   "a": "Skill toy yoyo",
+   "b": "Skill toy yoyo cup -1",
+   "frac": 1.0
+  },
+  {
+   "a": "Skill toy yoyo",
+   "b": "Skill toy yoyo hub -1",
+   "frac": 1.0
+  },
+  {
+   "a": "Skill toy yoyo cup 1",
+   "b": "Skill toy yoyo hub 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Skill toy yoyo cup -1",
+   "b": "Skill toy yoyo hub -1",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c1 edges",
+   "b": "Cube case r1c1",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c1 edges",
+   "b": "Cube case r1c1 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c1 edges",
+   "b": "Cube case r1c1 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c2 edges",
+   "b": "Cube case r1c2",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c2 edges",
+   "b": "Cube case r1c2 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c2 edges",
+   "b": "Cube case r1c2 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c3 edges",
+   "b": "Cube case r1c3",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c3 edges",
+   "b": "Cube case r1c3 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c3 edges",
+   "b": "Cube case r1c3 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c1 edges",
+   "b": "Cube case r2c1",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c1 edges",
+   "b": "Cube case r2c1 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c1 edges",
+   "b": "Cube case r2c1 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c2 edges",
+   "b": "Cube case r2c2",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c2 edges",
+   "b": "Cube case r2c2 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c2 edges",
+   "b": "Cube case r2c2 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c3 edges",
+   "b": "Cube case r2c3",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c3 edges",
+   "b": "Cube case r2c3 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c3 edges",
+   "b": "Cube case r2c3 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c1",
+   "b": "Cube case r1c1 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c1",
+   "b": "Cube case r1c1 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c2",
+   "b": "Cube case r1c2 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c2",
+   "b": "Cube case r1c2 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c3",
+   "b": "Cube case r1c3 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r1c3",
+   "b": "Cube case r1c3 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c1",
+   "b": "Cube case r2c1 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c1",
+   "b": "Cube case r2c1 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c2",
+   "b": "Cube case r2c2 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c2",
+   "b": "Cube case r2c2 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c3",
+   "b": "Cube case r2c3 step low",
+   "frac": 1.0
+  },
+  {
+   "a": "Cube case r2c3",
+   "b": "Cube case r2c3 step high",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi A hair",
+   "b": "Twin chibi A fringe",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi A hair",
+   "b": "Twin chibi A head",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi A hair",
+   "b": "Twin chibi A collar",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi A hair",
+   "b": "Twin chibi A bow -1",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi A hair",
+   "b": "Twin chibi A bow 1",
+   "frac": 1.0
+  },
+  {
+   "a": "U4 cup noodle pen cup",
+   "b": "U4 cup noodle band",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi A body",
+   "b": "Twin chibi A collar",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi B hair",
+   "b": "Twin chibi B fringe",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi B hair",
+   "b": "Twin chibi B head",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi B hair",
+   "b": "Twin chibi B collar",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi B hair",
+   "b": "Twin chibi B bow 1",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi B hair",
+   "b": "Twin chibi B bow -1",
+   "frac": 1.0
+  },
+  {
+   "a": "Twin chibi B body",
+   "b": "Twin chibi B collar",
+   "frac": 1.0
+  },
+  {
+   "a": "Cheer flag pole",
+   "b": "Cheer flag pole",
+   "frac": 1.0,
+   "kind": "structure"
+  },
+  {
+   "a": "Plush12 Left whisker 2",
+   "b": "Plush12 Left whisker 1",
    "frac": 0.99
   },
   {
-   "a": "Chair moulded shell",
-   "b": "Chair moulded shell back cushion",
-   "frac": 0.99
-  },
-  {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn tote mochi head 4",
-   "frac": 0.99
-  },
-  {
-   "a": "Nesoberi sewn chibi sleepy orange",
-   "b": "Nesoberi sewn tote mochi head 4",
-   "frac": 0.99
-  },
-  {
-   "a": "Nesoberi sewn lying orange pillow",
-   "b": "Nesoberi sewn chibi small orange",
+   "a": "Mouse v2 body",
+   "b": "Mouse v2 seam",
    "frac": 0.98
   },
   {
-   "a": "Desk pen cup noodle band",
-   "b": "Desk pen cup noodle body",
+   "a": "Mouse v2 seam",
+   "b": "Mouse v2 recessed wheel",
    "frac": 0.98
   },
   {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn tote mochi head 1",
-   "frac": 0.97
-  },
-  {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn clear tote handle 1",
-   "frac": 0.97
-  },
-  {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn tote mochi head 7",
-   "frac": 0.97
-  },
-  {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn tote mochi head 3",
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 23",
    "frac": 0.96
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn chibi smile brown",
+   "a": "Bottom album protective covers",
+   "b": "Books U4 bottom",
    "frac": 0.96
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn chibi sleepy orange",
-   "frac": 0.96
-  },
-  {
-   "a": "Camera gear Tamron 70-300mm lens zoom ring.001",
-   "b": "Camera gear Tamron 70-300mm lens zoom ring",
-   "frac": 0.96
-  },
-  {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille ring 3",
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 21",
    "frac": 0.95
   },
   {
-   "a": "Nesoberi sewn clear tote bag",
-   "b": "Nesoberi sewn tote mochi head 8",
+   "a": "Clear pen holder01",
+   "b": "Scissors upper blade",
    "frac": 0.95
   },
   {
-   "a": "Nesoberi sewn tote mochi head 5",
-   "b": "Nesoberi sewn clear tote bag",
+   "a": "Clear pen holder01",
+   "b": "Scissors lower blade",
+   "frac": 0.95
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan grille 22",
+   "frac": 0.94
+  },
+  {
+   "a": "Desk fan rear grille 17",
+   "b": "Desk fan rotor",
    "frac": 0.93
   },
   {
-   "a": "Camera gear Tamron 70-300mm lens barrel",
-   "b": "Camera gear Tamron 70-300mm lens zoom ring.001",
-   "frac": 0.92
-  },
-  {
-   "a": "Camera gear Nikon DX 18-105mm lens barrel",
-   "b": "Camera gear Nikon DX 18-105mm lens zoom ring",
-   "frac": 0.92
-  },
-  {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille spoke 1",
+   "a": "Plush11 Right whisker 2",
+   "b": "Plush11 Right whisker 1",
    "frac": 0.91
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille spoke 5",
+   "a": "Twin chibi A fringe",
+   "b": "Twin chibi A head",
    "frac": 0.91
   },
   {
-   "a": "Camera gear Nikon D7000 grip.001",
-   "b": "Camera gear Nikon D7000 body.001",
+   "a": "Twin chibi B fringe",
+   "b": "Twin chibi B head",
    "frac": 0.9
   },
   {
-   "a": "Camera gear Tamron 70-300mm lens barrel",
-   "b": "Camera gear Tamron 70-300mm lens zoom ring",
+   "a": "Clear pen holder01",
+   "b": "Gold pen barrel",
    "frac": 0.89
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan blades",
+   "a": "Desk fan rotor",
+   "b": "Desk fan rear grille 20",
+   "frac": 0.87
+  },
+  {
+   "a": "geometry_0.002",
+   "b": "Plush11 Right whisker 2",
+   "frac": 0.87
+  },
+  {
+   "a": "Scissors finger loop",
+   "b": "Scissors pivot",
+   "frac": 0.86
+  },
+  {
+   "a": "Plush11 Left whisker 2",
+   "b": "Plush11 Left whisker 3",
+   "frac": 0.83
+  },
+  {
+   "a": "Low table top",
+   "b": "Rubik sticker.045",
    "frac": 0.81
   },
   {
-   "a": "Nesoberi sewn tote mochi head 3",
-   "b": "Nesoberi sewn chibi sleepy orange",
-   "frac": 0.8
+   "a": "Low table top",
+   "b": "Rubik sticker.046",
+   "frac": 0.81
   },
   {
-   "a": "Camera gear Tamron 70-300mm lens barrel",
-   "b": "Camera gear Tamron 70-300mm lens front ring",
-   "frac": 0.8
+   "a": "Low table top",
+   "b": "Rubik sticker.047",
+   "frac": 0.81
   },
   {
-   "a": "Nesoberi sewn chibi smile brown",
-   "b": "Nesoberi sewn tote mochi head 7",
-   "frac": 0.78
+   "a": "Low table top",
+   "b": "Rubik sticker.048",
+   "frac": 0.81
   },
   {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn clear tote band 1",
+   "a": "Low table top",
+   "b": "Rubik sticker.049",
+   "frac": 0.81
+  },
+  {
+   "a": "Low table top",
+   "b": "Rubik sticker.050",
+   "frac": 0.81
+  },
+  {
+   "a": "Low table top",
+   "b": "Rubik sticker.051",
+   "frac": 0.81
+  },
+  {
+   "a": "Low table top",
+   "b": "Rubik sticker.052",
+   "frac": 0.81
+  },
+  {
+   "a": "Low table top",
+   "b": "Rubik sticker.053",
+   "frac": 0.81
+  },
+  {
+   "a": "Desk fan rear grille 25",
+   "b": "Desk fan rotor",
+   "frac": 0.79
+  },
+  {
+   "a": "Desk fan rear grille 24",
+   "b": "Desk fan rotor",
+   "frac": 0.79
+  },
+  {
+   "a": "Desk fan rear grille 21",
+   "b": "Desk fan rotor",
+   "frac": 0.79
+  },
+  {
+   "a": "geometry_0.002",
+   "b": "Plush11 Right whisker 1",
+   "frac": 0.79
+  },
+  {
+   "a": "Desk fan rear grille 5",
+   "b": "Desk fan rear grille 4",
    "frac": 0.76
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille ring 2",
+   "a": "Desk fan rear grille 23",
+   "b": "Desk fan rotor",
+   "frac": 0.76
+  },
+  {
+   "a": "Desk fan rear grille 18",
+   "b": "Desk fan rear grille 19",
+   "frac": 0.76
+  },
+  {
+   "a": "Desk fan grille 5",
+   "b": "Desk fan grille 4",
+   "frac": 0.76
+  },
+  {
+   "a": "Desk fan grille 18",
+   "b": "Desk fan grille 19",
+   "frac": 0.76
+  },
+  {
+   "a": "Desk fan rear grille 4",
+   "b": "Desk fan rear grille 3",
+   "frac": 0.75
+  },
+  {
+   "a": "Desk fan rear grille 22",
+   "b": "Desk fan rotor",
+   "frac": 0.75
+  },
+  {
+   "a": "Desk fan grille 17",
+   "b": "Desk fan grille 18",
+   "frac": 0.75
+  },
+  {
+   "a": "Scissors pivot",
+   "b": "Scissors thumb loop",
+   "frac": 0.75
+  },
+  {
+   "a": "Plush11 Right whisker 3",
+   "b": "Plush11 Right whisker 2",
+   "frac": 0.75
+  },
+  {
+   "a": "Plush12 Left whisker 2",
+   "b": "geometry_0.001",
+   "frac": 0.74
+  },
+  {
+   "a": "Plush12 Left whisker 1",
+   "b": "geometry_0.001",
+   "frac": 0.74
+  },
+  {
+   "a": "Magazine U1 leaning 1",
+   "b": "Magazine U1 leaning 2",
+   "frac": 0.74
+  },
+  {
+   "a": "Twin chibi A hand -1",
+   "b": "Twin chibi A body",
+   "frac": 0.74
+  },
+  {
+   "a": "Twin chibi A hand 1",
+   "b": "Twin chibi A arm 1",
+   "frac": 0.74
+  },
+  {
+   "a": "Desk fan rear grille 17",
+   "b": "Desk fan rear grille 18",
    "frac": 0.73
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille ring 1",
+   "a": "Desk fan grille 4",
+   "b": "Desk fan grille 3",
    "frac": 0.73
   },
   {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn chibi smile brown",
+   "a": "Laptop base",
+   "b": "Laptop key 1-1",
    "frac": 0.73
   },
   {
-   "a": "Desk pen cup noodle body",
-   "b": "Desk pen noodle cup 1",
+   "a": "Laptop base",
+   "b": "Laptop key 1-2",
    "frac": 0.73
   },
   {
-   "a": "Desk pen cup noodle body",
-   "b": "Desk pen noodle cup 3",
+   "a": "Laptop base",
+   "b": "Laptop key 1-3",
    "frac": 0.73
   },
   {
-   "a": "Desk pen cup noodle body",
-   "b": "Desk pen noodle cup 2",
+   "a": "Laptop base",
+   "b": "Laptop key 1-4",
    "frac": 0.73
   },
   {
-   "a": "Desk fan grille ring 4",
-   "b": "Desk fan grille ring 3",
+   "a": "Laptop base",
+   "b": "Laptop key 1-5",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 1-6",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 1-7",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 1-8",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 1-9",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 1-10",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 1-11",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 1-12",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 1-13",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 1-14",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-1",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-2",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-3",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-4",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-5",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-6",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-7",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-8",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-9",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-10",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-11",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 2-12",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop tall Return key",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-1",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-2",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-3",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-4",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-5",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-6",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-7",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-8",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-9",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-10",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-11",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 3-12",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-1",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-2",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-3",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-4",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-5",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-6",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-7",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-8",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-9",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-10",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-11",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-12",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 4-13",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 5-1",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 5-2",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 5-3",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 5-4",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 5-5",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 5-6",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 5-7",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 5-8",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop key 5-9",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop arrow upper",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop arrow lower 1",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop arrow lower 2",
+   "frac": 0.73
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop arrow lower 3",
+   "frac": 0.73
+  },
+  {
+   "a": "Twin chibi A head",
+   "b": "Twin chibi A collar",
+   "frac": 0.73
+  },
+  {
+   "a": "Twin chibi B head",
+   "b": "Twin chibi B collar",
+   "frac": 0.73
+  },
+  {
+   "a": "Twin chibi B hand -1",
+   "b": "Twin chibi B arm -1",
+   "frac": 0.73
+  },
+  {
+   "a": "Desk fan rear grille 6",
+   "b": "Desk fan rear grille 5",
    "frac": 0.72
   },
   {
-   "a": "Mouse",
-   "b": "Mouse button split",
+   "a": "Desk fan rear grille 20",
+   "b": "Desk fan rear grille 19",
    "frac": 0.72
   },
   {
-   "a": "Monitor stem",
-   "b": "Monitor bezel",
+   "a": "Desk fan grille 6",
+   "b": "Desk fan grille 5",
+   "frac": 0.72
+  },
+  {
+   "a": "Desk fan grille 20",
+   "b": "Desk fan grille 19",
+   "frac": 0.72
+  },
+  {
+   "a": "Twin chibi B body",
+   "b": "Twin chibi B hand 1",
+   "frac": 0.71
+  },
+  {
+   "a": "Desk fan rear grille 10",
+   "b": "Desk fan rear grille 11",
    "frac": 0.69
   },
   {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn clear tote bag",
+   "a": "Desk fan rear grille 25",
+   "b": "Desk fan rear grille 24",
+   "frac": 0.69
+  },
+  {
+   "a": "Desk fan grille 10",
+   "b": "Desk fan grille 11",
+   "frac": 0.69
+  },
+  {
+   "a": "Desk fan grille 25",
+   "b": "Desk fan grille 24",
+   "frac": 0.69
+  },
+  {
+   "a": "Desk fan rear grille 26",
+   "b": "Desk fan rotor",
+   "frac": 0.68
+  },
+  {
+   "a": "Twin chibi A head",
+   "b": "Twin chibi A bow -1",
+   "frac": 0.68
+  },
+  {
+   "a": "Twin chibi A head",
+   "b": "Twin chibi A bow 1",
+   "frac": 0.68
+  },
+  {
+   "a": "Twin chibi B hand 1",
+   "b": "Twin chibi B arm 1",
+   "frac": 0.68
+  },
+  {
+   "a": "Desk fan rear grille 7",
+   "b": "Desk fan rear grille 6",
+   "frac": 0.67
+  },
+  {
+   "a": "Desk fan rear grille 9",
+   "b": "Desk fan rear grille 10",
+   "frac": 0.67
+  },
+  {
+   "a": "Desk fan rear grille 3",
+   "b": "Desk fan rear grille 2",
+   "frac": 0.67
+  },
+  {
+   "a": "Desk fan rear grille 12",
+   "b": "Desk fan rear grille 13",
+   "frac": 0.67
+  },
+  {
+   "a": "Desk fan rear grille 24",
+   "b": "Desk fan rear grille 23",
+   "frac": 0.67
+  },
+  {
+   "a": "Desk fan grille 9",
+   "b": "Desk fan grille 10",
+   "frac": 0.67
+  },
+  {
+   "a": "Desk fan grille 27",
+   "b": "Desk fan grille 26",
+   "frac": 0.67
+  },
+  {
+   "a": "Desk fan grille 24",
+   "b": "Desk fan grille 23",
+   "frac": 0.67
+  },
+  {
+   "a": "Desk fan grille 16",
+   "b": "Desk fan grille 17",
+   "frac": 0.67
+  },
+  {
+   "a": "Desk fan grille 21",
+   "b": "Desk fan grille 20",
+   "frac": 0.67
+  },
+  {
+   "a": "Plush11 Right whisker 3",
+   "b": "Plush11 Right whisker 1",
+   "frac": 0.67
+  },
+  {
+   "a": "U4 cup noodle pen cup",
+   "b": "U4 pen 1",
+   "frac": 0.67
+  },
+  {
+   "a": "U4 cup noodle pen cup",
+   "b": "U4 pen 3",
+   "frac": 0.67
+  },
+  {
+   "a": "U4 cup noodle pen cup",
+   "b": "U4 pen 2",
+   "frac": 0.67
+  },
+  {
+   "a": "U4 cup noodle pen cup",
+   "b": "U4 pen 4",
+   "frac": 0.67
+  },
+  {
+   "a": "Twin chibi A hand -1",
+   "b": "Twin chibi A arm -1",
+   "frac": 0.67
+  },
+  {
+   "a": "Twin chibi B head",
+   "b": "Twin chibi B bow 1",
    "frac": 0.66
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille spoke 2",
+   "a": "Twin chibi B head",
+   "b": "Twin chibi B bow -1",
+   "frac": 0.66
+  },
+  {
+   "a": "Desk fan rear grille 11",
+   "b": "Desk fan rear grille 12",
+   "frac": 0.65
+  },
+  {
+   "a": "Desk fan rear grille 13",
+   "b": "Desk fan rear grille 14",
+   "frac": 0.65
+  },
+  {
+   "a": "Desk fan rear grille 26",
+   "b": "Desk fan rear grille 25",
+   "frac": 0.65
+  },
+  {
+   "a": "Desk fan rear grille 21",
+   "b": "Desk fan rear grille 20",
+   "frac": 0.65
+  },
+  {
+   "a": "Desk fan grille 7",
+   "b": "Desk fan grille 6",
+   "frac": 0.65
+  },
+  {
+   "a": "Desk fan grille 11",
+   "b": "Desk fan grille 12",
+   "frac": 0.65
+  },
+  {
+   "a": "Desk fan grille 28",
+   "b": "Desk fan grille 27",
+   "frac": 0.65
+  },
+  {
+   "a": "Desk fan grille 26",
+   "b": "Desk fan grille 25",
+   "frac": 0.65
+  },
+  {
+   "a": "Desk fan rear grille 27",
+   "b": "Desk fan rear grille 26",
    "frac": 0.64
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille spoke 4",
+   "a": "Desk fan grille 12",
+   "b": "Desk fan grille 13",
    "frac": 0.64
   },
   {
-   "a": "Nesoberi sewn chibi small orange",
-   "b": "Nesoberi sewn lying orange pillow side lock",
-   "frac": 0.63
+   "a": "Clear pen holder01",
+   "b": "Desk pen 2",
+   "frac": 0.64
   },
   {
-   "a": "Skill toy penspinning pen 2 barrel",
-   "b": "Skill toy penspinning pen 2 grip a",
-   "frac": 0.6
+   "a": "Clear pen holder01",
+   "b": "Desk pen 3",
+   "frac": 0.64
   },
   {
-   "a": "Skill toy penspinning pen 2 barrel",
-   "b": "Skill toy penspinning pen 2 grip b",
-   "frac": 0.6
+   "a": "Clear pen holder01",
+   "b": "Desk pen 4",
+   "frac": 0.64
   },
   {
-   "a": "Skill toy penspinning pen 1 barrel",
-   "b": "Skill toy penspinning pen 1 grip a",
+   "a": "Desk fan rear grille 28",
+   "b": "Desk fan rear grille 27",
+   "frac": 0.62
+  },
+  {
+   "a": "Desk fan rear grille 16",
+   "b": "Desk fan rotor",
+   "frac": 0.62
+  },
+  {
+   "a": "Desk fan grille 13",
+   "b": "Desk fan grille 14",
+   "frac": 0.62
+  },
+  {
+   "a": "Twin chibi A hair",
+   "b": "Twin chibi A tail 1",
+   "frac": 0.59
+  },
+  {
+   "a": "Desk fan rotor",
+   "b": "Desk fan motor hub",
+   "frac": 0.58
+  },
+  {
+   "a": "Desk fan rear grille 8",
+   "b": "Desk fan rear grille 7",
+   "frac": 0.57
+  },
+  {
+   "a": "Desk fan grille 22",
+   "b": "Desk fan grille 21",
+   "frac": 0.57
+  },
+  {
+   "a": "Twin chibi B hair",
+   "b": "Twin chibi B tail -1",
+   "frac": 0.57
+  },
+  {
+   "a": "AC body",
+   "b": "AC louver",
    "frac": 0.56
   },
   {
-   "a": "Skill toy penspinning pen 1 barrel",
-   "b": "Skill toy penspinning pen 1 grip b",
+   "a": "Desk fan rear grille 22",
+   "b": "Desk fan rear grille 21",
    "frac": 0.56
   },
   {
-   "a": "Nesoberi sewn lying dark pillow",
-   "b": "Nesoberi sewn grey cat",
+   "a": "Desk fan grille 8",
+   "b": "Desk fan grille 7",
+   "frac": 0.56
+  },
+  {
+   "a": "Skill toy yoyo string",
+   "b": "Skill toy yoyo hub 1",
+   "frac": 0.56
+  },
+  {
+   "a": "Desk fan rear grille 5",
+   "b": "Desk fan rear grille 3",
+   "frac": 0.55
+  },
+  {
+   "a": "Desk fan rear grille 16",
+   "b": "Desk fan rear grille 17",
+   "frac": 0.55
+  },
+  {
+   "a": "Desk fan grille 3",
+   "b": "Desk fan grille 2",
+   "frac": 0.55
+  },
+  {
+   "a": "Desk fan grille 17",
+   "b": "Desk fan grille 19",
+   "frac": 0.55
+  },
+  {
+   "a": "geometry_0.010",
+   "b": "Plush04 hollow attachment",
+   "frac": 0.54
+  },
+  {
+   "a": "Desk fan rear grille 6",
+   "b": "Desk fan rear grille 4",
    "frac": 0.53
   },
   {
-   "a": "Nesoberi sewn tote mochi head 4",
-   "b": "Nesoberi sewn eared creature",
-   "frac": 0.51
+   "a": "Desk fan rear grille 14",
+   "b": "Desk fan rear grille 15",
+   "frac": 0.53
   },
   {
-   "a": "Skill toy kendama tether",
-   "b": "Skill toy kendama center collar",
-   "frac": 0.51
+   "a": "Desk fan rear grille 17",
+   "b": "Desk fan rear grille 19",
+   "frac": 0.53
   },
   {
-   "a": "Skill toy yoyo cotton string",
-   "b": "Skill toy yoyo display cradle",
-   "frac": 0.51
+   "a": "Desk fan rear grille 18",
+   "b": "Desk fan rear grille 20",
+   "frac": 0.53
   },
   {
-   "a": "Nesoberi sewn tote mochi head 8",
-   "b": "Nesoberi sewn eared creature",
+   "a": "Desk fan grille 6",
+   "b": "Desk fan grille 4",
+   "frac": 0.53
+  },
+  {
+   "a": "Desk fan grille 5",
+   "b": "Desk fan grille 3",
+   "frac": 0.53
+  },
+  {
+   "a": "Desk fan grille 1",
+   "b": "Desk fan grille 28",
+   "frac": 0.53
+  },
+  {
+   "a": "Desk fan grille 18",
+   "b": "Desk fan grille 20",
+   "frac": 0.53
+  },
+  {
+   "a": "Kendama ken",
+   "b": "Kendama string",
+   "frac": 0.52
+  },
+  {
+   "a": "Laptop base",
+   "b": "Laptop hinge barrel",
    "frac": 0.5
   },
   {
-   "a": "Desk pen cup",
-   "b": "Desk pen 3",
-   "frac": 0.47
+   "a": "Tote rim left",
+   "b": "Tote body",
+   "frac": 0.5
   },
   {
-   "a": "Desk pen cup",
-   "b": "Desk pen 1",
-   "frac": 0.47
+   "a": "Tote body",
+   "b": "Tote rim right",
+   "frac": 0.5
   },
   {
-   "a": "Desk pen cup",
-   "b": "Desk pen 4",
-   "frac": 0.47
+   "a": "Desk fan rear grille 1",
+   "b": "Desk fan rear grille 28",
+   "frac": 0.49
   },
   {
-   "a": "Desk pen cup",
-   "b": "Desk pen 2",
-   "frac": 0.47
+   "a": "Desk fan rear grille 27",
+   "b": "Desk fan rotor",
+   "frac": 0.49
   },
   {
-   "a": "Nesoberi sewn white mochi",
-   "b": "Nesoberi sewn lying orange pillow",
-   "frac": 0.47
+   "a": "Desk fan grille 14",
+   "b": "Desk fan grille 15",
+   "frac": 0.49
   },
   {
-   "a": "Nesoberi sewn sweater bear",
-   "b": "Nesoberi sewn lying orange pillow",
-   "frac": 0.47
+   "a": "Tote rim front",
+   "b": "Tote body",
+   "frac": 0.49
   },
   {
-   "a": "Desk jump rope handle 1",
-   "b": "Desk jump rope cord",
+   "a": "Tote rim back",
+   "b": "Tote body",
+   "frac": 0.49
+  },
+  {
+   "a": "Twin chibi A hair",
+   "b": "Twin chibi A tail -1",
+   "frac": 0.49
+  },
+  {
+   "a": "U4 pen 1",
+   "b": "U4 pen 3",
+   "frac": 0.49
+  },
+  {
+   "a": "Twin chibi B hair",
+   "b": "Twin chibi B tail 1",
+   "frac": 0.49
+  },
+  {
+   "a": "Desk fan shell",
+   "b": "Desk fan foot 1",
    "frac": 0.46
   },
   {
-   "a": "Nesoberi sewn laughing chibi ginger",
-   "b": "Nesoberi sewn chibi sleepy orange",
+   "a": "Desk fan shell",
+   "b": "Desk fan foot 2",
    "frac": 0.46
   },
   {
-   "a": "Skill toy kendama large cup",
-   "b": "Skill toy kendama bridge",
+   "a": "Twin chibi B body",
+   "b": "Twin chibi B hand -1",
    "frac": 0.46
   },
   {
-   "a": "Nesoberi sewn lying ginger pillow",
-   "b": "Nesoberi sewn white mochi",
+   "a": "Skill toy yoyo string",
+   "b": "Skill toy yoyo cup 1",
    "frac": 0.45
   },
   {
-   "a": "Monitor bezel",
-   "b": "Monitor screen",
+   "a": "Desk fan rear grille 4",
+   "b": "Desk fan rear grille 2",
+   "frac": 0.44
+  },
+  {
+   "a": "Desk fan grille 16",
+   "b": "Desk fan grille 18",
+   "frac": 0.44
+  },
+  {
+   "a": "Dart 4",
+   "b": "Dart 6",
+   "frac": 0.44
+  },
+  {
+   "a": "Twin chibi A body",
+   "b": "Twin chibi A hand 1",
+   "frac": 0.43
+  },
+  {
+   "a": "Desk fan rear grille 10",
+   "b": "Desk fan rear grille 12",
    "frac": 0.42
   },
   {
-   "a": "Skill toy kendama bridge",
-   "b": "Skill toy kendama turned ken",
+   "a": "Desk fan rear grille 26",
+   "b": "Desk fan rear grille 24",
    "frac": 0.42
   },
   {
-   "a": "Monitor bezel",
-   "b": "Desk pen 3",
+   "a": "Desk fan grille 10",
+   "b": "Desk fan grille 12",
+   "frac": 0.42
+  },
+  {
+   "a": "Desk fan grille 26",
+   "b": "Desk fan grille 24",
+   "frac": 0.42
+  },
+  {
+   "a": "Desk fan rear grille 7",
+   "b": "Desk fan rear grille 5",
+   "frac": 0.41
+  },
+  {
+   "a": "Desk fan rear grille 25",
+   "b": "Desk fan rear grille 23",
+   "frac": 0.41
+  },
+  {
+   "a": "Desk fan grille 9",
+   "b": "Desk fan grille 11",
+   "frac": 0.41
+  },
+  {
+   "a": "Desk fan grille 21",
+   "b": "Desk fan grille 19",
+   "frac": 0.41
+  },
+  {
+   "a": "Desk fan rear grille 9",
+   "b": "Desk fan rear grille 11",
    "frac": 0.4
   },
   {
-   "a": "Monitor bezel",
-   "b": "Desk pen 1",
+   "a": "Desk fan rear grille 21",
+   "b": "Desk fan rear grille 19",
    "frac": 0.4
   },
   {
-   "a": "Laptop lid",
-   "b": "Laptop hinge",
-   "frac": 0.39
+   "a": "Desk fan grille 7",
+   "b": "Desk fan grille 5",
+   "frac": 0.4
   },
   {
-   "a": "Laptop lid",
-   "b": "Laptop hinge.001",
-   "frac": 0.39
+   "a": "Desk fan grille 25",
+   "b": "Desk fan grille 23",
+   "frac": 0.4
   },
   {
-   "a": "Nesoberi sewn tote mochi head 6",
-   "b": "Nesoberi sewn chibi smile brown",
-   "frac": 0.39
+   "a": "Dart 2",
+   "b": "Dart 1",
+   "frac": 0.4
   },
   {
-   "a": "Darts accessory flight",
-   "b": "Darts accessory shaft",
-   "frac": 0.39
-  },
-  {
-   "a": "Darts accessory flight.001",
-   "b": "Darts accessory shaft.001",
-   "frac": 0.39
-  },
-  {
-   "a": "Darts accessory flight.002",
-   "b": "Darts accessory shaft.002",
-   "frac": 0.39
-  },
-  {
-   "a": "Mouse button split",
-   "b": "Mouse wheel recess lining",
+   "a": "AC body",
+   "b": "Indoor AC lower band",
    "frac": 0.38
   },
   {
-   "a": "Nesoberi sewn chibi sleepy orange",
-   "b": "Nesoberi sewn eared creature",
+   "a": "Desk fan rear grille 11",
+   "b": "Desk fan rear grille 13",
    "frac": 0.38
   },
   {
-   "a": "Skill toy kendama turned ken",
-   "b": "Skill toy kendama tether",
+   "a": "Desk fan rear grille 12",
+   "b": "Desk fan rear grille 14",
    "frac": 0.38
   },
   {
-   "a": "Nesoberi sewn tote mochi head 1",
-   "b": "Nesoberi sewn tote mochi head 2",
+   "a": "Desk fan grille 28",
+   "b": "Desk fan grille 26",
+   "frac": 0.38
+  },
+  {
+   "a": "Desk fan grille 27",
+   "b": "Desk fan grille 25",
+   "frac": 0.38
+  },
+  {
+   "a": "Keyboard stand X",
+   "b": "Keyboard stand X",
+   "frac": 0.38,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk fan rear grille 6",
+   "b": "Desk fan rear grille 3",
    "frac": 0.37
   },
   {
-   "a": "Nesoberi sewn chibi sleepy orange",
-   "b": "Nesoberi sewn tote mochi head 8",
+   "a": "Desk fan rear grille 15",
+   "b": "Desk fan rotor",
+   "frac": 0.37
+  },
+  {
+   "a": "Desk fan grille 17",
+   "b": "Desk fan grille 20",
+   "frac": 0.37
+  },
+  {
+   "a": "Cheer flag pole",
+   "b": "Penlight row2 13 mic",
+   "frac": 0.37
+  },
+  {
+   "a": "Striped tote handle 1",
+   "b": "Striped tote handle 2",
    "frac": 0.36
   },
   {
-   "a": "Nesoberi sewn lying ginger pillow",
-   "b": "Nesoberi sewn sweater bear",
+   "a": "Desk fan rear grille 27",
+   "b": "Desk fan rear grille 25",
    "frac": 0.35
   },
   {
-   "a": "Nesoberi sewn white mochi",
-   "b": "Nesoberi sewn sweater bear",
+   "a": "Desk fan rear grille 17",
+   "b": "Desk fan rear grille 20",
    "frac": 0.35
   },
   {
-   "a": "Skill toy kendama large cup rim",
-   "b": "Skill toy kendama large cup",
+   "a": "Desk fan grille 6",
+   "b": "Desk fan grille 3",
    "frac": 0.35
   },
   {
-   "a": "Skill toy kendama small cup rim",
-   "b": "Skill toy kendama small cup",
+   "a": "Desk fan grille 11",
+   "b": "Desk fan grille 13",
    "frac": 0.35
   },
   {
-   "a": "Desk fan base neck motor",
-   "b": "Desk fan grille spoke 3",
+   "a": "Desk fan rear grille 28",
+   "b": "Desk fan rear grille 26",
    "frac": 0.34
   },
   {
-   "a": "Skill toy kendama large cup rim",
-   "b": "Skill toy kendama turned ken",
-   "frac": 0.33
+   "a": "Desk fan rear grille 16",
+   "b": "Desk fan rear grille 18",
+   "frac": 0.34
   },
   {
-   "a": "Camera gear Nikon D7000 body.001",
-   "b": "Camera gear Nikon D7000 shutter button",
-   "frac": 0.33
+   "a": "Desk fan motor hub",
+   "b": "Desk fan center hub",
+   "frac": 0.34
   },
   {
-   "a": "Skill toy kendama bridge",
-   "b": "Skill toy kendama small cup",
-   "frac": 0.32
+   "a": "Desk fan grille 4",
+   "b": "Desk fan grille 2",
+   "frac": 0.34
   },
   {
-   "a": "Nesoberi sewn tote mochi head 5",
-   "b": "Nesoberi sewn tote mochi head 6",
+   "a": "Desk fan grille 12",
+   "b": "Desk fan grille 14",
+   "frac": 0.34
+  },
+  {
+   "a": "Dart 3",
+   "b": "Dart 2",
+   "frac": 0.34
+  },
+  {
+   "a": "Desk fan folding hinge",
+   "b": "Desk fan rear grille 22",
    "frac": 0.31
   },
   {
-   "a": "Nesoberi sewn tote mochi head 7",
-   "b": "Nesoberi sewn chibi sleepy orange",
+   "a": "Desk fan folding hinge",
+   "b": "Desk fan rear grille 21",
    "frac": 0.31
   },
   {
-   "a": "Nesoberi sewn hat plush",
-   "b": "Nesoberi sewn hat plush cone",
+   "a": "Laptop lid",
+   "b": "Laptop hinge barrel",
    "frac": 0.31
   },
   {
-   "a": "Laptop base",
-   "b": "Laptop USB port rim",
+   "a": "Desk fan rear grille 5",
+   "b": "Desk fan rear grille 2",
    "frac": 0.3
   },
   {
-   "a": "Laptop base",
-   "b": "Laptop USB port rim.001",
+   "a": "Desk fan grille 16",
+   "b": "Desk fan grille 19",
    "frac": 0.3
+  },
+  {
+   "a": "Cheer flag cloth",
+   "b": "Cheer flag pole",
+   "frac": 0.21,
+   "kind": "structure"
+  },
+  {
+   "a": "Keyboard body",
+   "b": "Keyboard body",
+   "frac": 0.08,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk column 1",
+   "b": "Desk column 1",
+   "frac": 0.06,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk column 2",
+   "b": "Desk column 2",
+   "frac": 0.06,
+   "kind": "furniture"
+  },
+  {
+   "a": "Low table leg 1",
+   "b": "Low table leg 1",
+   "frac": 0.06,
+   "kind": "furniture"
+  },
+  {
+   "a": "Low table leg 2",
+   "b": "Low table leg 2",
+   "frac": 0.06,
+   "kind": "furniture"
+  },
+  {
+   "a": "Low table leg 3",
+   "b": "Low table leg 3",
+   "frac": 0.06,
+   "kind": "furniture"
+  },
+  {
+   "a": "Low table leg 4",
+   "b": "Low table leg 4",
+   "frac": 0.06,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Desk column 2",
+   "frac": 0.06,
+   "kind": "furniture"
+  },
+  {
+   "a": "Low table top",
+   "b": "Low table top",
+   "frac": 0.05,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk crossbar",
+   "b": "Desk crossbar",
+   "frac": 0.04,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Desk crossbar",
+   "frac": 0.04,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk foot 1",
+   "b": "Desk foot 1",
+   "frac": 0.036,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk foot 2",
+   "b": "Desk foot 2",
+   "frac": 0.036,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Desk foot 2",
+   "frac": 0.036,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk top bracket 1",
+   "b": "Desk top bracket 1",
+   "frac": 0.03,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk top bracket 2",
+   "b": "Desk top bracket 2",
+   "frac": 0.03,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Desk top bracket 2",
+   "frac": 0.03,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U1 bookcase plinth",
+   "frac": 0.03,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk top",
+   "b": "Desk top",
+   "frac": 0.025,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Desk top",
+   "frac": 0.025,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 1",
+   "b": "Dart rack post 1",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 2",
+   "b": "Dart rack post 2",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 3",
+   "b": "Dart rack post 3",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 4",
+   "b": "Dart rack post 4",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart board cabinet",
+   "b": "Dart rack post 1",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart board cabinet",
+   "b": "Dart rack post 2",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack post 1",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack post 2",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack post 3",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack post 4",
+   "frac": 0.024,
+   "kind": "furniture"
+  },
+  {
+   "a": "Mic arm lower rail 2",
+   "b": "Monitor riser leg 2",
+   "frac": 0.02,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Monitor riser leg 2",
+   "frac": 0.02,
+   "kind": "furniture"
+  },
+  {
+   "a": "Mic arm lower rail 1",
+   "b": "Monitor riser top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Mic arm lower rail 2",
+   "b": "Monitor riser top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase side L",
+   "b": "Shelf U1 bookcase side L",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase side L",
+   "b": "Shelf U1 bookcase top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase side L",
+   "b": "Shelf U1 bookcase bottom",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase side R",
+   "b": "Shelf U1 bookcase side R",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase side R",
+   "b": "Shelf U1 bookcase top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase side R",
+   "b": "Shelf U1 bookcase bottom",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase top",
+   "b": "Shelf U1 bookcase side L",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase top",
+   "b": "Shelf U1 bookcase side R",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase top",
+   "b": "Shelf U1 bookcase top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase bottom",
+   "b": "Shelf U1 bookcase side L",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase bottom",
+   "b": "Shelf U1 bookcase side R",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase bottom",
+   "b": "Shelf U1 bookcase bottom",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase shelf 1",
+   "b": "Shelf U1 bookcase shelf 1",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase shelf 2",
+   "b": "Shelf U1 bookcase shelf 2",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase shelf 3",
+   "b": "Shelf U1 bookcase shelf 3",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube side L",
+   "b": "Shelf U2 cube side L",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube side R",
+   "b": "Shelf U2 cube side R",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube top",
+   "b": "Shelf U2 cube top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube bottom",
+   "b": "Shelf U2 cube bottom",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube shelf 1",
+   "b": "Shelf U2 cube shelf 1",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube shelf 1",
+   "b": "Shelf U2 cube divider",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube shelf 2",
+   "b": "Shelf U2 cube shelf 2",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube shelf 2",
+   "b": "Shelf U2 cube divider",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube divider",
+   "b": "Shelf U2 cube shelf 1",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube divider",
+   "b": "Shelf U2 cube shelf 2",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube divider",
+   "b": "Shelf U2 cube divider",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube side L",
+   "b": "Shelf U3 cube side L",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube side R",
+   "b": "Shelf U3 cube side R",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube top",
+   "b": "Shelf U3 cube top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube top",
+   "b": "Shelf U3 cube divider",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube bottom",
+   "b": "Shelf U3 cube bottom",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube bottom",
+   "b": "Shelf U3 cube divider",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube shelf 1",
+   "b": "Shelf U3 cube shelf 1",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube shelf 1",
+   "b": "Shelf U3 cube divider",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube shelf 2",
+   "b": "Shelf U3 cube shelf 2",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube shelf 2",
+   "b": "Shelf U3 cube divider",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube divider",
+   "b": "Shelf U3 cube top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube divider",
+   "b": "Shelf U3 cube bottom",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube divider",
+   "b": "Shelf U3 cube shelf 1",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube divider",
+   "b": "Shelf U3 cube shelf 2",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube divider",
+   "b": "Shelf U3 cube divider",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U4 teal side L",
+   "b": "Shelf U4 teal side L",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U4 teal side R",
+   "b": "Shelf U4 teal side R",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U4 teal top",
+   "b": "Shelf U4 teal top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U4 teal bottom",
+   "b": "Shelf U4 teal bottom",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U4 teal shelf 1",
+   "b": "Shelf U4 teal shelf 1",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U4 teal shelf 2",
+   "b": "Shelf U4 teal shelf 2",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U4 teal shelf 3",
+   "b": "Shelf U4 teal shelf 3",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Monitor riser top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U1 bookcase side L",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U1 bookcase side R",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U1 bookcase top",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U1 bookcase bottom",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U1 bookcase shelf 1",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U1 bookcase shelf 2",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U1 bookcase shelf 3",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U4 teal side R",
+   "frac": 0.018,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk column 1",
+   "b": "Desk top bracket 1",
+   "frac": 0.017,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk top bracket 1",
+   "b": "Desk column 1",
+   "frac": 0.017,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk column 2",
+   "b": "Desk top bracket 2",
+   "frac": 0.017,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk top bracket 2",
+   "b": "Desk column 2",
+   "frac": 0.017,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 1",
+   "b": "Dart rack shelf frame 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 1",
+   "b": "Dart rack shelf frame 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 1",
+   "b": "Dart rack shelf frame 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 1",
+   "b": "Dart rack shelf frame 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 2",
+   "b": "Dart rack shelf frame 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 2",
+   "b": "Dart rack shelf frame 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 2",
+   "b": "Dart rack shelf frame 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 2",
+   "b": "Dart rack shelf frame 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 3",
+   "b": "Dart rack shelf frame 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 3",
+   "b": "Dart rack shelf frame 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 3",
+   "b": "Dart rack shelf frame 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 3",
+   "b": "Dart rack shelf frame 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 4",
+   "b": "Dart rack shelf frame 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 4",
+   "b": "Dart rack shelf frame 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 4",
+   "b": "Dart rack shelf frame 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack post 4",
+   "b": "Dart rack shelf frame 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 1",
+   "b": "Dart rack post 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 1",
+   "b": "Dart rack post 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 1",
+   "b": "Dart rack post 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 1",
+   "b": "Dart rack post 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 1",
+   "b": "Dart rack shelf frame 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 2",
+   "b": "Dart rack post 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 2",
+   "b": "Dart rack post 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 2",
+   "b": "Dart rack post 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 2",
+   "b": "Dart rack post 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 2",
+   "b": "Dart rack shelf frame 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 3",
+   "b": "Dart rack post 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 3",
+   "b": "Dart rack post 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 3",
+   "b": "Dart rack post 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 3",
+   "b": "Dart rack post 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 3",
+   "b": "Dart rack shelf frame 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 4",
+   "b": "Dart rack post 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 4",
+   "b": "Dart rack post 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 4",
+   "b": "Dart rack post 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 4",
+   "b": "Dart rack post 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 4",
+   "b": "Dart rack shelf frame 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk rug puzzle border",
+   "b": "Desk foot 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Desk rug puzzle border",
+   "b": "Desk foot 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack shelf frame 1",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack shelf frame 2",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack shelf frame 3",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack shelf frame 4",
+   "frac": 0.012,
+   "kind": "furniture"
+  },
+  {
+   "a": "Mic arm lower rail 1",
+   "b": "Monitor riser leg 2",
+   "frac": 0.01,
+   "kind": "furniture"
+  },
+  {
+   "a": "Keyboard body",
+   "b": "Keyboard stand X",
+   "frac": 0.008,
+   "kind": "furniture"
+  },
+  {
+   "a": "Keyboard stand X",
+   "b": "Keyboard body",
+   "frac": 0.008,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf rods 1",
+   "b": "Dart rack shelf rods 1",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf rods 2",
+   "b": "Dart rack shelf rods 2",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf rods 3",
+   "b": "Dart rack shelf rods 3",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf rods 4",
+   "b": "Dart rack shelf rods 4",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart stand upright 1",
+   "b": "Dart rack shelf frame 4",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart stand upright 2",
+   "b": "Dart rack shelf frame 4",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase side L",
+   "b": "Shelf U1 bookcase back",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase side R",
+   "b": "Shelf U1 bookcase back",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase top",
+   "b": "Shelf U1 bookcase back",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase bottom",
+   "b": "Shelf U1 bookcase back",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase back",
+   "b": "Shelf U1 bookcase side L",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase back",
+   "b": "Shelf U1 bookcase side R",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase back",
+   "b": "Shelf U1 bookcase top",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase back",
+   "b": "Shelf U1 bookcase bottom",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase back",
+   "b": "Shelf U1 bookcase plinth",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U1 bookcase back",
+   "b": "Shelf U1 bookcase back",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U2 cube back",
+   "b": "Shelf U2 cube back",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Shelf U3 cube back",
+   "b": "Shelf U3 cube back",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack shelf rods 1",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack shelf rods 2",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack shelf rods 3",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Dart rack shelf rods 4",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Backdrop day",
+   "b": "Shelf U1 bookcase back",
+   "frac": 0.006,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 1",
+   "b": "Dart rack shelf rods 1",
+   "frac": 0.005,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf rods 1",
+   "b": "Dart rack shelf frame 1",
+   "frac": 0.005,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 2",
+   "b": "Dart rack shelf rods 2",
+   "frac": 0.005,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf rods 2",
+   "b": "Dart rack shelf frame 2",
+   "frac": 0.005,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf frame 4",
+   "b": "Dart rack shelf rods 4",
+   "frac": 0.005,
+   "kind": "furniture"
+  },
+  {
+   "a": "Dart rack shelf rods 4",
+   "b": "Dart rack shelf frame 4",
+   "frac": 0.005,
+   "kind": "furniture"
   }
  ],
- "sinks": [],
+ "sinks": [
+  {
+   "a": "Mic arm lower rail 2",
+   "b": "Monitor riser leg 2",
+   "sink": 0.046
+  },
+  {
+   "a": "Mic arm lower rail 1",
+   "b": "Monitor riser leg 2",
+   "sink": 0.037
+  },
+  {
+   "a": "Cube case r1c1",
+   "b": "Cube case r1c1 step low",
+   "sink": 0.034
+  },
+  {
+   "a": "Cube case r1c2",
+   "b": "Cube case r1c2 step low",
+   "sink": 0.034
+  },
+  {
+   "a": "Cube case r1c3",
+   "b": "Cube case r1c3 step low",
+   "sink": 0.034
+  },
+  {
+   "a": "Cube case r2c1",
+   "b": "Cube case r2c1 step low",
+   "sink": 0.034
+  },
+  {
+   "a": "Cube case r2c2",
+   "b": "Cube case r2c2 step low",
+   "sink": 0.034
+  },
+  {
+   "a": "Cube case r2c3",
+   "b": "Cube case r2c3 step low",
+   "sink": 0.034
+  },
+  {
+   "a": "Mic arm clamp",
+   "b": "PC cable laptop",
+   "sink": 0.015
+  },
+  {
+   "a": "Mouse v2 body",
+   "b": "Mouse v2 thumb shelf",
+   "sink": 0.008
+  },
+  {
+   "a": "Darts stand floral banner",
+   "b": "Dart rack shelf rods 4",
+   "sink": 0.007
+  },
+  {
+   "a": "Darts stand floral banner",
+   "b": "Dart rack shelf frame 4",
+   "sink": 0.006
+  },
+  {
+   "a": "Dart stand upright 1",
+   "b": "Dart rack shelf frame 4",
+   "sink": 0.006
+  },
+  {
+   "a": "Dart stand upright 2",
+   "b": "Dart rack shelf frame 4",
+   "sink": 0.006
+  },
+  {
+   "a": "Mic arm clamp",
+   "b": "Desk top",
+   "sink": 0.005
+  },
+  {
+   "a": "Camera bag",
+   "b": "Entry rack shelf 1",
+   "sink": 0.005
+  },
+  {
+   "a": "Camera Tamron 70-300 lens",
+   "b": "Entry rack shelf 3",
+   "sink": 0.004
+  }
+ ],
  "collider_drift": [],
  "curve_hits": []
 }

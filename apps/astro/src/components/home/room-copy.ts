@@ -40,6 +40,7 @@ export const roomCopy = {
     related: 'Related pages',
     content: 'Page content',
     failed: 'The room could not load. You can still explore every page below.',
+    playFailed: 'This item could not be opened. You can keep exploring the room.',
     look: 'Click to explore',
     about: 'About',
     contact: 'Contact',
@@ -51,12 +52,62 @@ export const roomCopy = {
     yoyo: 'Yoyo',
     penspinning: 'Pen Spinning',
     kendama: 'Kendama',
+    juggling: 'Juggling',
     cardistry: 'Cardistry / Magic',
     nesoberi: 'Nesoberi',
     penlight: 'Penlights',
     play: {
       exit: 'Back to the room',
       openPage: 'Open page',
+      penlight: {
+        intro:
+          'Drag a penlight to pick it up and wave it. Enter toggles its glow; C changes color. Use left/right arrows to select and Space to pick up or release.',
+        toggleGlow: 'Toggle glow',
+        cycleColor: 'Change color',
+        picked: 'Pick a penlight'
+      },
+      cardistry: {
+        intro:
+          'Watch the highlighted card, then shuffle and follow it. Click a card or press 1–3 to choose. Enter reveals your choice; Space shuffles or reveals.',
+        shuffle: 'Shuffle',
+        reveal: 'Reveal',
+        find: 'Find the highlighted card',
+        win: 'Found it!',
+        miss: 'Try again'
+      },
+      penspinning: {
+        intro:
+          'Pick up the pen, hold Space to charge, then release to spin. Press Space in the catch window. Drag to move or flick the pen; R resets.',
+        pickUp: 'Pick up',
+        charge: 'Charge',
+        sonic: 'Release to spin',
+        catch: 'Catch',
+        drop: 'Drop',
+        reset: 'Reset',
+        spinning: 'Spinning',
+        dropped: 'Dropped',
+        caught: 'Caught'
+      },
+      kendama: {
+        intro:
+          'Move the pointer to guide the cup. Click or press Space to toss the ball, then place the cup under its descent. Reset returns to the starting position.',
+        throw: 'Toss',
+        catch: 'Caught',
+        land: 'Landed',
+        reset: 'Reset',
+        catches: 'Catches',
+        drops: 'Drops'
+      },
+      juggling: {
+        intro:
+          'Click or press Space to throw a ball or catch one within reach. Enter throws; C catches. Keep the balls moving between hands, or reset after a drop.',
+        throw: 'Throw',
+        catch: 'Catch',
+        land: 'Landed',
+        reset: 'Reset',
+        catches: 'Catches',
+        drops: 'Drops'
+      },
       darts: {
         intro:
           'Aim with the pointer. Press and hold to wind up, release to throw. Space works too. 301, finish on a double.',
@@ -153,6 +204,7 @@ export const roomCopy = {
     related: '関連ページ',
     content: 'ページの内容',
     failed: '部屋を読み込めませんでした。下のリンクから各ページをご覧いただけます。',
+    playFailed: 'このアイテムを開けませんでした。引き続き部屋を探索できます。',
     look: 'クリックして読む',
     about: '自己紹介',
     contact: 'お問い合わせ',
@@ -164,12 +216,62 @@ export const roomCopy = {
     yoyo: 'ヨーヨー',
     penspinning: 'ペンスピニング',
     kendama: 'けん玉',
+    juggling: 'ジャグリング',
     cardistry: 'カーディストリー / マジック',
     nesoberi: '寝そべり',
     penlight: 'ペンライト',
     play: {
       exit: '部屋に戻る',
       openPage: 'ページを開く',
+      penlight: {
+        intro:
+          'ペンライトをドラッグして持ち上げ、振れます。Enterで点灯切替、Cで色変更。左右キーで選び、Spaceで持つ・離す。',
+        toggleGlow: '点灯切替',
+        cycleColor: '色を変える',
+        picked: 'ペンライトを選ぶ'
+      },
+      cardistry: {
+        intro:
+          '光っているカードを覚え、シャッフル中も追いかけてください。クリックか1〜3で選択、Enterで答え合わせ。Spaceでシャッフル・答え合わせ。',
+        shuffle: 'シャッフル',
+        reveal: '答え合わせ',
+        find: '光っていたカードを探す',
+        win: '正解！',
+        miss: 'もう一度'
+      },
+      penspinning: {
+        intro:
+          'ペンを持ち、Spaceを長押しして離すと回転。キャッチのタイミングでSpaceを押します。ドラッグで移動・フリック、Rでリセット。',
+        pickUp: '持つ',
+        charge: '力をためる',
+        sonic: '離して回す',
+        catch: 'キャッチ',
+        drop: '落とす',
+        reset: 'リセット',
+        spinning: '回転中',
+        dropped: '落下',
+        caught: 'キャッチ成功'
+      },
+      kendama: {
+        intro:
+          'ポインターで皿を動かし、クリックかSpaceで玉を投げます。落ちてくる玉の下に皿を合わせてください。リセットで最初の位置に戻ります。',
+        throw: '投げる',
+        catch: '成功',
+        land: '着地',
+        reset: 'リセット',
+        catches: '成功',
+        drops: '落下'
+      },
+      juggling: {
+        intro:
+          'クリックかSpaceで投げる・届く玉を受け取る。Enterで投げ、Cでキャッチ。左右の手で投げ続け、落としたらリセットできます。',
+        throw: '投げる',
+        catch: 'キャッチ',
+        land: '着地',
+        reset: 'リセット',
+        catches: 'キャッチ',
+        drops: '落下'
+      },
       darts: {
         intro:
           'ポインターで狙い、押して構え、離して投げる。スペースキーでも可。301、ダブルで上がり。',
@@ -266,6 +368,7 @@ export const roomCopy = {
     related: 'หน้าที่เกี่ยวข้อง',
     content: 'เนื้อหาของหน้า',
     failed: 'โหลดห้องไม่สำเร็จ ยังสามารถอ่านทุกหน้าได้จากลิงก์ด้านล่าง',
+    playFailed: 'เปิดสิ่งของนี้ไม่สำเร็จ ยังสามารถสำรวจห้องต่อได้',
     look: 'คลิกเพื่ออ่าน',
     about: 'เกี่ยวกับผม',
     contact: 'ติดต่อ',
@@ -277,12 +380,62 @@ export const roomCopy = {
     yoyo: 'โยโย่',
     penspinning: 'เพนสปินนิ่ง',
     kendama: 'เคนดามะ',
+    juggling: 'โยนรับลูกบอล',
     cardistry: 'คาร์ดิสทรี / มายากล',
     nesoberi: 'ตุ๊กตาเนโซเบริ',
     penlight: 'แท่งไฟเชียร์',
     play: {
       exit: 'กลับไปที่ห้อง',
       openPage: 'เปิดหน้า',
+      penlight: {
+        intro:
+          'ลากแท่งไฟเพื่อหยิบและโบก กด Enter เพื่อเปิดหรือปิดไฟ กด C เพื่อเปลี่ยนสี ใช้ลูกศรซ้ายขวาเพื่อเลือก และ Space เพื่อหยิบหรือปล่อย',
+        toggleGlow: 'เปิดหรือปิดไฟ',
+        cycleColor: 'เปลี่ยนสี',
+        picked: 'เลือกแท่งไฟ'
+      },
+      cardistry: {
+        intro:
+          'จำไพ่ที่เรืองแสงแล้วติดตามขณะสับไพ่ คลิกไพ่หรือกด 1–3 เพื่อเลือก กด Enter เพื่อเฉลย หรือ Space เพื่อสับไพ่และเฉลย',
+        shuffle: 'สับไพ่',
+        reveal: 'เฉลย',
+        find: 'หาไพ่ที่เรืองแสง',
+        win: 'ถูกต้อง!',
+        miss: 'ลองอีกครั้ง'
+      },
+      penspinning: {
+        intro:
+          'หยิบปากกา กด Space ค้างแล้วปล่อยเพื่อหมุน กด Space ในจังหวะรับ ลากเพื่อขยับหรือสะบัดปากกา กด R เพื่อเริ่มใหม่',
+        pickUp: 'หยิบ',
+        charge: 'สะสมแรง',
+        sonic: 'ปล่อยเพื่อหมุน',
+        catch: 'รับ',
+        drop: 'ปล่อยตก',
+        reset: 'เริ่มใหม่',
+        spinning: 'กำลังหมุน',
+        dropped: 'ตกแล้ว',
+        caught: 'รับได้'
+      },
+      kendama: {
+        intro:
+          'ขยับเมาส์เพื่อเลื่อนถ้วย คลิกหรือกด Space เพื่อโยนลูก แล้วเลื่อนถ้วยไปรับขณะลูกตก กดเริ่มใหม่เพื่อกลับจุดเริ่มต้น',
+        throw: 'โยน',
+        catch: 'รับได้',
+        land: 'ตกถึงพื้น',
+        reset: 'เริ่มใหม่',
+        catches: 'รับได้',
+        drops: 'ตก'
+      },
+      juggling: {
+        intro:
+          'คลิกหรือกด Space เพื่อโยนหรือรับลูกที่อยู่ในระยะ กด Enter เพื่อโยน กด C เพื่อรับ โยนสลับมืออย่างต่อเนื่อง หรือเริ่มใหม่เมื่อลูกตก',
+        throw: 'โยน',
+        catch: 'รับ',
+        land: 'ตกถึงพื้น',
+        reset: 'เริ่มใหม่',
+        catches: 'รับได้',
+        drops: 'ตก'
+      },
       darts: {
         intro:
           'เล็งด้วยเมาส์ กดค้างเพื่อง้าง ปล่อยเพื่อปา หรือใช้ Space ก็ได้ เกม 301 ต้องจบด้วยช่องดับเบิล',

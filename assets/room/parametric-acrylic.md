@@ -1,0 +1,15 @@
+# PNG-driven acrylic assets
+
+`parametric_acrylic.py` runs inside native Blender MCP. `png_plate(image, corners, ink_material, clear_material, thickness, border_m, tab_width_m, sample_step, alpha_threshold)` builds a closed silhouette plate from a transparent PNG. Corners define the print rectangle in world coordinates and preserve its placement and UV orientation. `acrylic_base(width, depth, height, segments)` builds a configurable oval base mesh. Functions return meshes; caller owns linking, placement, materials and original-object preservation.
+
+Default thickness3mm, clear border0.65mm, insertion tab4mm. No inference or CPU image-to-3D model required. Generated inputs must contain one complete connected figure, alpha background, tight clean edges, no base/frame/glow/shadow/text/logos/facial details. Separate PNG per artwork; never an atlas as a deliverable. Distinct existing assignments remain authoritative. Disconnected decorative fragments and internal holes require further handling; reject unsuitable artwork instead of claiming universal compatibility.
+
+Native geometry verification covers all72 existing standalone PNGs plus the new stand02 print candidate: closed manifold meshes, zero degenerate faces after tolerance repair. Report: tools/room-harness/image-to-3d/outputs/parametric-acrylic-input-audit.json. New input rendered through the reusable preview adapter and inspected: clean silhouette, print visible on both faces, no baked halo visible in the rendered surface. Whole-room integration and browser verification remain pending; this does not prove every existing image fits every display location.
+
+Production policy: use this shared parametric generator for acrylics. Generate distinct transparent print PNGs individually; do not perform separate image-to-3D inference or hand-build each stand. Existing assignments and roomTarget metadata must survive adaptation. Individual image assets remain independent of physical thickness, clear border, support tab and base dimensions. Preview adapter: tools/room-harness/image-to-3d/render_parametric_acrylic.py, configured through ACRYLIC_SPEC.
+
+## Production rollout
+
+63 remaining Case stand plates integrated as png-parametric-v1; stand01 contour retained. Original object names, transforms, bases, print materials and hobby metadata preserved. Base insertion tabs placed0.5mm into existing bases. Production saved; fresh stand02 six-view PNG inspected. Integration record: tools/room-harness/image-to-3d/outputs/parametric-acrylic-integration.json. Complete photo acceptance and browser verification remain open. Additional contour geometry raises full-scene budget to693946 triangles; budget reduction remains required.
+
+Production filled-case review: assets/room/design-sheets/acrylic-case-r1c1-production-context.png inspected at original resolution. Existing unique prints remain visible through front/back; silhouette geometry replaces former rectangular print substrates. Context retains actual current solid-cube case shell and original bases; it is not the isolated hollow-case candidate. Contact, case shell and exact photograph identity still require work.

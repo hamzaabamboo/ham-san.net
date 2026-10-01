@@ -1,4 +1,7 @@
 import { readFile } from 'node:fs/promises'
+import { createReadStream } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { pipeline } from 'node:stream/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -11,6 +14,10 @@ const asJson = args.includes('--json')
 
 const plan = JSON.parse(await readFile(resolve(here, 'build-plan.json'), 'utf8'))
 const audit = JSON.parse(await readFile(resolve(here, 'audit-latest.json'), 'utf8'))
+const sourceFile = resolve(repo, 'assets/room/room-v2.blend')
+const sourceHash = createHash('sha256')
+await pipeline(createReadStream(sourceFile), sourceHash)
+const sourceSha256 = sourceHash.digest('hex')
 
 const meshes = audit.objects.filter((o) => o.min && o.max)
 const floor = meshes.find((o) => /^Floor base$/.test(o.name)) ?? meshes.find((o) => /floor/i.test(o.name))
@@ -32,6 +39,19 @@ const tol = (units) => (units / plan.floorplan.width) * (cal.x1 - cal.x0)
 const renderable = audit.objects.filter((o) => !o.hide_render)
 const results = []
 const push = (item, status, detail) => results.push({ item, status, detail })
+const provenanceProblems = (report) => {
+  const problems = []
+  if (!report.source_file) problems.push('source path provenance is missing')
+  else if (report.source_file !== sourceFile) problems.push('source file does not match production blend')
+  if (!report.source_sha256) problems.push('source fingerprint is missing')
+  else if (report.source_sha256 !== sourceSha256) problems.push('source fingerprint is stale')
+  if (report.source_is_dirty !== false) problems.push('saved scene consistency is unproven')
+  if (report.source_present !== true || !['scene', 'collection'].includes(report.source_scope) || !report.source_collection) problems.push('source scope is missing or invalid')
+  if (!Number.isFinite(Date.parse(report.generated_at))) problems.push('generation timestamp is missing or invalid')
+  return problems
+}
+const sceneProvenance = provenanceProblems(audit)
+push('SCENE-AUDIT-SOURCE', sceneProvenance.length ? 'fail' : 'pass', sceneProvenance.length ? sceneProvenance.join('; ') : 'current saved production source')
 
 const globalChecks = () => {
   const tris = audit.triangles_renderable
@@ -115,10 +135,28 @@ const physicsChecks = async () => {
     push('PHYSICS-AUDIT', 'fail', 'physics-latest.json missing; run physics_audit.py in Blender')
     return
   }
-  const assembly = /Monitor|Piano|Rubik|kendama|Nikon|Tamron|Laptop|penspinning|yoyo|Desk pen|Darts accessory|Desk fan|Camera gear|Chair moulded shell|Shelf cover display|^Mouse|^Nesoberi|jump rope/i
-  const pairs = physics.intersections.filter((i) => !i.kind && !(assembly.test(i.a) && assembly.test(i.b)))
+  const provenance = provenanceProblems(physics)
+  if (physics.method !== 'mesh-contact-audit') {
+    provenance.push('physical report is screening only; mesh contact verification is missing')
+  }
+  if (!Number.isInteger(physics.objects) || physics.objects < 1 || physics.objects > audit.object_count) {
+    provenance.push('physical object coverage does not match scene inventory')
+  }
+  for (const key of ['floating', 'wall_penetration', 'intersections', 'sinks', 'collider_drift', 'curve_hits']) {
+    if (!Array.isArray(physics[key])) provenance.push(`physical results missing: ${key}`)
+  }
+  if (physics.source_scope !== audit.source_scope || physics.source_collection !== audit.source_collection) {
+    provenance.push('physics scope does not match scene inventory')
+  }
+  if (sceneProvenance.length || provenance.length) {
+    push('PHYSICS-AUDIT', 'fail', [...new Set([...sceneProvenance, ...provenance])].join('; '))
+    return
+  }
+  const pairs = physics.intersections.filter((i) => !i.kind)
   const kinds = (k) => physics.intersections.filter((i) => i.kind === k)
-  push('PHYSICS-PAIRS', pairs.length ? 'fail' : 'pass', pairs.length ? pairs.slice(0, 5).map((p) => `${p.a} × ${p.b}`).join('; ') : `${physics.intersections.length} pairs, all sub-assemblies`)
+  push('PHYSICS-SUPPORT', physics.floating.length ? 'fail' : 'pass', `${physics.floating.length} unsupported objects`)
+  push('PHYSICS-WALLS', physics.wall_penetration.length ? 'fail' : 'pass', `${physics.wall_penetration.length} wall/floor penetrations`)
+  push('PHYSICS-PAIRS', pairs.length ? 'fail' : 'pass', pairs.length ? pairs.slice(0, 5).map((p) => `${p.a} × ${p.b}`).join('; ') : 'no unresolved content pairs')
   push('PHYSICS-STRUCTURE', kinds('structure').length ? 'fail' : 'pass', `${kinds('structure').length} content-in-structure hits`)
   push('PHYSICS-FURNITURE', kinds('furniture').length ? 'fail' : 'pass', `${kinds('furniture').length} content-in-furniture hits`)
   push('PHYSICS-SINKS', (physics.sinks ?? []).length ? 'fail' : 'pass', `${(physics.sinks ?? []).length} objects sunk into a surface`)

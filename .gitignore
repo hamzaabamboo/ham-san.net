@@ -144,3 +144,33 @@ dogfood-output
 
 /conductor/evidence/room-references/
 /assets/room/room-photo-comparison.png
+/assets/room/current-room-*.jpg
+/assets/room/textures/*-reference-*.png
+/tools/room-harness/reference-*/
+/docs/ref/
+
+############################
+# Room work in progress (local only)
+############################
+
+/assets/room/*.glb
+/assets/room/*.blend
+/assets/room/*.blend1
+/assets/room/__pycache__/
+/assets/room/generated-*
+/assets/room/model-gallery-browser.png
+/assets/room/model-output-gallery.html
+/assets/room/design-sheets/
+/assets/room/art/gen/stand-02-print-v2*
+/assets/room/art/gen/stand-73.png
+/assets/room/art/gen/stand-73-clean.png
+/assets/room/art/gen/stand-73-green.png
+/assets/room/art/gen/stand-73-v3.png
+/tools/room-harness/image-to-3d/
+/tools/room-harness/item-compare/work/
+/tools/room-harness/item-compare/panels/
+/tools/room-harness/item-compare/sheets/
+/tools/room-harness/item-compare/current/
+/tools/room-harness/item-compare/photos/
+/tools/room-harness/build/fix-*
+/docs/room-handoff-2026-10-02/

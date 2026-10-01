@@ -1,58 +1,71 @@
 import * as THREE from 'three';
+import { cardistry, penlight, penspinning, type PropPlayCopy } from './room-play-props';
+import { juggling, kendama, type PhysicsPlayCopy } from './room-play-physics';
 
-export type PlayId = 'darts' | 'rubik' | 'piano' | 'typing' | 'yoyo';
+export type PlayId =
+  | 'darts'
+  | 'rubik'
+  | 'piano'
+  | 'typing'
+  | 'yoyo'
+  | 'penlight'
+  | 'cardistry'
+  | 'penspinning'
+  | 'kendama'
+  | 'juggling';
 
-export type PlayCopy = {
-  exit: string;
-  openPage: string;
-  darts: {
-    intro: string;
-    remaining: string;
-    round: string;
-    bust: string;
-    win: string;
-    newGame: string;
-    miss: string;
+export type PlayCopy = PropPlayCopy &
+  PhysicsPlayCopy & {
+    exit: string;
+    openPage: string;
+    darts: {
+      intro: string;
+      remaining: string;
+      round: string;
+      bust: string;
+      win: string;
+      newGame: string;
+      miss: string;
+    };
+    piano: {
+      intro: string;
+      chord: string;
+      octave: string;
+      sustain: string;
+    };
+    typing: {
+      intro: string;
+      ready: string;
+      go: string;
+      you: string;
+      finished: string;
+      place: string;
+      wpm: string;
+      accuracy: string;
+      best: string;
+      newRace: string;
+    };
+    yoyo: {
+      intro: string;
+      sleep: string;
+      best: string;
+      around: string;
+      walk: string;
+      binds: string;
+      dead: string;
+      rewind: string;
+    };
+    rubik: {
+      intro: string;
+      scramble: string;
+      reset: string;
+      time: string;
+      best: string;
+      ao5: string;
+      solved: string;
+      moves: string;
+    };
   };
-  piano: {
-    intro: string;
-    chord: string;
-    octave: string;
-    sustain: string;
-  };
-  typing: {
-    intro: string;
-    ready: string;
-    go: string;
-    you: string;
-    finished: string;
-    place: string;
-    wpm: string;
-    accuracy: string;
-    best: string;
-    newRace: string;
-  };
-  yoyo: {
-    intro: string;
-    sleep: string;
-    best: string;
-    around: string;
-    walk: string;
-    binds: string;
-    dead: string;
-    rewind: string;
-  };
-  rubik: {
-    intro: string;
-    scramble: string;
-    reset: string;
-    time: string;
-    best: string;
-    ao5: string;
-    solved: string;
-    moves: string;
-  };
-};
 
 export type PlayPose = { position: THREE.Vector3; lookAt: THREE.Vector3 };
 
@@ -77,7 +90,18 @@ export type PlaySession = {
   dispose: () => void;
 };
 
-const playIds: readonly PlayId[] = ['darts', 'rubik', 'piano', 'typing', 'yoyo'];
+const playIds: readonly PlayId[] = [
+  'darts',
+  'rubik',
+  'piano',
+  'typing',
+  'yoyo',
+  'penlight',
+  'cardistry',
+  'penspinning',
+  'kendama',
+  'juggling'
+];
 
 export const isPlayable = (id: string): id is PlayId => playIds.includes(id as PlayId);
 
@@ -1607,7 +1631,12 @@ const sessions: Record<PlayId, (context: PlayContext) => PlaySession> = {
   rubik,
   piano,
   typing,
-  yoyo
+  yoyo,
+  penlight,
+  cardistry,
+  penspinning,
+  kendama: (context) => kendama(context, context.copy.kendama),
+  juggling: (context) => juggling(context, context.copy.juggling)
 };
 
 export const startPlay = (id: PlayId, context: PlayContext) => sessions[id](context);

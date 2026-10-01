@@ -1,11 +1,16 @@
 import bpy
 import json
 import os
+import hashlib
+from datetime import datetime, timezone
 from mathutils import Vector
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(bpy.data.filepath), '..', '..'))
 OUT = os.path.join(REPO, 'tools', 'room-harness', 'build', 'audit-latest.json')
 SOURCE = 'RoomHome'
+SCOPE = globals().get('AUDIT_SCOPE', 'collection')
+if SCOPE not in {'collection', 'scene'}:
+    raise ValueError(f'Unknown audit scope: {SCOPE}')
 ROOM_KEYS = (
     'roomTarget', 'roomNavigation', 'roomCurtain', 'roomClosetLeaf',
     'roomBounds', 'roomCollision', 'roomLight', 'roomSwitch'
@@ -52,7 +57,12 @@ def collection_tree(col, depth=0, acc=None):
     return acc
 
 
-source = bpy.data.collections.get(SOURCE)
+source = bpy.context.scene.collection if SCOPE == 'scene' else bpy.data.collections.get(SOURCE)
+source_hash = hashlib.sha256()
+with open(bpy.data.filepath, 'rb') as handle:
+    for chunk in iter(lambda: handle.read(1024 * 1024), b''):
+        source_hash.update(chunk)
+bpy.context.view_layer.update()
 depsgraph = bpy.context.evaluated_depsgraph_get()
 objects = []
 materials = {}
@@ -90,8 +100,13 @@ if source:
 
 payload = {
     'file': bpy.data.filepath,
+    'source_file': bpy.data.filepath,
+    'source_sha256': source_hash.hexdigest(),
+    'source_is_dirty': bpy.data.is_dirty,
+    'generated_at': datetime.now(timezone.utc).isoformat(),
     'blender': bpy.app.version_string,
-    'source_collection': SOURCE,
+    'source_collection': source.name if source else SOURCE,
+    'source_scope': SCOPE,
     'source_present': source is not None,
     'collections': collection_tree(bpy.context.scene.collection),
     'object_count': len(objects),
