@@ -1,11 +1,11 @@
 {
  "source_file": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/room-v2.blend",
- "source_sha256": "8568164da58110742a09c621d3dd1844be18289fbda7242ae7f5cc9ceb81ba00",
+ "source_sha256": "f69d3679dffbda94fe89e82c52b04e610c0eb620f3e11f44c9f1a626014d0de8",
  "source_is_dirty": false,
  "source_scope": "scene",
  "source_collection": "Scene Collection",
  "source_present": true,
- "generated_at": "2026-10-01T16:48:23.516580+00:00",
+ "generated_at": "2026-10-21T13:58:08.050996+00:00",
  "method": "aabb-screening",
  "room_bounds": {
   "xmin": -1.78000009059906,
@@ -20,7 +20,7 @@
   "Plush v4",
   "Plush v5 nesoberi"
  ],
- "objects": 1164,
+ "objects": 1168,
  "floating": [
   {
    "name": "Desk top bracket 1",
@@ -1748,12 +1748,12 @@
    "name": "Live towel fold 1",
    "bottom": 1.042,
    "lo": [
-    3.136,
+    3.149,
     -0.94,
     1.042
    ],
    "hi": [
-    3.17,
+    3.183,
     -0.74,
     1.402
    ]
@@ -1762,12 +1762,12 @@
    "name": "Live towel fold 2",
    "bottom": 1.082,
    "lo": [
-    3.136,
+    3.149,
     -1.395,
     1.082
    ],
    "hi": [
-    3.17,
+    3.183,
     -1.205,
     1.402
    ]

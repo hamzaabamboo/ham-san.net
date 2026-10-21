@@ -1,9 +1,9 @@
 {
  "file": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/room-v2.blend",
  "source_file": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/room-v2.blend",
- "source_sha256": "8568164da58110742a09c621d3dd1844be18289fbda7242ae7f5cc9ceb81ba00",
+ "source_sha256": "f69d3679dffbda94fe89e82c52b04e610c0eb620f3e11f44c9f1a626014d0de8",
  "source_is_dirty": false,
- "generated_at": "2026-10-01T16:48:43.991129+00:00",
+ "generated_at": "2026-10-21T13:58:13.432495+00:00",
  "blender": "5.2.2 LTS",
  "source_collection": "Scene Collection",
  "source_scope": "scene",
@@ -374,7 +374,11 @@
     "Desk fan rear grille 25",
     "Desk fan rear grille 26",
     "Desk fan rear grille 27",
-    "Desk fan rear grille 28"
+    "Desk fan rear grille 28",
+    "Mic shock mount elastic 1",
+    "Mic shock mount elastic 2",
+    "Mic shock mount elastic 3",
+    "Mic shock mount elastic 4"
    ]
   },
   {
@@ -1789,8 +1793,8 @@
    ]
   }
  ],
- "object_count": 1578,
- "triangles_renderable": 671124,
+ "object_count": 1582,
+ "triangles_renderable": 671236,
  "objects": [
   {
    "name": "Review cam",
@@ -12012,6 +12016,130 @@
    "uv_layers": []
   },
   {
+   "name": "Mic shock mount elastic 1",
+   "type": "MESH",
+   "collection": "Desk",
+   "parent": null,
+   "hide_render": false,
+   "hide_viewport": false,
+   "props": {
+    "roomTarget": "projects"
+   },
+   "location": [
+    -1.4216,
+    1.1784,
+    1.09
+   ],
+   "min": [
+    -1.4264,
+    1.1736,
+    1.0888
+   ],
+   "max": [
+    -1.4169,
+    1.1831,
+    1.0912
+   ],
+   "tris": 28,
+   "materials": [
+    "Black steel"
+   ],
+   "uv_layers": []
+  },
+  {
+   "name": "Mic shock mount elastic 2",
+   "type": "MESH",
+   "collection": "Desk",
+   "parent": null,
+   "hide_render": false,
+   "hide_viewport": false,
+   "props": {
+    "roomTarget": "projects"
+   },
+   "location": [
+    -1.4584,
+    1.1784,
+    1.09
+   ],
+   "min": [
+    -1.4631,
+    1.1736,
+    1.0888
+   ],
+   "max": [
+    -1.4536,
+    1.1831,
+    1.0912
+   ],
+   "tris": 28,
+   "materials": [
+    "Black steel"
+   ],
+   "uv_layers": []
+  },
+  {
+   "name": "Mic shock mount elastic 3",
+   "type": "MESH",
+   "collection": "Desk",
+   "parent": null,
+   "hide_render": false,
+   "hide_viewport": false,
+   "props": {
+    "roomTarget": "projects"
+   },
+   "location": [
+    -1.4584,
+    1.1416,
+    1.09
+   ],
+   "min": [
+    -1.4631,
+    1.1369,
+    1.0888
+   ],
+   "max": [
+    -1.4536,
+    1.1464,
+    1.0912
+   ],
+   "tris": 28,
+   "materials": [
+    "Black steel"
+   ],
+   "uv_layers": []
+  },
+  {
+   "name": "Mic shock mount elastic 4",
+   "type": "MESH",
+   "collection": "Desk",
+   "parent": null,
+   "hide_render": false,
+   "hide_viewport": false,
+   "props": {
+    "roomTarget": "projects"
+   },
+   "location": [
+    -1.4216,
+    1.1416,
+    1.09
+   ],
+   "min": [
+    -1.4264,
+    1.1369,
+    1.0888
+   ],
+   "max": [
+    -1.4169,
+    1.1464,
+    1.0912
+   ],
+   "tris": 28,
+   "materials": [
+    "Black steel"
+   ],
+   "uv_layers": []
+  },
+  {
    "name": "Chair shell",
    "type": "MESH",
    "collection": "Chair",
@@ -15103,18 +15231,18 @@
     "roomTarget": "darts"
    },
    "location": [
-    0.0,
-    0.0,
+    0.01,
+    0.013,
     0.0
    ],
    "min": [
-    0.483,
-    1.765,
+    0.493,
+    1.778,
     1.1
    ],
    "max": [
-    0.507,
-    1.79,
+    0.517,
+    1.803,
     1.86
    ],
    "tris": 12,
@@ -15134,18 +15262,18 @@
     "roomTarget": "darts"
    },
    "location": [
-    0.0,
-    0.0,
+    -0.01,
+    0.013,
     0.0
    ],
    "min": [
-    1.083,
-    1.765,
+    1.073,
+    1.778,
     1.1
    ],
    "max": [
-    1.107,
-    1.79,
+    1.097,
+    1.803,
     1.86
    ],
    "tris": 12,
@@ -29129,17 +29257,17 @@
     "roomTarget": "events"
    },
    "location": [
-    0.0,
+    0.0132,
     0.0,
     0.0
    ],
    "min": [
-    3.136,
+    3.1492,
     -0.9401,
     1.0424
    ],
    "max": [
-    3.17,
+    3.1831,
     -0.7399,
     1.402
    ],
@@ -29162,17 +29290,17 @@
     "roomTarget": "events"
    },
    "location": [
-    0.0,
+    0.0132,
     0.0,
     0.0
    ],
    "min": [
-    3.136,
+    3.1492,
     -1.3951,
     1.0824
    ],
    "max": [
-    3.17,
+    3.1832,
     -1.2049,
     1.402
    ],

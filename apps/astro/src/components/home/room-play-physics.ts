@@ -160,6 +160,69 @@ const kendamaRim = (ken: THREE.Object3D) => {
   throw new Error('Kendama upper cup ring vertices are missing');
 };
 
+const edgeKey = (a: number, b: number) => (a < b ? `${a}:${b}` : `${b}:${a}`);
+
+const circumcircle = (a: THREE.Vector3, b: THREE.Vector3, c: THREE.Vector3) => {
+  const ab = b.clone().sub(a);
+  const ac = c.clone().sub(a);
+  const normal = ab.clone().cross(ac);
+  const center = a.clone().add(
+    normal
+      .clone()
+      .cross(ab)
+      .multiplyScalar(ac.lengthSq())
+      .add(ac.clone().cross(normal).multiplyScalar(ab.lengthSq()))
+      .divideScalar(2 * normal.lengthSq())
+  );
+  return { center, radius: center.distanceTo(a), normal: normal.normalize() };
+};
+
+const withoutEndCaps = (triangles: number[][], vertices: THREE.Vector3[]) => {
+  const edgeFaces = new Map<string, number[]>();
+  triangles.forEach((triangle, face) => {
+    for (let corner = 0; corner < 3; corner += 1) {
+      const key = edgeKey(triangle[corner], triangle[(corner + 1) % 3]);
+      edgeFaces.set(key, [...(edgeFaces.get(key) ?? []), face]);
+    }
+  });
+  if ([...edgeFaces.values()].some((faces) => faces.length === 1)) return triangles;
+  const circles = triangles.map(([a, b, c]) => circumcircle(vertices[a], vertices[b], vertices[c]));
+  const group = triangles.map((_, face) => face);
+  const find = (face: number): number =>
+    group[face] === face ? face : (group[face] = find(group[face]));
+  edgeFaces.forEach(([first, second]) => {
+    if (second === undefined) return;
+    const tolerance = 0.05 * Math.min(circles[first].radius, circles[second].radius);
+    if (
+      circles[first].center.distanceTo(circles[second].center) < tolerance &&
+      Math.abs(circles[first].radius - circles[second].radius) < tolerance
+    )
+      group[find(first)] = find(second);
+  });
+  const members = new Map<number, number[]>();
+  triangles.forEach((_, face) =>
+    members.set(find(face), [...(members.get(find(face)) ?? []), face])
+  );
+  const caps = [...members.values()]
+    .filter((faces) => faces.length > 2)
+    .map((faces) => ({
+      center: faces
+        .reduce((sum, face) => sum.add(circles[face].center), new THREE.Vector3())
+        .divideScalar(faces.length),
+      radius: faces.reduce((sum, face) => sum + circles[face].radius, 0) / faces.length,
+      normal: circles[faces[0]].normal
+    }));
+  const onCap = (vertex: THREE.Vector3) =>
+    caps.some(({ center, radius, normal }) => {
+      const offset = vertex.clone().sub(center);
+      return (
+        Math.abs(offset.dot(normal)) < radius * 0.1 &&
+        Math.abs(offset.length() - radius) < radius * 0.1
+      );
+    });
+  return triangles.filter((triangle) => !triangle.every((vertex) => onCap(vertices[vertex])));
+};
+
 const cordTopology = (mesh: THREE.Mesh, toward: THREE.Vector3) => {
   mesh.updateWorldMatrix(true, false);
   const attribute = mesh.geometry.getAttribute('position');
@@ -184,10 +247,13 @@ const cordTopology = (mesh: THREE.Mesh, toward: THREE.Vector3) => {
     }
     remap.push(keys.get(key)!);
   }
+  const triangles: number[][] = [];
+  for (let face = 0; face < index.count; face += 3) {
+    triangles.push([0, 1, 2].map((corner) => remap[index.getX(face + corner)]));
+  }
   const edges = new Map<string, { a: number; b: number; count: number }>();
   const neighbors = vertices.map(() => new Set<number>());
-  for (let face = 0; face < index.count; face += 3) {
-    const triangle = [0, 1, 2].map((corner) => remap[index.getX(face + corner)]);
+  for (const triangle of withoutEndCaps(triangles, vertices)) {
     for (let corner = 0; corner < 3; corner += 1) {
       const a = triangle[corner];
       const b = triangle[(corner + 1) % 3];

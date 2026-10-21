@@ -30,15 +30,8 @@ const destinations = [
   <div class="room-stage" data-room-stage aria-label={copy.scene}></div>
   <header class="room-header">
     <a class="room-brand" href={`/${locale}`} aria-label={t('common.name')}><BrandMark /></a>
-    <div class="room-time"><span data-room-time></span><span>Tokyo</span></div>
-    <div class="room-light-control" data-room-light-control hidden>
-      <button type="button" data-room-light-toggle aria-pressed="false">{copy.light}</button>
-      <button type="button" data-room-light-left aria-pressed="false">{copy.lightLeft}</button>
-      <button type="button" data-room-light-right aria-pressed="false">{copy.lightRight}</button>
-      <button type="button" data-room-light-auto hidden>{copy.lightAuto}</button>
-      <button type="button" data-room-curtains aria-pressed="false">{copy.curtains}</button>
-      <button type="button" data-room-curtains-auto hidden>{copy.curtainsAuto}</button>
-    </div>
+    <button type="button" class="room-exit" data-room-exit hidden>{copy.exit}</button>
+    <p class="room-time"><span data-room-time></span> Tokyo</p>
     <nav class="room-languages" aria-label={t('common.language')}>
       {
         (['en', 'ja', 'th'] as const).map((lang) => (
@@ -60,19 +53,50 @@ const destinations = [
   <div class="room-target-labels" data-room-target-labels hidden></div>
   <div class="room-hint" data-room-hint hidden aria-live="polite"></div>
   <footer class="room-controls">
-    <p data-room-help data-room-desktop-controls={copy.controls}>{copy.controls}</p>
-    <nav aria-label={copy.destinations}>
-      {
-        destinations.map((item) => (
-          <a href={`/${locale}/${item.path}`} data-room-destination={item.id}>
-            {item.label}
-          </a>
-        ))
-      }
-      <button type="button" data-room-lie-down hidden aria-pressed="false">{copy.lieDown}</button>
-      <button type="button" data-room-closet hidden aria-pressed="false">{copy.closetOpen}</button>
-      <button data-room-exit hidden>{copy.exit}</button>
-    </nav>
+    <p class="room-help" data-room-help data-room-desktop-controls={copy.controls}>
+      {copy.controls}
+    </p>
+    <div class="room-controls-row">
+      <nav class="room-destinations" aria-label={copy.destinations}>
+        {
+          destinations.map((item) => (
+            <a href={`/${locale}/${item.path}`} data-room-destination={item.id}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+      <div class="room-toolbar" data-room-light-control hidden>
+        <div class="room-toolbar-group" role="group" aria-label={copy.light}>
+          <button type="button" data-room-light-toggle aria-pressed="false">{copy.light}</button>
+          <button
+            type="button"
+            data-room-light-left
+            aria-pressed="false"
+            aria-label={copy.lightLeft}>{copy.left}</button
+          >
+          <button
+            type="button"
+            data-room-light-right
+            aria-pressed="false"
+            aria-label={copy.lightRight}>{copy.right}</button
+          >
+          <button type="button" class="room-toolbar-reset" data-room-light-auto hidden
+            >{copy.lightAuto}</button
+          >
+        </div>
+        <div class="room-toolbar-group">
+          <button type="button" data-room-curtains aria-pressed="false">{copy.curtains}</button>
+          <button type="button" class="room-toolbar-reset" data-room-curtains-auto hidden
+            >{copy.curtainsAuto}</button
+          >
+          <button type="button" data-room-closet hidden aria-pressed="false">{copy.closet}</button>
+          <button type="button" data-room-lie-down hidden aria-pressed="false"
+            >{copy.lieDown}</button
+          >
+        </div>
+      </div>
+    </div>
   </footer>
   <section class="room-play" data-room-play hidden aria-live="polite">
     <p class="room-play-title" data-room-play-title></p>
@@ -86,10 +110,7 @@ const destinations = [
   </section>
   <dialog class="room-panel" data-room-panel aria-labelledby="room-panel-title">
     <header class="room-panel-header">
-      <div>
-        <p class="room-panel-kicker" data-room-panel-kicker>{copy.examine}</p>
-        <h2 id="room-panel-title"></h2>
-      </div>
+      <h2 id="room-panel-title"></h2>
       <a data-room-full-page>{copy.fullPage} ↗</a>
       <button data-room-close aria-label={copy.close}>×</button>
     </header>
@@ -162,35 +183,29 @@ const destinations = [
     z-index: 2;
     display: flex;
     align-items: center;
-    gap: 2rem;
-    padding: 1.5rem 2rem;
-    background: linear-gradient(var(--atelier-bg), transparent);
+    gap: 1.5rem;
+    padding: 1.25rem 2rem;
+    background: linear-gradient(
+      color-mix(in srgb, var(--atelier-bg) 80%, transparent),
+      transparent
+    );
     pointer-events: none;
   }
-  .room-header a {
+  .room-header a,
+  .room-header button {
     pointer-events: auto;
   }
-  .room-light-control {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
+  .room-exit {
+    min-height: 44px;
     margin-left: auto;
-    pointer-events: auto;
-  }
-  .room-light-control button {
-    padding: 0.45rem 0.6rem;
+    padding: 0 1rem;
     color: var(--atelier-fg);
+    font-size: 0.85rem;
+    background: color-mix(in srgb, var(--atelier-bg) 82%, transparent);
     border: 1px solid var(--atelier-line);
-    background: color-mix(in srgb, var(--atelier-bg) 72%, transparent);
-    font-family: var(--font-code);
-    font-size: 0.63rem;
-    letter-spacing: 0.04em;
   }
-  .room-light-control button:hover,
-  .room-light-control button[aria-pressed='true'] {
-    color: var(--atelier-bg);
-    border-color: var(--atelier-accent);
-    background: var(--atelier-accent);
+  .room-exit:hover {
+    border-color: var(--atelier-fg-muted);
   }
   .room-brand {
     display: flex;
@@ -202,27 +217,38 @@ const destinations = [
   }
   .room-time,
   .room-languages {
-    font-family: var(--font-code);
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
+    font-size: 0.8rem;
   }
   .room-time {
-    display: grid;
-    margin-left: auto;
-    text-align: right;
+    margin: 0 0 0 auto;
+    color: var(--atelier-fg-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
     text-shadow: 0 1px 8px var(--atelier-bg);
+  }
+  .room-exit:not([hidden]) + .room-time {
+    margin-left: 0;
   }
   .room-languages {
     display: flex;
-    gap: 0.8rem;
+    gap: 0.25rem;
   }
   .room-languages a {
-    color: var(--atelier-fg);
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    color: var(--atelier-fg-muted);
+    text-decoration: none;
     text-shadow: 0 1px 8px var(--atelier-bg);
-    padding: 0.5rem 0;
+  }
+  .room-languages a:hover {
+    color: var(--atelier-fg);
   }
   .room-languages a[aria-current] {
-    color: var(--atelier-accent-soft);
+    color: var(--atelier-fg);
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
   }
   .room-entry {
     position: relative;
@@ -290,14 +316,70 @@ const destinations = [
     position: absolute;
     inset: auto 0 0;
     z-index: 2;
-    padding: 1.2rem 2rem;
-    background: color-mix(in srgb, var(--atelier-bg) 90%, transparent);
-    border-top: 1px solid var(--atelier-line);
+    padding: 3rem 2rem 1.25rem;
+    background: linear-gradient(
+      transparent,
+      color-mix(in srgb, var(--atelier-bg) 85%, transparent)
+    );
+    pointer-events: none;
   }
-  .room-controls p {
-    font-size: 0.75rem;
+  .room-controls a,
+  .room-controls button {
+    pointer-events: auto;
+  }
+  .room-help {
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
     color: var(--atelier-fg-muted);
-    margin-bottom: 0.65rem;
+    text-shadow: 0 1px 6px var(--atelier-bg);
+  }
+  .room-home:not([data-room-entered]) .room-help {
+    display: none;
+  }
+  .room-controls-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+  }
+  .room-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .room-toolbar-group {
+    display: flex;
+    background: color-mix(in srgb, var(--atelier-bg) 85%, transparent);
+    border: 1px solid var(--atelier-line);
+  }
+  .room-toolbar-group button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 0.9rem;
+    color: var(--atelier-fg);
+    font-size: 0.8rem;
+  }
+  .room-toolbar-group button + button {
+    border-left: 1px solid var(--atelier-line);
+  }
+  .room-toolbar-group button:hover {
+    background: var(--atelier-surface-high);
+  }
+  .room-toolbar-group button[aria-pressed]::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid var(--atelier-fg-muted);
+  }
+  .room-toolbar-group button[aria-pressed='true']::before {
+    background: var(--atelier-accent);
+    border-color: var(--atelier-accent);
+  }
+  .room-toolbar-reset {
+    color: var(--atelier-fg-muted) !important;
   }
   .room-home:has(.room-panel[open]) .room-controls {
     visibility: hidden;
@@ -305,20 +387,23 @@ const destinations = [
   .room-home:has(.room-panel[open]) .room-stage {
     filter: var(--atelier-image-dimmed);
   }
-  .room-controls nav {
+  .room-destinations {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem 1.5rem;
+    gap: 0 1.25rem;
   }
-  .room-controls a,
-  .room-controls button {
-    padding: 0.5rem 0;
-    font-size: 0.85rem;
+  .room-destinations a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.875rem;
     color: var(--atelier-fg);
+    text-decoration: none;
+    text-shadow: 0 1px 6px var(--atelier-bg);
   }
-  .room-controls a:hover,
-  .room-controls button:hover {
-    color: var(--atelier-accent);
+  .room-destinations a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
   }
   .room-play {
     position: absolute;
@@ -337,11 +422,9 @@ const destinations = [
     display: none;
   }
   .room-play-title {
-    font-family: var(--font-code);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--atelier-accent-soft);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--atelier-fg);
   }
   .room-play-intro {
     font-size: 0.82rem;
@@ -361,23 +444,28 @@ const destinations = [
   }
   .room-play-actions button,
   .room-play-controls :global(.room-play-button) {
-    padding: 0.5rem 0.8rem;
+    min-height: 44px;
+    padding: 0 0.9rem;
     border: 1px solid var(--atelier-line);
     color: var(--atelier-fg);
     background: transparent;
-    font-family: var(--font-code);
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     cursor: pointer;
   }
   .room-play-actions button:hover,
   .room-play-controls :global(.room-play-button:hover) {
+    background: var(--atelier-surface-high);
+  }
+  .room-play-controls :global(.room-play-button[aria-pressed='true']) {
     border-color: var(--atelier-accent);
-    color: var(--atelier-accent);
   }
   .room-home[data-room-play] .room-controls,
   .room-home[data-room-play] .room-reticle,
   .room-home[data-room-play] .room-hint {
     visibility: hidden;
+  }
+  .room-home:not([data-room-pointer-lock='locked']) .room-reticle {
+    display: none;
   }
   .room-reticle {
     position: absolute;
@@ -430,11 +518,9 @@ const destinations = [
     cursor: pointer;
     padding: 0.35rem 0.55rem;
     color: var(--atelier-fg);
-    background: color-mix(in srgb, var(--atelier-bg) 90%, transparent);
+    background: color-mix(in srgb, var(--atelier-bg) 88%, transparent);
     border: 1px solid var(--atelier-line);
-    font-family: var(--font-code);
-    font-size: 0.68rem;
-    letter-spacing: 0.04em;
+    font-size: 0.78rem;
     line-height: 1.2;
     white-space: nowrap;
     transform: translate(-50%, -100%);
@@ -453,7 +539,8 @@ const destinations = [
     opacity: 1;
     transform: translate(-50%, -100%) scale(1.04);
   }
-  .room-target-labels :global(.room-target-label[data-room-target-marker]) {
+  .room-target-labels
+    :global(.room-target-label[data-room-target-marker]:not([data-room-target-near])) {
     width: 24px;
     height: 24px;
     padding: 0;
@@ -464,7 +551,8 @@ const destinations = [
     border-radius: 50%;
     transform: translate(-50%, -50%);
   }
-  .room-target-labels :global(.room-target-label[data-room-target-marker]::before) {
+  .room-target-labels
+    :global(.room-target-label[data-room-target-marker]:not([data-room-target-near])::before) {
     content: '';
     position: absolute;
     inset: 8px;
@@ -473,7 +561,11 @@ const destinations = [
     border-radius: 50%;
   }
   .room-target-labels
-    :global(.room-target-label[data-room-target-marker][data-room-target-hover]::after) {
+    :global(
+      .room-target-label[data-room-target-marker]:not(
+          [data-room-target-near]
+        )[data-room-target-hover]::after
+    ) {
     content: attr(aria-label);
     position: absolute;
     bottom: 100%;
@@ -531,17 +623,9 @@ const destinations = [
     border-bottom: 1px solid var(--atelier-line);
   }
   .room-panel-header h2 {
-    margin: 0.12rem 0 0;
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-  }
-  .room-panel-kicker {
     margin: 0;
-    color: var(--atelier-accent-soft);
-    font-family: var(--font-code);
-    font-size: 0.62rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    font-size: 0.875rem;
+    font-weight: 600;
   }
   .room-panel-header a {
     margin-left: auto;
@@ -589,21 +673,21 @@ const destinations = [
       padding: 1rem;
       gap: 1rem;
     }
-    .room-light-control {
-      gap: 0.25rem;
-    }
-    .room-light-control button {
-      font-size: 0.56rem;
+    .room-time {
+      display: none;
     }
     .room-entry {
       margin: 5svh auto 14rem;
       padding: 1.5rem;
     }
     .room-controls {
-      padding: 0.8rem 1rem;
+      padding: 2rem 1rem max(0.75rem, env(safe-area-inset-bottom));
     }
-    .room-controls nav {
-      gap: 0 1rem;
+    .room-home[data-room-entered] .room-destinations {
+      display: none;
+    }
+    .room-toolbar-group button {
+      padding: 0 0.7rem;
     }
     .room-target-labels :global(.room-target-label) {
       font-size: 0.62rem;

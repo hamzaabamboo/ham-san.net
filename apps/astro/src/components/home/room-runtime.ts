@@ -6,6 +6,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
 import { roomCopy } from './room-copy';
 import { roomPhaseForTokyoHour, type RoomPhase } from './room-logic';
 import { isPlayable, startPlay, type PlayId, type PlaySession } from './room-play';
@@ -344,6 +345,10 @@ const disposeObject = (object: THREE.Object3D) => {
   });
 };
 
+THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
+THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
+THREE.Mesh.prototype.raycast = acceleratedRaycast;
+
 const createPose = (camera: THREE.PerspectiveCamera, yaw: number, pitch: number): Pose => ({
   position: camera.position.clone(),
   yaw,
@@ -379,7 +384,6 @@ export const initRoom = (root: HTMLElement) => {
   const curtainAuto = root.querySelector<HTMLButtonElement>('[data-room-curtains-auto]');
   const lieDownButton = root.querySelector<HTMLButtonElement>('[data-room-lie-down]');
   const closetButton = root.querySelector<HTMLButtonElement>('[data-room-closet]');
-  const panelKicker = root.querySelector<HTMLElement>('[data-room-panel-kicker]');
   const playHud = root.querySelector<HTMLElement>('[data-room-play]');
   const playTitle = root.querySelector<HTMLElement>('[data-room-play-title]');
   const playIntro = root.querySelector<HTMLElement>('[data-room-play-intro]');
@@ -414,7 +418,6 @@ export const initRoom = (root: HTMLElement) => {
     !curtainAuto ||
     !lieDownButton ||
     !closetButton ||
-    !panelKicker ||
     !playHud ||
     !playTitle ||
     !playIntro ||
@@ -594,7 +597,9 @@ export const initRoom = (root: HTMLElement) => {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
   renderer.shadowMap.autoUpdate = false;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const fullPixelRatio = Math.min(window.devicePixelRatio, 2);
+  let motionPixelRatio = Math.min(fullPixelRatio, 1.5);
+  renderer.setPixelRatio(fullPixelRatio);
   renderer.setSize(stage.clientWidth, stage.clientHeight, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
@@ -623,7 +628,7 @@ export const initRoom = (root: HTMLElement) => {
     ambientOcclusion.blendIntensity = 0.85;
     composer.addPass(ambientOcclusion);
     composer.addPass(new OutputPass());
-    composer.setPixelRatio(renderer.getPixelRatio());
+    composer.setPixelRatio(fullPixelRatio);
     composer.setSize(stage.clientWidth, stage.clientHeight);
   }
 
@@ -832,6 +837,15 @@ export const initRoom = (root: HTMLElement) => {
   let frameRequest = 0;
   let clockTimer = 0;
   let frameFocusTimer = 0;
+  let renderRequested = true;
+  let settledRendered = false;
+  let renderedLastFrame = false;
+  let lastMotionAt = 0;
+  let lastScaleChange = 0;
+  let motionFrameAverage = 1000 / 60;
+  let pendingHover: PointerEvent | null = null;
+  const renderedView = new THREE.Matrix4();
+  const renderedProjection = new THREE.Matrix4();
 
   const setLookAt = (target: THREE.Vector3) => {
     const direction = target.clone().sub(camera.position);
@@ -906,6 +920,7 @@ export const initRoom = (root: HTMLElement) => {
     polygonOffsetUnits: -1
   });
   const applyModelHighlight = (target?: TargetId) => {
+    renderRequested = true;
     highlightOverlays.splice(0).forEach((overlay) => overlay.removeFromParent());
     if (!target) return;
     targetMeshes.get(target)?.forEach((mesh) => {
@@ -926,6 +941,7 @@ export const initRoom = (root: HTMLElement) => {
     });
   };
 
+  const nearLabelDistance = 2.2;
   const labelRaycaster = new THREE.Raycaster();
   const labelVisibility = new Map<TargetId, boolean>();
   const labelCameraPosition = new THREE.Vector3(Infinity, Infinity, Infinity);
@@ -952,7 +968,6 @@ export const initRoom = (root: HTMLElement) => {
         !camera.quaternion.equals(labelCameraQuaternion) ||
         !camera.projectionMatrix.equals(labelProjectionMatrix));
     if (checkVisibility) {
-      room!.updateMatrixWorld(true);
       labelCameraPosition.copy(camera.position);
       labelCameraQuaternion.copy(camera.quaternion);
       labelProjectionMatrix.copy(camera.projectionMatrix);
@@ -977,8 +992,12 @@ export const initRoom = (root: HTMLElement) => {
           .find((intersection) => isOpaqueObject(intersection.object));
         labelVisibility.set(id, !blocker || getRoomTarget(blocker.object) === id);
       }
-      label.hidden = !onScreen;
+      label.hidden = !onScreen || labelVisibility.get(id) === false;
       if (label.hidden) return;
+      label.toggleAttribute(
+        'data-room-target-near',
+        position.distanceToSquared(camera.position) < nearLabelDistance * nearLabelDistance
+      );
       label.style.left = `${canvasRect.left - rootRect.left + ((projected.x + 1) / 2) * canvasRect.width}px`;
       label.style.top = `${canvasRect.top - rootRect.top + ((1 - projected.y) / 2) * canvasRect.height}px`;
     });
@@ -1074,8 +1093,6 @@ export const initRoom = (root: HTMLElement) => {
   const updateIndividualLightControls = () => {
     const leftOn = leftLightManual ?? nightPhase;
     const rightOn = rightLightManual ?? nightPhase;
-    lightLeft.textContent = `${copy.lightLeft}: ${leftOn ? copy.lightStateOn : copy.lightStateOff}`;
-    lightRight.textContent = `${copy.lightRight}: ${rightOn ? copy.lightStateOn : copy.lightStateOff}`;
     lightLeft.setAttribute('aria-pressed', String(leftOn));
     lightRight.setAttribute('aria-pressed', String(rightOn));
   };
@@ -1186,6 +1203,7 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const updateCurtains = (delta: number) => {
+    let moving = false;
     curtainMotion.forEach(
       ({ object, id, attribute, normalAttribute, open, closed, openNormals, closedNormals }) => {
         const previousAmount = curtainAmounts.get(id);
@@ -1193,6 +1211,7 @@ export const initRoom = (root: HTMLElement) => {
         const target = curtainTargets.get(id) ?? 0;
         const nextAmount = amount + (target - amount) * Math.min(delta * 4, 1);
         if (previousAmount !== undefined && Math.abs(nextAmount - previousAmount) < 0.0005) return;
+        moving = true;
         curtainAmounts.set(id, nextAmount);
         renderer.shadowMap.needsUpdate = true;
         for (let index = 0; index < attribute.count; index += 1) {
@@ -1220,6 +1239,7 @@ export const initRoom = (root: HTMLElement) => {
         object.geometry.computeBoundingSphere();
       }
     );
+    return moving;
   };
 
   const captureCloset = (loadedRoom: THREE.Group) => {
@@ -1233,14 +1253,15 @@ export const initRoom = (root: HTMLElement) => {
   };
 
   const updateCloset = (delta: number) => {
+    if (Math.abs(closetTarget - closetAmount) < 0.0005) return false;
     closetAmount += (closetTarget - closetAmount) * Math.min(delta * 5, 1);
     closetMotion.forEach(({ object, offset, closedX }) => {
       object.position.x = closedX + offset * closetAmount;
     });
+    return true;
   };
 
   const updateClosetControl = () => {
-    closetButton.textContent = closetOpen ? copy.closetClose : copy.closetOpen;
     closetButton.setAttribute('aria-pressed', String(closetOpen));
     root.dataset.roomCloset = closetOpen ? 'open' : 'closed';
   };
@@ -1257,7 +1278,6 @@ export const initRoom = (root: HTMLElement) => {
 
   const updateCurtainControl = () => {
     const open = curtainManualOpen ?? !nightPhase;
-    curtainButton.textContent = open ? copy.curtainsClose : copy.curtainsOpen;
     curtainButton.setAttribute('aria-pressed', String(open));
     curtainAuto.hidden = curtainManualOpen === undefined;
     root.dataset.roomCurtains = open ? 'open' : 'closed';
@@ -1298,6 +1318,7 @@ export const initRoom = (root: HTMLElement) => {
       const open = curtainManualOpen ?? !night;
       curtainTargets.set(id, open && !(id === 'balcony-left' && !night) ? 0 : 1);
     });
+    renderRequested = true;
     root.dataset.roomPhase = night ? 'night' : 'day';
     root.dataset.roomLightMode =
       manualPhase || leftLightManual !== undefined || rightLightManual !== undefined
@@ -1306,7 +1327,6 @@ export const initRoom = (root: HTMLElement) => {
     const leftOn = leftLightManual ?? night;
     const rightOn = rightLightManual ?? night;
     const anyLightOn = leftOn || rightOn;
-    lightToggle.textContent = anyLightOn ? copy.lightOff : copy.lightOn;
     lightToggle.setAttribute('aria-pressed', String(anyLightOn));
     lightAuto.hidden =
       manualPhase === undefined && leftLightManual === undefined && rightLightManual === undefined;
@@ -1342,7 +1362,6 @@ export const initRoom = (root: HTMLElement) => {
       timeElement.textContent = new Intl.DateTimeFormat(timeLocale, {
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit',
         hourCycle: 'h23',
         timeZone: 'Asia/Tokyo'
       }).format(new Date());
@@ -1398,8 +1417,8 @@ export const initRoom = (root: HTMLElement) => {
       return;
     }
     setHighlightedTarget(target);
-    hint.textContent = target ? `${labelFor(target)} · ${copy.look}` : copy.blocked;
-    hint.hidden = false;
+    hint.textContent = target ? `${labelFor(target)} · ${copy.look}` : '';
+    hint.hidden = !target;
   };
 
   const relatedLinks = (id: ContentId): ContentLink[] => {
@@ -1471,8 +1490,6 @@ export const initRoom = (root: HTMLElement) => {
         fullPageUrl.searchParams.delete('roomEmbed');
         fullPage.href = fullPageUrl.href;
       }
-      const heading = frame.contentDocument?.querySelector('h1')?.textContent?.trim();
-      if (heading) panelTitle.textContent = heading;
       const frameDocument = frame.contentDocument;
       const frameWindow = frame.contentWindow;
       if (!frameDocument || !frameWindow) return;
@@ -1528,7 +1545,6 @@ export const initRoom = (root: HTMLElement) => {
     if (id === 'hobbies' || isHobbyTarget(id) || isMusicChild(id)) await hobbyRoutesReady;
     if (disposed || request !== contentRequest) return;
     panelTitle.textContent = labelFor(id);
-    panelKicker.textContent = copy.examine;
     fullPage.href = toUrl(pathFor(id));
     renderTabs(id);
     frame.hidden = false;
@@ -1538,7 +1554,7 @@ export const initRoom = (root: HTMLElement) => {
     if (!panel.open) panel.showModal();
     if (frameFocusTimer) window.clearTimeout(frameFocusTimer);
     frameFocusTimer = window.setTimeout(() => {
-      if (!disposed) frame.focus();
+      if (!disposed) panel.querySelector<HTMLButtonElement>('[data-room-close]')?.focus();
     }, 0);
   };
 
@@ -1816,6 +1832,7 @@ export const initRoom = (root: HTMLElement) => {
     moveTarget = null;
     pointerState = null;
     entered = true;
+    root.dataset.roomEntered = '';
     entry.hidden = true;
     exitButton.hidden = false;
     reticle.hidden = false;
@@ -1845,6 +1862,7 @@ export const initRoom = (root: HTMLElement) => {
     focusActive = false;
     setComposition(false);
     entered = false;
+    delete root.dataset.roomEntered;
     entry.hidden = false;
     exitButton.hidden = true;
     reticle.hidden = true;
@@ -1918,9 +1936,7 @@ export const initRoom = (root: HTMLElement) => {
       return;
     }
     if (!pointerState || pointerState.id !== event.pointerId) {
-      const target = targetFromPointer(event);
-      setHint(target);
-      renderer.domElement.style.cursor = target ? 'pointer' : 'grab';
+      pendingHover = event;
       return;
     }
     const deltaX = event.clientX - pointerState.x;
@@ -2008,6 +2024,7 @@ export const initRoom = (root: HTMLElement) => {
     camera.updateProjectionMatrix();
     renderer.setSize(width, height, false);
     composer?.setSize(width, height);
+    renderRequested = true;
     updateCameraComposition();
     updateHelp();
   };
@@ -2016,6 +2033,7 @@ export const initRoom = (root: HTMLElement) => {
     if (disposed || frame.hidden) return;
     panelStatus.hidden = true;
     syncFrameNavigation();
+    if (panel.open) frame.focus();
   };
 
   const onEnterClick = () => enterRoom();
@@ -2193,6 +2211,29 @@ export const initRoom = (root: HTMLElement) => {
     });
   };
 
+  const buildRaycastTrees = (loadedRoom: THREE.Group) => {
+    const geometries = new Set<THREE.BufferGeometry>();
+    loadedRoom.traverse((object) => {
+      if (object instanceof THREE.Mesh && !object.userData?.roomCurtain)
+        geometries.add(object.geometry);
+    });
+    const pending = Array.from(geometries);
+    const step = (deadline?: IdleDeadline) => {
+      if (disposed) return;
+      const started = performance.now();
+      while (pending.length > 0) {
+        const geometry = pending.pop()!;
+        if (!geometry.boundsTree) geometry.computeBoundsTree({ indirect: true });
+        if (deadline ? deadline.timeRemaining() < 2 : performance.now() - started > 8) break;
+      }
+      if (pending.length === 0) return;
+      if (typeof window.requestIdleCallback === 'function')
+        window.requestIdleCallback(step, { timeout: 200 });
+      else setTimeout(step, 16);
+    };
+    step();
+  };
+
   const loader = new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
   loader.load(
@@ -2250,6 +2291,7 @@ export const initRoom = (root: HTMLElement) => {
       });
       applyModelMetadata(room);
       captureCurtains(room);
+      buildRaycastTrees(room);
       captureCloset(room);
       updatePhase();
       scene.add(room);
@@ -2317,16 +2359,60 @@ export const initRoom = (root: HTMLElement) => {
     }
     if (play?.active) play.session.update(delta);
     updatePats(delta);
-    updateCurtains(delta);
-    updateCloset(delta);
+    const curtainsMoving = updateCurtains(delta);
+    const closetMoving = updateCloset(delta);
     camera.updateMatrixWorld();
     updateTargetLabels(now);
+    if (pendingHover) {
+      const target = entered && !focusActive ? targetFromPointer(pendingHover) : undefined;
+      pendingHover = null;
+      setHint(target);
+      renderer.domElement.style.cursor = target ? 'pointer' : 'grab';
+    }
     if (pointerLocked && entered && !focusActive && now - lastCenterCheck > 90) {
       lastCenterCheck = now;
       setHint(targetAt(0, 0));
     }
-    if (composer) composer.render();
-    else renderer.render(scene, camera);
+    const moving =
+      renderRequested ||
+      renderer.shadowMap.needsUpdate ||
+      Boolean(transition || play || moveTarget || keys.size || lookKeys.size) ||
+      pats.length > 0 ||
+      hearts.length > 0 ||
+      curtainsMoving ||
+      closetMoving ||
+      !camera.matrixWorld.equals(renderedView) ||
+      !camera.projectionMatrix.equals(renderedProjection);
+    if (moving) {
+      if (renderedLastFrame) {
+        motionFrameAverage += (delta * 1000 - motionFrameAverage) * 0.1;
+        if (now - lastScaleChange > 600) {
+          const nextRatio =
+            motionFrameAverage > 21
+              ? Math.max(0.75, motionPixelRatio - 0.25)
+              : motionFrameAverage < 14
+                ? Math.min(fullPixelRatio, motionPixelRatio + 0.25)
+                : motionPixelRatio;
+          if (nextRatio !== motionPixelRatio) {
+            motionPixelRatio = nextRatio;
+            lastScaleChange = now;
+          }
+        }
+      }
+      renderRequested = false;
+      settledRendered = false;
+      lastMotionAt = now;
+      renderedView.copy(camera.matrixWorld);
+      renderedProjection.copy(camera.projectionMatrix);
+      if (renderer.getPixelRatio() !== motionPixelRatio) renderer.setPixelRatio(motionPixelRatio);
+      renderer.render(scene, camera);
+    } else if (!settledRendered && now - lastMotionAt > 160) {
+      settledRendered = true;
+      if (renderer.getPixelRatio() !== fullPixelRatio) renderer.setPixelRatio(fullPixelRatio);
+      if (composer) composer.render();
+      else renderer.render(scene, camera);
+    }
+    renderedLastFrame = moving;
     frameRequest = window.requestAnimationFrame(frameLoop);
   };
 

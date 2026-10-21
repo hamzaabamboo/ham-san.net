@@ -11,17 +11,17 @@ This is an explorable 3D model of Ham's real room. Objects in the room open the 
 ## Anatomy
 
 ```
-[mark] Ham                       00:58 Tokyo   [lights][curtains]  EN JA TH
+[mark] Ham                               [Leave room]  00:58 Tokyo  EN JA TH
 ┌ entry panel ────────────────┐
 │ A room of my own.           │        3D room (static preview until loaded)
 │ Work on the monitor …       │
 │ [Enter room]                │
 │ Browse the website ↗        │
 └─────────────────────────────┘
-controls help · Projects Notes Hobbies Namecard Events
+Projects Notes Hobbies Namecard Events Photos
 ```
 
-After entering, the room shows object labels, a reticle, lights and curtains controls, and the lie-down, closet and leave buttons. Choosing an object moves the camera to a close-up and opens an examine `<dialog>` holding the matching page in an iframe (`?roomEmbed=1` hides the site shell).
+After entering, the header shows "Leave room". The bottom edge carries the controls help line, the page links on the left, and a toolbar on the right: a Lights group (Light, Left, Right, and "Tokyo automatic" once changed) and a room group (Curtains, its automatic reset, Closet, Lie down). Toggle buttons keep a fixed label and show state with a small square: filled amber means on. The reticle appears only while the pointer is locked. Object labels hide when a wall blocks them; hobby markers are dots until the visitor is within 2.2 m, then they show their name. Choosing an object moves the camera to a close-up and opens an examine `<dialog>` holding the matching page in an iframe (`?roomEmbed=1` hides the site shell).
 
 ## Data and caching
 
@@ -37,6 +37,9 @@ After entering, the room shows object labels, a reticle, lights and curtains con
 
 ## Rules
 
+- Amber is the only state colour in the HUD: the primary "Enter room" button and the on-state square. Hover uses a surface tint, not amber.
+- The clock shows hours and minutes only; it refreshes every 30 seconds.
+- The examine dialog header names the section; the embedded page carries its own H1. Focus goes to the close button until the page loads, then into the page, so Escape always closes it.
 - The entry panel shows one "Enter room" control. The status line is empty once the room is ready and only carries loading or error text.
 - The brand uses the shared `BrandMark`.
 - `room-design-prototype` is not a public route (removed 2026-09-27).

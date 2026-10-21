@@ -7,6 +7,7 @@ from mathutils import Vector
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(bpy.data.filepath)))
 OUT = os.path.join(REPO, 'assets', 'room', 'room-v2-web.glb')
 EXCLUDED_COLLECTIONS = {'Blockout', 'Plush v4', 'Plush v5 nesoberi'}
+NAV_ANCHOR_EXCLUDED_PREFIXES = ('Darts mat', 'Carrot plush')
 
 
 def world_bounds(objects):
@@ -39,7 +40,14 @@ def navigation():
     groups = {}
     for o in bpy.data.objects:
         target = o.get('roomTarget')
-        if target and target != 'light' and o.type == 'MESH' and not o.hide_render and not o.get('roomNavIgnore'):
+        if (
+            target
+            and target != 'light'
+            and o.type == 'MESH'
+            and not o.hide_render
+            and not o.get('roomNavIgnore')
+            and not o.name.startswith(NAV_ANCHOR_EXCLUDED_PREFIXES)
+        ):
             groups.setdefault(target, []).append(o)
     room_centre = Vector((0.75, 0.0, 1.1))
     targets = {}
