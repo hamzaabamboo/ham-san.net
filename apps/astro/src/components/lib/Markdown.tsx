@@ -139,6 +139,7 @@ export const Markdown = ({
       minW="0"
       maxW="full"
       lineHeight="1.8"
+      overflowWrap="anywhere"
       css={{
         '& > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, hr):not(.markdown-structural)': {
           maxWidth: '42rem'
