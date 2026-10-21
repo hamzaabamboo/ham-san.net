@@ -1,9 +1,9 @@
 {
  "file": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/room-v2.blend",
  "source_file": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/room-v2.blend",
- "source_sha256": "7e982be494a9daa7a6fd5d7085c31bfecd089c9896f7543e8dfd55ccdbb40b1a",
+ "source_sha256": "f6713cc1a77b94c7781b532fc5a6543fe105d1e69dbb8b38c295931e73441e93",
  "source_is_dirty": false,
- "generated_at": "2026-10-21T15:55:43.839749+00:00",
+ "generated_at": "2026-10-21T16:18:50.618783+00:00",
  "blender": "5.2.2 LTS",
  "source_collection": "Scene Collection",
  "source_scope": "scene",
@@ -1794,7 +1794,7 @@
   }
  ],
  "object_count": 1582,
- "triangles_renderable": 668020,
+ "triangles_renderable": 671688,
  "objects": [
   {
    "name": "Review cam",
@@ -2007,7 +2007,7 @@
    "hide_render": false,
    "hide_viewport": false,
    "props": {
-    "roomNavigation": "{\"entry\": [-1.1, 1.45, 1.35], \"lookAt\": [0.3, 1.0, -1.4], \"bounds\": {\"minX\": -1.78, \"maxX\": 3.27, \"minZ\": -1.9, \"maxZ\": 1.85, \"minY\": 0.02, \"maxY\": 2.35}, \"targets\": {\"hobbies\": {\"position\": [3.0775, 1.0675, -0.495], \"camera\": [1.4636, 1.4175, -0.1518]}, \"photos\": {\"position\": [0.4365, 0.9184, 1.7034], \"camera\": [0.5764, 1.2684, 0.9431]}, \"events\": {\"position\": [3.0588, 1.3375, 1.2309], \"camera\": [1.6878, 1.6875, 0.5]}, \"closet\": {\"position\": [2.31, 1.075, 1.8059]}, \"darts\": {\"position\": [0.795, 1.4799, -1.6652], \"camera\": [0.7688, 1.8299, -0.6974]}, \"juggling\": {\"position\": [0.9448, 0.2867, -1.6265], \"camera\": [0.8697, 0.95, -0.9999]}, \"kendama\": {\"position\": [2.1599, 0.4013, -0.4044], \"camera\": [1.5104, 0.95, -0.2181]}, \"typing\": {\"position\": [-1.3662, 0.8347, -0.8717], \"camera\": [-0.4389, 1.1847, -0.4897]}, \"piano\": {\"position\": [-1.48, 0.795, 0.58], \"camera\": [-0.4367, 1.145, 0.3087]}, \"projects\": {\"position\": [-1.583, 1.027, -0.88], \"camera\": [-0.456, 1.377, -0.4549]}, \"nesoberi\": {\"position\": [0.64, 0.5798, -1.75], \"camera\": [0.682, 0.95, -1.0825]}, \"penlight\": {\"position\": [3.209, 1.651, 1.1561], \"camera\": [2.2634, 2.001, 0.7115]}, \"notes\": {\"position\": [-1.771, 1.39, -1.582], \"camera\": [-1.0163, 1.74, -1.1084]}, \"rubik\": {\"position\": [2.0594, 0.3885, -0.5356], \"camera\": [1.5205, 0.95, -0.3152]}, \"cardistry\": {\"position\": [1.79, 0.3695, -0.522], \"camera\": [1.1188, 0.95, -0.1851]}, \"penspinning\": {\"position\": [1.951, 0.3785, -0.44], \"camera\": [1.3304, 0.95, -0.2126]}, \"yoyo\": {\"position\": [1.8535, 0.3965, -0.3434], \"camera\": [1.2503, 0.95, -0.1557]}}, \"colliders\": [{\"id\": \"desk\", \"minX\": -1.81, \"maxX\": -1.04, \"minZ\": -1.58, \"maxZ\": 0.01}, {\"id\": \"chair\", \"minX\": -0.8774, \"maxX\": -0.3626, \"minZ\": -1.0508, \"maxZ\": -0.5092}, {\"id\": \"shelf\", \"minX\": 2.875, \"maxX\": 3.28, \"minZ\": -1.7, \"maxZ\": 0.71}, {\"id\": \"floor-table\", \"minX\": 1.645, \"maxX\": 2.325, \"minZ\": -0.95, \"maxZ\": -0.27}, {\"id\": \"darts-stand\", \"minX\": 0.46, \"maxX\": 1.3556, \"minZ\": -1.86, \"maxZ\": -1.2831}, {\"id\": \"piano\", \"minX\": -1.7, \"maxX\": -1.26, \"minZ\": 0.07, \"maxZ\": 1.09}, {\"id\": \"beanbag\", \"minX\": 1.3768, \"maxX\": 2.5862, \"minZ\": -0.0151, \"maxZ\": 1.1345}, {\"id\": \"penlight-rack\", \"minX\": 3.2127, \"maxX\": 3.2772, \"minZ\": 0.6545, \"maxZ\": 1.6456}, {\"id\": \"closet\", \"minX\": 1.39, \"maxX\": 3.23, \"minZ\": 1.7418, \"maxZ\": 1.87}]}"
+    "roomNavigation": "{\"entry\": [-1.1, 1.45, 1.35], \"lookAt\": [0.3, 1.0, -1.4], \"bounds\": {\"minX\": -1.78, \"maxX\": 3.27, \"minZ\": -1.9, \"maxZ\": 1.85, \"minY\": 0.02, \"maxY\": 2.35}, \"targets\": {\"hobbies\": {\"position\": [3.0775, 1.0628, -0.495], \"camera\": [1.4636, 1.4128, -0.1518]}, \"photos\": {\"position\": [0.4365, 0.9184, 1.7034], \"camera\": [0.5764, 1.2684, 0.9431]}, \"events\": {\"position\": [3.0588, 1.3375, 1.2309], \"camera\": [1.6878, 1.6875, 0.5]}, \"closet\": {\"position\": [2.31, 1.075, 1.8059]}, \"darts\": {\"position\": [0.795, 1.4799, -1.6652], \"camera\": [0.7688, 1.8299, -0.6974]}, \"juggling\": {\"position\": [0.9448, 0.2867, -1.6265], \"camera\": [0.8697, 0.95, -0.9999]}, \"kendama\": {\"position\": [2.1599, 0.4013, -0.4044], \"camera\": [1.5104, 0.95, -0.2181]}, \"typing\": {\"position\": [-1.3662, 0.8347, -0.8717], \"camera\": [-0.4389, 1.1847, -0.4897]}, \"piano\": {\"position\": [-1.48, 0.795, 0.58], \"camera\": [-0.4367, 1.145, 0.3087]}, \"projects\": {\"position\": [-1.583, 1.027, -0.88], \"camera\": [-0.456, 1.377, -0.4549]}, \"nesoberi\": {\"position\": [0.64, 0.5798, -1.75], \"camera\": [0.682, 0.95, -1.0825]}, \"penlight\": {\"position\": [3.209, 1.651, 1.1561], \"camera\": [2.2634, 2.001, 0.7115]}, \"notes\": {\"position\": [-1.771, 1.39, -1.582], \"camera\": [-1.0163, 1.74, -1.1084]}, \"rubik\": {\"position\": [2.0594, 0.3885, -0.5356], \"camera\": [1.5205, 0.95, -0.3152]}, \"cardistry\": {\"position\": [1.79, 0.3695, -0.522], \"camera\": [1.1188, 0.95, -0.1851]}, \"penspinning\": {\"position\": [1.951, 0.3785, -0.44], \"camera\": [1.3304, 0.95, -0.2126]}, \"yoyo\": {\"position\": [1.8535, 0.3965, -0.3434], \"camera\": [1.2503, 0.95, -0.1557]}}, \"colliders\": [{\"id\": \"desk\", \"minX\": -1.81, \"maxX\": -1.04, \"minZ\": -1.58, \"maxZ\": 0.01}, {\"id\": \"chair\", \"minX\": -0.8774, \"maxX\": -0.3626, \"minZ\": -1.0508, \"maxZ\": -0.5092}, {\"id\": \"shelf\", \"minX\": 2.875, \"maxX\": 3.28, \"minZ\": -1.7, \"maxZ\": 0.71}, {\"id\": \"floor-table\", \"minX\": 1.645, \"maxX\": 2.325, \"minZ\": -0.95, \"maxZ\": -0.27}, {\"id\": \"darts-stand\", \"minX\": 0.46, \"maxX\": 1.3556, \"minZ\": -1.86, \"maxZ\": -1.2831}, {\"id\": \"piano\", \"minX\": -1.7, \"maxX\": -1.26, \"minZ\": 0.07, \"maxZ\": 1.09}, {\"id\": \"beanbag\", \"minX\": 1.3768, \"maxX\": 2.5862, \"minZ\": -0.0151, \"maxZ\": 1.1345}, {\"id\": \"penlight-rack\", \"minX\": 3.2127, \"maxX\": 3.2772, \"minZ\": 0.6545, \"maxZ\": 1.6456}, {\"id\": \"closet\", \"minX\": 1.39, \"maxX\": 3.23, \"minZ\": 1.7418, \"maxZ\": 1.87}]}"
    },
    "location": [
     0.0,
@@ -41772,17 +41772,17 @@
    ],
    "min": [
     3.1595,
-    -0.074,
+    -0.0918,
     1.841
    ],
    "max": [
     3.1625,
-    -0.0116,
-    2.051
+    0.0056,
+    2.07
    ],
-   "tris": 812,
+   "tris": 704,
    "materials": [
-    "Bay r20 stand 1 individual artwork",
+    "Bay r20 stand 1 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -41839,17 +41839,17 @@
    ],
    "min": [
     3.1475,
-    0.0361,
+    0.0218,
     1.841
    ],
    "max": [
     3.1505,
-    0.0913,
-    2.0285
+    0.0956,
+    2.045
    ],
-   "tris": 752,
+   "tris": 848,
    "materials": [
-    "Bay r20 stand 2 individual artwork",
+    "Bay r20 stand 2 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -41906,17 +41906,17 @@
    ],
    "min": [
     3.1595,
-    0.1138,
+    0.1055,
     1.841
    ],
    "max": [
     3.1625,
-    0.2106,
-    2.0558
+    0.2189,
+    2.0694
    ],
-   "tris": 668,
+   "tris": 1100,
    "materials": [
-    "Bay r20 stand 3 individual artwork",
+    "Bay r20 stand 3 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -41973,17 +41973,17 @@
    ],
    "min": [
     3.1475,
-    0.2374,
+    0.2262,
     1.841
    ],
    "max": [
     3.1505,
     0.3038,
-    2.0322
+    2.0455
    ],
-   "tris": 568,
+   "tris": 840,
    "materials": [
-    "Bay r20 stand 4 individual artwork",
+    "Bay r20 stand 4 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42071,17 +42071,17 @@
    ],
    "min": [
     2.9505,
-    1.1215,
+    1.1114,
     1.756
    ],
    "max": [
     2.9535,
-    1.198,
-    1.9461
+    1.1986,
+    1.961
    ],
-   "tris": 1016,
+   "tris": 852,
    "materials": [
-    "Bay r21 stand 0 individual artwork",
+    "Bay r21 stand 0 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42138,17 +42138,17 @@
    ],
    "min": [
     2.9625,
-    1.2328,
+    1.2108,
     1.756
    ],
    "max": [
     2.9655,
-    1.3053,
-    1.9702
+    1.307,
+    1.9844
    ],
-   "tris": 844,
+   "tris": 1120,
    "materials": [
-    "Bay r21 stand 1 individual artwork",
+    "Bay r21 stand 1 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42205,17 +42205,17 @@
    ],
    "min": [
     2.9505,
-    1.3387,
+    1.3248,
     1.756
    ],
    "max": [
     2.9535,
-    1.4008,
-    1.9408
+    1.4146,
+    1.9605
    ],
-   "tris": 512,
+   "tris": 828,
    "materials": [
-    "Bay r21 stand 2 individual artwork",
+    "Bay r21 stand 2 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42272,17 +42272,17 @@
    ],
    "min": [
     2.9625,
-    1.4448,
+    1.433,
     1.756
    ],
    "max": [
     2.9655,
-    1.5096,
-    1.9708
+    1.5214,
+    1.985
    ],
-   "tris": 768,
+   "tris": 704,
    "materials": [
-    "Bay r21 stand 3 individual artwork",
+    "Bay r21 stand 3 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42339,17 +42339,17 @@
    ],
    "min": [
     2.9505,
-    1.5537,
+    1.5244,
     1.756
    ],
    "max": [
     2.9535,
-    1.6153,
-    1.9525
+    1.6413,
+    1.961
    ],
-   "tris": 744,
+   "tris": 1144,
    "materials": [
-    "Bay r21 stand 4 individual artwork",
+    "Bay r21 stand 4 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42406,17 +42406,17 @@
    ],
    "min": [
     3.0325,
-    1.1215,
+    1.1051,
     1.806
    ],
    "max": [
     3.0355,
-    1.1863,
-    1.9924
+    1.1938,
+    2.011
    ],
-   "tris": 800,
+   "tris": 1244,
    "materials": [
-    "Bay r22 stand 0 individual artwork",
+    "Bay r22 stand 0 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42473,17 +42473,17 @@
    ],
    "min": [
     3.0445,
-    1.2328,
+    1.2209,
     1.806
    ],
    "max": [
     3.0475,
-    1.2916,
-    2.0208
+    1.3035,
+    2.035
    ],
-   "tris": 660,
+   "tris": 716,
    "materials": [
-    "Bay r22 stand 1 individual artwork",
+    "Bay r22 stand 1 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42540,17 +42540,17 @@
    ],
    "min": [
     3.0325,
-    1.3211,
+    1.3158,
     1.806
    ],
    "max": [
     3.0355,
-    1.4183,
-    1.9935
+    1.4237,
+    2.0105
    ],
-   "tris": 940,
+   "tris": 1088,
    "materials": [
-    "Bay r22 stand 2 individual artwork",
+    "Bay r22 stand 2 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42607,17 +42607,17 @@
    ],
    "min": [
     3.0445,
-    1.4443,
+    1.4193,
     1.806
    ],
    "max": [
     3.0475,
-    1.5125,
-    2.0237
+    1.5167,
+    2.035
    ],
-   "tris": 692,
+   "tris": 920,
    "materials": [
-    "Bay r22 stand 3 individual artwork",
+    "Bay r22 stand 3 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42674,17 +42674,17 @@
    ],
    "min": [
     3.0325,
-    1.543,
+    1.5234,
     1.806
    ],
    "max": [
     3.0355,
-    1.6259,
-    1.9972
+    1.6445,
+    2.0105
    ],
-   "tris": 672,
+   "tris": 1172,
    "materials": [
-    "Bay r22 stand 4 individual artwork",
+    "Bay r22 stand 4 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42741,17 +42741,17 @@
    ],
    "min": [
     3.1125,
-    1.13,
+    1.1242,
     1.856
    ],
    "max": [
     3.1155,
-    1.1784,
-    2.0525
+    1.1927,
+    2.061
    ],
-   "tris": 736,
+   "tris": 848,
    "materials": [
-    "Bay r23 stand 0 individual artwork",
+    "Bay r23 stand 0 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42808,17 +42808,17 @@
    ],
    "min": [
     3.1245,
-    1.2245,
+    1.1984,
     1.856
    ],
    "max": [
     3.1275,
-    1.2999,
-    2.0648
+    1.326,
+    2.085
    ],
-   "tris": 724,
+   "tris": 880,
    "materials": [
-    "Bay r23 stand 1 individual artwork",
+    "Bay r23 stand 1 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42875,17 +42875,17 @@
    ],
    "min": [
     3.1125,
-    1.3185,
+    1.3286,
     1.856
    ],
    "max": [
     3.1155,
-    1.3998,
-    2.0488
+    1.4013,
+    2.061
    ],
-   "tris": 828,
+   "tris": 840,
    "materials": [
-    "Bay r23 stand 2 individual artwork",
+    "Bay r23 stand 2 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -42942,17 +42942,17 @@
    ],
    "min": [
     3.1245,
-    1.4383,
+    1.4158,
     1.856
    ],
    "max": [
     3.1275,
-    1.5155,
-    2.0648
+    1.525,
+    2.085
    ],
-   "tris": 736,
+   "tris": 960,
    "materials": [
-    "Bay r23 stand 3 individual artwork",
+    "Bay r23 stand 3 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -43009,17 +43009,17 @@
    ],
    "min": [
     3.1125,
-    1.5505,
+    1.5335,
     1.856
    ],
    "max": [
     3.1155,
-    1.619,
-    2.0493
+    1.6264,
+    2.061
    ],
-   "tris": 692,
+   "tris": 856,
    "materials": [
-    "Bay r23 stand 4 individual artwork",
+    "Bay r23 stand 4 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -43076,17 +43076,17 @@
    ],
    "min": [
     3.1885,
-    1.1247,
+    1.1141,
     1.906
    ],
    "max": [
     3.1915,
-    1.1847,
-    2.0983
+    1.1959,
+    2.11
    ],
-   "tris": 888,
+   "tris": 756,
    "materials": [
-    "Bay r30 stand 0 individual artwork",
+    "Bay r30 stand 0 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -43143,17 +43143,17 @@
    ],
    "min": [
     3.2005,
-    1.2126,
+    1.2061,
     1.906
    ],
    "max": [
     3.2035,
-    1.3118,
-    2.1255
+    1.3177,
+    2.1344
    ],
-   "tris": 768,
+   "tris": 840,
    "materials": [
-    "Bay r30 stand 1 individual artwork",
+    "Bay r30 stand 1 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -43210,17 +43210,17 @@
    ],
    "min": [
     3.1885,
-    1.3397,
+    1.3349,
     1.906
    ],
    "max": [
     3.1915,
-    1.4013,
-    2.1009
+    1.3971,
+    2.11
    ],
-   "tris": 672,
+   "tris": 824,
    "materials": [
-    "Bay r30 stand 2 individual artwork",
+    "Bay r30 stand 2 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -43277,17 +43277,17 @@
    ],
    "min": [
     3.2005,
-    1.4419,
+    1.4282,
     1.906
    ],
    "max": [
     3.2035,
-    1.5125,
-    2.122
+    1.5262,
+    2.135
    ],
-   "tris": 612,
+   "tris": 756,
    "materials": [
-    "Bay r30 stand 3 individual artwork",
+    "Bay r30 stand 3 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -43344,17 +43344,17 @@
    ],
    "min": [
     3.1885,
-    1.5537,
+    1.5489,
     1.906
    ],
    "max": [
     3.1915,
-    1.6158,
-    2.1015
+    1.6163,
+    2.111
    ],
-   "tris": 936,
+   "tris": 868,
    "materials": [
-    "Bay r30 stand 4 individual artwork",
+    "Bay r30 stand 4 individual artwork.001",
     "Optical clear display case acrylic"
    ],
    "uv_layers": [
@@ -54743,8 +54743,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r20 stand 1 individual artwork": {
-   "name": "Bay r20 stand 1 individual artwork",
+  "Bay r20 stand 1 individual artwork.001": {
+   "name": "Bay r20 stand 1 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-86.png"
@@ -54754,8 +54754,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r20 stand 2 individual artwork": {
-   "name": "Bay r20 stand 2 individual artwork",
+  "Bay r20 stand 2 individual artwork.001": {
+   "name": "Bay r20 stand 2 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-87.png"
@@ -54765,8 +54765,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r20 stand 3 individual artwork": {
-   "name": "Bay r20 stand 3 individual artwork",
+  "Bay r20 stand 3 individual artwork.001": {
+   "name": "Bay r20 stand 3 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-88.png"
@@ -54776,8 +54776,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r20 stand 4 individual artwork": {
-   "name": "Bay r20 stand 4 individual artwork",
+  "Bay r20 stand 4 individual artwork.001": {
+   "name": "Bay r20 stand 4 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-89.png"
@@ -54787,8 +54787,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r21 stand 0 individual artwork": {
-   "name": "Bay r21 stand 0 individual artwork",
+  "Bay r21 stand 0 individual artwork.001": {
+   "name": "Bay r21 stand 0 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-90.png"
@@ -54807,8 +54807,8 @@
    "roughness": 0.08,
    "emission": 0.0
   },
-  "Bay r21 stand 1 individual artwork": {
-   "name": "Bay r21 stand 1 individual artwork",
+  "Bay r21 stand 1 individual artwork.001": {
+   "name": "Bay r21 stand 1 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-91.png"
@@ -54827,8 +54827,8 @@
    "roughness": 0.08,
    "emission": 0.0
   },
-  "Bay r21 stand 2 individual artwork": {
-   "name": "Bay r21 stand 2 individual artwork",
+  "Bay r21 stand 2 individual artwork.001": {
+   "name": "Bay r21 stand 2 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-92.png"
@@ -54847,8 +54847,8 @@
    "roughness": 0.08,
    "emission": 0.0
   },
-  "Bay r21 stand 3 individual artwork": {
-   "name": "Bay r21 stand 3 individual artwork",
+  "Bay r21 stand 3 individual artwork.001": {
+   "name": "Bay r21 stand 3 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-93.png"
@@ -54867,8 +54867,8 @@
    "roughness": 0.08,
    "emission": 0.0
   },
-  "Bay r21 stand 4 individual artwork": {
-   "name": "Bay r21 stand 4 individual artwork",
+  "Bay r21 stand 4 individual artwork.001": {
+   "name": "Bay r21 stand 4 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-94.png"
@@ -54878,8 +54878,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r22 stand 0 individual artwork": {
-   "name": "Bay r22 stand 0 individual artwork",
+  "Bay r22 stand 0 individual artwork.001": {
+   "name": "Bay r22 stand 0 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-95.png"
@@ -54889,8 +54889,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r22 stand 1 individual artwork": {
-   "name": "Bay r22 stand 1 individual artwork",
+  "Bay r22 stand 1 individual artwork.001": {
+   "name": "Bay r22 stand 1 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-96.png"
@@ -54900,8 +54900,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r22 stand 2 individual artwork": {
-   "name": "Bay r22 stand 2 individual artwork",
+  "Bay r22 stand 2 individual artwork.001": {
+   "name": "Bay r22 stand 2 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-97.png"
@@ -54911,8 +54911,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r22 stand 3 individual artwork": {
-   "name": "Bay r22 stand 3 individual artwork",
+  "Bay r22 stand 3 individual artwork.001": {
+   "name": "Bay r22 stand 3 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-98.png"
@@ -54922,8 +54922,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r22 stand 4 individual artwork": {
-   "name": "Bay r22 stand 4 individual artwork",
+  "Bay r22 stand 4 individual artwork.001": {
+   "name": "Bay r22 stand 4 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-99.png"
@@ -54933,8 +54933,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r23 stand 0 individual artwork": {
-   "name": "Bay r23 stand 0 individual artwork",
+  "Bay r23 stand 0 individual artwork.001": {
+   "name": "Bay r23 stand 0 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-100.png"
@@ -54944,8 +54944,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r23 stand 1 individual artwork": {
-   "name": "Bay r23 stand 1 individual artwork",
+  "Bay r23 stand 1 individual artwork.001": {
+   "name": "Bay r23 stand 1 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-101.png"
@@ -54955,8 +54955,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r23 stand 2 individual artwork": {
-   "name": "Bay r23 stand 2 individual artwork",
+  "Bay r23 stand 2 individual artwork.001": {
+   "name": "Bay r23 stand 2 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-102.png"
@@ -54966,8 +54966,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r23 stand 3 individual artwork": {
-   "name": "Bay r23 stand 3 individual artwork",
+  "Bay r23 stand 3 individual artwork.001": {
+   "name": "Bay r23 stand 3 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-103.png"
@@ -54977,8 +54977,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r23 stand 4 individual artwork": {
-   "name": "Bay r23 stand 4 individual artwork",
+  "Bay r23 stand 4 individual artwork.001": {
+   "name": "Bay r23 stand 4 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-104.png"
@@ -54997,8 +54997,8 @@
    "roughness": 0.08,
    "emission": 0.0
   },
-  "Bay r30 stand 0 individual artwork": {
-   "name": "Bay r30 stand 0 individual artwork",
+  "Bay r30 stand 0 individual artwork.001": {
+   "name": "Bay r30 stand 0 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-105.png"
@@ -55008,8 +55008,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r30 stand 1 individual artwork": {
-   "name": "Bay r30 stand 1 individual artwork",
+  "Bay r30 stand 1 individual artwork.001": {
+   "name": "Bay r30 stand 1 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-106.png"
@@ -55019,8 +55019,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r30 stand 2 individual artwork": {
-   "name": "Bay r30 stand 2 individual artwork",
+  "Bay r30 stand 2 individual artwork.001": {
+   "name": "Bay r30 stand 2 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-107.png"
@@ -55030,8 +55030,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r30 stand 3 individual artwork": {
-   "name": "Bay r30 stand 3 individual artwork",
+  "Bay r30 stand 3 individual artwork.001": {
+   "name": "Bay r30 stand 3 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-108.png"
@@ -55041,8 +55041,8 @@
    "roughness": 0.3,
    "emission": 0.0
   },
-  "Bay r30 stand 4 individual artwork": {
-   "name": "Bay r30 stand 4 individual artwork",
+  "Bay r30 stand 4 individual artwork.001": {
+   "name": "Bay r30 stand 4 individual artwork.001",
    "blend": "DITHERED",
    "images": [
     "stand-109.png"

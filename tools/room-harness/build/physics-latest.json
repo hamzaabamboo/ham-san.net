@@ -1,11 +1,11 @@
 {
  "source_file": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/room-v2.blend",
- "source_sha256": "7e982be494a9daa7a6fd5d7085c31bfecd089c9896f7543e8dfd55ccdbb40b1a",
+ "source_sha256": "f6713cc1a77b94c7781b532fc5a6543fe105d1e69dbb8b38c295931e73441e93",
  "source_is_dirty": false,
  "source_scope": "scene",
  "source_collection": "Scene Collection",
  "source_present": true,
- "generated_at": "2026-10-21T15:55:41.792651+00:00",
+ "generated_at": "2026-10-21T16:18:59.980738+00:00",
  "method": "aabb-screening",
  "room_bounds": {
   "xmin": -1.78000009059906,
