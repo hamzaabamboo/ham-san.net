@@ -6,7 +6,6 @@
   "inactive": "Inactive",
   "page-heading": "Work & Experiments.",
   "intro": "Web projects, small tools, and experiments I have worked on.",
-  "view-execution": "View project",
   "card-archive": "Inactive",
   "open-project": "Open project",
   "latest": "Latest",
@@ -17,5 +16,11 @@
   "empty-description": "Projects will show up again when the content connection is back.",
   "detail-empty-title": "Project Unavailable",
   "detail-empty-description": "This project could not be loaded right now. It will show up again when the content connection is back.",
-  "earlier-work": "Earlier work"
+  "earlier-work": "Earlier work",
+  "back-to-tags": "Back to tags",
+  "links": "Links",
+  "opens-in-new-tab": "(opens in a new tab)",
+  "tag-empty": "Nothing is linked to this tag yet.",
+  "screenshot-alt": "{title} screenshot",
+  "linked-count": "{count} linked projects and roles"
 }

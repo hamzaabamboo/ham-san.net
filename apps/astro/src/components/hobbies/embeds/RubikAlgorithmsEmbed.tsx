@@ -7,10 +7,9 @@ import type { HobbyEmbedProps } from './types';
 type AlgorithmSet = {
   name: string;
   notation: string;
-  use: string;
 };
 
-const parseSourceAlgorithms = (body: string, sourceNoteUseLabel: string): AlgorithmSet[] =>
+const parseSourceAlgorithms = (body: string): AlgorithmSet[] =>
   getListItems(getMarkdownSection(body, 'Algorithms'))
     .map((item) => {
       const [name, ...notationParts] = item.split(':');
@@ -18,8 +17,7 @@ const parseSourceAlgorithms = (body: string, sourceNoteUseLabel: string): Algori
 
       return {
         name: cleanSourceText(name ?? item),
-        notation: notation || cleanSourceText(item),
-        use: sourceNoteUseLabel
+        notation: notation || cleanSourceText(item)
       } satisfies AlgorithmSet;
     })
     .filter((algorithm) => algorithm.name && algorithm.notation);
@@ -27,11 +25,10 @@ const parseSourceAlgorithms = (body: string, sourceNoteUseLabel: string): Algori
 export const RubikAlgorithmsEmbed = ({
   body = '',
   links = [],
-  sourceNoteUseLabel = 'note',
   noAlgorithmSetsLabel = 'No algorithm sets are listed yet.'
 }: HobbyEmbedProps) => {
   const [activeAlgorithm, setActiveAlgorithm] = useState(0);
-  const sourceSets = parseSourceAlgorithms(body, sourceNoteUseLabel);
+  const sourceSets = parseSourceAlgorithms(body);
   const resources = getRubikResourceLinks(links);
   const activeSet = sourceSets[activeAlgorithm] ?? sourceSets[0];
 
@@ -54,7 +51,6 @@ export const RubikAlgorithmsEmbed = ({
           </div>
           <div className={hobbyStyles.algorithmViewer}>
             <p>{activeSet?.notation}</p>
-            <span>{activeSet?.use}</span>
           </div>
         </div>
       ) : resources.length === 0 ? (

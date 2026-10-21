@@ -18,6 +18,7 @@ import type {
   TagFragment
 } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
+import { knownLinkLabelsFrom } from '~/utils/link-label';
 import MainLayout from '~/layouts/MainLayout.astro';
 import Eyebrow from '~/components/common/Eyebrow.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
@@ -92,7 +93,13 @@ if (tagUnavailable) {
 <MainLayout title={pageTitle}>
   <Container maxW="breakpoint-xl" py="8" w="full">
     <Stack gap="8">
-      <Link href={`/${locale}/tags`}>
+      <Link
+        href={`/${locale}/tags`}
+        display="inline-flex"
+        alignItems="center"
+        alignSelf="start"
+        minH="44px"
+      >
         <Wrap
           fontSize="xs"
           fontFamily="var(--font-code)"
@@ -101,7 +108,7 @@ if (tagUnavailable) {
           _hover={{ color: 'var(--atelier-accent)' }}
         >
           <FaArrowLeft />
-          <Text>{t('common.tags')}</Text>
+          <Text>{t('project.back-to-tags')}</Text>
         </Wrap>
       </Link>
       {
@@ -164,26 +171,32 @@ if (tagUnavailable) {
                   bg="var(--atelier-surface-low)"
                   p="6"
                 >
-                  <Heading as="h2" fontSize={{ base: '2xl', md: '3xl' }}>
+                  <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }}>
                     {title}
                   </Heading>
                   <Wrap fontSize="sm" color="var(--atelier-outline)" fontFamily="var(--font-code)">
-                    {position && <Text>{`${position}\u00A0|`}</Text>}
+                    {position && <Text color="var(--atelier-fg-muted)">{position}</Text>}
+                    {position && startDate && <Text aria-hidden="true">|</Text>}
                     {startDate && (
                       <Text>
-                        {formatMonthYear(startDate, locale)} -{' '}
+                        {formatMonthYear(startDate, locale)} –{' '}
                         {endDate ? formatMonthYear(endDate, locale) : t('common.present')}
                         {duration ? ` (${duration})` : ''}
                       </Text>
                     )}
                   </Wrap>
                   {tags && (
-                    <Wrap fontSize="sm" gap="2" rowGap="3" alignItems="center">
+                    <Wrap fontSize="sm" gap="2" alignItems="center">
                       <Text>{t('common.tags')}</Text>
                       {sortTags(nonNullTags(tags)).map(
                         (tag) =>
                           tag && (
-                            <Link href={`/${locale}/tags/${tagSlug(tag)}`} display="inline-flex">
+                            <Link
+                              href={`/${locale}/tags/${tagSlug(tag)}`}
+                              display="inline-flex"
+                              alignItems="center"
+                              minH="44px"
+                            >
                               <TagBadge tag={tag} size="sm" />
                             </Link>
                           )
@@ -194,24 +207,58 @@ if (tagUnavailable) {
                       line, against ~70 on every other prose surface on the site. */}
                   {content && (
                     <Box maxW="70ch">
-                      <Markdown content={content} headingLevelOffset={2} />
+                      <Markdown
+                        content={content}
+                        headingLevelOffset={3}
+                        newTabLabel={t('note.opens-new-tab')}
+                        linkLabels={knownLinkLabelsFrom(t)}
+                      />
                     </Box>
                   )}
                 </Stack>
               );
             })}
-            <Divider borderColor="var(--atelier-line)" />
-            {projectItems.length > 0 && <SectionHeading label={t('project.projects')} />}
-            <Grid
-              gridTemplateColumns="repeat(auto-fit, minmax(min(100%, 300px), 1fr))"
-              alignItems={{ base: 'start', md: 'stretch' }}
-            >
-              {projectItems.map((project) => (
-                <GridItem>
-                  <ProjectCard data={project} locale={locale} />
-                </GridItem>
-              ))}
-            </Grid>
+            {experienceItems.length > 0 && projectItems.length > 0 && (
+              <Divider borderColor="var(--atelier-line)" />
+            )}
+            {projectItems.length > 0 && (
+              <>
+                <SectionHeading label={t('project.projects')} />
+                <Grid
+                  gridTemplateColumns="repeat(auto-fit, minmax(min(100%, 300px), 1fr))"
+                  alignItems={{ base: 'start', md: 'stretch' }}
+                >
+                  {projectItems.map((project) => (
+                    <GridItem>
+                      <ProjectCard data={project} locale={locale} />
+                    </GridItem>
+                  ))}
+                </Grid>
+              </>
+            )}
+            {experienceItems.length === 0 && projectItems.length === 0 && (
+              <Stack
+                gap="4"
+                alignItems="start"
+                border="1px solid"
+                borderColor="var(--atelier-line)"
+                bg="var(--atelier-surface-low)"
+                p={{ base: '6', md: '8' }}
+              >
+                <Text color="var(--atelier-fg-muted)" lineHeight="1.7">
+                  {t('project.tag-empty')}
+                </Text>
+                <Link
+                  href={`/${locale}/tags`}
+                  display="inline-flex"
+                  alignItems="center"
+                  minH="44px"
+                  className="amber-link"
+                >
+                  {t('project.back-to-tags')}
+                </Link>
+              </Stack>
+            )}
           </>
         )
       }

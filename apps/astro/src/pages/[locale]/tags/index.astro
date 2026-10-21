@@ -1,7 +1,7 @@
 ---
 import { toKebabCase } from 'utils/kebab-case';
 import { Box, Container, Flex, Grid, Stack, Wrap } from 'styled-system/jsx';
-import { TagBadge } from '~/components/tags/TagBadge';
+import { TagBadge, tagLinkCount } from '~/components/tags/TagBadge';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
@@ -114,27 +114,40 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
             {Object.entries(primaryGroups).map(([type, groupTags]) => (
               <Stack gap="6">
                 <Flex alignItems="center" gap="4">
-                  <Text
+                  <Heading
+                    as="h2"
                     fontFamily="var(--font-code)"
                     fontSize="10px"
+                    fontWeight="normal"
+                    fontStyle="normal"
                     textTransform="uppercase"
                     letterSpacing="0.12em"
                     color="var(--atelier-outline)"
                     flexShrink="0"
                   >
                     {t(`common.${toKebabCase(type)}` as 'common.frontend')}
-                  </Text>
-                  <div style="flex:1;height:1px;background:var(--atelier-line)" />
+                  </Heading>
+                  <Box flex="1" h="1px" bg="var(--atelier-line)" />
                 </Flex>
-                <Wrap gap="3">
+                <Wrap gap="2">
                   {groupTags.map((tag) => (
                     <Link
                       href={`/${locale}/tags/${tagSlug(tag)}`}
-                      display="block"
+                      display="flex"
+                      alignItems="center"
+                      minH="44px"
                       _hover={{ transform: 'translate(-2px, -2px)' }}
                       transition="transform 0.2s ease"
                     >
-                      <TagBadge tag={tag} showCount size="md" />
+                      <TagBadge
+                        tag={tag}
+                        showCount
+                        countLabel={t('project.linked-count').replace(
+                          '{count}',
+                          String(tagLinkCount(tag))
+                        )}
+                        size="md"
+                      />
                     </Link>
                   ))}
                 </Wrap>
@@ -151,27 +164,40 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
               {Object.entries(secondaryGroups).map(([type, groupTags]) => (
                 <Stack gap="6" css={{ '&:last-child:nth-child(odd)': { gridColumn: '1 / -1' } }}>
                   <Flex alignItems="center" gap="4">
-                    <Text
+                    <Heading
+                      as="h2"
                       fontFamily="var(--font-code)"
                       fontSize="10px"
+                      fontWeight="normal"
+                      fontStyle="normal"
                       textTransform="uppercase"
                       letterSpacing="0.12em"
                       color="var(--atelier-outline)"
                       flexShrink="0"
                     >
                       {t(`common.${toKebabCase(type)}` as 'common.frontend')}
-                    </Text>
-                    <div style="flex:1;height:1px;background:var(--atelier-line)" />
+                    </Heading>
+                    <Box flex="1" h="1px" bg="var(--atelier-line)" />
                   </Flex>
-                  <Wrap gap="3">
+                  <Wrap gap="2">
                     {groupTags.map((tag) => (
                       <Link
                         href={`/${locale}/tags/${tagSlug(tag)}`}
-                        display="block"
+                        display="flex"
+                        alignItems="center"
+                        minH="44px"
                         _hover={{ transform: 'translate(-2px, -2px)' }}
                         transition="transform 0.2s ease"
                       >
-                        <TagBadge tag={tag} showCount size="md" />
+                        <TagBadge
+                          tag={tag}
+                          showCount
+                          countLabel={t('project.linked-count').replace(
+                            '{count}',
+                            String(tagLinkCount(tag))
+                          )}
+                          size="md"
+                        />
                       </Link>
                     ))}
                   </Wrap>

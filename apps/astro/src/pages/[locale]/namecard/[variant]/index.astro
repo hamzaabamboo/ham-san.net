@@ -10,6 +10,7 @@ import {
   FaSpotify,
   FaTwitter
 } from 'react-icons/fa';
+import { css } from 'styled-system/css';
 import { Box, Container, Grid, GridItem, HStack, Stack, styled } from 'styled-system/jsx';
 import kaho1 from '~/assets/namecard/kaho-1.png';
 import kanataPeek from '~/assets/namecard/kanata-peek.png';
@@ -58,6 +59,13 @@ if (!namecard) {
 const { color } = namecard;
 
 const Image = styled.img;
+const namecardPreviewLink = css({
+  display: 'block',
+  rounded: 'l1',
+  transition: 'box-shadow 160ms ease',
+  _hover: { boxShadow: '0 0 0 3px #fff, 0 0 0 5px var(--main-color)' },
+  _focusVisible: { outline: '3px solid #1f1f1f', outlineOffset: '4px' }
+});
 ---
 
 <NamecardLayout title={pageTitle}>
@@ -109,7 +117,10 @@ const Image = styled.img;
         <Grid
           gridGap="2"
           alignItems="stretch"
-          gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))"
+          gridTemplateColumns={{
+            base: 'repeat(auto-fit, minmax(140px, 1fr))',
+            md: 'repeat(auto-fit, minmax(200px, 1fr))'
+          }}
         >
           {
             links.map((item) => {
@@ -142,8 +153,10 @@ const Image = styled.img;
                         </Text>
                       )}
                       <Stack gap="1" alignItems="center">
-                        <Text fontWeight="bold">{item.label}</Text>
-                        {item.value && <Text>{item.value}</Text>}
+                        <Text fontWeight="bold" overflowWrap="anywhere">
+                          {item.id === 'twitter' ? 'X' : item.label}
+                        </Text>
+                        {item.value && <Text overflowWrap="anywhere">{item.value}</Text>}
                       </Stack>
                     </Stack>
                   </Link>
@@ -153,7 +166,11 @@ const Image = styled.img;
           }
         </Grid>
         <Box mx="auto" textAlign="start" maxW="full" overflowX="auto" pb="2">
-          <a href={`/${locale}/namecard/all`}>
+          <a
+            href={`/${locale}/namecard/all`}
+            class={namecardPreviewLink}
+            aria-label={t('name-card.view-other-namecards')}
+          >
             <Namecard side="front" data={namecard} />
           </a>
         </Box>
@@ -162,7 +179,7 @@ const Image = styled.img;
     </Container>
     <Box w="full" overflow="hidden" flex="1" minH="240px" position="relative">
       <Box position="absolute" top="0" right="0" animation={'pyon'}>
-        <Image w="400px" translateX="15%" src={kaho1.src} alt="日野下花帆" />
+        <Image w="400px" translateX="15%" src={kaho1.src} alt="" />
       </Box>
       <Box
         display={{ base: 'none', md: 'block' }}
@@ -177,7 +194,7 @@ const Image = styled.img;
           pointerEvents="none"
           transform="scaleX(-100%)"
           src={kanataPeek.src}
-          alt="彼方このえ"
+          alt=""
         />
       </Box>
     </Box>

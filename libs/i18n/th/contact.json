@@ -26,11 +26,12 @@
   "subject-collaboration": "คุยเรื่องร่วมงาน",
   "subject-technical": "คำถามด้านเทคนิค",
   "subject-other": "อื่น ๆ",
-  "execute-transmission": "ส่งข้อความ",
+  "execute-transmission": "เปิดในแอปอีเมล",
   "security-brief": "ก่อนส่ง",
   "security-brief-body": "ฟอร์มนี้จะเปิดเมลไคลเอนต์พร้อมข้อความที่กรอกไว้ หากเป็นข้อมูลส่วนตัว ให้ส่งผ่านช่องทางที่คุณไว้ใจ",
   "office-hours": "การตอบกลับ",
   "office-hours-body": "โดยปกติจะตอบกลับภายในไม่กี่วัน\nส่งมาได้เลย ไม่ต้องรอคำตอบทันที",
-  "current-time-label": "เวลาปัจจุบัน",
-  "namecards-count": "จำนวนการ์ด"
+  "mail-fallback-prefix": "หากไม่มีอะไรเปิดขึ้น ส่งอีเมลไปที่ ",
+  "mail-fallback-suffix": "",
+  "tokyo-time-label": "โตเกียว"
 }

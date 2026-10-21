@@ -14,56 +14,65 @@ type EmbedDefinition = {
   title: string;
   description: string;
   className: string;
+  interactive: boolean;
   Component: ComponentType<HobbyEmbedProps>;
 };
 
 const embedRegistry: Record<string, EmbedDefinition> = {
   'photo-gallery': {
     title: 'Photo lab',
-    description: 'Images and references from the note.',
+    description: 'Images and references.',
     className: 'photo-gallery',
+    interactive: true,
     Component: PhotoGalleryEmbed
   },
   'twitter-feed': {
     title: 'Social feed',
-    description: 'Public posts and profile links from the note.',
+    description: 'Public posts and profile links.',
     className: 'twitter-feed',
+    interactive: false,
     Component: TwitterFeedEmbed
   },
   'rubik-algorithms': {
-    title: 'Algorithm viewer',
+    title: 'Algorithms',
     description: 'Move notation with practice context.',
     className: 'rubik-algorithms',
+    interactive: true,
     Component: RubikAlgorithmsEmbed
   },
   'typing-stats': {
     title: 'Typing profiles',
     description: 'Typing profiles and practice links.',
     className: 'typing-stats',
+    interactive: false,
     Component: TypingStatsEmbed
   },
   'darts-board': {
     title: 'Darts board',
     description: 'Board, gear, and practice notes.',
     className: 'darts-board',
+    interactive: false,
     Component: DartsBoardEmbed
   },
   'link-library': {
     title: 'Link library',
-    description: 'External references from the note.',
+    description: 'External references.',
     className: 'link-library',
+    interactive: false,
     Component: LinkLibraryEmbed
   },
   'piano-chords': {
     title: 'Chord player',
     description: 'Chord, voicing, and audio pages.',
     className: 'piano-chords',
+    interactive: true,
     Component: PianoChordsEmbed
   },
   'field-notes': {
-    title: 'Note links',
-    description: 'Links, related pages, and update state.',
+    title: 'Links and pages',
+    description: 'Links and related pages.',
     className: 'field-notes',
+    interactive: false,
     Component: FieldNotesEmbed
   }
 };
@@ -76,6 +85,7 @@ export const HobbyInteractiveEmbed = ({
   description,
   body,
   images = [],
+  imageAlts = [],
   links = [],
   nestedPages = [],
   moduleTitle,
@@ -88,23 +98,28 @@ export const HobbyInteractiveEmbed = ({
   noImagesLabel,
   imageLabel,
   noLinksLabel,
-  sourceNoteLabel,
   noFeedLabel,
   noTypingProfilesLabel,
-  sourceNoteUseLabel,
   openSourcePageLabel,
   noAlgorithmSetsLabel,
   audioUnavailableLabel,
   playedLabel,
   audioStartsAfterTapLabel,
   noChordsLabel,
+  noDartsDataLabel,
+  moreLabel,
   status = 'active'
 }: HobbyEmbedProps & { type: string }) => {
   const embed = embedRegistry[type] ?? fallbackEmbed;
   const Component = embed.Component;
 
   return (
-    <section className={hobbyStyles.embed} data-embed={embed.className} data-status={status}>
+    <section
+      className={hobbyStyles.embed}
+      data-embed={embed.className}
+      data-interactive={embed.interactive}
+      data-status={status}
+    >
       <div className={hobbyStyles.embedHeader}>
         <h2>{moduleTitle ?? embed.title}</h2>
       </div>
@@ -116,6 +131,7 @@ export const HobbyInteractiveEmbed = ({
         description={description}
         body={body}
         images={images}
+        imageAlts={imageAlts}
         links={links}
         nestedPages={nestedPages}
         moduleTitle={moduleTitle}
@@ -128,16 +144,16 @@ export const HobbyInteractiveEmbed = ({
         noImagesLabel={noImagesLabel}
         imageLabel={imageLabel}
         noLinksLabel={noLinksLabel}
-        sourceNoteLabel={sourceNoteLabel}
         noFeedLabel={noFeedLabel}
         noTypingProfilesLabel={noTypingProfilesLabel}
-        sourceNoteUseLabel={sourceNoteUseLabel}
         openSourcePageLabel={openSourcePageLabel}
         noAlgorithmSetsLabel={noAlgorithmSetsLabel}
         audioUnavailableLabel={audioUnavailableLabel}
         playedLabel={playedLabel}
         audioStartsAfterTapLabel={audioStartsAfterTapLabel}
         noChordsLabel={noChordsLabel}
+        noDartsDataLabel={noDartsDataLabel}
+        moreLabel={moreLabel}
         status={status}
       />
     </section>

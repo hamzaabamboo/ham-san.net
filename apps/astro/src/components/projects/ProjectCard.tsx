@@ -1,4 +1,5 @@
-import { FaArrowRight, FaGithub, FaGlobe } from 'react-icons/fa';
+import { useState } from 'react';
+import { FaGithub, FaGlobe } from 'react-icons/fa';
 import { Box, Center, Stack, styled, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { resolveMedia } from 'utils/media';
@@ -54,6 +55,7 @@ const extractMedia = (
 export const ProjectCard = (props: { data: ProjectCardData; locale: Languages }) => {
   const { data, locale } = props;
   const t = useTranslations(locale);
+  const [imageFailed, setImageFailed] = useState(false);
   const { title, description, slug, date, links } = data;
   const category =
     data.category && 'name' in data.category
@@ -110,10 +112,11 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                 {t('project.card-archive')}
               </Box>
             )}
-            {image && resolved ? (
+            {image && resolved && !imageFailed ? (
               <styled.img
                 src={resolved.src}
-                alt={image.name}
+                alt=""
+                onError={() => setImageFailed(true)}
                 htmlWidth={800}
                 htmlHeight={600}
                 loading="lazy"
@@ -174,8 +177,8 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               fontFamily="var(--font-code)"
               fontSize="xs"
             >
-              {category?.name && <Text>{category.name}</Text>}
-              {category?.name && date && <Text>|</Text>}
+              {category?.name && <Text color="var(--atelier-fg-muted)">{category.name}</Text>}
+              {category?.name && date && <Text aria-hidden="true">|</Text>}
               <Text>{date && formatMonthYear(parseDate(date), locale)}</Text>
             </Wrap>
             <Text
@@ -185,7 +188,6 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               fontWeight="bold"
               letterSpacing="-0.02em"
               lineHeight="1.1"
-              textTransform="uppercase"
             >
               {title}
             </Text>
@@ -197,13 +199,11 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               alignItems="center"
               marginTop="auto"
               color="var(--atelier-accent)"
-              fontFamily="var(--font-code)"
-              fontSize="10px"
-              letterSpacing="0.12em"
-              textTransform="uppercase"
+              fontSize="sm"
+              fontWeight="bold"
             >
               <Text>{t('project.open-project')}</Text>
-              <FaArrowRight />
+              <Text aria-hidden="true">→</Text>
             </Wrap>
           </Stack>
         </Stack>
@@ -219,6 +219,8 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             variant="ghost"
             border="1px solid"
             borderColor="var(--atelier-surface-high)"
+            minW="44px"
+            minH="44px"
             color="var(--atelier-fg-muted)"
             bg="transparent"
             _hover={{
@@ -244,6 +246,8 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             variant="ghost"
             border="1px solid"
             borderColor="var(--atelier-surface-high)"
+            minW="44px"
+            minH="44px"
             color="var(--atelier-fg-muted)"
             bg="transparent"
             _hover={{

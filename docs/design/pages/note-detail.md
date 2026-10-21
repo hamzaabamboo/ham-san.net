@@ -28,6 +28,13 @@ This page is for reading one note in full, with its contents, details and neighb
 - **Upstream unavailable:** status 503.
 - **Either case:** `CDN-Cache-Control: no-store`. Otherwise 86400 s.
 
+## Reading aids
+
+- Prose is capped at 42rem; code, tables and chord charts can run wider and scroll.
+- Below 1280px a collapsible Contents list sits above the body, and a Back to notes link sits above the eyebrow.
+- The Details box shows the note's real collection name (hidden if unknown) and the date in Asia/Tokyo, matching the list.
+- External links carry a visually hidden "opens in a new tab". Bare YouTube and Google Photos URLs are labelled "YouTube video" and "Google Photos album" in each locale.
+
 ## States
 
 - **Not found:** `note.status-not-found` with `note.not-found-*`.

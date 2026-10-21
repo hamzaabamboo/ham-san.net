@@ -36,25 +36,29 @@ const parseGearGroups = (body: string) => {
   return groups.filter((group) => group.items.length > 0);
 };
 
-export const DartsBoardEmbed = ({ body = '' }: HobbyEmbedProps) => {
+export const DartsBoardEmbed = ({
+  body = '',
+  noDartsDataLabel = 'No darts stats or gear are listed yet.'
+}: HobbyEmbedProps) => {
   const stats = parseStats(body);
   const gearGroups = parseGearGroups(body);
 
+  if (stats.length === 0 && gearGroups.length === 0) {
+    return <p className={`${hobbyStyles.sourceEmpty} hobby-meta`}>{noDartsDataLabel}</p>;
+  }
+
   return (
     <div className={hobbyStyles.dartsBoard}>
-      <div className={hobbyStyles.dartsTarget} aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </div>
-      <div className={hobbyStyles.dartsStats}>
-        {stats.map((stat) => (
-          <div key={stat.label}>
-            <span>{stat.label}</span>
-            <strong>{stat.value}</strong>
-          </div>
-        ))}
-      </div>
+      {stats.length > 0 && (
+        <div className={hobbyStyles.dartsStats}>
+          {stats.map((stat) => (
+            <div key={stat.label}>
+              <span>{stat.label}</span>
+              <strong>{stat.value}</strong>
+            </div>
+          ))}
+        </div>
+      )}
       {gearGroups.length > 0 && (
         <div className={hobbyStyles.dartsGear}>
           {gearGroups.map((group) => (

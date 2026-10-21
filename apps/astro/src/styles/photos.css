@@ -28,12 +28,70 @@
   margin: 0;
 }
 
+.kameko [hidden] {
+  display: none;
+}
+
+.kameko__search-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .kameko__search input {
+  flex: 1 1 14rem;
+  min-height: 2.75rem;
   border: 1px solid var(--atelier-line);
   background: var(--atelier-surface-lowest);
   color: var(--atelier-fg);
   padding: 0.7rem 0.85rem;
   font: inherit;
+}
+
+.kameko__search button,
+.kameko__search-clear,
+.kameko__top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.kameko__search button {
+  border: 1px solid var(--atelier-accent);
+  background: var(--atelier-accent);
+  color: var(--atelier-on-accent);
+  cursor: pointer;
+}
+
+.kameko__search-clear {
+  border: 1px solid var(--atelier-line);
+  color: var(--atelier-fg);
+}
+
+.kameko__search-clear:hover,
+.kameko__top:hover {
+  border-color: var(--atelier-outline);
+  background: var(--atelier-surface-low);
+}
+
+.kameko__top {
+  justify-self: center;
+  border: 1px solid var(--atelier-line);
+  color: var(--atelier-fg);
+}
+
+.kameko__search button:focus-visible,
+.kameko__search-clear:focus-visible,
+.kameko__top:focus-visible {
+  outline: 2px solid var(--atelier-accent);
+  outline-offset: 2px;
 }
 
 .kameko__search input:focus-visible {
@@ -221,8 +279,8 @@
   right: 0.5rem;
   display: grid;
   place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   padding: 0;
   border: 0;
   background: var(--atelier-bg);
@@ -257,13 +315,7 @@
   gap: 0.1rem;
   padding: 2.5rem 0.8rem 0.7rem;
   background: linear-gradient(transparent, var(--atelier-bg));
-  opacity: 0;
-  transition: opacity 200ms ease;
-}
-
-.kameko-tile a:hover .kameko-tile__caption,
-.kameko-tile a:focus-visible .kameko-tile__caption {
-  opacity: 1;
+  pointer-events: none;
 }
 
 .kameko-tile__name {
@@ -273,9 +325,15 @@
 }
 
 .kameko-tile__event {
+  display: none;
   color: var(--atelier-fg-muted);
   font-size: 0.78rem;
   line-height: 1.35;
+}
+
+.kameko-tile a:hover .kameko-tile__event,
+.kameko-tile a:focus-visible .kameko-tile__event {
+  display: block;
 }
 
 .kameko-viewer {
@@ -400,13 +458,14 @@
   }
 
   .kameko-tile__caption {
-    opacity: 1;
     padding: 1.6rem 0.55rem 0.45rem;
   }
+}
 
-  .kameko-tile__event {
-    display: none;
-  }
+.kameko__facet a,
+.kameko__facet summary {
+  min-height: 2.75rem;
+  align-items: center;
 }
 
 @media (max-width: 700px) {
@@ -434,8 +493,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kameko-tile img,
-  .kameko-tile__caption {
+  .kameko-tile img {
     transition: none;
   }
 }

@@ -21,5 +21,8 @@
   "viewer-prev": "รูปก่อนหน้า",
   "viewer-next": "รูปถัดไป",
   "posts-count": "โพสต์",
-  "view-photo": "ดูรูป"
+  "view-photo": "ดูรูป",
+  "search-submit": "ค้นหา",
+  "clear-search": "ล้างการค้นหา",
+  "back-to-top": "กลับขึ้นด้านบน"
 }

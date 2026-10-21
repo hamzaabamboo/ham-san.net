@@ -1,5 +1,5 @@
 {
-  "rss-title": "Ham — โน้ต",
+  "rss-title": "Ham: โน้ต",
   "rss-description": "ฐานความรู้ส่วนตัวที่เปิดเผยต่อสาธารณะ",
   "untitled": "ไม่มีชื่อ",
   "notes": "บันทึก",
@@ -13,9 +13,6 @@
   "collection": "คอลเลกชัน",
   "details": "รายละเอียด",
   "latest-note": "บันทึกล่าสุด",
-  "total-notes": "โน้ตทั้งหมด",
-  "collections": "คอลเลกชัน",
-  "latest": "ล่าสุด",
   "status-unavailable": "สถานะ: ไม่พร้อมใช้งาน",
   "previous-entry": "บันทึกก่อนหน้า",
   "next-entry": "บันทึกถัดไป",
@@ -32,5 +29,10 @@
   "not-found-description": "บันทึกนี้ไม่มีอยู่หรือไม่ได้เผยแพร่แล้ว",
   "status-empty": "สถานะ: ว่าง",
   "empty-none-title": "ยังไม่มีโน้ต",
-  "empty-none-description": "ยังไม่มีโน้ตที่เผยแพร่ กลับมาดูใหม่ภายหลัง"
+  "empty-none-description": "ยังไม่มีโน้ตที่เผยแพร่ กลับมาดูใหม่ภายหลัง",
+  "page-of": "หน้า {n} จาก {m}",
+  "opens-new-tab": "(เปิดในแท็บใหม่)",
+  "total-notes": "โน้ตทั้งหมด",
+  "collections": "คอลเลกชัน",
+  "latest": "ล่าสุด"
 }

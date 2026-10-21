@@ -1,11 +1,12 @@
 ---
 import { Glyph } from '~/components/ui/glyph';
-import { Box, Container, Grid, Stack } from 'styled-system/jsx';
+import { Box, Container, Grid, Stack, styled } from 'styled-system/jsx';
 import { cleanArticleContent, getArticleBanner } from 'outline/article';
 import { Heading } from '~/components/ui/heading';
 import { Markdown, createHeadingSlugger } from '~/components/lib/Markdown';
 import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
+import { knownLinkLabelsFrom } from '~/utils/link-label';
 import MainLayout from '~/layouts/MainLayout.astro';
 import Eyebrow from '~/components/common/Eyebrow.astro';
 import { withLastGood } from '~/utils/cms-cache';
@@ -100,6 +101,16 @@ const siblingsRequest = note
     })
   : null;
 
+const collectionRequest = note?.collectionId
+  ? await withLastGood(`note-collection:${note.collectionId}`, async () => {
+      const request = await outlineClient.POST('/collections.info', {
+        body: { id: note.collectionId }
+      });
+      return requireOutlineOk(request, 'collections.info');
+    }).catch(() => null)
+  : null;
+const collectionName = collectionRequest?.data?.data?.name ?? null;
+
 const siblings = siblingsRequest?.data?.data ?? [];
 if (siblingsUnavailable) {
   Astro.response.status = 503;
@@ -124,13 +135,12 @@ const countWords = (text: string) => {
 };
 const wordCount = countWords(content ?? '');
 const readingMinutes = Math.max(1, Math.round(wordCount / 200));
-const publishedDate = note?.publishedAt ?? note?.createdAt;
-const formattedDate = publishedDate
-  ? new Date(publishedDate).toISOString().slice(0, 10) +
-    ' // ' +
-    new Date(publishedDate).toISOString().slice(11, 16) +
-    ' GMT'
-  : null;
+const dateFormatter = new Intl.DateTimeFormat(locale, {
+  dateStyle: 'long',
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
+});
+const formattedDate = note?.createdAt ? dateFormatter.format(new Date(note.createdAt)) : null;
 
 const currentIndex = note ? siblings.findIndex((s) => s.id === note.id) : -1;
 const prevSibling = currentIndex > 0 ? siblings[currentIndex - 1] : null;
@@ -282,6 +292,20 @@ const tags = (note as any)?.tags ?? [];
 
           <Stack gap="10" minW="0">
             <Stack gap="6" mb="4">
+              <Box hideFrom="xl">
+                <styled.a
+                  href={`/${locale}/notes`}
+                  display="inline-flex"
+                  alignItems="center"
+                  minH="44px"
+                  fontFamily="var(--font-code)"
+                  fontSize="xs"
+                  color="var(--atelier-fg-muted)"
+                  _hover={{ color: 'var(--atelier-accent)' }}
+                >
+                  ← {t('note.back-to-posts')}
+                </styled.a>
+              </Box>
               <Eyebrow label={t('note.note-label')} />
               <Heading
                 as="h1"
@@ -335,9 +359,53 @@ const tags = (note as any)?.tags ?? [];
               </Box>
             )}
 
+            {showContents && (
+              <Box hideFrom="xl">
+                <styled.details
+                  border="1px solid"
+                  borderColor="var(--atelier-line)"
+                  bg="var(--atelier-surface-low)"
+                >
+                  <styled.summary
+                    display="flex"
+                    alignItems="center"
+                    minH="44px"
+                    px="4"
+                    fontFamily="var(--font-code)"
+                    fontSize="xs"
+                    textTransform="uppercase"
+                    color="var(--atelier-fg-muted)"
+                    cursor="pointer"
+                  >
+                    {t('note.contents')}
+                  </styled.summary>
+                  <Stack gap="1" px="4" pb="3">
+                    {headings.map((h) => (
+                      <styled.a
+                        href={`#${h.id}`}
+                        display="flex"
+                        alignItems="center"
+                        minH="44px"
+                        style={h.level > 1 ? { paddingLeft: '1rem' } : undefined}
+                        fontFamily="var(--font-code)"
+                        fontSize="xs"
+                        color="var(--atelier-fg-muted)"
+                        overflowWrap="anywhere"
+                        _hover={{ color: 'var(--atelier-accent)' }}
+                      >
+                        {h.text}
+                      </styled.a>
+                    ))}
+                  </Stack>
+                </styled.details>
+              </Box>
+            )}
+
             {bodyContent && (
               <Markdown
                 content={bodyContent}
+                newTabLabel={t('note.opens-new-tab')}
+                linkLabels={knownLinkLabelsFrom(t)}
                 assetsPrefix={outlineAssetPrefix}
                 assetProxyBasePath={outlineAssetProxyPath}
                 headingLevelOffset={1}
@@ -448,7 +516,7 @@ const tags = (note as any)?.tags ?? [];
               >
                 <Text
                   fontFamily="var(--font-code)"
-                  fontSize="9px"
+                  fontSize="11px"
                   textTransform="uppercase"
                   color="var(--atelier-accent)"
                 >
@@ -473,29 +541,23 @@ const tags = (note as any)?.tags ?? [];
                     </Text>
                   </Box>
                 )}
-                <Box>
-                  <Text
-                    fontFamily="var(--font-code)"
-                    fontSize="10px"
-                    textTransform="uppercase"
-                    color="var(--atelier-outline)"
-                    letterSpacing="0.12em"
-                    mb="1"
-                  >
-                    {t('note.collection')}
-                  </Text>
-                  <Text
-                    color="var(--atelier-accent)"
-                    fontWeight="bold"
-                    textTransform="uppercase"
-                    letterSpacing="-0.04em"
-                    textDecoration="underline"
-                    textUnderlineOffset="4px"
-                    fontSize="sm"
-                  >
-                    {t('note.note-label')}
-                  </Text>
-                </Box>
+                {collectionName && (
+                  <Box>
+                    <Text
+                      fontFamily="var(--font-code)"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      color="var(--atelier-outline)"
+                      letterSpacing="0.12em"
+                      mb="1"
+                    >
+                      {t('note.collection')}
+                    </Text>
+                    <Text fontSize="sm" overflowWrap="anywhere">
+                      {collectionName}
+                    </Text>
+                  </Box>
+                )}
                 <Box>
                   <Text
                     fontFamily="var(--font-code)"
@@ -534,10 +596,10 @@ const tags = (note as any)?.tags ?? [];
                         >
                           <Text
                             fontFamily="var(--font-code)"
-                            fontSize="9px"
+                            fontSize="11px"
                             color="var(--atelier-fg-muted)"
                           >
-                            #{tag.toUpperCase()}
+                            #{tag}
                           </Text>
                         </Box>
                       ))}
@@ -559,6 +621,7 @@ const tags = (note as any)?.tags ?? [];
                 class="note-cta-button group"
               >
                 <span>{t('note.read-in-outline')}</span>
+                <styled.span srOnly>{t('note.opens-new-tab')}</styled.span>
                 <Glyph name="open_in_new" className="note-cta-icon" />
               </a>
             </Stack>

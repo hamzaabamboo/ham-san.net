@@ -64,9 +64,7 @@ const carouselImage = css({
   aspectRatio: '16 / 9',
   objectFit: 'contain',
   w: 'full',
-  transition: 'filter 0.3s ease',
-  filter: 'var(--atelier-image-rest)',
-  '&:hover': { filter: 'var(--atelier-image-hover)' }
+  filter: 'var(--atelier-image-plate)'
 });
 const thumbnailImage = css({
   aspectRatio: '1',
@@ -147,8 +145,6 @@ export const AppCarousel = (
       <UICarousel.Context>
         {(carousel) => (
           <>
-            {/* With three or fewer slides the thumbnail strip already shows every slide, so
-                arrows and dots are two more ways to do what one control does. */}
             <UICarousel.Control hidden={images.length <= 3}>
               <UICarousel.PrevTrigger asChild>
                 <IconButton
@@ -159,6 +155,8 @@ export const AppCarousel = (
                     event.preventDefault();
                     navigateCarousel(carousel, 'previous', reducedMotion);
                   }}
+                  w="44px"
+                  minH="44px"
                 >
                   <FaChevronLeft />
                 </IconButton>
@@ -173,6 +171,8 @@ export const AppCarousel = (
                     event.preventDefault();
                     navigateCarousel(carousel, 'next', reducedMotion);
                   }}
+                  w="44px"
+                  minH="44px"
                 >
                   <FaChevronRight />
                 </IconButton>

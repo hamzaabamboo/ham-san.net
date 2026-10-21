@@ -1,5 +1,5 @@
 {
-  "rss-title": "Ham — ノート",
+  "rss-title": "Ham: ノート",
   "rss-description": "個人ナレッジベースの公開ノート。",
   "untitled": "無題",
   "notes": "ノート一覧",
@@ -13,9 +13,6 @@
   "collection": "コレクション",
   "details": "詳細",
   "latest-note": "最新のノート",
-  "total-notes": "ノート総数",
-  "collections": "コレクション",
-  "latest": "最新",
   "status-unavailable": "ステータス: 利用不可",
   "previous-entry": "前のノート",
   "next-entry": "次のノート",
@@ -32,5 +29,10 @@
   "not-found-description": "このノートは存在しないか、公開が終了しています。",
   "status-empty": "ステータス: 未公開",
   "empty-none-title": "ノートはまだありません",
-  "empty-none-description": "まだ公開されたノートはありません。また後で見に来てください。"
+  "empty-none-description": "まだ公開されたノートはありません。また後で見に来てください。",
+  "page-of": "{n} / {m} ページ",
+  "opens-new-tab": "（新しいタブで開きます）",
+  "total-notes": "ノート総数",
+  "collections": "コレクション",
+  "latest": "最新"
 }

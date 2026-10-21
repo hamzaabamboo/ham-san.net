@@ -14,6 +14,7 @@ import { graphQLSdk } from '~/graphql';
 import { withLastGood } from '~/utils/cms-cache';
 import type { ProjectFragment, TagFragment } from '~/graphql/generated/client';
 import { useTranslations, validateLocale } from '~/i18n/utils';
+import { knownLinkLabelsFrom } from '~/utils/link-label';
 import MainLayout from '~/layouts/MainLayout.astro';
 import Eyebrow from '~/components/common/Eyebrow.astro';
 import { cleanProjectCopy } from '~/utils/project-copy';
@@ -45,7 +46,6 @@ if (!projectUnavailable && !project) {
 }
 const { content, title, banner, links, media, category, date, finishedDate, tags } = project ?? {};
 const bannerUrl = resolveMedia(banner, 1110, import.meta.env.PUBLIC_API_URL)?.src;
-const bannerName = banner?.name;
 const images = (media ?? [])
   .filter((d): d is NonNullable<typeof d> => !!d)
   .filter((d) => !banner?.url || d.url !== banner.url)
@@ -53,7 +53,7 @@ const images = (media ?? [])
   .filter((d): d is string => !!d);
 const nonNullTags = (items: Array<TagFragment | null>) =>
   items.filter((t): t is TagFragment => !!t);
-const nonNullLinks = (links ?? []).filter((l): l is NonNullable<typeof l> => !!l);
+const nonNullLinks = (links ?? []).filter((l): l is NonNullable<typeof l> => !!l?.url);
 const t = useTranslations(locale);
 const pageTitle = `${title ?? t('common.projects')} | ${t('common.name')}`;
 
@@ -77,7 +77,13 @@ if (projectUnavailable) {
       borderColor="var(--atelier-line)"
     >
       <Stack gap="8">
-        <Link href={`/${locale}/projects`}>
+        <Link
+          href={`/${locale}/projects`}
+          display="inline-flex"
+          alignItems="center"
+          alignSelf="start"
+          minH="44px"
+        >
           <Wrap
             fontFamily="var(--font-code)"
             fontSize="xs"
@@ -93,20 +99,6 @@ if (projectUnavailable) {
         {
           project ? (
             <>
-              {bannerUrl && (
-                <Box overflow="hidden" border="1px solid" borderColor="var(--atelier-line)">
-                  <styled.img
-                    src={bannerUrl}
-                    alt={bannerName ?? title ?? undefined}
-                    objectFit="cover"
-                    objectPosition="center"
-                    width="full"
-                    aspectRatio="16 / 9"
-                    backgroundColor="var(--atelier-surface-highest)"
-                    filter="var(--atelier-image-plate)"
-                  />
-                </Box>
-              )}
               <Stack gap="4">
                 <Stack gap="2">
                   <Eyebrow label={t('common.projects')} />
@@ -114,15 +106,15 @@ if (projectUnavailable) {
                     {title}
                   </Heading>
                   <Wrap fontSize="sm" color="var(--atelier-outline)" fontFamily="var(--font-code)">
-                    {category?.name && (
-                      <Text fontWeight="bold" color="var(--atelier-accent)">
-                        {category.name}
+                    {category?.name && <Text color="var(--atelier-fg-muted)">{category.name}</Text>}
+                    {category?.name && date && (
+                      <Text aria-hidden="true" color="var(--atelier-outline)">
+                        |
                       </Text>
                     )}
-                    {category?.name && date && <Text color="var(--atelier-outline)">|</Text>}
                     {date && (
                       <Text>
-                        {formatMonthYear(parseDate(date as string), locale)} -{' '}
+                        {formatMonthYear(parseDate(date as string), locale)} –{' '}
                         {finishedDate
                           ? formatMonthYear(parseDate(finishedDate as string), locale)
                           : t('common.present')}
@@ -133,11 +125,16 @@ if (projectUnavailable) {
                 {tags && nonNullTags(tags).length > 0 && (
                   <HStack>
                     <Text fontWeight="bold" fontSize="sm" color="var(--atelier-fg-muted)">
-                      {t('common.tags')}:
+                      {t('common.tags')}
                     </Text>
-                    <Wrap>
+                    <Wrap gap="2">
                       {nonNullTags(tags).map((tag) => (
-                        <Link href={`/${locale}/tags/${tag.slug}`}>
+                        <Link
+                          href={`/${locale}/tags/${tag.slug}`}
+                          display="inline-flex"
+                          alignItems="center"
+                          minH="44px"
+                        >
                           <TagBadge tag={tag} size="sm" />
                         </Link>
                       ))}
@@ -145,6 +142,20 @@ if (projectUnavailable) {
                   </HStack>
                 )}
               </Stack>
+              {bannerUrl && (
+                <Box overflow="hidden" border="1px solid" borderColor="var(--atelier-line)">
+                  <styled.img
+                    src={bannerUrl}
+                    alt={t('project.screenshot-alt').replace('{title}', title ?? '')}
+                    objectFit="cover"
+                    objectPosition="center"
+                    width="full"
+                    aspectRatio="16 / 9"
+                    backgroundColor="var(--atelier-surface-highest)"
+                    filter="var(--atelier-image-plate)"
+                  />
+                </Box>
+              )}
 
               <Divider borderColor="var(--atelier-line)" />
               {/* The prose is capped at 70ch for reading, but the links sat above it at full
@@ -164,6 +175,8 @@ if (projectUnavailable) {
                     content={content}
                     assetsPrefix={import.meta.env.PUBLIC_API_URL}
                     headingLevelOffset={1}
+                    newTabLabel={t('note.opens-new-tab')}
+                    linkLabels={knownLinkLabelsFrom(t)}
                   />
                 )}
                 {links && nonNullLinks.length > 0 && (
@@ -178,10 +191,16 @@ if (projectUnavailable) {
                       borderBottom="1px solid"
                       borderColor="var(--atelier-line)"
                     >
-                      {t('common.open')}
+                      {t('project.links')}
                     </Text>
                     {nonNullLinks.map((l) => {
-                      return <LinkItem data={l} openLabel={t('common.open')} />;
+                      return (
+                        <LinkItem
+                          data={l}
+                          openLabel={t('common.open')}
+                          newTabLabel={t('project.opens-in-new-tab')}
+                        />
+                      );
                     })}
                   </Stack>
                 )}

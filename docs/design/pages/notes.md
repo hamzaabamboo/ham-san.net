@@ -28,6 +28,10 @@ Public notes from my personal knowledge base …
 - An invalid `page` redirects to the base URL; a page past the end redirects to the last valid page.
 - `CDN-Cache-Control` is 86400 s when the list loaded, otherwise 60 s.
 
+## Pagination
+
+- "Page X of Y" sits above the 44px Newer/Older links.
+
 ## States
 
 - **Loaded but empty:** `note.status-empty` with `note.empty-none-*`.

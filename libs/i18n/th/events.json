@@ -8,10 +8,18 @@
   "aria-year-filter": "ตัวกรองปี",
   "aria-overview": "สถิติภาพรวม",
   "aria-preset-grid": "จำนวนอีเวนต์ตามช่วงเวลา",
-  "aria-highlight-totals": "ยอดรวมไฮไลต์",
   "aria-chart-grid": "แผงแผนภูมิ",
-  "aria-metrics-strip": "สถิติรองของอีเวนต์",
   "aria-analytics": "แผนภูมิวิเคราะห์อีเวนต์",
   "aria-heatmap": "ปฏิทินวันที่ไปอีเวนต์ หนึ่งช่องคือหนึ่งวัน ความเข้มบอกจำนวนอีเวนต์ในวันนั้น",
-  "aria-heatmap-scroll": "ตารางปฏิทินเลื่อนแนวนอน"
+  "aria-heatmap-scroll": "ตารางปฏิทินเลื่อนแนวนอน",
+  "highest-rate": "อัตราการเข้าร่วมสูงสุด",
+  "highest-rate-sub": "{rate} ({went}/{total}) เฉพาะศิลปินที่มี {min} อีเวนต์ขึ้นไป",
+  "heatmap-summary": "ระหว่าง {range} เข้าร่วม {days} วัน รวม {events} อีเวนต์",
+  "heatmap-peak": "วันที่มากที่สุด: {date} ({n} อีเวนต์)",
+  "months-window": "{n} เดือนล่าสุด",
+  "showing-of": "{n} จาก {total}",
+  "all-on-eventernote": "ดูอีเวนต์ทั้งหมดบน Eventernote",
+  "opens-new-tab": "(เปิดในแท็บใหม่)",
+  "rail-toggle": "หัวข้อและปี",
+  "top-count": "{n} อันดับแรก"
 }

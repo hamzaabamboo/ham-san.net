@@ -8,10 +8,18 @@
   "aria-year-filter": "Year filter",
   "aria-overview": "Overview statistics",
   "aria-preset-grid": "Date range event counts",
-  "aria-highlight-totals": "Highlight totals",
   "aria-chart-grid": "Chart panels",
-  "aria-metrics-strip": "Secondary event statistics",
   "aria-analytics": "Event analytics charts",
   "aria-heatmap": "Calendar of days attended, one cell per day, shaded by how many events that day.",
-  "aria-heatmap-scroll": "Scrollable calendar grid"
+  "aria-heatmap-scroll": "Scrollable calendar grid",
+  "highest-rate": "Highest attendance rate",
+  "highest-rate-sub": "{rate} attended ({went}/{total}), artists with {min}+ events only",
+  "heatmap-summary": "{days} active days and {events} events between {range}.",
+  "heatmap-peak": "Busiest day: {date}, {n} events.",
+  "months-window": "Last {n} months",
+  "showing-of": "{n} of {total}",
+  "all-on-eventernote": "All events on Eventernote",
+  "opens-new-tab": "(opens in a new tab)",
+  "rail-toggle": "Sections and years",
+  "top-count": "Top {n}"
 }

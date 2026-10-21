@@ -9,18 +9,6 @@
   }
 }
 
-@keyframes ping {
-  75%,
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-.animate-ping {
-  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -34,7 +22,6 @@
     scroll-behavior: auto;
   }
 
-  .animate-ping,
   .animation_pyon,
   .animation_kanatapeek {
     animation: none;
@@ -271,6 +258,7 @@ html:lang(th) .event-report__highlight-grid p {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-height: 44px;
   padding: 10px 20px;
   border: 1px solid var(--atelier-line);
   background: var(--atelier-surface-low);
@@ -373,8 +361,12 @@ html:lang(th) h6 {
 
 .fallback-grid-lines {
   background-image:
-    linear-gradient(rgba(255, 176, 0, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 176, 0, 0.07) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--atelier-accent) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--atelier-accent) 7%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 40px 40px;
 }
 
@@ -450,7 +442,7 @@ html:lang(th) h6 {
 }
 
 .note-cta-button:hover {
-  background-color: rgba(53, 53, 52, 0.6);
+  background-color: color-mix(in srgb, var(--atelier-surface-highest) 60%, transparent);
 }
 
 .note-cta-icon {
@@ -472,18 +464,12 @@ html:lang(th) h6 {
 .project-card:hover .project-card-label {
   opacity: 1 !important;
 }
-.project-card:hover .project-card-footer {
-  opacity: 1 !important;
-}
 @media (hover: none) {
   .project-card .project-card-img {
     filter: var(--atelier-image-plate) !important;
   }
   .project-card .project-card-overlay {
     opacity: 0 !important;
-  }
-  .project-card .project-card-footer {
-    opacity: 1 !important;
   }
 }
 
@@ -936,6 +922,40 @@ html:lang(th) a {
   min-height: 44px;
   align-items: center;
   justify-content: center;
+  padding: 0.75rem;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--atelier-fg-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.shell-footer-copy {
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--atelier-fg-muted);
+}
+
+.shell-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.contact-form-status {
+  font-size: 0.875rem;
+  color: var(--atelier-fg-muted);
+}
+
+.contact-form-status a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--atelier-accent);
 }
 
 .shell-nav {
@@ -1161,9 +1181,8 @@ html:lang(th) a {
 
 .shell-sidebar-link-label {
   font-family: var(--font-body);
-  text-transform: uppercase;
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  letter-spacing: 0;
 }
 
 .shell-sidebar-footer {
@@ -1240,7 +1259,6 @@ html:lang(th) a {
   gap: 1rem;
   border-top: 2px solid var(--atelier-line);
   background-color: var(--atelier-bg);
-  cursor: crosshair;
 }
 @media (min-width: 1024px) {
   .shell-footer {
@@ -1318,8 +1336,11 @@ html:lang(th) a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
   border: 1px solid var(--atelier-line);
   color: var(--atelier-fg-muted);
   background: none;
@@ -1403,15 +1424,20 @@ html:lang(th) a {
   transition: background-color 0.15s ease;
 }
 .shell-drawer-link[data-active='true'] {
-  background-color: var(--atelier-accent);
-  color: var(--atelier-on-accent);
+  border-left: 4px solid var(--atelier-accent);
+  padding-left: calc(1.5rem - 4px);
+  background-color: var(--atelier-surface-low);
+  color: var(--atelier-fg);
   font-weight: 700;
 }
 .shell-drawer-link[data-active='false'] {
+  border-left: 4px solid transparent;
+  padding-left: calc(1.5rem - 4px);
   color: var(--atelier-fg-muted);
 }
 .shell-drawer-link[data-active='false']:hover {
   background-color: var(--atelier-surface-highest);
+  border-left-color: var(--atelier-accent);
 }
 
 .shell-drawer-locale {
@@ -1477,6 +1503,9 @@ html:lang(th) a {
   left: 0;
   z-index: 100;
   transform: translateY(-120%);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   border: 1px solid var(--atelier-accent);
   background: var(--atelier-bg);
   padding: 0.75rem 1rem;

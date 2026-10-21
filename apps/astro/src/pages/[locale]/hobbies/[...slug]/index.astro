@@ -3,9 +3,15 @@ import { HobbyInteractiveEmbed } from '~/components/hobbies/HobbyInteractiveEmbe
 import { hobbyStyles } from '~/components/hobbies/hobbyStyles';
 import { Markdown } from '~/components/lib/Markdown';
 import { useTranslations, validateLocale } from '~/i18n/utils';
+import { knownLinkLabelsFrom } from '~/utils/link-label';
 import MainLayout from '~/layouts/MainLayout.astro';
 import Eyebrow from '~/components/common/Eyebrow.astro';
-import { getHobbyBodyIntro, parseHobbyContent, splitHobbyBodyParts } from '~/utils/hobby-content';
+import {
+  getHobbyBodyIntro,
+  hasExplicitHobbyStatus,
+  parseHobbyContent,
+  splitHobbyBodyParts
+} from '~/utils/hobby-content';
 import { getHobbyDetailResponse } from '~/utils/hobby-detail-response';
 import {
   formatHobbyUpdated,
@@ -111,19 +117,23 @@ const nestedPages = childDocuments.map((child) => ({
   title: child.title ?? t('hobbies.untitled'),
   href: `/${locale}/hobbies/${rootId}/doc/${child.id}`
 }));
-const hasExplicitStatus =
-  typeof content.meta.status === 'string' || typeof content.meta.active === 'boolean';
+const hasExplicitStatus = hasExplicitHobbyStatus(content.meta);
 const hasSourceContent =
   !!content.body.trim() ||
   content.images.length > 0 ||
   content.links.length > 0 ||
   nestedPages.length > 0;
 const effectiveStatus = hasExplicitStatus || hasSourceContent ? content.status : 'inactive';
-const nestedDescription = nestedPages
-  .map((child) => child.title)
+const nestedTitles = nestedPages.map((child) => child.title).filter(Boolean);
+const hiddenNestedCount = nestedTitles.length - 3;
+const nestedDescription = [
+  nestedTitles.slice(0, 3).join(' / '),
+  hiddenNestedCount > 0
+    ? String(t('hobbies.more-count')).replace('{count}', String(hiddenNestedCount))
+    : ''
+]
   .filter(Boolean)
-  .slice(0, 3)
-  .join(' / ');
+  .join(' ');
 const pageTitle = `${data?.title ?? t('common.hobbies')} | ${t('common.name')}`;
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = getOutlineAssetProxyPath(locale);
@@ -141,12 +151,24 @@ const detailDescription =
     t
   }) || nestedDescription;
 const heroDescription =
-  detailDescription === getHobbyBodyIntro(content.body) ? '' : detailDescription;
+  !hasSourceContent || detailDescription === getHobbyBodyIntro(content.body)
+    ? ''
+    : detailDescription;
 const embedLabel = getHobbyContentLabel({ hasSource: hasSourceContent, type: embedType, t });
-const statusLabel =
-  effectiveStatus === 'inactive' ? t('hobbies.status-inactive') : t('hobbies.status-active');
+const statusLabel = hasExplicitStatus
+  ? effectiveStatus === 'inactive'
+    ? t('hobbies.status-inactive')
+    : t('hobbies.status-active')
+  : undefined;
+const eyebrowLabel =
+  [statusLabel, hasModule ? embedLabel : undefined].filter(Boolean).join(' / ') ||
+  t('common.hobbies');
 const banner = resolveHobbyAssetUrl(content.banner);
-const images = content.images.map(resolveHobbyAssetUrl).filter((image): image is string => !!image);
+const resolvedImages = content.images
+  .map((src, index) => ({ src: resolveHobbyAssetUrl(src), alt: content.imageAlts[index] ?? '' }))
+  .filter((image): image is { src: string; alt: string } => !!image.src);
+const images = resolvedImages.map((image) => image.src);
+const imageAlts = resolvedImages.map((image) => image.alt);
 const updatedLabel = formatHobbyUpdated({
   date: content.updatedAt,
   locale,
@@ -158,6 +180,7 @@ const embedProps = {
   description: detailDescription,
   body: content.sourceBody,
   images,
+  imageAlts,
   links: content.links,
   nestedPages,
   emptySourceLabel: t('hobbies.empty-source-description'),
@@ -168,16 +191,16 @@ const embedProps = {
   noImagesLabel: t('hobbies.no-images'),
   imageLabel: t('hobbies.image-label'),
   noLinksLabel: t('hobbies.no-links'),
-  sourceNoteLabel: t('hobbies.source-note'),
   noFeedLabel: t('hobbies.no-feed'),
   noTypingProfilesLabel: t('hobbies.no-typing-profiles'),
-  sourceNoteUseLabel: t('hobbies.source-note-use'),
   openSourcePageLabel: t('hobbies.open-source-page'),
   noAlgorithmSetsLabel: t('hobbies.no-algorithm-sets'),
   audioUnavailableLabel: t('hobbies.audio-unavailable'),
   playedLabel: t('hobbies.played'),
   audioStartsAfterTapLabel: t('hobbies.audio-starts-after-tap'),
   noChordsLabel: t('hobbies.no-chords'),
+  noDartsDataLabel: t('hobbies.no-darts-data'),
+  moreLabel: t('hobbies.more-items'),
   status: effectiveStatus
 };
 
@@ -218,7 +241,7 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
       !cmsUnavailable && (
         <section class={hobbyStyles.detailHero} data-visual={banner ? 'image' : 'glyph'}>
           <div class={hobbyStyles.detailHeadline}>
-            <Eyebrow label={hasModule ? `${statusLabel} / ${embedLabel}` : statusLabel} />
+            <Eyebrow label={eyebrowLabel} />
             <h1 class={hobbyStyles.detailTitle}>{data?.title}</h1>
             {heroDescription && <p class={hobbyStyles.detailDescription}>{heroDescription}</p>}
             <p class={cx(hobbyStyles.detailUpdated, 'hobby-meta')}>
@@ -279,7 +302,7 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
                   </p>
                   <div class={hobbyStyles.detailNested}>
                     <a href={`/${locale}/hobbies`}>
-                      <span>{t('hobbies.page-heading')}</span>
+                      <span>{t('hobbies.back-to-hobbies')}</span>
                       <span class="hobby-meta">{t('common.open')}</span>
                     </a>
                   </div>
@@ -309,6 +332,8 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
                       assetsPrefix={outlineAssetPrefix}
                       assetProxyBasePath={outlineAssetProxyPath}
                       headingLevelOffset={1}
+                      newTabLabel={t('note.opens-new-tab')}
+                      linkLabels={knownLinkLabelsFrom(t)}
                     />
                   </div>
                 );

@@ -42,6 +42,7 @@ export const hobbyStyles = {
     // The rule hangs in the gutter so the h1 lands on the content edge, as on every other
     // page header.
     borderLeft: '4px solid var(--atelier-line)',
+    borderLeftColor: { base: 'var(--atelier-line)', lg: 'transparent' },
     ml: 'calc(-1.5rem - 4px)',
     py: '4',
     pl: '1.5rem'
@@ -77,7 +78,7 @@ export const hobbyStyles = {
     m: '0',
     color: 'var(--atelier-outline)',
     fontFamily: 'var(--font-code)',
-    fontSize: '10px',
+    fontSize: { base: '11px', md: '10px' },
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
     flexWrap: 'wrap'
@@ -219,6 +220,7 @@ export const hobbyStyles = {
     alignContent: 'start',
     alignSelf: 'start',
     minW: '0',
+    order: { base: '-1', md: '0' },
     md: {
       pos: 'sticky',
       // Clears the 64px fixed header; at 24px the panel sat behind it, clipped.
@@ -240,7 +242,7 @@ export const hobbyStyles = {
     m: '0 0 1rem',
     color: 'var(--atelier-outline)',
     fontFamily: 'var(--font-code)',
-    fontSize: '10px',
+    fontSize: { base: '11px', md: '10px' },
     letterSpacing: '0.12em',
     textTransform: 'uppercase'
   }),
@@ -266,7 +268,7 @@ export const hobbyStyles = {
     '& a span:last-child': {
       color: 'var(--atelier-outline)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     }
@@ -277,9 +279,12 @@ export const hobbyStyles = {
     minW: '0',
     p: 'clamp(1.5rem, 3vw, 2.5rem)',
     color: 'var(--atelier-fg)',
-    bg: 'linear-gradient(135deg, rgba(255, 176, 0, 0.06), transparent 46%), var(--atelier-bg)',
+    bg: 'var(--atelier-bg)',
     overflow: 'hidden',
-    '&::before': {
+    '&[data-interactive="true"]': {
+      bg: 'linear-gradient(135deg, color-mix(in srgb, var(--atelier-accent) 6%, transparent), transparent 46%), var(--atelier-bg)'
+    },
+    '&[data-interactive="true"]::before': {
       inset: '0 auto 0 0',
       pos: 'absolute',
       w: '4px',
@@ -325,7 +330,7 @@ export const hobbyStyles = {
     bg: 'var(--atelier-surface-lowest)',
     overflow: 'hidden',
     '& img': {
-      objectFit: 'cover',
+      objectFit: 'contain',
       w: 'full',
       h: 'full',
       minH: '22rem',
@@ -372,7 +377,7 @@ export const hobbyStyles = {
       overflowWrap: 'anywhere',
       _hover: {
         borderColor: 'var(--atelier-accent)',
-        bg: 'rgba(255, 176, 0, 0.08)'
+        bg: 'color-mix(in srgb, var(--atelier-accent) 8%, transparent)'
       }
     }
   }),
@@ -386,7 +391,7 @@ export const hobbyStyles = {
       minH: '44px',
       color: 'var(--atelier-fg-muted)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
       bg: 'var(--atelier-bg)'
@@ -399,6 +404,18 @@ export const hobbyStyles = {
       objectFit: 'cover',
       w: 'full',
       h: '5rem'
+    },
+    '& p': {
+      display: 'grid',
+      border: '1px solid var(--atelier-line)',
+      minH: '44px',
+      m: '0',
+      color: 'var(--atelier-outline)',
+      fontFamily: 'var(--font-code)',
+      fontSize: { base: '11px', md: '10px' },
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      placeItems: 'center'
     }
   }),
   feed: css({
@@ -414,7 +431,7 @@ export const hobbyStyles = {
     '& span': {
       color: 'var(--atelier-outline)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     },
@@ -451,7 +468,7 @@ export const hobbyStyles = {
       minH: '44px',
       color: 'var(--atelier-fg-muted)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
       bg: 'var(--atelier-bg)'
@@ -475,7 +492,7 @@ export const hobbyStyles = {
     '& span': {
       color: 'var(--atelier-outline)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     },
@@ -487,7 +504,7 @@ export const hobbyStyles = {
       color: 'var(--atelier-accent)',
       textDecoration: 'none',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       fontWeight: '700',
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
@@ -521,7 +538,7 @@ export const hobbyStyles = {
     '& span': {
       color: 'var(--atelier-accent)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     },
@@ -560,7 +577,7 @@ export const hobbyStyles = {
     '& span': {
       color: 'var(--atelier-accent)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
       overflowWrap: 'anywhere'
@@ -577,7 +594,7 @@ export const hobbyStyles = {
     p: '5',
     color: 'var(--atelier-outline)',
     fontFamily: 'var(--font-code)',
-    fontSize: '10px',
+    fontSize: { base: '11px', md: '10px' },
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
     bg: 'var(--atelier-bg)'
@@ -586,41 +603,7 @@ export const hobbyStyles = {
     display: 'grid',
     gap: '4',
     alignItems: 'stretch',
-    gridTemplateColumns: { base: 'minmax(0, 1fr)', lg: '16rem minmax(0, 1fr)' }
-  }),
-  dartsTarget: css({
-    pos: 'relative',
-    border: '1px solid var(--atelier-line)',
-    minH: '16rem',
-    bg: 'var(--atelier-surface-lowest)',
-    overflow: 'hidden',
-    '&::before': {
-      inset: '1.5rem',
-      pos: 'absolute',
-      border: '2px solid var(--atelier-accent)',
-      rounded: 'full',
-      boxShadow:
-        'inset 0 0 0 1.5rem rgba(255, 176, 0, 0.08), inset 0 0 0 3rem var(--atelier-bg), inset 0 0 0 3.25rem var(--atelier-accent-soft)',
-      content: '""'
-    },
-    '& span': {
-      pos: 'absolute',
-      top: '50%',
-      left: '50%',
-      transformOrigin: '50% 0',
-      w: '2px',
-      h: '44%',
-      bg: 'var(--atelier-line)'
-    },
-    '& span:nth-child(1)': {
-      transform: 'rotate(0deg)'
-    },
-    '& span:nth-child(2)': {
-      transform: 'rotate(60deg)'
-    },
-    '& span:nth-child(3)': {
-      transform: 'rotate(120deg)'
-    }
+    gridTemplateColumns: 'minmax(0, 1fr)'
   }),
   dartsStats: css({
     display: 'grid',
@@ -635,7 +618,7 @@ export const hobbyStyles = {
     '& span': {
       color: 'var(--atelier-outline)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     },
@@ -651,7 +634,6 @@ export const hobbyStyles = {
   dartsGear: css({
     display: 'grid',
     gap: '1px',
-    gridColumn: { lg: '1 / -1' },
     gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'repeat(3, minmax(0, 1fr))' },
     border: '1px solid var(--atelier-line)',
     bg: 'var(--atelier-line)',
@@ -662,7 +644,7 @@ export const hobbyStyles = {
     '& span': {
       color: 'var(--atelier-outline)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     },
@@ -698,7 +680,7 @@ export const hobbyStyles = {
     '& span': {
       color: 'var(--atelier-accent)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase'
     },
@@ -710,7 +692,7 @@ export const hobbyStyles = {
     '& small': {
       color: 'var(--atelier-outline)',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.08em',
       textTransform: 'uppercase',
       overflowWrap: 'anywhere'
@@ -734,11 +716,20 @@ export const hobbyStyles = {
       pos: 'relative',
       borderRight: '1px solid var(--atelier-fg-muted)'
     },
-    '& span[data-black="true"]::before': {
-      inset: '0 18% 44%',
+    '& span[data-active="true"]': {
+      bg: 'var(--atelier-accent)'
+    },
+    '& i': {
+      zIndex: '1',
       pos: 'absolute',
-      bg: 'var(--atelier-bg)',
-      content: '""'
+      top: '0',
+      right: '-0.4rem',
+      w: '0.8rem',
+      h: '58%',
+      bg: 'var(--atelier-bg)'
+    },
+    '& i[data-active="true"]': {
+      bg: 'var(--atelier-accent-soft)'
     }
   }),
   pianoControls: css({
@@ -756,7 +747,7 @@ export const hobbyStyles = {
       color: 'var(--atelier-fg-muted)',
       textDecoration: 'none',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
       bg: 'var(--atelier-bg)',
@@ -764,12 +755,17 @@ export const hobbyStyles = {
         borderColor: 'var(--atelier-accent)',
         color: 'var(--atelier-accent)'
       }
+    },
+    '& button[data-active="true"]': {
+      borderColor: 'var(--atelier-accent)',
+      color: 'var(--atelier-accent)'
     }
   }),
   pianoStatus: css({
+    minH: '1.5rem',
     color: 'var(--atelier-outline)',
     fontFamily: 'var(--font-code)',
-    fontSize: '10px',
+    fontSize: { base: '11px', md: '10px' },
     letterSpacing: '0.12em',
     textTransform: 'uppercase'
   }),
@@ -812,7 +808,7 @@ export const hobbyStyles = {
       color: 'var(--atelier-fg-muted)',
       textDecoration: 'none',
       fontFamily: 'var(--font-code)',
-      fontSize: '10px',
+      fontSize: { base: '11px', md: '10px' },
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
       bg: 'var(--atelier-bg)',

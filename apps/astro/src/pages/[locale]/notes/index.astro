@@ -1,7 +1,5 @@
 ---
-import { parseISO } from 'date-fns';
 import { Box, Container, Grid, Stack, Wrap } from 'styled-system/jsx';
-import { formatMonthYear } from 'utils/date';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
@@ -99,9 +97,20 @@ const showHero = page === 1;
 const collectionCount = new Set(
   allArticles.map((article) => article.collectionName).filter(Boolean)
 ).size;
-const latestNoteDate = allArticles[0]?.createdAt
-  ? formatMonthYear(parseISO(allArticles[0].createdAt), locale)
-  : '----';
+const lastPageNumber = Math.max(1, Math.ceil(allArticles.length / PAGE_SIZE));
+const noteDateFormatter = new Intl.DateTimeFormat(locale, {
+  year: 'numeric',
+  month: 'long',
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
+});
+const formatNoteDate = (value?: string) =>
+  value ? noteDateFormatter.format(new Date(value)) : null;
+const latestNoteDate =
+  formatNoteDate(
+    (allArticles[0] as { documentCreatedAt?: string } | undefined)?.documentCreatedAt ??
+      allArticles[0]?.createdAt
+  ) ?? '----';
 
 Astro.response.headers.set(
   'CDN-Cache-Control',
@@ -203,12 +212,14 @@ Astro.response.headers.set(
             <Stack gap="4">
               {showHero &&
                 visibleArticles.slice(0, 1).map((data) => {
-                  const { id, documentTitle, collectionName, documentSummary, createdAt } =
+                  const { id, documentTitle, collectionName, documentSummary } =
                     data as typeof data & {
                       collectionName: string;
                       documentSummary: string;
-                      documentCreatedAt: string;
                     };
+                  const noteDate = formatNoteDate(
+                    (data as { documentCreatedAt?: string }).documentCreatedAt ?? data.createdAt
+                  );
                   const excerpt = makeExcerpt(documentSummary, 220);
 
                   return (
@@ -253,10 +264,7 @@ Astro.response.headers.set(
                             color="var(--atelier-outline)"
                             fontFamily="var(--font-code)"
                           >
-                            <Text>{collectionName}</Text> |{' '}
-                            <Text>
-                              {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
-                            </Text>
+                            <Text>{collectionName}</Text> | <Text>{noteDate}</Text>
                           </Wrap>
                           {excerpt && (
                             <Text
@@ -279,12 +287,14 @@ Astro.response.headers.set(
               >
                 {(showHero ? visibleArticles.slice(1) : visibleArticles).map(
                   (data, index, cards) => {
-                    const { id, documentTitle, collectionName, documentSummary, createdAt } =
+                    const { id, documentTitle, collectionName, documentSummary } =
                       data as typeof data & {
                         collectionName: string;
                         documentSummary: string;
-                        documentCreatedAt: string;
                       };
+                    const noteDate = formatNoteDate(
+                      (data as { documentCreatedAt?: string }).documentCreatedAt ?? data.createdAt
+                    );
                     const excerpt = makeExcerpt(documentSummary, 100);
                     const spansRow = cards.length % 2 === 1 && index === cards.length - 1;
 
@@ -332,10 +342,7 @@ Astro.response.headers.set(
                               fontFamily="var(--font-code)"
                               mt="auto"
                             >
-                              <Text>{collectionName}</Text> |{' '}
-                              <Text>
-                                {createdAt ? formatMonthYear(parseISO(createdAt), locale) : null}
-                              </Text>
+                              <Text>{collectionName}</Text> | <Text>{noteDate}</Text>
                             </Wrap>
                           </Stack>
                         </Box>
@@ -346,38 +353,50 @@ Astro.response.headers.set(
               </Grid>
             </Stack>
             {(hasPrevPage || hasNextPage) && (
-              <Box
-                className={
-                  hasPrevPage && hasNextPage
-                    ? 'notes-pagination notes-pagination-between'
-                    : hasNextPage
-                      ? 'notes-pagination notes-pagination-end'
-                      : 'notes-pagination notes-pagination-start'
-                }
-                display="flex"
-                alignItems="center"
-                pt="4"
-                borderTopWidth="1px"
-                borderTopStyle="solid"
-                borderTopColor="var(--atelier-line)"
-              >
-                {hasPrevPage && (
-                  <a
-                    href={page === 2 ? `/${locale}/notes` : `/${locale}/notes?page=${page - 1}`}
-                    class="notes-pagination-link card-hover-amber"
-                  >
-                    ← {t('note.newer-notes')}
-                  </a>
-                )}
-                {hasNextPage && (
-                  <a
-                    href={`/${locale}/notes?page=${page + 1}`}
-                    class="notes-pagination-link card-hover-amber"
-                  >
-                    {t('note.older-notes')} →
-                  </a>
-                )}
-              </Box>
+              <Stack gap="3">
+                <Text
+                  fontFamily="var(--font-code)"
+                  fontSize="xs"
+                  color="var(--atelier-outline)"
+                  textAlign="center"
+                >
+                  {t('note.page-of')
+                    .replace('{n}', String(page))
+                    .replace('{m}', String(lastPageNumber))}
+                </Text>
+                <Box
+                  className={
+                    hasPrevPage && hasNextPage
+                      ? 'notes-pagination notes-pagination-between'
+                      : hasNextPage
+                        ? 'notes-pagination notes-pagination-end'
+                        : 'notes-pagination notes-pagination-start'
+                  }
+                  display="flex"
+                  alignItems="center"
+                  pt="4"
+                  borderTopWidth="1px"
+                  borderTopStyle="solid"
+                  borderTopColor="var(--atelier-line)"
+                >
+                  {hasPrevPage && (
+                    <a
+                      href={page === 2 ? `/${locale}/notes` : `/${locale}/notes?page=${page - 1}`}
+                      class="notes-pagination-link card-hover-amber"
+                    >
+                      ← {t('note.newer-notes')}
+                    </a>
+                  )}
+                  {hasNextPage && (
+                    <a
+                      href={`/${locale}/notes?page=${page + 1}`}
+                      class="notes-pagination-link card-hover-amber"
+                    >
+                      {t('note.older-notes')} →
+                    </a>
+                  )}
+                </Box>
+              </Stack>
             )}
           </>
         )

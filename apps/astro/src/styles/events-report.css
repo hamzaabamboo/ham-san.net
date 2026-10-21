@@ -15,6 +15,12 @@
   margin-left: calc(-1.5rem - 2px);
 }
 
+@media (min-width: 1024px) {
+  .event-report__hero {
+    border-left-color: transparent;
+  }
+}
+
 /* Bottom-anchoring the copy inside a 19rem column left a ~700x220px hole above the page
    title, so the eye landed on the identity card before the page name. */
 .event-report__hero-copy {
@@ -81,7 +87,7 @@
   gap: 0.35rem;
   min-height: 4.75rem;
   align-content: end;
-  border: 1px solid rgba(82, 69, 51, 0.65);
+  border: 1px solid color-mix(in srgb, var(--atelier-line) 65%, transparent);
   background: var(--atelier-bg);
   padding: 0.65rem;
 }
@@ -156,11 +162,74 @@
 
 .event-report__rail {
   position: sticky;
-  top: 1rem;
+  top: calc(4rem + 1rem);
   display: grid;
   gap: 1rem;
-  max-height: calc(100vh - 2rem);
+  max-height: calc(100vh - 4rem - 2rem);
   overflow-y: auto;
+}
+
+.event-report__rail-fold {
+  display: grid;
+  gap: 1rem;
+}
+
+.event-report__rail-fold > summary {
+  display: none;
+  min-height: 44px;
+  align-items: center;
+  border: 1px solid var(--atelier-line);
+  background: var(--atelier-surface-low);
+  padding: 0 1rem;
+  color: var(--atelier-accent-soft);
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.event-report__rail-fold > summary:focus-visible {
+  outline: 2px solid var(--atelier-accent);
+  outline-offset: 2px;
+}
+
+.event-report__rail-fold[open] > summary {
+  margin-bottom: 1rem;
+}
+
+.event-report__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.event-report__chart-scroll {
+  overflow-x: auto;
+}
+
+.event-report__more-link {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--atelier-line);
+  color: var(--atelier-accent-soft);
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.event-report__more-link:hover,
+.event-report__more-link:focus-visible {
+  border-color: var(--atelier-accent);
+  color: var(--atelier-accent);
 }
 
 .event-report__content {
@@ -196,7 +265,7 @@
   display: flex;
   min-height: 44px;
   align-items: center;
-  border-bottom: 1px solid rgba(82, 69, 51, 0.55);
+  border-bottom: 1px solid color-mix(in srgb, var(--atelier-line) 55%, transparent);
   padding: 0.65rem 0.75rem;
   color: var(--atelier-fg-muted);
   font-family: var(--font-code);
@@ -214,13 +283,13 @@
 
 .event-report__jump-nav a:hover,
 .event-report__jump-nav a:focus-visible {
-  background: rgba(255, 176, 0, 0.1);
+  background: color-mix(in srgb, var(--atelier-accent) 10%, transparent);
   color: var(--atelier-accent-soft);
 }
 
 .event-report__year-filter {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem;
 }
 
@@ -387,28 +456,6 @@ a[data-active='true'] {
   line-height: 1.5;
 }
 
-.event-report__highlight-totals {
-  display: flex;
-  gap: 1.25rem;
-}
-
-.event-report__highlight-totals span {
-  display: grid;
-  gap: 0.2rem;
-  color: var(--atelier-outline);
-  font-family: var(--font-code);
-  font-size: 0.75rem;
-  /* Left, like every other block on the site: centred inside a left-aligned panel head the
-     figures read as a stray card, which is what they looked like at 390. */
-  text-align: left;
-}
-
-.event-report__highlight-totals strong {
-  color: var(--atelier-fg);
-  font-size: clamp(1.6rem, 3vw, 2.25rem);
-  line-height: 1;
-}
-
 .event-report__highlight-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -424,7 +471,7 @@ a[data-active='true'] {
   gap: 0.45rem;
   min-height: 9rem;
   align-content: start;
-  border: 1px solid rgba(159, 142, 120, 0.38);
+  border: 1px solid color-mix(in srgb, var(--atelier-outline) 38%, transparent);
   padding: 1rem;
 }
 
@@ -481,44 +528,6 @@ a[data-active='true'] {
   color: var(--atelier-fg-muted);
   font-size: 0.8125rem;
   line-height: 1.45;
-  overflow-wrap: anywhere;
-}
-
-.event-report__metrics-strip {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.event-report__metrics-strip article {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.25rem 0.75rem;
-  min-height: 4.25rem;
-  align-content: center;
-  border: 1px solid var(--atelier-line);
-  background: var(--atelier-bg);
-  padding: 0.75rem;
-}
-
-.event-report__metrics-strip p {
-  color: var(--atelier-outline);
-  font-family: var(--font-code);
-  font-size: 0.6875rem;
-  text-transform: uppercase;
-}
-
-.event-report__metrics-strip strong {
-  color: var(--atelier-fg);
-  font-family: var(--font-code);
-  font-size: 1.25rem;
-}
-
-.event-report__metrics-strip span {
-  grid-column: 1 / -1;
-  color: var(--atelier-fg-muted);
-  font-size: 0.75rem;
-  line-height: 1.35;
   overflow-wrap: anywhere;
 }
 
@@ -594,8 +603,9 @@ a[data-active='true'] {
 
 .event-report__svg-chart {
   width: 100%;
+  min-width: 33rem;
   height: auto;
-  border: 1px solid rgba(82, 69, 51, 0.55);
+  border: 1px solid color-mix(in srgb, var(--atelier-line) 55%, transparent);
   background: var(--atelier-bg);
 }
 
@@ -680,7 +690,7 @@ a[data-active='true'] {
   grid-template-columns: 6.25rem minmax(0, 1fr);
   gap: 0.3rem 1rem;
   min-height: 74px;
-  border: 1px solid rgba(82, 69, 51, 0.65);
+  border: 1px solid color-mix(in srgb, var(--atelier-line) 65%, transparent);
   padding: 0.85rem;
   color: inherit;
   text-decoration: none;
@@ -693,7 +703,7 @@ a[data-active='true'] {
 .event-report__event:hover,
 .event-report__event:focus-visible {
   border-color: var(--atelier-accent);
-  background: rgba(255, 176, 0, 0.08);
+  background: color-mix(in srgb, var(--atelier-accent) 8%, transparent);
   transform: translateY(-1px);
 }
 
@@ -720,7 +730,7 @@ a[data-active='true'] {
 
 .event-report__event--next {
   border-color: var(--atelier-line);
-  background: rgba(255, 176, 0, 0.045);
+  background: color-mix(in srgb, var(--atelier-accent) 4.5%, transparent);
 }
 
 .event-report__rank-list {
@@ -754,7 +764,7 @@ a[data-active='true'] {
   gap: 1rem;
   align-items: center;
   min-height: 44px;
-  border-bottom: 1px solid rgba(82, 69, 51, 0.55);
+  border-bottom: 1px solid color-mix(in srgb, var(--atelier-line) 55%, transparent);
 }
 
 /* The bar fills a full-width track rather than floating at its own length: without the
@@ -851,7 +861,7 @@ a[data-active='true'] {
   gap: 0.4rem;
   min-height: 5rem;
   align-content: end;
-  border: 1px solid rgba(82, 69, 51, 0.65);
+  border: 1px solid color-mix(in srgb, var(--atelier-line) 65%, transparent);
   padding: 0.65rem;
 }
 
@@ -1006,52 +1016,75 @@ a[data-active='true'] {
   scrollbar-width: thin;
   scrollbar-color: var(--atelier-accent) var(--atelier-surface);
   background:
-    linear-gradient(to right, var(--atelier-surface-low) 30%, rgba(28, 27, 27, 0)) left/2.5rem 100%
+    linear-gradient(to right, var(--atelier-surface-low) 30%, transparent) left/2.5rem 100%
       no-repeat local,
-    linear-gradient(to left, var(--atelier-surface-low) 30%, rgba(28, 27, 27, 0)) right/2.5rem 100%
+    linear-gradient(to left, var(--atelier-surface-low) 30%, transparent) right/2.5rem 100%
       no-repeat local,
-    linear-gradient(to right, rgba(255, 176, 0, 0.35), transparent) left/1rem 100% no-repeat scroll,
-    linear-gradient(to left, rgba(255, 176, 0, 0.35), transparent) right/1rem 100% no-repeat scroll;
+    linear-gradient(
+        to right,
+        color-mix(in srgb, var(--atelier-accent) 35%, transparent),
+        transparent
+      )
+      left/1rem 100% no-repeat scroll,
+    linear-gradient(
+        to left,
+        color-mix(in srgb, var(--atelier-accent) 35%, transparent),
+        transparent
+      )
+      right/1rem 100% no-repeat scroll;
 }
 
-.event-report__attendance-row {
-  display: grid;
-  grid-template-columns: minmax(14rem, 1fr) repeat(4, minmax(4rem, auto));
-  gap: 1rem;
-  align-items: center;
+.event-report__attendance-table table {
+  width: 100%;
   min-width: 42rem;
-  border-bottom: 1px solid rgba(82, 69, 51, 0.55);
-  padding: 0.6rem 0;
+  border-collapse: collapse;
   color: var(--atelier-fg-muted);
+  text-align: right;
 }
 
-.event-report__attendance-row > span:first-child {
+.event-report__attendance-table th,
+.event-report__attendance-table td {
+  border-bottom: 1px solid color-mix(in srgb, var(--atelier-line) 55%, transparent);
+  padding: 0.6rem 0.5rem;
+  font-weight: 400;
+}
+
+.event-report__attendance-table thead th,
+.event-report__attendance-table tfoot th,
+.event-report__attendance-table tfoot td {
+  color: var(--atelier-fg);
+  font-weight: 700;
+}
+
+.event-report__attendance-table th[scope='row'] {
   display: grid;
   gap: 0.35rem;
+  min-width: 14rem;
+  color: var(--atelier-fg-muted);
+  text-align: left;
 }
 
-.event-report__attendance-row i {
+.event-report__attendance-table thead th:first-child {
+  text-align: left;
+}
+
+.event-report__attendance-table i {
+  display: block;
   width: var(--size);
   max-width: 100%;
   height: 0.25rem;
   background: var(--atelier-outline);
 }
 
-.event-report__attendance-row strong {
+.event-report__attendance-table strong {
   color: var(--atelier-fg);
   font-family: var(--font-code);
 }
 
-.event-report__attendance-row--head,
-.event-report__attendance-row--total {
-  color: var(--atelier-fg);
-  font-weight: 700;
-}
-
-.event-report__attendance-row--total {
+.event-report__attendance-table tfoot th,
+.event-report__attendance-table tfoot td {
   border-bottom: 0;
-  background: rgba(229, 226, 225, 0.04);
-  padding-inline: 0.75rem;
+  background: color-mix(in srgb, var(--atelier-fg) 4%, transparent);
 }
 
 .event-report__highlights {
@@ -1111,6 +1144,12 @@ a[data-active='true'] {
 
   .event-report__rail {
     position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .event-report__rail-fold > summary {
+    display: flex;
   }
 
   .event-report__jump-nav {
@@ -1120,7 +1159,6 @@ a[data-active='true'] {
   .event-report__stats,
   .event-report__overview-grid,
   .event-report__preset-grid,
-  .event-report__metrics-strip,
   .event-report__grid--three,
   .event-report__highlight-grid,
   .event-report__highlights,
@@ -1171,10 +1209,6 @@ a[data-active='true'] {
     gap: 1rem;
   }
 
-  .event-report__metrics-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .event-report__preset-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1183,9 +1217,7 @@ a[data-active='true'] {
     grid-column: 1 / -1;
   }
 
-  .event-report__attendance-row {
-    grid-template-columns: minmax(9rem, 1fr) repeat(4, minmax(3.25rem, auto));
-    gap: 0.75rem;
+  .event-report__attendance-table table {
     min-width: 30rem;
   }
 }
@@ -1194,28 +1226,21 @@ a[data-active='true'] {
   /* A 30rem row inside a 324px card scrolled, so the "Missed" header read as "Mis" and the
      values were sliced mid-glyph at the card edge — it looked broken rather than scrollable.
      Went and Rate carry the point; Missed and Total are derivable from them. */
-  .event-report__attendance-row {
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    gap: 0.5rem;
+  .event-report__attendance-table table {
     min-width: 0;
   }
 
-  .event-report__attendance-row > *:nth-child(3),
-  .event-report__attendance-row > *:nth-child(4) {
+  .event-report__attendance-table th[scope='row'] {
+    min-width: 0;
+  }
+
+  .event-report__attendance-table :is(th, td):nth-child(3),
+  .event-report__attendance-table :is(th, td):nth-child(4) {
     display: none;
   }
 
   .event-report__actions {
     display: grid;
-  }
-
-  .event-report__highlight-totals {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .event-report__metrics-strip article {
-    grid-template-columns: minmax(0, 1fr);
   }
 
   .event-report__preset-grid {
@@ -1255,10 +1280,6 @@ a[data-active='true'] {
 
   .event-report__event time {
     grid-row: auto;
-  }
-
-  .event-report__svg-chart text {
-    font-size: 1.5rem;
   }
 
   .event-report__status {

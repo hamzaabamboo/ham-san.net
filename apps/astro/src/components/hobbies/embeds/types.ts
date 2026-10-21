@@ -5,6 +5,7 @@ export type HobbyEmbedProps = {
   description?: string;
   body?: string;
   images?: string[];
+  imageAlts?: string[];
   links?: HobbyLink[];
   nestedPages?: Array<{ title: string; href: string }>;
   moduleTitle?: string;
@@ -17,15 +18,15 @@ export type HobbyEmbedProps = {
   noImagesLabel?: string;
   imageLabel?: string;
   noLinksLabel?: string;
-  sourceNoteLabel?: string;
   noFeedLabel?: string;
   noTypingProfilesLabel?: string;
-  sourceNoteUseLabel?: string;
   openSourcePageLabel?: string;
   noAlgorithmSetsLabel?: string;
   audioUnavailableLabel?: string;
   playedLabel?: string;
   audioStartsAfterTapLabel?: string;
   noChordsLabel?: string;
+  noDartsDataLabel?: string;
+  moreLabel?: string;
   status?: 'active' | 'inactive';
 };

@@ -144,6 +144,7 @@ export const Sidebar = ({
         aria-expanded={open}
       >
         <MdOutlineMenu aria-hidden="true" style={{ fontSize: '1.25rem' }} />
+        <span aria-hidden="true">{labels.menu}</span>
       </button>
 
       {open &&

@@ -21,7 +21,7 @@ This is an explorable 3D model of Ham's real room. Objects in the room open the 
 Projects Notes Hobbies Namecard Events Photos
 ```
 
-After entering, the header shows "Leave room". The bottom edge carries the controls help line, the page links on the left, and a toolbar on the right: a Lights group (Light, Left, Right, and "Tokyo automatic" once changed) and a room group (Curtains, its automatic reset, Closet, Lie down). Toggle buttons keep a fixed label and show state with a small square: filled amber means on. The reticle appears only while the pointer is locked. Object labels hide when a wall blocks them; hobby markers are dots until the visitor is within 2.2 m, then they show their name. Choosing an object moves the camera to a close-up and opens an examine `<dialog>` holding the matching page in an iframe (`?roomEmbed=1` hides the site shell).
+After entering, the header shows "Leave room". The bottom edge carries the controls help line, the page links on the left, and a toolbar on the right: a Lights group (Light, Left, Right, and "Tokyo automatic" once changed) and a room group (Curtains, its automatic reset, Closet, Lie down). Toggle buttons keep a fixed label and show state with a small square: filled amber means on. The reticle appears only while the pointer is locked. Object labels hide when a wall blocks them or when they would land under the header or the bottom toolbar; hobby markers are dots until the visitor is within 2.2 m, then they show their name. Choosing an object moves the camera to a close-up and opens an examine `<dialog>` holding the matching page in an iframe (`?roomEmbed=1` hides the site shell).
 
 ## Data and caching
 
@@ -33,6 +33,7 @@ After entering, the header shows "Leave room". The bottom edge carries the contr
 - **Desktop:** WASD movement, arrow-key or mouse look (pointer lock on click), click an object to examine it, Escape to close.
 - **Touch:** drag to look, tap the floor to move, tap an object to examine it.
 - **Controls:** lights on/off (manual day preview), left and right lights, automatic restore; curtains; closet; lie down; darts mini-game in the darts panel.
+- **Desk fan:** clicking the fan toggles its rotor; it spins up and down smoothly. It has no label (`label: false`), only the hover hint.
 - **Lighting** follows Asia/Tokyo time (day and night).
 
 ## Rules

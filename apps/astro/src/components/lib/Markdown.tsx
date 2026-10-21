@@ -1,5 +1,6 @@
 import { authoredHeadingLevels, FRONTMATTER, makeRankOf } from '~/utils/heading-rank';
 import { join } from 'path';
+import { isValidElement } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkTextr from 'remark-textr';
@@ -9,7 +10,7 @@ import { Heading } from '../ui/heading';
 import { Link } from '../ui/link';
 import { Table } from '../ui/table';
 import { Text } from '../ui/text';
-import { formatBareUrlLabel } from '~/utils/link-label';
+import { formatBareUrlLabel, type KnownLinkLabels } from '~/utils/link-label';
 import { resolveOutlineAssetUrl } from '~/utils/outline-assets';
 
 export const createHeadingSlugger = () => {
@@ -36,7 +37,7 @@ export const createHeadingSlugger = () => {
 // chart became five. Two shapes only, both unambiguous and neither reachable from prose:
 // a line GFM would have made a table row if it had carried a delimiter row (`| E | F#m |`),
 // and a bracketed section label (`[Intro]`). Anything else stays prose.
-const STRUCTURAL_LINE = /^\s*(?:\|.*|\[[^\]]+\])\s*$/;
+const STRUCTURAL_LINE = /^\s*(?:\|.*|\[[^\]]+\](?:\s*\([^)]*\))?)\s*$/;
 // `.` does not match a newline and `$` is end-of-string here, so a soft-wrapped paragraph
 // that merely opens with a pipe already fails the test — no separate line-count check.
 export const isStructuralLine = (text: string) => STRUCTURAL_LINE.test(text);
@@ -58,6 +59,8 @@ export const Markdown = ({
   linksPrefix,
   disableLinks,
   disableInternalLinks,
+  newTabLabel,
+  linkLabels,
   headingLevelOffset = 0
 }: {
   content: string;
@@ -66,6 +69,8 @@ export const Markdown = ({
   linksPrefix?: string;
   disableLinks?: string;
   disableInternalLinks?: boolean;
+  newTabLabel?: string;
+  linkLabels?: KnownLinkLabels;
   headingLevelOffset?: number;
 }) => {
   // Body copy is `lg`, so every heading level must sit strictly above it, and the top of
@@ -100,7 +105,7 @@ export const Markdown = ({
       line.replace(
         /^(\s*(?:[-*]\s+)?)((?:https?:\/\/|www\.)\S+)\s*$/,
         (_, prefix: string, url: string) =>
-          `${prefix}[${formatBareUrlLabel(url)}](${url.startsWith('www.') ? `https://${url}` : url})`
+          `${prefix}[${formatBareUrlLabel(url, undefined, linkLabels)}](${url.startsWith('www.') ? `https://${url}` : url})`
       )
     )
     .join('\n');
@@ -129,7 +134,17 @@ export const Markdown = ({
       | 'h6';
 
   return (
-    <Stack gap="5" minW="0" maxW="full" lineHeight="1.8">
+    <Stack
+      gap="5"
+      minW="0"
+      maxW="full"
+      lineHeight="1.8"
+      css={{
+        '& > :is(h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, hr):not(.markdown-structural)': {
+          maxWidth: '42rem'
+        }
+      }}
+    >
       <ReactMarkdown
         remarkPlugins={[remarkTextr, remarkGfm]}
         components={{
@@ -237,7 +252,7 @@ export const Markdown = ({
                 : null;
             const displayChildren =
               childText && /^(?:https?:\/\/|www\.)/.test(childText.trim())
-                ? formatBareUrlLabel(childText.trim())
+                ? formatBareUrlLabel(childText.trim(), undefined, linkLabels)
                 : children;
             if (disableLinks || (disableInternalLinks && href?.startsWith('/'))) {
               return <Text as="p">{props.children}</Text>;
@@ -261,6 +276,9 @@ export const Markdown = ({
                 {...rest}
               >
                 {displayChildren}
+                {isExternal && newTabLabel ? (
+                  <styled.span srOnly> {newTabLabel}</styled.span>
+                ) : null}
               </Link>
             );
           },
@@ -297,24 +315,33 @@ export const Markdown = ({
             />
           ),
           li: ({ ref: _, node: __, ...props }) => <styled.li lineHeight="1.7" {...props} />,
-          code: ({ ref: _, node: __, className, children, ...props }) => {
-            const language = className?.replace('language-', '');
-            const content = children?.toString() ?? '';
-            if (!language) {
-              return <Code {...props}>{content}</Code>;
-            }
+          pre: ({ ref: _, node: __, children }) => {
+            const child = Array.isArray(children) ? children[0] : children;
+            const codeProps = isValidElement<{ className?: string; children?: unknown }>(child)
+              ? child.props
+              : undefined;
             return (
               <styled.pre
                 border="1px solid"
                 borderColor="var(--atelier-line)"
+                maxW="full"
                 p="5"
+                color="var(--atelier-fg)"
+                fontFamily="var(--font-code)"
+                fontSize="sm"
+                lineHeight="1.7"
                 bg="var(--atelier-surface-low)"
                 overflowX="auto"
               >
-                <styled.code className={className}>{content}</styled.code>
+                <styled.code className={codeProps?.className}>
+                  {codeProps ? childrenToText(codeProps.children).replace(/\n$/, '') : children}
+                </styled.code>
               </styled.pre>
             );
           },
+          code: ({ ref: _, node: __, className: ___, children, ...props }) => (
+            <Code {...props}>{children}</Code>
+          ),
           table: ({ ref: _, node: __, ...props }) => (
             <styled.div w="full" overflowX="auto" css={{ '& table': { minW: 'max-content' } }}>
               <Table.Root {...props} />
@@ -338,7 +365,7 @@ export const Markdown = ({
           tr: ({ ref: _, node: __, ...props }) => (
             <Table.Row
               borderBottomColor="var(--atelier-line)"
-              _hover={{ bg: 'rgba(53,53,52,0.3)' }}
+              _hover={{ bg: 'color-mix(in srgb, var(--atelier-surface-highest) 30%, transparent)' }}
               {...props}
             />
           ),

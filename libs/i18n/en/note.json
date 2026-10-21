@@ -1,5 +1,5 @@
 {
-  "rss-title": "Ham — Notes",
+  "rss-title": "Ham: Notes",
   "rss-description": "Public notes from a personal knowledge base.",
   "untitled": "Untitled",
   "notes": "Notes",
@@ -13,9 +13,6 @@
   "collection": "Collection",
   "details": "Details",
   "latest-note": "Latest note",
-  "total-notes": "Total Notes",
-  "collections": "Collections",
-  "latest": "Latest",
   "status-unavailable": "Status: unavailable",
   "previous-entry": "Previous Entry",
   "next-entry": "Next Entry",
@@ -32,5 +29,10 @@
   "not-found-description": "This note does not exist or is no longer shared.",
   "status-empty": "Status: empty",
   "empty-none-title": "No Notes Yet",
-  "empty-none-description": "Nothing has been published here yet. Check back later."
+  "empty-none-description": "Nothing has been published here yet. Check back later.",
+  "page-of": "Page {n} of {m}",
+  "opens-new-tab": "(opens in a new tab)",
+  "total-notes": "Total Notes",
+  "collections": "Collections",
+  "latest": "Latest"
 }

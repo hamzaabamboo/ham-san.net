@@ -1,4 +1,5 @@
-import { FaGithub, FaGlobe } from 'react-icons/fa';
+import { FaGithub, FaGlobe, FaLink } from 'react-icons/fa';
+import { css } from 'styled-system/css';
 import type { IconType } from 'react-icons/lib';
 import { Stack, Wrap } from 'styled-system/jsx';
 import { Enum_Componentutilslink_Type } from '~/graphql/generated/client';
@@ -33,7 +34,7 @@ const linkIcon = (link: Pick<LinkData, 'type'>) => {
     case Enum_Componentutilslink_Type.Web:
       return FaGlobe;
     default:
-      return null;
+      return FaLink;
   }
 };
 
@@ -41,13 +42,16 @@ export const LinkItem = ({
   data,
   Icon: _icon,
   linkText,
-  openLabel = 'Open'
+  openLabel = 'Open',
+  newTabLabel = '(opens in a new tab)'
 }: {
   data: LinkData;
   Icon?: IconType;
   linkText?: string;
   openLabel?: string;
+  newTabLabel?: string;
 }) => {
+  if (!data.url) return null;
   const Icon = _icon ? _icon : linkIcon(data);
   const text = linkText ? linkText : processUrl(data, openLabel);
   return (
@@ -76,13 +80,17 @@ export const LinkItem = ({
           </Text>
           <Link
             className="amber-link"
-            href={data.url ?? ''}
+            href={data.url}
             target="_blank"
             rel="noreferrer"
+            display="inline-flex"
+            alignItems="center"
+            minH="44px"
             fontFamily="var(--font-code)"
             overflowWrap="anywhere"
           >
             {text}
+            <span className={css({ srOnly: true })}> {newTabLabel}</span>
           </Link>
         </Stack>
       </Wrap>

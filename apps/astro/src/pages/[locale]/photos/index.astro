@@ -82,6 +82,13 @@ const hrefWith = (key: 'person' | 'event' | 'tag', value: string) => {
   const search = next.toString();
   return search ? `${pagePath}?${search}` : pagePath;
 };
+const clearQueryHref = (() => {
+  const next = new URLSearchParams(params);
+  next.delete('q');
+  const search = next.toString();
+  return search ? `${pagePath}?${search}` : pagePath;
+})();
+const postCount = new Set(tiles.map((tile) => tile.entry.url)).size;
 const dateFormatter = new Intl.DateTimeFormat(locale, {
   dateStyle: 'medium',
   timeZone: 'Asia/Tokyo',
@@ -98,7 +105,7 @@ const describe = (entry: KamekoEntry) =>
 
 <MainLayout title={pageTitle} description={t('photos.lede')}>
   <Container maxW="breakpoint-xl" className="page-shell">
-    <div class="kameko">
+    <div class="kameko" id="kameko-top">
       <PageMasthead
         eyebrow="#カメコしてみた"
         heading={t('photos.heading')}
@@ -111,14 +118,24 @@ const describe = (entry: KamekoEntry) =>
           {eventFilter && <input type="hidden" name="event" value={eventFilter} />}
           {tag && <input type="hidden" name="tag" value={tag} />}
           <label for="kameko-search">{t('photos.search-label')}</label>
-          <input
-            id="kameko-search"
-            name="q"
-            type="search"
-            value={query}
-            placeholder={t('photos.search-placeholder')}
-            autocomplete="off"
-          />
+          <div class="kameko__search-row">
+            <input
+              id="kameko-search"
+              name="q"
+              type="search"
+              value={query}
+              placeholder={t('photos.search-placeholder')}
+              autocomplete="off"
+            />
+            <button type="submit">{t('photos.search-submit')}</button>
+            {
+              query && (
+                <a href={clearQueryHref} class="kameko__search-clear">
+                  {t('photos.clear-search')}
+                </a>
+              )
+            }
+          </div>
         </form>
 
         <div class="kameko__facet">
@@ -185,10 +202,10 @@ const describe = (entry: KamekoEntry) =>
         </details>
 
         <p class="kameko__result-line" role="status">
-          <strong>{tiles.length}</strong>
+          <strong data-kameko-photo-count>{tiles.length}</strong>
           {t('photos.photos-count')}
           <span aria-hidden="true">·</span>
-          <strong>{entries.length}</strong>
+          <strong data-kameko-post-count>{postCount}</strong>
           {t('photos.posts-count')}
           {filtered && <a href={pagePath}>{t('photos.clear')}</a>}
         </p>
@@ -198,57 +215,68 @@ const describe = (entry: KamekoEntry) =>
         entries.length === 0 ? (
           <p class="kameko__empty">{t('photos.empty')}</p>
         ) : (
-          <ul class="kameko-collage" aria-label={t('photos.aria-grid')}>
-            {tiles.map((tile, index) => (
-              <li
-                class="kameko-tile"
-                style={`--w: ${tile.media.width}; --h: ${tile.media.height}`}
-                data-kameko-card
-              >
-                <a
-                  href={tile.entry.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${t('photos.open-on-x')}: ${describe(tile.entry)}`}
+          <>
+            <p class="kameko__empty" data-kameko-empty hidden>
+              {t('photos.empty')}
+            </p>
+            <ul class="kameko-collage" aria-label={t('photos.aria-grid')}>
+              {tiles.map((tile, index) => (
+                <li
+                  class="kameko-tile"
+                  style={`--w: ${tile.media.width}; --h: ${tile.media.height}`}
+                  data-kameko-card
+                  data-kameko-post={tile.entry.url}
                 >
-                  <img
-                    src={mediaUrl(tile.media.url, 'small')}
-                    srcset={`${mediaUrl(tile.media.url, 'small')} 680w, ${mediaUrl(tile.media.url, 'medium')} 1200w`}
-                    sizes="(min-width: 900px) 30vw, 50vw"
-                    alt={tile.media.alt ?? describe(tile.entry)}
-                    width={tile.media.width ?? undefined}
-                    height={tile.media.height ?? undefined}
-                    loading={index < 6 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    draggable="false"
-                    referrerpolicy="no-referrer"
-                    data-kameko-image
-                  />
-                  <span class="kameko-tile__caption">
-                    <span class="kameko-tile__name">
-                      {tile.entry.subjects.map((subject) => subject.name).join('、')}
-                    </span>
-                    {tile.entry.event && <span class="kameko-tile__event">{tile.entry.event}</span>}
-                  </span>
-                </a>
-                <button
-                  type="button"
-                  class="kameko-tile__expand"
-                  data-kameko-open={index}
-                  aria-label={`${t('photos.view-photo')}: ${describe(tile.entry)}`}
-                >
-                  <svg viewBox="0 0 16 16" aria-hidden="true">
-                    <path
-                      d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.5"
+                  <a
+                    href={tile.entry.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${t('photos.open-on-x')}: ${describe(tile.entry)}`}
+                  >
+                    <img
+                      src={mediaUrl(tile.media.url, 'small')}
+                      srcset={`${mediaUrl(tile.media.url, 'small')} 680w, ${mediaUrl(tile.media.url, 'medium')} 1200w`}
+                      sizes="(min-width: 900px) 30vw, 50vw"
+                      alt={tile.media.alt ?? describe(tile.entry)}
+                      width={tile.media.width ?? undefined}
+                      height={tile.media.height ?? undefined}
+                      loading={index < 6 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      draggable="false"
+                      referrerpolicy="no-referrer"
+                      data-kameko-image
                     />
-                  </svg>
-                </button>
-              </li>
-            ))}
-          </ul>
+                    <span class="kameko-tile__caption">
+                      <span class="kameko-tile__name">
+                        {tile.entry.subjects.map((subject) => subject.name).join('、')}
+                      </span>
+                      {tile.entry.event && (
+                        <span class="kameko-tile__event">{tile.entry.event}</span>
+                      )}
+                    </span>
+                  </a>
+                  <button
+                    type="button"
+                    class="kameko-tile__expand"
+                    data-kameko-open={index}
+                    aria-label={`${t('photos.view-photo')}: ${describe(tile.entry)}`}
+                  >
+                    <svg viewBox="0 0 16 16" aria-hidden="true">
+                      <path
+                        d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      />
+                    </svg>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <a class="kameko__top" href="#kameko-top" data-kameko-top>
+              {t('photos.back-to-top')}
+            </a>
+          </>
         )
       }
 
@@ -291,7 +319,7 @@ const describe = (entry: KamekoEntry) =>
             src: mediaUrl(tile.media.url, 'large'),
             alt: tile.media.alt ?? describe(tile.entry),
             name: tile.entry.subjects.map((subject) => subject.name).join('、'),
-            event: [formatDate(tile.entry.shotOn), tile.entry.event].filter(Boolean).join(' — '),
+            event: [formatDate(tile.entry.shotOn), tile.entry.event].filter(Boolean).join(' · '),
             caption: tile.entry.caption,
             url: tile.entry.url
           }))
@@ -332,9 +360,17 @@ const describe = (entry: KamekoEntry) =>
   }> = dataNode ? JSON.parse(dataNode.textContent ?? '[]') : [];
   let current = 0;
 
-  const show = (index: number) => {
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-kameko-card]'));
+  const isHidden = (index: number) => cards[index]?.hasAttribute('hidden') ?? false;
+
+  const show = (index: number, step = 1) => {
     if (!viewer || photos.length === 0) return;
-    current = (index + photos.length) % photos.length;
+    let target = (index + photos.length) % photos.length;
+    for (let tried = 0; isHidden(target) && tried < photos.length; tried++) {
+      target = (target + step + photos.length) % photos.length;
+    }
+    if (isHidden(target)) return;
+    current = target;
     const photo = photos[current];
     const image = viewer.querySelector<HTMLImageElement>('[data-viewer-image]');
     if (image) {
@@ -353,13 +389,15 @@ const describe = (entry: KamekoEntry) =>
   });
 
   viewer?.querySelector('[data-viewer-close]')?.addEventListener('click', () => viewer.close());
-  viewer?.querySelector('[data-viewer-prev]')?.addEventListener('click', () => show(current - 1));
+  viewer
+    ?.querySelector('[data-viewer-prev]')
+    ?.addEventListener('click', () => show(current - 1, -1));
   viewer?.querySelector('[data-viewer-next]')?.addEventListener('click', () => show(current + 1));
   viewer?.addEventListener('click', (event) => {
     if (event.target === viewer) viewer.close();
   });
   viewer?.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft') show(current - 1);
+    if (event.key === 'ArrowLeft') show(current - 1, -1);
     if (event.key === 'ArrowRight') show(current + 1);
   });
   let touchStart: number | null = null;
@@ -370,11 +408,26 @@ const describe = (entry: KamekoEntry) =>
     if (touchStart === null) return;
     const delta = event.clientX - touchStart;
     touchStart = null;
-    if (Math.abs(delta) > 48) show(current + (delta < 0 ? 1 : -1));
+    if (Math.abs(delta) > 48) show(current + (delta < 0 ? 1 : -1), delta < 0 ? 1 : -1);
   });
 
-  const hideRemoved = (image: HTMLImageElement) =>
+  const syncVisible = () => {
+    const visible = cards.filter((card) => !card.hasAttribute('hidden'));
+    const photoCount = document.querySelector('[data-kameko-photo-count]');
+    const postCount = document.querySelector('[data-kameko-post-count]');
+    if (photoCount) photoCount.textContent = String(visible.length);
+    if (postCount) {
+      postCount.textContent = String(new Set(visible.map((card) => card.dataset.kamekoPost)).size);
+    }
+    const empty = visible.length === 0;
+    document.querySelector('[data-kameko-empty]')?.toggleAttribute('hidden', !empty);
+    document.querySelector('.kameko-collage')?.toggleAttribute('hidden', empty);
+    document.querySelector('[data-kameko-top]')?.toggleAttribute('hidden', empty);
+  };
+  const hideRemoved = (image: HTMLImageElement) => {
     image.closest<HTMLElement>('[data-kameko-card]')?.setAttribute('hidden', '');
+    syncVisible();
+  };
   document
     .querySelectorAll<HTMLImageElement>('img[data-kameko-image], [data-viewer-image]')
     .forEach((image) => {

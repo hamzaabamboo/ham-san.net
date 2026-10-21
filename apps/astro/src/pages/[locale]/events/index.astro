@@ -98,9 +98,6 @@ const monthFormatter = new Intl.DateTimeFormat(locale, {
   timeZone: 'Asia/Tokyo',
   calendar: 'gregory'
 });
-const weekendRate = report?.totalEvents
-  ? pct1((report.weekendEvents / report.totalEvents) * 100)
-  : '0%';
 const busiestMonths = [...(report?.monthlyBreakdown ?? [])]
   .sort((a, b) => b.count - a.count)
   .slice(0, 12);
@@ -110,6 +107,7 @@ const maxMonthOfYearCount = Math.max(
   ...(report?.monthOfYearBreakdown.map((item) => item.count) ?? []),
   1
 );
+const MIN_RATE_EVENTS = 20;
 const latestFavoriteCumulative = report?.cumulativeFavoriteArtists.at(-1)?.values ?? [];
 const lineStyles = [
   { color: 'var(--atelier-accent)', dash: 'none' },
@@ -129,9 +127,18 @@ const favoriteCumulativeMax = Math.max(
 );
 const yearlyChartData = report?.yearlyBreakdown ?? [];
 const yearLabelStep = Math.max(1, Math.ceil(yearlyChartData.length / 7));
-const cumulativeYearMarks = (report?.cumulativeFavoriteArtists ?? [])
+const cumulativeSeries = (() => {
+  const all = report?.cumulativeFavoriteArtists ?? [];
+  const first = all.findIndex((month) => month.values.some((item) => item.count > 0));
+  return first > 0 ? all.slice(first) : all;
+})();
+const cumulativeJanuaryMarks = cumulativeSeries
   .map((item, index) => ({ month: item.month, index }))
   .filter((item) => item.month.slice(5, 7) === '01');
+const cumulativeYearMarks =
+  cumulativeSeries.length && (cumulativeJanuaryMarks[0]?.index ?? Infinity) >= 4
+    ? [{ month: cumulativeSeries[0].month, index: 0 }, ...cumulativeJanuaryMarks]
+    : cumulativeJanuaryMarks;
 const cumulativeYearStep = Math.max(1, Math.ceil(cumulativeYearMarks.length / 7));
 const maxYearlyChartCount = Math.max(...yearlyChartData.map((item) => item.count), 1);
 const maxCumulativeChartCount = Math.max(...yearlyChartData.map((item) => item.cumulative), 1);
@@ -142,12 +149,6 @@ const yearlyLinePoints = yearlyChartData
     return `${x},${y}`;
   })
   .join(' ');
-const averageEventsPerActiveDay = report?.activeDays
-  ? (report.totalEvents / report.activeDays).toFixed(2)
-  : '0.00';
-const averageEventsPerYear = report?.yearlyBreakdown.length
-  ? (report.totalEvents / report.yearlyBreakdown.length).toFixed(1)
-  : '0.0';
 const dateLabel = (date?: string) =>
   date ? dateFormatter.format(new Date(`${date}T00:00:00+09:00`)) : '-';
 const monthLabel = (month?: string) =>
@@ -163,7 +164,7 @@ const yearLabel = (year: string) =>
     .find((part) => part.type === 'year')?.value ?? year;
 const reportPeriodLabel =
   selectedYear === 'all' ? t('common.events-report-all-years') : yearLabel(selectedYear);
-const dateRangeLabel = report?.dateRange?.split(' - ').map(dateLabel).join(' - ') ?? '';
+const dateRangeLabel = report?.dateRange?.split(' - ').map(dateLabel).join(' – ') ?? '';
 const windowLabels: Record<string, string> = {
   'this-year': t('common.events-report-window-this-year'),
   'last-30-days': t('common.events-report-window-last-30-days'),
@@ -220,7 +221,7 @@ const dayUnit = (count: number) =>
     : t('common.events-report-days-count')
   ).replace('{n}', formatter.format(count));
 
-const cumulativeLine = (artist: string, data = report?.cumulativeFavoriteArtists ?? []) => {
+const cumulativeLine = (artist: string, data = cumulativeSeries) => {
   return data
     .map((month, monthIndex) => {
       const x = data.length === 1 ? 56 : 56 + (monthIndex / (data.length - 1)) * 624;
@@ -290,7 +291,45 @@ const heatmapMonthMarks = heatmapCells
 const heatmapWindowLabel = heatmapDays.length
   ? `${dateLabel(heatmapDays[0].date)} - ${dateLabel(heatmapDays[heatmapDays.length - 1].date)}`
   : '';
+const heatmapActiveDays = heatmapCells.filter((day) => day.count > 0).length;
+const heatmapEventTotal = heatmapCells.reduce((sum, day) => sum + day.count, 0);
+const heatmapPeak = heatmapCells.reduce((peak, day) => (day.count > peak.count ? day : peak), {
+  date: '',
+  count: 0
+});
+const heatmapSummary = [
+  t('events.heatmap-summary')
+    .replace('{days}', formatter.format(heatmapActiveDays))
+    .replace('{events}', formatter.format(heatmapEventTotal))
+    .replace('{range}', heatmapWindowLabel),
+  heatmapPeak.count
+    ? t('events.heatmap-peak')
+        .replace('{date}', dateLabel(heatmapPeak.date))
+        .replace('{n}', formatter.format(heatmapPeak.count))
+    : ''
+]
+  .filter(Boolean)
+  .join(' ');
+const monthsWindowLabel = t('events.months-window').replace(
+  '{n}',
+  formatter.format(monthlyChartData.length)
+);
+const yearlyDesc = yearlyChartData
+  .map((item) => `${yearLabel(item.year)}: ${formatter.format(item.count)}`)
+  .join(', ');
+const monthlyDesc = monthlyChartData
+  .map((item) => `${monthLabel(item.month)}: ${formatter.format(item.count)}`)
+  .join(', ');
+const cumulativeDesc = latestFavoriteCumulative
+  .map((artist) => `${artist.name}: ${formatter.format(artist.count)}`)
+  .join(', ');
+const NEXT_VISIBLE = 10;
 const rankListVisible = 12;
+const RANK_LIST_MAX = 50;
+const topArtistCount = Math.min(report?.topArtists.length ?? 0, RANK_LIST_MAX);
+const topVenueCount = Math.min(report?.topVenues.length ?? 0, RANK_LIST_MAX);
+const topLabel = (count: number) =>
+  t('events.top-count').replace('{n}', formatter.format(Math.min(count, rankListVisible)));
 // Linear, because the bar is drawn inside a full-width track and labelled with the absolute
 // percentage: the track reads as a 0-100% axis, so any non-linear fill makes the bar
 // contradict its own label. A square-root scale was tried to stop the long tail collapsing
@@ -320,9 +359,9 @@ const favoriteAttendanceTotal = report?.favoriteArtistAttendance.reduce(
 const favoriteAttendancePct = favoriteAttendanceTotal?.total
   ? (favoriteAttendanceTotal.attended / favoriteAttendanceTotal.total) * 100
   : 0;
-const bestFavoriteAttendance = [...(report?.favoriteArtistAttendance ?? [])].sort(
-  (a, b) => b.pct - a.pct || b.attended - a.attended || a.name.localeCompare(b.name)
-)[0];
+const bestFavoriteAttendance = [...(report?.favoriteArtistAttendance ?? [])]
+  .filter((artist) => artist.total >= MIN_RATE_EVENTS)
+  .sort((a, b) => b.pct - a.pct || b.attended - a.attended || a.name.localeCompare(b.name))[0];
 const eventingStyle = report
   ? report.multiEventDayStats.maxEventsInDay >= 10
     ? {
@@ -352,62 +391,6 @@ const eventingStyle = report
             sub: t('common.events-report-style-balanced-sub')
           }
   : undefined;
-
-const secondaryStats = report
-  ? [
-      {
-        label: t('common.events-report-active-days'),
-        value: formatter.format(report.activeDays),
-        meta: t('common.events-report-multi-days').replace(
-          '{n}',
-          formatter.format(report.multiEventDays)
-        )
-      },
-      {
-        label: t('common.events-report-weekend-rate'),
-        value: weekendRate,
-        meta: `${formatter.format(report.weekendEvents)} / ${formatter.format(report.totalEvents)}`
-      },
-      {
-        label: t('common.events-report-events-per-day'),
-        value: averageEventsPerActiveDay,
-        meta: t('common.events-report-active-days')
-      },
-      {
-        label: t('common.events-report-events-per-year'),
-        value: averageEventsPerYear,
-        meta: withUnit(
-          report.yearlyBreakdown.length,
-          report.yearlyBreakdown.length === 1
-            ? t('common.events-report-year')
-            : t('common.events-report-years')
-        )
-      },
-      {
-        label: t('common.events-report-artist-appearances'),
-        value: formatter.format(report.totalArtistAppearances),
-        meta: t('common.events-report-total-appearances')
-      },
-      {
-        label: t('common.events-report-days-spent'),
-        value: pct1(report.daysSpentPercentage),
-        meta: `${formatter.format(report.activeDays)} / ${formatter.format(report.totalDaysInRange)}`
-      },
-      {
-        label: t('common.events-report-max-day'),
-        value: formatter.format(report.maxEventsInDay?.count ?? 0),
-        meta: dateLabel(report.maxEventsInDay?.name)
-      },
-      {
-        label: t('common.events-report-followers'),
-        value: formatter.format(report.profile.followers),
-        meta: t('common.events-report-following').replace(
-          '{n}',
-          formatter.format(report.profile.following)
-        )
-      }
-    ]
-  : [];
 
 const heroStats = report
   ? [
@@ -572,19 +555,20 @@ const highlightCards =
             formatter.format(report.topArtists[0]?.count ?? 0)
           )
         },
-        {
-          icon: 'social_leaderboard' as const,
-          label: t('common.events-report-most-loyal'),
-          value: bestFavoriteAttendance?.name ?? '-',
-          sub: bestFavoriteAttendance
-            ? `${t('common.events-report-attendance-rate-value').replace(
-                '{n}',
-                pct1(bestFavoriteAttendance.pct)
-              )} (${formatter.format(bestFavoriteAttendance.attended)}/${formatter.format(
-                bestFavoriteAttendance.total
-              )})`
-            : '-'
-        },
+        ...(bestFavoriteAttendance
+          ? [
+              {
+                icon: 'social_leaderboard' as const,
+                label: t('events.highest-rate'),
+                value: bestFavoriteAttendance.name,
+                sub: t('events.highest-rate-sub')
+                  .replace('{rate}', pct1(bestFavoriteAttendance.pct))
+                  .replace('{went}', formatter.format(bestFavoriteAttendance.attended))
+                  .replace('{total}', formatter.format(bestFavoriteAttendance.total))
+                  .replace('{min}', formatter.format(MIN_RATE_EVENTS))
+              }
+            ]
+          : []),
         {
           icon: 'home' as const,
           label: t('common.events-report-home-venue'),
@@ -601,30 +585,6 @@ const highlightCards =
           sub: t('common.events-report-weekly-best').replace(
             '{n}',
             formatter.format(report.streaks.weekly.longestStreak)
-          )
-        },
-        {
-          icon: 'bolt' as const,
-          label: t('common.events-report-personal-record'),
-          value: t('common.events-report-events-in-one-day').replace(
-            '{n}',
-            formatter.format(report.multiEventDayStats.maxEventsInDay)
-          ),
-          sub: dateLabel(report.multiEventDayStats.maxEventsInDayDate)
-        },
-        {
-          icon: 'bar_chart' as const,
-          label: t('common.events-report-busiest-month'),
-          value: monthLabel(report.busiestMonth?.month),
-          sub: withUnit(report.busiestMonth?.count ?? 0, t('common.events-report-events-unit'))
-        },
-        {
-          icon: 'event' as const,
-          label: t('common.events-report-favorite-day'),
-          value: weekdayLabel(report.favoriteDay?.name),
-          sub: t('common.events-report-events-on-this-day').replace(
-            '{n}',
-            formatter.format(report.favoriteDay?.count ?? 0)
           )
         }
       ]
@@ -677,6 +637,7 @@ const reportSections = report
             <a href={EVENTERNOTE_PROFILE_URL} target="_blank" rel="noreferrer">
               <Glyph name="open_in_new" />
               {t('common.events-report-source-profile')}
+              <span class="event-report__sr-only">{t('events.opens-new-tab')}</span>
             </a>
           </div>
         </div>
@@ -712,33 +673,36 @@ const reportSections = report
                 <span>{report.profile.bio}</span>
               </section>
 
-              <nav class="event-report__jump-nav" aria-label={t('events.aria-sections')}>
-                {reportSections.map((section) => (
-                  <a href={`#${section.id}`}>{section.label}</a>
-                ))}
-              </nav>
-
-              <section class="event-report__section event-report__section--controls">
-                <SectionHeading label={t('common.events-report-filter')} />
-                <nav class="event-report__year-filter" aria-label={t('events.aria-year-filter')}>
-                  <a
-                    href={`/${locale}/events`}
-                    data-active={selectedYear === 'all' ? 'true' : 'false'}
-                    aria-current={selectedYear === 'all' ? 'page' : undefined}
-                  >
-                    {t('common.events-report-all-years')}
-                  </a>
-                  {yearOptions.map((year) => (
-                    <a
-                      href={`/${locale}/events?year=${year}`}
-                      data-active={selectedYear === year ? 'true' : 'false'}
-                      aria-current={selectedYear === year ? 'page' : undefined}
-                    >
-                      {yearLabel(year)}
-                    </a>
+              <details class="event-report__rail-fold" data-rail-fold open>
+                <summary>{t('events.rail-toggle')}</summary>
+                <nav class="event-report__jump-nav" aria-label={t('events.aria-sections')}>
+                  {reportSections.map((section) => (
+                    <a href={`#${section.id}`}>{section.label}</a>
                   ))}
                 </nav>
-              </section>
+
+                <section class="event-report__section event-report__section--controls">
+                  <SectionHeading label={t('common.events-report-filter')} />
+                  <nav class="event-report__year-filter" aria-label={t('events.aria-year-filter')}>
+                    <a
+                      href={`/${locale}/events`}
+                      data-active={selectedYear === 'all' ? 'true' : 'false'}
+                      aria-current={selectedYear === 'all' ? 'page' : undefined}
+                    >
+                      {t('common.events-report-all-years')}
+                    </a>
+                    {yearOptions.map((year) => (
+                      <a
+                        href={`/${locale}/events?year=${year}`}
+                        data-active={selectedYear === year ? 'true' : 'false'}
+                        aria-current={selectedYear === year ? 'page' : undefined}
+                      >
+                        {yearLabel(year)}
+                      </a>
+                    ))}
+                  </nav>
+                </section>
+              </details>
             </aside>
 
             <div class="event-report__content">
@@ -788,24 +752,6 @@ const reportSections = report
                     <h2>{t('common.events-report-highlights')}</h2>
                     <p>{t('common.events-report-highlights-subtitle')}</p>
                   </div>
-                  <div
-                    role="group"
-                    class="event-report__highlight-totals"
-                    aria-label={t('events.aria-highlight-totals')}
-                  >
-                    <span>
-                      <strong>{formatter.format(report.totalEvents)}</strong>
-                      {t('common.events-report-events-unit')}
-                    </span>
-                    <span>
-                      <strong>{formatter.format(report.uniqueVenues)}</strong>
-                      {t('common.events-report-venues-unit')}
-                    </span>
-                    <span>
-                      <strong>{formatter.format(report.uniqueArtists)}</strong>
-                      {t('common.events-report-artists-unit')}
-                    </span>
-                  </div>
                 </div>
                 <div class="event-report__highlight-grid">
                   {highlightCards.map((item) => (
@@ -830,125 +776,152 @@ const reportSections = report
                     <div class="event-report__panel-head">
                       <h3>{t('common.events-report-yearly')}</h3>
                     </div>
-                    <svg class="event-report__svg-chart" viewBox="0 0 720 260" role="img">
-                      <title>{t('common.events-report-yearly')}</title>
-                      <line x1="36" y1="220" x2="700" y2="220" />
-                      {yearlyChartData.map((item, index) => {
-                        const x =
-                          yearlyChartData.length === 1
-                            ? 340
-                            : 40 + (index / (yearlyChartData.length - 1)) * 640;
-                        const height = (item.count / maxYearlyChartCount) * 170;
+                    <div class="event-report__chart-scroll">
+                      <svg
+                        class="event-report__svg-chart"
+                        viewBox="0 0 720 260"
+                        role="img"
+                        aria-labelledby="chart-yearly-title"
+                        aria-describedby="chart-yearly-desc"
+                      >
+                        <title id="chart-yearly-title">{t('common.events-report-yearly')}</title>
+                        <desc id="chart-yearly-desc">{yearlyDesc}</desc>
+                        <line x1="36" y1="220" x2="700" y2="220" />
+                        {yearlyChartData.map((item, index) => {
+                          const x =
+                            yearlyChartData.length === 1
+                              ? 340
+                              : 40 + (index / (yearlyChartData.length - 1)) * 640;
+                          const height = (item.count / maxYearlyChartCount) * 170;
 
-                        const showLabel =
-                          (yearlyChartData.length - 1 - index) % yearLabelStep === 0;
+                          const showLabel =
+                            (yearlyChartData.length - 1 - index) % yearLabelStep === 0;
 
-                        return (
-                          <>
-                            <rect x={x - 10} y={220 - height} width="20" height={height} />
-                            {showLabel ? (
-                              <>
+                          return (
+                            <>
+                              <rect x={x - 10} y={220 - height} width="20" height={height} />
+                              {showLabel || item.count === maxYearlyChartCount ? (
                                 <text x={x} y={210 - height}>
                                   {formatter.format(item.count)}
                                 </text>
+                              ) : null}
+                              {showLabel ? (
                                 <text x={x} y="244">
                                   {yearLabel(item.year)}
                                 </text>
-                              </>
-                            ) : null}
-                          </>
-                        );
-                      })}
-                      <polyline points={yearlyLinePoints} />
-                    </svg>
+                              ) : null}
+                            </>
+                          );
+                        })}
+                        <polyline points={yearlyLinePoints} />
+                      </svg>
+                    </div>
                   </div>
 
                   <div class="event-report__panel event-report__panel--wide">
                     <div class="event-report__panel-head">
-                      <h3>{t('common.events-report-months')}</h3>
+                      <h3>{`${t('common.events-report-months')} · ${monthsWindowLabel}`}</h3>
                     </div>
-                    <svg class="event-report__svg-chart" viewBox="0 0 720 280" role="img">
-                      <title>{t('common.events-report-months')}</title>
-                      <line x1="36" y1="220" x2="700" y2="220" />
-                      {monthlyChartData.map((item, index) => {
-                        const width = 620 / Math.max(monthlyChartData.length, 1);
-                        const x = 50 + index * width;
-                        const height = (item.count / maxMonthlyChartCount) * 170;
-                        const showTick =
-                          (monthlyChartData.length - 1 - index) % monthTickStep === 0;
-                        const showYear = index === 0 || item.month.slice(5, 7) === '01';
+                    <div class="event-report__chart-scroll">
+                      <svg
+                        class="event-report__svg-chart"
+                        viewBox="0 0 720 280"
+                        role="img"
+                        aria-labelledby="chart-months-title"
+                        aria-describedby="chart-months-desc"
+                      >
+                        <title id="chart-months-title">{`${t('common.events-report-months')} · ${monthsWindowLabel}`}</title>
+                        <desc id="chart-months-desc">{monthlyDesc}</desc>
+                        <line x1="36" y1="220" x2="700" y2="220" />
+                        {monthlyChartData.map((item, index) => {
+                          const width = 620 / Math.max(monthlyChartData.length, 1);
+                          const x = 50 + index * width;
+                          const height = (item.count / maxMonthlyChartCount) * 170;
+                          const showTick =
+                            (monthlyChartData.length - 1 - index) % monthTickStep === 0;
+                          const showYear = index === 0 || item.month.slice(5, 7) === '01';
 
-                        return (
-                          <>
-                            <rect
-                              x={x}
-                              y={220 - height}
-                              width={Math.max(width - 6, 6)}
-                              height={height}
-                            />
-                            {showTick ? (
-                              <>
+                          return (
+                            <>
+                              <rect
+                                x={x}
+                                y={220 - height}
+                                width={Math.max(width - 6, 6)}
+                                height={height}
+                              />
+                              {showTick || item.count === maxMonthlyChartCount ? (
                                 <text x={x + width / 2} y={210 - height}>
                                   {formatter.format(item.count)}
                                 </text>
+                              ) : null}
+                              {showTick ? (
                                 <text x={x + width / 2} y="242">
                                   {item.month.slice(5)}
                                 </text>
-                              </>
-                            ) : null}
-                            {showYear ? (
-                              <text x={x + width / 2} y="264">
-                                {yearLabel(item.month.slice(0, 4))}
-                              </text>
-                            ) : null}
-                          </>
-                        );
-                      })}
-                    </svg>
+                              ) : null}
+                              {showYear ? (
+                                <text x={x + width / 2} y="264">
+                                  {yearLabel(item.month.slice(0, 4))}
+                                </text>
+                              ) : null}
+                            </>
+                          );
+                        })}
+                      </svg>
+                    </div>
                   </div>
 
                   <div class="event-report__panel event-report__panel--wide">
                     <div class="event-report__panel-head">
                       <h3>{t('common.events-report-cumulative-artist-attendance')}</h3>
                     </div>
-                    <svg
-                      class="event-report__svg-chart event-report__svg-chart--line"
-                      viewBox="0 0 720 300"
-                      role="img"
-                    >
-                      <title>{t('common.events-report-cumulative-artist-attendance')}</title>
-                      <line x1="56" y1="230" x2="700" y2="230" />
-                      <line x1="56" y1="40" x2="56" y2="230" />
-                      <line class="event-report__svg-grid" x1="56" y1="50" x2="700" y2="50" />
-                      <text class="event-report__svg-tick" x="50" y="54">
-                        {formatter.format(favoriteCumulativeMax)}
-                      </text>
-                      <text class="event-report__svg-tick" x="50" y="234">
-                        0
-                      </text>
-                      {cumulativeYearMarks.map((mark, markIndex) => {
-                        const x =
-                          report.cumulativeFavoriteArtists.length === 1
-                            ? 56
-                            : 56 +
-                              (mark.index / (report.cumulativeFavoriteArtists.length - 1)) * 624;
+                    <div class="event-report__chart-scroll">
+                      <svg
+                        class="event-report__svg-chart event-report__svg-chart--line"
+                        viewBox="0 0 720 300"
+                        role="img"
+                        aria-labelledby="chart-cumulative-title"
+                        aria-describedby="chart-cumulative-desc"
+                      >
+                        <title id="chart-cumulative-title">
+                          {t('common.events-report-cumulative-artist-attendance')}
+                        </title>
+                        <desc id="chart-cumulative-desc">{cumulativeDesc}</desc>
+                        <line x1="56" y1="230" x2="700" y2="230" />
+                        <line x1="56" y1="40" x2="56" y2="230" />
+                        <line class="event-report__svg-grid" x1="56" y1="50" x2="700" y2="50" />
+                        <text class="event-report__svg-tick" x="50" y="54">
+                          {formatter.format(favoriteCumulativeMax)}
+                        </text>
+                        <text class="event-report__svg-tick" x="50" y="234">
+                          0
+                        </text>
+                        {cumulativeYearMarks.map((mark, markIndex) => {
+                          const x =
+                            cumulativeSeries.length === 1
+                              ? 56
+                              : 56 + (mark.index / (cumulativeSeries.length - 1)) * 624;
 
-                        if ((cumulativeYearMarks.length - 1 - markIndex) % cumulativeYearStep !== 0)
-                          return null;
+                          if (
+                            (cumulativeYearMarks.length - 1 - markIndex) % cumulativeYearStep !==
+                            0
+                          )
+                            return null;
 
-                        return (
-                          <text x={x} y="268">
-                            {yearLabel(mark.month.slice(0, 4))}
-                          </text>
-                        );
-                      })}
-                      {latestFavoriteCumulative.map((artist, index) => (
-                        <polyline
-                          points={cumulativeLine(artist.name)}
-                          style={`--line-color: ${lineStyles[index % lineStyles.length].color}; --line-dash: ${lineStyles[index % lineStyles.length].dash}`}
-                        />
-                      ))}
-                    </svg>
+                          return (
+                            <text x={x} y="268">
+                              {yearLabel(mark.month.slice(0, 4))}
+                            </text>
+                          );
+                        })}
+                        {latestFavoriteCumulative.map((artist, index) => (
+                          <polyline
+                            points={cumulativeLine(artist.name)}
+                            style={`--line-color: ${lineStyles[index % lineStyles.length].color}; --line-dash: ${lineStyles[index % lineStyles.length].dash}`}
+                          />
+                        ))}
+                      </svg>
+                    </div>
                     <div class="event-report__legend">
                       {latestFavoriteCumulative.map((artist, index) => (
                         <span
@@ -999,19 +972,6 @@ const reportSections = report
 
               <section id="rhythm" class="event-report__section">
                 <SectionHeading label={t('common.events-report-rhythm')} />
-                <div
-                  role="group"
-                  class="event-report__metrics-strip"
-                  aria-label={t('events.aria-metrics-strip')}
-                >
-                  {secondaryStats.map((stat) => (
-                    <article>
-                      <p>{stat.label}</p>
-                      <strong>{stat.value}</strong>
-                      <span>{stat.meta}</span>
-                    </article>
-                  ))}
-                </div>
                 <div
                   role="group"
                   class="event-report__analytics"
@@ -1087,6 +1047,7 @@ const reportSections = report
                           class="event-report__heatmap"
                           role="img"
                           aria-label={t('events.aria-heatmap')}
+                          aria-describedby="heatmap-summary"
                         >
                           {heatmapCells.map((day) => (
                             <span
@@ -1098,6 +1059,9 @@ const reportSections = report
                         </div>
                       </div>
                     </div>
+                    <p id="heatmap-summary" class="event-report__sr-only">
+                      {heatmapSummary}
+                    </p>
                     <div class="event-report__heatmap-legend">
                       <span>{t('common.events-report-less')}</span>
                       <i />
@@ -1114,32 +1078,50 @@ const reportSections = report
                       <span>{pct1(favoriteAttendancePct)}</span>
                     </div>
                     <div class="event-report__attendance-table">
-                      <div class="event-report__attendance-row event-report__attendance-row--head">
-                        <span>{t('common.events-report-artist-column')}</span>
-                        <span>{t('common.events-report-went-column')}</span>
-                        <span>{t('common.events-report-missed-column')}</span>
-                        <span>{t('common.events-report-total-column')}</span>
-                        <span>{t('common.events-report-rate-column')}</span>
-                      </div>
-                      {report.favoriteArtistAttendance.slice(0, 8).map((artist) => (
-                        <div class="event-report__attendance-row" style={`--size: ${artist.pct}%`}>
-                          <span>
-                            {artist.name}
-                            <i />
-                          </span>
-                          <strong>{formatter.format(artist.attended)}</strong>
-                          <span>{formatter.format(artist.missed)}</span>
-                          <span>{formatter.format(artist.total)}</span>
-                          <strong>{pct1(artist.pct)}</strong>
-                        </div>
-                      ))}
-                      <div class="event-report__attendance-row event-report__attendance-row--total">
-                        <span>{t('common.events-report-total-column')}</span>
-                        <strong>{formatter.format(favoriteAttendanceTotal?.attended ?? 0)}</strong>
-                        <span>{formatter.format(favoriteAttendanceTotal?.missed ?? 0)}</span>
-                        <span>{formatter.format(favoriteAttendanceTotal?.total ?? 0)}</span>
-                        <strong>{pct1(favoriteAttendancePct)}</strong>
-                      </div>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th scope="col">{t('common.events-report-artist-column')}</th>
+                            <th scope="col">{t('common.events-report-went-column')}</th>
+                            <th scope="col">{t('common.events-report-missed-column')}</th>
+                            <th scope="col">{t('common.events-report-total-column')}</th>
+                            <th scope="col">{t('common.events-report-rate-column')}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {report.favoriteArtistAttendance.slice(0, 8).map((artist) => (
+                            <tr style={`--size: ${artist.pct}%`}>
+                              <th scope="row">
+                                {artist.name}
+                                <i />
+                              </th>
+                              <td>
+                                <strong>{formatter.format(artist.attended)}</strong>
+                              </td>
+                              <td>{formatter.format(artist.missed)}</td>
+                              <td>{formatter.format(artist.total)}</td>
+                              <td>
+                                <strong>{pct1(artist.pct)}</strong>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th scope="row">{t('common.events-report-total-column')}</th>
+                            <td>
+                              <strong>
+                                {formatter.format(favoriteAttendanceTotal?.attended ?? 0)}
+                              </strong>
+                            </td>
+                            <td>{formatter.format(favoriteAttendanceTotal?.missed ?? 0)}</td>
+                            <td>{formatter.format(favoriteAttendanceTotal?.total ?? 0)}</td>
+                            <td>
+                              <strong>{pct1(favoriteAttendancePct)}</strong>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -1151,7 +1133,13 @@ const reportSections = report
                   <div class="event-report__panel event-report__panel--wide">
                     <div class="event-report__panel-head">
                       <h3>{t('common.events-report-next')}</h3>
-                      <span>{formatter.format(report.nextEvents.length)}</span>
+                      <span>
+                        {report.nextEvents.length > NEXT_VISIBLE
+                          ? t('events.showing-of')
+                              .replace('{n}', formatter.format(NEXT_VISIBLE))
+                              .replace('{total}', formatter.format(report.nextEvents.length))
+                          : formatter.format(report.nextEvents.length)}
+                      </span>
                     </div>
                     {report.nextEvents.length ? (
                       <div class="event-report__event-list">
@@ -1167,8 +1155,20 @@ const reportSections = report
                             </time>
                             <span>{event.title}</span>
                             <small>{event.venue}</small>
+                            <span class="event-report__sr-only">{t('events.opens-new-tab')}</span>
                           </a>
                         ))}
+                        {report.nextEvents.length > NEXT_VISIBLE ? (
+                          <a
+                            class="event-report__more-link"
+                            href={`${EVENTERNOTE_PROFILE_URL}/events`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {t('events.all-on-eventernote')}
+                            <span class="event-report__sr-only">{t('events.opens-new-tab')}</span>
+                          </a>
+                        ) : null}
                       </div>
                     ) : (
                       <p class="event-report__empty">{t('common.events-report-empty-next')}</p>
@@ -1192,6 +1192,7 @@ const reportSections = report
                           </time>
                           <span>{event.title}</span>
                           <small>{event.venue}</small>
+                          <span class="event-report__sr-only">{t('events.opens-new-tab')}</span>
                         </a>
                       ))}
                     </div>
@@ -1205,7 +1206,7 @@ const reportSections = report
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
                       <h3>{t('common.events-report-top-artists')}</h3>
-                      <span>{t('common.events-report-top-50')}</span>
+                      <span>{topLabel(topArtistCount)}</span>
                     </div>
                     <ol class="event-report__rank-list">
                       {report.topArtists.slice(0, rankListVisible).map((artist, index) => (
@@ -1219,11 +1220,11 @@ const reportSections = report
                         </li>
                       ))}
                     </ol>
-                    {report.topArtists.length > rankListVisible ? (
+                    {topArtistCount > rankListVisible ? (
                       <details class="event-report__rank-more">
-                        <summary>{`${t('events.show-all')} (${formatter.format(report.topArtists.length)})`}</summary>
+                        <summary>{`${t('events.show-all')} (${formatter.format(topArtistCount)})`}</summary>
                         <ol class="event-report__rank-list" start={rankListVisible + 1}>
-                          {report.topArtists.slice(rankListVisible, 50).map((artist) => (
+                          {report.topArtists.slice(rankListVisible, RANK_LIST_MAX).map((artist) => (
                             <li
                               style={`--size: ${(artist.count / Math.max(report.topArtists[0]?.count ?? 1, 1)) * 100}%`}
                             >
@@ -1240,7 +1241,7 @@ const reportSections = report
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
                       <h3>{t('common.events-report-top-venues')}</h3>
-                      <span>{t('common.events-report-top-50')}</span>
+                      <span>{topLabel(topVenueCount)}</span>
                     </div>
                     <ol class="event-report__rank-list">
                       {report.topVenues.slice(0, rankListVisible).map((venue, index) => (
@@ -1254,11 +1255,11 @@ const reportSections = report
                         </li>
                       ))}
                     </ol>
-                    {report.topVenues.length > rankListVisible ? (
+                    {topVenueCount > rankListVisible ? (
                       <details class="event-report__rank-more">
-                        <summary>{`${t('events.show-all')} (${formatter.format(report.topVenues.length)})`}</summary>
+                        <summary>{`${t('events.show-all')} (${formatter.format(topVenueCount)})`}</summary>
                         <ol class="event-report__rank-list" start={rankListVisible + 1}>
-                          {report.topVenues.slice(rankListVisible, 50).map((venue) => (
+                          {report.topVenues.slice(rankListVisible, RANK_LIST_MAX).map((venue) => (
                             <li
                               style={`--size: ${(venue.count / Math.max(report.topVenues[0]?.count ?? 1, 1)) * 100}%`}
                             >
@@ -1341,6 +1342,18 @@ const reportSections = report
     });
   };
 
+  const narrowRail = window.matchMedia('(max-width: 1080px)');
+  const foldRailOnNarrow = () => {
+    document.querySelectorAll<HTMLDetailsElement>('[data-rail-fold]').forEach((fold) => {
+      fold.open = !narrowRail.matches;
+    });
+  };
+  narrowRail.addEventListener('change', foldRailOnNarrow);
+
   scrollHeatmaps();
-  document.addEventListener('astro:page-load', scrollHeatmaps);
+  foldRailOnNarrow();
+  document.addEventListener('astro:page-load', () => {
+    scrollHeatmaps();
+    foldRailOnNarrow();
+  });
 </script>

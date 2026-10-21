@@ -26,11 +26,12 @@
   "subject-collaboration": "コラボレーション",
   "subject-technical": "技術的な質問",
   "subject-other": "その他",
-  "execute-transmission": "送信",
+  "execute-transmission": "メールアプリで開く",
   "security-brief": "送る前に",
   "security-brief-body": "フォームは入力内容をメールクライアントに渡します。機密情報は信頼できる方法で送ってください。",
   "office-hours": "返信について",
   "office-hours-body": "通常は数日以内に返信します。\n非同期で大丈夫です。",
-  "current-time-label": "現在時刻",
-  "namecards-count": "登録カード数"
+  "mail-fallback-prefix": "何も開かない場合は、",
+  "mail-fallback-suffix": " へメールしてください。",
+  "tokyo-time-label": "東京"
 }

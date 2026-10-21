@@ -4,14 +4,20 @@ import { hobbyStyles } from '../hobbyStyles';
 import { getHostLabel } from './source';
 import type { HobbyEmbedProps } from './types';
 
+const maxVisibleImages = 6;
+
 export const PhotoGalleryEmbed = ({
   images = [],
+  imageAlts = [],
   links = [],
   linkedPhotoSourcesLabel = 'Linked photo sources',
   noImagesLabel = 'No images attached yet',
-  imageLabel = 'Photo'
+  imageLabel = 'Photo',
+  moreLabel = 'more'
 }: HobbyEmbedProps) => {
-  const galleryImages = images.slice(0, 6);
+  const galleryImages = images.slice(0, maxVisibleImages);
+  const hiddenCount = images.length - galleryImages.length;
+  const getImageLabel = (index: number) => imageAlts[index] || `${imageLabel} ${index + 1}`;
   const [activeImage, setActiveImage] = useState(0);
   const galleryLinks = getPhotoSourceLinks(links);
   const getDisplayLabel = (link: { href: string; label: string }) => {
@@ -31,7 +37,7 @@ export const PhotoGalleryEmbed = ({
         {galleryImages[activeImage] ? (
           <img
             src={galleryImages[activeImage]}
-            alt={`${imageLabel} ${activeImage + 1}`}
+            alt={getImageLabel(activeImage)}
             width={1200}
             height={900}
             decoding="async"
@@ -60,13 +66,14 @@ export const PhotoGalleryEmbed = ({
               key={image}
               type="button"
               data-active={index === activeImage}
-              aria-label={`${imageLabel} ${index + 1}`}
+              aria-label={getImageLabel(index)}
               aria-pressed={index === activeImage}
               onClick={() => setActiveImage(index)}
             >
               <img src={image} alt="" width={320} height={240} loading="lazy" decoding="async" />
             </button>
           ))}
+          {hiddenCount > 0 && <p>{`+${hiddenCount} ${moreLabel}`}</p>}
         </div>
       )}
     </div>

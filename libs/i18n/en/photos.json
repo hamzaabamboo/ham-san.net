@@ -21,5 +21,8 @@
   "viewer-prev": "Previous photo",
   "viewer-next": "Next photo",
   "posts-count": "posts",
-  "view-photo": "View photo"
+  "view-photo": "View photo",
+  "search-submit": "Search",
+  "clear-search": "Clear search",
+  "back-to-top": "Back to top"
 }

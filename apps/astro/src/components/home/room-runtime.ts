@@ -34,7 +34,8 @@ type TargetId =
   | 'penlight'
   | 'nesoberi'
   | 'light'
-  | 'closet';
+  | 'closet'
+  | 'fan';
 type ContentId = TargetId | MusicChildId | 'about' | 'contact';
 type Pose = { position: THREE.Vector3; yaw: number; pitch: number };
 type TargetDefinition = {
@@ -116,6 +117,7 @@ const targetDefinitions: TargetDefinition[] = [
   { id: 'juggling', position: [0.935, 0.2875, -1.64], path: 'hobbies' },
   { id: 'nesoberi', position: [0.8, 0.6, -1.6], path: '', label: false },
   { id: 'light', position: [-1.86, 1.24, -2.45], path: '' },
+  { id: 'fan', position: [-1.662, 0.912, -0.344], path: '', label: false },
   {
     id: 'closet',
     position: [2.42, 1.25, -2.45],
@@ -183,7 +185,8 @@ const defaultFocusPositions: Record<TargetId, [number, number, number]> = {
   penspinning: [2.75, 1.4, -1.05],
   kendama: [2.75, 1.4, -0.55],
   cardistry: [2.75, 1.4, 0.1],
-  closet: [1.15, 1.45, -1.65]
+  closet: [1.15, 1.45, -1.65],
+  fan: [-1.0, 1.25, -0.344]
 };
 const focusDuration = 520;
 const returnDuration = 420;
@@ -445,6 +448,7 @@ export const initRoom = (root: HTMLElement) => {
     if (id === 'juggling') return copy.juggling;
     if (id === 'nesoberi') return copy.nesoberi;
     if (id === 'closet') return copy.closet;
+    if (id === 'fan') return copy.fan;
     if (id === 'about') return copy.about;
     if (id === 'contact') return copy.contact;
     return destinationLabels.get(id) ?? id;
@@ -826,6 +830,9 @@ export const initRoom = (root: HTMLElement) => {
   }[] = [];
   let closetAmount = 0;
   let closetTarget = 0;
+  let fanRotor: THREE.Object3D | null = null;
+  let fanOn = false;
+  let fanSpeed = 0;
   let moveTarget: THREE.Vector3 | null = null;
   let yaw = 0;
   let pitch = 0;
@@ -992,14 +999,16 @@ export const initRoom = (root: HTMLElement) => {
           .find((intersection) => isOpaqueObject(intersection.object));
         labelVisibility.set(id, !blocker || getRoomTarget(blocker.object) === id);
       }
-      label.hidden = !onScreen || labelVisibility.get(id) === false;
+      const screenY = ((1 - projected.y) / 2) * canvasRect.height;
+      const underHud = screenY < 88 || screenY > canvasRect.height - 120;
+      label.hidden = !onScreen || underHud || labelVisibility.get(id) === false;
       if (label.hidden) return;
       label.toggleAttribute(
         'data-room-target-near',
         position.distanceToSquared(camera.position) < nearLabelDistance * nearLabelDistance
       );
       label.style.left = `${canvasRect.left - rootRect.left + ((projected.x + 1) / 2) * canvasRect.width}px`;
-      label.style.top = `${canvasRect.top - rootRect.top + ((1 - projected.y) / 2) * canvasRect.height}px`;
+      label.style.top = `${canvasRect.top - rootRect.top + screenY}px`;
     });
   };
 
@@ -1805,6 +1814,11 @@ export const initRoom = (root: HTMLElement) => {
       toggleCloset();
       return;
     }
+    if (id === 'fan') {
+      fanOn = !fanOn;
+      setHint(id);
+      return;
+    }
     if (id === 'nesoberi') {
       patPlush();
       return;
@@ -2246,6 +2260,7 @@ export const initRoom = (root: HTMLElement) => {
       room = gltf.scene;
       room.traverse((object) => {
         if (object.userData?.roomBackdrop) backdrops.push(object);
+        if (object.name.replace(/[ _]/g, '') === 'Deskfanrotor') fanRotor = object;
         if (!(object instanceof THREE.Mesh)) return;
         const target = getRoomTarget(object);
         if (!target) return;
@@ -2359,6 +2374,9 @@ export const initRoom = (root: HTMLElement) => {
     }
     if (play?.active) play.session.update(delta);
     updatePats(delta);
+    fanSpeed += ((fanOn ? 1 : 0) - fanSpeed) * Math.min(delta * 1.5, 1);
+    if (fanSpeed < 0.001) fanSpeed = 0;
+    if (fanRotor && fanSpeed > 0) fanRotor.rotateX(fanSpeed * 40 * delta);
     const curtainsMoving = updateCurtains(delta);
     const closetMoving = updateCloset(delta);
     camera.updateMatrixWorld();
@@ -2378,6 +2396,7 @@ export const initRoom = (root: HTMLElement) => {
       renderer.shadowMap.needsUpdate ||
       Boolean(transition || play || moveTarget || keys.size || lookKeys.size) ||
       pats.length > 0 ||
+      fanSpeed > 0 ||
       hearts.length > 0 ||
       curtainsMoving ||
       closetMoving ||

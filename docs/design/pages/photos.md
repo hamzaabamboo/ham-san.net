@@ -45,7 +45,7 @@ Posted by @HamP_punipuni · Updated Sep 27, 2026
 ## Interactions
 
 - **Tile click** opens the X post in a new tab. That is the primary action, and it works without JavaScript.
-- **Expand button** (top-right of each tile, visible on hover or focus, always visible on touch) opens the full-screen viewer:
+- **Expand button** (top-right of each tile, 44px, visible on hover or focus, always visible on touch) opens the full-screen viewer:
   - a `<dialog>` with the `name=large` image from X;
   - names, date and event, and the caption;
   - "Open on X";
@@ -56,7 +56,9 @@ Posted by @HamP_punipuni · Updated Sep 27, 2026
 ## Responsive
 
 - Collage row height is 18rem on desktop and 9rem at ≤700 px (2–3 photos per row).
-- On touch, tile captions show names only.
+- Tile captions always show the person's name; the event line appears on hover or focus.
+- The search form has a visible Search button and a Clear link when a query is set; facet chips are 44px tall; a Back to top link ends the grid.
+- When failed images hide tiles, the result line and the viewer's previous/next skip them, and the empty message shows if none remain.
 - Viewer navigation buttons are hidden at ≤700 px in favour of swipe.
 
 ## Rules

@@ -25,6 +25,8 @@ const pageTitle = `${t('common.contact')} | ${t('common.name')}`;
 // No request-time data on this page; it was previously uncacheable.
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=86400, must-revalidate');
 
+const EMAIL = 'hello@ham-san.net';
+
 const items = [
   { label: 'GITHUB', value: 'hamzaabamboo', url: 'https://github.com/hamzaabamboo' },
   {
@@ -64,46 +66,36 @@ const items = [
         </Text>
       </Stack>
 
-      <Grid
-        gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
-        gap="1px"
-        bg="var(--atelier-line)"
+      <Stack
+        bg="var(--atelier-bg)"
         border="1px solid"
         borderColor="var(--atelier-line)"
+        p="5"
+        gap="2"
+        role="region"
+        aria-label={t('contact.direct')}
       >
-        <Stack bg="var(--atelier-bg)" p="5" gap="2" role="region" aria-label={t('contact.direct')}>
-          <Text
-            fontFamily="var(--font-code)"
-            fontSize="10px"
-            textTransform="uppercase"
-            color="var(--atelier-outline)"
-          >
-            {t('contact.direct')}
-          </Text>
-          <Text fontFamily="var(--font-code)" fontSize="sm" color="var(--atelier-accent)">
-            hello@ham-san.net
-          </Text>
-        </Stack>
-        <Stack
-          className="contact-panel"
-          p="5"
-          gap="2"
-          role="region"
-          aria-label={t('contact.namecards-count')}
+        <Text
+          fontFamily="var(--font-code)"
+          fontSize="10px"
+          textTransform="uppercase"
+          color="var(--atelier-outline)"
         >
-          <Text
-            fontFamily="var(--font-code)"
-            fontSize="10px"
-            textTransform="uppercase"
-            color="var(--atelier-outline)"
-          >
-            {t('contact.namecards-count')}
-          </Text>
-          <Text fontFamily="var(--font-code)" fontSize="3xl" color="var(--atelier-accent)">
-            {NAMECARDS.length}
-          </Text>
-        </Stack>
-      </Grid>
+          {t('contact.direct')}
+        </Text>
+        <Link
+          href={`mailto:${EMAIL}`}
+          display="inline-flex"
+          alignItems="center"
+          minH="44px"
+          alignSelf="flex-start"
+          fontFamily="var(--font-code)"
+          fontSize="sm"
+          color="var(--atelier-accent)"
+        >
+          {EMAIL}
+        </Link>
+      </Stack>
 
       <Stack gap="16">
         <Stack gap="12" minW="0">
@@ -152,7 +144,7 @@ const items = [
         </Stack>
 
         <Stack gap="16" minW="0">
-          <Stack gap="6">
+          <Stack gap="6" role="region" aria-label={t('contact.namecards')}>
             <SectionHeading label={t('contact.namecards')} />
             {
               /* Full width with the variant list beside the card. Capping the stage to 40rem
@@ -202,13 +194,11 @@ const items = [
                       justifyContent="space-between"
                       alignItems="center"
                       gap="4"
-                      py="3"
+                      minH="44px"
                       borderBottom="1px solid"
                       borderColor="var(--atelier-line)"
                       fontFamily="var(--font-code)"
-                      fontSize="11px"
-                      textTransform="uppercase"
-                      letterSpacing="0.08em"
+                      fontSize="xs"
                       color="var(--atelier-fg-muted)"
                       _hover={{ color: 'var(--atelier-accent)' }}
                     >
@@ -219,12 +209,15 @@ const items = [
                 }
                 <Link
                   href={`/${locale}/namecard/all`}
+                  display="inline-flex"
+                  alignItems="center"
+                  minH="44px"
                   color="var(--atelier-accent)"
                   textTransform="uppercase"
                   fontSize="10px"
                   letterSpacing="0.12em"
                   fontFamily="var(--font-code)"
-                  pt="4"
+                  mt="2"
                 >
                   {t('name-card.view-other-namecards')}
                 </Link>
@@ -253,7 +246,7 @@ const items = [
             <form
               aria-label={t('contact.form-heading')}
               class="contact-form"
-              action="mailto:hello@ham-san.net"
+              action={`mailto:${EMAIL}`}
               method="post"
               enctype="text/plain"
             >
@@ -321,34 +314,35 @@ const items = [
                   style="min-height: 180px; resize: vertical;"
                   required></textarea>
               </Stack>
+              <Stack gap="2">
+                <Text
+                  fontWeight="bold"
+                  fontSize="sm"
+                  textTransform="uppercase"
+                  letterSpacing="0.2em"
+                  color="var(--atelier-accent-soft)"
+                >
+                  {t('contact.security-brief')}
+                </Text>
+                <Text color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="relaxed">
+                  {t('contact.security-brief-body')}
+                </Text>
+              </Stack>
               <button class="contact-submit-btn">
                 {t('contact.execute-transmission')}
                 <Glyph name="send" style={{ fontSize: '16px' }} />
               </button>
+              <p class="contact-form-status" role="status" hidden>
+                {t('contact.mail-fallback-prefix')}<a href={`mailto:${EMAIL}`}>{EMAIL}</a>{
+                  t('contact.mail-fallback-suffix')
+                }
+              </p>
             </form>
           </Stack>
         </Stack>
       </Stack>
 
-      <Grid
-        gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
-        gap="8"
-      >
-        <Stack border="1px solid" borderColor="var(--atelier-line)" p="6">
-          <Text
-            fontWeight="bold"
-            fontSize="sm"
-            textTransform="uppercase"
-            letterSpacing="0.2em"
-            color="var(--atelier-accent-soft)"
-            mb="4"
-          >
-            {t('contact.security-brief')}
-          </Text>
-          <Text color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="relaxed">
-            {t('contact.security-brief-body')}
-          </Text>
-        </Stack>
+      <Grid gridTemplateColumns="minmax(0, 1fr)" gap="8">
         <Stack border="1px solid" borderColor="var(--atelier-line)" p="6">
           <Text
             fontWeight="bold"
@@ -374,10 +368,10 @@ const items = [
             {t('contact.office-hours-body')}
           </Text>
           <Text
-            id="contact-utc-time"
-            data-label={t('contact.current-time-label')}
+            id="contact-tokyo-time"
+            data-label={t('contact.tokyo-time-label')}
             fontFamily="var(--font-code)"
-            fontSize="10px"
+            fontSize="xs"
             color="var(--atelier-fg-muted)"
             lineHeight="2.2"
           />
@@ -388,17 +382,16 @@ const items = [
 </MainLayout>
 
 <script>
-  const utcFormatter = new Intl.DateTimeFormat('en-GB', {
-    timeZone: 'UTC',
+  const tokyoFormatter = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Tokyo',
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit',
     hour12: false
   });
 
-  const updateUtcTime = () => {
-    const el = document.getElementById('contact-utc-time');
-    if (el) el.textContent = `${el.dataset.label}: ${utcFormatter.format(new Date())} UTC`;
+  const updateTokyoTime = () => {
+    const el = document.getElementById('contact-tokyo-time');
+    if (el) el.textContent = `${el.dataset.label}: ${tokyoFormatter.format(new Date())} JST`;
   };
 
   const bindContactForm = () => {
@@ -413,14 +406,24 @@ const items = [
       const body = `${label('contact-name')}: ${data.get('name')}\n${label('contact-email')}: ${data.get('email')}\n\n${data.get('message')}`;
       const subject = String(data.get('subject') ?? '');
       window.location.href = `${form.action}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      form.querySelector<HTMLElement>('.contact-form-status')?.removeAttribute('hidden');
     });
   };
 
-  updateUtcTime();
+  let tokyoTimer: ReturnType<typeof setInterval> | undefined;
+
+  const startTokyoClock = () => {
+    clearInterval(tokyoTimer);
+    if (!document.getElementById('contact-tokyo-time')) return;
+    updateTokyoTime();
+    tokyoTimer = setInterval(updateTokyoTime, 60000);
+  };
+
+  startTokyoClock();
   bindContactForm();
-  setInterval(updateUtcTime, 1000);
+  document.addEventListener('astro:before-swap', () => clearInterval(tokyoTimer));
   document.addEventListener('astro:page-load', () => {
-    updateUtcTime();
+    startTokyoClock();
     bindContactForm();
   });
 </script>

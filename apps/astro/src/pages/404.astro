@@ -62,13 +62,17 @@ const t = useTranslations(lang);
 
 <style>
   .not-found-cta {
-    font-family: var(--font-code);
-    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     color: var(--atelier-on-accent);
     background: var(--atelier-accent);
-    padding: 10px 20px;
+    padding: 0 20px;
     text-decoration: none;
     transition: opacity 0.15s ease;
   }
@@ -76,13 +80,17 @@ const t = useTranslations(lang);
     opacity: 0.85;
   }
   .not-found-link {
-    font-family: var(--font-code);
-    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     color: var(--atelier-fg-muted);
     border: 1px solid var(--atelier-line);
-    padding: 10px 20px;
+    padding: 0 20px;
     text-decoration: none;
     transition:
       border-color 0.15s ease,

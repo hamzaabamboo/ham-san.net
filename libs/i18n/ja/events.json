@@ -8,10 +8,18 @@
   "aria-year-filter": "年フィルター",
   "aria-overview": "概要統計",
   "aria-preset-grid": "期間別イベント数",
-  "aria-highlight-totals": "ハイライト合計",
   "aria-chart-grid": "チャートパネル",
-  "aria-metrics-strip": "補助イベント統計",
   "aria-analytics": "イベント分析チャート",
   "aria-heatmap": "参加した日のカレンダー。1マスが1日で、その日の参加数で濃さが変わります。",
-  "aria-heatmap-scroll": "横スクロールするカレンダー"
+  "aria-heatmap-scroll": "横スクロールするカレンダー",
+  "highest-rate": "参加率が最も高い",
+  "highest-rate-sub": "{rate}（{went}/{total}）、{min}件以上のイベントがあるアーティストのみ",
+  "heatmap-summary": "{range}の間に、参加日は{days}日、イベントは{events}件。",
+  "heatmap-peak": "最多の日: {date}（{n}件）。",
+  "months-window": "直近{n}か月",
+  "showing-of": "{total}件中{n}件",
+  "all-on-eventernote": "Eventernoteで全件を見る",
+  "opens-new-tab": "（新しいタブで開きます）",
+  "rail-toggle": "セクションと年",
+  "top-count": "上位{n}"
 }

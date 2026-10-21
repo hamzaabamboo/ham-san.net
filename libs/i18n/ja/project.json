@@ -6,7 +6,6 @@
   "inactive": "非アクティブ",
   "page-heading": "制作と実験。",
   "intro": "これまでに作ったWebプロジェクト、小さなツール、実験の記録。",
-  "view-execution": "詳細を見る",
   "card-archive": "非アクティブ",
   "open-project": "プロジェクトを見る",
   "latest": "最新",
@@ -17,5 +16,11 @@
   "empty-description": "接続が戻ると、プロジェクトが再表示されます。",
   "detail-empty-title": "プロジェクトを取得できません",
   "detail-empty-description": "このプロジェクトは今読み込めません。接続が戻ると再表示されます。",
-  "earlier-work": "これまでの制作"
+  "earlier-work": "これまでの制作",
+  "back-to-tags": "タグ一覧へ",
+  "links": "リンク",
+  "opens-in-new-tab": "(新しいタブで開きます)",
+  "tag-empty": "このタグにはまだ何も紐づいていません。",
+  "screenshot-alt": "{title}のスクリーンショット",
+  "linked-count": "関連するプロジェクトと職歴 {count}件"
 }

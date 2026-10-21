@@ -97,7 +97,7 @@ Weights must be ones the font request actually serves; `apps/astro/tests/atelier
 
 - **Bar** (`Navigation.astro`): the brand on the content edge and the language switcher showing all three languages. The current one is underlined in amber (`aria-current`). Between 900 and 1023 px the bar also carries the page links.
 - **Rail** (`DesktopSidebar.astro`, ≥1024 px): navigation only, with icon plus sentence-case label. The current page gets a 4 px amber left rule on `--atelier-surface-low`.
-- **Drawer** (`Sidebar.tsx`, <1024 px): opened from the bar's menu button. It holds the mark, the same links and a three-button language switcher.
+- **Drawer** (`Sidebar.tsx`, <1024 px): opened from the bar's labelled "Menu" button (icon plus word). It holds the mark, the same links and a three-button language switcher. Its current link uses the rail's 4px amber rule on `--atelier-surface-low`, not a solid amber block.
 - **Footer** (`Footer.astro`): copyright and GitHub, LinkedIn, RSS and Sitemap links, aligned to the content column.
 - **Breakpoints:** 640 (bar switcher appears), 700 (gallery and home photo grids go to two columns), 900 and 1024 (rail replaces the bar links).
 - **The room** (`/room`) is full-bleed with its own overlay header and does not use this shell.

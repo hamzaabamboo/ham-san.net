@@ -51,6 +51,7 @@ export type NamecardDefaultContent = {
 
 type NamecardBase = {
   variant: string;
+  label: string;
   color: string;
 };
 

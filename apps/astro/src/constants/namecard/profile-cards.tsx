@@ -14,6 +14,7 @@ import type { ProfileNamecardData } from './types';
 export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
   {
     variant: 'polka-new',
+    label: 'Polka (new)',
     color: '#305483',
     theme: 'profile',
     logos: {
@@ -134,6 +135,7 @@ export const PROFILE_NAMECARDS: ProfileNamecardData[] = [
   },
   {
     variant: 'Honoshi',
+    label: 'Honoshi',
     color: '#305483',
     theme: 'profile',
     logos: {

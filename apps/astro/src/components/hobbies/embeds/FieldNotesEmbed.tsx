@@ -9,10 +9,10 @@ export const FieldNotesEmbed = ({
   links = [],
   nestedPages = [],
   moduleTitle,
-  emptySourceLabel = 'Source material pending.',
+  emptySourceLabel = 'No public notes for this hobby yet.',
   emptySourceStateLabel,
   nestedSourcePagesLabel = 'Related pages',
-  sourceNoteAttachedLabel = 'Note content available'
+  sourceNoteAttachedLabel = 'Notes on this page'
 }: HobbyEmbedProps) => {
   const sourceState = body
     ? sourceNoteAttachedLabel

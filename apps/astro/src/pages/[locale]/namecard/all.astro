@@ -1,8 +1,10 @@
 ---
-import { Center, Grid } from 'styled-system/jsx';
+import { Center, Grid, HStack } from 'styled-system/jsx';
 import { NAMECARDS } from '../../../constants/namecard';
 
 import { Namecard } from '~/components/namecard/Namecard';
+import { Heading } from '~/components/ui/heading';
+import { Link } from '~/components/ui/link';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import NamecardLayout from '~/layouts/NamecardLayout.astro';
 const { locale } = Astro.params;
@@ -10,10 +12,25 @@ if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 const t = useTranslations(locale);
-const pageTitle = `${t('common.name-card')} | ${t('common.name')}`;
+const pageTitle = `${t('name-card.all-namecards')} | ${t('common.name')}`;
 ---
 
 <NamecardLayout title={pageTitle}>
+  <HStack
+    justifyContent="space-between"
+    alignItems="center"
+    flexWrap="wrap"
+    gap="2"
+    px="4"
+    py="2"
+    _print={{ display: 'none' }}
+  >
+    <Heading as="h1" fontSize="2xl" fontWeight="bold">{t('name-card.all-namecards')}</Heading>
+    <Link href={`/${locale}/namecard/default`} minH="44px">
+      <span aria-hidden="true">←</span>
+      {t('name-card.back-to-namecard')}
+    </Link>
+  </HStack>
   <Center
     flex={1}
     h={{
@@ -39,13 +56,13 @@ const pageTitle = `${t('common.name-card')} | ${t('common.name')}`;
             <>
               <a
                 href={`/${locale}/namecard/${namecard.variant}`}
-                aria-label={`${namecard.variant} ${t('name-card.front-namecard')}`}
+                aria-label={`${namecard.label} ${t('name-card.front-namecard')}`}
               >
                 <Namecard side="front" data={namecard} />
               </a>
               <a
                 href={`/${locale}/namecard/${namecard.variant}`}
-                aria-label={`${namecard.variant} ${t('name-card.back-namecard')}`}
+                aria-label={`${namecard.label} ${t('name-card.back-namecard')}`}
               >
                 <Namecard side="back" data={namecard} />
               </a>

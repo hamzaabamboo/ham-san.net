@@ -32,6 +32,14 @@ The sections use the `common.events-report-*` keys: overview, highlights, charts
 - The year filter rebuilds the report locally with `buildEventernoteReport`.
 - `CDN-Cache-Control` is 3600 s, or 60 s when the fetch fails.
 
+## Layout notes
+
+- Below 1080px the Sections and Years rail is a collapsed `<details>`, so data starts on the second screen.
+- Charts sit in horizontal scroll containers on narrow screens so tick labels stay at least 11px, and every chart has a `<desc>` with its values.
+- Highlight cards: "Ham's style", most-seen artist, highest attendance rate (minimum 20 events), home venue, longest streak. Facts already in the summary are not repeated.
+- The hero's gutter rule is transparent at 1024px and wider, beside the rail border.
+- Upcoming shows "10 of N" with a link to the full list on Eventernote.
+
 ## States
 
 - **Fetch failed:** `common.events-empty-title` and `common.events-report-fetch-error`.

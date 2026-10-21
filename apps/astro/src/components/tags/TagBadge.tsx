@@ -1,3 +1,4 @@
+import { css } from 'styled-system/css';
 import { Enum_Tag_Type } from '~/graphql/generated/client';
 import { Badge } from '../ui/badge';
 
@@ -17,17 +18,22 @@ const relationCount = (relation?: TagRelation) =>
       ? relation.data.filter(Boolean).length
       : 0;
 
+export const tagLinkCount = (tag: TagBadgeData) =>
+  relationCount(tag.projects) + relationCount(tag.experiences);
+
 export const TagBadge = ({
   tag,
   showCount = false,
+  countLabel,
   size
 }: {
   tag: TagBadgeData;
   showCount?: boolean;
+  countLabel?: string;
   size?: 'sm' | 'md' | 'lg';
 }) => {
   const { title } = tag;
-  const count = relationCount(tag.projects) + relationCount(tag.experiences);
+  const count = tagLinkCount(tag);
 
   // Tag chips are inventory, not signal: the same tag names render in `--atelier-outline`
   // grey on the project cards. Amber is reserved for the hovered/active chip.
@@ -44,7 +50,12 @@ export const TagBadge = ({
       color="var(--atelier-fg-muted)"
       textTransform="uppercase"
     >
-      {title} {showCount && `(${count})`}
+      {title}
+      {showCount && ' '}
+      <span aria-hidden="true" title={countLabel}>
+        {showCount && `(${count})`}
+      </span>
+      {showCount && countLabel && <span className={css({ srOnly: true })}>{countLabel}</span>}
     </Badge>
   );
 };

@@ -63,7 +63,7 @@
 .home-hero-photo-meta {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
   font-family: var(--font-code);
@@ -75,6 +75,9 @@
 
 .home-hero-photo-meta a,
 .home-photos-all {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--atelier-accent);
   text-decoration: none;
 }

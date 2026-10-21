@@ -21,5 +21,8 @@
   "viewer-prev": "前の写真",
   "viewer-next": "次の写真",
   "posts-count": "投稿",
-  "view-photo": "写真を見る"
+  "view-photo": "写真を見る",
+  "search-submit": "検索",
+  "clear-search": "検索をクリア",
+  "back-to-top": "ページの先頭へ"
 }

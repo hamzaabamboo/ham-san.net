@@ -24,6 +24,7 @@ const defaultContacts = createContactContent('@HamP_punipuni', 'HamP');
 export const DEFAULT_NAMECARDS: DefaultNamecardData[] = [
   {
     variant: 'default',
+    label: 'Default',
     color: '#1F1F5A',
     theme: 'default',
     content: {
@@ -55,6 +56,7 @@ export const DEFAULT_NAMECARDS: DefaultNamecardData[] = [
   },
   {
     variant: 'kaho',
+    label: 'Kaho',
     color: '#f8b500',
     theme: 'default',
     content: {
@@ -96,6 +98,7 @@ export const DEFAULT_NAMECARDS: DefaultNamecardData[] = [
   },
   {
     variant: 'ktk',
+    label: 'KTK',
     color: '#6a6c6d',
     theme: 'default',
     content: {
@@ -124,6 +127,7 @@ export const DEFAULT_NAMECARDS: DefaultNamecardData[] = [
   },
   {
     variant: 'polka',
+    label: 'Polka',
     color: '#fbe67c',
     theme: 'default',
     content: {

@@ -13,13 +13,13 @@ This page gives every way to reach Ham: email, social profiles, namecards, and a
 ```
 Contact me.                                    (h1, one colour)
 lede
-┌ Direct channels: hello@ham-san.net ┬ Cards on file: 6 ┐
+┌ Direct channels: hello@ham-san.net (mailto link)       ┐
 Social links: GitHub LinkedIn Twitter Facebook Discord Eventernote
 Namecards ────────────────────────────────────────────────
 [card preview]   default / kaho / ktk / polka / polka-neo / honoshi
 Send a message ───────────────────────────────────────────
-Name  Email / Subject / Message / [Send message]
-┌ Before you send ┐ ┌ Replies (+ live UTC time) ┐
+Name  Email / Subject / Message / Before you send / [Open in mail app]
+┌ Replies (+ Tokyo time, per minute) ┐
 ```
 
 ## Data and caching
@@ -30,7 +30,9 @@ Name  Email / Subject / Message / [Send message]
 ## Interactions
 
 - The form builds a `mailto:` URL from its fields and navigates to it. Nothing is sent to a server.
-- A live UTC clock sits in the Replies card.
+- A Tokyo-time clock (Asia/Tokyo, JST) sits in the Replies card and updates once a minute.
+- The email is a mailto link with a 44px target. The form builds a mailto and names that honestly ("Open in mail app"); after submit a status line offers the address in case no mail app opened.
+- The namecard section is a labelled region, and its variant rows are 44px tall.
 - Social links open in a new tab (`noopener noreferrer`).
 - **Testing rule:** automated browser tests must never click the `mailto:` link or submit the form. Read the composed URL instead.
 

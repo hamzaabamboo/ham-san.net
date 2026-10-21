@@ -6,7 +6,6 @@ import type { HobbyEmbedProps } from './types';
 export const TwitterFeedEmbed = ({
   links = [],
   description,
-  sourceNoteLabel = 'note',
   noFeedLabel = 'No public feed link is attached to this note.'
 }: HobbyEmbedProps) => {
   const feedLinks = getSocialFeedLinks(links);
@@ -26,7 +25,6 @@ export const TwitterFeedEmbed = ({
         ))
       ) : (
         <article>
-          <span>{sourceNoteLabel}</span>
           <p>{description || noFeedLabel}</p>
         </article>
       )}

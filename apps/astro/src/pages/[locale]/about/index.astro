@@ -31,7 +31,7 @@ const formatDateRange = (start?: string, end?: string) => {
   const startText = start ? formatMonthYear(parseDate(start), locale) : '';
   const endText = end ? formatMonthYear(parseDate(end), locale) : t('common.present');
   if (!startText) return endText === t('common.present') ? '' : endText;
-  return `${startText} - ${endText}`;
+  return `${startText} – ${endText}`;
 };
 
 const formatDuration = (start?: string, end?: string) => {
@@ -138,7 +138,7 @@ Astro.response.headers.set(
         gridTemplateColumns={{ base: 'minmax(0, 1fr)', xl: 'minmax(0, 0.8fr) minmax(0, 1.2fr)' }}
         gap="12"
       >
-        <Stack gap="16" order={{ base: 2, xl: 2 }}>
+        <Stack gap="16" order={{ base: 1, xl: 2 }}>
           <Stack gap="8">
             <SectionHeading label={t('common.experiences')} />
             {
@@ -196,7 +196,7 @@ Astro.response.headers.set(
                                 fontSize="xs"
                                 color="var(--atelier-accent)"
                               >
-                                {(title ?? '').toUpperCase()} // {dateRange}
+                                {[title, dateRange].filter(Boolean).join(' · ')}
                                 {duration && ` (${duration})`}
                               </Text>
                             </Stack>
@@ -282,7 +282,7 @@ Astro.response.headers.set(
           </Stack>
         </Stack>
 
-        <Stack gap="8" order={{ base: 1, xl: 1 }}>
+        <Stack gap="8" order={{ base: 2, xl: 1 }}>
           {
             /* A 2px frame wrapped two 1px-framed blocks, one of which carries a third inset
               border — two concentric hairlines 12px apart with nothing between them. The
@@ -313,7 +313,7 @@ Astro.response.headers.set(
                         <Link
                           href={tag.slug ? `/${locale}/tags/${tag.slug}` : '#'}
                           display="inline-flex"
-                          minH="36px"
+                          minH="44px"
                           alignItems="center"
                         >
                           <Box
@@ -392,9 +392,9 @@ Astro.response.headers.set(
             bg="var(--atelier-surface-low)"
             p="8"
           >
-            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} mb="8"
-              >{t('common.education')}</Heading
-            >
+            <Box mb="8">
+              <SectionHeading label={t('common.education')} />
+            </Box>
             <Stack gap="0">
               {
                 educations && educations.length > 0 ? (
@@ -457,9 +457,9 @@ Astro.response.headers.set(
             borderColor="var(--atelier-line)"
             p="8"
           >
-            <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} color="var(--atelier-fg)" mb="6">
-              {t('about-me.methodology')}
-            </Heading>
+            <Box mb="6">
+              <SectionHeading label={t('about-me.methodology')} />
+            </Box>
             <Text color="var(--atelier-fg-muted)" lineHeight="1.8" mb="4">
               {t('about-me.methodology-body')}
             </Text>
@@ -492,7 +492,7 @@ Astro.response.headers.set(
                           <Link
                             href={s.slug ? `/${locale}/tags/${s.slug}` : '#'}
                             display="inline-flex"
-                            minH="36px"
+                            minH="44px"
                             alignItems="center"
                           >
                             <Box

@@ -22,6 +22,7 @@ export type HobbyContentModel = {
   banner?: string;
   authoredDescription?: string;
   images: string[];
+  imageAlts: string[];
   links: HobbyLink[];
   embeds: HobbyEmbedConfig[];
   status: 'active' | 'inactive';
@@ -263,10 +264,18 @@ export const splitHobbyBodyParts = (body: string, embedCount: number): HobbyBody
   return [{ type: 'embed', index: 0 }, ...parts];
 };
 
+const markdownImagePattern = /!\[([^\]]*)]\(([^)]+)\)/g;
+
+const getMarkdownImages = (content: string) =>
+  Array.from(content.matchAll(markdownImagePattern))
+    .map((match) => ({ alt: match[1]?.trim() ?? '', src: match[2]?.trim() }))
+    .filter((image): image is { alt: string; src: string } => !!image.src);
+
 export const extractMarkdownImages = (content: string) =>
-  Array.from(content.matchAll(/!\[[^\]]*]\(([^)]+)\)/g))
-    .map((match) => match[1]?.trim())
-    .filter((src): src is string => !!src);
+  getMarkdownImages(content).map((image) => image.src);
+
+export const extractMarkdownImageAlts = (content: string) =>
+  getMarkdownImages(content).map((image) => image.alt);
 
 const formatLinkLabel = (href: string, fallback?: string) => {
   const label = fallback?.replace(/\\/g, '').replace(/[*_`]/g, '').replace(/\s+/g, ' ').trim();
@@ -311,6 +320,9 @@ export const extractMarkdownLinks = (content: string) => {
 
   return Array.from(links.values());
 };
+
+export const hasExplicitHobbyStatus = (meta: HobbyFrontmatter) =>
+  typeof meta.status === 'string' || typeof meta.active === 'boolean';
 
 export const getHobbyStatus = (meta: HobbyFrontmatter): 'active' | 'inactive' => {
   const status = normalize(asString(meta.status));
@@ -362,6 +374,7 @@ export const parseHobbyContent = ({
     authoredDescription: authoredDescription ?? '',
     banner,
     images,
+    imageAlts: extractMarkdownImageAlts(sourceBody),
     links,
     embeds,
     status: getHobbyStatus(meta),
