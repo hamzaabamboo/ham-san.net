@@ -78,8 +78,10 @@ Active: individual interpreted six-view PNGs for every room item, including each
 - Verified: 362/362 contract tests (incl. formerly failing font-weight test), astro check 0 errors, lint 0 errors, production build exit 0; sweep of every route x en/ja/th x 1440/402: no horizontal overflow, no em dashes, no missing alt, no console errors, no sub-44px controls except prose links (27-32px, above WCAG 24px). Double rule beside rail fixed (events hero, hobby headline).
 - Room: desk fan toggle verified in browser (frame diff 0.41 running vs 0.03 off); labels hide under HUD; room-preview.webp regenerated from current model (day entry view, 60 KB). Public GLB SHA-256 a0686c9ff5b3682e0f97f26d4cde44f5105a65a4c00cd80c32a5c0e9e6db141a, source 09b15f76191adb35a4180dd5f0bdbfbd6b6e202b13a796a76969ef7b6bc1067a.
 - Disk: swap at ~12 GB fills the shared volume; keep dev server and agent-browser closed when idle; delete regenerable export intermediates after publishing.
-- Owner decisions open: triangle budget 671k vs 450k; 24 repeated acrylic prints need new art (no local image generator); antislop conflicts kept as brand (eyebrow chips duplicating H1, tracked uppercase labels, rail MENU/language panel, generic event icons); hobby-detail doc vs letter-plate contract; home tools list/availability/current focus facts; YouTube/Google Photos labels show one generic label per link.
-- Next: independent diff review result, then commit (owner chose commit, no push).
+- Owner decisions 2026-10-22 applied: rail MENU chip and language box dropped (tests updated: rail is navigation only); eyebrow chips and event icons kept; triangle budget 700k (build-plan.json); hobby detail letter plate removed (tests updated); hosted generation approved for acrylic art.
+- Acrylic: 24 Bay copies (r20 stands 1-4; r21/r22/r23/r30 stands 0-4) now stand-86..109.png (Figma generate_image, blank faces, keyed by tools/room-harness/key_acrylic_print.mjs). Recovery quads rebuilt from Artwork UV least squares (fake-user meshes '<stand> recovery quad'). Live count 109 stands / 109 distinct / 0 repeats. Source SHA-256 7e982be494a9daa7a6fd5d7085c31bfecd089c9896f7543e8dfd55ccdbb40b1a; audits floating176/intersections550/sinks17/wall0; 668,020 tris. Public GLB d7bd8c517f25f951ca28c7080640dda90dd8b44fdc9bf71549cd95eda3bf3c70 (12,461,556 bytes), browser load verified, no console errors.
+- Still owner-only: home tools list / availability / current focus facts (unchanged content).
+- Next: push only on owner request.
 
 ## Native candidate review
 

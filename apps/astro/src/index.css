@@ -199,7 +199,6 @@ html:lang(th) .hobby-meta * {
 html:lang(ja) [class*='ls_0.'],
 html:lang(ja) [class*='ls_wide'],
 html:lang(ja) .shell-sidebar-link-label,
-html:lang(ja) .shell-sidebar-env-label,
 html:lang(ja) .shell-drawer-locale-label,
 html:lang(ja) .contact-label,
 html:lang(ja) .credentials-grid,
@@ -210,7 +209,6 @@ html:lang(ja) .event-report__highlight-grid p,
 html:lang(th) [class*='ls_0.'],
 html:lang(th) [class*='ls_wide'],
 html:lang(th) .shell-sidebar-link-label,
-html:lang(th) .shell-sidebar-env-label,
 html:lang(th) .shell-drawer-locale-label,
 html:lang(th) .contact-label,
 html:lang(th) .credentials-grid,
@@ -1129,11 +1127,6 @@ html:lang(th) a {
   }
 }
 
-.shell-sidebar-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--atelier-line);
-}
-
 .shell-sidebar-nav {
   flex: 1;
   padding: 1rem 0;
@@ -1183,45 +1176,6 @@ html:lang(th) a {
   font-family: var(--font-body);
   font-size: 0.875rem;
   letter-spacing: 0;
-}
-
-.shell-sidebar-footer {
-  padding: 1.5rem;
-  border-top: 1px solid var(--atelier-line);
-}
-
-/* Was the lightest surface in the rail — a passive locale readout outranking the
-   current-page marker, which round 22 deliberately demoted to a rule on a low surface. */
-.shell-sidebar-env {
-  background-color: var(--atelier-surface-low);
-  padding: 1rem;
-  border: 1px solid var(--atelier-line);
-  position: relative;
-}
-
-/* Typography only. The corner-notch positioning below is scoped to the env panel, which is
-   the `position: relative` ancestor it needs — sharing this class with the header eyebrow
-   for its type had it resolve against `.shell-sidebar` instead and hang at `left: -1px`,
-   with its own border off-canvas. */
-.shell-sidebar-env-label {
-  /* Shrink to the label. The notch instance gets this from `position: absolute`; the header
-     instance is a block in flow, so without it the same bordered chip stretched the full
-     207px of the rail beside a 66px one. */
-  width: fit-content;
-  padding: 0.125rem 0.5rem;
-  background-color: var(--atelier-surface-low);
-  color: var(--atelier-accent);
-  font-family: var(--font-code);
-  font-size: 10px;
-  text-transform: uppercase;
-  border: 1px solid var(--atelier-line);
-}
-
-.shell-sidebar-env > .shell-sidebar-env-label {
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  z-index: 10;
 }
 
 .shell-content {

@@ -22,10 +22,6 @@ const SIDEBAR_LINKS = [
 ---
 
 <aside class="shell-sidebar">
-  <div class="shell-sidebar-header">
-    <p class="shell-sidebar-env-label">{t('common.menu')}</p>
-  </div>
-
   <nav class="shell-sidebar-nav" aria-label={t('common.menu')}>
     {
       SIDEBAR_LINKS.map(({ label, value, icon }) => {
@@ -46,19 +42,4 @@ const SIDEBAR_LINKS = [
       })
     }
   </nav>
-
-  <div class="shell-sidebar-footer">
-    <div class="shell-sidebar-env">
-      <span class="shell-sidebar-env-label">{t('common.language')}</span>
-      <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.75rem">
-        <span
-          style="width:0.5rem;height:0.5rem;background-color:var(--atelier-accent);display:block"
-        ></span>
-        <span
-          style="font-family:var(--font-code);font-size:10px;text-transform:uppercase;color:var(--atelier-fg)"
-          >{lang.toUpperCase()}</span
-        >
-      </div>
-    </div>
-  </div>
 </aside>

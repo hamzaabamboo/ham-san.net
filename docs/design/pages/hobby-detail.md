@@ -38,7 +38,7 @@ LAST UPDATED / JUN 2, 2026
 
 ## Rules
 
-- With no banner the hero shows the grid-line letter plate (contract-pinned in round 32). The 2026-09-27 removal note conflicted with that contract; the plate stays until the owner decides.
+- The banner frame renders only when the note has a banner; without one the hero is a single column. There is no letter-mark plate (owner decision 2026-10-22).
 - The eyebrow here is contextual (status and module) and stays.
 - Embeds follow the Atelier palette: amber for interactive state only. The amber bar and wash mark only the interactive embeds (photo gallery, Rubik, piano); others use a neutral line.
 - The headline's gutter rule is transparent at 1024px and wider, where the rail border already draws that line.

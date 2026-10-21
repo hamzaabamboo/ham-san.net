@@ -368,6 +368,174 @@
       "id": "stand-72",
       "png": "stand-72.png",
       "clean_candidate": null
+    },
+    {
+      "id": "stand-86",
+      "png": "stand-86.png",
+      "clean_candidate": null,
+      "object": "Bay r20 stand 1",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-87",
+      "png": "stand-87.png",
+      "clean_candidate": null,
+      "object": "Bay r20 stand 2",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-88",
+      "png": "stand-88.png",
+      "clean_candidate": null,
+      "object": "Bay r20 stand 3",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-89",
+      "png": "stand-89.png",
+      "clean_candidate": null,
+      "object": "Bay r20 stand 4",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-90",
+      "png": "stand-90.png",
+      "clean_candidate": null,
+      "object": "Bay r21 stand 0",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-91",
+      "png": "stand-91.png",
+      "clean_candidate": null,
+      "object": "Bay r21 stand 1",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-92",
+      "png": "stand-92.png",
+      "clean_candidate": null,
+      "object": "Bay r21 stand 2",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-93",
+      "png": "stand-93.png",
+      "clean_candidate": null,
+      "object": "Bay r21 stand 3",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-94",
+      "png": "stand-94.png",
+      "clean_candidate": null,
+      "object": "Bay r21 stand 4",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-95",
+      "png": "stand-95.png",
+      "clean_candidate": null,
+      "object": "Bay r22 stand 0",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-96",
+      "png": "stand-96.png",
+      "clean_candidate": null,
+      "object": "Bay r22 stand 1",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-97",
+      "png": "stand-97.png",
+      "clean_candidate": null,
+      "object": "Bay r22 stand 2",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-98",
+      "png": "stand-98.png",
+      "clean_candidate": null,
+      "object": "Bay r22 stand 3",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-99",
+      "png": "stand-99.png",
+      "clean_candidate": null,
+      "object": "Bay r22 stand 4",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-100",
+      "png": "stand-100.png",
+      "clean_candidate": null,
+      "object": "Bay r23 stand 0",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-101",
+      "png": "stand-101.png",
+      "clean_candidate": null,
+      "object": "Bay r23 stand 1",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-102",
+      "png": "stand-102.png",
+      "clean_candidate": null,
+      "object": "Bay r23 stand 2",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-103",
+      "png": "stand-103.png",
+      "clean_candidate": null,
+      "object": "Bay r23 stand 3",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-104",
+      "png": "stand-104.png",
+      "clean_candidate": null,
+      "object": "Bay r23 stand 4",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-105",
+      "png": "stand-105.png",
+      "clean_candidate": null,
+      "object": "Bay r30 stand 0",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-106",
+      "png": "stand-106.png",
+      "clean_candidate": null,
+      "object": "Bay r30 stand 1",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-107",
+      "png": "stand-107.png",
+      "clean_candidate": null,
+      "object": "Bay r30 stand 2",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-108",
+      "png": "stand-108.png",
+      "clean_candidate": null,
+      "object": "Bay r30 stand 3",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
+    },
+    {
+      "id": "stand-109",
+      "png": "stand-109.png",
+      "clean_candidate": null,
+      "object": "Bay r30 stand 4",
+      "source": "Figma generate_image gemini-3.1-flash-lite-image on chroma green, keyed by tools/room-harness/key_acrylic_print.mjs, 2026-10-22"
     }
   ]
 }

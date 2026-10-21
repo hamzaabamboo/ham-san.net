@@ -31,8 +31,8 @@ export const hobbyStyles = {
     // the rail under it started 75px apart — a vertical seam that does not line up.
     gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) 22rem' },
     mt: { base: '6', md: '10' },
-    '&[data-visual="glyph"]': {
-      gridTemplateColumns: { base: 'minmax(0, 1fr)', md: 'minmax(0, 1fr) 22rem' }
+    '&:not(:has(> [data-visual]))': {
+      gridTemplateColumns: 'minmax(0, 1fr)'
     }
   }),
   detailHeadline: css({
@@ -90,97 +90,7 @@ export const hobbyStyles = {
     minH: { base: '18rem', md: '26rem' },
     bg: 'var(--atelier-bg)',
     overflow: 'hidden',
-    placeItems: 'center',
-    '&[data-visual="glyph"]': {
-      display: { base: 'none', md: 'grid' },
-      minH: '0'
-    },
-    '&[data-visual="glyph"]::before': {
-      inset: '0',
-      pos: 'absolute',
-      bg: 'linear-gradient(90deg, rgba(229, 226, 225, 0.11) 1px, transparent 1px), linear-gradient(180deg, rgba(229, 226, 225, 0.1) 1px, transparent 1px)',
-      backgroundSize: '3.75rem 3.75rem',
-      content: '""',
-      maskImage: 'linear-gradient(135deg, black, transparent 78%)'
-    },
-    '&[data-visual="glyph"]::after': {
-      inset: '12%',
-      pos: 'absolute',
-      border: '1px solid rgba(229, 226, 225, 0.72)',
-      content: '""'
-    },
-    '&[data-embed="photo-gallery"]': {
-      bg: 'radial-gradient(circle at 50% 50%, rgba(229, 226, 225, 0.18), transparent 38%), linear-gradient(135deg, rgba(229, 226, 225, 0.1), transparent 50%), var(--atelier-bg)'
-    },
-    '&[data-embed="photo-gallery"][data-visual="glyph"]::after': {
-      rounded: 'full',
-      boxShadow:
-        'inset 0 0 0 2.25rem rgba(229, 226, 225, 0.08), 0 0 0 5rem rgba(229, 226, 225, 0.04)'
-    },
-    '&[data-embed="twitter-feed"]': {
-      borderColor: 'var(--atelier-line)',
-      bg: 'radial-gradient(circle at 74% 20%, rgba(229, 226, 225, 0.14), transparent 34%), var(--atelier-bg)'
-    },
-    '&[data-embed="twitter-feed"][data-visual="glyph"]::after': {
-      inset: '18% 12%',
-      transform: 'skewX(-8deg)',
-      borderColor: 'rgba(229, 226, 225, 0.64)'
-    },
-    '&[data-embed="rubik-algorithms"]': {
-      borderColor: 'var(--atelier-line)',
-      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.14), transparent 36%), linear-gradient(315deg, rgba(229, 226, 225, 0.08), transparent 48%), var(--atelier-bg)'
-    },
-    '&[data-embed="rubik-algorithms"][data-visual="glyph"]::after': {
-      borderColor: 'rgba(229, 226, 225, 0.64)',
-      boxShadow: '4rem 0 0 rgba(229, 226, 225, 0.1), 0 4rem 0 rgba(229, 226, 225, 0.08)'
-    },
-    '&[data-embed="typing-stats"]': {
-      borderColor: 'var(--atelier-line)',
-      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.14), transparent 42%), linear-gradient(315deg, rgba(229, 226, 225, 0.1), transparent 46%), var(--atelier-bg)'
-    },
-    '&[data-embed="typing-stats"][data-visual="glyph"]::after': {
-      inset: 'auto 12% 18%',
-      borderColor: 'rgba(229, 226, 225, 0.66)',
-      borderTop: '0',
-      h: '34%'
-    },
-    '&[data-embed="darts-board"]': {
-      borderColor: 'var(--atelier-line)',
-      bg: 'radial-gradient(circle at 50% 50%, rgba(229, 226, 225, 0.16), transparent 34%), var(--atelier-bg)'
-    },
-    '&[data-embed="darts-board"][data-visual="glyph"]::after': {
-      borderColor: 'rgba(229, 226, 225, 0.7)',
-      rounded: 'full',
-      boxShadow:
-        'inset 0 0 0 2rem rgba(229, 226, 225, 0.05), inset 0 0 0 4rem rgba(229, 226, 225, 0.07)'
-    },
-    '&[data-embed="link-library"]': {
-      borderColor: 'var(--atelier-line)',
-      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.12), transparent 44%), var(--atelier-bg)'
-    },
-    '&[data-embed="link-library"][data-visual="glyph"]::after': {
-      inset: '18%',
-      transform: 'rotate(45deg)',
-      borderColor: 'rgba(229, 226, 225, 0.62)'
-    },
-    '&[data-embed="piano-chords"]': {
-      borderColor: 'var(--atelier-line)',
-      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.08), transparent 36%), linear-gradient(315deg, rgba(229, 226, 225, 0.12), transparent 48%), var(--atelier-bg)'
-    },
-    '&[data-embed="piano-chords"][data-visual="glyph"]::after': {
-      inset: '18% 12%',
-      borderColor: 'rgba(229, 226, 225, 0.62)',
-      boxShadow:
-        'inset 1.25rem 0 0 rgba(229, 226, 225, 0.06), inset 2.5rem 0 0 rgba(19, 19, 19, 0.7), inset 3.75rem 0 0 rgba(229, 226, 225, 0.06)'
-    },
-    '&[data-embed="field-notes"]': {
-      borderColor: 'var(--atelier-line)',
-      bg: 'linear-gradient(135deg, rgba(229, 226, 225, 0.12), transparent 40%), linear-gradient(315deg, rgba(229, 226, 225, 0.08), transparent 48%), var(--atelier-bg)'
-    },
-    '&[data-embed="field-notes"][data-visual="glyph"]::after': {
-      inset: '14% 20%',
-      borderColor: 'rgba(229, 226, 225, 0.64)'
-    }
+    placeItems: 'center'
   }),
   detailBanner: css({
     objectFit: 'cover',
@@ -188,17 +98,6 @@ export const hobbyStyles = {
     h: 'full',
     minH: '26rem',
     filter: 'var(--atelier-image-rest)'
-  }),
-  detailVisualLettermark: css({
-    zIndex: '1',
-    pos: 'relative',
-    color: 'var(--atelier-fg-muted)',
-    fontFamily: 'var(--font-display)',
-    fontSize: 'clamp(4rem, 10vw, 7rem)',
-    lineHeight: '1',
-    opacity: '0.3',
-    userSelect: 'none',
-    fontStyle: 'italic'
   }),
   detailBody: css({
     display: 'grid',

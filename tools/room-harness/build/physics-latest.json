@@ -1,11 +1,11 @@
 {
  "source_file": "/Users/vittayapalotai.tanyawat/code/ham-san.net/assets/room/room-v2.blend",
- "source_sha256": "f69d3679dffbda94fe89e82c52b04e610c0eb620f3e11f44c9f1a626014d0de8",
+ "source_sha256": "7e982be494a9daa7a6fd5d7085c31bfecd089c9896f7543e8dfd55ccdbb40b1a",
  "source_is_dirty": false,
  "source_scope": "scene",
  "source_collection": "Scene Collection",
  "source_present": true,
- "generated_at": "2026-10-21T13:58:08.050996+00:00",
+ "generated_at": "2026-10-21T15:55:41.792651+00:00",
  "method": "aabb-screening",
  "room_bounds": {
   "xmin": -1.78000009059906,
@@ -5499,6 +5499,11 @@
    "sink": 0.004
   }
  ],
- "collider_drift": [],
+ "collider_drift": [
+  {
+   "id": "darts-stand",
+   "drift": 0.2256
+  }
+ ],
  "curve_hits": []
 }

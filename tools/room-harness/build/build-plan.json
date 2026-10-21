@@ -9,7 +9,7 @@
     "note": "X grows toward the right (shelf) wall, Y grows from the window wall toward the entry wall. Scene calibration is derived from the floor mesh bounds at check time; never from measured metres."
   },
   "budgets": {
-    "trianglesRenderableMax": 450000,
+    "trianglesRenderableMax": 700000,
     "objectsRenderableMax": 2400,
     "glbBytesMax": 52428800
   },

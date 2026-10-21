@@ -265,12 +265,6 @@ describe('round 24: nothing renders as an unfinished page', () => {
     const mobile = css.slice(css.indexOf('@media (max-width: 520px)'));
     expect(mobile.slice(0, 600)).toContain('min-width: 0');
   });
-
-  test('the sidebar locale card does not outrank the active page', async () => {
-    const css = stripComments(await read('apps/astro/src/index.css'));
-    const env = css.slice(css.indexOf('.shell-sidebar-env {'));
-    expect(env.slice(0, 160)).not.toContain('var(--atelier-surface-highest)');
-  });
 });
 
 describe('round 25: composition', () => {
@@ -597,7 +591,10 @@ describe('round 32', () => {
   test('the hobby hero panel and the rail share one column track', async () => {
     // 7fr/5fr above and 8fr/4fr below put the two right-hand boxes 75px apart.
     const styles = await read('apps/astro/src/components/hobbies/hobbyStyles.tsx');
-    expect(styles.match(/md: 'minmax\(0, 1fr\) 22rem'/g) ?? []).toHaveLength(3);
+    expect(styles.match(/md: 'minmax\(0, 1fr\) 22rem'/g) ?? []).toHaveLength(2);
+    // Owner decision 2026-10-22: no letter-mark plate. Without a banner the hero is one column.
+    expect(styles).toContain("'&:not(:has(> [data-visual]))'");
+    expect(styles).not.toContain('detailVisualLettermark');
   });
 
   test('the tag detail experience section is labelled and measured', async () => {
@@ -832,20 +829,6 @@ describe('round 40', () => {
     expect(page).toContain("aria-current={isCurrent ? 'true' : undefined}");
   });
 
-  test('both sidebar eyebrows share one treatment', async () => {
-    // "Menu" was an inline style with no `text-transform`, beside an uppercase "LANGUAGE".
-    // Reusing the class also inherits the lang(ja)/lang(th) uppercase suppression.
-    const sidebar = await read('apps/astro/src/components/layout/DesktopSidebar.astro');
-    // Scoped to the header's own element: the footer carries a separate inline style for the
-    // locale VALUE, which is a different role and legitimately keeps its own treatment.
-    const header = sidebar.slice(
-      sidebar.indexOf('shell-sidebar-header'),
-      sidebar.indexOf('shell-sidebar-nav')
-    );
-    expect(header).toContain('class="shell-sidebar-env-label"');
-    expect(header).not.toContain('font-family:var(--font-code)');
-  });
-
   test('the skip link lands content clear of the fixed nav', async () => {
     const css = stripComments(await read('apps/astro/src/index.css'));
     expect(css).toMatch(/#main \{\s*scroll-margin-top: 88px;/);
@@ -853,16 +836,6 @@ describe('round 40', () => {
 });
 
 describe('round 41', () => {
-  test('the corner-notch positioning belongs to the env panel, not the class', async () => {
-    // Sharing `.shell-sidebar-env-label` with the header eyebrow for its TYPE also handed it
-    // `position: absolute`, which then resolved against `.shell-sidebar` — the label hung at
-    // `left: -1px` with its own border off-canvas while its header sat empty.
-    const css = stripComments(await read('apps/astro/src/index.css'));
-    expect(css).toMatch(/\.shell-sidebar-env > \.shell-sidebar-env-label \{\s*position: absolute;/);
-    const base = css.slice(css.indexOf('.shell-sidebar-env-label {'));
-    expect(base.slice(0, 200)).not.toContain('position: absolute');
-  });
-
   test('every page hero eyebrow is the shared chip', async () => {
     // `/events` was the last surface with its own: bare amber uppercase text at 0.6875rem
     // against the bordered 10px chip every other hero uses.
@@ -877,13 +850,14 @@ describe('round 41', () => {
 });
 
 describe('round 42', () => {
-  test('the sidebar eyebrow chip shrinks to its label in both positions', async () => {
-    // The notch instance gets shrink-to-fit from `position: absolute`; the header instance is
-    // a block in flow, so the same bordered chip stretched the full 207px of the rail beside
-    // a 66px one. Measuring only the properties I had changed (transform, size) missed it.
+  test('the rail is navigation only', async () => {
+    // Owner decision 2026-10-22: the MENU chip and the read-only language box duplicated the
+    // header switcher and labelled what was already obvious, so the rail carries links only.
+    const sidebar = await read('apps/astro/src/components/layout/DesktopSidebar.astro');
+    expect(sidebar).not.toContain('shell-sidebar-header');
+    expect(sidebar).not.toContain('shell-sidebar-env');
     const css = stripComments(await read('apps/astro/src/index.css'));
-    const base = css.slice(css.indexOf('.shell-sidebar-env-label {'));
-    expect(base.slice(0, 200)).toContain('width: fit-content');
+    expect(css).not.toContain('.shell-sidebar-env');
   });
 });
 
