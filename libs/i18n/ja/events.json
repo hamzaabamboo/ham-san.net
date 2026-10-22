@@ -1,6 +1,6 @@
 {
   "busiest-months": "参加が多い月",
-  "show-all": "すべて表示",
+  "show-all": "すべて表示（{n}）",
   "aria-hero-stats": "主要イベント統計",
   "aria-rail": "レポート操作",
   "aria-status": "レポートステータス",
@@ -16,10 +16,13 @@
   "highest-rate-sub": "{rate}（{went}/{total}）、{min}件以上のイベントがあるアーティストのみ",
   "heatmap-summary": "{range}の間に、参加日は{days}日、イベントは{events}件。",
   "heatmap-peak": "最多の日: {date}（{n}件）。",
-  "months-window": "直近{n}か月",
+  "months-window": "過去{n}か月",
   "showing-of": "{total}件中{n}件",
   "all-on-eventernote": "Eventernoteで全件を見る",
   "opens-new-tab": "（新しいタブで開きます）",
   "rail-toggle": "セクションと年",
-  "top-count": "上位{n}"
+  "top-count": "上位{n}",
+  "show-top": "上位{n}件を表示",
+  "updated-at": "{time}更新",
+  "aria-chart-scroll": "横スクロールするチャート"
 }

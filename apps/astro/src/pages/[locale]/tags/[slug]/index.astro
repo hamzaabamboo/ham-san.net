@@ -1,6 +1,6 @@
 ---
 import { FaArrowLeft } from 'react-icons/fa';
-import { Box, Container, Divider, Grid, GridItem, Stack, Wrap } from 'styled-system/jsx';
+import { Box, Container, Grid, GridItem, HStack, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthSpan, formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
 import { Markdown } from '~/components/lib/Markdown';
@@ -36,7 +36,6 @@ if (!validateLocale(locale)) {
 
 let tagData: TagData | undefined;
 let tagUnavailable = false;
-const cmsLocale = locale === 'ja' ? 'ja' : 'en';
 try {
   tagData = await withLastGood(
     `tag:${slug}`,
@@ -44,8 +43,8 @@ try {
       const data = await graphQLSdk.getTagBySlug({ slug });
       let tag = data?.tags?.[0] ?? undefined;
       if (!tag) {
-        const aboutData = await withLastGood(`about:${cmsLocale}`, () =>
-          graphQLSdk.fetchAboutMe({ locale: cmsLocale })
+        const aboutData = await withLastGood('about:en', () =>
+          graphQLSdk.fetchAboutMe({ locale: 'en' })
         );
         const match = (aboutData.tags ?? []).find(
           (candidate) => !!candidate?.title && !!candidate.slug && tagSlug(candidate) === slug
@@ -67,6 +66,10 @@ if (!tagUnavailable && !tagData) {
   return Astro.redirect(`/${locale}/404`);
 }
 
+if (tagData && tagSlug(tagData) !== slug) {
+  return Astro.redirect(`/${locale}/tags/${tagSlug(tagData)}`, 301);
+}
+
 if (tagUnavailable) {
   Astro.response.status = 503;
 }
@@ -79,8 +82,21 @@ const experienceItems = (tagData?.experiences ?? []).filter(
 const projectItems = (tagData?.projects ?? [])
   .filter((p): p is ProjectPreviewFragment & { id: string } => !!p)
   .map((p) => cleanProjectCopy(p));
-const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is TagFragment => !!t);
 const t = useTranslations(locale);
+const typeKey = type ? toKebabCase(type) : undefined;
+const typeLabel =
+  typeKey === 'others'
+    ? t('project.tag-type-others')
+    : typeKey === 'programming-language'
+      ? t('project.tag-type-programming-language')
+      : typeKey
+        ? t(`common.${typeKey as 'frontend'}`)
+        : undefined;
+const contentLangOf = (recordLocale?: string | null) =>
+  recordLocale && recordLocale !== locale ? recordLocale : undefined;
+const nonNullTags = (tags: Array<TagFragment | null>) => tags.filter((t): t is TagFragment => !!t);
+const isCurrentTag = (tag: TagFragment) =>
+  tagSlug(tag) === slug || (!!tag.slug && tag.slug === tagData?.slug);
 const pageTitle = `${title ?? t('common.tags')} | ${t('common.name')}`;
 
 if (tagUnavailable) {
@@ -133,11 +149,31 @@ if (tagUnavailable) {
               {t('note.status-unavailable')}
             </Text>
             <Heading as="h1" fontSize={{ base: '3xl', md: '4xl' }}>
-              {t('common.tags-empty-title')}
+              {t('project.tag-detail-empty-title')}
             </Heading>
             <Text color="var(--atelier-fg-muted)" maxW="md" lineHeight="1.7">
-              {t('common.tags-empty-description')}
+              {t('project.tag-detail-empty-description')}
             </Text>
+            <Wrap gap="6" justifyContent="center">
+              <Link
+                href={Astro.url.pathname}
+                display="inline-flex"
+                alignItems="center"
+                minH="44px"
+                className="amber-link"
+              >
+                {t('project.reload')}
+              </Link>
+              <Link
+                href={`/${locale}/projects`}
+                display="inline-flex"
+                alignItems="center"
+                minH="44px"
+                className="amber-link"
+              >
+                {t('common.projects')}
+              </Link>
+            </Wrap>
           </Stack>
         )
       }
@@ -151,14 +187,23 @@ if (tagUnavailable) {
                   {title}
                 </Heading>
                 <Wrap fontSize="sm" color="var(--atelier-outline)" fontFamily="var(--font-code)">
-                  {type && <Text>{t(`common.${toKebabCase(type) as 'frontend'}`)}</Text>}
+                  {typeLabel && <Text>{typeLabel}</Text>}
                 </Wrap>
               </Stack>
             </Stack>
 
             {experienceItems.length > 0 && <SectionHeading label={t('common.experiences')} />}
             {experienceItems.map((experience) => {
-              const { title, content, position, tags, start, end } = experience;
+              const {
+                title,
+                content,
+                position,
+                tags,
+                start,
+                end,
+                locale: recordLocale
+              } = experience;
+              const recordLang = contentLangOf(recordLocale);
               const startDate = start ? parseDate(start as string) : null;
               const endDate = end ? parseDate(end as string) : null;
               const duration = startDate
@@ -170,63 +215,122 @@ if (tagUnavailable) {
                   borderColor="var(--atelier-line)"
                   bg="var(--atelier-surface-low)"
                   p="6"
+                  maxW="calc(70ch + token(spacing.12))"
                 >
-                  <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }}>
+                  <Heading as="h3" fontSize={{ base: '2xl', md: '3xl' }} lang={recordLang}>
                     {title}
                   </Heading>
-                  <Wrap fontSize="sm" color="var(--atelier-outline)" fontFamily="var(--font-code)">
-                    {position && <Text color="var(--atelier-fg-muted)">{position}</Text>}
-                    {position && startDate && <Text aria-hidden="true">|</Text>}
+                  <Wrap
+                    fontSize="sm"
+                    color="var(--atelier-outline)"
+                    fontFamily="var(--font-code)"
+                    columnGap="3"
+                    rowGap="1"
+                  >
+                    {position && (
+                      <Text color="var(--atelier-fg-muted)" lang={recordLang}>
+                        {position}
+                      </Text>
+                    )}
+                    {position && startDate && (
+                      <Text aria-hidden="true" display={{ base: 'none', md: 'inline' }}>
+                        |
+                      </Text>
+                    )}
                     {startDate && (
                       <Text>
                         {formatMonthYear(startDate, locale)} –{' '}
                         {endDate ? formatMonthYear(endDate, locale) : t('common.present')}
-                        {duration ? ` (${duration})` : ''}
+                        {duration && (
+                          <Text as="span" whiteSpace="nowrap">
+                            {t('project.duration-span').replace('{duration}', duration)}
+                          </Text>
+                        )}
                       </Text>
                     )}
                   </Wrap>
                   {tags && (
-                    <Wrap fontSize="sm" gap="2" alignItems="center">
-                      <Text>{t('common.tags')}</Text>
-                      {sortTags(nonNullTags(tags)).map(
-                        (tag) =>
-                          tag && (
-                            <Link
-                              href={`/${locale}/tags/${tagSlug(tag)}`}
-                              display="inline-flex"
-                              alignItems="center"
-                              minH="44px"
-                            >
-                              <TagBadge tag={tag} size="sm" />
-                            </Link>
-                          )
-                      )}
-                    </Wrap>
+                    <HStack alignItems="start" gap="2">
+                      <Text
+                        fontFamily="var(--font-code)"
+                        fontSize="xs"
+                        color="var(--atelier-outline)"
+                        display="flex"
+                        alignItems="center"
+                        minH="44px"
+                      >
+                        {t('common.tags')}
+                      </Text>
+                      <Wrap columnGap="2" rowGap="2" pt="2.5">
+                        {sortTags(nonNullTags(tags)).map(
+                          (tag) =>
+                            tag &&
+                            (isCurrentTag(tag) ? (
+                              <Box
+                                display="inline-flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                minW="44px"
+                                position="relative"
+                                aria-current="page"
+                                _before={{
+                                  content: '""',
+                                  position: 'absolute',
+                                  insetBlock: '-10px',
+                                  insetInline: '0'
+                                }}
+                              >
+                                <TagBadge tag={tag} size="sm" current />
+                              </Box>
+                            ) : (
+                              <Link
+                                href={`/${locale}/tags/${tagSlug(tag)}`}
+                                display="inline-flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                minW="44px"
+                                className="group"
+                                position="relative"
+                                _before={{
+                                  content: '""',
+                                  position: 'absolute',
+                                  insetBlock: '-10px',
+                                  insetInline: '0'
+                                }}
+                              >
+                                <TagBadge tag={tag} size="sm" interactive />
+                              </Link>
+                            ))
+                        )}
+                      </Wrap>
+                    </HStack>
                   )}
                   {/* The card body ran the full 1070px container — about 130 characters a
                       line, against ~70 on every other prose surface on the site. */}
                   {content && (
                     <Box maxW="70ch">
-                      <Markdown
-                        content={content}
-                        headingLevelOffset={3}
-                        newTabLabel={t('note.opens-new-tab')}
-                        linkLabels={knownLinkLabelsFrom(t)}
-                      />
+                      <div lang={recordLang}>
+                        <Markdown
+                          content={content}
+                          headingLevelOffset={3}
+                          newTabLabel={t('note.opens-new-tab')}
+                          linkLabels={knownLinkLabelsFrom(t)}
+                          codeLabel={t('common.code-block')}
+                          locale={locale}
+                        />
+                      </div>
                     </Box>
                   )}
                 </Stack>
               );
             })}
-            {experienceItems.length > 0 && projectItems.length > 0 && (
-              <Divider borderColor="var(--atelier-line)" />
-            )}
             {projectItems.length > 0 && (
               <>
-                <SectionHeading label={t('project.projects')} />
+                <SectionHeading label={t('common.projects')} />
                 <Grid
-                  gridTemplateColumns="repeat(auto-fit, minmax(min(100%, 300px), 1fr))"
+                  gridTemplateColumns="repeat(auto-fill, minmax(min(100%, 300px), 1fr))"
                   alignItems={{ base: 'start', md: 'stretch' }}
+                  gap="8"
                 >
                   {projectItems.map((project) => (
                     <GridItem>

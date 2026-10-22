@@ -28,7 +28,7 @@ OTHERS ──────────────────────
 
 ## States
 
-- **Unavailable:** `note.status-unavailable` with `common.tags-empty-*`.
+- **Unavailable:** `note.status-unavailable` with `common.tags-empty-*`, then a `project.reload` link to the same URL and a Projects link.
 - **Empty:** `common.tags-status-empty` with `common.tags-empty-none-*`.
 
 ## Rules

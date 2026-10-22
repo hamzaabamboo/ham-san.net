@@ -3,8 +3,10 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { Box, Container, Divider, Grid, HStack, Stack, Wrap, styled } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { resolveMedia } from 'utils/media';
+import { tagSlug } from '~/utils/tags';
 import { Carousel } from '~/components/common/Carousel';
 import { LinkItem } from '~/components/common/LinkItem';
+import { Enum_Componentutilslink_Type } from '~/graphql/generated/client';
 import { Markdown } from '~/components/lib/Markdown';
 import { TagBadge } from '~/components/tags/TagBadge';
 import { Heading } from '~/components/ui/heading';
@@ -17,6 +19,7 @@ import { useTranslations, validateLocale } from '~/i18n/utils';
 import { knownLinkLabelsFrom } from '~/utils/link-label';
 import MainLayout from '~/layouts/MainLayout.astro';
 import Eyebrow from '~/components/common/Eyebrow.astro';
+import SectionHeading from '~/components/common/SectionHeading.astro';
 import { cleanProjectCopy } from '~/utils/project-copy';
 
 export const prerender = false;
@@ -44,17 +47,60 @@ try {
 if (!projectUnavailable && !project) {
   return Astro.redirect(`/${locale}/404`);
 }
-const { content, title, banner, links, media, category, date, finishedDate, tags } = project ?? {};
+const {
+  content: rawContent,
+  title,
+  banner,
+  links,
+  media,
+  category,
+  date,
+  finishedDate,
+  tags
+} = project ?? {};
+const normalizeHeading = (value: string) => value.trim().replace(/\s+/g, ' ').toLowerCase();
+const content = rawContent?.replace(/^\s*#{1,6}[ \t]+(.+?)[ \t]*(?:\n+|$)/, (match, heading) =>
+  normalizeHeading(heading) === normalizeHeading(title ?? '') ? '' : match
+);
 const bannerUrl = resolveMedia(banner, 1110, import.meta.env.PUBLIC_API_URL)?.src;
-const images = (media ?? [])
+const galleryMedia = (media ?? [])
   .filter((d): d is NonNullable<typeof d> => !!d)
-  .filter((d) => !banner?.url || d.url !== banner.url)
+  .filter((d) => !banner?.url || d.url !== banner.url);
+const images = galleryMedia
   .map((d) => resolveMedia(d, 1110, import.meta.env.PUBLIC_API_URL)?.src)
   .filter((d): d is string => !!d);
+const galleryPortrait =
+  galleryMedia.length > 0 && galleryMedia.every((d) => (d.height ?? 0) > (d.width ?? 0));
 const nonNullTags = (items: Array<TagFragment | null>) =>
   items.filter((t): t is TagFragment => !!t);
-const nonNullLinks = (links ?? []).filter((l): l is NonNullable<typeof l> => !!l?.url);
+const linkRank = (type?: Enum_Componentutilslink_Type | null) =>
+  type === Enum_Componentutilslink_Type.Web
+    ? 0
+    : type === Enum_Componentutilslink_Type.Github
+      ? 1
+      : 2;
+const nonNullLinks = (links ?? [])
+  .filter((l): l is NonNullable<typeof l> => !!l?.url)
+  .sort((a, b) => linkRank(a.type) - linkRank(b.type));
+const linkEyebrow = (link: (typeof nonNullLinks)[number]) =>
+  link.type === Enum_Componentutilslink_Type.Web
+    ? t('project.visit-site')
+    : link.type === Enum_Componentutilslink_Type.Github
+      ? t('project.source-code')
+      : link.title;
 const t = useTranslations(locale);
+const hasRail = !!content && nonNullLinks.length > 0;
+const hasBody = !!content || nonNullLinks.length > 0;
+const bannerPortrait = (banner?.height ?? 0) > (banner?.width ?? 0);
+const contentLang = project?.locale && project.locale !== locale ? project.locale : undefined;
+const startMonth = date ? formatMonthYear(parseDate(date as string), locale) : undefined;
+const endMonth = finishedDate
+  ? formatMonthYear(parseDate(finishedDate as string), locale)
+  : undefined;
+const dateRange =
+  startMonth &&
+  (endMonth === startMonth ? startMonth : `${startMonth} – ${endMonth ?? t('common.present')}`);
+const chipTags = nonNullTags(tags ?? []).filter((tag) => tagSlug(tag));
 const pageTitle = `${title ?? t('common.projects')} | ${t('common.name')}`;
 
 if (projectUnavailable) {
@@ -102,40 +148,63 @@ if (projectUnavailable) {
               <Stack gap="4">
                 <Stack gap="2">
                   <Eyebrow label={t('common.projects')} />
-                  <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }} lineHeight="0.95">
+                  <Heading
+                    as="h1"
+                    fontSize={{ base: '5xl', md: '7xl' }}
+                    lineHeight="0.95"
+                    lang={contentLang}
+                  >
                     {title}
                   </Heading>
-                  <Wrap fontSize="sm" color="var(--atelier-outline)" fontFamily="var(--font-code)">
-                    {category?.name && <Text color="var(--atelier-fg-muted)">{category.name}</Text>}
-                    {category?.name && date && (
-                      <Text aria-hidden="true" color="var(--atelier-outline)">
+                  <Wrap
+                    fontSize="sm"
+                    color="var(--atelier-outline)"
+                    fontFamily="var(--font-code)"
+                    flexDirection={{ base: 'column', sm: 'row' }}
+                    gap={{ base: '1', sm: '2' }}
+                  >
+                    {category?.name && (
+                      <Text color="var(--atelier-fg-muted)" lang={contentLang}>
+                        {category.name}
+                      </Text>
+                    )}
+                    {category?.name && dateRange && (
+                      <Text aria-hidden="true" display={{ base: 'none', sm: 'inline' }}>
                         |
                       </Text>
                     )}
-                    {date && (
-                      <Text>
-                        {formatMonthYear(parseDate(date as string), locale)} –{' '}
-                        {finishedDate
-                          ? formatMonthYear(parseDate(finishedDate as string), locale)
-                          : t('common.present')}
-                      </Text>
-                    )}
+                    {dateRange && <Text>{dateRange}</Text>}
                   </Wrap>
                 </Stack>
-                {tags && nonNullTags(tags).length > 0 && (
-                  <HStack>
-                    <Text fontWeight="bold" fontSize="sm" color="var(--atelier-fg-muted)">
+                {chipTags.length > 0 && (
+                  <HStack alignItems="start">
+                    <Text
+                      fontWeight="bold"
+                      fontSize="sm"
+                      color="var(--atelier-fg-muted)"
+                      display="flex"
+                      alignItems="center"
+                      minH="44px"
+                    >
                       {t('common.tags')}
                     </Text>
-                    <Wrap gap="2">
-                      {nonNullTags(tags).map((tag) => (
+                    <Wrap columnGap="2" rowGap="2" pt="2.5">
+                      {chipTags.map((tag) => (
                         <Link
-                          href={`/${locale}/tags/${tag.slug}`}
+                          href={`/${locale}/tags/${tagSlug(tag)}`}
                           display="inline-flex"
                           alignItems="center"
-                          minH="44px"
+                          justifyContent="center"
+                          minW="44px"
+                          position="relative"
+                          _before={{
+                            content: '""',
+                            position: 'absolute',
+                            insetBlock: '-10px',
+                            insetInline: '0'
+                          }}
                         >
-                          <TagBadge tag={tag} size="sm" />
+                          <TagBadge tag={tag} size="sm" interactive />
                         </Link>
                       ))}
                     </Wrap>
@@ -147,8 +216,8 @@ if (projectUnavailable) {
                   <styled.img
                     src={bannerUrl}
                     alt={t('project.screenshot-alt').replace('{title}', title ?? '')}
-                    objectFit="cover"
-                    objectPosition="center"
+                    objectFit={bannerPortrait ? 'contain' : 'cover'}
+                    objectPosition={bannerPortrait ? 'center' : 'top'}
                     width="full"
                     aspectRatio="16 / 9"
                     backgroundColor="var(--atelier-surface-highest)"
@@ -157,66 +226,83 @@ if (projectUnavailable) {
                 </Box>
               )}
 
-              <Divider borderColor="var(--atelier-line)" />
+              {hasBody && <Divider borderColor="var(--atelier-line)" />}
               {/* The prose is capped at 70ch for reading, but the links sat above it at full
                   container width, so the article looked left-shoved inside a wider frame with
                   a dead right third. In a rail the measure is deliberate and the column is
                   occupied — the note detail page already reads this way. */}
-              <Grid
-                gridTemplateColumns={{
-                  base: 'minmax(0, 70ch)',
-                  xl: 'minmax(0, 70ch) 280px'
-                }}
-                gap={{ base: '8', xl: '12' }}
-                alignItems="start"
-              >
-                {content && (
-                  <Markdown
-                    content={content}
-                    assetsPrefix={import.meta.env.PUBLIC_API_URL}
-                    headingLevelOffset={1}
-                    newTabLabel={t('note.opens-new-tab')}
-                    linkLabels={knownLinkLabelsFrom(t)}
-                  />
-                )}
-                {links && nonNullLinks.length > 0 && (
-                  <Stack gap="2" position={{ xl: 'sticky' }} top={{ xl: '24' }} minW="0">
-                    <Text
-                      fontFamily="var(--font-code)"
-                      fontSize="10px"
-                      textTransform="uppercase"
-                      letterSpacing="0.12em"
-                      color="var(--atelier-outline)"
-                      pb="2"
-                      borderBottom="1px solid"
-                      borderColor="var(--atelier-line)"
+              {hasBody && (
+                <Grid
+                  gridTemplateColumns={
+                    hasRail
+                      ? { base: 'minmax(0, 70ch)', xl: 'minmax(0, 70ch) 280px' }
+                      : { base: 'minmax(0, 70ch)' }
+                  }
+                  gap={{ base: '8', xl: '12' }}
+                  justifyContent={{ xl: 'space-between' }}
+                  alignItems="start"
+                >
+                  {links && nonNullLinks.length > 0 && (
+                    <Stack
+                      gap="2"
+                      gridColumn={hasRail ? { xl: '2' } : undefined}
+                      gridRow={hasRail ? { xl: '1' } : undefined}
+                      position={hasRail ? { xl: 'sticky' } : undefined}
+                      top={{ xl: '24' }}
+                      minW="0"
                     >
-                      {t('project.links')}
-                    </Text>
-                    {nonNullLinks.map((l) => {
-                      return (
-                        <LinkItem
-                          data={l}
-                          openLabel={t('common.open')}
-                          newTabLabel={t('project.opens-in-new-tab')}
-                        />
-                      );
-                    })}
-                  </Stack>
-                )}
-              </Grid>
+                      <Text
+                        className="mono-label"
+                        fontFamily="var(--font-code)"
+                        fontSize="10px"
+                        textTransform="uppercase"
+                        letterSpacing="0.12em"
+                        color="var(--atelier-outline)"
+                        pb="2"
+                        borderBottom="1px solid var(--atelier-line)"
+                      >
+                        {t('project.links')}
+                      </Text>
+                      {nonNullLinks.map((l) => {
+                        return (
+                          <LinkItem
+                            data={l}
+                            eyebrow={linkEyebrow(l)}
+                            formatOpen={(host: string) =>
+                              t('project.open-host').replace('{host}', host)
+                            }
+                            newTabLabel={t('note.opens-new-tab')}
+                          />
+                        );
+                      })}
+                    </Stack>
+                  )}
+                  {content && (
+                    <Box gridColumn={{ xl: '1' }} gridRow={{ xl: '1' }} minW="0" lang={contentLang}>
+                      <Markdown
+                        content={content}
+                        assetsPrefix={import.meta.env.PUBLIC_API_URL}
+                        headingLevelOffset={1}
+                        newTabLabel={t('note.opens-new-tab')}
+                        linkLabels={knownLinkLabelsFrom(t)}
+                        codeLabel={t('common.code-block')}
+                        locale={locale}
+                      />
+                    </Box>
+                  )}
+                </Grid>
+              )}
               {images.length > 0 && (
-                <Stack gap="6">
-                  <Heading as="h2" fontSize="4xl">
-                    {t('project.screenshots')}
-                  </Heading>
+                <Stack gap="6" pt={{ base: '8', md: '12' }}>
+                  <SectionHeading label={t('project.screenshots')} />
                   <Carousel
                     client:visible
                     images={images}
+                    portrait={galleryPortrait}
                     previousSlideLabel={t('common.carousel-previous')}
                     nextSlideLabel={t('common.carousel-next')}
                     gotoSlideLabel={t('common.carousel-goto')}
-                    slideLabel={t('common.carousel-slide')}
+                    slideLabel={t('project.screenshot-alt').replace('{title}', title ?? '')}
                     startRotationLabel={t('common.carousel-start')}
                     stopRotationLabel={t('common.carousel-stop')}
                   />
@@ -251,6 +337,26 @@ if (projectUnavailable) {
               <Text color="var(--atelier-fg-muted)" maxW="md" mx="auto">
                 {t('project.detail-empty-description')}
               </Text>
+              <Wrap gap="6" justifyContent="center" mt="6">
+                <Link
+                  href={Astro.url.pathname}
+                  display="inline-flex"
+                  alignItems="center"
+                  minH="44px"
+                  className="amber-link"
+                >
+                  {t('project.reload')}
+                </Link>
+                <Link
+                  href={`/${locale}/about`}
+                  display="inline-flex"
+                  alignItems="center"
+                  minH="44px"
+                  className="amber-link"
+                >
+                  {t('common.about-me')}
+                </Link>
+              </Wrap>
             </Box>
           )
         }

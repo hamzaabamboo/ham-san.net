@@ -16,19 +16,19 @@ export const table = defineSlotRecipe({
       _pinned: {
         zIndex: 1,
         position: 'sticky',
-        shadowColor: 'border',
+        shadowColor: 'var(--atelier-line)',
         bg: 'inherit',
         boxShadow: 'inset 0 -1px 0 0 var(--shadow-color)',
         overflow: 'unset'
       },
       alignItems: 'center',
       color: 'fg.muted',
-      shadowColor: 'border',
+      shadowColor: 'var(--atelier-line)',
       textAlign: 'start',
       textOverflow: 'ellipsis',
       boxShadow: 'inset 0 -1px 0 0 var(--shadow-color)',
-      overflow: 'hidden',
-      whiteSpace: 'nowrap'
+      overflow: 'visible',
+      whiteSpace: 'normal'
     },
     row: {
       _last: { '& td': { boxShadow: 'none' } }
@@ -39,7 +39,7 @@ export const table = defineSlotRecipe({
         position: 'sticky',
         bg: 'inherit'
       },
-      shadowColor: 'border',
+      shadowColor: 'var(--atelier-line)',
       textAlign: 'left',
       verticalAlign: 'middle',
       boxShadow: 'inset 0 -1px 0 0 var(--shadow-color)'
@@ -57,7 +57,10 @@ export const table = defineSlotRecipe({
     },
     foot: {
       fontWeight: 'medium',
-      '& td': { shadowColor: 'border', boxShadow: 'inset 0 1px 0 0 var(--shadow-color)!' }
+      '& td': {
+        shadowColor: 'var(--atelier-line)',
+        boxShadow: 'inset 0 1px 0 0 var(--shadow-color)!'
+      }
     }
   },
   variants: {
@@ -99,7 +102,7 @@ export const table = defineSlotRecipe({
       md: {
         root: { textStyle: 'sm' },
         header: { py: '3', px: '3' },
-        cell: { py: '3', px: '3' }
+        cell: { minW: '6rem', py: '3', px: '3' }
       }
     }
   },

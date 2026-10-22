@@ -52,7 +52,8 @@ Reference comps: `stitch_exports/4878703984446574546/02_the-personal-workshop-ho
 
 ## States
 
-- **CMS down:** the featured projects area shows `project.status-unavailable` with `home.projects-empty-title` and `-description`. The rest of the page still renders.
+- **CMS down:** the featured projects area shows `project.status-unavailable` with `home.projects-empty-title` and `-description`, then a `project.reload` link. The rest of the page still renders.
+- **No projects published (CMS answered):** the Featured projects heading and area are omitted.
 - **No gallery entries:** the hero figure and the Recent photos section are omitted, not replaced with a placeholder.
 - **Photo removed on X:** the image errors and the script hides its figure or list item.
 

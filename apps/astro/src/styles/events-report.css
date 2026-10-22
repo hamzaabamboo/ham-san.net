@@ -76,6 +76,15 @@
   line-height: 1.6;
 }
 
+.event-report__bio {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--atelier-fg-muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
 .event-report__hero-stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -95,7 +104,7 @@
 .event-report__hero-stats span {
   color: var(--atelier-outline);
   font-family: var(--font-code);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   line-height: 1.25;
   text-transform: uppercase;
 }
@@ -211,6 +220,8 @@
 
 .event-report__chart-scroll {
   overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--atelier-accent) var(--atelier-surface);
 }
 
 .event-report__more-link {
@@ -248,6 +259,10 @@
 
 .event-report__section > * {
   min-width: 0;
+}
+
+#highlights.event-report__section {
+  gap: 0;
 }
 
 .event-report__section--controls {
@@ -291,6 +306,10 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem;
+}
+
+.event-report__year-filter a:first-child {
+  grid-column: 1 / -1;
 }
 
 .event-report__year-filter a {
@@ -466,6 +485,20 @@ a[data-active='true'] {
   padding: clamp(1rem, 2vw, 1.35rem);
 }
 
+@media (min-width: 1081px) {
+  .event-report__highlight-grid:has(> article:nth-child(5)) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .event-report__highlight-grid:has(> article:nth-child(5)) > article {
+    grid-column: span 2;
+  }
+
+  .event-report__highlight-grid:has(> article:nth-child(5)) > article:nth-child(n + 4) {
+    grid-column: span 3;
+  }
+}
+
 .event-report__highlight-grid article {
   display: grid;
   gap: 0.45rem;
@@ -533,8 +566,8 @@ a[data-active='true'] {
 
 .event-report__grid {
   display: grid;
-  align-items: start;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: stretch;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -679,8 +712,7 @@ a[data-active='true'] {
 }
 
 .event-report__event-list,
-.event-report__rank-list,
-.event-report__month-list {
+.event-report__rank-list {
   display: grid;
   gap: 0.75rem;
 }
@@ -760,7 +792,7 @@ a[data-active='true'] {
 
 .event-report__rank-list li {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(4rem, 0.7fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(4rem, 0.7fr) 4rem;
   gap: 1rem;
   align-items: center;
   min-height: 44px;
@@ -781,38 +813,16 @@ a[data-active='true'] {
   );
 }
 
-.event-report__rank-list span,
-.event-report__month span {
+.event-report__rank-list span {
   color: var(--atelier-fg-muted);
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
-.event-report__rank-list strong,
-.event-report__month strong {
+.event-report__rank-list strong {
   color: var(--atelier-fg);
   font-family: var(--font-code);
-}
-
-.event-report__month {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.event-report__month div {
-  display: flex;
-  min-height: 24px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.event-report__month i {
-  display: block;
-  width: var(--size);
-  min-width: 0.5rem;
-  height: 0.45rem;
-  background: var(--atelier-outline);
+  text-align: right;
 }
 
 .event-report__compact-chart,
@@ -858,15 +868,17 @@ a[data-active='true'] {
 
 .event-report__spark {
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   gap: 0.4rem;
-  min-height: 5rem;
-  align-content: end;
+  min-height: 8rem;
+  align-content: stretch;
   border: 1px solid color-mix(in srgb, var(--atelier-line) 65%, transparent);
   padding: 0.65rem;
 }
 
 .event-report__spark i {
   display: block;
+  align-self: end;
   width: 100%;
   height: max(0.25rem, calc(var(--size) / 100 * 3.5rem));
   background: var(--atelier-outline);
@@ -928,7 +940,7 @@ a[data-active='true'] {
   gap: 0.18rem;
   color: var(--atelier-fg-muted);
   font-family: var(--font-code);
-  font-size: 0.62rem;
+  font-size: 0.6875rem;
   line-height: 0.65rem;
   background: var(--atelier-surface-low);
 }
@@ -1005,6 +1017,7 @@ a[data-active='true'] {
   background: var(--atelier-accent);
 }
 
+.event-report__panel--heatmap,
 .event-report__panel--attendance {
   grid-column: 1 / -1;
 }
@@ -1057,11 +1070,14 @@ a[data-active='true'] {
 }
 
 .event-report__attendance-table th[scope='row'] {
-  display: grid;
-  gap: 0.35rem;
   min-width: 14rem;
   color: var(--atelier-fg-muted);
   text-align: left;
+}
+
+.event-report__artist-cell {
+  display: grid;
+  gap: 0.35rem;
 }
 
 .event-report__attendance-table thead th:first-child {
@@ -1127,14 +1143,30 @@ a[data-active='true'] {
   line-height: 1.7;
 }
 
-.event-report__fallback a {
-  display: inline-block;
-  margin-top: 0.5rem;
-  color: var(--atelier-accent);
-  font-family: var(--font-code);
-  font-size: 0.85rem;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+.event-report__fallback .event-report__year-filter {
+  margin-top: 0.75rem;
+}
+
+html:lang(ja) .event-report__hero-stats span,
+html:lang(th) .event-report__hero-stats span {
+  font-size: 0.75rem;
+}
+
+html:lang(ja) .event-report__hero-stats span,
+html:lang(ja) .event-report__actions a,
+html:lang(ja) .event-report__more-link,
+html:lang(ja) .event-report__jump-nav a,
+html:lang(ja) .event-report__rail-fold > summary,
+html:lang(ja) .event-report__preset-grid p,
+html:lang(ja) .event-report__rank-more summary,
+html:lang(th) .event-report__hero-stats span,
+html:lang(th) .event-report__actions a,
+html:lang(th) .event-report__more-link,
+html:lang(th) .event-report__jump-nav a,
+html:lang(th) .event-report__rail-fold > summary,
+html:lang(th) .event-report__preset-grid p,
+html:lang(th) .event-report__rank-more summary {
+  text-transform: none;
 }
 
 @media (max-width: 1080px) {
@@ -1167,6 +1199,10 @@ a[data-active='true'] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .event-report__highlight-grid article:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
   .event-report__analytics .event-report__panel--wide {
     grid-column: 1 / -1;
     grid-row: auto;
@@ -1186,10 +1222,6 @@ a[data-active='true'] {
 
   .event-report__highlight-head {
     display: grid;
-  }
-
-  .event-report__hero-copy {
-    min-height: 15rem;
   }
 
   .event-report__jump-nav {

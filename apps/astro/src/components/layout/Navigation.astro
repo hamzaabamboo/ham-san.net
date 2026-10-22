@@ -91,11 +91,13 @@ const NAVIGATION_LINKS = [
           links={NAVIGATION_LINKS}
           locale={lang}
           locales={Object.keys(languages)}
+          localeNames={languages}
           labels={{
             menu: t('common.menu'),
             menuOpen: t('common.menu-open'),
             menuClose: t('common.menu-close'),
-            language: t('common.language')
+            language: t('common.language'),
+            home: t('common.name')
           }}
           pathname={Astro.url.pathname}
           search={Astro.url.search}

@@ -25,12 +25,16 @@ export const TagBadge = ({
   tag,
   showCount = false,
   countLabel,
-  size
+  size,
+  current = false,
+  interactive = false
 }: {
   tag: TagBadgeData;
   showCount?: boolean;
   countLabel?: string;
   size?: 'sm' | 'md' | 'lg';
+  current?: boolean;
+  interactive?: boolean;
 }) => {
   const { title } = tag;
   const count = tagLinkCount(tag);
@@ -46,13 +50,30 @@ export const TagBadge = ({
     <Badge
       variant="outline"
       size={size}
-      borderColor="var(--atelier-line)"
-      color="var(--atelier-fg-muted)"
+      borderColor={current ? 'var(--atelier-accent)' : 'var(--atelier-line)'}
+      color={current ? 'var(--atelier-fg)' : 'var(--atelier-fg-muted)'}
+      fontFamily="var(--font-code)"
       textTransform="uppercase"
+      bg={current ? 'var(--atelier-surface-high)' : undefined}
+      transition="colors"
+      _groupFocusVisible={
+        interactive && !current
+          ? { borderColor: 'var(--atelier-accent)', color: 'var(--atelier-fg)' }
+          : undefined
+      }
+      _groupHover={
+        interactive && !current
+          ? { borderColor: 'var(--atelier-accent)', color: 'var(--atelier-fg)' }
+          : undefined
+      }
     >
       {title}
       {showCount && ' '}
-      <span aria-hidden="true" title={countLabel}>
+      <span
+        aria-hidden="true"
+        title={countLabel}
+        className={css({ color: 'var(--atelier-outline)' })}
+      >
         {showCount && `(${count})`}
       </span>
       {showCount && countLabel && <span className={css({ srOnly: true })}>{countLabel}</span>}

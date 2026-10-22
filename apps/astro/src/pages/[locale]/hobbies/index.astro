@@ -17,6 +17,7 @@ import {
   formatHobbyUpdated,
   getHobbyContentLabel,
   getHobbyCountLabel,
+  getHobbyOverviewDescription,
   getHobbyOverviewSummary
 } from '~/utils/hobby-labels';
 import { getOutlineAssetProxyPath, resolveOutlineAssetUrl } from '~/utils/outline-assets';
@@ -63,10 +64,9 @@ const hobbyThumbnail = css({
 const hobbyRow = css({
   pos: 'relative',
   textDecorationLine: 'none',
-  transition: 'background-color 160ms ease, border-color 160ms ease',
+  transition: 'background-color 160ms ease',
   _hover: {
-    bg: 'color-mix(in srgb, var(--atelier-accent) 4%, transparent)',
-    borderColor: 'var(--atelier-outline)'
+    bg: 'color-mix(in srgb, var(--atelier-accent) 4%, transparent)'
   }
 });
 const hobbyRowStatic = css({
@@ -178,20 +178,24 @@ const hobbyCardBody = css({
 // Three columns at md: with everything left-packed the rows used the left 42% of a
 // full-width band, leaving twelve identical voids under a divider that runs edge to edge.
 const hobbyCardMeta = css({
-  display: 'grid',
+  display: { base: 'flex', md: 'grid' },
+  flexWrap: 'wrap',
   gap: '2',
   color: 'var(--atelier-outline)',
   // Sits in the row's third column at md so the band is spanned edge to edge; below that it
   // wraps under the title with the tile. Fixed tracks, so status / updated / counts land on
   // the same three axes on every row instead of wrapping at a different point per row.
   gridColumn: { base: '1 / -1', md: 'auto' },
-  gridTemplateColumns: { base: 'repeat(2, minmax(0, 1fr))', md: '7rem 11rem 9rem' },
+  gridTemplateColumns: { md: '7rem 11rem 9rem' },
   // The third axis right-aligns so the widest count chip grows leftward instead of
   // overhanging the rule that every row sits on.
   justifyItems: 'start',
   md: { '& > *:last-child': { justifySelf: 'end' } },
   justifySelf: { md: 'end' },
   alignItems: 'start'
+});
+const hobbyCardMetaGap = css({
+  display: { base: 'none', md: 'block' }
 });
 const hobbyCardPill = css({
   display: 'inline-flex',
@@ -323,6 +327,7 @@ const hobbies = hobbiesList
         const resolvedImages = content.images
           .map(resolveHobbyAssetUrl)
           .filter((image): image is string => !!image);
+        const sourced = hasSourceContent({ ...content, images: resolvedImages, childPages });
         return {
           ...h,
           ...content,
@@ -330,14 +335,13 @@ const hobbies = hobbiesList
           images: resolvedImages,
           description:
             getHobbyOverviewSummary({
-              hasSource: hasSourceContent({
-                ...content,
-                images: resolvedImages,
-                childPages
-              }),
+              hasSource: sourced,
               value: content.authoredDescription,
               t
-            }) || nestedSummary,
+            }) ||
+            nestedSummary ||
+            (sourced ? getHobbyOverviewDescription(t, getEmbedType(content)) : ''),
+          sourced,
           updatedLabel: formatUpdated(content.updatedAt),
           childPages
         };
@@ -379,7 +383,7 @@ const hobbies = hobbiesList
           </Box>
         ) : (
           <>
-            <Stack gap="0" borderTop="1px solid" borderColor="var(--atelier-line)">
+            <Stack gap="0" borderTop="1px solid var(--atelier-line)">
               {hobbies.map((hobby) => {
                 const embedType = getEmbedType(hobby);
                 const hasModule = hobby.embeds.length > 0;
@@ -428,8 +432,7 @@ const hobbies = hobbiesList
                     gap={{ base: '4', md: '7' }}
                     alignItems={{ md: 'center' }}
                     py={{ base: '5', md: '6' }}
-                    borderBottom="1px solid"
-                    borderColor="var(--atelier-line)"
+                    borderBottom="1px solid var(--atelier-line)"
                     className={hobbySourced ? cx('group', hobbyRow) : hobbyRowStatic}
                   >
                     <Box
@@ -494,7 +497,7 @@ const hobbies = hobbiesList
                             {item.label}
                           </span>
                         ) : (
-                          <span aria-hidden="true" />
+                          <span class={hobbyCardMetaGap} aria-hidden="true" />
                         )
                       )}
                     </div>

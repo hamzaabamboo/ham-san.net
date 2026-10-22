@@ -37,6 +37,7 @@
 - Do not hide layout or interaction failures behind "content gap" language
 - Hover states and hover colors must be deliberate and usable, not noisy
 - Fallback states must still feel designed
+- "ultracode pro max" means maximum-scale orchestration, not the default workflow size: cover every route and every detail page, audit with separate lenses, loop finders until dry, verify each finding with 3 independent refuters, run a completeness critic, and independently review the fix diff before reporting.
 - Keep this file operational only
 - Keep `tools/room-harness/README.md`, `tools/room-harness/comparison.md`, and `tools/room-harness/ask-for-comment.md` in English. This rule does not change the language of `conductor/room-spec.md` or product content.
 

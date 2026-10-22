@@ -18,7 +18,7 @@ export const getHobbyDetailResponse = ({
   childDocumentsUnavailable = false
 }: HobbyDetailResponseInput) => {
   if (!settingsAvailable) return unavailable;
-  if (documentStatus === 404) {
+  if (documentStatus === 404 || documentStatus === 400) {
     return { status: 404, cacheControl: 'no-store', redirectTo404: true } as const;
   }
   if (!documentStatus || documentStatus < 200 || documentStatus >= 300 || !hasDocument) {

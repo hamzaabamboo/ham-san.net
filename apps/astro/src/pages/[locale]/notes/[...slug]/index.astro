@@ -1,9 +1,9 @@
 ---
 import { Glyph } from '~/components/ui/glyph';
 import { Box, Container, Grid, Stack, styled } from 'styled-system/jsx';
-import { cleanArticleContent, getArticleBanner } from 'outline/article';
+import { cleanArticleContent, getArticleBanner, getArticleBannerAlt } from 'outline/article';
 import { Heading } from '~/components/ui/heading';
-import { Markdown, createHeadingSlugger } from '~/components/lib/Markdown';
+import { Markdown, createHeadingSlugger, isStructuralLine } from '~/components/lib/Markdown';
 import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import { knownLinkLabelsFrom } from '~/utils/link-label';
@@ -78,16 +78,48 @@ if (noteMissing) {
   Astro.response.status = 503;
 }
 
-const pageTitle = `${note?.title ?? t('common.note')} | ${t('common.name')}`;
+const stateTitle = noteMissing ? t('note.not-found-title') : t('note.detail-unavailable-title');
+const stateDescription = noteMissing
+  ? t('note.not-found-description')
+  : t('note.detail-unavailable-description');
+const pageTitle = `${note ? (note.title ?? t('common.note')) : stateTitle} | ${t('common.name')}`;
 const rawContent = note ? (cleanArticleContent(note.text) ?? '') : '';
 const bannerRaw = getArticleBanner(rawContent);
 const banner = resolveOutlineAssetUrl(bannerRaw ?? undefined);
+const bannerAlt = getArticleBannerAlt(rawContent);
 const content = bannerRaw
   ? rawContent.replace(/!\[.*?\]\((.+?)(?:".*?")?\)/, '').replace(/^\s*\n+/, '')
   : rawContent;
 
-const siblingsParentId =
-  maybeDocSegment === 'doc' && maybeDocId ? note?.parentDocumentId : note?.id;
+const isChildDocument = maybeDocSegment === 'doc' && !!maybeDocId;
+const fetchShareDocument = (id?: string) =>
+  withLastGood(
+    `note:${shareId}:${id ?? ''}`,
+    async () =>
+      requireOutlineOk(
+        await outlineClient.POST('/documents.info', { body: id ? { shareId, id } : { shareId } }),
+        'documents.info'
+      ),
+    (request) => request.response.ok
+  )
+    .then((request) => request.data?.data ?? null)
+    .catch(() => null);
+const parentNote =
+  isChildDocument && note?.parentDocumentId
+    ? await Promise.all([fetchShareDocument(), fetchShareDocument(note.parentDocumentId)]).then(
+        ([root, parent]) =>
+          parent?.title
+            ? {
+                title: parent.title as string,
+                href:
+                  root?.id === parent.id
+                    ? `/${locale}/notes/${shareId}`
+                    : `/${locale}/notes/${shareId}/doc/${parent.id}`
+              }
+            : null
+      )
+    : null;
+const siblingsParentId = isChildDocument ? note?.parentDocumentId : note?.id;
 let siblingsUnavailable = false;
 const siblingsRequest = note
   ? await withLastGood(`note-siblings:${siblingsParentId}`, async () => {
@@ -111,7 +143,38 @@ const collectionRequest = note?.collectionId
   : null;
 const collectionName = collectionRequest?.data?.data?.name ?? null;
 
-const siblings = siblingsRequest?.data?.data ?? [];
+type TreeNode = { id: string; title?: string; children?: TreeNode[] };
+const collectionTree: TreeNode[] | null = note?.collectionId
+  ? await withLastGood(
+      `collection-tree:${note.collectionId}`,
+      async () =>
+        requireOutlineOk(
+          await outlineClient.POST('/collections.documents', { body: { id: note.collectionId } }),
+          'collections.documents'
+        ),
+      (request) => request.response.ok
+    )
+      .then((request) => (request.data?.data as TreeNode[] | undefined) ?? null)
+      .catch(() => null)
+  : null;
+const findTreeNode = (nodes: TreeNode[] | null | undefined, id?: string): TreeNode | undefined => {
+  for (const node of nodes ?? []) {
+    if (node.id === id) return node;
+    const found = findTreeNode(node.children, id);
+    if (found) return found;
+  }
+  return undefined;
+};
+const authoredOrder = (findTreeNode(collectionTree, siblingsParentId)?.children ?? []).map(
+  (child) => child.id
+);
+const orderIndex = (id?: string) => {
+  const index = id ? authoredOrder.indexOf(id) : -1;
+  return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+};
+const siblings = [...(siblingsRequest?.data?.data ?? [])].sort(
+  (a, b) => orderIndex(a.id) - orderIndex(b.id)
+);
 if (siblingsUnavailable) {
   Astro.response.status = 503;
 }
@@ -122,8 +185,15 @@ if (noteMissing || noteUnavailable || siblingsUnavailable) {
 }
 const outlineUrl = `${outlineAssetPrefix}/s/${shareId}${maybeDocSegment === 'doc' && maybeDocId ? `/doc/${maybeDocId}` : ''}`;
 
+const countableText = (content ?? '')
+  .split('\n')
+  .filter((line) => !isStructuralLine(line))
+  .join('\n');
+const cjkChars = countableText.match(/[\u3040-\u30ff\u4e00-\u9fff]/g)?.length ?? 0;
+const countsCharacters = cjkChars > countableText.replace(/\s/g, '').length * 0.3;
 const countWords = (text: string) => {
   if (!text.trim()) return 0;
+  if (countsCharacters) return text.replace(/[\s#*_`>|\-\[\]()]/g, '').length;
   try {
     const segmenter = new Intl.Segmenter(locale, { granularity: 'word' });
     let count = 0;
@@ -133,10 +203,17 @@ const countWords = (text: string) => {
     return text.split(/\s+/).filter(Boolean).length;
   }
 };
-const wordCount = countWords(content ?? '');
-const readingMinutes = Math.max(1, Math.round(wordCount / 200));
+const wordCount = countWords(countableText);
+const readingMinutes = Math.max(1, Math.round(wordCount / (countsCharacters ? 500 : 200)));
+const wordUnit = countsCharacters ? t('note.chars') : t('note.words');
+const readingLabel =
+  wordCount > 0
+    ? `${numberFormatter.format(readingMinutes)}${unitGap}${t('note.min-read')} / ${numberFormatter.format(wordCount)}${unitGap}${wordUnit}`
+    : null;
 const dateFormatter = new Intl.DateTimeFormat(locale, {
-  dateStyle: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
   timeZone: 'Asia/Tokyo',
   calendar: 'gregory'
 });
@@ -146,7 +223,11 @@ const currentIndex = note ? siblings.findIndex((s) => s.id === note.id) : -1;
 const prevSibling = currentIndex > 0 ? siblings[currentIndex - 1] : null;
 const nextSibling =
   currentIndex >= 0 && currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : null;
+const childPages: { id?: string; title?: string }[] = isChildDocument
+  ? (findTreeNode(collectionTree, note?.id)?.children ?? [])
+  : siblings.filter((s) => s.id !== note?.id);
 
+const unescapeMarkdown = (text: string) => text.replace(/\\([\\`*_{}[\]()#+\-.!~=|])/g, '$1');
 const slugger = createHeadingSlugger();
 let inFence = false;
 // A contents rail holding one or two entries costs a 220px column for the whole scroll and
@@ -166,14 +247,31 @@ const headings = (content ?? '')
   .map((line, idx) => {
     const match = line.match(/^(#{1,6})\s+(.+)/);
     if (!match) return null;
-    const text = match[2].replace(/[*_`\[\]]/g, '').trim();
+    const text = unescapeMarkdown(match[2].replace(/(?<!\\)[*_`\[\]]/g, '')).trim();
     const id = slugger(match[2]);
     return { level: match[1].length, text, id, idx };
   })
-  .filter((h) => !!h && h.level <= 3) as { level: number; text: string; id: string; idx: number }[];
+  .filter((h) => !!h && !!h.text && h.level <= 3) as {
+  level: number;
+  text: string;
+  id: string;
+  idx: number;
+}[];
 
 const showContents = headings.length >= CONTENTS_MIN_ENTRIES;
+const minHeadingLevel = Math.min(...headings.map((h) => h.level));
+const headingIndent = (level: number) => `${(level - minHeadingLevel) * 0.75}rem`;
 
+const plainOf = (line: string) =>
+  unescapeMarkdown(
+    line
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .replace(/https?:\/\/\S+/g, '')
+      .replace(/(?<!\\)[*_`]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
 const contentLines = (content ?? '').split('\n');
 const firstContentIndex = contentLines.findIndex((line) => line.trim().length > 0);
 const firstContentLine = firstContentIndex >= 0 ? contentLines[firstContentIndex].trim() : '';
@@ -181,27 +279,94 @@ const ledeLineIndex =
   firstContentLine.length > 30 &&
   !/^[#!\[|>*-]/.test(firstContentLine) &&
   !/^`/.test(firstContentLine) &&
+  !/https?:\/\/|www\.|\]\(/.test(firstContentLine) &&
   !/^\d+[.)]\s/.test(firstContentLine)
     ? firstContentIndex
     : -1;
 const rawLede = ledeLineIndex >= 0 ? contentLines[ledeLineIndex] : undefined;
-const lede =
-  rawLede
-    ?.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-    .replace(/https?:\/\/\S+/g, '')
-    .replace(/[*_`]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim() ?? null;
-const bodyContent =
+const lede = rawLede ? plainOf(rawLede) : null;
+const descriptionLine = contentLines.find(
+  (line) =>
+    line.trim().length > 30 &&
+    !/^\s*([#!|>`<]|[-*+]\s|\d+[.)]\s|\[|---)/.test(line) &&
+    !isStructuralLine(line)
+);
+const descriptionText = descriptionLine ? plainOf(descriptionLine) : '';
+const clippedDescription =
+  descriptionText.length > 160
+    ? `${descriptionText.slice(0, 160).replace(/\s+\S*$/, '')}…`
+    : descriptionText;
+const metaDescription =
+  note && clippedDescription.length > 30
+    ? clippedDescription
+    : note
+      ? t('note.description')
+      : stateDescription;
+const rawBodyContent =
   ledeLineIndex >= 0
     ? [...contentLines.slice(0, ledeLineIndex), ...contentLines.slice(ledeLineIndex + 1)].join('\n')
     : content;
 
+const shareLinkPattern = /\[([^\]]*)\]\((?:[^)\s]*?)\/s\/([^/?#)\s]+)[^)\s]*\)/g;
+let knownShareKeys: Set<string> | null = null;
+if (rawBodyContent && /\/s\/[^/?#)\s]+/.test(rawBodyContent)) {
+  try {
+    const shares = await withLastGood('note-share-keys', async () => {
+      const rows: any[] = [];
+      const pageLimit = 100;
+      let offset = 0;
+      while (true) {
+        const request = requireOutlineOk(
+          await outlineClient.POST('/shares.list', {
+            body: { sort: 'createdAt', direction: 'DESC', limit: pageLimit, offset }
+          }),
+          'shares.list'
+        );
+        const page = request.data?.data ?? [];
+        rows.push(...page);
+        if (page.length < (request.data?.pagination?.limit ?? pageLimit)) break;
+        offset += page.length;
+      }
+      return rows;
+    });
+    knownShareKeys = new Set(shares.flatMap((share) => [share.id, share.urlId].filter(Boolean)));
+  } catch {
+    knownShareKeys = null;
+  }
+}
+const bodyContent =
+  rawBodyContent && knownShareKeys
+    ? rawBodyContent.replace(shareLinkPattern, (link, label, shareKey) =>
+        knownShareKeys.has(shareKey) ? link : label
+      )
+    : rawBodyContent;
+
+const docIdByUrlId: Record<string, string> = {};
+for (const doc of [note, ...siblings].filter(Boolean)) {
+  if (doc.urlId && doc.id) docIdByUrlId[doc.urlId] = doc.id;
+}
+for (const node of [findTreeNode(collectionTree, note?.id), ...childPages]) {
+  const urlId = (node as { url?: string } | undefined)?.url?.split('-').pop();
+  if (urlId && node?.id) docIdByUrlId[urlId] = node.id;
+}
+const currentDocIds = [note?.id, note?.urlId].filter(Boolean) as string[];
+
+const detectLang = (text: string) => {
+  const sample = text.replace(/[\s\d\p{P}]/gu, '').slice(0, 2000);
+  if (!sample) return undefined;
+  const share = (pattern: RegExp) => (sample.match(pattern)?.length ?? 0) / sample.length;
+  if (share(/[\u0e00-\u0e7f]/g) > 0.3) return 'th';
+  if (share(/[\u3040-\u30ff\u4e00-\u9fff]/g) > 0.3) return 'ja';
+  return share(/[A-Za-z]/g) > 0.5 ? 'en' : undefined;
+};
+const detectedLang = detectLang(`${note?.title ?? ''}\n${content ?? ''}`);
+const contentLang = detectedLang && detectedLang !== locale ? detectedLang : undefined;
+const titleParts = ((note?.title as string | undefined) ?? '').split(/(?<=[_/])/);
+
 const tags = (note as any)?.tags ?? [];
 ---
 
-<MainLayout title={pageTitle} description={lede || note?.title || t('note.description')}>
+<MainLayout title={pageTitle} description={metaDescription}>
   <Container maxW="breakpoint-xl" py="8" className="page-shell">
     {
       !note ? (
@@ -214,6 +379,7 @@ const tags = (note as any)?.tags ?? [];
             pl="6"
           >
             <Text
+              className="note-meta"
               fontFamily="var(--font-code)"
               fontSize="10px"
               textTransform="uppercase"
@@ -223,17 +389,22 @@ const tags = (note as any)?.tags ?? [];
               {noteMissing ? t('note.status-not-found') : t('note.status-unavailable')}
             </Text>
             <Heading as="h1" fontSize={{ base: '5xl', md: '7xl' }}>
-              {noteMissing ? t('note.not-found-title') : t('note.empty-title')}
+              {stateTitle}
             </Heading>
             <Text color="var(--atelier-fg-muted)" fontSize="lg" maxW="2xl" lineHeight="1.7">
-              {noteMissing ? t('note.not-found-description') : t('note.empty-description')}
+              {stateDescription}
             </Text>
-            <Box>
+            <Stack gap="4" alignItems="flex-start">
+              {noteUnavailable && (
+                <a href={Astro.url.pathname} class="note-cta-button group">
+                  <span>{t('note.reload')}</span>
+                </a>
+              )}
               <a href={`/${locale}/notes`} class="note-cta-button group">
                 <span>{t('note.back-to-posts')}</span>
                 <Glyph name="arrow_back" className="note-cta-icon" />
               </a>
-            </Box>
+            </Stack>
           </Stack>
         </Stack>
       ) : (
@@ -241,14 +412,19 @@ const tags = (note as any)?.tags ?? [];
           {/* Sticky on the grid child, mirroring the DETAILS rail below. Nested inside a
               static Stack of equal height it had zero travel, so the CONTENTS rail scrolled
               away while the right rail on the same page stayed pinned. */}
-          <Stack gap="8" hideBelow="xl" hidden={!showContents} position="sticky" top="24">
+          <Stack
+            gap="8"
+            hideBelow="xl"
+            hidden={!showContents}
+            data-note-toc-rail
+            position="sticky"
+            top="24"
+            maxH="calc(100dvh - 8rem)"
+            overflowY="auto"
+            overscrollBehavior="contain"
+          >
             <Box>
-              <Box
-                borderLeft="1px solid"
-                borderLeftColor="var(--atelier-line)"
-                pl="4"
-                position="relative"
-              >
+              <Box borderLeft="1px solid var(--atelier-line)" pl="4" position="relative">
                 <Box
                   position="absolute"
                   top="0"
@@ -258,6 +434,7 @@ const tags = (note as any)?.tags ?? [];
                   bg="var(--atelier-accent)"
                 />
                 <Text
+                  className="note-meta"
                   fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase"
@@ -266,26 +443,39 @@ const tags = (note as any)?.tags ?? [];
                 >
                   {t('note.contents')}
                 </Text>
-                <Stack gap="4">
-                  {headings.length > 0
-                    ? headings.map((h) => (
-                        <a href={`#${h.id}`} class="note-toc-link" data-toc-for={h.id}>
-                          <Text
-                            fontFamily="var(--font-code)"
-                            fontSize="11px"
-                            color="var(--atelier-fg-muted)"
-                            _hover={{ color: 'var(--atelier-accent)' }}
-                            transition="colors"
-                            transitionDuration="fast"
-                            textTransform="uppercase"
-                            letterSpacing="-0.02em"
-                          >
-                            {h.text}
-                          </Text>
-                        </a>
-                      ))
-                    : null}
-                </Stack>
+                <nav aria-label={t('note.contents')} lang={contentLang}>
+                  <Stack gap="0">
+                    {headings.map((h) => (
+                      <styled.a
+                        href={`#${h.id}`}
+                        className="note-toc-link"
+                        data-toc-for={h.id}
+                        display="flex"
+                        alignItems="center"
+                        minH="32px"
+                        css={{ '@media (pointer: coarse)': { minH: '44px' } }}
+                        style={{ paddingLeft: headingIndent(h.level) }}
+                      >
+                        <Text
+                          fontFamily="var(--font-code)"
+                          fontSize="11px"
+                          color={
+                            h.level === minHeadingLevel
+                              ? 'var(--atelier-fg)'
+                              : 'var(--atelier-fg-muted)'
+                          }
+                          _hover={{ color: 'var(--atelier-accent)' }}
+                          transition="colors"
+                          transitionDuration="fast"
+                          textTransform="uppercase"
+                          letterSpacing={locale === 'en' ? '-0.02em' : '0'}
+                        >
+                          {h.text}
+                        </Text>
+                      </styled.a>
+                    ))}
+                  </Stack>
+                </nav>
               </Box>
             </Box>
           </Stack>
@@ -306,15 +496,35 @@ const tags = (note as any)?.tags ?? [];
                   ← {t('note.back-to-posts')}
                 </styled.a>
               </Box>
+              {parentNote && (
+                <styled.a
+                  href={parentNote.href}
+                  display="inline-flex"
+                  alignItems="center"
+                  minH="44px"
+                  alignSelf="start"
+                  color="var(--atelier-fg-muted)"
+                  overflowWrap="anywhere"
+                  _hover={{ color: 'var(--atelier-accent)' }}
+                >
+                  ← {parentNote.title}
+                </styled.a>
+              )}
               <Eyebrow label={t('note.note-label')} />
               <Heading
                 as="h1"
                 fontSize={{ base: '5xl', md: '7xl' }}
                 lineHeight="tight"
-                letterSpacing="-0.04em"
+                letterSpacing={locale === 'en' ? '-0.04em' : '0'}
                 overflowWrap="anywhere"
+                lang={contentLang}
               >
-                {note.title}
+                {titleParts.map((part) => (
+                  <Fragment>
+                    {part}
+                    <wbr />
+                  </Fragment>
+                ))}
               </Heading>
               {lede && (
                 <Text
@@ -324,8 +534,21 @@ const tags = (note as any)?.tags ?? [];
                   fontStyle="italic"
                   lineHeight="relaxed"
                   maxW="xl"
+                  lang={contentLang}
                 >
                   {lede}
+                </Text>
+              )}
+              {(formattedDate || collectionName || readingLabel) && (
+                <Text
+                  hideFrom="xl"
+                  className="note-meta"
+                  fontFamily="var(--font-code)"
+                  fontSize="xs"
+                  color="var(--atelier-outline)"
+                  overflowWrap="anywhere"
+                >
+                  {[formattedDate, collectionName, readingLabel].filter(Boolean).join(' · ')}
                 </Text>
               )}
             </Stack>
@@ -343,7 +566,7 @@ const tags = (note as any)?.tags ?? [];
               >
                 <img
                   src={banner}
-                  alt={note.title ?? undefined}
+                  alt={bannerAlt}
                   width="1600"
                   height="900"
                   class="note-hero-image"
@@ -365,10 +588,18 @@ const tags = (note as any)?.tags ?? [];
                   border="1px solid"
                   borderColor="var(--atelier-line)"
                   bg="var(--atelier-surface-low)"
+                  lang={contentLang}
+                  css={{
+                    '& > summary::-webkit-details-marker': { display: 'none' },
+                    '& > summary::after': { content: '"+"', color: 'var(--atelier-accent)' },
+                    '&[open] > summary::after': { content: '"−"' }
+                  }}
                 >
                   <styled.summary
                     display="flex"
                     alignItems="center"
+                    justifyContent="space-between"
+                    listStyle="none"
                     minH="44px"
                     px="4"
                     fontFamily="var(--font-code)"
@@ -386,7 +617,7 @@ const tags = (note as any)?.tags ?? [];
                         display="flex"
                         alignItems="center"
                         minH="44px"
-                        style={h.level > 1 ? { paddingLeft: '1rem' } : undefined}
+                        style={{ paddingLeft: headingIndent(h.level) }}
                         fontFamily="var(--font-code)"
                         fontSize="xs"
                         color="var(--atelier-fg-muted)"
@@ -402,24 +633,90 @@ const tags = (note as any)?.tags ?? [];
             )}
 
             {bodyContent && (
-              <Markdown
-                content={bodyContent}
-                newTabLabel={t('note.opens-new-tab')}
-                linkLabels={knownLinkLabelsFrom(t)}
-                assetsPrefix={outlineAssetPrefix}
-                assetProxyBasePath={outlineAssetProxyPath}
-                headingLevelOffset={1}
-              />
+              <Box lang={contentLang} minW="0">
+                <Markdown
+                  content={bodyContent}
+                  newTabLabel={t('note.opens-new-tab')}
+                  linkLabels={knownLinkLabelsFrom(t)}
+                  tableLabel={t('common.table-region')}
+                  assetsPrefix={outlineAssetPrefix}
+                  assetProxyBasePath={outlineAssetProxyPath}
+                  linksPrefix={`/${locale}/notes/${shareId}`}
+                  notesBasePath={`/${locale}/notes`}
+                  currentDocIds={currentDocIds}
+                  docIdByUrlId={docIdByUrlId}
+                  codeLabel={t('common.code-block')}
+                  locale={locale}
+                  headingLevelOffset={1}
+                />
+              </Box>
+            )}
+
+            {!bodyContent?.trim() && !lede && childPages.length === 0 && (
+              <Text color="var(--atelier-fg-muted)" maxW="42rem">
+                {t('note.empty-page')}
+              </Text>
+            )}
+
+            {childPages.length > 0 && (
+              <styled.nav
+                aria-labelledby="note-pages-title"
+                maxW="42rem"
+                border="1px solid"
+                borderColor="var(--atelier-line)"
+                bg="var(--atelier-surface-low)"
+                p="6"
+              >
+                <Text
+                  as="h2"
+                  id="note-pages-title"
+                  fontWeight="normal"
+                  className="note-meta"
+                  fontFamily="var(--font-code)"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  color="var(--atelier-outline)"
+                  letterSpacing="0.12em"
+                  mb="2"
+                >
+                  {t('note.pages-in-note')}
+                </Text>
+                <styled.ul
+                  listStyle="none"
+                  m="0"
+                  p="0"
+                  css={{ '& > li:last-child > a': { borderBottom: 'none' } }}
+                >
+                  {childPages.map((child) => (
+                    <li>
+                      <styled.a
+                        href={`/${locale}/notes/${shareId}/doc/${child.id}`}
+                        display="flex"
+                        alignItems="center"
+                        minH="44px"
+                        py="2"
+                        borderBottom="1px solid var(--atelier-line)"
+                        color="var(--atelier-fg-muted)"
+                        overflowWrap="anywhere"
+                        _hover={{ color: 'var(--atelier-accent)' }}
+                      >
+                        {child.title ?? t('note.untitled')}
+                      </styled.a>
+                    </li>
+                  ))}
+                </styled.ul>
+              </styled.nav>
             )}
 
             {siblingsUnavailable && (
               <Box
+                maxW="42rem"
                 border="1px solid"
                 borderColor="var(--atelier-line)"
                 bg="var(--atelier-surface-low)"
                 p="4"
               >
-                <Text color="var(--atelier-accent-soft)">{t('note.status-unavailable')}</Text>
+                <Text color="var(--atelier-fg-muted)">{t('note.siblings-unavailable')}</Text>
               </Box>
             )}
 
@@ -428,18 +725,25 @@ const tags = (note as any)?.tags ?? [];
                 gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
                 gap="8"
                 pt="12"
-                borderTop="1px solid"
-                borderColor="var(--atelier-line)"
+                maxW="42rem"
+                borderTop="1px solid var(--atelier-line)"
               >
                 {prevSibling ? (
-                  <a href={`/${locale}/notes/${shareId}/doc/${prevSibling.id}`} class="group">
+                  <styled.a
+                    href={`/${locale}/notes/${shareId}/doc/${prevSibling.id}`}
+                    display="block"
+                    h="full"
+                    className="group"
+                  >
                     <Box
+                      h="full"
                       border="1px solid"
                       borderColor="var(--atelier-line)"
                       p="6"
                       className="blocky-shadow blocky-shadow-hover"
                     >
                       <Text
+                        className="note-meta"
                         fontFamily="var(--font-code)"
                         fontSize="10px"
                         textTransform="uppercase"
@@ -457,13 +761,19 @@ const tags = (note as any)?.tags ?? [];
                         {prevSibling.title}
                       </Text>
                     </Box>
-                  </a>
+                  </styled.a>
                 ) : (
-                  <Box />
+                  <Box hideBelow="md" />
                 )}
                 {nextSibling ? (
-                  <a href={`/${locale}/notes/${shareId}/doc/${nextSibling.id}`} class="group">
+                  <styled.a
+                    href={`/${locale}/notes/${shareId}/doc/${nextSibling.id}`}
+                    display="block"
+                    h="full"
+                    className="group"
+                  >
                     <Box
+                      h="full"
                       border="1px solid"
                       borderColor="var(--atelier-line)"
                       p="6"
@@ -471,6 +781,7 @@ const tags = (note as any)?.tags ?? [];
                       className="blocky-shadow blocky-shadow-hover"
                     >
                       <Text
+                        className="note-meta"
                         fontFamily="var(--font-code)"
                         fontSize="10px"
                         textTransform="uppercase"
@@ -488,9 +799,9 @@ const tags = (note as any)?.tags ?? [];
                         {nextSibling.title}
                       </Text>
                     </Box>
-                  </a>
+                  </styled.a>
                 ) : (
-                  <Box />
+                  <Box hideBelow="md" />
                 )}
               </Grid>
             )}
@@ -503,6 +814,7 @@ const tags = (note as any)?.tags ?? [];
               bg="var(--atelier-surface-low)"
               p="6"
               position="relative"
+              hideBelow={tags.length === 0 ? 'xl' : undefined}
             >
               <Box
                 position="absolute"
@@ -515,6 +827,7 @@ const tags = (note as any)?.tags ?? [];
                 py="0.5"
               >
                 <Text
+                  className="note-meta"
                   fontFamily="var(--font-code)"
                   fontSize="11px"
                   textTransform="uppercase"
@@ -525,8 +838,9 @@ const tags = (note as any)?.tags ?? [];
               </Box>
               <Stack gap="6" mt="2">
                 {formattedDate && (
-                  <Box>
+                  <Box hideBelow="xl">
                     <Text
+                      className="note-meta"
                       fontFamily="var(--font-code)"
                       fontSize="10px"
                       textTransform="uppercase"
@@ -542,8 +856,9 @@ const tags = (note as any)?.tags ?? [];
                   </Box>
                 )}
                 {collectionName && (
-                  <Box>
+                  <Box hideBelow="xl">
                     <Text
+                      className="note-meta"
                       fontFamily="var(--font-code)"
                       fontSize="10px"
                       textTransform="uppercase"
@@ -558,24 +873,28 @@ const tags = (note as any)?.tags ?? [];
                     </Text>
                   </Box>
                 )}
-                <Box>
-                  <Text
-                    fontFamily="var(--font-code)"
-                    fontSize="10px"
-                    textTransform="uppercase"
-                    color="var(--atelier-outline)"
-                    letterSpacing="0.12em"
-                    mb="1"
-                  >
-                    {t('note.reading-time')}
-                  </Text>
-                  <Text fontFamily="var(--font-code)" fontSize="xs" textTransform="uppercase">
-                    {`${numberFormatter.format(readingMinutes)}${unitGap}${t('note.min-read')} / ${numberFormatter.format(wordCount)}${unitGap}${t('note.words')}`}
-                  </Text>
-                </Box>
+                {readingLabel && (
+                  <Box hideBelow="xl">
+                    <Text
+                      className="note-meta"
+                      fontFamily="var(--font-code)"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      color="var(--atelier-outline)"
+                      letterSpacing="0.12em"
+                      mb="1"
+                    >
+                      {t('note.reading-time')}
+                    </Text>
+                    <Text fontFamily="var(--font-code)" fontSize="xs" textTransform="uppercase">
+                      {readingLabel}
+                    </Text>
+                  </Box>
+                )}
                 {tags.length > 0 && (
                   <Box>
                     <Text
+                      className="note-meta"
                       fontFamily="var(--font-code)"
                       fontSize="10px"
                       textTransform="uppercase"
@@ -659,6 +978,16 @@ const tags = (note as any)?.tags ?? [];
       for (const { link } of pairs) {
         if (link === active.link) link.setAttribute('aria-current', 'true');
         else link.removeAttribute('aria-current');
+      }
+      const rail = active.link.closest<HTMLElement>('[data-note-toc-rail]');
+      if (rail && rail.scrollHeight > rail.clientHeight) {
+        const top = active.link.offsetTop;
+        if (
+          top < rail.scrollTop ||
+          top + active.link.offsetHeight > rail.scrollTop + rail.clientHeight
+        ) {
+          rail.scrollTop = top - rail.clientHeight / 2;
+        }
       }
     };
 

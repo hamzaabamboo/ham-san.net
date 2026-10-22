@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { FaGithub, FaGlobe } from 'react-icons/fa';
 import { Box, Center, Stack, styled, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
@@ -56,6 +56,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
   const { data, locale } = props;
   const t = useTranslations(locale);
   const [imageFailed, setImageFailed] = useState(false);
+  const titleId = useId();
   const { title, description, slug, date, links } = data;
   const category =
     data.category && 'name' in data.category
@@ -65,6 +66,8 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
   const resolved = resolveMedia(image, 400, import.meta.env.PUBLIC_API_URL);
   const link = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Web);
   const ghLink = links?.find((l) => l?.type === Enum_Componentutilslink_Type.Github);
+  const contentLang =
+    typeof data.locale === 'string' && data.locale !== locale ? data.locale : undefined;
 
   return (
     <Stack
@@ -77,6 +80,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
       <Link
         href={`/${locale}/projects/${slug}`}
         data-astro-prefetch="hover"
+        aria-labelledby={titleId}
         display="block"
         flex={1}
       >
@@ -86,8 +90,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
           <Box
             position="relative"
             flexShrink={0}
-            borderColor="var(--atelier-line)"
-            borderBottom="1px solid"
+            borderBottom="1px solid var(--atelier-line)"
             backgroundColor="var(--atelier-surface-highest)"
             overflow="hidden"
           >
@@ -97,9 +100,8 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
                 position="absolute"
                 top="0"
                 left="0"
-                borderColor="var(--atelier-line)"
-                borderRight="1px solid"
-                borderBottom="1px solid"
+                borderRight="1px solid var(--atelier-line)"
+                borderBottom="1px solid var(--atelier-line)"
                 py="1.5"
                 px="3"
                 color="var(--atelier-fg-muted)"
@@ -177,12 +179,22 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
               fontFamily="var(--font-code)"
               fontSize="xs"
             >
-              {category?.name && <Text color="var(--atelier-fg-muted)">{category.name}</Text>}
-              {category?.name && date && <Text aria-hidden="true">|</Text>}
-              <Text>{date && formatMonthYear(parseDate(date), locale)}</Text>
+              {category?.name && (
+                <Text lang={contentLang} color="var(--atelier-fg-muted)">
+                  {category.name}
+                </Text>
+              )}
+              {category?.name && date && (
+                <Text aria-hidden="true" display={{ base: 'none', md: 'inline' }}>
+                  |
+                </Text>
+              )}
+              {date && <Text>{formatMonthYear(parseDate(date), locale)}</Text>}
             </Wrap>
             <Text
               as="h3"
+              id={titleId}
+              lang={contentLang}
               fontFamily="var(--font-body)"
               fontSize="xl"
               fontWeight="bold"
@@ -191,7 +203,7 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
             >
               {title}
             </Text>
-            <Text color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="1.7">
+            <Text lang={contentLang} color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="1.7">
               {description}
             </Text>
             <Wrap
@@ -211,62 +223,66 @@ export const ProjectCard = (props: { data: ProjectCardData; locale: Languages })
       {/* Reserves the icon row's height even when a project has no external links. Without
           it the sibling collapses, the link stack above absorbs the slack, and the bottom-
           pinned CTA drops ~32px below its neighbours in the same grid row. */}
-      <Wrap alignItems="center" w="full" minH="3rem" p="4" pt="0">
-        {link?.url && (
-          <IconButton
-            asChild
-            size="xs"
-            variant="ghost"
-            border="1px solid"
-            borderColor="var(--atelier-surface-high)"
-            minW="44px"
-            minH="44px"
-            color="var(--atelier-fg-muted)"
-            bg="transparent"
-            _hover={{
-              bg: 'transparent',
-              borderColor: 'var(--atelier-accent)',
-              color: 'var(--atelier-accent)'
-            }}
-          >
-            <a
-              href={link.url}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={t('project.visit-site')}
+      <Box hideBelow={link?.url || ghLink?.url ? undefined : 'sm'} w="full" px="4" pb="4">
+        <Wrap alignItems="center" minH="3rem">
+          {link?.url && (
+            <IconButton
+              asChild
+              size="xs"
+              variant="ghost"
+              border="1px solid"
+              borderColor="var(--atelier-surface-high)"
+              minW="44px"
+              minH="44px"
+              color="var(--atelier-fg-muted)"
+              bg="transparent"
+              _hover={{
+                bg: 'transparent',
+                borderColor: 'var(--atelier-accent)',
+                color: 'var(--atelier-accent)'
+              }}
             >
-              <FaGlobe />
-            </a>
-          </IconButton>
-        )}
-        {ghLink?.url && (
-          <IconButton
-            asChild
-            size="xs"
-            variant="ghost"
-            border="1px solid"
-            borderColor="var(--atelier-surface-high)"
-            minW="44px"
-            minH="44px"
-            color="var(--atelier-fg-muted)"
-            bg="transparent"
-            _hover={{
-              bg: 'transparent',
-              borderColor: 'var(--atelier-accent)',
-              color: 'var(--atelier-accent)'
-            }}
-          >
-            <a
-              href={ghLink.url}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={t('project.source-code')}
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${t('project.visit-site')}: ${title} ${t('note.opens-new-tab')}`}
+                title={t('project.visit-site')}
+              >
+                <FaGlobe />
+              </a>
+            </IconButton>
+          )}
+          {ghLink?.url && (
+            <IconButton
+              asChild
+              size="xs"
+              variant="ghost"
+              border="1px solid"
+              borderColor="var(--atelier-surface-high)"
+              minW="44px"
+              minH="44px"
+              color="var(--atelier-fg-muted)"
+              bg="transparent"
+              _hover={{
+                bg: 'transparent',
+                borderColor: 'var(--atelier-accent)',
+                color: 'var(--atelier-accent)'
+              }}
             >
-              <FaGithub />
-            </a>
-          </IconButton>
-        )}
-      </Wrap>
+              <a
+                href={ghLink.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${t('project.source-code')}: ${title} ${t('note.opens-new-tab')}`}
+                title={t('project.source-code')}
+              >
+                <FaGithub />
+              </a>
+            </IconButton>
+          )}
+        </Wrap>
+      </Box>
     </Stack>
   );
 };

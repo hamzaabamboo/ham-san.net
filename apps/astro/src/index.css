@@ -196,7 +196,33 @@ html:lang(th) .hobby-meta * {
   text-transform: none !important;
 }
 
+html:lang(th) .hobby-meta:not(div),
+html:lang(th) .hobby-meta span,
+html:lang(th) .hobby-meta small,
+html:lang(ja) .hobby-meta:not(div),
+html:lang(ja) .hobby-meta span,
+html:lang(ja) .hobby-meta small,
+html:lang(ja) .mono-label,
+html:lang(ja) .note-meta,
+html:lang(ja) .contact-label,
+html:lang(ja) .credentials-key,
+html:lang(ja) .notes-pagination-link,
+html:lang(th) .mono-label,
+html:lang(th) .note-meta,
+html:lang(th) .contact-label,
+html:lang(th) .credentials-key,
+html:lang(th) .notes-pagination-link,
+html:lang(ja) .home-hero-photo-chip,
+html:lang(ja) .home-hero-photo-meta,
+html:lang(ja) .home-photos-event,
+html:lang(th) .home-hero-photo-chip,
+html:lang(th) .home-hero-photo-meta,
+html:lang(th) .home-photos-event {
+  font-size: 12px;
+}
+
 html:lang(ja) [class*='ls_0.'],
+html:lang(ja) [class*='ls_-0.'],
 html:lang(ja) [class*='ls_wide'],
 html:lang(ja) .shell-sidebar-link-label,
 html:lang(ja) .shell-drawer-locale-label,
@@ -204,9 +230,16 @@ html:lang(ja) .contact-label,
 html:lang(ja) .credentials-grid,
 html:lang(ja) .note-cta-button,
 html:lang(ja) .home-hero-cta,
+html:lang(ja) .not-found-cta,
+html:lang(ja) .not-found-link,
 html:lang(ja) .notes-pagination-link,
 html:lang(ja) .event-report__highlight-grid p,
+html:lang(ja) .home-hero-photo-chip,
+html:lang(ja) .home-hero-photo-meta a,
+html:lang(ja) .home-photos-all,
+html:lang(ja) .skip-link,
 html:lang(th) [class*='ls_0.'],
+html:lang(th) [class*='ls_-0.'],
 html:lang(th) [class*='ls_wide'],
 html:lang(th) .shell-sidebar-link-label,
 html:lang(th) .shell-drawer-locale-label,
@@ -214,8 +247,14 @@ html:lang(th) .contact-label,
 html:lang(th) .credentials-grid,
 html:lang(th) .note-cta-button,
 html:lang(th) .home-hero-cta,
+html:lang(th) .not-found-cta,
+html:lang(th) .not-found-link,
 html:lang(th) .notes-pagination-link,
-html:lang(th) .event-report__highlight-grid p {
+html:lang(th) .event-report__highlight-grid p,
+html:lang(th) .home-hero-photo-chip,
+html:lang(th) .home-hero-photo-meta a,
+html:lang(th) .home-photos-all,
+html:lang(th) .skip-link {
   letter-spacing: 0 !important;
   text-transform: none !important;
 }
@@ -228,6 +267,10 @@ html:lang(th) .event-report__highlight-grid p {
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
+}
+
+.home-hero-grid:has(> figure[hidden]) {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .home-hero-cta {
@@ -287,6 +330,30 @@ html:lang(ja) h3,
 html:lang(ja) h4,
 html:lang(ja) p {
   word-break: auto-phrase;
+  line-break: strict;
+}
+
+html:not(:lang(ja)) [lang|='ja'] {
+  font-family: 'Manrope', 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  font-style: normal;
+  letter-spacing: 0;
+  text-transform: none;
+  word-break: auto-phrase;
+  line-break: strict;
+}
+
+html:not(:lang(th)) [lang|='th'] {
+  font-family: 'Manrope', 'Noto Sans Thai', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  font-style: normal;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html:not(:lang(ja)) [lang|='ja'] em,
+html:not(:lang(ja)) [lang|='ja'] i,
+html:not(:lang(th)) [lang|='th'] em,
+html:not(:lang(th)) [lang|='th'] i {
+  font-style: normal;
 }
 
 html:lang(th) h1,
@@ -298,22 +365,8 @@ html:lang(th) h6 {
   line-height: 1.2;
 }
 
-#main-nav.scrolled {
-  background-color: var(--atelier-bg) !important;
-  box-shadow: 0 4px 0 0 rgba(14, 14, 14, 1);
-}
-
 .page-shell {
   position: relative;
-}
-
-.page-shell::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-left: 1px solid rgba(82, 69, 51, 0.35);
-  border-right: 1px solid rgba(82, 69, 51, 0.35);
 }
 
 .image-archival img {
@@ -429,7 +482,7 @@ html:lang(th) h6 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid rgba(82, 69, 51, 0.5);
+  border: 1px solid var(--atelier-line);
   padding: 1rem;
   font-family: var(--font-body);
   font-size: 0.7rem;
@@ -751,7 +804,7 @@ html:lang(th) a {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--atelier-fg-muted);
+  color: var(--atelier-outline);
 }
 @media (min-width: 768px) {
   .credentials-grid {
@@ -786,11 +839,19 @@ html:lang(th) a {
 }
 
 .credentials-value,
+.credentials-value-alt,
+.credentials-signal {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.credentials-value,
 .credentials-value-alt {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
-  color: var(--atelier-fg-muted);
+  color: var(--atelier-fg);
 }
 .credentials-signal {
   display: inline-flex;
@@ -857,17 +918,6 @@ html:lang(th) a {
   color: var(--atelier-accent);
 }
 
-.exp-card-hover {
-  transition:
-    border-color 0.25s ease,
-    background-color 0.25s ease,
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-}
-.exp-card-hover:hover {
-  border-color: var(--atelier-accent);
-}
-
 .spine-gradient {
   background: linear-gradient(
     180deg,
@@ -929,6 +979,15 @@ html:lang(th) a {
   transition: color 0.15s ease;
 }
 
+.shell-footer-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .shell-footer-copy {
   font-family: var(--font-code);
   font-size: 0.75rem;
@@ -968,7 +1027,6 @@ html:lang(th) a {
   height: 4rem;
   background-color: var(--atelier-bg);
   border-bottom: 1px solid var(--atelier-line);
-  box-shadow: 4px 4px 0px 0px rgba(14, 14, 14, 1);
 }
 
 @media (min-width: 1024px) {
@@ -1012,12 +1070,16 @@ html:lang(th) a {
   height: 100%;
 }
 /* The bar carries the nav only in the 900-1023px window, where the rail is not yet shown.
-   From 1024 the rail is always visible with the same six destinations, icons and a stronger
+   From 1024 the rail is always visible with the same eight destinations, icons and a stronger
    active marker, so the bar's copy was a second complete navigation on screen at all times
    — 256px of composition spent saying the same thing twice. */
 @media (min-width: 900px) {
   .shell-nav-links {
     display: flex;
+    gap: 0.75rem;
+  }
+  .shell-nav-link:not([aria-current='page']) {
+    padding: 0 0.375rem;
   }
 }
 @media (min-width: 1024px) {
@@ -1026,7 +1088,7 @@ html:lang(th) a {
   }
 }
 
-/* 400, not 500: these six links were the ONLY consumers of weight 500 in the body face, and
+/* 400, not 500: these eight links were the ONLY consumers of weight 500 in the body face, and
    `/ja` was paying ~30 KB gz of render-blocking font CSS for that one weight — for a bar that
    only renders in the 900-1023px window. */
 .shell-nav-link {
@@ -1115,6 +1177,8 @@ html:lang(th) a {
   border-right: 1px solid var(--atelier-line);
   width: 16rem;
   z-index: 40;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 @media (min-width: 1024px) {
   .shell-sidebar {
@@ -1223,6 +1287,9 @@ html:lang(th) a {
 @media (min-width: 640px) {
   .shell-footer {
     flex-direction: row;
+  }
+  .shell-footer-links {
+    margin-inline-end: -0.75rem;
   }
 }
 @media print {
@@ -1333,15 +1400,27 @@ html:lang(th) a {
   z-index: 50;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .shell-drawer-header {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 1.5rem;
   height: 4rem;
   border-bottom: 1px solid var(--atelier-line);
+}
+
+.shell-drawer-brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  min-width: 44px;
+  color: var(--atelier-fg);
+  text-decoration: none;
 }
 
 .shell-drawer-close {
@@ -1395,6 +1474,7 @@ html:lang(th) a {
 }
 
 .shell-drawer-locale {
+  flex-shrink: 0;
   padding: 1rem 1.5rem;
   border-top: 1px solid var(--atelier-line);
 }
@@ -1430,10 +1510,13 @@ html:lang(th) a {
     border-color 0.15s ease;
 }
 .shell-drawer-locale-btn[data-active='true'] {
-  background-color: var(--atelier-accent);
-  color: var(--atelier-on-accent);
-  border: 1px solid var(--atelier-accent);
+  color: var(--atelier-fg);
+  border: 1px solid var(--atelier-line);
   font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--atelier-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.45em;
 }
 .shell-drawer-locale-btn[data-active='false'] {
   color: var(--atelier-fg-muted);
@@ -1473,4 +1556,11 @@ html:lang(th) a {
 }
 .skip-link:focus-visible {
   transform: translateY(0);
+}
+
+.contact-social-card .contact-social-glyph {
+  font-size: 14px;
+  margin-inline-start: 0.35em;
+  vertical-align: middle;
+  color: var(--atelier-outline);
 }

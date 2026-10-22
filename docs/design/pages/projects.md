@@ -32,7 +32,7 @@ Active cards show a 16:9 screenshot (optional), title, year, category chip, tech
 
 ## States
 
-- **No projects:** `project.status-unavailable`, `project.empty-title` and `project.empty-description`.
+- **No projects:** `project.status-unavailable`, `project.empty-title` and `project.empty-description`, then a `project.reload` link to the same URL and an About me link.
 
 ## Rules
 

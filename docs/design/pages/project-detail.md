@@ -32,7 +32,7 @@ Screenshots                              └────────────
 
 ## States
 
-- **Unavailable:** `project.status-unavailable`, `project.detail-empty-title` and `-description`.
+- **Unavailable:** `project.status-unavailable`, `project.detail-empty-title` and `-description`, then a `project.reload` link to the same URL and an About me link.
 
 ## Interactions
 

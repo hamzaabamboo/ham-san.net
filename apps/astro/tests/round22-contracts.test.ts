@@ -584,7 +584,9 @@ describe('round 32', () => {
   test('the about closing rule spans the container', async () => {
     // `maxW` on the Stack put the border 224px short of the cards above and the strip below.
     const page = await read('apps/astro/src/pages/[locale]/about/index.astro');
-    const quote = page.slice(page.indexOf('borderTop="1px solid"', page.indexOf('</Grid>')));
+    const quote = page.slice(
+      page.indexOf('borderTop="1px solid var(--atelier-line)"', page.indexOf('</Grid>'))
+    );
     expect(quote.slice(0, 120)).not.toContain('maxW');
   });
 

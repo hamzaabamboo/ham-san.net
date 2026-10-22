@@ -16,6 +16,8 @@ const thumbnailStripBase = {
   gridAutoFlow: 'column',
   gridAutoColumns: '38%',
   gap: '2',
+  p: '1',
+  scrollPaddingInline: '1',
   overflowX: 'auto',
   overscrollBehaviorX: 'contain'
 } as const;
@@ -23,10 +25,7 @@ const thumbnailStripBase = {
 const thumbnailStrip = css({
   ...thumbnailStripBase,
   md: {
-    gridTemplateColumns: 'repeat(auto-fit, 100px)',
-    gridAutoFlow: 'row',
-    gridAutoColumns: 'auto',
-    overflowX: 'visible'
+    gridAutoColumns: '100px'
   }
 });
 const thumbnailStripWide = css({
@@ -47,8 +46,7 @@ const thumbnailButton = css({
   position: 'relative',
   backgroundColor: 'transparent',
   '&[aria-pressed="true"]': {
-    borderColor: 'var(--atelier-accent)',
-    backgroundColor: 'var(--atelier-surface-highest)'
+    borderColor: 'var(--atelier-accent)'
   },
   '&[aria-pressed="true"]::after': {
     insetInline: '0',
@@ -61,14 +59,27 @@ const thumbnailButton = css({
   '&:hover': { borderColor: 'var(--atelier-outline)' }
 });
 const carouselImage = css({
+  boxSizing: 'border-box',
   aspectRatio: '16 / 9',
   objectFit: 'contain',
+  border: '1px solid var(--atelier-line)',
   w: 'full',
+  backgroundColor: 'var(--atelier-surface-highest)',
+  filter: 'var(--atelier-image-plate)'
+});
+const carouselImagePortrait = css({
+  boxSizing: 'border-box',
+  objectFit: 'contain',
+  border: '1px solid var(--atelier-line)',
+  w: 'full',
+  height: '70vh',
+  maxHeight: '640px',
+  backgroundColor: 'var(--atelier-surface-highest)',
   filter: 'var(--atelier-image-plate)'
 });
 const thumbnailImage = css({
-  aspectRatio: '1',
-  objectFit: 'contain',
+  aspectRatio: '16 / 9',
+  objectFit: 'cover',
   w: 'full',
   filter: 'var(--atelier-image-rest)'
 });
@@ -76,6 +87,7 @@ const thumbnailImage = css({
 export const AppCarousel = (
   props: Omit<RootProps, 'slideCount'> & {
     images: string[];
+    portrait?: boolean;
     previousSlideLabel?: string;
     nextSlideLabel?: string;
     gotoSlideLabel?: string;
@@ -94,6 +106,7 @@ export const AppCarousel = (
   }, []);
   const {
     images,
+    portrait = false,
     previousSlideLabel = 'Previous slide',
     nextSlideLabel = 'Next slide',
     gotoSlideLabel = 'Go to slide',
@@ -134,7 +147,7 @@ export const AppCarousel = (
             <img
               src={image}
               alt={`${slideLabel} ${index + 1}`}
-              className={carouselImage}
+              className={portrait ? carouselImagePortrait : carouselImage}
               loading="lazy"
               width={1600}
               height={900}
@@ -178,7 +191,10 @@ export const AppCarousel = (
                 </IconButton>
               </UICarousel.NextTrigger>
             </UICarousel.Control>
-            <Grid className={images.length <= 3 ? thumbnailStripWide : thumbnailStrip}>
+            <Grid
+              className={images.length <= 3 ? thumbnailStripWide : thumbnailStrip}
+              hidden={images.length < 2}
+            >
               {images.map((image, idx) => (
                 <styled.button
                   className={thumbnailButton}

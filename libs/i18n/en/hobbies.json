@@ -55,7 +55,6 @@
   "overview-piano-chords": "Music pages for chords, voicings, instruments, and audio references.",
   "overview-field-notes": "Links and related pages for this hobby.",
   "overview-empty-page": "No public notes for this hobby yet.",
-  "doc-label": "Page",
   "last-updated": "Last updated",
   "learning-resources": "Related pages",
   "empty-title": "Hobby notebook unavailable",
@@ -65,5 +64,6 @@
   "empty-none-description": "Nothing here yet. New hobby notes will show up on this page as they are added.",
   "more-count": "+{count} more",
   "no-darts-data": "No darts stats or gear are listed yet.",
-  "more-items": "more"
+  "more-items": "more",
+  "children-unavailable": "These pages did not load. Reload to try again."
 }

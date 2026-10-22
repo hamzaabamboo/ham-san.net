@@ -31,9 +31,9 @@ Projects ───────────────────────�
 
 ## States
 
-- **Unavailable:** `note.status-unavailable` with `common.tags-empty-*`.
+- **Unavailable:** `note.status-unavailable` with `project.tag-detail-empty-*`, then a `project.reload` link to the same URL and a Projects link.
 
 ## Rules
 
-- Project cards use `ProjectCard`: an image only when one exists, and a sentence-case "Open project" link with no arrow glyph.
+- Project cards use `ProjectCard`: an image only when one exists, and a sentence-case "View project" link with no arrow glyph.
 - The "Tags" eyebrow stays; it names the section on a detail page.

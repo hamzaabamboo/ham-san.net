@@ -68,6 +68,13 @@ const groupByType = (list: typeof tags) =>
 const primaryGroups = groupByType(primaryTags);
 const secondaryGroups = groupByType(secondaryTags);
 
+const countLabel = (tag: (typeof tags)[number]) => {
+  const count = tagLinkCount(tag);
+  return count === 1
+    ? t('project.linked-count-one').replace('{count}', String(count))
+    : t('project.linked-count').replace('{count}', String(count));
+};
+
 const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
 ---
 
@@ -107,6 +114,28 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
                   ? t('common.tags-empty-description')
                   : t('common.tags-empty-none-description')}
               </Text>
+              {tagsUnavailable && (
+                <Wrap gap="6" justifyContent="center">
+                  <Link
+                    href={Astro.url.pathname}
+                    display="inline-flex"
+                    alignItems="center"
+                    minH="44px"
+                    className="amber-link"
+                  >
+                    {t('project.reload')}
+                  </Link>
+                  <Link
+                    href={`/${locale}/projects`}
+                    display="inline-flex"
+                    alignItems="center"
+                    minH="44px"
+                    className="amber-link"
+                  >
+                    {t('common.projects')}
+                  </Link>
+                </Wrap>
+              )}
             </Stack>
           </Box>
         ) : (
@@ -116,6 +145,7 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
                 <Flex alignItems="center" gap="4">
                   <Heading
                     as="h2"
+                    className="mono-label"
                     fontFamily="var(--font-code)"
                     fontSize="10px"
                     fontWeight="normal"
@@ -129,24 +159,21 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
                   </Heading>
                   <Box flex="1" h="1px" bg="var(--atelier-line)" />
                 </Flex>
-                <Wrap gap="2">
+                <Wrap columnGap="2" rowGap="0">
                   {groupTags.map((tag) => (
                     <Link
                       href={`/${locale}/tags/${tagSlug(tag)}`}
+                      className="group"
                       display="flex"
                       alignItems="center"
                       minH="44px"
-                      _hover={{ transform: 'translate(-2px, -2px)' }}
-                      transition="transform 0.2s ease"
                     >
                       <TagBadge
                         tag={tag}
                         showCount
-                        countLabel={t('project.linked-count').replace(
-                          '{count}',
-                          String(tagLinkCount(tag))
-                        )}
+                        countLabel={countLabel(tag)}
                         size="md"
+                        interactive
                       />
                     </Link>
                   ))}
@@ -166,6 +193,7 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
                   <Flex alignItems="center" gap="4">
                     <Heading
                       as="h2"
+                      className="mono-label"
                       fontFamily="var(--font-code)"
                       fontSize="10px"
                       fontWeight="normal"
@@ -179,24 +207,21 @@ const pageTitle = `${t('common.tags')} | ${t('common.name')}`;
                     </Heading>
                     <Box flex="1" h="1px" bg="var(--atelier-line)" />
                   </Flex>
-                  <Wrap gap="2">
+                  <Wrap columnGap="2" rowGap="0">
                     {groupTags.map((tag) => (
                       <Link
                         href={`/${locale}/tags/${tagSlug(tag)}`}
+                        className="group"
                         display="flex"
                         alignItems="center"
                         minH="44px"
-                        _hover={{ transform: 'translate(-2px, -2px)' }}
-                        transition="transform 0.2s ease"
                       >
                         <TagBadge
                           tag={tag}
                           showCount
-                          countLabel={t('project.linked-count').replace(
-                            '{count}',
-                            String(tagLinkCount(tag))
-                          )}
+                          countLabel={countLabel(tag)}
                           size="md"
+                          interactive
                         />
                       </Link>
                     ))}

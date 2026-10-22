@@ -1,6 +1,6 @@
 ---
 import { Glyph } from '~/components/ui/glyph';
-import { Box, Container, Flex, Grid, Stack } from 'styled-system/jsx';
+import { Box, Container, Flex, Grid, Stack, styled } from 'styled-system/jsx';
 import { resolveMedia } from 'utils/media';
 import { Heading } from '~/components/ui/heading';
 import { Text } from '~/components/ui/text';
@@ -53,6 +53,7 @@ const heroProjects = [
   ...projects.filter((project) => !(project.banner ?? project.media?.[0]))
 ].slice(0, 3);
 const [heroPhoto, ...otherPhotos] = kamekoEntries;
+const photoLang = locale === 'ja' ? undefined : 'ja';
 const recentPhotos = otherPhotos
   .filter(
     (entry, index, list) =>
@@ -88,11 +89,14 @@ Astro.response.headers.set(
   <Container maxW="breakpoint-xl" className="page-shell">
     <Stack py={{ base: '8', md: '10' }} gap="0">
       <Grid
-        gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(0, 1.6fr) 400px' }}
+        gridTemplateColumns={{
+          base: 'minmax(0, 1fr)',
+          lg: heroPhoto ? 'minmax(0, 1.6fr) 400px' : 'minmax(0, 1fr)'
+        }}
         gap="12"
         py={{ base: '14', lg: '24' }}
-        borderBottom="1px solid"
-        borderColor="var(--atelier-line)"
+        borderBottom="1px solid var(--atelier-line)"
+        className="home-hero-grid"
       >
         <Stack gap="8">
           <Eyebrow label={t('home.operational-status')} />
@@ -127,12 +131,13 @@ Astro.response.headers.set(
           </Flex>
         </Stack>
         {
-          heroPhoto ? (
+          heroPhoto && (
             <figure class="home-hero-photo">
               <a
                 href={heroPhoto.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${t('photos.open-on-x')}: ${subjectNames(heroPhoto).join(', ')} · ${heroPhoto.event} ${t('note.opens-new-tab')}`}
                 class="home-hero-photo-frame"
                 style={`aspect-ratio:${photoRatio(heroPhoto)}`}
               >
@@ -150,21 +155,15 @@ Astro.response.headers.set(
                 <span class="home-hero-photo-chip">{t('home.photos-latest')}</span>
               </a>
               <figcaption>
-                <span class="home-hero-photo-name">{subjectNames(heroPhoto).join('、')}</span>
+                <span class="home-hero-photo-name" lang={photoLang}>
+                  {subjectNames(heroPhoto).join('、')}
+                </span>
                 <span class="home-hero-photo-meta">
-                  <span>{heroPhoto.event}</span>
+                  <span lang={photoLang}>{heroPhoto.event}</span>
                   <a href={`/${locale}/photos`}>{t('home.photos-all')}</a>
                 </span>
               </figcaption>
             </figure>
-          ) : (
-            <Box
-              border="1px solid"
-              borderColor="var(--atelier-line)"
-              bg="var(--atelier-surface-lowest)"
-              className="fallback-grid-lines"
-              minH={{ base: '20rem', lg: '26rem' }}
-            />
           )
         }
       </Grid>
@@ -173,7 +172,7 @@ Astro.response.headers.set(
         <StatusRow locale={locale} />
       </Box>
 
-      <Box py={{ base: '8', lg: '16' }} borderBottom="1px solid" borderColor="var(--atelier-line)">
+      <Box py={{ base: '8', lg: '16' }} borderBottom="1px solid var(--atelier-line)">
         <Stack gap="2" mb="12">
           <SectionHeading label={t('home.bench-heading')} />
           <Text color="var(--atelier-outline)" fontSize="sm" maxW="lg">
@@ -291,9 +290,13 @@ Astro.response.headers.set(
             /about and /events. A full-width underline was a second section-header idiom on
             the same page. */
         }
-        <Box mb="12">
-          <SectionHeading label={t('home.featured-projects')} />
-        </Box>
+        {
+          (heroProjects.length > 0 || homeUnavailable) && (
+            <Box mb="12">
+              <SectionHeading label={t('home.featured-projects')} />
+            </Box>
+          )
+        }
         {
           heroProjects.length > 0 ? (
             <Grid
@@ -303,9 +306,8 @@ Astro.response.headers.set(
                 lg: 'repeat(3, minmax(0, 1fr))'
               }}
               gap="0"
-              borderTop="1px solid"
-              borderLeft="1px solid"
-              borderColor="var(--atelier-line)"
+              borderTop="1px solid var(--atelier-line)"
+              borderLeft="1px solid var(--atelier-line)"
               mb="20"
             >
               {heroProjects.map((project) => {
@@ -402,8 +404,7 @@ Astro.response.headers.set(
                       <Flex
                         mt="auto"
                         pt="4"
-                        borderTop="1px solid"
-                        borderColor="var(--atelier-line)"
+                        borderTop="1px solid var(--atelier-line)"
                         justify="space-between"
                         align="center"
                         color="var(--atelier-fg-muted)"
@@ -420,31 +421,40 @@ Astro.response.headers.set(
               })}
             </Grid>
           ) : (
-            <Box
-              border="1px solid"
-              borderColor="var(--atelier-line)"
-              bg="var(--atelier-surface-low)"
-              p={{ base: '8', md: '12' }}
-              mb="20"
-              textAlign="center"
-            >
-              <Text
-                fontFamily="var(--font-code)"
-                fontSize="10px"
-                textTransform="uppercase"
-                letterSpacing="0.15em"
-                color="var(--atelier-outline)"
-                mb="4"
+            homeUnavailable && (
+              <Box
+                border="1px solid"
+                borderColor="var(--atelier-line)"
+                bg="var(--atelier-surface-low)"
+                p={{ base: '8', md: '12' }}
+                mb="20"
+                textAlign="center"
               >
-                {t('project.status-unavailable')}
-              </Text>
-              <Heading as="h3" fontSize={{ base: 'xl', md: '2xl' }} mb="3">
-                {t('home.projects-empty-title')}
-              </Heading>
-              <Text color="var(--atelier-outline)" fontSize="sm">
-                {t('home.projects-empty-description')}
-              </Text>
-            </Box>
+                <Text
+                  fontFamily="var(--font-code)"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  letterSpacing="0.15em"
+                  color="var(--atelier-outline)"
+                  mb="4"
+                >
+                  {t('project.status-unavailable')}
+                </Text>
+                <Heading as="h3" fontSize={{ base: 'xl', md: '2xl' }} mb="3">
+                  {t('home.projects-empty-title')}
+                </Heading>
+                <Text color="var(--atelier-outline)" fontSize="sm">
+                  {t('home.projects-empty-description')}
+                </Text>
+                <a
+                  href={Astro.url.pathname}
+                  class="amber-link"
+                  style="display:inline-flex;align-items:center;min-height:44px;margin-top:0.5rem"
+                >
+                  {t('project.reload')}
+                </a>
+              </Box>
+            )
           )
         }
         <Stack gap="8">
@@ -478,8 +488,7 @@ Astro.response.headers.set(
                 >
                   <Box
                     className="fallback-grid-lines"
-                    borderBottom="1px solid"
-                    borderColor="var(--atelier-line)"
+                    borderBottom="1px solid var(--atelier-line)"
                     bg="var(--atelier-surface-lowest)"
                     display="grid"
                     placeItems="center"
@@ -520,7 +529,7 @@ Astro.response.headers.set(
                       <span class="home-photos-frame" style={`aspect-ratio:${photoRatio(entry)}`}>
                         <img
                           src={`${entry.media[0].url}?format=jpg&name=small`}
-                          alt={subjectNames(entry).join(', ')}
+                          alt=""
                           loading="lazy"
                           decoding="async"
                           draggable="false"
@@ -528,8 +537,15 @@ Astro.response.headers.set(
                           data-kameko-image
                         />
                       </span>
-                      <span class="home-photos-name">{subjectNames(entry).join('、')}</span>
-                      <span class="home-photos-event">{entry.event}</span>
+                      <span class="home-photos-name" lang={photoLang}>
+                        {subjectNames(entry).join('、')}
+                      </span>
+                      <span class="home-photos-event" lang={photoLang}>
+                        {entry.event}
+                      </span>
+                      <styled.span srOnly>
+                        {t('photos.open-on-x')} {t('note.opens-new-tab')}
+                      </styled.span>
                     </a>
                   </li>
                 ))}

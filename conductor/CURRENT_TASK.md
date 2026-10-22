@@ -38,17 +38,13 @@ Balcony topology/cloth/drape/clearance scripts applied once; do not rerun. Origi
 
 Blue original033326574 inspected;033311397 is entry rack, contradicting spec index. No spec rewrite. refine_blue_curtains.py applied once; never rerun. Variable folds/header, hemz0.12m provisional. blue-curtains-before/after-20260930.png and blue-curtain-audit-20260930.json inspected; open/closed/half surfaces clear, no degenerate faces, minz>0.1199m; curtain-half-open-audit-20260930.json. Saved/public synchronized; cloth/photo acceptance open.
 
-Port4321 last checked: no listener. Server permission pending; do not start. Browser proof old.
+Port 4321: no listener at 2026-10-22 handoff; dev server is started per task and stopped after use. Browser proof current as of bed78b9 (see current section).
 
 ## Playable room work
 
 Existing darts, rubik, piano, typing, yoyo sessions exist; historical browser proof is not current. Required additions: kendama, juggling, penlights, cardistry and pen spinning on actual models. HTML minigame replacements, fake props, proxy hitboxes and autoplay scores are not acceptable. Preserve page overlay and exit/reset behavior across English/Japanese/Thai. Rug must not block walking; model itself supplies hit geometry.
 
-- Main changed `room-runtime.ts`: play cursor is none; pointer unlock/error/cancel respects active play. Browser verification pending.
-- `/root/props_play` is interrupted. Main reviewed the complete current `room-play-props.ts`; penlight Groups, card extraction/remapping/disposal, selection/reveal and pen pointer/center handling are corrected in source. Main added actual-surface pen support and full-dt substeps. Sessions are wired; runtime remains unverified.
-- `/root/interaction_audit` is interrupted. Main corrected `room-play-physics.ts` using decoded current asset measurements. Kendama/juggling resolve the actual nodes and support multimaterial Groups; cup contact, following positions and full-dt handling are present. Kendama now uses ring-derived cord length, preserved tube cross-sections, perpendicular slack bow, world-up launch and retryable misses. Both sessions remain subject to real browser verification.
-- Main integrated five PlayId/session registrations, en/ja/th control copy, juggling target/label/focus routing, actual ball metadata and user-visible initialization failure recovery. TS formatted; real browser proof pending.
-- Original refine_chair_cushion.py restored exactly; new seat code refine_chair_v2_seat.py. Preserve original back-pad script.
+- All ten play sessions (darts, rubik, piano, typing, yoyo, penspinning, kendama, cardistry, penlight, juggling) start on the real models in the browser (2026-10-21); kendama capped-cord topology fixed in room-play-physics.ts withoutEndCaps.
 
 ## Skill coverage
 
@@ -71,17 +67,33 @@ Remaining: top-view/floorplan/physical inspection, every item comparison, public
 
 Active: individual interpreted six-view PNGs for every room item, including each plush; isolated parallel modelling authorized. Retain observed identity and design hidden surfaces without further reference requests. One item per PNG, sequential generation, source/generated side by side before advancing. Rejected atlases do not establish coverage. Design index: assets/room/design-sheets/README.md. Originals immutable; no inference downloads. Bottom sleeves saved, public prior lower-album version. Acceptance open.
 
-## 2026-10-21/22 whole-app UX/antislop pass (current)
+## 2026-10-22 round 2 unslop (ACTIVE)
 
-- Goal: whole app through ux-heuristics + antislop (global mode during) plus open room items. Prior room work committed a72e184 (local).
-- Done (uncommitted at time of writing): 4 audits (shell/home/about/contact/404, projects/tags, notes/events/photos, hobbies/namecard) verified and fixed via 4 file-scoped agents plus main. Brand chrome mandated by docs/design/README.md and pinned by round contracts kept (eyebrow chips, rail MENU chip and language panel, hobby letter plate, notes stat strip, short-carousel rule, event highlight icons).
-- Verified: 362/362 contract tests (incl. formerly failing font-weight test), astro check 0 errors, lint 0 errors, production build exit 0; sweep of every route x en/ja/th x 1440/402: no horizontal overflow, no em dashes, no missing alt, no console errors, no sub-44px controls except prose links (27-32px, above WCAG 24px). Double rule beside rail fixed (events hero, hobby headline).
-- Room: desk fan toggle verified in browser (frame diff 0.41 running vs 0.03 off); labels hide under HUD; room-preview.webp regenerated from current model (day entry view, 60 KB). Public GLB SHA-256 a0686c9ff5b3682e0f97f26d4cde44f5105a65a4c00cd80c32a5c0e9e6db141a, source 09b15f76191adb35a4180dd5f0bdbfbd6b6e202b13a796a76969ef7b6bc1067a.
-- Disk: swap at ~12 GB fills the shared volume; keep dev server and agent-browser closed when idle; delete regenerable export intermediates after publishing.
-- Owner decisions 2026-10-22 applied: rail MENU chip and language box dropped (tests updated: rail is navigation only); eyebrow chips and event icons kept; triangle budget 700k (build-plan.json); hobby detail letter plate removed (tests updated); hosted generation approved for acrylic art.
-- Acrylic: 24 Bay copies (r20 stands 1-4; r21/r22/r23/r30 stands 0-4) use stand-86..109.png, generated with Codex CLI built-in image generation (codex exec, native transparency; replaced a first Figma-generated set). Recovery quads rebuilt from Artwork UV least squares. 109 stands / 109 distinct / 0 repeats in scene and exported GLB. Source SHA-256 f6713cc1a77b94c7781b532fc5a6543fe105d1e69dbb8b38c295931e73441e93; audits floating176/intersections550/sinks17/wall0; 671,688 tris. Public GLB 6995b1388322f9c29e54ed8ebe9ab3b05c087612351ec018c72c8abb74d01ec8 (13.2 MB), browser load verified, no console errors. Image generation: use codex exec built-in imagegen, not paid hosted tools.
-- Still owner-only: home tools list / availability / current focus facts (unchanged content).
-- Next: push only on owner request.
+- Goal: another unslop round over the site using antislop (mode during, global pref), ux-heuristics, taste-design. Ultracode opt-in: multi-agent workflow allowed.
+- Scope: every route x en/ja/th x 1440/402. Owner-pinned decisions (brand chrome, eyebrows, event icons, rail without MENU/language box, no hobby plate) and round contracts stay; taste-design font/serif/centered-hero bans do not override docs/design/README.md.
+- Method: one agent-browser session `unslop-r2` captures; read-only audit agents over captures+source; verify; fix with disjoint file ownership; gates (tests from repo root, astro check, lint, build); re-sweep; close server/browser.
+- Not authorized: push/merge/deploy, paid generation, room model edits.
+- Done: dev server on 4321 (harness bg task; Netlify edge shim errors, pages 200); 90 captures + metrics in session scratchpad; audit workflow wf_1b4976c5-61e: 50 confirmed (8 owner questions held), audit.json in scratchpad.
+- Fix workflow wf_fd43e2dd-43a applied 43 findings + main fixes (tags copy/reload, contract needle, notes TH labels, note /doc/ links via linksPrefix 29/29 resolve). Gates: 359/359, astro check 0, lint 0 errors, format clean, build exit 0. Recapture: no small targets/overflow.
+- Correction (GYST): owner asked "ultracode pro max"; I capped orchestration at the medium default (single pass, 1 verifier, 1 sample per detail route). Rule added to AGENTS.md operational notes. Action: capture every detail page (42 projects, ~21 notes, 7 hobbies, 33 tags) and run lens-split loop-until-dry audit, 3-vote verify, completeness critic, independent review of current diff.
+- Session restarted mid-run; dev server restarted (bg). caps3: 494 detail captures (140 routes) + metrics: 0 overflow/console errors; carousel dots <44px; em dashes only in CMS bodies.
+- Diff review wf_62a54381-d50: 21 confirmed, fixed: drawer aria-label removed, inactive re-sort reverted (featured order is an owner question), project links before prose in DOM, current-tag chip fill, URL-count regex, linksPrefix only for /doc/ + attachments proxied (200), notes pages list nav/h2/ul, photos script on astro:page-load (viewer was dead after filter nav; verified), people row focus room, empty-chip filter, contact tracking, streak inactive key (unit keys removed), room clock order via CSS (verified TH), docs states. Deferred: per-part known-label numbering on split hobby bodies (S4).
+- PAUSED at owner request: pro-max audit wf_39ba0d70-028 stopped in round 2. Interim: conductor/unslop-round2-findings.md (62 confirmed of 74 verified; 754 raw round-1 findings in conductor/unslop-round2-raw-findings.json). Dedup truncation bug: only first 180 KB of raw output was deduped, so notes/hobbies/tags/events/photos/about/contact/room raw findings are unverified.
+- Agents stay paused. Main applied 53/56 non-owner confirmed findings solo (status section in the findings file); gates green; browser-verified. Dev server restarted once for stale Vite deps (504 on transitions deps). Uncommitted work: 53 files (round-2 fixes + review fixes), gates green before pause (359/359, check 0, lint 0 errors).
+- RESUMED (owner: full force). Machine rebooted; old scratchpad captures lost. Running: recapture of 151 routes (bg, session scratchpad caps/), dedup workflow wf_33b3edf8-8dd (29 units, per-unit, no truncation, drops fixed/handled).
+- Dedup done: 241 still-open findings (35 owner questions) in conductor/unslop-round2-deduped.json. Running: verify+fix workflow wf_e915a3c1-10b (3 verifiers per batch of 5; 9 fix groups with disjoint ownership; shared index.css/common.json/home/layout applied last by one agent).
+- Next: gates -> browser verify -> independent diff review -> update findings file -> close server/browser.
+- Owner questions: home Life cards labels/targets; featured sort unlabeled; events duplicate rankings; contact namecard slugs; room "Tokyo automatic" wording; room entry eyebrow; home/about availability+focus facts.
+
+## 2026-10-21/22 room perf + whole-app UX/antislop pass (shipped)
+
+- State: DONE and shipped. dev, origin/dev, main, origin/main all at bed78b9 (7 commits a72e184..bed78b9 over bdb72eb). Working tree clean. Push and fast-forward of main done at owner request; CI run 39637764950 passed; Deploy run 39637764979 was in progress at handoff (check with `gh run view 39637764979`).
+- Full handoff: docs/HANDOFF_2026-10-22.md (methodology, commands, traps, verification matrix).
+- Room: render on demand + adaptive motion pixel ratio + AO on settle; three-mesh-bvh raycasts; HUD rebuilt; kendama capped-cord fix; darts anchor; desk fan toggle; dart uprights, mic shock-mount cords, towel folds fixed in Blender; 109/109 unique acrylic prints (stand-86..109 via codex exec built-in imagegen). Source room-v2.blend f6713cc1...; public room.glb 6995b138... (13,167,820 B); room-preview.webp 724d50a9....
+- App: all routes audited and fixed (ux-heuristics + antislop during); owner decisions 2026-10-22: rail MENU/language box dropped, eyebrows and event icons kept, hobby letter plate removed, triangle budget 700k.
+- Verified: 359/359 contract tests, astro check 0 errors, lint 0 errors, build exit 0 on 2cd94c8 state; 126-combination browser sweep clean except two 44px links fixed in bed78b9 (those two pages re-verified; full sweep not re-run after bed78b9).
+- Open (owner): confirm home tools list / "open to freelance" / "current focus" copy. Optional: rerun full sweep; confirm Deploy success. Handoff verified 2026-10-22 against live git/CI/Blender state.
+- Rules learned: image generation via `codex exec` built-in imagegen (free), never paid hosted tools; check process/port before declaring Blender down; swap fills disk, delete own intermediates and keep dev server/browser closed when idle.
 
 ## Native candidate review
 

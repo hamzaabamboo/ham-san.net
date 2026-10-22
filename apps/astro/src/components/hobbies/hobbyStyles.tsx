@@ -111,6 +111,7 @@ export const hobbyStyles = {
   detailMain: css({
     display: 'grid',
     gap: '8',
+    alignSelf: 'start',
     minW: '0'
   }),
   detailAside: css({
@@ -130,24 +131,34 @@ export const hobbyStyles = {
     border: '1px solid var(--atelier-line)',
     minW: '0',
     p: 'clamp(1.5rem, 3vw, 2rem)',
-    bg: 'var(--atelier-surface-low)'
+    bg: 'var(--atelier-surface-low)',
+    '[data-has-aside="false"] &': {
+      maxW: 'calc(42rem + 4rem + 2px)'
+    }
   }),
   detailPanel: css({
     border: '1px solid var(--atelier-line)',
     p: 'clamp(1.5rem, 3vw, 2rem)',
-    bg: 'var(--atelier-bg)'
+    bg: 'var(--atelier-bg)',
+    '[data-has-aside="false"] &': {
+      maxW: 'calc(42rem + 4rem + 2px)'
+    }
   }),
   detailPanelTitle: css({
     m: '0 0 1rem',
     color: 'var(--atelier-outline)',
     fontFamily: 'var(--font-code)',
     fontSize: { base: '11px', md: '10px' },
+    fontWeight: 'normal',
     letterSpacing: '0.12em',
     textTransform: 'uppercase'
   }),
   detailNested: css({
     display: 'grid',
     gap: '3',
+    m: '0',
+    p: '0',
+    listStyle: 'none',
     '& a': {
       display: 'flex',
       gap: '4',
@@ -164,7 +175,7 @@ export const hobbyStyles = {
     '& a span:first-child': {
       overflowWrap: 'anywhere'
     },
-    '& a span:last-child': {
+    '& a span:last-child:not(:first-child)': {
       color: 'var(--atelier-outline)',
       fontFamily: 'var(--font-code)',
       fontSize: { base: '11px', md: '10px' },

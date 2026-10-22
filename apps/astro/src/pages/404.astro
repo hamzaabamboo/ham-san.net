@@ -8,7 +8,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<MainLayout title={`404 | ${t('common.page-not-found')}`}>
+<MainLayout title={`404 · ${t('common.page-not-found')} | ${t('common.name')}`}>
   <Container maxW="breakpoint-xl" className="page-shell">
     {
       /* Every other page is built on a hard left-aligned spine; centring made this the one
@@ -51,7 +51,9 @@ const t = useTranslations(lang);
         </Text>
 
         <Flex gap="3" flexWrap="wrap">
-          <a href={`/${lang}/`} class="not-found-cta"> {t('common.return-home')} </a>
+          <a href={`/${lang}/`} class="not-found-cta blocky-shadow blocky-shadow-hover">
+            {t('common.return-home')}
+          </a>
           <a href={`/${lang}/projects`} class="not-found-link"> {t('common.projects')} </a>
           <a href={`/${lang}/contact`} class="not-found-link"> {t('common.contact')} </a>
         </Flex>
@@ -74,10 +76,6 @@ const t = useTranslations(lang);
     background: var(--atelier-accent);
     padding: 0 20px;
     text-decoration: none;
-    transition: opacity 0.15s ease;
-  }
-  .not-found-cta:hover {
-    opacity: 0.85;
   }
   .not-found-link {
     display: inline-flex;
@@ -99,5 +97,12 @@ const t = useTranslations(lang);
   .not-found-link:hover {
     border-color: var(--atelier-outline);
     color: var(--atelier-fg);
+  }
+  @media (max-width: 640px) {
+    .not-found-cta,
+    .not-found-link {
+      width: 100%;
+      justify-content: center;
+    }
   }
 </style>

@@ -3,7 +3,6 @@ import { Box, Container, Grid, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthSpan, formatMonthYear, parseDate } from 'utils/date';
 import { toKebabCase } from 'utils/kebab-case';
 import { Heading } from '~/components/ui/heading';
-import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
 import { withLastGood } from '~/utils/cms-cache';
@@ -13,8 +12,9 @@ import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
 import Eyebrow from '~/components/common/Eyebrow.astro';
+import TagChip from '~/components/about/TagChip.astro';
 import { pickLocale } from '~/utils/fallbackLocale';
-import { sortTags } from '~/utils/tags';
+import { sortTags, tagSlug } from '~/utils/tags';
 
 export const prerender = false;
 
@@ -41,6 +41,26 @@ const formatDuration = (start?: string, end?: string) => {
   return formatMonthSpan(startDate, endDate, locale);
 };
 
+const stripMarkdown = (text: string): string =>
+  text
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/https?:\/\/\S+/g, '')
+    .replace(/`([^`]*)`/g, '$1')
+    .replace(/(\*\*|__)(.*?)\1/g, '$2')
+    .replace(/(\*|_)(.*?)\1/g, '$2')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const extractListItems = (md: string, limit = 3): string[] =>
+  md
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => /^[-*]\s/.test(line))
+    .map((line) => stripMarkdown(line.replace(/^[-*]\s+/, '')))
+    .filter(Boolean)
+    .slice(0, limit);
+
 const extractFirstParagraph = (md: string): string => {
   const lines = md.split('\n');
   const paragraphs: string[] = [];
@@ -59,16 +79,9 @@ const extractFirstParagraph = (md: string): string => {
     current += (current ? ' ' : '') + line.trim();
   }
   if (current) paragraphs.push(current.trim());
-  return (paragraphs[0] ?? '')
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-    .replace(/https?:\/\/\S+/g, '')
-    .replace(/`([^`]*)`/g, '$1')
-    .replace(/(\*\*|__)(.*?)\1/g, '$2')
-    .replace(/(\*|_)(.*?)\1/g, '$2')
+  return stripMarkdown(paragraphs[0] ?? '')
     .replace(/(?:^|(?<=[.!?]))[^.!?]*\bas follows\b[.:]?\s*$/i, '')
     .replace(/(?:^|(?<=。))[^。]*（以下参照）[。：:]?\s*$/, '')
-    .replace(/\s+/g, ' ')
     .trim();
 };
 
@@ -82,6 +95,8 @@ const groupByType = <T extends { type: Enum_Tag_Type }>(items: T[]) =>
   }, {});
 
 const cmsLocale = locale === 'ja' ? 'ja' : 'en';
+const cmsFallback = cmsLocale !== locale;
+const cmsLang = cmsFallback ? cmsLocale : undefined;
 
 let educations: any[] | null = null;
 let experiences: any[] | null = null;
@@ -99,13 +114,24 @@ try {
   aboutUnavailable = true;
 }
 
+const currentRoleTags = (() => {
+  const first = experiences?.[0];
+  const exp = first ? pickLocale(first, locale) : null;
+  const list = exp?.tags?.length ? exp.tags : first ? pickLocale(first, 'en')?.tags : null;
+  return list ? sortTags(nonNullTags(list)).filter((tag) => tag.title || tag.slug) : [];
+})();
+const currentRoleSlugs = new Set(currentRoleTags.map((tag) => tag.slug));
+
 const skillTags = (tags?.filter(
   (tag: any): tag is NonNullable<typeof tag> & { type: Enum_Tag_Type } =>
-    !!tag?.title && !!tag?.slug && !!tag?.type && tag.type !== Enum_Tag_Type.NonDev
+    !!tag?.title &&
+    !!tag?.slug &&
+    !!tag?.type &&
+    tag.type !== Enum_Tag_Type.NonDev &&
+    !currentRoleSlugs.has(tag.slug)
 ) ?? []) as Array<NonNullable<NonNullable<typeof tags>[number]> & { type: Enum_Tag_Type }>;
 
 const skills = groupByType(skillTags);
-const profileFocus = skillTags.slice(0, 4);
 
 Astro.response.headers.set(
   'CDN-Cache-Control',
@@ -132,6 +158,25 @@ Astro.response.headers.set(
         <Text maxW="2xl" fontSize="lg" color="var(--atelier-fg-muted)" lineHeight="1.8">
           {t('about-me.hero-summary')}
         </Text>
+        {
+          aboutUnavailable && (
+            <Wrap gap="4" alignItems="center" role="status" mt="2">
+              <Text color="var(--atelier-fg-muted)">{t('about-me.unavailable-notice')}</Text>
+              <a
+                href={`/${locale}/about`}
+                style="color:var(--atelier-fg);text-decoration:underline;display:inline-block;padding-block:0.75rem"
+              >
+                {t('about-me.reload')}
+              </a>
+              <a
+                href={`/${locale}/contact`}
+                style="color:var(--atelier-fg);text-decoration:underline;display:inline-block;padding-block:0.75rem"
+              >
+                {t('common.contact')}
+              </a>
+            </Wrap>
+          )
+        }
       </Stack>
 
       <Grid
@@ -141,6 +186,18 @@ Astro.response.headers.set(
         <Stack gap="16" order={{ base: 1, xl: 2 }}>
           <Stack gap="8">
             <SectionHeading label={t('common.experiences')} />
+            {
+              cmsFallback && experiences && experiences.length > 0 && (
+                <Text
+                  fontFamily="var(--font-code)"
+                  fontSize="xs"
+                  color="var(--atelier-fg-muted)"
+                  className="mono-label"
+                >
+                  {t('about-me.source-english')}
+                </Text>
+              )
+            }
             {
               experiences && experiences.length > 0 ? (
                 <Box position="relative" pl={{ base: '6', md: '12' }}>
@@ -156,10 +213,12 @@ Astro.response.headers.set(
                     {experiences.map((d, idx) => {
                       const exp = pickLocale(d, locale);
                       if (!exp) return null;
-                      const { title, content, position, tags: expTags } = exp;
+                      const { title, content, position } = exp;
+                      const expTags = exp.tags?.length ? exp.tags : pickLocale(d, 'en')?.tags;
                       const dateRange = formatDateRange(exp.start as string, exp.end as string);
                       const duration = formatDuration(exp.start as string, exp.end as string);
                       const blurb = content ? extractFirstParagraph(content) : '';
+                      const blurbItems = !blurb && content ? extractListItems(content) : [];
                       return (
                         <Box position="relative">
                           <Box
@@ -178,7 +237,7 @@ Astro.response.headers.set(
                             borderColor="var(--atelier-line)"
                             bg="var(--atelier-surface-low)"
                             p="8"
-                            className="blocky-shadow blocky-shadow-hover exp-card-hover"
+                            className="blocky-shadow"
                           >
                             <Stack gap="1">
                               <Heading
@@ -188,47 +247,38 @@ Astro.response.headers.set(
                                 fontStyle="normal"
                                 textTransform="uppercase"
                                 letterSpacing="-0.02em"
+                                lang={cmsLang}
                               >
                                 {position}
                               </Heading>
-                              <Text
-                                fontFamily="var(--font-code)"
-                                fontSize="xs"
-                                color="var(--atelier-accent)"
-                              >
-                                {[title, dateRange].filter(Boolean).join(' · ')}
-                                {duration && ` (${duration})`}
+                              <Text fontFamily="var(--font-code)" fontSize="xs">
+                                <Box as="span" color="var(--atelier-fg)">
+                                  {title}
+                                </Box>
+                                <Box as="span" color="var(--atelier-fg-muted)">
+                                  {title && (dateRange || duration) ? ' · ' : ''}
+                                  {dateRange}
+                                  {duration && (
+                                    <Text as="span" whiteSpace="nowrap">
+                                      {t('project.duration-span').replace('{duration}', duration)}
+                                    </Text>
+                                  )}
+                                </Box>
                               </Text>
                             </Stack>
                             {expTags && nonNullTags(expTags).length > 0 && (
                               <Wrap gap="2" mt="4">
                                 {sortTags(nonNullTags(expTags))
+                                  .filter((s) => s.title || s.slug)
                                   .slice(0, 3)
-                                  .map(
-                                    (s) =>
-                                      s.slug && (
-                                        <Link
-                                          href={`/${locale}/tags/${s.slug}`}
-                                          display="inline-flex"
-                                          minW="44px"
-                                          minH="44px"
-                                          alignItems="center"
-                                        >
-                                          <Box
-                                            px="2"
-                                            py="1"
-                                            border="1px solid"
-                                            borderColor="var(--atelier-line)"
-                                            fontFamily="var(--font-code)"
-                                            fontSize="10px"
-                                            textTransform="uppercase"
-                                            color="var(--atelier-fg-muted)"
-                                          >
-                                            {s.title}
-                                          </Box>
-                                        </Link>
-                                      )
-                                  )}
+                                  .map((s) => (
+                                    <TagChip
+                                      label={s.title ?? s.slug ?? ''}
+                                      href={
+                                        tagSlug(s) ? `/${locale}/tags/${tagSlug(s)}` : undefined
+                                      }
+                                    />
+                                  ))}
                               </Wrap>
                             )}
                             {blurb && (
@@ -237,15 +287,42 @@ Astro.response.headers.set(
                                 fontSize="md"
                                 lineHeight="1.8"
                                 mt="5"
+                                lang={cmsLang}
                               >
                                 {blurb}
                               </Text>
+                            )}
+                            {blurbItems.length > 0 && (
+                              <Stack gap="2" mt="5" lang={cmsLang}>
+                                {blurbItems.map((item) => (
+                                  <Text
+                                    color="var(--atelier-fg-muted)"
+                                    fontSize="md"
+                                    lineHeight="1.7"
+                                  >
+                                    – {item}
+                                  </Text>
+                                ))}
+                              </Stack>
                             )}
                           </Stack>
                         </Box>
                       );
                     })}
                   </Stack>
+                </Box>
+              ) : !aboutUnavailable ? (
+                <Box py="4">
+                  <Text
+                    fontFamily="var(--font-code)"
+                    fontSize="10px"
+                    textTransform="uppercase"
+                    letterSpacing="0.15em"
+                    color="var(--atelier-outline)"
+                    className="mono-label"
+                  >
+                    {t('common.records-pending')}
+                  </Text>
                 </Box>
               ) : (
                 <Box
@@ -261,6 +338,7 @@ Astro.response.headers.set(
                       textTransform="uppercase"
                       letterSpacing="0.15em"
                       color="var(--atelier-outline)"
+                      className="mono-label"
                     >
                       {t('note.status-unavailable')}
                     </Text>
@@ -294,7 +372,7 @@ Astro.response.headers.set(
                 border="1px solid"
                 borderColor="var(--atelier-line)"
                 bg="linear-gradient(135deg, rgba(255, 176, 0, 0.06), transparent 42%), var(--atelier-bg)"
-                p="5"
+                p="8"
                 gap="4"
               >
                 <Text
@@ -303,39 +381,26 @@ Astro.response.headers.set(
                   textTransform="uppercase"
                   letterSpacing={locale === 'th' ? 'normal' : '0.12em'}
                   color="var(--atelier-accent)"
+                  className="mono-label"
                 >
                   {t('about-me.current-stack')}
                 </Text>
                 <Wrap gap="2">
                   {
-                    profileFocus.length > 0 ? (
-                      profileFocus.map((tag) => (
-                        <Link
-                          href={tag.slug ? `/${locale}/tags/${tag.slug}` : '#'}
-                          display="inline-flex"
-                          minH="44px"
-                          alignItems="center"
-                        >
-                          <Box
-                            px="2"
-                            py="1"
-                            border="1px solid"
-                            borderColor="var(--atelier-line)"
-                            fontFamily="var(--font-code)"
-                            fontSize="10px"
-                            textTransform="uppercase"
-                            color="var(--atelier-fg-muted)"
-                          >
-                            {tag.title}
-                          </Box>
-                        </Link>
+                    currentRoleTags.length > 0 ? (
+                      currentRoleTags.map((tag) => (
+                        <TagChip
+                          label={tag.title ?? tag.slug ?? ''}
+                          href={tagSlug(tag) ? `/${locale}/tags/${tagSlug(tag)}` : undefined}
+                        />
                       ))
-                    ) : (
+                    ) : aboutUnavailable ? null : (
                       <Text
                         fontFamily="var(--font-code)"
                         fontSize="10px"
                         textTransform="uppercase"
                         color="var(--atelier-outline)"
+                        className="mono-label"
                       >
                         {t('common.records-pending')}
                       </Text>
@@ -412,7 +477,7 @@ Astro.response.headers.set(
                         <Text
                           fontFamily="var(--font-code)"
                           fontSize="xs"
-                          color="var(--atelier-accent)"
+                          color="var(--atelier-fg-muted)"
                           mb="1"
                         >
                           {formatDateRange(edu.start as string, edu.end as string)}
@@ -424,18 +489,19 @@ Astro.response.headers.set(
                           fontWeight="bold"
                           textTransform="uppercase"
                           letterSpacing="-0.02em"
+                          lang={cmsLang}
                         >
                           {edu.title}
                         </Heading>
                         {edu.description && !/^\s*[（(]なし[)）]\s*$/.test(edu.description) && (
-                          <Text color="var(--atelier-fg-muted)" fontSize="sm" mt="1">
+                          <Text color="var(--atelier-fg-muted)" fontSize="sm" mt="1" lang={cmsLang}>
                             {edu.description}
                           </Text>
                         )}
                       </Box>
                     );
                   })
-                ) : (
+                ) : aboutUnavailable ? null : (
                   <Box py="4">
                     <Text
                       fontFamily="var(--font-code)"
@@ -443,6 +509,7 @@ Astro.response.headers.set(
                       textTransform="uppercase"
                       letterSpacing="0.15em"
                       color="var(--atelier-outline)"
+                      className="mono-label"
                     >
                       {t('common.records-pending')}
                     </Text>
@@ -467,8 +534,28 @@ Astro.response.headers.set(
               {t('about-me.methodology-coda')}
             </Text>
           </Stack>
-          <Stack gap="8">
+          <Stack
+            gap="8"
+            border="1px solid"
+            borderColor="var(--atelier-line)"
+            bg="var(--atelier-surface-low)"
+            p="8"
+          >
             <SectionHeading label={t('about-me.skills')} />
+            {
+              Object.keys(skills).length === 0 && !aboutUnavailable && (
+                <Text
+                  fontFamily="var(--font-code)"
+                  fontSize="10px"
+                  textTransform="uppercase"
+                  letterSpacing="0.15em"
+                  color="var(--atelier-outline)"
+                  className="mono-label"
+                >
+                  {t('common.records-pending')}
+                </Text>
+              )
+            }
             {
               Object.keys(skills)
                 .slice(0, 2)
@@ -484,30 +571,16 @@ Astro.response.headers.set(
                         textTransform="uppercase"
                         color="var(--atelier-accent)"
                         letterSpacing={locale === 'th' ? 'normal' : '0.1em'}
+                        className="mono-label"
                       >
                         {t(`common.${toKebabCase(key) as 'frontend'}`)}
                       </Text>
                       <Wrap gap="2">
                         {sorted.map((s) => (
-                          <Link
-                            href={s.slug ? `/${locale}/tags/${s.slug}` : '#'}
-                            display="inline-flex"
-                            minH="44px"
-                            alignItems="center"
-                          >
-                            <Box
-                              px="2"
-                              py="1"
-                              border="1px solid"
-                              borderColor="var(--atelier-line)"
-                              fontFamily="var(--font-code)"
-                              fontSize="10px"
-                              textTransform="uppercase"
-                              color="var(--atelier-fg-muted)"
-                            >
-                              {s.title}
-                            </Box>
-                          </Link>
+                          <TagChip
+                            label={s.title}
+                            href={tagSlug(s) ? `/${locale}/tags/${tagSlug(s)}` : undefined}
+                          />
                         ))}
                       </Wrap>
                     </Stack>
@@ -521,6 +594,7 @@ Astro.response.headers.set(
                 textTransform="uppercase"
                 color="var(--atelier-accent)"
                 letterSpacing={locale === 'th' ? 'normal' : '0.1em'}
+                className="mono-label"
               >
                 {t('about-me.tools')}
               </Text>
@@ -552,7 +626,7 @@ Astro.response.headers.set(
           column's rule and read as a footnote to the last job, while the left rail ended
           ~230px above it. */
       }
-      <Stack gap="4" pt="10" borderTop="1px solid" borderColor="var(--atelier-line)">
+      <Stack gap="4" pt="10" borderTop="1px solid var(--atelier-line)">
         <Text fontSize="2xl" lineHeight="1.6" fontFamily="var(--font-display)" maxW="4xl">
           {t('about-me.bio-integrity')}
         </Text>
@@ -564,19 +638,19 @@ Astro.response.headers.set(
 
     <section class="credentials-grid">
       <div class="credentials-cell">
-        <span>{t('about-me.credentials-certification')}</span>
+        <span class="credentials-key">{t('about-me.credentials-certification')}</span>
         <span class="credentials-value">{t('about-me.credentials-certification-value')}</span>
       </div>
       <div class="credentials-cell">
-        <span>{t('about-me.credentials-location')}</span>
+        <span class="credentials-key">{t('about-me.credentials-location')}</span>
         <span class="credentials-value-alt">{t('about-me.credentials-location-value')}</span>
       </div>
       <div class="credentials-cell">
-        <span>{t('about-me.credentials-availability')}</span>
+        <span class="credentials-key">{t('about-me.credentials-availability')}</span>
         <span class="credentials-value">{t('about-me.credentials-availability-value')}</span>
       </div>
       <div class="credentials-cell">
-        <span>{t('about-me.credentials-signal')}</span>
+        <span class="credentials-key">{t('about-me.credentials-signal')}</span>
         <a href="mailto:hello@ham-san.net" class="credentials-signal" style="text-transform:none"
           >hello@ham-san.net</a
         >

@@ -70,17 +70,12 @@ const items = [
         bg="var(--atelier-bg)"
         border="1px solid"
         borderColor="var(--atelier-line)"
-        p="5"
+        p={{ base: '6', md: '8' }}
         gap="2"
         role="region"
-        aria-label={t('contact.direct')}
+        aria-labelledby="contact-direct-heading"
       >
-        <Text
-          fontFamily="var(--font-code)"
-          fontSize="10px"
-          textTransform="uppercase"
-          color="var(--atelier-outline)"
-        >
+        <Text as="h2" id="contact-direct-heading" className="contact-label" fontWeight="normal">
           {t('contact.direct')}
         </Text>
         <Link
@@ -99,17 +94,17 @@ const items = [
 
       <Stack gap="16">
         <Stack gap="12" minW="0">
-          <Stack gap="4" role="region" aria-label={t('contact.social-connectors')}>
-            <Text
-              fontFamily="var(--font-code)"
-              fontSize="10px"
-              textTransform="uppercase"
-              letterSpacing="0.2em"
-              color="var(--atelier-outline)"
-            >
+          <Stack gap="4" role="region" aria-labelledby="contact-social-heading">
+            <Text as="h2" id="contact-social-heading" className="contact-label" fontWeight="normal">
               {t('contact.social-connectors')}
             </Text>
-            <Grid gridTemplateColumns="repeat(auto-fit, minmax(min(100%, 320px), 1fr))" gap="2">
+            <Grid
+              gridTemplateColumns={{
+                base: 'repeat(2, minmax(0, 1fr))',
+                sm: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))'
+              }}
+              gap="2"
+            >
               {
                 items.map((item) => (
                   <Link
@@ -126,6 +121,8 @@ const items = [
                   >
                     <Text fontWeight="bold" fontSize="sm">
                       {item.label}
+                      <Glyph name="open_in_new" className="contact-social-glyph" />
+                      <span class="contact-sr-only">{t('note.opens-new-tab')}</span>
                     </Text>
                     <Text
                       fontFamily="var(--font-code)"
@@ -144,8 +141,8 @@ const items = [
         </Stack>
 
         <Stack gap="16" minW="0">
-          <Stack gap="6" role="region" aria-label={t('contact.namecards')}>
-            <SectionHeading label={t('contact.namecards')} />
+          <Stack gap="6" role="region" aria-labelledby="contact-namecards-heading">
+            <SectionHeading label={t('contact.namecards')} id="contact-namecards-heading" />
             {
               /* Full width with the variant list beside the card. Capping the stage to 40rem
                 left an empty right half under a heading rule that runs edge to edge; leaving
@@ -162,29 +159,28 @@ const items = [
               p={{ base: '6', md: '8' }}
               overflow="hidden"
             >
-              <Box maxW="full" className="contact-namecard-preview">
-                <Link
-                  href={`/${locale}/namecard/default`}
-                  display="block"
-                  w="91mm"
-                  h="55mm"
-                  className="contact-namecard-link"
-                >
-                  <InteractiveNamecard data={NAMECARDS[0]} />
-                </Link>
-              </Box>
-              <Stack gap="0" minW="0">
-                <Text
-                  fontFamily="var(--font-code)"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  letterSpacing="0.12em"
-                  color="var(--atelier-outline)"
-                  pb="3"
-                  borderBottom="1px solid"
-                  borderColor="var(--atelier-line)"
-                >
+              <Stack gap="3" minW="0">
+                <Box maxW="full" className="contact-namecard-preview">
+                  <Link
+                    href={`/${locale}/namecard/default`}
+                    aria-label={`${t('contact.default-card')}: ${NAMECARDS[0].label}`}
+                    display="block"
+                    w="91mm"
+                    h="55mm"
+                    className="contact-namecard-link"
+                  >
+                    <Box aria-hidden="true">
+                      <InteractiveNamecard data={NAMECARDS[0]} />
+                    </Box>
+                  </Link>
+                </Box>
+                <Text className="contact-label">
                   {t('contact.default-card')}
+                </Text>
+              </Stack>
+              <Stack gap="0" minW="0">
+                <Text className="contact-label" pb="3" borderBottom="1px solid var(--atelier-line)">
+                  {t('contact.all-cards')}
                 </Text>
                 {
                   NAMECARDS.map((card) => (
@@ -195,15 +191,13 @@ const items = [
                       alignItems="center"
                       gap="4"
                       minH="44px"
-                      borderBottom="1px solid"
-                      borderColor="var(--atelier-line)"
+                      borderBottom="1px solid var(--atelier-line)"
                       fontFamily="var(--font-code)"
                       fontSize="xs"
                       color="var(--atelier-fg-muted)"
                       _hover={{ color: 'var(--atelier-accent)' }}
                     >
                       <Text>{card.variant}</Text>
-                      <Glyph name="north_east" />
                     </Link>
                   ))
                 }
@@ -212,14 +206,11 @@ const items = [
                   display="inline-flex"
                   alignItems="center"
                   minH="44px"
+                  className="contact-label"
                   color="var(--atelier-accent)"
-                  textTransform="uppercase"
-                  fontSize="10px"
-                  letterSpacing="0.12em"
-                  fontFamily="var(--font-code)"
                   mt="2"
                 >
-                  {t('name-card.view-other-namecards')}
+                  {t('contact.namecard-sheet')}
                 </Link>
               </Stack>
             </Grid>
@@ -234,10 +225,9 @@ const items = [
             <Wrap
               justifyContent="space-between"
               alignItems="center"
-              px="8"
+              px={{ base: '6', md: '8' }}
               py="5"
-              borderBottom="1px solid"
-              borderColor="var(--atelier-line)"
+              borderBottom="1px solid var(--atelier-line)"
             >
               <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} fontStyle="normal">
                 {t('contact.form-heading')}
@@ -315,13 +305,7 @@ const items = [
                   required></textarea>
               </Stack>
               <Stack gap="2">
-                <Text
-                  fontWeight="bold"
-                  fontSize="sm"
-                  textTransform="uppercase"
-                  letterSpacing="0.2em"
-                  color="var(--atelier-accent-soft)"
-                >
+                <Text className="contact-label">
                   {t('contact.security-brief')}
                 </Text>
                 <Text color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="relaxed">
@@ -343,13 +327,18 @@ const items = [
       </Stack>
 
       <Grid gridTemplateColumns="minmax(0, 1fr)" gap="8">
-        <Stack border="1px solid" borderColor="var(--atelier-line)" p="6">
+        <Stack
+          border="1px solid"
+          borderColor="var(--atelier-line)"
+          p={{ base: '6', md: '8' }}
+          role="region"
+          aria-labelledby="contact-replies-heading"
+        >
           <Text
-            fontWeight="bold"
-            fontSize="sm"
-            textTransform="uppercase"
-            letterSpacing="0.2em"
-            color="var(--atelier-accent-soft)"
+            as="h2"
+            id="contact-replies-heading"
+            className="contact-label"
+            fontWeight="normal"
             mb="4"
           >
             {t('contact.office-hours')}
@@ -433,7 +422,15 @@ const items = [
     --namecard-scale: min(1, calc((100vw - 82px) / 91mm));
     width: calc(91mm * var(--namecard-scale));
     height: calc(55mm * var(--namecard-scale));
-    margin-inline: auto;
+  }
+
+  .contact-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
   .contact-namecard-link {

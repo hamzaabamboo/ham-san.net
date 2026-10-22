@@ -1,6 +1,6 @@
 {
   "busiest-months": "เดือนที่ไปมากที่สุด",
-  "show-all": "แสดงทั้งหมด",
+  "show-all": "แสดงทั้งหมด ({n})",
   "aria-hero-stats": "สถิติเด่นของอีเวนต์",
   "aria-rail": "ส่วนควบคุมรายงาน",
   "aria-status": "สถานะรายงาน",
@@ -21,5 +21,8 @@
   "all-on-eventernote": "ดูอีเวนต์ทั้งหมดบน Eventernote",
   "opens-new-tab": "(เปิดในแท็บใหม่)",
   "rail-toggle": "หัวข้อและปี",
-  "top-count": "{n} อันดับแรก"
+  "top-count": "{n} อันดับแรก",
+  "show-top": "แสดง {n} อันดับแรก",
+  "updated-at": "อัปเดต {time}",
+  "aria-chart-scroll": "แผนภูมิเลื่อนแนวนอน"
 }

@@ -1,7 +1,7 @@
 {
   "title": "Photos",
   "heading": "Photos",
-  "lede": "Portraits I shot at events and posted on X with #⁠カメコしてみた, plus earlier #⁠蓮ノ空 × #⁠zweigen posts. Every photo is shown straight from X and opens the original post.",
+  "lede": "Portraits I shot at events and posted on X with #⁠カメコしてみた, plus earlier #⁠蓮ノ空 × #⁠zweigen posts.",
   "filter-people": "People",
   "filter-events": "Events",
   "filter-tags": "Tags",
@@ -9,7 +9,6 @@
   "search-label": "Search photos",
   "search-placeholder": "Name, event or tag",
   "open-on-x": "Open on X",
-  "photos-count": "photos",
   "empty": "No photos match these filters.",
   "clear": "Clear filters",
   "source-note": "Photos load from X and link to their original posts. A post removed from X disappears here too.",
@@ -20,9 +19,13 @@
   "viewer-close": "Close",
   "viewer-prev": "Previous photo",
   "viewer-next": "Next photo",
-  "posts-count": "posts",
   "view-photo": "View photo",
   "search-submit": "Search",
   "clear-search": "Clear search",
-  "back-to-top": "Back to top"
+  "back-to-top": "Back to top",
+  "photos-one": "{n} photo",
+  "photos-other": "{n} photos",
+  "posts-one": "{n} post",
+  "posts-other": "{n} posts",
+  "viewer-error": "This photo could not be loaded. Open the original post on X."
 }

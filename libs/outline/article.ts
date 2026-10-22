@@ -10,6 +10,9 @@ export const getArticleBanner = (content?: string) => {
       .trim() ?? undefined
   );
 };
+export const getArticleBannerAlt = (content?: string) => {
+  return /!\[(.*?)\]\((.+?)(?:".*?")?\)/.exec(content ?? '')?.[1].trim() ?? '';
+};
 export const getArticleDescription = (content?: string) => {
   const plainText = (content ?? '')
     .replaceAll(/!\[(.*)\]\((.+)\)/g, '')

@@ -62,12 +62,6 @@ const normalize = (value?: string | null) => (value ?? '').trim().toLowerCase();
 const asString = (value: HobbyFrontmatter[string]) =>
   typeof value === 'string' ? value.trim() : undefined;
 
-const formatList = (items: string[]) => {
-  if (items.length <= 1) return items[0] ?? '';
-  if (items.length === 2) return `${items[0]} and ${items[1]}`;
-  return `${items.slice(0, -1).join(', ')}, and ${items.at(-1)}`;
-};
-
 const cleanDescription = (value?: string) => {
   const cleaned = value
     ?.replace(/!\[[^\]]*]\([^)]+\)/g, '')
@@ -99,24 +93,15 @@ const getProseDescription = (content: string) => {
     .filter(Boolean);
 
   const prose = paragraphs.find(
-    (paragraph) => !/^(#|[-*+]\s|!\[|<?https?:\/\/|www\.|::|<!--)/.test(paragraph)
+    (paragraph) =>
+      !/^(#|[-*+]\s|!\[|<?https?:\/\/|www\.|::|<!--)/.test(paragraph) &&
+      !/https?:\/\//.test(paragraph.slice(0, 40))
   );
 
   return cleanDescription(prose);
 };
 
 export const getHobbyBodyIntro = (body: string) => getProseDescription(body) ?? '';
-
-const getHeadingDescription = (content: string) => {
-  const headings = Array.from(content.matchAll(/^#{1,3}\s+(.+)$/gm))
-    .map((match) => cleanDescription(match[1]))
-    .filter((heading): heading is string => !!heading)
-    .map((heading, index) => (index === 0 ? heading : heading.toLowerCase()))
-    .slice(0, 3);
-
-  if (headings.length === 0) return undefined;
-  return `${formatList(headings)}.`;
-};
 
 const parseValue = (value: string) => {
   const trimmed = value.trim();
@@ -359,11 +344,7 @@ export const parseHobbyContent = ({
     cleanDescription(asString(meta.description)) ??
     cleanDescription(asString(meta.summary)) ??
     cleanDescription(asString(meta.categoryDescription));
-  const description =
-    authoredDescription ??
-    getProseDescription(sourceBody) ??
-    getHeadingDescription(sourceBody) ??
-    '';
+  const description = authoredDescription ?? getProseDescription(sourceBody) ?? '';
   const banner = asString(meta.banner) ?? asString(meta.image) ?? undefined;
 
   return {

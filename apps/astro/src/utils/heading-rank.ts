@@ -12,7 +12,10 @@
 // A fence may be indented up to three spaces, must be closed by a run at least as long as
 // the opener, and runs to EOF when never closed.
 
-export const FRONTMATTER = /^﻿?---\r?\n[\s\S]*?\r?\n---[ \t]*(?:\r?\n|$)/;
+// Only a block of YAML-shaped lines counts. Outline bodies have no frontmatter, and a note
+// that opens with a `---` rule lost everything up to its next rule as if it were metadata.
+export const FRONTMATTER =
+  /^﻿?---\r?\n(?:(?:[\w-]+[ \t]*:.*|[ \t]+\S.*|-[ \t].*|#.*|[ \t]*)\r?\n)*?---[ \t]*(?:\r?\n|$)/;
 
 // Headings are valid inside a blockquote, so the marker is stripped before matching.
 const QUOTE = /^ {0,3}(?:> ?)+/;
@@ -229,7 +232,7 @@ export const authoredHeadingLevels = (content: string): number[] => {
       return;
     }
 
-    // A list item's text IS a paragraph — it just lives inside the item, so a later run at
+    // A list item's text IS a paragraph, but it lives inside the item, so a later run at
     // column 0 underlines nothing. A table row, link-reference definition or rule is not a
     // paragraph at all.
     // With no paragraph open to continue, four spaces is an indented code block, not text.
@@ -245,7 +248,7 @@ export const authoredHeadingLevels = (content: string): number[] => {
 export const makeRankOf = (levels: number[]) => (level: number) => {
   const index = levels.indexOf(level);
   if (index !== -1) return index + 1;
-  // An unseen level must not fall back to its own depth — that reintroduces the absolute
+  // An unseen level must not fall back to its own depth, which reintroduces the absolute
   // mapping this exists to remove. Rank it against the nearest shallower level present.
   const shallower = levels.filter((candidate) => candidate < level).length;
   return Math.max(1, shallower === 0 ? 1 : shallower + 1);

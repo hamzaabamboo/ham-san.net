@@ -33,7 +33,10 @@ This page is for reading one note in full, with its contents, details and neighb
 - Prose is capped at 42rem; code, tables and chord charts can run wider and scroll.
 - Below 1280px a collapsible Contents list sits above the body, and a Back to notes link sits above the eyebrow.
 - The Details box shows the note's real collection name (hidden if unknown) and the date in Asia/Tokyo, matching the list.
-- External links carry a visually hidden "opens in a new tab". Bare YouTube and Google Photos URLs are labelled "YouTube video" and "Google Photos album" in each locale.
+- External links carry a visually hidden "opens in a new tab". Bare YouTube and Google Photos URLs are labelled "YouTube video" and "Google Photos album" in each locale; repeats on one page are numbered ("Google Photos album 2").
+- Outline links between documents (`/doc/{id}`) are rewritten to `/{locale}/notes/{share}/doc/{id}`, so they open on this site.
+- A note or section with child documents lists them under "Pages in this note" after the body, one 44 px row each, in the authored order from `collections.documents`. Previous/Next use the same order.
+- A child page shows a link to its parent note above the title.
 
 ## States
 

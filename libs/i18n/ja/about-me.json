@@ -19,5 +19,8 @@
   "tools": "ツール",
   "current-stack": "今のスタック",
   "timeline-empty-title": "タイムラインは現在利用できません",
-  "timeline-empty-description": "接続が戻ると、経歴が再表示されます。"
+  "timeline-empty-description": "接続が戻ると、経歴が再表示されます。",
+  "unavailable-notice": "プロフィールの記録を現在読み込めません。",
+  "reload": "再読み込み",
+  "source-english": "経歴と学歴は英語の原文で表示しています。"
 }

@@ -582,6 +582,15 @@ export const initRoom = (root: HTMLElement) => {
     })
     .catch(() => undefined);
 
+  const showFailure = () => {
+    status.textContent = root.dataset.roomError ?? copy.failed;
+    status.dataset.roomStatusError = '';
+    enterButton.disabled = true;
+    enterButton.hidden = true;
+    if (stage) stage.hidden = true;
+    if (preview) preview.hidden = false;
+  };
+
   let renderer: THREE.WebGLRenderer;
   try {
     renderer = new THREE.WebGLRenderer({
@@ -591,8 +600,7 @@ export const initRoom = (root: HTMLElement) => {
     });
   } catch {
     hobbyRoutesController.abort();
-    status.textContent = root.dataset.roomError ?? copy.failed;
-    enterButton.disabled = true;
+    showFailure();
     return;
   }
 
@@ -610,6 +618,8 @@ export const initRoom = (root: HTMLElement) => {
   renderer.toneMappingExposure = 1.0;
   renderer.domElement.tabIndex = 0;
   renderer.domElement.setAttribute('aria-label', copy.scene);
+  renderer.domElement.setAttribute('role', 'application');
+  renderer.domElement.setAttribute('aria-describedby', 'room-help');
   stage.replaceChildren(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -1426,7 +1436,17 @@ export const initRoom = (root: HTMLElement) => {
       return;
     }
     setHighlightedTarget(target);
-    hint.textContent = target ? `${labelFor(target)} · ${copy.look}` : '';
+    const action =
+      target === 'light' || target === 'fan'
+        ? copy.toggle
+        : target === 'nesoberi'
+          ? copy.pat
+          : target === 'closet'
+            ? closetOpen
+              ? copy.closetClose
+              : copy.closetOpen
+            : copy.look;
+    hint.textContent = target ? `${labelFor(target)} · ${action}` : '';
     hint.hidden = !target;
   };
 
@@ -1533,6 +1553,8 @@ export const initRoom = (root: HTMLElement) => {
         event.preventDefault();
         const nextUrl = new URL(href, window.location.href);
         nextUrl.searchParams.set('roomEmbed', '1');
+        panelStatus.hidden = false;
+        panelStatus.textContent = copy.loadingDescription;
         frameWindow.location.href = nextUrl.href;
       };
       frameDocument.addEventListener('click', onFrameClick, true);
@@ -1764,11 +1786,12 @@ export const initRoom = (root: HTMLElement) => {
     resting = true;
     focusActive = true;
     root.dataset.roomResting = 'true';
-    lieDownButton.textContent = copy.standUp;
     lieDownButton.setAttribute('aria-pressed', 'true');
     setComposition(true);
     setTransition(focusPose('projects'), focusDuration, () => {
-      hint.textContent = copy.resting;
+      hint.textContent = window.matchMedia('(pointer: coarse)').matches
+        ? copy.mobileResting
+        : copy.resting;
       hint.hidden = false;
     });
   };
@@ -1779,7 +1802,6 @@ export const initRoom = (root: HTMLElement) => {
     lookKeys.clear();
     moveTarget = null;
     focusActive = true;
-    lieDownButton.textContent = copy.lieDown;
     lieDownButton.setAttribute('aria-pressed', 'false');
     const pose = savedPose;
     if (!pose) {
@@ -2045,8 +2067,25 @@ export const initRoom = (root: HTMLElement) => {
 
   const onFrameLoad = () => {
     if (disposed || frame.hidden) return;
-    panelStatus.hidden = true;
     syncFrameNavigation();
+    let hasMain = true;
+    try {
+      const frameDocument = frame.contentDocument;
+      const framePath = frame.contentWindow?.location.pathname;
+      hasMain = !!frameDocument?.querySelector('main');
+      const tabs = [...panelTabs.querySelectorAll<HTMLButtonElement>('button')];
+      const matches = tabs.filter(
+        (tab) => framePath === toUrl(pathFor(tab.dataset.roomTab as ContentId))
+      );
+      if (matches.length < 2) {
+        tabs.forEach((tab) => tab.removeAttribute('aria-current'));
+        matches[0]?.setAttribute('aria-current', 'page');
+      }
+    } catch {
+      hasMain = true;
+    }
+    panelStatus.hidden = hasMain;
+    if (!hasMain) panelStatus.textContent = copy.playFailed;
     if (panel.open) frame.focus();
   };
 
@@ -2319,8 +2358,7 @@ export const initRoom = (root: HTMLElement) => {
     undefined,
     () => {
       if (disposed) return;
-      status.textContent = root.dataset.roomError ?? copy.failed;
-      enterButton.disabled = true;
+      showFailure();
     }
   );
 

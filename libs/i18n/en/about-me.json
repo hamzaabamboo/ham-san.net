@@ -19,5 +19,8 @@
   "tools": "Tools",
   "current-stack": "Current stack",
   "timeline-empty-title": "Timeline unavailable",
-  "timeline-empty-description": "Experience entries will show up again when the content connection is back."
+  "timeline-empty-description": "Experience entries will show up again when the content connection is back.",
+  "unavailable-notice": "Profile records are unavailable right now.",
+  "reload": "Reload",
+  "source-english": "Experience and education entries are shown in English."
 }

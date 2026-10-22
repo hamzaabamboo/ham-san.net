@@ -39,6 +39,7 @@ export const Sidebar = ({
   search,
   links,
   locales,
+  localeNames,
   labels
 }: {
   locale: Languages;
@@ -46,7 +47,8 @@ export const Sidebar = ({
   search: string;
   links: { label: string; value: string }[];
   locales: string[];
-  labels: { menu: string; menuOpen: string; menuClose: string; language: string };
+  localeNames: Record<string, string>;
+  labels: { menu: string; menuOpen: string; menuClose: string; language: string; home: string };
 }) => {
   const [open, setOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -163,7 +165,16 @@ export const Sidebar = ({
             />
             <div className="shell-drawer">
               <div className="shell-drawer-header">
-                <BrandMark />
+                <a
+                  href={`/${locale}/`}
+                  className="shell-drawer-brand"
+                  aria-label={labels.home}
+                  aria-current={
+                    pathname === `/${locale}/` || pathname === `/${locale}` ? 'page' : undefined
+                  }
+                >
+                  <BrandMark />
+                </a>
                 <button
                   ref={closeButtonRef}
                   onClick={() => setOpen(false)}
@@ -205,6 +216,9 @@ export const Sidebar = ({
                       key={code}
                       href={getCurrentURLWithLanguage(code)}
                       className="shell-drawer-locale-btn"
+                      lang={code}
+                      hrefLang={code}
+                      title={localeNames[code]}
                       data-active={code === locale ? 'true' : 'false'}
                       aria-current={code === locale ? 'true' : undefined}
                     >

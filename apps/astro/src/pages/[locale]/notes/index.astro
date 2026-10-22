@@ -1,5 +1,5 @@
 ---
-import { Box, Container, Grid, Stack, Wrap } from 'styled-system/jsx';
+import { Box, Container, Grid, Stack, Wrap, styled } from 'styled-system/jsx';
 import { Heading } from '~/components/ui/heading';
 import { Link } from '~/components/ui/link';
 import { Text } from '~/components/ui/text';
@@ -33,7 +33,6 @@ const headers = {
   Authorization: undefined as unknown as 'Bearer hoge'
 };
 const t = useTranslations(locale);
-const pageTitle = `${t('common.note')} | ${t('common.name')}`;
 
 const fetchSharePage = async (offset: number, pageLimit: number) => {
   const controller = new AbortController();
@@ -81,7 +80,13 @@ try {
   sharedArticlesList = undefined;
 }
 
-const allArticles = (sharedArticlesList ?? []).filter(Boolean);
+const noteDateOf = (article: { documentCreatedAt?: string; createdAt?: string }) =>
+  article.documentCreatedAt ?? article.createdAt;
+const noteTimeOf = (article: { documentCreatedAt?: string; createdAt?: string }) =>
+  Date.parse(noteDateOf(article) ?? '') || 0;
+const allArticles = (sharedArticlesList ?? [])
+  .filter(Boolean)
+  .sort((a, b) => noteTimeOf(b) - noteTimeOf(a));
 if (sharedArticlesList && allArticles.length > 0) {
   const lastPage = Math.ceil(allArticles.length / PAGE_SIZE);
   if (page > lastPage) {
@@ -106,11 +111,26 @@ const noteDateFormatter = new Intl.DateTimeFormat(locale, {
 });
 const formatNoteDate = (value?: string) =>
   value ? noteDateFormatter.format(new Date(value)) : null;
-const latestNoteDate =
-  formatNoteDate(
-    (allArticles[0] as { documentCreatedAt?: string } | undefined)?.documentCreatedAt ??
-      allArticles[0]?.createdAt
-  ) ?? '----';
+const latestMonthParts = allArticles[0]?.documentCreatedAt ?? allArticles[0]?.createdAt;
+const latestNoteDate = latestMonthParts
+  ? new Intl.DateTimeFormat(locale, {
+      year: 'numeric',
+      month: '2-digit',
+      timeZone: 'Asia/Tokyo',
+      calendar: 'gregory'
+    })
+      .formatToParts(new Date(latestMonthParts))
+      .reduce<Record<string, string>>((acc, part) => ({ ...acc, [part.type]: part.value }), {})
+  : null;
+const latestNoteLabel = latestNoteDate ? `${latestNoteDate.year}/${latestNoteDate.month}` : '----';
+const pageOfLabel = t('note.page-of')
+  .replace('{n}', String(page))
+  .replace('{m}', String(lastPageNumber));
+const pageTitle =
+  page > 1
+    ? `${t('common.note')} · ${pageOfLabel} | ${t('common.name')}`
+    : `${t('common.note')} | ${t('common.name')}`;
+const pageOfAlign = hasPrevPage && hasNextPage ? 'center' : hasNextPage ? 'end' : 'start';
 
 Astro.response.headers.set(
   'CDN-Cache-Control',
@@ -124,7 +144,7 @@ Astro.response.headers.set(
   <Container maxW="breakpoint-xl" w="full" className="page-shell">
     <Stack py="8" gap="10">
       <PageMasthead
-        eyebrow={t('note.notes')}
+        eyebrow={t('common.note')}
         heading={t('note.notes')}
         lede={t('note.description')}
       />
@@ -138,6 +158,7 @@ Astro.response.headers.set(
           >
             <Stack gap="4" alignItems="center" textAlign="center" py="12">
               <Text
+                className="mono-label"
                 fontFamily="var(--font-code)"
                 fontSize="10px"
                 textTransform="uppercase"
@@ -154,6 +175,19 @@ Astro.response.headers.set(
                   ? t('note.empty-none-description')
                   : t('note.empty-description')}
               </Text>
+              <Wrap gap="3" justify="center">
+                {!sharedArticlesList && (
+                  <a
+                    href={`${Astro.url.pathname}${Astro.url.search}`}
+                    class="notes-pagination-link card-hover-amber"
+                  >
+                    {t('note.reload')}
+                  </a>
+                )}
+                <a href={`/${locale}/projects`} class="notes-pagination-link card-hover-amber">
+                  {t('common.projects')}
+                </a>
+              </Wrap>
             </Stack>
           </Box>
         ) : (
@@ -167,6 +201,7 @@ Astro.response.headers.set(
             >
               <Stack bg="var(--atelier-bg)" p="5" gap="2">
                 <Text
+                  className="mono-label"
                   fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase"
@@ -180,6 +215,7 @@ Astro.response.headers.set(
               </Stack>
               <Stack className="note-signal-card" p="5" gap="2">
                 <Text
+                  className="mono-label"
                   fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase"
@@ -193,6 +229,7 @@ Astro.response.headers.set(
               </Stack>
               <Stack bg="var(--atelier-bg)" p="5" gap="2">
                 <Text
+                  className="mono-label"
                   fontFamily="var(--font-code)"
                   fontSize="10px"
                   textTransform="uppercase"
@@ -202,14 +239,25 @@ Astro.response.headers.set(
                 </Text>
                 <Text
                   fontFamily="var(--font-code)"
-                  fontSize={{ base: 'xl', md: '3xl' }}
+                  fontSize={{ base: 'lg', md: '3xl' }}
                   color="var(--atelier-accent)"
+                  whiteSpace="nowrap"
                 >
-                  {latestNoteDate}
+                  {latestNoteLabel}
                 </Text>
               </Stack>
             </Grid>
             <Stack gap="4">
+              {page > 1 && (
+                <Text
+                  className="mono-label"
+                  fontFamily="var(--font-code)"
+                  fontSize="xs"
+                  color="var(--atelier-outline)"
+                >
+                  {pageOfLabel}
+                </Text>
+              )}
               {showHero &&
                 visibleArticles.slice(0, 1).map((data) => {
                   const { id, documentTitle, collectionName, documentSummary } =
@@ -217,14 +265,13 @@ Astro.response.headers.set(
                       collectionName: string;
                       documentSummary: string;
                     };
-                  const noteDate = formatNoteDate(
-                    (data as { documentCreatedAt?: string }).documentCreatedAt ?? data.createdAt
-                  );
+                  const noteDate = formatNoteDate(noteDateOf(data));
                   const excerpt = makeExcerpt(documentSummary, 220);
 
                   return (
                     <Link
                       href={`/${locale}/notes/${id}`}
+                      aria-labelledby={`note-title-${id}`}
                       display="block"
                       w="full"
                       minW="0"
@@ -242,6 +289,7 @@ Astro.response.headers.set(
                       >
                         <Stack gap={4}>
                           <Text
+                            className="mono-label"
                             fontFamily="var(--font-code)"
                             fontSize="10px"
                             textTransform="uppercase"
@@ -252,6 +300,7 @@ Astro.response.headers.set(
                           </Text>
                           <Heading
                             as="h2"
+                            id={`note-title-${id}`}
                             fontSize={{ base: '4xl', md: '5xl' }}
                             lineHeight="0.95"
                             overflowWrap="anywhere"
@@ -264,7 +313,9 @@ Astro.response.headers.set(
                             color="var(--atelier-outline)"
                             fontFamily="var(--font-code)"
                           >
-                            <Text>{collectionName}</Text> | <Text>{noteDate}</Text>
+                            <Text>{collectionName}</Text>
+                            <span aria-hidden="true"> | </span>
+                            <Text>{noteDate}</Text>
                           </Wrap>
                           {excerpt && (
                             <Text
@@ -292,15 +343,14 @@ Astro.response.headers.set(
                         collectionName: string;
                         documentSummary: string;
                       };
-                    const noteDate = formatNoteDate(
-                      (data as { documentCreatedAt?: string }).documentCreatedAt ?? data.createdAt
-                    );
+                    const noteDate = formatNoteDate(noteDateOf(data));
                     const excerpt = makeExcerpt(documentSummary, 100);
                     const spansRow = cards.length % 2 === 1 && index === cards.length - 1;
 
                     return (
                       <Link
                         href={`/${locale}/notes/${id}`}
+                        aria-labelledby={`note-title-${id}`}
                         display="block"
                         w="full"
                         h="full"
@@ -325,6 +375,7 @@ Astro.response.headers.set(
                           <Stack gap={3} h="full">
                             <Heading
                               as="h2"
+                              id={`note-title-${id}`}
                               fontSize={{ base: '2xl', md: '3xl' }}
                               overflowWrap="anywhere"
                               className="group-hover-underline"
@@ -342,7 +393,9 @@ Astro.response.headers.set(
                               fontFamily="var(--font-code)"
                               mt="auto"
                             >
-                              <Text>{collectionName}</Text> | <Text>{noteDate}</Text>
+                              <Text>{collectionName}</Text>
+                              <span aria-hidden="true"> | </span>
+                              <Text>{noteDate}</Text>
                             </Wrap>
                           </Stack>
                         </Box>
@@ -353,16 +406,14 @@ Astro.response.headers.set(
               </Grid>
             </Stack>
             {(hasPrevPage || hasNextPage) && (
-              <Stack gap="3">
+              <styled.nav aria-label={t('note.pagination')} display="flex" flexDir="column" gap="3">
                 <Text
                   fontFamily="var(--font-code)"
                   fontSize="xs"
                   color="var(--atelier-outline)"
-                  textAlign="center"
+                  textAlign={pageOfAlign}
                 >
-                  {t('note.page-of')
-                    .replace('{n}', String(page))
-                    .replace('{m}', String(lastPageNumber))}
+                  {pageOfLabel}
                 </Text>
                 <Box
                   className={
@@ -382,21 +433,23 @@ Astro.response.headers.set(
                   {hasPrevPage && (
                     <a
                       href={page === 2 ? `/${locale}/notes` : `/${locale}/notes?page=${page - 1}`}
+                      rel="prev"
                       class="notes-pagination-link card-hover-amber"
                     >
-                      ← {t('note.newer-notes')}
+                      <span aria-hidden="true">←</span> {t('note.newer-notes')}
                     </a>
                   )}
                   {hasNextPage && (
                     <a
                       href={`/${locale}/notes?page=${page + 1}`}
+                      rel="next"
                       class="notes-pagination-link card-hover-amber"
                     >
-                      {t('note.older-notes')} →
+                      {t('note.older-notes')} <span aria-hidden="true">→</span>
                     </a>
                   )}
                 </Box>
-              </Stack>
+              </styled.nav>
             )}
           </>
         )

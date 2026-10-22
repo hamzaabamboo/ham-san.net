@@ -34,7 +34,7 @@ try {
   const { value, fromCache } = await withLastGoodState('events:report', () =>
     getEventernoteReport()
   );
-  rawReport = fromCache ? { ...value, cached: true } : value;
+  rawReport = { ...value, cached: fromCache };
 } catch {
   fetchError = true;
 }
@@ -141,16 +141,16 @@ const cumulativeYearMarks =
     : cumulativeJanuaryMarks;
 const cumulativeYearStep = Math.max(1, Math.ceil(cumulativeYearMarks.length / 7));
 const maxYearlyChartCount = Math.max(...yearlyChartData.map((item) => item.count), 1);
-const maxCumulativeChartCount = Math.max(...yearlyChartData.map((item) => item.cumulative), 1);
-const yearlyLinePoints = yearlyChartData
-  .map((item, index) => {
-    const x = yearlyChartData.length === 1 ? 40 : 40 + (index / (yearlyChartData.length - 1)) * 640;
-    const y = 220 - (item.cumulative / maxCumulativeChartCount) * 170;
-    return `${x},${y}`;
-  })
-  .join(' ');
 const dateLabel = (date?: string) =>
   date ? dateFormatter.format(new Date(`${date}T00:00:00+09:00`)) : '-';
+const dateRangeText = (start?: string, end?: string) =>
+  start && end
+    ? dateFormatter.formatRange(
+        new Date(`${start}T00:00:00+09:00`),
+        new Date(`${end}T00:00:00+09:00`)
+      )
+    : '-';
+const nameLang = locale === 'ja' ? undefined : 'ja';
 const monthLabel = (month?: string) =>
   month ? monthFormatter.format(new Date(`${month}-01T00:00:00+09:00`)) : '-';
 const yearPartFormatter = new Intl.DateTimeFormat(locale, {
@@ -164,7 +164,8 @@ const yearLabel = (year: string) =>
     .find((part) => part.type === 'year')?.value ?? year;
 const reportPeriodLabel =
   selectedYear === 'all' ? t('common.events-report-all-years') : yearLabel(selectedYear);
-const dateRangeLabel = report?.dateRange?.split(' - ').map(dateLabel).join(' – ') ?? '';
+const [rangeStart, rangeEnd] = report?.dateRange?.split(' - ') ?? [];
+const dateRangeLabel = rangeStart ? dateRangeText(rangeStart, rangeEnd) : '';
 const windowLabels: Record<string, string> = {
   'this-year': t('common.events-report-window-this-year'),
   'last-30-days': t('common.events-report-window-last-30-days'),
@@ -289,7 +290,7 @@ const heatmapMonthMarks = heatmapCells
     return marks;
   }, []);
 const heatmapWindowLabel = heatmapDays.length
-  ? `${dateLabel(heatmapDays[0].date)} - ${dateLabel(heatmapDays[heatmapDays.length - 1].date)}`
+  ? dateRangeText(heatmapDays[0].date, heatmapDays[heatmapDays.length - 1].date)
   : '';
 const heatmapActiveDays = heatmapCells.filter((day) => day.count > 0).length;
 const heatmapEventTotal = heatmapCells.reduce((sum, day) => sum + day.count, 0);
@@ -310,10 +311,10 @@ const heatmapSummary = [
 ]
   .filter(Boolean)
   .join(' ');
-const monthsWindowLabel = t('events.months-window').replace(
-  '{n}',
-  formatter.format(monthlyChartData.length)
-);
+const monthsWindowLabel =
+  selectedYear === 'all'
+    ? t('events.months-window').replace('{n}', formatter.format(monthlyChartData.length))
+    : yearLabel(selectedYear);
 const yearlyDesc = yearlyChartData
   .map((item) => `${yearLabel(item.year)}: ${formatter.format(item.count)}`)
   .join(', ');
@@ -326,8 +327,14 @@ const cumulativeDesc = latestFavoriteCumulative
 const NEXT_VISIBLE = 10;
 const rankListVisible = 12;
 const RANK_LIST_MAX = 50;
-const topArtistCount = Math.min(report?.topArtists.length ?? 0, RANK_LIST_MAX);
-const topVenueCount = Math.min(report?.topVenues.length ?? 0, RANK_LIST_MAX);
+const topArtistTotal = report?.topArtists.length ?? 0;
+const topVenueTotal = report?.topVenues.length ?? 0;
+const topArtistCount = Math.min(topArtistTotal, RANK_LIST_MAX);
+const topVenueCount = Math.min(topVenueTotal, RANK_LIST_MAX);
+const rankMoreLabel = (count: number) =>
+  count >= RANK_LIST_MAX
+    ? t('events.show-top').replace('{n}', formatter.format(RANK_LIST_MAX))
+    : t('events.show-all').replace('{n}', formatter.format(count));
 const topLabel = (count: number) =>
   t('events.top-count').replace('{n}', formatter.format(Math.min(count, rankListVisible)));
 // Linear, because the bar is drawn inside a full-width track and labelled with the absolute
@@ -360,7 +367,7 @@ const favoriteAttendancePct = favoriteAttendanceTotal?.total
   ? (favoriteAttendanceTotal.attended / favoriteAttendanceTotal.total) * 100
   : 0;
 const bestFavoriteAttendance = [...(report?.favoriteArtistAttendance ?? [])]
-  .filter((artist) => artist.total >= MIN_RATE_EVENTS)
+  .filter((artist) => artist.total >= MIN_RATE_EVENTS && artist.attended > 0)
   .sort((a, b) => b.pct - a.pct || b.attended - a.attended || a.name.localeCompare(b.name))[0];
 const eventingStyle = report
   ? report.multiEventDayStats.maxEventsInDay >= 10
@@ -396,19 +403,23 @@ const heroStats = report
   ? [
       {
         label: t('common.events-report-period'),
-        value: reportPeriodLabel
+        value: reportPeriodLabel,
+        lang: undefined
       },
       {
         label: t('common.events-report-total'),
-        value: formatter.format(report.totalEvents)
+        value: formatter.format(report.totalEvents),
+        lang: undefined
       },
       {
         label: t('common.events-report-next'),
-        value: formatter.format(report.nextEvents.length)
+        value: formatter.format(report.nextEvents.length),
+        lang: undefined
       },
       {
         label: t('common.events-report-artists'),
-        value: report.topArtists[0]?.name ?? '-'
+        value: report.topArtists[0]?.name ?? '-',
+        lang: nameLang
       }
     ]
   : [];
@@ -518,24 +529,30 @@ const overviewGroups = report
             value: formatter.format(report.streaks.daily.currentStreak),
             meta: report.streaks.daily.isActive
               ? `${t('common.events-report-since')} ${dateLabel(report.streaks.daily.currentStreakStartDate)}`
-              : t('common.events-report-days-unit')
+              : t('common.events-report-streak-inactive')
           },
           {
             label: t('common.events-report-current-weekly'),
             value: formatter.format(report.streaks.weekly.currentStreak),
             meta: report.streaks.weekly.isActive
               ? `${t('common.events-report-since')} ${dateLabel(report.streaks.weekly.currentStreakStartDate)}`
-              : t('common.events-report-weeks-unit')
+              : t('common.events-report-streak-inactive')
           },
           {
             label: t('common.events-report-longest-daily'),
             value: formatter.format(report.streaks.daily.longestStreak),
-            meta: `${dateLabel(report.streaks.daily.longestStreakStartDate)} - ${dateLabel(report.streaks.daily.longestStreakEndDate)}`
+            meta: dateRangeText(
+              report.streaks.daily.longestStreakStartDate,
+              report.streaks.daily.longestStreakEndDate
+            )
           },
           {
             label: t('common.events-report-longest-weekly'),
             value: formatter.format(report.streaks.weekly.longestStreak),
-            meta: `${dateLabel(report.streaks.weekly.longestStreakStartDate)} - ${dateLabel(report.streaks.weekly.longestStreakEndDate)}`
+            meta: dateRangeText(
+              report.streaks.weekly.longestStreakStartDate,
+              report.streaks.weekly.longestStreakEndDate
+            )
           }
         ]
       }
@@ -582,10 +599,13 @@ const highlightCards =
           icon: 'local_fire_department' as const,
           label: t('common.events-report-longest-streak'),
           value: dayUnit(report.streaks.daily.longestStreak),
-          sub: t('common.events-report-weekly-best').replace(
-            '{n}',
-            formatter.format(report.streaks.weekly.longestStreak)
-          )
+          sub:
+            report.streaks.weekly.longestStreak === 1
+              ? t('common.events-report-weekly-best-one').replace('{n}', formatter.format(1))
+              : t('common.events-report-weekly-best').replace(
+                  '{n}',
+                  formatter.format(report.streaks.weekly.longestStreak)
+                )
         }
       ]
     : [];
@@ -615,7 +635,14 @@ const reportSections = report
         <div class="event-report__identity">
           <div>
             <p>{EVENTERNOTE_USERNAME}</p>
-            <span>{report?.profile.displayName ?? `@${EVENTERNOTE_USERNAME}`}</span>
+            <span>{rawReport?.profile.displayName ?? `@${EVENTERNOTE_USERNAME}`}</span>
+            {
+              rawReport?.profile.bio ? (
+                <small class="event-report__bio" lang="ja">
+                  {rawReport.profile.bio}
+                </small>
+              ) : null
+            }
           </div>
           {
             heroStats.length ? (
@@ -627,7 +654,7 @@ const reportSections = report
                 {heroStats.map((stat) => (
                   <article>
                     <span>{stat.label}</span>
-                    <strong>{stat.value}</strong>
+                    <strong lang={stat.lang}>{stat.value}</strong>
                   </article>
                 ))}
               </div>
@@ -655,7 +682,18 @@ const reportSections = report
                   : t('common.events-report-fetch-error')}
               </p>
               {emptyYear ? (
-                <a href={`/${locale}/events`}>{t('common.events-report-all-years')}</a>
+                <nav class="event-report__year-filter" aria-label={t('events.aria-year-filter')}>
+                  <a href={`/${locale}/events`}>{t('common.events-report-all-years')}</a>
+                  {yearOptions.map((year) => (
+                    <a
+                      href={`/${locale}/events?year=${year}`}
+                      data-active={selectedYear === year ? 'true' : 'false'}
+                      aria-current={selectedYear === year ? 'page' : undefined}
+                    >
+                      {yearLabel(year)}
+                    </a>
+                  ))}
+                </nav>
               ) : null}
             </div>
           </section>
@@ -669,8 +707,12 @@ const reportSections = report
                     : t('common.events-report-fresh')}
                 </span>
                 <span>{t('common.events-report-cache-window')}</span>
-                <span>{timeFormatter.format(new Date(report.fetchedAt))}</span>
-                <span>{report.profile.bio}</span>
+                <span>
+                  {t('events.updated-at').replace(
+                    '{time}',
+                    timeFormatter.format(new Date(report.fetchedAt))
+                  )}
+                </span>
               </section>
 
               <details class="event-report__rail-fold" data-rail-fold open>
@@ -758,7 +800,15 @@ const reportSections = report
                     <article>
                       <Glyph name={item.icon} />
                       <p>{item.label}</p>
-                      <strong>{item.value}</strong>
+                      <strong
+                        lang={
+                          ['crown', 'home', 'social_leaderboard'].includes(item.icon)
+                            ? nameLang
+                            : undefined
+                        }
+                      >
+                        {item.value}
+                      </strong>
                       <small>{item.sub}</small>
                     </article>
                   ))}
@@ -776,7 +826,12 @@ const reportSections = report
                     <div class="event-report__panel-head">
                       <h3>{t('common.events-report-yearly')}</h3>
                     </div>
-                    <div class="event-report__chart-scroll">
+                    <div
+                      class="event-report__chart-scroll"
+                      tabindex="0"
+                      role="group"
+                      aria-label={t('events.aria-chart-scroll')}
+                    >
                       <svg
                         class="event-report__svg-chart"
                         viewBox="0 0 720 260"
@@ -800,11 +855,9 @@ const reportSections = report
                           return (
                             <>
                               <rect x={x - 10} y={220 - height} width="20" height={height} />
-                              {showLabel || item.count === maxYearlyChartCount ? (
-                                <text x={x} y={210 - height}>
-                                  {formatter.format(item.count)}
-                                </text>
-                              ) : null}
+                              <text x={x} y={210 - height}>
+                                {formatter.format(item.count)}
+                              </text>
                               {showLabel ? (
                                 <text x={x} y="244">
                                   {yearLabel(item.year)}
@@ -813,7 +866,6 @@ const reportSections = report
                             </>
                           );
                         })}
-                        <polyline points={yearlyLinePoints} />
                       </svg>
                     </div>
                   </div>
@@ -822,7 +874,12 @@ const reportSections = report
                     <div class="event-report__panel-head">
                       <h3>{`${t('common.events-report-months')} · ${monthsWindowLabel}`}</h3>
                     </div>
-                    <div class="event-report__chart-scroll">
+                    <div
+                      class="event-report__chart-scroll"
+                      tabindex="0"
+                      role="group"
+                      aria-label={t('events.aria-chart-scroll')}
+                    >
                       <svg
                         class="event-report__svg-chart"
                         viewBox="0 0 720 280"
@@ -875,7 +932,12 @@ const reportSections = report
                     <div class="event-report__panel-head">
                       <h3>{t('common.events-report-cumulative-artist-attendance')}</h3>
                     </div>
-                    <div class="event-report__chart-scroll">
+                    <div
+                      class="event-report__chart-scroll"
+                      tabindex="0"
+                      role="group"
+                      aria-label={t('events.aria-chart-scroll')}
+                    >
                       <svg
                         class="event-report__svg-chart event-report__svg-chart--line"
                         viewBox="0 0 720 300"
@@ -925,6 +987,7 @@ const reportSections = report
                     <div class="event-report__legend">
                       {latestFavoriteCumulative.map((artist, index) => (
                         <span
+                          lang={nameLang}
                           style={`--legend-color: ${lineStyles[index % lineStyles.length].color}; --legend-dash: ${lineStyles[index % lineStyles.length].dash}`}
                         >
                           {artist.name}
@@ -941,7 +1004,7 @@ const reportSections = report
                     <ol class="event-report__rank-list">
                       {venueShares.map((venue, index) => (
                         <li data-leader={index === 0 || undefined} style={`--size: ${venue.size}%`}>
-                          <span>{venue.name}</span>
+                          <span lang={nameLang}>{venue.name}</span>
                           <i />
                           <strong>{pct1(venue.share)}</strong>
                         </li>
@@ -960,7 +1023,7 @@ const reportSections = report
                           data-leader={index === 0 || undefined}
                           style={`--size: ${artist.size}%`}
                         >
-                          <span>{artist.name}</span>
+                          <span lang={nameLang}>{artist.name}</span>
                           <i />
                           <strong>{pct1(artist.share)}</strong>
                         </li>
@@ -1018,7 +1081,7 @@ const reportSections = report
               <section id="activity" class="event-report__section">
                 <SectionHeading label={t('common.events-report-activity')} />
                 <div class="event-report__grid">
-                  <div class="event-report__panel event-report__panel--wide">
+                  <div class="event-report__panel event-report__panel--heatmap">
                     <div class="event-report__panel-head">
                       <h3>{t('common.events-report-activity-heatmap')}</h3>
                       <span class="event-report__heatmap-window">{heatmapWindowLabel}</span>
@@ -1092,8 +1155,10 @@ const reportSections = report
                           {report.favoriteArtistAttendance.slice(0, 8).map((artist) => (
                             <tr style={`--size: ${artist.pct}%`}>
                               <th scope="row">
-                                {artist.name}
-                                <i />
+                                <span class="event-report__artist-cell">
+                                  <span lang={nameLang}>{artist.name}</span>
+                                  <i />
+                                </span>
                               </th>
                               <td>
                                 <strong>{formatter.format(artist.attended)}</strong>
@@ -1153,8 +1218,8 @@ const reportSections = report
                             <time datetime={event.dateKey}>
                               {dateFormatter.format(new Date(`${event.dateKey}T00:00:00+09:00`))}
                             </time>
-                            <span>{event.title}</span>
-                            <small>{event.venue}</small>
+                            <span lang={nameLang}>{event.title}</span>
+                            <small lang={nameLang}>{event.venue}</small>
                             <span class="event-report__sr-only">{t('events.opens-new-tab')}</span>
                           </a>
                         ))}
@@ -1190,8 +1255,8 @@ const reportSections = report
                           <time datetime={event.dateKey}>
                             {dateFormatter.format(new Date(`${event.dateKey}T00:00:00+09:00`))}
                           </time>
-                          <span>{event.title}</span>
-                          <small>{event.venue}</small>
+                          <span lang={nameLang}>{event.title}</span>
+                          <small lang={nameLang}>{event.venue}</small>
                           <span class="event-report__sr-only">{t('events.opens-new-tab')}</span>
                         </a>
                       ))}
@@ -1214,7 +1279,7 @@ const reportSections = report
                           data-leader={index === 0 || undefined}
                           style={`--size: ${(artist.count / Math.max(report.topArtists[0]?.count ?? 1, 1)) * 100}%`}
                         >
-                          <span>{artist.name}</span>
+                          <span lang={nameLang}>{artist.name}</span>
                           <i />
                           <strong>{formatter.format(artist.count)}</strong>
                         </li>
@@ -1222,13 +1287,13 @@ const reportSections = report
                     </ol>
                     {topArtistCount > rankListVisible ? (
                       <details class="event-report__rank-more">
-                        <summary>{`${t('events.show-all')} (${formatter.format(topArtistCount)})`}</summary>
+                        <summary>{rankMoreLabel(topArtistTotal)}</summary>
                         <ol class="event-report__rank-list" start={rankListVisible + 1}>
                           {report.topArtists.slice(rankListVisible, RANK_LIST_MAX).map((artist) => (
                             <li
                               style={`--size: ${(artist.count / Math.max(report.topArtists[0]?.count ?? 1, 1)) * 100}%`}
                             >
-                              <span>{artist.name}</span>
+                              <span lang={nameLang}>{artist.name}</span>
                               <i />
                               <strong>{formatter.format(artist.count)}</strong>
                             </li>
@@ -1249,7 +1314,7 @@ const reportSections = report
                           data-leader={index === 0 || undefined}
                           style={`--size: ${(venue.count / Math.max(report.topVenues[0]?.count ?? 1, 1)) * 100}%`}
                         >
-                          <span>{venue.name}</span>
+                          <span lang={nameLang}>{venue.name}</span>
                           <i />
                           <strong>{formatter.format(venue.count)}</strong>
                         </li>
@@ -1257,13 +1322,13 @@ const reportSections = report
                     </ol>
                     {topVenueCount > rankListVisible ? (
                       <details class="event-report__rank-more">
-                        <summary>{`${t('events.show-all')} (${formatter.format(topVenueCount)})`}</summary>
+                        <summary>{rankMoreLabel(topVenueTotal)}</summary>
                         <ol class="event-report__rank-list" start={rankListVisible + 1}>
                           {report.topVenues.slice(rankListVisible, RANK_LIST_MAX).map((venue) => (
                             <li
                               style={`--size: ${(venue.count / Math.max(report.topVenues[0]?.count ?? 1, 1)) * 100}%`}
                             >
-                              <span>{venue.name}</span>
+                              <span lang={nameLang}>{venue.name}</span>
                               <i />
                               <strong>{formatter.format(venue.count)}</strong>
                             </li>
@@ -1276,18 +1341,20 @@ const reportSections = report
                   <div class="event-report__panel">
                     <div class="event-report__panel-head">
                       <h3>{t('events.busiest-months')}</h3>
+                      <span>{topLabel(busiestMonths.length)}</span>
                     </div>
-                    <div class="event-report__month-list">
+                    <ol class="event-report__rank-list">
                       {busiestMonths.map((month, index) => (
-                        <div class="event-report__month" data-leader={index === 0 || undefined}>
-                          <div>
-                            <span>{monthLabel(month.month)}</span>
-                            <strong>{formatter.format(month.count)}</strong>
-                          </div>
-                          <i style={`--size: ${(month.count / maxMonthCount) * 100}%`} />
-                        </div>
+                        <li
+                          data-leader={index === 0 || undefined}
+                          style={`--size: ${(month.count / maxMonthCount) * 100}%`}
+                        >
+                          <span>{monthLabel(month.month)}</span>
+                          <i />
+                          <strong>{formatter.format(month.count)}</strong>
+                        </li>
                       ))}
-                    </div>
+                    </ol>
                   </div>
                 </div>
               </section>
@@ -1326,20 +1393,22 @@ const reportSections = report
   };
 
   const scrollHeatmaps = () => {
-    document.querySelectorAll('.event-report__heatmap-shell').forEach((shell) => {
-      shell.scrollLeft = shell.scrollWidth;
-      updateHeatmapMonthLabels(shell);
-      if (!(shell as HTMLElement).dataset.monthLabelsBound) {
-        (shell as HTMLElement).dataset.monthLabelsBound = 'true';
-        shell.addEventListener(
-          'scroll',
-          coalesce(() => updateHeatmapMonthLabels(shell)),
-          {
-            passive: true
-          }
-        );
-      }
-    });
+    document
+      .querySelectorAll('.event-report__heatmap-shell, .event-report__chart-scroll')
+      .forEach((shell) => {
+        shell.scrollLeft = shell.scrollWidth;
+        updateHeatmapMonthLabels(shell);
+        if (!(shell as HTMLElement).dataset.monthLabelsBound) {
+          (shell as HTMLElement).dataset.monthLabelsBound = 'true';
+          shell.addEventListener(
+            'scroll',
+            coalesce(() => updateHeatmapMonthLabels(shell)),
+            {
+              passive: true
+            }
+          );
+        }
+      });
   };
 
   const narrowRail = window.matchMedia('(max-width: 1080px)');

@@ -1,0 +1,55 @@
+---
+import { Box } from 'styled-system/jsx';
+import { Link } from '~/components/ui/link';
+
+interface Props {
+  label: string;
+  href?: string;
+}
+
+const { label, href } = Astro.props;
+---
+
+{
+  href ? (
+    <Link
+      href={href}
+      display="inline-flex"
+      minW="44px"
+      minH="44px"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Box
+        as="span"
+        flex="1"
+        textAlign="center"
+        px="2"
+        py="1"
+        border="1px solid"
+        borderColor="var(--atelier-line)"
+        fontFamily="var(--font-code)"
+        fontSize="10px"
+        textTransform="uppercase"
+        color="var(--atelier-fg-muted)"
+      >
+        {label}
+      </Box>
+    </Link>
+  ) : (
+    <Box
+      as="span"
+      display="inline-flex"
+      minH="44px"
+      alignItems="center"
+      fontFamily="var(--font-code)"
+      fontSize="10px"
+      textTransform="uppercase"
+      color="var(--atelier-fg-muted)"
+    >
+      <Box as="span" px="2" py="1" border="1px solid" borderColor="var(--atelier-line)">
+        {label}
+      </Box>
+    </Box>
+  )
+}

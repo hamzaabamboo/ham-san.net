@@ -43,6 +43,24 @@ const pageTitle = `${t('common.projects')} | ${t('common.name')}`;
 
 const { active: activeProjects, inactive: inactiveProjects } = groupProjectsByActivity(projects);
 const inactiveGridProjects = inactiveProjects.slice(0, 9);
+const langOf = (project: { locale?: string | null }) =>
+  project.locale && project.locale !== locale ? project.locale : undefined;
+type LinkLike = { url?: string | null; type?: string | null } | null;
+const linkKinds = (project: { links?: LinkLike[] | null }): string[] =>
+  Array.from(
+    new Set(
+      (project.links ?? [])
+        .filter((link: LinkLike) => link?.url)
+        .map((link: LinkLike) =>
+          link?.type === 'github'
+            ? t('project.source-code')
+            : link?.type === 'web'
+              ? t('project.visit-site')
+              : null
+        )
+        .filter((label: string | null): label is string => !!label)
+    )
+  );
 const latestProjectYear = projects.reduce((latest, project) => {
   const year = project.date?.slice(0, 4);
   return year && year > latest ? year : latest;
@@ -71,7 +89,7 @@ if (projectsUnavailable) {
   <Container maxW="breakpoint-xl" className="page-shell">
     <Stack py="10" gap="16">
       <PageMasthead
-        eyebrow={t('project.projects')}
+        eyebrow={t('common.projects')}
         heading={t('project.page-heading')}
         lede={t('project.intro')}
       />
@@ -87,6 +105,7 @@ if (projectsUnavailable) {
           >
             <Stack bg="var(--atelier-bg)" p="5" gap="2">
               <Text
+                className="mono-label"
                 fontFamily="var(--font-code)"
                 fontSize="10px"
                 textTransform="uppercase"
@@ -100,6 +119,7 @@ if (projectsUnavailable) {
             </Stack>
             <Stack className="contact-panel" p="5" gap="2">
               <Text
+                className="mono-label"
                 fontFamily="var(--font-code)"
                 fontSize="10px"
                 textTransform="uppercase"
@@ -113,6 +133,7 @@ if (projectsUnavailable) {
             </Stack>
             <Stack bg="var(--atelier-bg)" p="5" gap="2">
               <Text
+                className="mono-label"
                 fontFamily="var(--font-code)"
                 fontSize="10px"
                 textTransform="uppercase"
@@ -152,6 +173,26 @@ if (projectsUnavailable) {
               <Text color="var(--atelier-fg-muted)" maxW="md" lineHeight="1.7">
                 {t('project.empty-description')}
               </Text>
+              <Wrap gap="6" justifyContent="center">
+                <Link
+                  href={Astro.url.pathname}
+                  display="inline-flex"
+                  alignItems="center"
+                  minH="44px"
+                  className="amber-link"
+                >
+                  {t('project.reload')}
+                </Link>
+                <Link
+                  href={`/${locale}/about`}
+                  display="inline-flex"
+                  alignItems="center"
+                  minH="44px"
+                  className="amber-link"
+                >
+                  {t('common.about-me')}
+                </Link>
+              </Wrap>
             </Stack>
           </Box>
         ) : (
@@ -312,6 +353,7 @@ if (projectsUnavailable) {
                             fontSize="sm"
                             lineHeight="1.7"
                             mb="6"
+                            lang={langOf(project)}
                           >
                             {project.description}
                           </Text>
@@ -347,7 +389,10 @@ if (projectsUnavailable) {
                 <SectionHeading label={t('project.inactive')} />
                 <Grid
                   gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(3, minmax(0, 1fr))' }}
-                  gap="8"
+                  gap="1px"
+                  bg="var(--atelier-line)"
+                  border="1px solid"
+                  borderColor="var(--atelier-line)"
                 >
                   {inactiveGridProjects.map((project) => {
                     // `alignItems="stretch"` is load-bearing: Park-UI's Link sets
@@ -363,12 +408,11 @@ if (projectsUnavailable) {
                         w="full"
                         position="relative"
                         overflow="hidden"
-                        bg="var(--atelier-surface-low)"
-                        border="1px solid"
-                        borderColor="var(--atelier-line)"
+                        bg="var(--atelier-bg)"
+                        _hover={{ bg: 'var(--atelier-surface-lowest)' }}
                         p="6"
                         textDecorationLine="none"
-                        className="group blocky-shadow blocky-shadow-hover"
+                        className="group"
                       >
                         <Flex justifyContent="space-between" alignItems="center" mb="2" gap="3">
                           <Heading
@@ -378,7 +422,7 @@ if (projectsUnavailable) {
                             fontWeight="bold"
                             fontStyle="normal"
                             fontFamily="var(--font-body)"
-                            className="group-hover-underline"
+                            className="group-hover-amber group-hover-underline"
                           >
                             {project.title}
                           </Heading>
@@ -391,27 +435,45 @@ if (projectsUnavailable) {
                             {yearLabel(project.date?.slice(0, 4))}
                           </Text>
                         </Flex>
-                        <Text color="var(--atelier-fg-muted)" fontSize="xs" lineHeight="1.7" mb="4">
-                          {project.description}
-                        </Text>
-                        {project.links?.length > 0 && (
+                        {project.category?.name && (
+                          <Text
+                            fontFamily="var(--font-code)"
+                            fontSize="10px"
+                            textTransform="uppercase"
+                            color="var(--atelier-outline)"
+                            mb="2"
+                          >
+                            {project.category.name}
+                          </Text>
+                        )}
+                        {project.description && (
+                          <Text
+                            color="var(--atelier-fg-muted)"
+                            fontSize="xs"
+                            lineHeight="1.7"
+                            mb="4"
+                            lang={langOf(project)}
+                          >
+                            {project.description}
+                          </Text>
+                        )}
+                        {linkKinds(project).length > 0 && (
                           <Wrap gap="2" mb="4" mt="auto">
-                            {project.links
-                              .filter((link: any) => link?.url)
-                              .slice(0, 2)
-                              .map((link: any) => (
-                                <Text
-                                  fontFamily="var(--font-code)"
-                                  fontSize="10px"
-                                  textTransform="uppercase"
-                                  color="var(--atelier-outline)"
-                                >
-                                  {link.title ?? link.type}
-                                </Text>
-                              ))}
+                            <Text
+                              fontFamily="var(--font-code)"
+                              fontSize="10px"
+                              textTransform="uppercase"
+                              color="var(--atelier-outline)"
+                            >
+                              {linkKinds(project).join(' · ')}
+                            </Text>
                           </Wrap>
                         )}
-                        <Flex gap="2" alignItems="center">
+                        <Flex
+                          gap="2"
+                          alignItems="center"
+                          mt={linkKinds(project).length > 0 ? undefined : 'auto'}
+                        >
                           <Text color="var(--atelier-accent)" fontSize="sm" fontWeight="bold">
                             {t('project.open-project')}
                           </Text>
@@ -429,74 +491,69 @@ if (projectsUnavailable) {
                     );
                   })}
                 </Grid>
-                {inactiveProjects.length > 9 && (
-                  <>
-                    <SectionHeading label={t('project.earlier-work')} />
-                    <Stack
-                      gap="1px"
-                      bg="var(--atelier-line)"
-                      border="1px solid"
-                      borderColor="var(--atelier-line)"
+              </Stack>
+            )}
+            {inactiveProjects.length > 9 && (
+              <Stack gap="10">
+                <SectionHeading label={t('project.earlier-work')} />
+                <Stack
+                  gap="1px"
+                  bg="var(--atelier-line)"
+                  border="1px solid"
+                  borderColor="var(--atelier-line)"
+                >
+                  {inactiveProjects.slice(9).map((project) => (
+                    <Link
+                      href={`/${locale}/projects/${project.slug}`}
+                      display="block"
+                      w="full"
+                      bg="var(--atelier-surface-low)"
+                      p="4"
+                      textDecorationLine="none"
+                      className="group"
+                      _hover={{ bg: 'var(--atelier-bg)' }}
+                      transition="background-color 0.2s ease"
                     >
-                      {inactiveProjects.slice(9).map((project) => (
-                        <Link
-                          href={`/${locale}/projects/${project.slug}`}
-                          display="block"
-                          w="full"
-                          bg="var(--atelier-surface-low)"
-                          p="4"
-                          textDecorationLine="none"
-                          className="group"
-                          _hover={{ bg: 'var(--atelier-bg)' }}
-                          transition="background-color 0.2s ease"
-                        >
-                          <Flex
-                            justifyContent="space-between"
-                            alignItems="center"
-                            gap="4"
-                            flexWrap="wrap"
+                      <Flex justifyContent="space-between" alignItems="center" gap="4">
+                        <Stack gap="1" minW="0" flex="1">
+                          <Heading
+                            as="h3"
+                            fontSize="md"
+                            fontWeight="bold"
+                            fontStyle="normal"
+                            fontFamily="var(--font-body)"
+                            className="group-hover-amber group-hover-underline"
+                            transition="color 0.2s ease"
                           >
-                            <Stack gap="1" minW="0">
-                              <Heading
-                                as="h3"
-                                fontSize="md"
-                                fontWeight="bold"
-                                fontStyle="normal"
-                                fontFamily="var(--font-body)"
-                                className="group-hover-amber group-hover-underline"
-                                transition="color 0.2s ease"
-                              >
-                                {project.title}
-                              </Heading>
-                              {project.category?.name && (
-                                <Text
-                                  fontFamily="var(--font-code)"
-                                  fontSize="10px"
-                                  textTransform="uppercase"
-                                  color="var(--atelier-outline)"
-                                >
-                                  {project.category.name}
-                                </Text>
-                              )}
-                            </Stack>
-                            <Flex gap="4" alignItems="center" flexShrink="0">
-                              <Text
-                                fontFamily="var(--font-code)"
-                                fontSize="10px"
-                                color="var(--atelier-outline)"
-                              >
-                                {yearLabel(project.date?.slice(0, 4))}
-                              </Text>
-                              <Text color="var(--atelier-accent)" fontSize="sm" aria-hidden="true">
-                                →
-                              </Text>
-                            </Flex>
-                          </Flex>
-                        </Link>
-                      ))}
-                    </Stack>
-                  </>
-                )}
+                            {project.title}
+                          </Heading>
+                          {project.category?.name && (
+                            <Text
+                              fontFamily="var(--font-code)"
+                              fontSize="10px"
+                              textTransform="uppercase"
+                              color="var(--atelier-outline)"
+                            >
+                              {project.category.name}
+                            </Text>
+                          )}
+                        </Stack>
+                        <Flex gap="4" alignItems="center" flexShrink="0">
+                          <Text
+                            fontFamily="var(--font-code)"
+                            fontSize="10px"
+                            color="var(--atelier-outline)"
+                          >
+                            {yearLabel(project.date?.slice(0, 4))}
+                          </Text>
+                          <Text color="var(--atelier-accent)" fontSize="sm" aria-hidden="true">
+                            →
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    </Link>
+                  ))}
+                </Stack>
               </Stack>
             )}
           </>

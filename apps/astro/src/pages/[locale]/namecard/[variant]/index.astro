@@ -51,9 +51,12 @@ const links = NAMECARD_PAGE_LINKS.map((item) => ({
   value: item.valueKey ? t(item.valueKey as never) : item.value
 }));
 
-const namecard = NAMECARDS.find((n) => n.variant === variant);
+const namecard = NAMECARDS.find((n) => n.variant.toLowerCase() === variant?.toLowerCase());
 if (!namecard) {
   return Astro.redirect(`/${locale}/404`);
+}
+if (namecard.variant !== variant) {
+  return Astro.redirect(`/${locale}/namecard/${namecard.variant}`, 301);
 }
 
 const { color } = namecard;

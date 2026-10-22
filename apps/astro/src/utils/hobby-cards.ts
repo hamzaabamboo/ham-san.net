@@ -3,6 +3,7 @@ type HobbyCard = {
   title?: string | null;
   description?: string | null;
   banner?: string;
+  sourced?: boolean;
 };
 
 type HobbySlot = 'hero' | 'learning' | 'sound' | 'flow';
@@ -69,5 +70,9 @@ export const orderHobbyCards = <T extends HobbyCard>(hobbies: T[]) => {
     }
   });
 
-  return [...ordered, ...remaining];
+  return [
+    ...ordered,
+    ...remaining.filter((hobby) => hobby.sourced !== false),
+    ...remaining.filter((hobby) => hobby.sourced === false)
+  ];
 };

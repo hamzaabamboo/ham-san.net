@@ -34,8 +34,14 @@ export const carousel = defineSlotRecipe({
     },
     indicator: {
       cursor: 'pointer',
+      position: 'relative',
       borderRadius: 'full',
-      background: 'var(--atelier-surface-highest)',
+      background: 'var(--atelier-outline)',
+      _before: {
+        inset: '-7px',
+        position: 'absolute',
+        content: '""'
+      },
       _current: {
         background: 'colorPalette.solid.bg'
       },
@@ -61,7 +67,7 @@ export const carousel = defineSlotRecipe({
           gap: '3'
         },
         indicatorGroup: {
-          gap: '3'
+          gap: '4'
         },
         indicator: {
           boxSize: '2.5'

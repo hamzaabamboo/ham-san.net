@@ -1,7 +1,7 @@
 {
   "untitled": "無題",
   "back-to-hobbies": "趣味一覧へ",
-  "back-to-parent": "親の趣味へ戻る",
+  "back-to-parent": "上位の趣味へ戻る",
   "page-heading": "趣味",
   "description": "カメラ、音楽、タイピング、パズル、ダーツ、地図、参照メモ。",
   "status-active": "稼働中",
@@ -55,15 +55,15 @@
   "overview-piano-chords": "コード、ボイシング、楽器、音源リファレンスの音楽ページ。",
   "overview-field-notes": "この趣味のリンクと関連ページ。",
   "overview-empty-page": "この趣味の公開ノートはまだありません。",
-  "doc-label": "ページ",
   "last-updated": "最終更新",
   "learning-resources": "関連ページ",
   "empty-title": "趣味ノートを取得できません",
   "empty-description": "ノートブックに接続できません。接続が回復すると、趣味ページが再表示されます。",
-  "status-empty": "状態: なし",
+  "status-empty": "状態: 未公開",
   "empty-none-title": "まだ公開された趣味はありません",
   "empty-none-description": "今のところ何もありません。新しい趣味ノートが追加されると、このページに表示されます。",
   "more-count": "ほか{count}件",
   "no-darts-data": "ダーツの記録やギアはまだ登録されていません。",
-  "more-items": "件"
+  "more-items": "件",
+  "children-unavailable": "読み込めませんでした。再読み込みしてください。"
 }

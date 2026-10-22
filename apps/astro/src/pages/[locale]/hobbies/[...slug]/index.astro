@@ -53,6 +53,16 @@ try {
 const documentId = childId ?? rootId;
 const fetchHobbyDocument = (collectionId: string, id: string) =>
   outlineClient.POST('/documents.info', { body: { collectionId, id } });
+const loadHobbyDocument = (id: string) =>
+  withLastGood(
+    `hobby:${id}`,
+    async () => {
+      const request = await fetchHobbyDocument(settings!['hobbies-collection'], id);
+      if (request.response.status === 404 || request.response.status === 400) return request;
+      return requireOutlineOk(request, 'documents.info');
+    },
+    (request) => request.response.ok
+  );
 let data: NonNullable<Awaited<ReturnType<typeof fetchHobbyDocument>>['data']>['data'] | undefined;
 let documentStatus: number | undefined;
 
@@ -62,15 +72,7 @@ if (!cmsUnavailable) {
   }
   try {
     if (!settings?.['hobbies-collection']) throw new Error('hobbies collection not configured');
-    const documentRequest = await withLastGood(
-      `hobby:${documentId}`,
-      async () => {
-        const request = await fetchHobbyDocument(settings!['hobbies-collection'], documentId);
-        if (request.response.status === 404) return request;
-        return requireOutlineOk(request, 'documents.info');
-      },
-      (request) => request.response.ok
-    );
+    const documentRequest = await loadHobbyDocument(documentId);
     documentStatus = documentRequest.response.status;
     data = documentRequest.data?.data;
   } catch {
@@ -90,6 +92,20 @@ if (initialResponse.redirectTo404) {
 
 cmsUnavailable = initialResponse.status === 503;
 
+if (data && childId && data.parentDocumentId !== rootId && data.parentDocumentId) {
+  return Astro.redirect(`/${locale}/hobbies/${data.parentDocumentId}/doc/${childId}`, 301);
+}
+if (data && !childId && data.parentDocumentId) {
+  return Astro.redirect(`/${locale}/hobbies/${data.parentDocumentId}/doc/${rootId}`, 301);
+}
+
+let rootTitle: string | undefined;
+if (data && childId) {
+  try {
+    rootTitle = (await loadHobbyDocument(rootId)).data?.data?.title;
+  } catch {}
+}
+
 const childDocumentsParentId = childId && data?.parentDocumentId ? data.parentDocumentId : data?.id;
 let childDocumentsUnavailable = false;
 const childDocumentsRequest = data
@@ -103,9 +119,7 @@ const childDocumentsRequest = data
       return null;
     })
   : null;
-const childDocuments = (childDocumentsRequest?.data?.data ?? [])
-  .filter(Boolean)
-  .filter((child) => child.id !== data?.id);
+const childDocuments = (childDocumentsRequest?.data?.data ?? []).filter(Boolean);
 const backHref = childId ? `/${locale}/hobbies/${rootId}` : `/${locale}/hobbies`;
 const backLabel = childId ? t('hobbies.back-to-parent') : t('hobbies.back-to-hobbies');
 const content = parseHobbyContent({
@@ -134,7 +148,9 @@ const nestedDescription = [
 ]
   .filter(Boolean)
   .join(' ');
-const pageTitle = `${data?.title ?? t('common.hobbies')} | ${t('common.name')}`;
+const pageTitle = `${[data?.title ?? t('common.hobbies'), childId ? rootTitle : undefined]
+  .filter(Boolean)
+  .join(' · ')} | ${t('common.name')}`;
 const outlineAssetPrefix = outlineServerUrl.replace('/api', '');
 const outlineAssetProxyPath = getOutlineAssetProxyPath(locale);
 const resolveHobbyAssetUrl = (rawUrl?: string) =>
@@ -144,14 +160,20 @@ const resolveHobbyAssetUrl = (rawUrl?: string) =>
   });
 const embedType = content.embeds[0]?.type ?? 'field-notes';
 const hasModule = content.embeds.length > 0;
-const detailDescription =
-  getHobbyOverviewSummary({
-    hasSource: hasSourceContent,
-    value: content.description,
-    t
-  }) || nestedDescription;
+const authoredDescription = getHobbyOverviewSummary({
+  hasSource: hasSourceContent,
+  value: content.description,
+  t
+});
+const detailDescription = authoredDescription || nestedDescription;
+const metaDescription =
+  authoredDescription ||
+  (hasSourceContent ? getHobbyOverviewDescription(t, embedType) : '') ||
+  data?.title;
 const heroDescription =
-  !hasSourceContent || detailDescription === getHobbyBodyIntro(content.body)
+  !hasSourceContent ||
+  detailDescription === getHobbyBodyIntro(content.body) ||
+  (!authoredDescription && childDocuments.length > 0)
     ? ''
     : detailDescription;
 const embedLabel = getHobbyContentLabel({ hasSource: hasSourceContent, type: embedType, t });
@@ -214,7 +236,7 @@ Astro.response.status = responseState.status;
 Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
 ---
 
-<MainLayout title={pageTitle} description={detailDescription || data?.title}>
+<MainLayout title={pageTitle} description={metaDescription}>
   <div class={cx(hobbyStyles.detail, 'page-shell', 'hobby-detail')}>
     <a class={cx(hobbyStyles.detailBack, 'hobby-meta')} href={backHref}>
       <span aria-hidden="true">←</span>
@@ -246,8 +268,12 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
             {heroDescription && <p class={hobbyStyles.detailDescription}>{heroDescription}</p>}
             <p class={cx(hobbyStyles.detailUpdated, 'hobby-meta')}>
               <span>{t('hobbies.last-updated')}</span>
-              <span>/</span>
-              <span>{updatedLabel}</span>
+              <span aria-hidden="true">/</span>
+              {content.updatedAt ? (
+                <time datetime={content.updatedAt}>{updatedLabel}</time>
+              ) : (
+                <span>{updatedLabel}</span>
+              )}
             </p>
           </div>
 
@@ -277,9 +303,9 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
             {childDocumentsUnavailable && (
               <div class={hobbyStyles.detailPanel}>
                 <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
-                  {t('hobbies.status-unavailable')}
+                  {t('hobbies.learning-resources')}
                 </p>
-                <p class={hobbyStyles.detailDescription}>{t('hobbies.empty-description')}</p>
+                <p class={hobbyStyles.detailDescription}>{t('hobbies.children-unavailable')}</p>
               </div>
             )}
             {bodyParts.length === 0 &&
@@ -301,19 +327,31 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
                 </div>
               )}
             {bodyParts.length === 0 && childDocuments.length > 0 && (
-              <div class={hobbyStyles.detailPanel}>
-                <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+              <nav class={hobbyStyles.detailPanel} aria-labelledby="hobby-related-pages">
+                {childId && (
+                  <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+                    {t('hobbies.empty-source-state')}
+                  </p>
+                )}
+                <h2 id="hobby-related-pages" class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
                   {t('hobbies.learning-resources')}
-                </p>
-                <div class={hobbyStyles.detailNested}>
+                </h2>
+                <ul class={hobbyStyles.detailNested} role="list">
                   {childDocuments.map((child) => (
-                    <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
-                      <span>{child.title ?? t('hobbies.untitled')}</span>
-                      <span class="hobby-meta">{t('hobbies.doc-label')}</span>
-                    </a>
+                    <li>
+                      <a
+                        href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}
+                        aria-current={child.id === data?.id ? 'page' : undefined}
+                      >
+                        <span>{child.title ?? t('hobbies.untitled')}</span>
+                        {child.id !== data?.id && (
+                          <span class="hobby-meta">{t('common.open')}</span>
+                        )}
+                      </a>
+                    </li>
                   ))}
-                </div>
-              </div>
+                </ul>
+              </nav>
             )}
             {bodyParts.map((part) => {
               if (part.type === 'markdown') {
@@ -326,6 +364,9 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
                       headingLevelOffset={1}
                       newTabLabel={t('note.opens-new-tab')}
                       linkLabels={knownLinkLabelsFrom(t)}
+                      codeLabel={t('common.code-block')}
+                      locale={locale}
+                      tableLabel={t('common.table-region')}
                     />
                   </div>
                 );
@@ -355,19 +396,29 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
           </div>
 
           {childDocuments.length > 0 && bodyParts.length > 0 && (
-            <aside class={hobbyStyles.detailAside}>
+            <aside class={hobbyStyles.detailAside} aria-labelledby="hobby-related-pages-aside">
               <div class={hobbyStyles.detailPanel}>
-                <p class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}>
+                <h2
+                  id="hobby-related-pages-aside"
+                  class={cx(hobbyStyles.detailPanelTitle, 'hobby-meta')}
+                >
                   {t('hobbies.learning-resources')}
-                </p>
-                <div class={hobbyStyles.detailNested}>
+                </h2>
+                <ul class={hobbyStyles.detailNested} role="list">
                   {childDocuments.map((child) => (
-                    <a href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}>
-                      <span>{child.title ?? t('hobbies.untitled')}</span>
-                      <span class="hobby-meta">{t('hobbies.doc-label')}</span>
-                    </a>
+                    <li>
+                      <a
+                        href={`/${locale}/hobbies/${rootId}/doc/${child.id}`}
+                        aria-current={child.id === data?.id ? 'page' : undefined}
+                      >
+                        <span>{child.title ?? t('hobbies.untitled')}</span>
+                        {child.id !== data?.id && (
+                          <span class="hobby-meta">{t('common.open')}</span>
+                        )}
+                      </a>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </aside>
           )}

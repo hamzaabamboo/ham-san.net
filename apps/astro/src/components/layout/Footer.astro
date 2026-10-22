@@ -15,6 +15,7 @@ const t = useTranslations(locale);
       class="shell-footer-link"
     >
       GitHub
+      <span class="shell-footer-sr">{t('note.opens-new-tab')}</span>
     </a>
     <a
       target="_blank"
@@ -23,8 +24,9 @@ const t = useTranslations(locale);
       class="shell-footer-link"
     >
       LinkedIn
+      <span class="shell-footer-sr">{t('note.opens-new-tab')}</span>
     </a>
     <a href={`/${locale}/rss.xml`} class="shell-footer-link"> RSS </a>
-    <a href={`/${locale}/sitemap.xml`} class="shell-footer-link"> Sitemap </a>
+    <a href={`/${locale}/sitemap.xml`} class="shell-footer-link"> {t('common.sitemap')} </a>
   </div>
 </footer>

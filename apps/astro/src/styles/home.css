@@ -68,9 +68,12 @@
   flex-wrap: wrap;
   font-family: var(--font-code);
   font-size: 10px;
+  color: var(--atelier-outline);
+}
+
+.home-hero-photo-meta a {
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--atelier-outline);
 }
 
 .home-hero-photo-meta a,
@@ -140,8 +143,6 @@
   padding: 0 1rem 0.9rem;
   font-family: var(--font-code);
   font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--atelier-outline);
 }
 
