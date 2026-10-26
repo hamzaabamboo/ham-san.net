@@ -1,6 +1,6 @@
 ---
 import { FaArrowLeft } from 'react-icons/fa';
-import { Box, Container, Divider, Grid, HStack, Stack, Wrap, styled } from 'styled-system/jsx';
+import { Box, Container, Divider, Grid, HStack, Stack, Wrap } from 'styled-system/jsx';
 import { formatMonthYear, parseDate } from 'utils/date';
 import { resolveMedia } from 'utils/media';
 import { tagSlug } from '~/utils/tags';
@@ -21,6 +21,7 @@ import MainLayout from '~/layouts/MainLayout.astro';
 import Eyebrow from '~/components/common/Eyebrow.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
 import { cleanProjectCopy } from '~/utils/project-copy';
+import { projectMonogram } from '~/utils/monogram';
 
 export const prerender = false;
 
@@ -212,17 +213,45 @@ if (projectUnavailable) {
                 )}
               </Stack>
               {bannerUrl && (
-                <Box overflow="hidden" border="1px solid" borderColor="var(--atelier-line)">
-                  <styled.img
+                <Box
+                  position="relative"
+                  overflow="hidden"
+                  border="1px solid"
+                  borderColor="var(--atelier-line)"
+                >
+                  <img
                     src={bannerUrl}
                     alt={t('project.screenshot-alt').replace('{title}', title ?? '')}
-                    objectFit={bannerPortrait ? 'contain' : 'cover'}
-                    objectPosition={bannerPortrait ? 'center' : 'top'}
-                    width="full"
-                    aspectRatio="16 / 9"
-                    backgroundColor="var(--atelier-surface-highest)"
-                    filter="var(--atelier-image-plate)"
+                    onerror="this.style.visibility='hidden';this.nextElementSibling.style.display='grid'"
+                    style={{
+                      objectFit: bannerPortrait ? 'contain' : 'cover',
+                      objectPosition: bannerPortrait ? 'center' : 'top',
+                      width: '100%',
+                      aspectRatio: '16 / 9',
+                      backgroundColor: 'var(--atelier-surface-highest)',
+                      filter: 'var(--atelier-image-plate)'
+                    }}
                   />
+                  <Box
+                    position="absolute"
+                    inset="0"
+                    className="fallback-grid-lines"
+                    display="none"
+                    placeItems="center"
+                    aria-hidden="true"
+                  >
+                    <Box
+                      fontFamily="var(--font-display)"
+                      fontStyle="italic"
+                      fontSize="96px"
+                      lineHeight="1"
+                      color="var(--atelier-outline)"
+                      opacity="0.3"
+                      userSelect="none"
+                    >
+                      {projectMonogram(title)}
+                    </Box>
+                  </Box>
                 </Box>
               )}
 

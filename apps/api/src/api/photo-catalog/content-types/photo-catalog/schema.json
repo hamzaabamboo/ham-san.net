@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "photo_catalogs",
+  "info": {
+    "singularName": "photo-catalog",
+    "pluralName": "photo-catalogs",
+    "displayName": "Photo Catalog"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "account": {
+      "type": "string"
+    },
+    "hashtagQueries": {
+      "type": "json"
+    },
+    "fetchedAt": {
+      "type": "datetime"
+    },
+    "newestSeenAt": {
+      "type": "datetime"
+    }
+  }
+}

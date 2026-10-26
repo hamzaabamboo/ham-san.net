@@ -261,7 +261,7 @@ if (tagUnavailable) {
                       >
                         {t('common.tags')}
                       </Text>
-                      <Wrap columnGap="2" rowGap="2" pt="2.5">
+                      <Wrap columnGap="2" rowGap="0">
                         {sortTags(nonNullTags(tags)).map(
                           (tag) =>
                             tag &&
@@ -271,14 +271,8 @@ if (tagUnavailable) {
                                 alignItems="center"
                                 justifyContent="center"
                                 minW="44px"
-                                position="relative"
+                                minH="44px"
                                 aria-current="page"
-                                _before={{
-                                  content: '""',
-                                  position: 'absolute',
-                                  insetBlock: '-10px',
-                                  insetInline: '0'
-                                }}
                               >
                                 <TagBadge tag={tag} size="sm" current />
                               </Box>
@@ -289,14 +283,8 @@ if (tagUnavailable) {
                                 alignItems="center"
                                 justifyContent="center"
                                 minW="44px"
+                                minH="44px"
                                 className="group"
-                                position="relative"
-                                _before={{
-                                  content: '""',
-                                  position: 'absolute',
-                                  insetBlock: '-10px',
-                                  insetInline: '0'
-                                }}
                               >
                                 <TagBadge tag={tag} size="sm" interactive />
                               </Link>

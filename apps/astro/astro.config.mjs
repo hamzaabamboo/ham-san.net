@@ -33,7 +33,7 @@ export default defineConfig({
       dedupe: ['react', 'react-dom']
     },
     ssr: {
-      noExternal: process.env.ASTRO_ADAPTER === 'node' ? true : ['@ark-ui/react', /^@zag-js\//]
+      noExternal: ['@ark-ui/react', /^@zag-js\//]
     }
   },
   prefetch: true,

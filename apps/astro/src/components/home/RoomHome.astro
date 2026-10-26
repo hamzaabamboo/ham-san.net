@@ -21,6 +21,7 @@ const destinations = [
   data-room-home
   data-locale={locale}
   data-room-error={copy.failed}
+  data-room-loading={copy.loading}
   data-room-mobile-controls={copy.mobileControls}
   data-room-blocked={copy.blocked}
 >
@@ -53,8 +54,8 @@ const destinations = [
   <section class="room-entry" data-room-entry>
     <h1>{copy.title}</h1>
     <p>{copy.intro}</p>
-    <button class="room-enter" data-room-enter disabled>{copy.enter}</button>
-    <p class="room-status" data-room-status role="status">{copy.loading}</p>
+    <button class="room-enter" data-room-enter>{copy.enter}</button>
+    <p class="room-status" data-room-status role="status"></p>
     <a class="room-text-link" href={`/${locale}`}>{copy.conventional} ↗</a>
   </section>
   <div class="room-reticle" data-room-reticle hidden aria-hidden="true"></div>
@@ -129,7 +130,6 @@ const destinations = [
 </main>
 
 <script>
-  import { initRoom } from './room-runtime';
   type RoomHomeLifecycle = { root?: HTMLElement; dispose?: () => void };
   const windowWithRoom = window as Window & { __roomHomeLifecycle?: RoomHomeLifecycle };
   const lifecycle = windowWithRoom.__roomHomeLifecycle ?? {};
@@ -138,9 +138,49 @@ const destinations = [
     const root = document.querySelector<HTMLElement>('[data-room-home]');
     if (!root || lifecycle.root === root) return;
     lifecycle.dispose?.();
-    const dispose = initRoom(root);
-    lifecycle.root = dispose ? root : undefined;
-    lifecycle.dispose = dispose;
+    const enterButton = root.querySelector<HTMLButtonElement>('[data-room-enter]');
+    const status = root.querySelector<HTMLElement>('[data-room-status]');
+    const timeElement = root.querySelector<HTMLElement>('[data-room-time]');
+    if (!enterButton || !status) return;
+    lifecycle.root = root;
+    let disposed = false;
+    let runtimeDispose: (() => void) | undefined;
+    const updateClock = () => {
+      if (!timeElement) return;
+      const locale =
+        root.dataset.locale === 'ja' ? 'ja-JP' : root.dataset.locale === 'th' ? 'th-TH' : 'en-GB';
+      timeElement.textContent = new Intl.DateTimeFormat(locale, {
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: 'h23',
+        timeZone: 'Asia/Tokyo'
+      }).format(new Date());
+    };
+    updateClock();
+    const clockTimer = window.setInterval(updateClock, 30_000);
+    const onEnter = async () => {
+      if (disposed || runtimeDispose || enterButton.disabled) return;
+      enterButton.disabled = true;
+      status.textContent = root.dataset.roomLoading ?? '';
+      window.clearInterval(clockTimer);
+      try {
+        const { initRoom } = await import('./room-runtime');
+        if (disposed || !root.isConnected) return;
+        runtimeDispose = initRoom(root, true);
+      } catch {
+        status.textContent = root.dataset.roomError ?? '';
+        status.dataset.roomStatusError = '';
+        enterButton.hidden = true;
+      }
+    };
+    enterButton.addEventListener('click', onEnter);
+    lifecycle.dispose = () => {
+      if (disposed) return;
+      disposed = true;
+      window.clearInterval(clockTimer);
+      enterButton.removeEventListener('click', onEnter);
+      runtimeDispose?.();
+    };
   };
   const unmount = () => {
     lifecycle.dispose?.();

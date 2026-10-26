@@ -470,11 +470,9 @@ describe('round 29', () => {
     }
   });
 
-  test('the hobby meta chips sit on fixed axes', async () => {
-    // A free wrap broke at a different point on every row and pushed an orphan chip onto a
-    // second line on five of twelve.
+  test('wide hobby rows keep metadata on fixed axes', async () => {
     const page = await read('apps/astro/src/pages/[locale]/hobbies/index.astro');
-    expect(page).toContain("md: '7rem 11rem 9rem'");
+    expect(page).toContain("xl: '7rem 11rem 9rem'");
     // Exactly three slots, with counts merged, so a missing value leaves a gap not a shift.
     expect(page).toContain("countLabels.join(' \\u00B7 ') || null");
   });

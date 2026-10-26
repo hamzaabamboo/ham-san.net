@@ -28,6 +28,30 @@ const t = useTranslations(locale);
         wheelMultiplier: 1.0,
         touchMultiplier: 2.0
       });
+      const syncDialogScroll = () => {
+        if (document.querySelector('dialog[data-lenis-prevent][open]')) lenis.stop();
+        else lenis.start();
+      };
+      const dialogObserver = new MutationObserver((mutations) => {
+        if (
+          mutations.some(
+            ({ target }) =>
+              target instanceof HTMLDialogElement && target.hasAttribute('data-lenis-prevent')
+          )
+        ) {
+          syncDialogScroll();
+        }
+      });
+      dialogObserver.observe(document, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['open']
+      });
+      document.addEventListener('astro:after-swap', () => {
+        lenis.stop();
+        syncDialogScroll();
+      });
+      syncDialogScroll();
       const raf = (time: number) => {
         lenis.raf(time);
         requestAnimationFrame(raf);

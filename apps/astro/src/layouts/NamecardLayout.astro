@@ -77,6 +77,12 @@ const siteName = 'Ham';
     text-underline-offset: initial;
   }
 
+  @media screen {
+    html.namecard-document a:focus-visible {
+      outline-color: currentColor;
+    }
+  }
+
   html.namecard-document h1,
   html.namecard-document h2,
   html.namecard-document h3,

@@ -27,5 +27,6 @@
   "photos-other": "{n} photos",
   "posts-one": "{n} post",
   "posts-other": "{n} posts",
-  "viewer-error": "This photo could not be loaded. Open the original post on X."
+  "viewer-error": "This photo could not be loaded. Open the original post on X.",
+  "unavailable": "The photo catalog is temporarily unavailable. Please try again shortly."
 }

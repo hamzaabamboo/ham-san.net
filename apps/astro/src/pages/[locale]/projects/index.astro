@@ -103,7 +103,10 @@ if (projectsUnavailable) {
             border="1px solid"
             borderColor="var(--atelier-line)"
           >
-            <Stack bg="var(--atelier-bg)" p="5" gap="2">
+            <a
+              href={activeProjects.length > 0 ? '#active-projects' : undefined}
+              class="project-group-jump"
+            >
               <Text
                 className="mono-label"
                 fontFamily="var(--font-code)"
@@ -116,8 +119,11 @@ if (projectsUnavailable) {
               <Text fontFamily="var(--font-code)" fontSize="3xl" color="var(--atelier-accent)">
                 {activeProjects.length}
               </Text>
-            </Stack>
-            <Stack className="contact-panel" p="5" gap="2">
+            </a>
+            <a
+              href={inactiveProjects.length > 0 ? '#inactive-projects' : undefined}
+              class="project-group-jump"
+            >
               <Text
                 className="mono-label"
                 fontFamily="var(--font-code)"
@@ -130,7 +136,7 @@ if (projectsUnavailable) {
               <Text fontFamily="var(--font-code)" fontSize="3xl" color="var(--atelier-accent)">
                 {inactiveProjects.length}
               </Text>
-            </Stack>
+            </a>
             <Stack bg="var(--atelier-bg)" p="5" gap="2">
               <Text
                 className="mono-label"
@@ -199,7 +205,7 @@ if (projectsUnavailable) {
           <>
             {activeProjects.length > 0 && (
               <Stack gap="10">
-                <SectionHeading label={t('project.active')} />
+                <SectionHeading label={t('project.active')} id="active-projects" />
                 <Grid
                   gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }}
                   gap="1px"
@@ -386,7 +392,7 @@ if (projectsUnavailable) {
 
             {inactiveProjects.length > 0 && (
               <Stack gap="10">
-                <SectionHeading label={t('project.inactive')} />
+                <SectionHeading label={t('project.inactive')} id="inactive-projects" />
                 <Grid
                   gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(3, minmax(0, 1fr))' }}
                   gap="1px"

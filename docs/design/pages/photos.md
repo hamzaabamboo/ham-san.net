@@ -30,15 +30,18 @@ Posted by @HamP_punipuni · Updated Sep 27, 2026
 
 ## Data and caching
 
-- `kamekoEntries` comes from `src/constants/kameko-posts.json`, a committed cache holding post metadata and `pbs.twimg.com` media URLs. No image files are stored.
+- 写真一覧は `src/utils/photo-catalog.ts` から Strapi の `photo-catalog` と `kameko-posts` を読み込む。画像は引き続き X の URL を使用する。Git の JSON は移行用の入力としてのみ残し、実行時のフォールバックには使用しない。
+- 本番移行は未完了。先に CMS スキーマを反映し、`scripts/import-kameko-catalog.mjs --input <snapshot> --write` で全件を移行・照合してからフロントエンドを切り替える。既存の ADR 0003 は旧構成の記録。
 - **Parser** (`parseKamekoPosts`), for the template `date / event / name @handle / caption / #tags`:
   - Legacy date formats `M月D日（曜）` and `YYYY-MM-DD` are supported.
   - Names come from `name @handle` lines, known names (subsequence match for typos and nicknames), and performer hashtags (the `performerTags` map).
   - Handles are canonicalised per name, and event spellings that differ only in spacing are merged.
   - Entries without a name are dropped.
-- `CDN-Cache-Control: public, max-age=3600, must-revalidate`.
-- **Refresh:** `cd apps/astro && TWEETAPI_IO_API_KEY=… bun run fetch:kameko`.
-  - One twitterapi.io search request covering all hashtag combinations, `since_time` the newest cached post. It skips known IDs.
+- CMS 読み込みは同時リクエストを共有し、60 秒間キャッシュする。取得に失敗した場合は過去に取得できた CMS データを使用する。初回取得も失敗した場合は 503 と `no-store` を返し、検索結果が空であるかのように表示しない。
+- `CDN-Cache-Control: public, max-age=60, must-revalidate`。
+- **Refresh:** `cd apps/astro && bun run fetch:kameko`。`STRAPI_API_TOKEN`、`PRIVATE_BACKEND_API_URL` または `PUBLIC_API_URL`、`TWEETAPI_IO_API_KEY` を実行環境で設定する。
+  - A catalog refresh requires running the fetcher, checking the metadata diff, and verifying the refreshed entries in the gallery. Viewer or layout changes alone do not refresh the catalog.
+  - アカウント、検索条件、確定済みウォーターマークは CMS から取得する。全ページの取得後に投稿を upsert し、読み戻して照合してからウォーターマークを更新する。途中失敗時は既存投稿の最大日付で検索範囲を進めない。
   - `KAMEKO_DEEP=1` runs a full Latest+Top sweep. It is paid, so use it only with the owner's approval and a credit estimate.
   - The key lives in `with-meets-reminder/.env`. It is read at runtime only and never written to this repo.
 

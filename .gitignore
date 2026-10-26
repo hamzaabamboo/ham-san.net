@@ -128,6 +128,7 @@ data/
 generated/
 
 .image-cache
+.scratch/
 
 styled-system
 .nx
