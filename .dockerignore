@@ -1,5 +1,7 @@
 .git
 .gitignore
+.scratch
+.nx
 .DS_Store
 .env
 .env.*

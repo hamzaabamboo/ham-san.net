@@ -56,7 +56,8 @@ jobs:
               exit 0
             fi
             test -n "$PHOTO_CATALOG_SNAPSHOT_GZIP_BASE64"
-            test -z "$(git status --porcelain)"
+            git diff --quiet
+            git diff --cached --quiet
             eval "$(ssh-agent -s)"
             cleanup() {
               result=$?

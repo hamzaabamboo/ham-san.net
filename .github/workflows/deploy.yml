@@ -203,7 +203,8 @@ jobs:
             set -eu
             cd ./ham-san-net
             git status --short
-            test -z "$(git status --porcelain)"
+            git diff --quiet
+            git diff --cached --quiet
             eval "$(ssh-agent -s)"
             trap 'ssh-agent -k >/dev/null || true' EXIT
             ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
