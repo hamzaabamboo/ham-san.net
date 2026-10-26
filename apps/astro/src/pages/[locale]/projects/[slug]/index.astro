@@ -57,6 +57,7 @@ const {
   category,
   date,
   finishedDate,
+  isActive,
   tags
 } = project ?? {};
 const normalizeHeading = (value: string) => value.trim().replace(/\s+/g, ' ').toLowerCase();
@@ -100,7 +101,9 @@ const endMonth = finishedDate
   : undefined;
 const dateRange =
   startMonth &&
-  (endMonth === startMonth ? startMonth : `${startMonth} – ${endMonth ?? t('common.present')}`);
+  (endMonth === startMonth || (!endMonth && !isActive)
+    ? startMonth
+    : `${startMonth} – ${endMonth ?? t('common.present')}`);
 const chipTags = nonNullTags(tags ?? []).filter((tag) => tagSlug(tag));
 const pageTitle = `${title ?? t('common.projects')} | ${t('common.name')}`;
 

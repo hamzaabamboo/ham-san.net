@@ -368,46 +368,36 @@ Astro.response.headers.set(
           }
           <Box position="relative">
             <Stack gap="6">
-              <Stack
-                border="1px solid"
-                borderColor="var(--atelier-line)"
-                bg="linear-gradient(135deg, rgba(255, 176, 0, 0.06), transparent 42%), var(--atelier-bg)"
-                p="8"
-                gap="4"
-              >
-                <Text
-                  fontFamily="var(--font-code)"
-                  fontSize="10px"
-                  textTransform="uppercase"
-                  letterSpacing={locale === 'th' ? 'normal' : '0.12em'}
-                  color="var(--atelier-accent)"
-                  className="mono-label"
-                >
-                  {t('about-me.current-stack')}
-                </Text>
-                <Wrap gap="2">
-                  {
-                    currentRoleTags.length > 0 ? (
-                      currentRoleTags.map((tag) => (
+              {
+                currentRoleTags.length > 0 && (
+                  <Stack
+                    border="1px solid"
+                    borderColor="var(--atelier-line)"
+                    bg="linear-gradient(135deg, rgba(255, 176, 0, 0.06), transparent 42%), var(--atelier-bg)"
+                    p="8"
+                    gap="4"
+                  >
+                    <Text
+                      fontFamily="var(--font-code)"
+                      fontSize="10px"
+                      textTransform="uppercase"
+                      letterSpacing={locale === 'th' ? 'normal' : '0.12em'}
+                      color="var(--atelier-accent)"
+                      className="mono-label"
+                    >
+                      {t('about-me.current-stack')}
+                    </Text>
+                    <Wrap gap="2">
+                      {currentRoleTags.map((tag) => (
                         <TagChip
                           label={tag.title ?? tag.slug ?? ''}
                           href={tagSlug(tag) ? `/${locale}/tags/${tagSlug(tag)}` : undefined}
                         />
-                      ))
-                    ) : aboutUnavailable ? null : (
-                      <Text
-                        fontFamily="var(--font-code)"
-                        fontSize="10px"
-                        textTransform="uppercase"
-                        color="var(--atelier-outline)"
-                        className="mono-label"
-                      >
-                        {t('common.records-pending')}
-                      </Text>
-                    )
-                  }
-                </Wrap>
-              </Stack>
+                      ))}
+                    </Wrap>
+                  </Stack>
+                )
+              }
               <Box
                 position="relative"
                 border="1px solid"
@@ -456,6 +446,7 @@ Astro.response.headers.set(
             borderColor="var(--atelier-line)"
             bg="var(--atelier-surface-low)"
             p="8"
+            _print={{ breakInside: 'avoid' }}
           >
             <Box mb="8">
               <SectionHeading label={t('common.education')} />
@@ -523,6 +514,7 @@ Astro.response.headers.set(
             border="1px solid"
             borderColor="var(--atelier-line)"
             p="8"
+            _print={{ breakInside: 'avoid' }}
           >
             <Box mb="6">
               <SectionHeading label={t('about-me.methodology')} />
@@ -540,6 +532,7 @@ Astro.response.headers.set(
             borderColor="var(--atelier-line)"
             bg="var(--atelier-surface-low)"
             p="8"
+            _print={{ breakInside: 'avoid' }}
           >
             <SectionHeading label={t('about-me.skills')} />
             {
