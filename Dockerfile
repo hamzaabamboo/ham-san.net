@@ -26,15 +26,28 @@ FROM install AS build-legacy-client
 RUN bunx nx run client:build
 
 FROM base AS astro-runtime-dependencies
-COPY . /usr/src/app
+COPY package.json bun.lock ./
+COPY apps/astro/package.json ./apps/astro/package.json
+COPY apps/api/package.json ./apps/api/package.json
+COPY apps/client/package.json ./apps/client/package.json
 RUN bun install --frozen-lockfile --production --ignore-scripts --filter astro
 
-FROM build-api AS api
-ENV PATH=/usr/src/app/apps/api/node_modules/.bin:/usr/src/app/node_modules/.bin:$PATH
+FROM base AS api-runtime-dependencies
+COPY package.json bun.lock ./
+COPY apps/astro/package.json ./apps/astro/package.json
+COPY apps/api/package.json ./apps/api/package.json
+COPY apps/client/package.json ./apps/client/package.json
+RUN bun install --frozen-lockfile --production --ignore-scripts --filter api
+
+FROM node:22-bookworm-slim AS api
+ENV DO_NOT_TRACK=1 STRAPI_TELEMETRY_DISABLED=true NODE_ENV=production
+COPY --from=api-runtime-dependencies /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --from=api-runtime-dependencies /usr/src/app/apps/api/node_modules /usr/src/app/apps/api/node_modules
+COPY --from=build-api /usr/src/app/dist/apps/api /usr/src/app/dist/apps/api
 WORKDIR /usr/src/app/dist/apps/api
 RUN ln -s ../../../apps/api/node_modules ./node_modules
 EXPOSE 1337
-CMD ["bun", "run", "start"]
+CMD ["node", "node_modules/@strapi/strapi/bin/strapi.js", "start"]
 
 FROM node:22-bookworm-slim AS astro
 ENV DO_NOT_TRACK=1 ASTRO_TELEMETRY_DISABLED=1

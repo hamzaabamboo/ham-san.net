@@ -19,7 +19,7 @@ services:
       # - ./api/src:/usr/src/app/dist/apps/api/src
     ports:
       - 1337:1337
-    command: ['bun', 'run', 'start']
+    command: ['node', 'node_modules/@strapi/strapi/bin/strapi.js', 'start']
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     networks:

@@ -12,6 +12,11 @@ on:
         required: true
         type: boolean
         default: true
+      cleanup_unused_images:
+        description: Remove unused images belonging only to this project during inspection
+        required: true
+        type: boolean
+        default: false
       write:
         description: Write and verify catalog records
         required: true
@@ -35,6 +40,7 @@ jobs:
       PHOTO_CATALOG_SNAPSHOT_GZIP_BASE64: ${{ inputs.snapshot }}
       PHOTO_CATALOG_WRITE: ${{ inputs.write }}
       PHOTO_CATALOG_INSPECT: ${{ inputs.inspect }}
+      CLEANUP_UNUSED_IMAGES: ${{ inputs.cleanup_unused_images }}
     steps:
       - name: Import through the deployed API image
         uses: appleboy/ssh-action@master
@@ -42,7 +48,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
-          envs: PHOTO_CATALOG_SNAPSHOT_GZIP_BASE64,PHOTO_CATALOG_WRITE,PHOTO_CATALOG_INSPECT
+          envs: PHOTO_CATALOG_SNAPSHOT_GZIP_BASE64,PHOTO_CATALOG_WRITE,PHOTO_CATALOG_INSPECT,CLEANUP_UNUSED_IMAGES
           script: |
             set -eu
             export DO_NOT_TRACK=1
@@ -53,6 +59,26 @@ jobs:
               git rev-parse HEAD
               docker inspect --format '{{.Image}}' strapi
               docker compose ps api
+              df -k .
+              docker exec strapi df -k /usr/src/app
+              docker image ls --no-trunc --digests --filter 'reference=registry.ham-san.net/ham-san-net-*' --format '{{.ID}} {{.Repository}}:{{.Tag}} {{.Digest}} {{.Size}}'
+              docker inspect --format '{{.Name}} {{.Image}}' strapi astro
+              if [ "$CLEANUP_UNUSED_IMAGES" = true ]; then
+                mkdir -p .scratch/deployment
+                docker image ls --no-trunc --filter 'reference=registry.ham-san.net/ham-san-net-*' --format '{{.ID}} {{.Repository}} {{.Tag}}' > .scratch/deployment/project-images.txt
+                while read -r image repository tag; do
+                  case "$repository" in
+                    registry.ham-san.net/ham-san-net-api|registry.ham-san.net/ham-san-net-astro) ;;
+                    *) continue ;;
+                  esac
+                  if [ "$tag" = '<none>' ]; then continue; fi
+                  holders=$(docker container ls -a --filter "ancestor=$image" --format '{{.ID}}')
+                  if [ -n "$holders" ]; then continue; fi
+                  docker image rm "$repository:$tag"
+                done < .scratch/deployment/project-images.txt
+                df -k .
+                docker exec strapi df -k /usr/src/app
+              fi
               exit 0
             fi
             test -n "$PHOTO_CATALOG_SNAPSHOT_GZIP_BASE64"
