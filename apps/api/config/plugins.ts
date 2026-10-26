@@ -47,10 +47,13 @@ module.exports = ({ env }) => {
                   },
                   params: {
                     Bucket: env('S3_BUCKET'),
-                    ACL: undefined,
-                    CacheControl: 'public, max-age=31536000, immutable'
+                    ACL: undefined
                   }
                 }
+              },
+              actionOptions: {
+                upload: { CacheControl: 'public, max-age=31536000, immutable' },
+                uploadStream: { CacheControl: 'public, max-age=31536000, immutable' }
               }
             }
           }

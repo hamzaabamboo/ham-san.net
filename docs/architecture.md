@@ -36,6 +36,7 @@ The workspace is Bun (runtime and test runner) with Nx orchestrating `lint`, `co
 | Eventernote | `src/utils/eventernote-report.ts`: HTML scrape of the public profile with a 24 h in-module cache; no key | none |
 | twitterapi.io | 明示承認した `scripts/fetch-kameko.mjs` のみ。投稿メタデータは Strapi に保存し、実行時には呼び出さない | `TWEETAPI_IO_API_KEY`、`STRAPI_API_TOKEN`（実行環境のみ） |
 | X image host | the browser loads `pbs.twimg.com` directly (ADR 0002) | none |
+| Strapi メディア | S3 互換ストレージ `https://s3.ham-san.net/personal/ham-san-net/media/`。CMS にメタデータと関連を保持し、画像本体は Git に保存しない | プロジェクトのプレフィックスに限定した `S3_*` デプロイ設定。リージョンは `local` |
 
 All upstream calls have short timeouts: 7 s for GraphQL and Outline, 12 s for Eventernote, 8 s for the asset proxy.
 

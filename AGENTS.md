@@ -51,6 +51,7 @@
 - Photo images remain on X; store their original URLs and metadata in Strapi. Runtime pages must never call the paid post provider or fall back to a Git catalog.
 - Migrate with an idempotent import and complete field readback before advancing the catalog watermark. Retain the existing migration seed until production readback succeeds, then remove the tracked seed while preserving an ignored recovery copy.
 - Upload project screenshots and graphics to CMS media; do not commit those media files. Code, schemas, font configuration, and required editable room sources remain project assets.
+- Strapi media binaries use the S3 provider at `https://s3.ham-san.net`, bucket `personal`, prefix `ham-san-net/media`, region `local`. Keep metadata and relations in Strapi. Use project-scoped credentials from deployment secrets; never copy the administrator alias credentials into the application. Public reads apply only to the media prefix. Preserve original server files until migration and byte readback succeed.
 
 ### Issue tracker
 
