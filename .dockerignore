@@ -16,6 +16,7 @@ dist
 .netlify
 coverage
 data
+data-backup
 dogfood-output
 public/uploads
 stitch_exports

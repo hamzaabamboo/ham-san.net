@@ -20,7 +20,6 @@ import { knownLinkLabelsFrom } from '~/utils/link-label';
 import MainLayout from '~/layouts/MainLayout.astro';
 import Eyebrow from '~/components/common/Eyebrow.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
-import { cleanProjectCopy } from '~/utils/project-copy';
 import { projectMonogram } from '~/utils/monogram';
 
 export const prerender = false;
@@ -40,7 +39,7 @@ try {
     (result) => !!result?.projects?.[0]
   );
   const rawProject = data?.projects?.[0] as (ProjectFragment & { id: string }) | undefined;
-  project = rawProject ? cleanProjectCopy(rawProject) : undefined;
+  project = rawProject;
 } catch {
   projectUnavailable = true;
 }

@@ -28,7 +28,7 @@ services:
     container_name: astro
     env_file: .env
     restart: unless-stopped
-    image: registry.ham-san.net/ham-san-net-astro:latest
+    image: ${ASTRO_IMAGE:-registry.ham-san.net/ham-san-net-astro:latest}
     environment:
       PRIVATE_BACKEND_API_URL: http://api:1337
       PORT: 4125

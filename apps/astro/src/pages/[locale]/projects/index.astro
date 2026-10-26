@@ -9,7 +9,6 @@ import { useTranslations, validateLocale } from '~/i18n/utils';
 import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { projectMonogram } from '~/utils/monogram';
-import { cleanProjectCopy } from '~/utils/project-copy';
 import { groupProjectsByActivity, requireProjects } from '~/utils/project-groups';
 import MainLayout from '~/layouts/MainLayout.astro';
 import PageMasthead from '~/components/common/PageMasthead.astro';
@@ -30,10 +29,7 @@ try {
   const data = await withLastGood('projects', async () =>
     requireProjects(await graphQLSdk.fetchProjects({ limit: 75 }))
   );
-  projects = (data?.projects ?? [])
-    .map((p) => pickLocale(p, locale))
-    .filter((p: any) => !!p)
-    .map((p) => cleanProjectCopy(p as any));
+  projects = (data?.projects ?? []).map((p) => pickLocale(p, locale)).filter((p: any) => !!p);
 } catch {
   projectsUnavailable = true;
 }

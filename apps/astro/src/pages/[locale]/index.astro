@@ -14,7 +14,6 @@ import Eyebrow from '~/components/common/Eyebrow.astro';
 import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { projectMonogram } from '~/utils/monogram';
-import { cleanProjectCopy } from '~/utils/project-copy';
 import { getPhotoCatalog } from '~/utils/photo-catalog';
 import '~/styles/home.css';
 
@@ -42,8 +41,7 @@ try {
   const rawProjects = data?.projects ?? [];
   projects = rawProjects
     .map((p) => pickLocale(p, locale))
-    .filter((p): p is ProjectPreviewFragment => !!p)
-    .map((p) => cleanProjectCopy(p));
+    .filter((p): p is ProjectPreviewFragment => !!p);
 } catch {
   projects = [];
   homeUnavailable = true;

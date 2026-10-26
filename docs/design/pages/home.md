@@ -47,7 +47,7 @@ Reference comps: `stitch_exports/4878703984446574546/02_the-personal-workshop-ho
 ## Data and caching
 
 - Projects come from `graphQLSdk.fetchHomePage({ locale })` (Strapi), wrapped in `withLastGood('home:{cmsLocale}')`.
-- Photos come from `kamekoEntries` (the static cache `src/constants/kameko-posts.json`); there is no live API call.
+- 写真は `src/utils/photo-catalog.ts` 経由で Strapi から取得する。画像本体は X に保持し、Git のカタログには依存しない。
 - `CDN-Cache-Control` is `public, max-age=3600, must-revalidate`, or `max-age=60` when the CMS is unavailable.
 
 ## States

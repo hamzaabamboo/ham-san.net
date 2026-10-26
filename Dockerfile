@@ -1,7 +1,7 @@
 FROM node:22-bookworm-slim AS base
 ENV DO_NOT_TRACK=1 STRAPI_TELEMETRY_DISABLED=true ASTRO_TELEMETRY_DISABLED=1
 WORKDIR /usr/src/app
-RUN npm install -g bun@1.3.10
+RUN npm install -g bun@1.3.14
 RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ curl bash git && rm -rf /var/lib/apt/lists/*
 
 FROM base AS install
@@ -25,6 +25,10 @@ RUN bun run codegen:prod && bun run build
 FROM install AS build-legacy-client
 RUN bunx nx run client:build
 
+FROM base AS astro-runtime-dependencies
+COPY . /usr/src/app
+RUN bun install --frozen-lockfile --production --ignore-scripts --filter astro
+
 FROM build-api AS api
 ENV PATH=/usr/src/app/apps/api/node_modules/.bin:/usr/src/app/node_modules/.bin:$PATH
 WORKDIR /usr/src/app/dist/apps/api
@@ -32,12 +36,15 @@ RUN ln -s ../../../apps/api/node_modules ./node_modules
 EXPOSE 1337
 CMD ["bun", "run", "start"]
 
-FROM node:22-alpine AS astro
+FROM node:22-bookworm-slim AS astro
 ENV DO_NOT_TRACK=1 ASTRO_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
 WORKDIR /usr/src/app/apps/astro
+COPY --from=astro-runtime-dependencies /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --from=astro-runtime-dependencies /usr/src/app/apps/astro/node_modules ./node_modules
+COPY --from=astro-runtime-dependencies /usr/src/app/apps/astro/package.json ./package.json
 COPY --from=build-astro /usr/src/app/apps/astro/dist ./dist
 EXPOSE 4321
 CMD ["node", "./dist/server/entry.mjs"]

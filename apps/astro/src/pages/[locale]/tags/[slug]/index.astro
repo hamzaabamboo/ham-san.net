@@ -22,7 +22,6 @@ import { knownLinkLabelsFrom } from '~/utils/link-label';
 import MainLayout from '~/layouts/MainLayout.astro';
 import Eyebrow from '~/components/common/Eyebrow.astro';
 import SectionHeading from '~/components/common/SectionHeading.astro';
-import { cleanProjectCopy } from '~/utils/project-copy';
 import { sortTags, tagSlug } from '~/utils/tags';
 
 export const prerender = false;
@@ -79,9 +78,9 @@ const type = tagData?.type;
 const experienceItems = (tagData?.experiences ?? []).filter(
   (e): e is ExperienceFragment & { id: string } => !!e
 );
-const projectItems = (tagData?.projects ?? [])
-  .filter((p): p is ProjectPreviewFragment & { id: string } => !!p)
-  .map((p) => cleanProjectCopy(p));
+const projectItems = (tagData?.projects ?? []).filter(
+  (p): p is ProjectPreviewFragment & { id: string } => !!p
+);
 const t = useTranslations(locale);
 const typeKey = type ? toKebabCase(type) : undefined;
 const typeLabel =

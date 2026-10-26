@@ -139,7 +139,9 @@ jobs:
             PUBLIC_URL=${{ secrets.PUBLIC_URL }}
             PUBLIC_OUTLINE_URL=${{ secrets.PUBLIC_OUTLINE_URL }}
           push: true
-          tags: registry.ham-san.net/ham-san-net-astro:latest
+          tags: |
+            registry.ham-san.net/ham-san-net-astro:latest
+            registry.ham-san.net/ham-san-net-astro:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
@@ -213,13 +215,42 @@ jobs:
       - name: Deploy Backend
         uses: appleboy/ssh-action@master
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.backend) || (github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.backend == 'true') }}
+        env:
+          S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          S3_REGION: ${{ secrets.S3_REGION }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_ROOT_PATH: ${{ secrets.S3_ROOT_PATH }}
+          S3_PUBLIC_BASE_URL: ${{ secrets.S3_PUBLIC_BASE_URL }}
+          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
+          envs: S3_ENDPOINT,S3_REGION,S3_BUCKET,S3_ROOT_PATH,S3_PUBLIC_BASE_URL,S3_ACCESS_KEY_ID,S3_SECRET_ACCESS_KEY
           script: |
             set -eu
             cd ./ham-san-net
+            test -n "$S3_ENDPOINT"
+            test -n "$S3_REGION"
+            test -n "$S3_BUCKET"
+            test -n "$S3_ROOT_PATH"
+            test -n "$S3_PUBLIC_BASE_URL"
+            test -n "$S3_ACCESS_KEY_ID"
+            test -n "$S3_SECRET_ACCESS_KEY"
+            umask 077
+            s3_env_tmp=$(mktemp .env.s3.XXXXXX)
+            trap 'rm -f "$s3_env_tmp"' EXIT
+            awk '!/^(S3_ENDPOINT|S3_REGION|S3_BUCKET|S3_ROOT_PATH|S3_PUBLIC_BASE_URL|S3_ACCESS_KEY_ID|S3_SECRET_ACCESS_KEY)=/' .env > "$s3_env_tmp"
+            printf '%s\n' \
+              "S3_ENDPOINT=$S3_ENDPOINT" \
+              "S3_REGION=$S3_REGION" \
+              "S3_BUCKET=$S3_BUCKET" \
+              "S3_ROOT_PATH=$S3_ROOT_PATH" \
+              "S3_PUBLIC_BASE_URL=$S3_PUBLIC_BASE_URL" \
+              "S3_ACCESS_KEY_ID=$S3_ACCESS_KEY_ID" \
+              "S3_SECRET_ACCESS_KEY=$S3_SECRET_ACCESS_KEY" >> "$s3_env_tmp"
+            mv "$s3_env_tmp" .env
             export API_IMAGE=registry.ham-san.net/ham-san-net-api:${{ github.sha }}
             docker compose pull api
             docker compose up -d --no-deps api
@@ -231,5 +262,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
+            set -eu
             cd ./ham-san-net
-            ./deploy-frontend.sh
+            export ASTRO_IMAGE=registry.ham-san.net/ham-san-net-astro:${{ github.sha }}
+            docker compose pull client
+            docker compose up -d --no-deps client

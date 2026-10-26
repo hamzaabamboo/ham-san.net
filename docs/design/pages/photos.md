@@ -30,8 +30,8 @@ Posted by @HamP_punipuni · Updated Sep 27, 2026
 
 ## Data and caching
 
-- 写真一覧は `src/utils/photo-catalog.ts` から Strapi の `photo-catalog` と `kameko-posts` を読み込む。画像は引き続き X の URL を使用する。Git の JSON は移行用の入力としてのみ残し、実行時のフォールバックには使用しない。
-- 本番移行は未完了。先に CMS スキーマを反映し、`scripts/import-kameko-catalog.mjs --input <snapshot> --write` で全件を移行・照合してからフロントエンドを切り替える。既存の ADR 0003 は旧構成の記録。
+- 写真一覧は `src/utils/photo-catalog.ts` から Strapi の `photo-catalog` と `kameko-posts` を読み込む。画像は引き続き X の URL を使用する。Git のカタログや実行時フォールバックは使用しない。
+- 本番 CMS に 150 投稿を移行し、全フィールドとカタログ情報の読み戻し照合が完了した。Git の移行用 JSON は削除し、復旧用コピーを Git 管理外の `.scratch/cms-validation/kameko-posts.recovery.json` に保持する。既存の ADR 0003 は旧構成の記録。
 - **Parser** (`parseKamekoPosts`), for the template `date / event / name @handle / caption / #tags`:
   - Legacy date formats `M月D日（曜）` and `YYYY-MM-DD` are supported.
   - Names come from `name @handle` lines, known names (subsequence match for typos and nicknames), and performer hashtags (the `performerTags` map).

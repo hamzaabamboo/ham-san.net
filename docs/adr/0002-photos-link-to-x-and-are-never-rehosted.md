@@ -1,3 +1,5 @@
 # Photos are shown from X and never re-hosted
 
+2026-10-26 更新: 投稿メタデータの保存先は Strapi に移行済み。以下の Git キャッシュ名は旧構成の記録であり、画像を X から配信する方針は継続する。
+
 The photos page stores post metadata only (`apps/astro/src/constants/kameko-posts.json`). Every image loads from `pbs.twimg.com`, and every photo links to its original post. Ham wants each photo tied to the post that credits the people in it, and a post deleted on X must disappear from the site too: a tile whose image fails to load hides itself. The cost: the page depends on X's image host, and it cannot optimise or resize images beyond X's `name=small|medium|large` variants.

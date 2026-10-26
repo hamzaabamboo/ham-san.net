@@ -1,6 +1,27 @@
-export default [
+export default ({ env }) => [
   'strapi::errors',
-  'strapi::security',
+  ...(env('S3_PUBLIC_BASE_URL')
+    ? [
+        {
+          name: 'strapi::security',
+          config: {
+            contentSecurityPolicy: {
+              useDefaults: true,
+              directives: {
+                'img-src': [
+                  "'self'",
+                  'data:',
+                  'blob:',
+                  'https://market-assets.strapi.io',
+                  new URL(env('S3_PUBLIC_BASE_URL')).origin
+                ],
+                'media-src': ["'self'", 'data:', 'blob:', new URL(env('S3_PUBLIC_BASE_URL')).origin]
+              }
+            }
+          }
+        }
+      ]
+    : ['strapi::security']),
   'strapi::poweredBy',
   {
     name: 'strapi::cors',

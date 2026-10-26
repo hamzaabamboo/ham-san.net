@@ -34,16 +34,16 @@ The workspace is Bun (runtime and test runner) with Nx orchestrating `lint`, `co
 | Strapi GraphQL | `src/graphql/index.ts` (typed SDK generated from `libs/graphql/**/*.gql` by `codegen.yml` / `codegen.prod.yml`) | `PRIVATE_BACKEND_API_URL`, `PUBLIC_API_URL` |
 | Outline | `src/utils/outline-api.ts` (client from `libs/outline`); settings document parsed by `outline-settings.ts`; attachments proxied by `/api/outline-asset` | `PRIVATE_OUTLINE_SERVER`, `PRIVATE_OUTLINE_API_TOKEN`, `PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID` |
 | Eventernote | `src/utils/eventernote-report.ts`: HTML scrape of the public profile with a 24 h in-module cache; no key | none |
-| twitterapi.io | `scripts/fetch-kameko.mjs` only, run by hand; writes `src/constants/kameko-posts.json` (ADR 0003) | `TWEETAPI_IO_API_KEY` (lives in `with-meets-reminder/.env`; never commit it) |
+| twitterapi.io | 明示承認した `scripts/fetch-kameko.mjs` のみ。投稿メタデータは Strapi に保存し、実行時には呼び出さない | `TWEETAPI_IO_API_KEY`、`STRAPI_API_TOKEN`（実行環境のみ） |
 | X image host | the browser loads `pbs.twimg.com` directly (ADR 0002) | none |
 
 All upstream calls have short timeouts: 7 s for GraphQL and Outline, 12 s for Eventernote, 8 s for the asset proxy.
 
 ## The photos data flow
 
-1. `scripts/fetch-kameko.mjs` searches X for posts by @HamP_punipuni with the photo hashtags. It skips post IDs already in the cache and merges new posts into `src/constants/kameko-posts.json` (commit this file).
+1. `scripts/fetch-kameko.mjs` は CMS の確定済みウォーターマークから対象投稿を取得する。全ページ取得後に Strapi へ投稿を upsert し、全フィールドの読み戻し照合後にカタログ情報を更新する。Git に投稿データを保存しない。
 2. `src/utils/kameko.ts` parses each post's text into a photo entry: shoot date, event, the named people, caption and tags. It drops any post that names nobody (ADR 0004).
-3. `/photos` and the home page read those entries at render time, so there is no API call per request.
+3. `/photos` とホームは `src/utils/photo-catalog.ts` から CMS の投稿・カタログを取得する。同時リクエストを共有し、60 秒間キャッシュする。取得失敗時は過去の CMS データのみを使用し、初回取得も失敗したギャラリーは 503 を返す。有料の取得元や Git データにはフォールバックしない。
 
 ## The 3D room pipeline (Blender → browser)
 

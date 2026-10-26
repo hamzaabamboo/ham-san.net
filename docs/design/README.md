@@ -117,10 +117,10 @@ Weights must be ones the font request actually serves; `apps/astro/tests/atelier
 
 ## Imagery and third-party content
 
-- **Gallery photos** come from `apps/astro/src/constants/kameko-posts.json` (post metadata only) and load from `pbs.twimg.com`. Every tile links to the original post on X. The page adds `referrerpolicy="no-referrer"` and `draggable="false"`, blocks the context menu on images, and hides a tile whose image fails to load, so posts deleted on X drop off the site.
+- **Gallery photos:** 投稿メタデータは Strapi、画像本体は `pbs.twimg.com` から取得する。各写真は元の X 投稿へリンクし、`referrerpolicy="no-referrer"` と `draggable="false"` を設定する。画像の読み込みに失敗した写真は非表示にする。Git のカタログは使用しない。
 - **The home hero** shows the latest named portrait, and the home "Recent photos" strip shows the newest photo of each other person. Both link to X.
 - **CMS images** (projects, hobbies) come from the Strapi/Outline APIs. A missing image renders the grid-line monogram plate.
-- **The gallery cache** is refreshed with `cd apps/astro && TWEETAPI_IO_API_KEY=… bun run fetch:kameko`. This is one request per run and never refetches a known post. `KAMEKO_DEEP=1` is a paid full sweep that needs the owner's approval.
+- **Gallery refresh:** `cd apps/astro && bun run fetch:kameko` は CMS の確定済みウォーターマークから取得し、全投稿の読み戻し照合後に更新を確定する。実行環境に CMS と取得元の認証情報を設定する。有料の取得処理は所有者の明示承認時のみ実行する。
 
 ## Motion
 

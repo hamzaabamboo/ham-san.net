@@ -1,0 +1,72 @@
+name: Migrate CMS media to S3
+
+on:
+  workflow_dispatch:
+    inputs:
+      write:
+        description: Copy media to S3 and update verified CMS references
+        required: true
+        type: boolean
+        default: false
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    environment: prod
+    timeout-minutes: 30
+    env:
+      MEDIA_MIGRATION_WRITE: ${{ inputs.write }}
+    steps:
+      - name: Migrate verified media using the deployed API image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          envs: MEDIA_MIGRATION_WRITE
+          command_timeout: 25m
+          script: |
+            set -eu
+            export DO_NOT_TRACK=1
+            cd ./ham-san-net
+            git diff --quiet
+            git diff --cached --quiet
+            eval "$(ssh-agent -s)"
+            cleanup() {
+              result=$?
+              trap - EXIT
+              if [ "${api_stopped:-false}" = true ]; then
+                docker compose up -d --no-deps api || result=$?
+              fi
+              ssh-agent -k >/dev/null || true
+              exit "$result"
+            }
+            trap cleanup EXIT
+            ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
+            git fetch origin "${{ github.sha }}"
+            git checkout --detach "${{ github.sha }}"
+            export API_IMAGE="$(docker inspect --format '{{.Image}}' strapi)"
+            case "$API_IMAGE" in
+              sha256:*) ;;
+              *) exit 1 ;;
+            esac
+            mkdir -p .scratch/cms-media
+            set --
+            if [ "$MEDIA_MIGRATION_WRITE" = true ]; then
+              set -- --write
+            fi
+            api_stopped=true
+            docker compose stop api
+            docker compose run --rm --no-deps --pull never -T \
+              -e DO_NOT_TRACK=1 -e STRAPI_TELEMETRY_DISABLED=true \
+              -e MEDIA_MIGRATION_BACKUP_DIR=/opt/migration-output \
+              -v "$PWD/.scratch/cms-media:/opt/migration-output" \
+              -v "$PWD/apps/api/scripts/migrate-local-media.cjs:/opt/migrate-local-media.cjs:ro" \
+              api node /opt/migrate-local-media.cjs "$@"
