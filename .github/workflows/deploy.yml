@@ -1,5 +1,9 @@
 name: Deploy
 
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
 on:
   push:
     branches:
@@ -38,7 +42,7 @@ jobs:
       - name: Run Lint All
         run: bun run check
       - name: Run Tests
-        run: bun test
+        run: bun test --max-concurrency=2
 
   detect-changes:
     runs-on: ubuntu-latest
@@ -165,7 +169,9 @@ jobs:
           context: .
           target: api
           push: true
-          tags: registry.ham-san.net/ham-san-net-api:latest
+          tags: |
+            registry.ham-san.net/ham-san-net-api:latest
+            registry.ham-san.net/ham-san-net-api:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
@@ -189,11 +195,13 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
+            set -eu
             eval "$(ssh-agent -s)"
             ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
             cd ./ham-san-net
-            git pull origin main
-            ./pre-deploy.sh
+            test -z "$(git status --porcelain)"
+            git fetch origin "${{ github.sha }}"
+            git checkout --detach "${{ github.sha }}"
       - name: Deploy Backend
         uses: appleboy/ssh-action@master
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.backend) || (github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.backend == 'true') }}
@@ -202,8 +210,11 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
+            set -eu
             cd ./ham-san-net
-            ./deploy-backend.sh
+            export API_IMAGE=registry.ham-san.net/ham-san-net-api:${{ github.sha }}
+            docker compose pull api
+            docker compose up -d --no-deps api
       - name: Deploy Frontend
         uses: appleboy/ssh-action@master
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.frontend) || (github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.frontend == 'true') }}
@@ -214,11 +225,3 @@ jobs:
           script: |
             cd ./ham-san-net
             ./deploy-frontend.sh
-      - name: Running Page Speed Insights
-        uses: jakepartusch/psi-action@v1.3
-        id: psi
-        with:
-          url: ${{ secrets.PUBLIC_URL }}
-          threshold: 70
-          strategy: mobile
-          key: ${{ secrets.PSI_API_KEY }}

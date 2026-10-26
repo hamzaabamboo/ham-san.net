@@ -15,7 +15,7 @@ import { withLastGood } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { projectMonogram } from '~/utils/monogram';
 import { cleanProjectCopy } from '~/utils/project-copy';
-import { kamekoEntries } from '~/utils/kameko';
+import { getPhotoCatalog } from '~/utils/photo-catalog';
 import '~/styles/home.css';
 
 export const prerender = false;
@@ -33,6 +33,7 @@ const cmsLocale = locale === 'ja' ? 'ja' : 'en';
 
 let projects: ProjectPreviewFragment[] = [];
 let homeUnavailable = false;
+const photoCatalog = getPhotoCatalog().catch(() => null);
 
 try {
   const data = await withLastGood(`home:${cmsLocale}`, () =>
@@ -52,6 +53,7 @@ const heroProjects = [
   ...projects.filter((project) => project.banner ?? project.media?.[0]),
   ...projects.filter((project) => !(project.banner ?? project.media?.[0]))
 ].slice(0, 3);
+const kamekoEntries = (await photoCatalog)?.entries ?? [];
 const [heroPhoto, ...otherPhotos] = kamekoEntries;
 const photoLang = locale === 'ja' ? undefined : 'ja';
 const recentPhotos = otherPhotos
@@ -94,7 +96,7 @@ Astro.response.headers.set(
           lg: heroPhoto ? 'minmax(0, 1.6fr) 400px' : 'minmax(0, 1fr)'
         }}
         gap="12"
-        py={{ base: '14', lg: '24' }}
+        py={{ base: '8', lg: '24' }}
         borderBottom="1px solid var(--atelier-line)"
         className="home-hero-grid"
       >
@@ -102,6 +104,7 @@ Astro.response.headers.set(
           <Eyebrow label={t('home.operational-status')} />
           <Heading
             as="h1"
+            className="home-hero-heading"
             fontSize={{ base: '5xl', md: '5xl', lg: '5xl' }}
             lineHeight={locale === 'th' ? '1.15' : locale === 'ja' ? '1.05' : '0.95'}
             style={locale === 'ja' ? { wordBreak: 'auto-phrase' } : undefined}
@@ -563,11 +566,18 @@ Astro.response.headers.set(
 </MainLayout>
 
 <script>
-  document.querySelectorAll<HTMLImageElement>('[data-kameko-image]').forEach((image) => {
-    const hide = () => image.closest<HTMLElement>('li, figure')?.setAttribute('hidden', '');
-    if (image.complete && image.naturalWidth === 0) hide();
-    image.addEventListener('error', hide, { once: true });
-    image.addEventListener('contextmenu', (event) => event.preventDefault());
-    image.addEventListener('dragstart', (event) => event.preventDefault());
-  });
+  const mountHomePhotos = () => {
+    document.querySelectorAll<HTMLImageElement>('[data-kameko-image]').forEach((image) => {
+      if (image.dataset.homePhotoBound) return;
+      image.dataset.homePhotoBound = 'true';
+      const hide = () => image.closest<HTMLElement>('li, figure')?.setAttribute('hidden', '');
+      image.addEventListener('error', hide, { once: true });
+      if (image.complete && image.naturalWidth === 0) hide();
+      image.addEventListener('contextmenu', (event) => event.preventDefault());
+      image.addEventListener('dragstart', (event) => event.preventDefault());
+    });
+  };
+
+  mountHomePhotos();
+  document.addEventListener('astro:page-load', mountHomePhotos);
 </script>

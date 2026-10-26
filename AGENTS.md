@@ -18,8 +18,10 @@
 
 - Primary gate for the Stitch workstream: `cd apps/astro && bun run build`
 - Route verification must use `agent-browser`
+- Verify wheel scroll containment with `agent-browser mouse wheel` and compare `scrollY` before and after. Page-scroll commands do not establish wheel behavior. If native input stalls while page reads work, activate the existing task tab before retrying.
 - Compare implemented pages against `stitch_exports/4878703984446574546`
 - Validate one route at a time
+- Assess disk pressure using available bytes from `df -k`, recent growth, and the operation's expected storage. A rounded capacity percentage alone does not establish exhausted space or block lightweight verification.
 - Do not batch shell commands for this workstream
 - Build success is not sufficient; visual and functional verification are required in the same loop
 - The default Ralph build loop must re-plan, implement, verify, and write notes in one iteration
@@ -43,6 +45,13 @@
 
 ## Agent skills
 
+### Content ownership
+
+- Strapi owns projects, experience, profile, tags, screenshots, graphics, and photo catalog metadata. Outline owns notes and hobbies. Do not add editorial content or per-project copy overrides to application code.
+- Photo images remain on X; store their original URLs and metadata in Strapi. Runtime pages must never call the paid post provider or fall back to a Git catalog.
+- Migrate with an idempotent import and complete field readback before advancing the catalog watermark. Retain the existing migration seed until production readback succeeds, then remove the tracked seed while preserving an ignored recovery copy.
+- Upload project screenshots and graphics to CMS media; do not commit those media files. Code, schemas, font configuration, and required editable room sources remain project assets.
+
 ### Issue tracker
 
 GitHub Issues on `hamzaabamboo/ham-san.net`, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
@@ -57,6 +66,7 @@ Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/
 
 ## Color System
 
+- Whole-app UI refinement may revise the Atelier styling when it improves the result. Preserve the site's identity and real behavior; the existing palette and chrome are a starting point, not an immutable requirement. Keep any changes coordinated through shared tokens.
 - The palette is `The Builder's Atelier`, defined in `stitch_exports/4878703984446574546/01_design-system.md`.
 - The single source of truth in code is the `--atelier-*` custom property block in `apps/astro/src/index.css`, mirrored as Panda tokens in `apps/astro/src/theme/tokens/atelier.ts`.
 - Components and stylesheets reference `var(--atelier-*)`. Raw hex literals in component or page source are a defect.

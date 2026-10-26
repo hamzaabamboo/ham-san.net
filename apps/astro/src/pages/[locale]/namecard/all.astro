@@ -75,6 +75,25 @@ const pageTitle = `${t('name-card.all-namecards')} | ${t('common.name')}`;
 </NamecardLayout>
 
 <style>
+  @media screen {
+    a[aria-label] {
+      position: relative;
+    }
+
+    a[aria-label]:focus-visible {
+      outline-offset: -2px;
+    }
+
+    a[aria-label]:focus-visible::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid currentColor;
+      z-index: 3;
+      pointer-events: none;
+    }
+  }
+
   @page {
     margin: 0;
     size: 91mm 55mm;

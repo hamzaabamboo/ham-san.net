@@ -16,7 +16,7 @@ import { requireOutlineOk } from '~/utils/outline-response';
 export const prerender = false;
 
 const { locale } = Astro.params;
-const slugParts = Astro.params.slug?.split('/') ?? [];
+const slugParts = Astro.params.slug?.replace(/\/$/, '').split('/') ?? [];
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
@@ -44,27 +44,33 @@ if (!shareId) {
 }
 
 let note: any = null;
-let noteMissing = false;
+let noteMissing = !(
+  slugParts.length === 1 ||
+  (slugParts.length === 3 && maybeDocSegment === 'doc' && !!maybeDocId)
+);
 let noteUnavailable = false;
 
 try {
-  const noteRequest = await withLastGood(
-    `note:${shareId}:${maybeDocId ?? ''}`,
-    async () => {
-      const request = await outlineClient.POST('/documents.info', {
-        body: maybeDocSegment === 'doc' && maybeDocId ? { shareId, id: maybeDocId } : { shareId }
-      });
-      if (!request.response.ok && ![400, 403, 404].includes(request.response.status)) {
-        throw new Error(`documents.info ${request.response.status}`);
-      }
-      return request;
-    },
-    (request) => request.response.ok
-  );
+  const noteRequest = noteMissing
+    ? null
+    : await withLastGood(
+        `note:${shareId}:${maybeDocId ?? ''}`,
+        async () => {
+          const request = await outlineClient.POST('/documents.info', {
+            body:
+              maybeDocSegment === 'doc' && maybeDocId ? { shareId, id: maybeDocId } : { shareId }
+          });
+          if (!request.response.ok && ![400, 403, 404].includes(request.response.status)) {
+            throw new Error(`documents.info ${request.response.status}`);
+          }
+          return request;
+        },
+        (request) => request.response.ok
+      );
 
-  if (noteRequest.response.ok && noteRequest.data?.data) {
+  if (noteRequest?.response.ok && noteRequest.data?.data) {
     note = noteRequest.data.data;
-  } else if ([400, 403, 404].includes(noteRequest.response.status)) {
+  } else if (noteRequest && [400, 403, 404].includes(noteRequest.response.status)) {
     noteMissing = true;
   }
 } catch {
@@ -614,6 +620,8 @@ const tags = (note as any)?.tags ?? [];
                     {headings.map((h) => (
                       <styled.a
                         href={`#${h.id}`}
+                        className="note-toc-link"
+                        data-toc-for={h.id}
                         display="flex"
                         alignItems="center"
                         minH="44px"
@@ -952,56 +960,66 @@ const tags = (note as any)?.tags ?? [];
 </MainLayout>
 
 <script>
-  // The rail used to hardcode the accent onto entry 0, so on a 28,000px note it claimed you
-  // were in section 1 while you were eleven sections down. Track the heading actually in
-  // view and mark it with `aria-current` so it is announced, not just coloured.
-  // Position-based rather than IntersectionObserver: an observer band thin enough to pick a
-  // single heading is one a jump-scroll can land entirely outside, leaving nothing marked.
+  let disposeNoteToc: (() => void) | undefined;
+
   const wireNoteToc = () => {
+    disposeNoteToc?.();
+    disposeNoteToc = undefined;
     const links = Array.from(document.querySelectorAll('.note-toc-link')) as HTMLAnchorElement[];
-    if (links.length === 0) return;
+    const targets = Array.from(
+      new Map(
+        links.map((link) => {
+          const id = link.dataset.tocFor ?? '';
+          return [id, document.getElementById(id)] as const;
+        })
+      ).values()
+    ).filter((target): target is HTMLElement => !!target);
+    if (targets.length === 0) return;
 
-    const pairs = links
-      .map((link) => ({ link, target: document.getElementById(link.dataset.tocFor ?? '') }))
-      .filter((pair): pair is { link: HTMLAnchorElement; target: HTMLElement } => !!pair.target);
-    if (pairs.length === 0) return;
-
-    let queued = false;
+    const controller = new AbortController();
+    let frame = 0;
     const sync = () => {
-      queued = false;
-      // The last heading whose top has passed under the fixed nav; before the first one, the
-      // first entry stands in so the rail is never blank.
-      let active = pairs[0];
-      for (const pair of pairs) {
-        if (pair.target.getBoundingClientRect().top <= 88) active = pair;
+      frame = 0;
+      let active = targets[0];
+      for (const target of targets) {
+        const offset = Math.max(
+          88,
+          Number.parseFloat(getComputedStyle(target).scrollMarginTop) || 0
+        );
+        if (target.getBoundingClientRect().top <= offset + 1) active = target;
       }
-      for (const { link } of pairs) {
-        if (link === active.link) link.setAttribute('aria-current', 'true');
+      for (const link of links) {
+        if (link.dataset.tocFor === active.id) link.setAttribute('aria-current', 'true');
         else link.removeAttribute('aria-current');
       }
-      const rail = active.link.closest<HTMLElement>('[data-note-toc-rail]');
-      if (rail && rail.scrollHeight > rail.clientHeight) {
-        const top = active.link.offsetTop;
+      const railLink = links.find(
+        (link) => link.dataset.tocFor === active.id && link.closest('[data-note-toc-rail]')
+      );
+      const rail = railLink?.closest<HTMLElement>('[data-note-toc-rail]');
+      if (rail && railLink && rail.scrollHeight > rail.clientHeight) {
+        const top = railLink.offsetTop;
         if (
           top < rail.scrollTop ||
-          top + active.link.offsetHeight > rail.scrollTop + rail.clientHeight
+          top + railLink.offsetHeight > rail.scrollTop + rail.clientHeight
         ) {
           rail.scrollTop = top - rail.clientHeight / 2;
         }
       }
     };
-
     const onScroll = () => {
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(sync);
+      if (!frame) frame = requestAnimationFrame(sync);
     };
 
+    disposeNoteToc = () => {
+      controller.abort();
+      cancelAnimationFrame(frame);
+    };
     sync();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true, signal: controller.signal });
+    window.addEventListener('resize', onScroll, { passive: true, signal: controller.signal });
   };
 
   wireNoteToc();
   document.addEventListener('astro:page-load', wireNoteToc);
+  document.addEventListener('astro:before-swap', () => disposeNoteToc?.());
 </script>

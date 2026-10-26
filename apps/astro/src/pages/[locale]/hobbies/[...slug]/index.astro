@@ -29,14 +29,17 @@ import { cx } from 'styled-system/css';
 export const prerender = false;
 
 const { locale, slug } = Astro.params;
-const slugParts = slug?.split('/') ?? [];
+const slugParts = slug?.replace(/\/$/, '').split('/') ?? [];
 const [rootId, maybeDocSegment, childId] = slugParts;
 
 if (!validateLocale(locale)) {
   return Astro.redirect('/404');
 }
 
-if (!rootId || (maybeDocSegment && maybeDocSegment !== 'doc')) {
+if (
+  !rootId ||
+  (slugParts.length !== 1 && !(slugParts.length === 3 && maybeDocSegment === 'doc' && childId))
+) {
   return Astro.redirect(`/${locale}/404`);
 }
 

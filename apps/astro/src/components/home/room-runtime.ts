@@ -358,7 +358,7 @@ const createPose = (camera: THREE.PerspectiveCamera, yaw: number, pitch: number)
   pitch
 });
 
-export const initRoom = (root: HTMLElement) => {
+export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
   const locale = (root.dataset.locale ?? 'en') as Locale;
   const copy = roomCopy[locale] ?? roomCopy.en;
   const stage = root.querySelector<HTMLElement>('[data-room-stage]');
@@ -2354,6 +2354,7 @@ export const initRoom = (root: HTMLElement) => {
       enterButton.disabled = false;
       enterButton.textContent = copy.enter;
       status.textContent = '';
+      if (enterWhenReady) enterRoom();
     },
     undefined,
     () => {

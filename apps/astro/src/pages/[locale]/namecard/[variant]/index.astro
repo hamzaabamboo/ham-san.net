@@ -62,8 +62,32 @@ if (namecard.variant !== variant) {
 const { color } = namecard;
 
 const Image = styled.img;
+const namecardPreview = css({
+  display: 'block',
+  position: 'relative',
+  w: 'full',
+  maxW: '91mm',
+  aspectRatio: '91 / 55',
+  textAlign: 'start',
+  mx: 'auto',
+  '&:not(:defined)': {
+    aspectRatio: 'auto',
+    overflowX: 'auto'
+  },
+  '&:not(:defined) > a': {
+    position: 'static',
+    transform: 'none'
+  }
+});
 const namecardPreviewLink = css({
   display: 'block',
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  w: '91mm',
+  h: '55mm',
+  transform: 'scale(var(--namecard-scale, 1))',
+  transformOrigin: 'top left',
   rounded: 'l1',
   transition: 'box-shadow 160ms ease',
   _hover: { boxShadow: '0 0 0 3px #fff, 0 0 0 5px var(--main-color)' },
@@ -142,7 +166,7 @@ const namecardPreviewLink = css({
                   >
                     <Stack
                       gap="1"
-                      p="4"
+                      p={{ base: '3', sm: '4' }}
                       bgColor="white.a8"
                       h="full"
                       flex="1"
@@ -168,7 +192,7 @@ const namecardPreviewLink = css({
             })
           }
         </Grid>
-        <Box mx="auto" textAlign="start" maxW="full" overflowX="auto" pb="2">
+        <namecard-preview class={namecardPreview}>
           <a
             href={`/${locale}/namecard/all`}
             class={namecardPreviewLink}
@@ -176,7 +200,7 @@ const namecardPreviewLink = css({
           >
             <Namecard side="front" data={namecard} />
           </a>
-        </Box>
+        </namecard-preview>
         <Link href={`/${locale}/namecard/all`}>{t('name-card.view-other-namecards')}</Link>
       </Stack>
     </Container>
@@ -203,3 +227,25 @@ const namecardPreviewLink = css({
     </Box>
   </Stack>
 </NamecardLayout>
+
+<script>
+  customElements.define(
+    'namecard-preview',
+    class extends HTMLElement {
+      observer = new ResizeObserver(() => {
+        const card = this.firstElementChild;
+        if (card instanceof HTMLElement) {
+          this.style.setProperty('--namecard-scale', String(this.clientWidth / card.offsetWidth));
+        }
+      });
+
+      connectedCallback() {
+        this.observer.observe(this);
+      }
+
+      disconnectedCallback() {
+        this.observer.disconnect();
+      }
+    }
+  );
+</script>

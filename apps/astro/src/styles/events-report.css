@@ -786,6 +786,35 @@ a[data-active='true'] {
   color: var(--atelier-accent);
 }
 
+.event-report__rail-fold > summary,
+.event-report__rank-more > summary {
+  gap: 1rem;
+  list-style: none;
+}
+
+.event-report__rail-fold > summary::-webkit-details-marker,
+.event-report__rank-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.event-report__rail-fold > summary::after,
+.event-report__rank-more > summary::after {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-right: 0.15rem;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.event-report__rail-fold[open] > summary::after,
+.event-report__rank-more[open] > summary::after {
+  transform: rotate(225deg);
+}
+
 .event-report__rank-more[open] > .event-report__rank-list {
   margin-top: 0.75rem;
 }

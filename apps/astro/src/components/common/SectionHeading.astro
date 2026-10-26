@@ -10,8 +10,16 @@ interface Props {
 const { label, id } = Astro.props;
 ---
 
-<Flex align="center" gap="4" overflow="hidden">
-  <Heading as="h2" id={id} fontSize={{ base: '3xl', md: '4xl' }} flexShrink="0" fontStyle="normal">
+<Flex align="center" gap="4">
+  <Heading
+    as="h2"
+    id={id}
+    tabIndex={id ? -1 : undefined}
+    scrollMarginTop="6rem"
+    fontSize={{ base: '3xl', md: '4xl' }}
+    minW="0"
+    fontStyle="normal"
+  >
     {label}
   </Heading>
   <Box h="1px" flex="1" bg="var(--atelier-line)" />

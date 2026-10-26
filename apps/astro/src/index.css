@@ -380,7 +380,8 @@ html:lang(th) h6 {
     transform 0.5s ease;
 }
 
-.group:hover .image-archival img {
+.group:hover .image-archival img,
+.group:focus-visible .image-archival img {
   filter: var(--atelier-image-hover);
   opacity: 1;
   transform: scale(1.05);
@@ -505,14 +506,17 @@ html:lang(th) h6 {
   color: var(--atelier-accent);
 }
 
-.project-card:hover .project-card-img {
+.project-card:hover .project-card-img,
+.project-card:focus-visible .project-card-img {
   filter: var(--atelier-image-hover) !important;
   transform: scale(1.03);
 }
-.project-card:hover .project-card-overlay {
+.project-card:hover .project-card-overlay,
+.project-card:focus-visible .project-card-overlay {
   opacity: 0 !important;
 }
-.project-card:hover .project-card-label {
+.project-card:hover .project-card-label,
+.project-card:focus-visible .project-card-label {
   opacity: 1 !important;
 }
 @media (hover: none) {
@@ -530,6 +534,25 @@ html:lang(th) h6 {
     color 0.15s ease;
 }
 
+.project-group-jump {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background-color: var(--atelier-bg);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.project-group-jump[href] .mono-label {
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.project-group-jump[href]:is(:hover, :focus-visible) {
+  background-color: var(--atelier-surface-low);
+}
+
 .cta-secondary:hover {
   background-color: var(--atelier-surface-highest);
 }
@@ -543,6 +566,7 @@ html:lang(th) h6 {
 }
 
 /* Driven by the scrollspy, not by index: the rail marks the heading actually in view. */
+.note-toc-link[aria-current='true'],
 .note-toc-link[aria-current='true'] > * {
   color: var(--atelier-accent);
 }
@@ -701,7 +725,7 @@ html:lang(th) a {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .contact-submit-btn {
@@ -725,6 +749,10 @@ html:lang(th) a {
 }
 
 @media (min-width: 768px) {
+  .contact-form {
+    padding: 2rem;
+  }
+
   .contact-submit-btn {
     width: auto;
     align-self: flex-start;
@@ -746,16 +774,16 @@ html:lang(th) a {
   border: 1px solid var(--atelier-outline);
   padding: 1rem;
   font-family: var(--font-body);
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--atelier-fg);
   transition: border-color 0.15s ease;
 }
 
 .contact-label {
   font-family: var(--font-code);
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
   color: var(--atelier-outline);
 }
 
@@ -778,7 +806,7 @@ html:lang(th) a {
   padding: 1rem;
   padding-right: 3rem;
   font-family: var(--font-body);
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--atelier-fg);
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%239f8e78' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E");
@@ -1297,48 +1325,42 @@ html:lang(th) a {
      keeping the explicit light text colour. Forcing `body` alone is not enough: every card
      and section paints its own dark surface through a utility class that `body` cannot
      override, so headings printed black-on-black. Invert at the surface, not the root. */
-  html,
-  body,
-  .shell-content,
-  .page-shell,
-  .blocky-shadow,
-  .blocky-shadow-sm,
-  .contact-panel,
-  [class*='bg_var(--atelier'],
-  [class*='bgColor_var(--atelier'] {
+  html:not(.namecard-document) {
+    --atelier-fg: #111;
+    --atelier-fg-muted: #111;
+    color-scheme: light;
+  }
+
+  html:not(.namecard-document),
+  html:not(.namecard-document)
+    :is(
+      body,
+      .shell-content,
+      .page-shell,
+      .blocky-shadow,
+      .blocky-shadow-sm,
+      .contact-panel,
+      [class*='bg_var(--atelier'],
+      [class*='bgColor_var(--atelier']
+    ) {
     background: #fff !important;
     background-image: none !important;
     box-shadow: none !important;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  li,
-  td,
-  th,
-  a,
-  span,
-  strong,
-  em,
-  small,
-  figcaption,
-  blockquote {
+  html:not(.namecard-document)
+    :is(h1, h2, h3, h4, h5, h6, p, li, td, th, a, span, strong, em, small, figcaption, blockquote) {
     color: #111 !important;
     background: transparent !important;
   }
 
   /* Structural rules must stay visible as ink, not disappear with the dark palette. */
-  * {
+  html:not(.namecard-document) * {
     border-color: #999 !important;
   }
   /* `position: fixed` elements repeat on every printed page — this printed over the
      content twice on /about. The same block already hides nav, sidebar and footer. */
-  .skip-link {
+  html:not(.namecard-document) .skip-link {
     display: none;
   }
 

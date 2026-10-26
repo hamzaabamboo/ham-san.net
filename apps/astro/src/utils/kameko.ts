@@ -1,5 +1,3 @@
-import cache from '~/constants/kameko-posts.json';
-
 export type KamekoMedia = {
   url: string;
   width: number | null;
@@ -261,9 +259,7 @@ export const parseKamekoPosts = (posts: KamekoPost[]): KamekoEntry[] => {
     });
 };
 
-export const kamekoAccount = cache.account;
-export const kamekoFetchedAt = cache.fetchedAt;
-const unifyEvents = (entries: KamekoEntry[]) => {
+export const unifyEvents = (entries: KamekoEntry[]) => {
   const keyOf = (event: string) => event.replace(/\s+/g, '');
   const variants = new Map<string, Map<string, number>>();
   entries.forEach((entry) => {
@@ -278,7 +274,3 @@ const unifyEvents = (entries: KamekoEntry[]) => {
       entry.event
   }));
 };
-
-export const kamekoEntries = unifyEvents(
-  parseKamekoPosts(cache.posts as KamekoPost[]).filter((entry) => entry.subjects.length > 0)
-);

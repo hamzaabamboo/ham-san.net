@@ -156,3 +156,9 @@
     gap: 0.75rem;
   }
 }
+
+@media (max-width: 767px) {
+  html:lang(ja) .home-hero-heading {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "kameko_posts",
+  "info": {
+    "singularName": "kameko-post",
+    "pluralName": "kameko-posts",
+    "displayName": "Kameko Post"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "sourceId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "postedAt": {
+      "type": "datetime",
+      "required": true
+    },
+    "text": {
+      "type": "text"
+    },
+    "authorUserName": {
+      "type": "string",
+      "required": true
+    },
+    "authorName": {
+      "type": "string"
+    },
+    "hashtags": {
+      "type": "json"
+    },
+    "mentions": {
+      "type": "json"
+    },
+    "media": {
+      "type": "json"
+    }
+  }
+}

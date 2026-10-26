@@ -109,6 +109,7 @@ export const LinkItem = ({
             alignItems="center"
             minH="44px"
             fontFamily="var(--font-code)"
+            wordBreak="keep-all"
             overflowWrap="anywhere"
             _after={{ content: '""', position: 'absolute', inset: '0' }}
             _focusVisible={{ outline: 'none' }}
