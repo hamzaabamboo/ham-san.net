@@ -170,9 +170,13 @@ describe('single source of truth', () => {
   test('the panda token mirror matches the css custom properties by name and value', async () => {
     const css = await read(INDEX_CSS);
     const ts = await read('apps/astro/src/theme/tokens/atelier.ts');
+    const palettes = [...css.matchAll(/(?:^|\n)\s*html\s*\{([^}]+)\}/g)]
+      .map((match) => match[1])
+      .filter((block) => block.includes('--atelier-bg:'));
+    expect(palettes).toHaveLength(1);
 
     const cssVars = new Map(
-      [...css.matchAll(/^\s*--atelier-([a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{3,8})\s*;/gm)].map(
+      [...palettes[0].matchAll(/^\s*--atelier-([a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{3,8})\s*;/gm)].map(
         (match) => [match[1], match[2].toLowerCase()]
       )
     );
