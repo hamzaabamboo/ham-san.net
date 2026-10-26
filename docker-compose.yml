@@ -3,7 +3,7 @@ services:
     container_name: strapi
     restart: unless-stopped
     env_file: .env
-    image: registry.ham-san.net/ham-san-net-api:latest
+    image: ${API_IMAGE:-registry.ham-san.net/ham-san-net-api:latest}
     environment:
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
