@@ -1,0 +1,84 @@
+name: CMS maintenance access
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Temporary CMS access operation
+        required: true
+        type: choice
+        options: [issue, revoke]
+      nonce:
+        description: Maintenance nonce
+        required: true
+        type: string
+      public_key:
+        description: RSA public key for encrypted delivery
+        required: false
+        type: string
+      token_id:
+        description: Issued token ID for revocation
+        required: false
+        type: string
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    environment: prod
+    timeout-minutes: 10
+    env:
+      CMS_ACCESS_OPERATION: ${{ inputs.operation }}
+      CMS_ACCESS_NONCE: ${{ inputs.nonce }}
+      CMS_ACCESS_PUBLIC_KEY: ${{ inputs.public_key }}
+      CMS_ACCESS_TOKEN_ID: ${{ inputs.token_id }}
+    steps:
+      - name: Maintain temporary CMS access
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          envs: CMS_ACCESS_OPERATION,CMS_ACCESS_NONCE,CMS_ACCESS_PUBLIC_KEY,CMS_ACCESS_TOKEN_ID
+          script: |
+            set -eu
+            export DO_NOT_TRACK=1
+            cd ./ham-san-net
+            git diff --quiet
+            git diff --cached --quiet
+            eval "$(ssh-agent -s)"
+            cleanup() {
+              result=$?
+              trap - EXIT
+              if [ "${api_stopped:-false}" = true ]; then
+                docker compose up -d --no-deps api || result=$?
+              fi
+              ssh-agent -k >/dev/null || true
+              exit "$result"
+            }
+            trap cleanup EXIT
+            ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
+            git fetch origin "${{ github.sha }}"
+            git checkout --detach "${{ github.sha }}"
+            export API_IMAGE="$(docker inspect --format '{{.Image}}' strapi)"
+            case "$API_IMAGE" in
+              sha256:*) ;;
+              *) exit 1 ;;
+            esac
+            case "$CMS_ACCESS_OPERATION" in
+              issue|revoke) ;;
+              *) exit 1 ;;
+            esac
+            api_stopped=true
+            docker compose stop api
+            docker compose run --rm --no-deps --pull never -T \
+              -e DO_NOT_TRACK=1 -e STRAPI_TELEMETRY_DISABLED=true \
+              -e CMS_ACCESS_NONCE -e CMS_ACCESS_PUBLIC_KEY -e CMS_ACCESS_TOKEN_ID \
+              -v "$PWD/apps/api/scripts/cms-access.cjs:/opt/cms-access.cjs:ro" \
+              api node /opt/cms-access.cjs "$CMS_ACCESS_OPERATION"
