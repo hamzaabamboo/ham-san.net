@@ -1,4 +1,5 @@
 FROM node:22-bookworm-slim AS base
+ENV DO_NOT_TRACK=1 STRAPI_TELEMETRY_DISABLED=true ASTRO_TELEMETRY_DISABLED=1
 WORKDIR /usr/src/app
 RUN npm install -g bun@1.3.10
 RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ curl bash git && rm -rf /var/lib/apt/lists/*
@@ -32,6 +33,7 @@ EXPOSE 1337
 CMD ["bun", "run", "start"]
 
 FROM node:22-alpine AS astro
+ENV DO_NOT_TRACK=1 ASTRO_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321

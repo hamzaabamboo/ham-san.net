@@ -5,6 +5,8 @@ services:
     env_file: .env
     image: ${API_IMAGE:-registry.ham-san.net/ham-san-net-api:latest}
     environment:
+      DO_NOT_TRACK: '1'
+      STRAPI_TELEMETRY_DISABLED: 'true'
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
       APP_KEYS: ${APP_KEYS}

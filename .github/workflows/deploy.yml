@@ -4,6 +4,11 @@ concurrency:
   group: production-deploy
   cancel-in-progress: false
 
+env:
+  DO_NOT_TRACK: '1'
+  STRAPI_TELEMETRY_DISABLED: 'true'
+  ASTRO_TELEMETRY_DISABLED: '1'
+
 on:
   push:
     branches:
@@ -196,10 +201,12 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             set -eu
-            eval "$(ssh-agent -s)"
-            ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
             cd ./ham-san-net
+            git status --short
             test -z "$(git status --porcelain)"
+            eval "$(ssh-agent -s)"
+            trap 'ssh-agent -k >/dev/null || true' EXIT
+            ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
             git fetch origin "${{ github.sha }}"
             git checkout --detach "${{ github.sha }}"
       - name: Deploy Backend

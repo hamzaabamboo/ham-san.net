@@ -1,0 +1,90 @@
+name: Import photo catalog
+
+on:
+  workflow_dispatch:
+    inputs:
+      snapshot:
+        description: Gzip/base64 photo snapshot
+        required: false
+        type: string
+      inspect:
+        description: Inspect deployment state without changing it
+        required: true
+        type: boolean
+        default: true
+      write:
+        description: Write and verify catalog records
+        required: true
+        type: boolean
+        default: false
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    environment: prod
+    timeout-minutes: 10
+    env:
+      DO_NOT_TRACK: '1'
+      PHOTO_CATALOG_SNAPSHOT_GZIP_BASE64: ${{ inputs.snapshot }}
+      PHOTO_CATALOG_WRITE: ${{ inputs.write }}
+      PHOTO_CATALOG_INSPECT: ${{ inputs.inspect }}
+    steps:
+      - name: Import through the deployed API image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          envs: PHOTO_CATALOG_SNAPSHOT_GZIP_BASE64,PHOTO_CATALOG_WRITE,PHOTO_CATALOG_INSPECT
+          script: |
+            set -eu
+            export DO_NOT_TRACK=1
+            cd ./ham-san-net
+            if [ "$PHOTO_CATALOG_INSPECT" = true ]; then
+              git status --short
+              git diff --stat
+              git rev-parse HEAD
+              docker inspect --format '{{.Image}}' strapi
+              docker compose ps api
+              exit 0
+            fi
+            test -n "$PHOTO_CATALOG_SNAPSHOT_GZIP_BASE64"
+            test -z "$(git status --porcelain)"
+            eval "$(ssh-agent -s)"
+            cleanup() {
+              result=$?
+              trap - EXIT
+              if [ "${api_stopped:-false}" = true ]; then
+                docker compose up -d --no-deps api || result=$?
+              fi
+              ssh-agent -k >/dev/null || true
+              exit "$result"
+            }
+            trap cleanup EXIT
+            ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
+            git fetch origin "${{ github.sha }}"
+            git checkout --detach "${{ github.sha }}"
+            export API_IMAGE="$(docker inspect --format '{{.Image}}' strapi)"
+            case "$API_IMAGE" in
+              sha256:*) ;;
+              *) exit 1 ;;
+            esac
+            set --
+            if [ "$PHOTO_CATALOG_WRITE" = true ]; then
+              set -- --write
+            fi
+            api_stopped=true
+            docker compose stop api
+            docker compose run --rm --no-deps --pull never -T \
+              -e DO_NOT_TRACK=1 \
+              -e STRAPI_TELEMETRY_DISABLED=true \
+              -e PHOTO_CATALOG_SNAPSHOT_GZIP_BASE64 \
+              -v "$PWD/apps/api/scripts/import-photo-catalog.cjs:/opt/import-photo-catalog.cjs:ro" \
+              api node /opt/import-photo-catalog.cjs "$@"
