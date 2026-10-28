@@ -257,13 +257,25 @@ jobs:
       - name: Deploy Frontend
         uses: appleboy/ssh-action@master
         if: ${{ (github.event_name == 'workflow_dispatch' && inputs.frontend) || (github.event_name != 'workflow_dispatch' && needs.detect-changes.outputs.frontend == 'true') }}
+        env:
+          PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID: ${{ secrets.PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
+          envs: PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID
           script: |
             set -eu
             cd ./ham-san-net
+            case "$PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID" in
+              ''|*[!a-zA-Z0-9_-]*) exit 1 ;;
+            esac
+            umask 077
+            outline_env_tmp=$(mktemp .env.outline.XXXXXX)
+            trap 'rm -f "$outline_env_tmp"' EXIT
+            awk '!/^PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID=/' .env > "$outline_env_tmp"
+            printf 'PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID=%s\n' "$PRIVATE_OUTLINE_SETTINGS_DOCUMENT_ID" >> "$outline_env_tmp"
+            mv "$outline_env_tmp" .env
             export ASTRO_IMAGE=registry.ham-san.net/ham-san-net-astro:${{ github.sha }}
             docker compose pull client
             docker compose up -d --no-deps client
