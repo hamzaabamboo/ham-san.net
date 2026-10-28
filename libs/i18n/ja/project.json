@@ -1,6 +1,6 @@
 {
   "projects": "プロジェクト一覧",
-  "screenshots": "スクリーンショット",
+  "images": "画像",
   "back-to-projects": "プロジェクト一覧へ",
   "active": "アクティブ",
   "inactive": "非アクティブ",
@@ -24,7 +24,7 @@
   "back-to-tags": "タグ一覧へ",
   "links": "リンク",
   "tag-empty": "このタグにはまだ何も紐づいていません。",
-  "screenshot-alt": "{title}のスクリーンショット",
+  "image-alt": "{title}の画像",
   "linked-count": "関連するプロジェクトと職歴 {count}件",
   "linked-count-one": "関連するプロジェクトと職歴 {count}件",
   "duration-span": "（{duration}）",

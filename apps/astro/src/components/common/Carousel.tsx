@@ -87,6 +87,7 @@ const thumbnailImage = css({
 export const AppCarousel = (
   props: Omit<RootProps, 'slideCount'> & {
     images: string[];
+    imageAlts?: Array<string | null | undefined>;
     portrait?: boolean;
     previousSlideLabel?: string;
     nextSlideLabel?: string;
@@ -106,6 +107,7 @@ export const AppCarousel = (
   }, []);
   const {
     images,
+    imageAlts = [],
     portrait = false,
     previousSlideLabel = 'Previous slide',
     nextSlideLabel = 'Next slide',
@@ -146,7 +148,7 @@ export const AppCarousel = (
           >
             <img
               src={image}
-              alt={`${slideLabel} ${index + 1}`}
+              alt={imageAlts[index]?.trim() || `${slideLabel} ${index + 1}`}
               className={portrait ? carouselImagePortrait : carouselImage}
               loading="lazy"
               width={1600}

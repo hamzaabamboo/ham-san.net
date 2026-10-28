@@ -9,5 +9,6 @@
   "tierlist-description": "ラブライブ！声優ランキング",
   "home": "ホームページ",
   "all-namecards": "名刺一覧",
-  "back-to-namecard": "名刺ページへ戻る"
+  "back-to-namecard": "名刺ページへ戻る",
+  "scroll-hint": "横にスワイプすると名刺全体を見られます。"
 }

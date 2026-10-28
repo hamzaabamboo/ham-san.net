@@ -1,5 +1,7 @@
 {
   "busiest-months": "参加が多い月",
+  "attendance-unavailable": "アーティストの参加データを取得できませんでした。しばらくしてからお試しください。",
+  "attendance-retry": "未取得データは次回以降の表示時に再取得します",
   "show-all": "すべて表示（{n}）",
   "aria-hero-stats": "主要イベント統計",
   "aria-rail": "レポート操作",

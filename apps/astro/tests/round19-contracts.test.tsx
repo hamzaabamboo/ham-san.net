@@ -171,6 +171,7 @@ test('carousel renders semantic controls with descriptive localized image labels
   const html = renderToStaticMarkup(
     <AppCarousel
       images={['/one.jpg', '/two.jpg']}
+      imageAlts={['Integrationsdiagramm', null]}
       previousSlideLabel="Vorheriges Bild"
       nextSlideLabel="Nächstes Bild"
       gotoSlideLabel="Gehe zu Bild"
@@ -185,7 +186,8 @@ test('carousel renders semantic controls with descriptive localized image labels
   expect(html).toContain('aria-label="Nächstes Bild"');
   expect(html).toContain('aria-label="Gehe zu Bild 1"');
   expect(html).toContain('aria-pressed="true"');
-  expect(html).toContain('alt="Bild 1"');
+  expect(html).toContain('alt="Integrationsdiagramm"');
+  expect(html).toContain('alt="Bild 2"');
   expect(html.match(/data-part="item-group"/g)).toHaveLength(1);
   expect(html.match(/data-part="item"[^>]*aria-hidden="false"/g)).toHaveLength(1);
   expect(html.match(/data-part="item"[^>]*aria-hidden="true"/g)).toHaveLength(1);
@@ -203,7 +205,6 @@ test('carousel renders semantic controls with descriptive localized image labels
   expect(source).toContain("borderColor: 'var(--atelier-accent)'");
   expect(source).toContain('\'&[aria-pressed="true"]::after\'');
   expect(source).toContain('aria-label={`${gotoSlideLabel} ${idx + 1}`}');
-  expect(source).toContain('alt={`${slideLabel} ${index + 1}`}');
   expect(source).toContain('page={index}');
   expect(source).toContain('translations={{');
   expect(source).toContain(

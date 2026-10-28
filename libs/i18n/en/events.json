@@ -1,5 +1,7 @@
 {
   "busiest-months": "Busiest months",
+  "attendance-unavailable": "Artist attendance data is unavailable. Try again shortly.",
+  "attendance-retry": "Incomplete data is retried on later visits",
   "show-all": "Show all ({n})",
   "aria-hero-stats": "Headline event statistics",
   "aria-rail": "Report controls",

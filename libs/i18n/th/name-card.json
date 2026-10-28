@@ -9,5 +9,6 @@
   "tierlist-description": "จัดอันดับเซย์ยู Love Live",
   "home": "หน้าแรก",
   "all-namecards": "นามบัตรทั้งหมด",
-  "back-to-namecard": "กลับไปหน้านามบัตร"
+  "back-to-namecard": "กลับไปหน้านามบัตร",
+  "scroll-hint": "ปัดด้านข้างเพื่อดูนามบัตรทั้งใบ"
 }

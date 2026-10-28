@@ -6,7 +6,7 @@ import { Text } from '~/components/ui/text';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import PageMasthead from '~/components/common/PageMasthead.astro';
-import { withLastGood } from '~/utils/cms-cache';
+import { withFreshLastGoodState } from '~/utils/cms-cache';
 import { makeExcerpt } from '~/utils/excerpt';
 import { outlineClient } from '~/utils/outline-api';
 import { requireOutlineOk } from '~/utils/outline-response';
@@ -70,12 +70,11 @@ const fetchAllShares = async () => {
 };
 
 let sharedArticlesList: any[] | undefined = undefined;
+let notesFromLastGood = false;
 try {
-  sharedArticlesList = await withLastGood('notes:list', async () => {
-    const shares = await fetchAllShares();
-    if (!shares) throw new Error('shares.list failed');
-    return shares;
-  });
+  const result = await withFreshLastGoodState('notes:list', fetchAllShares);
+  sharedArticlesList = result.value;
+  notesFromLastGood = result.fromCache;
 } catch {
   sharedArticlesList = undefined;
 }
@@ -134,7 +133,7 @@ const pageOfAlign = hasPrevPage && hasNextPage ? 'center' : hasNextPage ? 'end' 
 
 Astro.response.headers.set(
   'CDN-Cache-Control',
-  sharedArticlesList
+  sharedArticlesList && !notesFromLastGood
     ? 'public, max-age=86400, must-revalidate'
     : 'public, max-age=60, must-revalidate'
 );

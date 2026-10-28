@@ -31,7 +31,11 @@ const pageTitle = `${t('name-card.all-namecards')} | ${t('common.name')}`;
       {t('name-card.back-to-namecard')}
     </Link>
   </HStack>
+  <p class="scroll-hint">{t('name-card.scroll-hint')}</p>
   <Center
+    role="region"
+    aria-label={t('name-card.all-namecards')}
+    tabIndex={0}
     flex={1}
     h={{
       _print: 'full'
@@ -75,6 +79,10 @@ const pageTitle = `${t('name-card.all-namecards')} | ${t('common.name')}`;
 </NamecardLayout>
 
 <style>
+  .scroll-hint {
+    display: none;
+  }
+
   @media screen {
     a[aria-label] {
       position: relative;
@@ -91,6 +99,15 @@ const pageTitle = `${t('name-card.all-namecards')} | ${t('common.name')}`;
       border: 2px solid currentColor;
       z-index: 3;
       pointer-events: none;
+    }
+  }
+
+  @media screen and (max-width: 91mm) {
+    .scroll-hint {
+      display: block;
+      margin: 0;
+      padding: 0 1rem 0.5rem;
+      font-size: 0.875rem;
     }
   }
 

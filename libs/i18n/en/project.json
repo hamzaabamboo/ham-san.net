@@ -1,6 +1,6 @@
 {
   "projects": "Projects",
-  "screenshots": "Screenshots",
+  "images": "Images",
   "back-to-projects": "Back to projects",
   "active": "Active",
   "inactive": "Inactive",
@@ -24,7 +24,7 @@
   "back-to-tags": "Back to tags",
   "links": "Links",
   "tag-empty": "Nothing is linked to this tag yet.",
-  "screenshot-alt": "{title} screenshot",
+  "image-alt": "{title} image",
   "linked-count": "{count} linked projects and roles",
   "linked-count-one": "{count} linked project or role",
   "duration-span": " ({duration})",

@@ -29,12 +29,16 @@ const pageTitle = `${t('common.event')} | ${t('common.name')}`;
 
 let rawReport: EventernoteReport | undefined;
 let fetchError = false;
+let staleReport = false;
 
 try {
-  const { value, fromCache } = await withLastGoodState('events:report', () =>
-    getEventernoteReport()
+  const { value, fromCache } = await withLastGoodState(
+    'events:report',
+    () => getEventernoteReport(),
+    (report) => !report.attendanceIncomplete
   );
-  rawReport = { ...value, cached: fromCache };
+  staleReport = fromCache;
+  rawReport = { ...value, cached: value.cached || fromCache };
 } catch {
   fetchError = true;
 }
@@ -43,7 +47,7 @@ try {
 // so a single upstream timeout cannot pin a broken page at the edge for an hour.
 Astro.response.headers.set(
   'CDN-Cache-Control',
-  fetchError || !rawReport
+  fetchError || !rawReport || staleReport || rawReport.attendanceIncomplete
     ? 'public, max-age=60, must-revalidate'
     : 'public, max-age=3600, must-revalidate'
 );
@@ -706,7 +710,11 @@ const reportSections = report
                     ? t('common.events-report-cache')
                     : t('common.events-report-fresh')}
                 </span>
-                <span>{t('common.events-report-cache-window')}</span>
+                <span>
+                  {report.attendanceIncomplete
+                    ? t('events.attendance-retry')
+                    : t('common.events-report-cache-window')}
+                </span>
                 <span>
                   {t('events.updated-at').replace(
                     '{time}',
@@ -1138,9 +1146,18 @@ const reportSections = report
                   <div class="event-report__panel event-report__panel--attendance">
                     <div class="event-report__panel-head">
                       <h3>{t('common.events-report-favorite-attendance')}</h3>
-                      <span>{pct1(favoriteAttendancePct)}</span>
+                      <span hidden={report.attendanceIncomplete}>
+                        {pct1(favoriteAttendancePct)}
+                      </span>
                     </div>
-                    <div class="event-report__attendance-table">
+                    <p class="event-report__empty" hidden={!report.attendanceIncomplete}>
+                      {t('events.attendance-unavailable')}
+                    </p>
+                    <div
+                      class="event-report__attendance-table"
+                      hidden={report.attendanceIncomplete}
+                      style={report.attendanceIncomplete ? 'display: none' : undefined}
+                    >
                       <table>
                         <thead>
                           <tr>

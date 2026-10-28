@@ -372,6 +372,18 @@ const hobbies = hobbiesList
                   ? t('hobbies.empty-description')
                   : t('hobbies.empty-none-description')}
               </Text>
+              {hobbiesUnavailable && (
+                <Link
+                  href={`${Astro.url.pathname}${Astro.url.search}`}
+                  display="inline-flex"
+                  alignItems="center"
+                  alignSelf="start"
+                  minH="44px"
+                  className="amber-link"
+                >
+                  {t('hobbies.reload')}
+                </Link>
+              )}
             </Stack>
           </Box>
         ) : (

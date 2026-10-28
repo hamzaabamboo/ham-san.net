@@ -256,6 +256,12 @@ Astro.response.headers.set('CDN-Cache-Control', responseState.cacheControl);
               </p>
               <h1 class={hobbyStyles.detailTitle}>{t('hobbies.empty-title')}</h1>
               <p class={hobbyStyles.detailDescription}>{t('hobbies.empty-description')}</p>
+              <a
+                class={cx(hobbyStyles.detailBack, 'amber-link')}
+                href={`${Astro.url.pathname}${Astro.url.search}`}
+              >
+                {t('hobbies.reload')}
+              </a>
             </div>
           </div>
         </section>

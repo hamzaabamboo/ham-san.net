@@ -138,6 +138,7 @@ export type EventernoteReport = {
     weekly: StreakItem;
   };
   favoriteArtistAttendance: FavoriteArtistAttendanceItem[];
+  attendanceIncomplete: boolean;
   weekendEvents: number;
   weekdayEvents: number;
   busiestMonth?: MonthlyItem;
@@ -153,17 +154,30 @@ type CachedReport = {
 };
 
 let cachedReport: CachedReport | undefined;
+let pendingReport: Promise<EventernoteReport> | undefined;
 
 export async function getEventernoteReport() {
   const now = Date.now();
 
-  if (cachedReport && now - cachedReport.fetchedAt < EVENTERNOTE_CACHE_TTL_MS) {
+  if (
+    cachedReport &&
+    now - cachedReport.fetchedAt <
+      (cachedReport.report.attendanceIncomplete ? 60_000 : EVENTERNOTE_CACHE_TTL_MS)
+  ) {
     return {
       ...cachedReport.report,
       cached: true
     };
   }
 
+  if (pendingReport) return pendingReport;
+  pendingReport = loadEventernoteReport(now).finally(() => {
+    pendingReport = undefined;
+  });
+  return pendingReport;
+}
+
+async function loadEventernoteReport(now: number) {
   const [profileHtml, eventsHtml] = await Promise.all([
     fetchEventernoteHtml(EVENTERNOTE_PROFILE_URL),
     fetchEventernoteHtml(`${EVENTERNOTE_PROFILE_URL}/events?limit=10000`)
@@ -225,13 +239,13 @@ export async function fetchFavoriteArtistEvents(artists: RankedItem[]) {
           const eventDates = parseEventDates(html);
           return [artist.name, { totalEvents: eventDates.length, eventDates }] as const;
         } catch {
-          return [artist.name, { totalEvents: 0, eventDates: [] as string[] }] as const;
+          return undefined;
         }
       })
     );
 
-    for (const [name, eventData] of batchResults) {
-      result.set(name, eventData);
+    for (const item of batchResults) {
+      if (item) result.set(item[0], item[1]);
     }
 
     if (index + batchSize < artistsWithHref.length) {
@@ -411,6 +425,7 @@ export function buildEventernoteReport(
       attendanceWindowEnd,
       attendanceWindowStart
     ),
+    attendanceIncomplete: profile.favoriteArtists.some((artist) => artist.eventDates === undefined),
     weekendEvents,
     weekdayEvents: attendedEvents.length - weekendEvents,
     busiestMonth: [...monthlyBreakdown].sort((a, b) => b.count - a.count)[0],
@@ -624,16 +639,17 @@ function calculateFavoriteArtistAttendance(
     }
   }
 
+  if (profile.favoriteArtists.some((artist) => artist.eventDates === undefined)) return [];
+
   return profile.favoriteArtists
+    .filter((artist) => artist.eventDates !== undefined)
     .map((artist) => {
       const attended = counts.get(artist.name) ?? 0;
-      const total = artist.eventDates?.length
-        ? artist.eventDates.filter((date) => {
-            if (startDate && date < startDate) return false;
-            if (endDate && date > endDate) return false;
-            return true;
-          }).length
-        : (artist.totalEvents ?? artist.count);
+      const total = artist.eventDates!.filter((date) => {
+        if (startDate && date < startDate) return false;
+        if (endDate && date > endDate) return false;
+        return true;
+      }).length;
       const missed = Math.max(total - attended, 0);
 
       return {

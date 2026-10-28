@@ -67,9 +67,11 @@ const bannerUrl = resolveMedia(banner, 1110, import.meta.env.PUBLIC_API_URL)?.sr
 const galleryMedia = (media ?? [])
   .filter((d): d is NonNullable<typeof d> => !!d)
   .filter((d) => !banner?.url || d.url !== banner.url);
-const images = galleryMedia
-  .map((d) => resolveMedia(d, 1110, import.meta.env.PUBLIC_API_URL)?.src)
-  .filter((d): d is string => !!d);
+const galleryImages = galleryMedia.flatMap((item) => {
+  const source = resolveMedia(item, 1110, import.meta.env.PUBLIC_API_URL)?.src;
+  return source ? [{ source, alt: item.alternativeText }] : [];
+});
+const images = galleryImages.map((item) => item.source);
 const galleryPortrait =
   galleryMedia.length > 0 && galleryMedia.every((d) => (d.height ?? 0) > (d.width ?? 0));
 const nonNullTags = (items: Array<TagFragment | null>) =>
@@ -223,7 +225,10 @@ if (projectUnavailable) {
                 >
                   <img
                     src={bannerUrl}
-                    alt={t('project.screenshot-alt').replace('{title}', title ?? '')}
+                    alt={
+                      banner?.alternativeText?.trim() ||
+                      t('project.image-alt').replace('{title}', title ?? '')
+                    }
                     onerror="this.style.visibility='hidden';this.nextElementSibling.style.display='grid'"
                     style={{
                       objectFit: bannerPortrait ? 'contain' : 'cover',
@@ -325,15 +330,16 @@ if (projectUnavailable) {
               )}
               {images.length > 0 && (
                 <Stack gap="6" pt={{ base: '8', md: '12' }}>
-                  <SectionHeading label={t('project.screenshots')} />
+                  <SectionHeading label={t('project.images')} />
                   <Carousel
                     client:visible
                     images={images}
+                    imageAlts={galleryImages.map((item) => item.alt)}
                     portrait={galleryPortrait}
                     previousSlideLabel={t('common.carousel-previous')}
                     nextSlideLabel={t('common.carousel-next')}
                     gotoSlideLabel={t('common.carousel-goto')}
-                    slideLabel={t('project.screenshot-alt').replace('{title}', title ?? '')}
+                    slideLabel={t('project.image-alt').replace('{title}', title ?? '')}
                     startRotationLabel={t('common.carousel-start')}
                     stopRotationLabel={t('common.carousel-stop')}
                   />

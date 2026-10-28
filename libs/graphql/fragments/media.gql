@@ -1,5 +1,6 @@
 fragment media on UploadFile {
   name
+  alternativeText
   url
   width
   height

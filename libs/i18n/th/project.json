@@ -1,6 +1,6 @@
 {
   "projects": "โปรเจกต์",
-  "screenshots": "ภาพหน้าจอ",
+  "images": "รูปภาพ",
   "back-to-projects": "กลับไปหน้าโปรเจกต์",
   "active": "ใช้งานอยู่",
   "inactive": "ไม่ได้ใช้งาน",
@@ -24,7 +24,7 @@
   "back-to-tags": "กลับไปหน้าแท็ก",
   "links": "ลิงก์",
   "tag-empty": "ยังไม่มีรายการที่เชื่อมกับแท็กนี้",
-  "screenshot-alt": "ภาพหน้าจอ {title}",
+  "image-alt": "รูปภาพ {title}",
   "linked-count": "โปรเจกต์และบทบาทที่เกี่ยวข้อง {count} รายการ",
   "linked-count-one": "โปรเจกต์และบทบาทที่เกี่ยวข้อง {count} รายการ",
   "duration-span": " ({duration})",

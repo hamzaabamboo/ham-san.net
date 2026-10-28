@@ -223,6 +223,7 @@ if (projectsUnavailable) {
                     return (
                       <Link
                         href={`/${locale}/projects/${project.slug}`}
+                        aria-labelledby={`active-project-${index}`}
                         display="block"
                         w="full"
                         bg="var(--atelier-bg)"
@@ -302,6 +303,7 @@ if (projectsUnavailable) {
                           <Flex justifyContent="space-between" alignItems="start" mb="2" gap="3">
                             <Heading
                               as="h3"
+                              id={`active-project-${index}`}
                               minW="0"
                               fontSize="xl"
                               fontWeight="extrabold"
@@ -396,13 +398,14 @@ if (projectsUnavailable) {
                   border="1px solid"
                   borderColor="var(--atelier-line)"
                 >
-                  {inactiveGridProjects.map((project) => {
+                  {inactiveGridProjects.map((project, index) => {
                     // `alignItems="stretch"` is load-bearing: Park-UI's Link sets
                     // `align-items: center`, so making this card a flex column to pin its
                     // chip row centred every line inside it.
                     return (
                       <Link
                         href={`/${locale}/projects/${project.slug}`}
+                        aria-labelledby={`inactive-project-${index}`}
                         display="flex"
                         flexDirection="column"
                         alignItems="stretch"
@@ -419,6 +422,7 @@ if (projectsUnavailable) {
                         <Flex justifyContent="space-between" alignItems="center" mb="2" gap="3">
                           <Heading
                             as="h3"
+                            id={`inactive-project-${index}`}
                             minW="0"
                             fontSize="lg"
                             fontWeight="bold"
@@ -504,9 +508,10 @@ if (projectsUnavailable) {
                   border="1px solid"
                   borderColor="var(--atelier-line)"
                 >
-                  {inactiveProjects.slice(9).map((project) => (
+                  {inactiveProjects.slice(9).map((project, index) => (
                     <Link
                       href={`/${locale}/projects/${project.slug}`}
+                      aria-labelledby={`earlier-project-${index}`}
                       display="block"
                       w="full"
                       bg="var(--atelier-surface-low)"
@@ -520,6 +525,7 @@ if (projectsUnavailable) {
                         <Stack gap="1" minW="0" flex="1">
                           <Heading
                             as="h3"
+                            id={`earlier-project-${index}`}
                             fontSize="md"
                             fontWeight="bold"
                             fontStyle="normal"

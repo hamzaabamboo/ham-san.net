@@ -21,9 +21,10 @@
 - Verify wheel scroll containment with `agent-browser mouse wheel` and compare `scrollY` before and after. Page-scroll commands do not establish wheel behavior. If native input stalls while page reads work, activate the existing task tab before retrying.
 - Compare implemented pages against `stitch_exports/4878703984446574546`
 - Validate one route at a time
-- Assess disk pressure using available bytes from `df -k`, recent growth, and the operation's expected storage. A rounded capacity percentage alone does not establish exhausted space or block lightweight verification.
+- Assess disk pressure using available bytes from `df -k`, recent growth, and the operation's expected storage. A rounded capacity percentage alone does not establish exhausted space or block lightweight verification. Recheck transient low-space readings and continue work that fits; do not treat recovered space as a blocker.
 - Do not batch shell commands for this workstream
 - Build success is not sufficient; visual and functional verification are required in the same loop
+- When an audit identifies a live failure, investigate its cause with authorized read-only evidence and perform available local repairs; a status report or error-state polish does not resolve the failure.
 - The default Ralph build loop must re-plan, implement, verify, and write notes in one iteration
 
 ## Operational Notes

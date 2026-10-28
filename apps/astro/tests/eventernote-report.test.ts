@@ -1,6 +1,8 @@
-import { describe, expect, test } from 'bun:test';
+import { describe, expect, spyOn, test } from 'bun:test';
 import {
   buildEventernoteReport,
+  fetchFavoriteArtistEvents,
+  getEventernoteReport,
   parseEventernoteEvents,
   parseEventernoteProfile
 } from '../src/utils/eventernote-report';
@@ -64,6 +66,38 @@ const eventsHtml = `
 `;
 
 describe('eventernote report', () => {
+  test('shares an in-flight report refresh across concurrent requests', async () => {
+    const fetchSpy = spyOn(globalThis, 'fetch').mockImplementation(async (input) => {
+      const url = String(input);
+      const body = url.endsWith('/users/HamP_punipuni') ? profileHtml : eventsHtml;
+      return new Response(body, { status: 200 });
+    });
+    try {
+      await Promise.all([getEventernoteReport(), getEventernoteReport()]);
+      expect(fetchSpy).toHaveBeenCalledTimes(4);
+    } finally {
+      fetchSpy.mockRestore();
+    }
+  });
+
+  test('does not invent attendance totals when an artist request fails', async () => {
+    const fetchSpy = spyOn(globalThis, 'fetch').mockRejectedValue(new Error('unavailable'));
+    try {
+      const profile = parseEventernoteProfile(profileHtml);
+      const results = await fetchFavoriteArtistEvents([profile.favoriteArtists[0]]);
+      expect(results.has('Aqours')).toBe(false);
+      const report = buildEventernoteReport(
+        profile,
+        parseEventernoteEvents(eventsHtml),
+        new Date('2026-05-06T00:00:00+09:00').getTime()
+      );
+      expect(report.favoriteArtistAttendance).toEqual([]);
+      expect(report.attendanceIncomplete).toBe(true);
+    } finally {
+      fetchSpy.mockRestore();
+    }
+  });
+
   test('parses Eventernote profile and event list markup', () => {
     const profile = parseEventernoteProfile(profileHtml);
     const events = parseEventernoteEvents(eventsHtml);
