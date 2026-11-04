@@ -60,7 +60,7 @@ test('contact controls use focus-visible without duplicate select rules', async 
 });
 
 test('remaining changed card images declare dimensions', async () => {
-  const home = await Bun.file('apps/astro/src/pages/[locale]/index.astro').text();
+  const home = await Bun.file('apps/astro/src/components/home/HomeBody.astro').text();
   const projects = await Bun.file('apps/astro/src/pages/[locale]/projects/index.astro').text();
 
   // Sliced to the element: an unbounded `[\s\S]*?` matches dimensions on any later tag,
