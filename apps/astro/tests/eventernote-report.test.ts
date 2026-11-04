@@ -134,6 +134,23 @@ describe('eventernote report', () => {
     }
   });
 
+  test('rejects incomplete scores and impossible event dates', () => {
+    expect(() =>
+      parseEventernoteProfile(
+        '<div class="gb_users_side_profile"><h2 class="name1">Known</h2></div>'
+      )
+    ).toThrow();
+    expect(() => parseEventernoteProfile(profileHtml.replace('>29<', '>unavailable<'))).toThrow();
+    expect(() =>
+      parseEventernoteProfile(profileHtml.replace('>29<', '>9007199254740992<'))
+    ).toThrow();
+    expect(parseEventernoteProfile(profileHtml.replace('>29<', '>0<')).following).toBe(0);
+    const invalidDate = eventsHtml.replace('2026-11-14', '2026-02-31');
+    expect(() => parseEventernoteEvents(invalidDate)).toThrow();
+    expect(() => parseEventDates(invalidDate)).toThrow();
+    expect(parseEventDates(eventsHtml.replace('2026-11-14', '2024-02-29'))[0]).toBe('2024-02-29');
+  });
+
   test('parses Eventernote profile and event list markup', () => {
     const profile = parseEventernoteProfile(profileHtml);
     const events = parseEventernoteEvents(eventsHtml);

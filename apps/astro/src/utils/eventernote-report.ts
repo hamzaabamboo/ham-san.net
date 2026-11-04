@@ -330,6 +330,7 @@ export function parseEventernoteProfile(html: string): EventernoteProfile {
   const scores = Array.from(document.querySelectorAll('.gb_score_table .number a')).map((node) =>
     parseNumber(node.textContent)
   );
+  if (scores.length !== 3) throw new Error('Invalid Eventernote profile scores');
   const favoriteArtists = Array.from(document.querySelectorAll('ul.gb_actors_list li'))
     .map((node): RankedItem | undefined => {
       const link = node.querySelector('a');
@@ -470,12 +471,18 @@ function cleanVenueName(value?: string | null) {
 }
 
 function parseNumber(value?: string | null) {
-  const parsed = Number.parseInt((value ?? '').replace(/[^\d]/g, ''), 10);
-  return Number.isFinite(parsed) ? parsed : 0;
+  const text = cleanText(value);
+  if (!/^(?:\d+|\d{1,3}(?:,\d{3})+)$/.test(text))
+    throw new Error('Invalid Eventernote profile score');
+  const parsed = Number.parseInt(text.replace(/,/g, ''), 10);
+  if (!Number.isSafeInteger(parsed)) throw new Error('Invalid Eventernote profile score');
+  return parsed;
 }
 
 function parseDateKey(value: string) {
-  return value.match(/\d{4}-\d{2}-\d{2}/)?.[0] ?? '';
+  const key = value.match(/\d{4}-\d{2}-\d{2}/)?.[0] ?? '';
+  const date = new Date(`${key}T00:00:00.000Z`);
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === key ? key : '';
 }
 
 function toAbsoluteUrl(href: string) {
