@@ -14,6 +14,7 @@ import { withFreshLastGoodState } from '~/utils/cms-cache';
 import { pickLocale } from '~/utils/fallbackLocale';
 import { projectMonogram } from '~/utils/monogram';
 import { getPhotoCatalog } from '~/utils/photo-catalog';
+import { getHomepageStatus } from '~/utils/homepage-status';
 
 interface Props {
   locale: Languages;
@@ -26,6 +27,7 @@ const cmsLocale = locale === 'ja' ? 'ja' : 'en';
 let projects: ProjectPreviewFragment[] = [];
 let homeUnavailable = false;
 const photoCatalog = getPhotoCatalog().catch(() => null);
+const homepageStatus = getHomepageStatus(locale);
 
 try {
   const { value: data, fromCache } = await withFreshLastGoodState(`home:${cmsLocale}`, () =>
@@ -73,7 +75,7 @@ const yearLabel = (year?: string) =>
 ---
 
 <Box className="home-chapter">
-  <StatusRow locale={locale} />
+  <StatusRow locale={locale} status={await homepageStatus} />
 </Box>
 
 <Box
