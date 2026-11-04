@@ -44,7 +44,7 @@ All upstream calls have short timeouts: 7 s for GraphQL and Outline, 12 s for Ev
 
 1. `scripts/fetch-kameko.mjs` は CMS の確定済みウォーターマークから対象投稿を取得する。全ページ取得後に Strapi へ投稿を upsert し、全フィールドの読み戻し照合後にカタログ情報を更新する。Git に投稿データを保存しない。
 2. `src/utils/kameko.ts` parses each post's text into a photo entry: shoot date, event, the named people, caption and tags. It drops any post that names nobody (ADR 0004).
-3. `/photos` とホームは `src/utils/photo-catalog.ts` から CMS の投稿・カタログを取得する。同時リクエストを共有し、60 秒間キャッシュする。取得失敗時は過去の CMS データのみを使用し、初回取得も失敗したギャラリーは 503 を返す。有料の取得元や Git データにはフォールバックしない。
+3. `/photos` とホームは `src/utils/photo-catalog.ts` から CMS の投稿・カタログを取得する。同時リクエストを共有し、60 秒後から 5 分以内は最終正常データを即座に返しながら再取得する。5 分以降は再取得を待つ。取得失敗時は過去の CMS データのみを使用し、初回取得も失敗したギャラリーは 503 を返す。有料の取得元や Git データにはフォールバックしない。
 
 ## The 3D room pipeline (Blender → browser)
 

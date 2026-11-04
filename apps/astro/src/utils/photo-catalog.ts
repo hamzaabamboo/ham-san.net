@@ -37,6 +37,7 @@ type Pagination = {
 
 const pageSize = 100;
 const cacheTtl = 60_000;
+const staleTtl = 300_000;
 const cacheLimit = 4;
 const cache = new Map<string, { value: CatalogResult; storedAt: number }>();
 const inFlight = new Map<string, Promise<CatalogResult>>();
@@ -332,14 +333,26 @@ export const getPhotoCatalog = async (): Promise<CatalogResult> => {
   if (cached && age >= 0 && age < cacheTtl) return cached.value;
 
   const pending = inFlight.get(key);
-  if (pending) return pending;
+  if (pending) {
+    if (cached && age >= 0 && age < staleTtl) return cached.value;
+    return pending;
+  }
 
   const request = (async () => {
     const result = await withLastGoodState(`photo-catalog:${key}`, () => fetchCatalog(base));
     if (!result.fromCache) retainRecent(key, result.value);
     return result.value;
-  })().finally(() => inFlight.delete(key));
+  })()
+    .catch((error) => {
+      if (cached) return cached.value;
+      throw error;
+    })
+    .finally(() => inFlight.delete(key));
 
   inFlight.set(key, request);
+  if (cached && age >= 0 && age < staleTtl) {
+    void request.catch(() => undefined);
+    return cached.value;
+  }
   return request;
 };
