@@ -1,4 +1,5 @@
 fragment experience on Experience {
+  documentId
   locale
   title
   description

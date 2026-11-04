@@ -1,4 +1,4 @@
-query fetchAboutMe($locale: I18NLocaleCode) {
+query fetchAboutMe($locale: I18NLocaleCode, $includeFallback: Boolean! = false) {
   aboutMe(locale: $locale) {
     introduction
   }
@@ -9,6 +9,20 @@ query fetchAboutMe($locale: I18NLocaleCode) {
     }
   }
   educations(locale: $locale, sort: ["start:desc"]) {
+    ...education
+    localizations {
+      ...education
+    }
+  }
+  fallbackExperiences: experiences(locale: "en", sort: ["start:desc"])
+    @include(if: $includeFallback) {
+    ...experience
+    localizations {
+      ...experience
+    }
+  }
+  fallbackEducations: educations(locale: "en", sort: ["start:desc"])
+    @include(if: $includeFallback) {
     ...education
     localizations {
       ...education
