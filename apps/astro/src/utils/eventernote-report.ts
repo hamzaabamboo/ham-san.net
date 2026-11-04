@@ -258,9 +258,16 @@ export async function fetchFavoriteArtistEvents(artists: RankedItem[]) {
 
 export function parseEventernoteEvents(html: string): EventernoteEvent[] {
   const { document } = parseHTML(html);
+  if (!document.querySelector('.gb_event_list > ul')) {
+    const empty = Array.from(document.querySelectorAll('.span8.page > p.t2')).some(
+      (node) => cleanText(node.textContent) === 'イベントはありません'
+    );
+    if (empty) return [];
+    throw new Error('Invalid Eventernote event list');
+  }
   const nodes = Array.from(document.querySelectorAll('.gb_event_list > ul > li'));
 
-  return nodes
+  const events = nodes
     .map((node) => {
       const eventLink = node.querySelector('.event h4 a');
       const title = cleanText(eventLink?.textContent);
@@ -289,19 +296,37 @@ export function parseEventernoteEvents(html: string): EventernoteEvent[] {
       };
     })
     .filter((event): event is EventernoteEvent => Boolean(event));
+
+  if (events.length !== nodes.length) throw new Error('Invalid Eventernote event data');
+  return events;
 }
 
 export function parseEventDates(html: string) {
   const { document } = parseHTML(html);
+  if (!document.querySelector('.gb_event_list > ul')) {
+    const empty = Array.from(document.querySelectorAll('.span8.page > p.t2')).some(
+      (node) => cleanText(node.textContent) === 'イベントはありません'
+    );
+    const emptyArtist = Array.from(document.querySelectorAll('.span8.page > h2 + p')).some(
+      (node) => cleanText(node.textContent) === 'イベント情報はありません。'
+    );
+    if (empty || emptyArtist) return [];
+    throw new Error('Invalid Eventernote event list');
+  }
 
-  return Array.from(document.querySelectorAll('.gb_event_list > ul > li .date p'))
-    .map((node) => parseDateKey(cleanText(node.textContent)))
-    .filter(Boolean);
+  const nodes = Array.from(document.querySelectorAll('.gb_event_list > ul > li'));
+  const dates = nodes.map((node) =>
+    parseDateKey(cleanText(node.querySelector('.date p')?.textContent))
+  );
+  if (dates.some((date) => !date)) throw new Error('Invalid Eventernote event date');
+  return dates;
 }
 
 export function parseEventernoteProfile(html: string): EventernoteProfile {
   const { document } = parseHTML(html);
   const profile = document.querySelector('.gb_users_side_profile');
+  if (!cleanText(profile?.querySelector('.name1')?.textContent))
+    throw new Error('Invalid Eventernote profile');
   const scores = Array.from(document.querySelectorAll('.gb_score_table .number a')).map((node) =>
     parseNumber(node.textContent)
   );

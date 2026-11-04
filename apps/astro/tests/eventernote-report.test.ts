@@ -3,6 +3,7 @@ import {
   buildEventernoteReport,
   fetchFavoriteArtistEvents,
   getEventernoteReport,
+  parseEventDates,
   parseEventernoteEvents,
   parseEventernoteProfile
 } from '../src/utils/eventernote-report';
@@ -93,6 +94,41 @@ describe('eventernote report', () => {
       );
       expect(report.favoriteArtistAttendance).toEqual([]);
       expect(report.attendanceIncomplete).toBe(true);
+    } finally {
+      fetchSpy.mockRestore();
+    }
+  });
+
+  test('rejects invalid upstream pages without inventing empty reports', async () => {
+    const invalidHtml = '<html><title>Service unavailable</title></html>';
+    expect(() => parseEventernoteProfile(invalidHtml)).toThrow();
+    expect(() => parseEventernoteEvents(invalidHtml)).toThrow();
+    expect(() => parseEventDates(invalidHtml)).toThrow();
+    const invalidList = '<div class="gb_event_list">Unavailable</div>';
+    expect(() => parseEventernoteEvents(invalidList)).toThrow();
+    expect(() => parseEventDates(invalidList)).toThrow();
+    expect(() =>
+      parseEventernoteProfile('<div class="gb_users_side_profile"><h2 class="name1"></h2></div>')
+    ).toThrow();
+    expect(() =>
+      parseEventernoteProfile('<div class="gb_users_side_profile">Unavailable</div>')
+    ).toThrow();
+    const invalidRow = '<div class="gb_event_list"><ul><li>Unavailable</li></ul></div>';
+    expect(() => parseEventernoteEvents(invalidRow)).toThrow();
+    expect(() => parseEventDates(invalidRow)).toThrow();
+    const emptyPage = '<div class="span8 page"><p class="t2">イベントはありません</p></div>';
+    expect(parseEventernoteEvents(emptyPage)).toEqual([]);
+    expect(parseEventDates(emptyPage)).toEqual([]);
+    const emptyArtist =
+      '<div class="span8 page"><h2>Artist</h2><p>イベント情報はありません。</p></div>';
+    expect(parseEventDates(emptyArtist)).toEqual([]);
+    expect(parseEventernoteEvents('<div class="gb_event_list"><ul></ul></div>')).toEqual([]);
+    const fetchSpy = spyOn(globalThis, 'fetch').mockResolvedValue(new Response(invalidHtml));
+    try {
+      const results = await fetchFavoriteArtistEvents([
+        { name: 'Aqours', count: 1, href: '/actors/a/1' }
+      ]);
+      expect(results.has('Aqours')).toBe(false);
     } finally {
       fetchSpy.mockRestore();
     }
