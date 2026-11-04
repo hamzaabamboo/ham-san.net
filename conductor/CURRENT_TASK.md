@@ -21,7 +21,7 @@
 
 ## Reference coverage and next action
 
-- performance SKILL.md 1–399/EOF and MEASUREMENT.md 1–107/EOF read. Photo-only stale refresh is uncommitted: 60 s fresh, 5 min nonblocking stale, validated last-good retained. Local /photos TTFB 1.267 s cold vs 0.021 s warm; after expiry 0.044 s. With a real CMS proxy adding 600 ms/request, four expired-cache loads took 134–179 ms and shared one refresh; outage served last-good, retried successfully, cold outage returned 503 and recovery restored 288 images. Accelerated-clock check waited 2.25 s beyond five minutes and retained local last-good after shared-cache eviction. Independent review found no regression under the intended indefinite last-good failure policy. Notes is unchanged; lint, 388 tests and Astro build passed. Build warns of chunks above 500 kB.
+- performance SKILL.md 1–399/EOF and MEASUREMENT.md 1–107/EOF read. Photo-only stale refresh is committed locally as ea9cc28, not pushed while approval names f1dbc57: 60 s fresh, 5 min nonblocking stale, validated last-good retained. Local /photos TTFB 1.267 s cold vs 0.021 s warm; after expiry 0.044 s. With a real CMS proxy adding 600 ms/request, four expired-cache loads took 134–179 ms and shared one refresh; outage served last-good, retried successfully, cold outage returned 503 and recovery restored 288 images. Accelerated-clock check waited 2.25 s beyond five minutes and retained local last-good after shared-cache eviction. Independent review found no regression under the intended indefinite last-good failure policy. Notes is unchanged; lint, 388 tests and Astro build passed. After build, browser wheel moved 650 px and gallery rendered. Build warns of chunks above 500 kB: the homepage dynamically imports Three.js (580,279 bytes minified; 146,255 bytes gzip locally), which is shared with the room. This is bundle-size evidence, not a production transfer measurement.
 
 - Latest correction removes homepage availability and its CMS field; do not solicit or infer availability. Keep current focus migration separate. migration SKILL.md 1–17/EOF read; retain mixed-version compatibility and avoid production writes.
 
@@ -32,7 +32,7 @@
 
 - motion-design SKILL.md 1–315, animation-principles SKILL.md 1–114, motion-background SKILL.md 1–279, and motion-design quality-checklist 1–67, choreography 1–93 and animation-principles easing-curves 1–136 read through EOF. Project-integrated scroll requirements and measured smoothness override the background skill’s standalone demo contract and generic ambient frame-rate guidance.
 
-- look-at-the-screen SKILL.md 1–60 read through EOF. The current mobile prototype screenshot was directly inspected; it shows ring geometry crossing the headline. This observation was stated before this skill reread, a sequencing lapse; inspect the resulting runtime again before any completion claim.
+- look-at-the-screen SKILL.md 1–60 read through EOF. A previous prototype placed geometry across the headline. Current 390×844 browser screenshot was inspected: the ribbon sits above the headline and text remains readable; visual acceptance is still unverified.
 
 - antislop-layoutmobile SKILL.md 1–170 read contiguously through EOF; apply its responsive checklist using the announced during mode.
 
