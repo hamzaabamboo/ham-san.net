@@ -16,6 +16,22 @@
     }
   },
   "attributes": {
+    "currentFocus": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "availability": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "heroImage": {
       "type": "media",
       "multiple": false,
