@@ -33,7 +33,18 @@ const readInput = async (path) => {
 const findHomepage = (documents, locale, status = 'draft') =>
   documents.findFirst({ locale, status, populate: ['heroImage', 'introductionImage'] });
 
-const planMigration = async (strapi, input) => {
+const sameFields = (left, right) =>
+  preservedFields.every(
+    (field) => JSON.stringify(left?.[field] ?? null) === JSON.stringify(right?.[field] ?? null)
+  );
+
+const assertPublishSafe = (draft, published, locale) => {
+  if (draft && !sameFields(draft, published)) {
+    fail(`Publishing would include unrelated draft content for ${locale}.`);
+  }
+};
+
+const planMigration = async (strapi, input, publish) => {
   if (!strapi.contentTypes[uid]?.attributes?.currentFocus)
     fail('CMS currentFocus field is missing.');
   const documents = strapi.documents(uid);
@@ -48,6 +59,7 @@ const planMigration = async (strapi, input) => {
     const draft = await findHomepage(documents, locale);
     const published = await findHomepage(documents, locale, 'published');
     if (published && !draft) fail(`Published homepage has no draft for ${locale}.`);
+    if (publish) assertPublishSafe(draft, published, locale);
     for (const record of [draft, published]) {
       if (!record) continue;
       if (record.documentId !== reference.documentId)
@@ -67,41 +79,77 @@ const planMigration = async (strapi, input) => {
   return plan;
 };
 
-const migrate = async (strapi, rawInput, write = false) => {
+const migrate = async (strapi, rawInput, write = false, publish = false) => {
   const input = normalizeInput(rawInput);
   const documents = strapi.documents(uid);
-  const plan = await planMigration(strapi, input);
+  const plan = await planMigration(strapi, input, publish);
   if (!write) return plan;
 
-  for (const item of plan.filter((entry) => entry.update)) {
-    const current = await findHomepage(documents, item.locale);
-    if (JSON.stringify(current) !== JSON.stringify(item.draft)) {
-      fail(`Draft changed during migration for ${item.locale}.`);
+  let stage = 'draft';
+  let activeLocale = '';
+  let verifiedDrafts = 0;
+  let verifiedPublications = 0;
+  try {
+    for (const item of plan.filter((entry) => entry.update)) {
+      activeLocale = item.locale;
+      const current = await findHomepage(documents, item.locale);
+      if (JSON.stringify(current) !== JSON.stringify(item.draft)) {
+        fail(`Draft changed during migration for ${item.locale}.`);
+      }
+      const published = await findHomepage(documents, item.locale, 'published');
+      if (JSON.stringify(published) !== JSON.stringify(item.published)) {
+        fail(`Published homepage changed during migration for ${item.locale}.`);
+      }
+      await documents.update({
+        documentId: item.documentId,
+        locale: item.locale,
+        data: { currentFocus: input[item.locale] }
+      });
+      const saved = await findHomepage(documents, item.locale);
+      if (saved?.currentFocus !== input[item.locale]) fail(`Readback failed for ${item.locale}.`);
+      const original = item.draft ?? item.published;
+      if (
+        original &&
+        preservedFields.some(
+          (field) => JSON.stringify(saved[field]) !== JSON.stringify(original[field])
+        )
+      ) {
+        fail(`Existing homepage content changed for ${item.locale}.`);
+      }
+      const publishedAfter = await findHomepage(documents, item.locale, 'published');
+      if (JSON.stringify(publishedAfter) !== JSON.stringify(item.published)) {
+        fail(`Published homepage changed during draft update for ${item.locale}.`);
+      }
+      verifiedDrafts += 1;
     }
-    const published = await findHomepage(documents, item.locale, 'published');
-    if (JSON.stringify(published) !== JSON.stringify(item.published)) {
-      fail(`Published homepage changed during migration for ${item.locale}.`);
+
+    if (publish) {
+      stage = 'publication';
+      for (const item of plan) {
+        activeLocale = item.locale;
+        const draft = await findHomepage(documents, item.locale);
+        const published = await findHomepage(documents, item.locale, 'published');
+        if (JSON.stringify(published) !== JSON.stringify(item.published)) {
+          fail(`Published homepage changed before publishing ${item.locale}.`);
+        }
+        if (draft?.currentFocus !== input[item.locale])
+          fail(`Draft focus changed for ${item.locale}.`);
+        assertPublishSafe(draft, published, item.locale);
+        if (published?.currentFocus === input[item.locale]) continue;
+        await documents.publish({ documentId: item.documentId, locale: item.locale });
+        const saved = await findHomepage(documents, item.locale, 'published');
+        if (saved?.currentFocus !== input[item.locale] || !sameFields(saved, draft)) {
+          fail(`Published readback failed for ${item.locale}.`);
+        }
+        verifiedPublications += 1;
+      }
     }
-    await documents.update({
-      documentId: item.documentId,
-      locale: item.locale,
-      data: { currentFocus: input[item.locale] }
-    });
-    const saved = await findHomepage(documents, item.locale);
-    if (saved?.currentFocus !== input[item.locale]) fail(`Readback failed for ${item.locale}.`);
-    const original = item.draft ?? item.published;
-    if (
-      original &&
-      preservedFields.some(
-        (field) => JSON.stringify(saved[field]) !== JSON.stringify(original[field])
-      )
-    ) {
-      fail(`Existing homepage content changed for ${item.locale}.`);
-    }
-    const publishedAfter = await findHomepage(documents, item.locale, 'published');
-    if (JSON.stringify(publishedAfter) !== JSON.stringify(item.published)) {
-      fail(`Published homepage changed during draft update for ${item.locale}.`);
-    }
+  } catch (error) {
+    fail(
+      `Stopped during ${stage} for ${activeLocale} after ${verifiedDrafts} verified draft updates ` +
+        `and ${verifiedPublications} verified publications. The current locale may have changed; ` +
+        `inspect it and rerun preflight. ${error.message}`
+    );
   }
   return plan;
 };
@@ -110,9 +158,20 @@ const main = async () => {
   const args = process.argv.slice(2);
   const inputIndex = args.indexOf('--input');
   if (inputIndex < 0 || !args[inputIndex + 1])
-    fail('Usage: node import-homepage-focus.cjs --input file.json [--write]');
+    fail(
+      'Usage: node import-homepage-focus.cjs --input file.json [--preflight-publish | --write [--publish]]'
+    );
   const allowed = args.filter((_, index) => index !== inputIndex && index !== inputIndex + 1);
-  if (allowed.some((arg) => arg !== '--write') || allowed.length > 1) fail('Unknown option.');
+  if (
+    allowed.some((arg) => !['--write', '--publish', '--preflight-publish'].includes(arg)) ||
+    new Set(allowed).size !== allowed.length
+  ) {
+    fail('Unknown or duplicate option.');
+  }
+  if (allowed.includes('--publish') && !allowed.includes('--write'))
+    fail('Publishing requires --write.');
+  if (allowed.includes('--preflight-publish') && allowed.length !== 1)
+    fail('Publish preflight cannot write.');
   const input = await readInput(args[inputIndex + 1]);
   const requireFromApp = createRequire(resolve(process.cwd(), 'homepage-focus-import.cjs'));
   const requireFromStrapi = createRequire(requireFromApp.resolve('@strapi/strapi'));
@@ -121,9 +180,13 @@ const main = async () => {
   try {
     await strapi.load();
     const write = allowed.includes('--write');
-    const plan = await migrate(strapi, input, write);
+    const publish = allowed.includes('--publish');
+    const preflight = allowed.includes('--preflight-publish');
+    const plan = await migrate(strapi, input, write, publish || preflight);
     console.log(
-      `mode=${write ? 'write' : 'dry-run'} updates=${plan.filter((item) => item.update).length}`
+      `mode=${preflight ? 'preflight-publish' : publish ? 'publish' : write ? 'write' : 'dry-run'} ` +
+        `draftUpdates=${plan.filter((item) => item.update).length} ` +
+        `publications=${plan.filter((item) => item.published?.currentFocus !== input[item.locale]).length}`
     );
   } finally {
     await strapi.destroy();
