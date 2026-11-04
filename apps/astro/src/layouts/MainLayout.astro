@@ -21,10 +21,12 @@ const t = useTranslations(locale);
     // onto the critical path of every page for a component that rendered null.
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const { default: Lenis } = await import('lenis');
+      let nativeHome = !!document.querySelector('.home-experience');
       const lenis = new Lenis({
         lerp: 0.1,
         duration: 1.2,
         smoothWheel: true,
+        virtualScroll: () => !nativeHome,
         wheelMultiplier: 1.0,
         touchMultiplier: 2.0
       });
@@ -48,6 +50,7 @@ const t = useTranslations(locale);
         attributeFilter: ['open']
       });
       document.addEventListener('astro:after-swap', () => {
+        nativeHome = !!document.querySelector('.home-experience');
         lenis.stop();
         syncDialogScroll();
       });

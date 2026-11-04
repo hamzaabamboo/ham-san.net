@@ -1,27 +1,123 @@
-.home-hero-photo {
-  display: grid;
-  gap: 0;
-  margin: 0;
-  align-self: start;
-  border: 1px solid var(--atelier-line);
-  background: var(--atelier-surface-lowest);
+body:has(.home-experience) .shell-sidebar {
+  display: none;
 }
 
-.home-hero-photo-frame {
+body:has(.home-experience) .shell-content {
+  margin-left: 0;
+  background: transparent;
+}
+
+.home-experience {
   position: relative;
-  display: block;
-  overflow: hidden;
-  border-bottom: 1px solid var(--atelier-line);
 }
 
-.home-hero-photo-frame:focus-visible,
+.home-world {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    var(--atelier-surface-lowest),
+    var(--atelier-surface-highest)
+  );
+}
+
+.home-world::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--atelier-surface-lowest) 85%, transparent) 0%,
+    color-mix(in srgb, var(--atelier-surface-lowest) 65%, transparent) 42%,
+    color-mix(in srgb, var(--atelier-surface-lowest) 10%, transparent) 100%
+  );
+}
+
+.home-world canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.home-world canvas[data-unavailable] {
+  visibility: hidden;
+}
+
+.home-content {
+  position: relative;
+  z-index: 1;
+}
+
+.home-content > :first-child {
+  min-height: calc(100svh - 8rem);
+  align-content: center;
+}
+
+.home-hero-copy {
+  max-width: 48rem;
+}
+
+.home-project-grid {
+  gap: 2rem !important;
+  border: 0 !important;
+}
+
+.home-project-grid .project-card {
+  border: 1px solid var(--atelier-line);
+}
+
+.home-project-grid .project-card-overlay {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--atelier-bg) 32%, transparent),
+      color-mix(in srgb, var(--atelier-bg) 72%, transparent)
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--atelier-accent) 10%, transparent),
+      transparent 60%
+    );
+}
+
+@media (min-width: 900px) and (max-width: 1279px) {
+  body:has(.home-experience) .shell-nav-links {
+    display: none;
+  }
+
+  body:has(.home-experience) .shell-drawer-trigger {
+    display: flex;
+  }
+}
+
+@media (min-width: 1280px) {
+  body:has(.home-experience) .shell-nav-links {
+    display: flex;
+  }
+}
+
+@media (max-width: 767px) {
+  .home-world::after {
+    background: color-mix(in srgb, var(--atelier-surface-lowest) 48%, transparent);
+  }
+
+  .home-project-grid .project-card:nth-child(odd) {
+    margin-right: 1.5rem;
+  }
+
+  .home-project-grid .project-card:nth-child(even) {
+    margin-left: 1.5rem;
+  }
+}
+
 .home-photos a:focus-visible,
 .home-photos-all:focus-visible {
   outline: 2px solid var(--atelier-accent);
   outline-offset: 3px;
 }
 
-.home-hero-photo img,
 .home-photos img {
   display: block;
   width: 100%;
@@ -32,60 +128,6 @@
   -webkit-touch-callout: none;
 }
 
-.home-hero-photo-chip {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  padding: 0.25rem 0.75rem;
-  background: var(--atelier-surface-highest);
-  border: 1px solid var(--atelier-line);
-  color: var(--atelier-accent);
-  font-family: var(--font-code);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.home-hero-photo figcaption {
-  display: grid;
-  gap: 0.5rem;
-  padding: 1rem 1.25rem 1.1rem;
-}
-
-.home-hero-photo-name {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.5rem;
-  line-height: 1.15;
-  color: var(--atelier-fg);
-}
-
-.home-hero-photo-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  font-family: var(--font-code);
-  font-size: 10px;
-  color: var(--atelier-outline);
-}
-
-.home-hero-photo-meta a {
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.home-hero-photo-meta a,
-.home-photos-all {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--atelier-accent);
-  text-decoration: none;
-}
-
-.home-hero-photo-meta a:hover,
 .home-photos-all:hover {
   text-decoration: underline;
   text-underline-offset: 0.3em;
@@ -94,6 +136,9 @@
 .home-photos-all {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
+  color: var(--atelier-accent);
+  text-decoration: none;
   gap: 0.5rem;
   width: fit-content;
   font-family: var(--font-code);

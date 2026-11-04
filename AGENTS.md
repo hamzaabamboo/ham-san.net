@@ -1,3 +1,7 @@
+## Explicit full-reference read gate
+
+When the user requests every word or every code file in supplied references, inventory each supplied source and read every in-scope file from beginning to end before design or implementation, subject to the file-size limit in the active instructions. Record exact source, revision, file inventory and coverage; truncated output, a README, a search result, or a subagent summary is not a full read. Independently verify delegated coverage. Record files exceeding the active full-read limit and their unread ranges explicitly; do not claim full coverage for them. Treat inaccessible sources and unread files as unresolved, not as permission to invent a substitute or claim completion.
+
 ## Build & Run
 
 - Install: `bun install`
@@ -50,6 +54,7 @@
 
 - Strapi owns projects, experience, profile, tags, screenshots, graphics, and photo catalog metadata. Outline owns notes and hobbies. Do not add editorial content or per-project copy overrides to application code.
 - Photo images remain on X; store their original URLs and metadata in Strapi. Runtime pages must never call the paid post provider or fall back to a Git catalog.
+- The whole homepage should be an immersive Three.js experience, not an isolated graphic or a Kameko photo as its hero. Keep catalog photos in their own section.
 - Migrate with an idempotent import and complete field readback before advancing the catalog watermark. Retain the existing migration seed until production readback succeeds, then remove the tracked seed while preserving an ignored recovery copy.
 - Upload project screenshots and graphics to CMS media; do not commit those media files. Code, schemas, font configuration, and required editable room sources remain project assets.
 - Strapi media binaries use the S3 provider at `https://s3.ham-san.net`, bucket `personal`, prefix `ham-san-net/media`, region `local`. Keep metadata and relations in Strapi. Use project-scoped credentials from deployment secrets; never copy the administrator alias credentials into the application. Public reads apply only to the media prefix. Preserve original server files until migration and byte readback succeed.
@@ -65,6 +70,10 @@ The five default labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready
 ### Domain docs
 
 Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+## Browser Profiles
+
+- Chrome personal: `Profile 2` (hamzaabamboo@gmail.com). Work: `Profile 1` (arsaga.jp), `Profile 3` (donuts.ne.jp); choose the matching account.
 
 ## Color System
 

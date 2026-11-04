@@ -239,16 +239,11 @@ describe('round 24: nothing renders as an unfinished page', () => {
     expect(block).not.toContain("borderLeft: '4px solid var(--atelier-accent)'");
   });
 
-  test('the homepage hero does not render a CMS illustration', async () => {
-    // The asset in place is stock clip art on a white ground: in a grayscale-plus-amber
-    // system it was the brightest block on the page and beat the amber CTA beside it.
-    // Comments stripped first: the note explaining the removal names the field it removed.
+  test('the homepage hero uses a graphic instead of a catalog photo', async () => {
     const page = stripComments(await read('apps/astro/src/pages/[locale]/index.astro'));
-    const hero = page.slice(0, page.indexOf('<StatusRow'));
-    const images = hero.match(/<img[^>]*>/g) ?? [];
-    expect(images.length).toBeGreaterThan(0);
-    for (const image of images) expect(image).toContain('data-kameko-image');
-    expect(hero).not.toContain('introductionImage');
+    const hero = page.slice(page.indexOf('<MainLayout'), page.indexOf('<HomeBody'));
+    expect(hero).toContain('data-home-hero');
+    expect(hero).not.toContain('data-kameko-image');
   });
 
   test('a note card anchors its meta line to the bottom', async () => {
@@ -278,7 +273,9 @@ describe('round 25: composition', () => {
   test('the homepage holds one left edge for its whole length', async () => {
     // The hero sat on 288 while every section below it sat on 312 and the status labels on
     // 344, under a rule that began at 288 — the landing page was the one misaligned route.
-    const page = await read('apps/astro/src/pages/[locale]/index.astro');
+    const page =
+      (await read('apps/astro/src/pages/[locale]/index.astro')) +
+      (await read('apps/astro/src/components/home/HomeBody.astro'));
     expect(page).not.toContain("px={{ base: '0', lg: '6' }}");
     const status = await read('apps/astro/src/components/home/StatusRow.astro');
     expect(status).not.toMatch(
@@ -427,15 +424,6 @@ describe('round 28', () => {
     const css = stripComments(await read('apps/astro/src/index.css'));
     const layout = css.slice(css.indexOf('.note-layout {'));
     expect(layout.slice(0, 220)).toContain('align-items: start');
-  });
-
-  test('the hero photo label is a plain-CSS chip, not caught by the locale letter-spacing exemption', async () => {
-    // `[class*='ls_0.']` matches any element carrying a letter-spacing utility and kills its
-    // `text-transform` too, so a utility-styled label read HAM on /en and Ham on /ja and /th.
-    const page = await read('apps/astro/src/pages/[locale]/index.astro');
-    expect(page).toContain('class="home-hero-photo-chip"');
-    const css = stripComments(await read('apps/astro/src/styles/home.css'));
-    expect(css).toMatch(/\.home-hero-photo-chip \{[^}]*text-transform: uppercase/);
   });
 
   test('a lone markdown hard-break escape does not reach the page', async () => {
@@ -641,7 +629,7 @@ describe('round 33', () => {
   test('the home page uses one section-header idiom', async () => {
     // A full-width underline on Featured projects against an inline rule on Life — two forms
     // on one page, and the inline rule is the sitewide one.
-    const page = await read('apps/astro/src/pages/[locale]/index.astro');
+    const page = await read('apps/astro/src/components/home/HomeBody.astro');
     const headers = page.slice(page.indexOf('<StatusRow'));
     expect(headers).not.toMatch(/borderBottom="1px solid"[\s\S]{0,120}as="h2"/);
     expect(headers).not.toMatch(/borderBottom="1px solid"[\s\S]{0,120}as="h2"/);
@@ -683,7 +671,11 @@ describe('round 34: one section-header vocabulary', () => {
       'contact/index',
       'tags/[slug]/index'
     ]) {
-      const source = await read(`apps/astro/src/pages/[locale]/${page}.astro`);
+      const source = await read(
+        page === 'index'
+          ? 'apps/astro/src/components/home/HomeBody.astro'
+          : `apps/astro/src/pages/[locale]/${page}.astro`
+      );
       expect(`${page} ${source.includes('<SectionHeading ')}`).toBe(`${page} true`);
     }
   });
