@@ -194,3 +194,16 @@ Replace every `<...>` in the schema above with real values. The following exampl
 ```
 
 Keep photos and temporary screenshots out of Git. Use only project-owned evidence captured against the current artifacts. Do not complete a requirement from an old browser view, old GLB hash, build success, labels, or filenames.
+
+## Existing-session motion capture
+
+`capture-session.mjs` attaches to the marked task tab in the isolated agent-browser session. It never launches a browser. Discover the current CDP URL and set `window.name` to the supplied marker before recording.
+
+```sh
+DO_NOT_TRACK=1 node tools/room-harness/capture-session.mjs <cdp-url> <marker> .scratch/rec/touch-entry.mp4 12 --touch --enter
+DO_NOT_TRACK=1 node tools/room-harness/capture-session.mjs <cdp-url> <marker> .scratch/rec/touch-tour.mp4 1 --touch --chapters
+```
+
+`--touch` sets a 390×844 mobile viewport with five touch points and reloads after screencasting starts. `--enter` dispatches a touch on the initial entry button and requires entry and WebGL reveal to complete at the same phone width with coarse pointer enabled. `--chapters` uses native wheel input to visit each chapter, saves viewport screenshots beside the video, and checks phone width, coarse pointer and horizontal overflow. These modes are mutually exclusive.
+
+Do not issue agent-browser commands during capture: they can restore the CLI's stored viewport and touch settings. Touch video frames preserve aspect ratio, normalize to the CSS viewport height, then crop the phone region; this accommodates screencast frames that include the surrounding native viewport. The JSON sidecar records navigation, exceptions, actions and final runtime state. Inspect the video sequence and every chapter screenshot before accepting visual results. These captures are browser emulation, not physical-device evidence.

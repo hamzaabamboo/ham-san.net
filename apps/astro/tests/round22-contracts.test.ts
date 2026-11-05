@@ -101,10 +101,9 @@ describe('one page-name scale, one section-heading specimen', () => {
         : file;
       const h1 = source.slice(source.indexOf('as="h1"'));
       const size = h1.match(/fontSize=\{\{([^}]*)\}\}/)?.[1] ?? '';
-      // The home hero is a sentence, not a page name, so it keeps its own smaller step.
       expect(`${page} ${size.replace(/\s+/g, ' ').trim()}`).toBe(
         page === 'index'
-          ? "index base: '5xl', md: '5xl', lg: '5xl'"
+          ? "index base: '7xl', md: '8xl', lg: '9xl'"
           : `${page} base: '5xl', md: '7xl'`
       );
     }
@@ -239,10 +238,11 @@ describe('round 24: nothing renders as an unfinished page', () => {
     expect(block).not.toContain("borderLeft: '4px solid var(--atelier-accent)'");
   });
 
-  test('the homepage hero uses a graphic instead of a catalog photo', async () => {
+  test('the homepage hero is the room tour instead of a catalog photo', async () => {
     const page = stripComments(await read('apps/astro/src/pages/[locale]/index.astro'));
     const hero = page.slice(page.indexOf('<MainLayout'), page.indexOf('<HomeBody'));
-    expect(hero).toContain('data-home-hero');
+    expect(hero).toContain('<RoomHome locale={locale} tour>');
+    expect(hero).toContain('data-tour-stop="entry"');
     expect(hero).not.toContain('data-kameko-image');
   });
 
@@ -630,7 +630,7 @@ describe('round 33', () => {
     // A full-width underline on Featured projects against an inline rule on Life — two forms
     // on one page, and the inline rule is the sitewide one.
     const page = await read('apps/astro/src/components/home/HomeBody.astro');
-    const headers = page.slice(page.indexOf('<StatusRow'));
+    const headers = page.slice(page.indexOf('data-tour-stop'));
     expect(headers).not.toMatch(/borderBottom="1px solid"[\s\S]{0,120}as="h2"/);
     expect(headers).not.toMatch(/borderBottom="1px solid"[\s\S]{0,120}as="h2"/);
     // Round 34 moved the rule into `SectionHeading`, so counting the literal element would

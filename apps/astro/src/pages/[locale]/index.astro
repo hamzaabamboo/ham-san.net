@@ -1,11 +1,12 @@
 ---
-import { Box, Flex, Grid, Stack } from 'styled-system/jsx';
-import { container, stack } from 'styled-system/patterns';
 import { Heading } from '~/components/ui/heading';
+import Eyebrow from '~/components/common/Eyebrow.astro';
 import { useTranslations, validateLocale } from '~/i18n/utils';
 import MainLayout from '~/layouts/MainLayout.astro';
 import HomeBody from '~/components/home/HomeBody.astro';
-import Eyebrow from '~/components/common/Eyebrow.astro';
+import RoomHome from '~/components/home/RoomHome.astro';
+import StatusRow from '~/components/home/StatusRow.astro';
+import { getHomepageStatus } from '~/utils/homepage-status';
 import '~/styles/home.css';
 
 export const prerender = false;
@@ -18,70 +19,47 @@ if (!validateLocale(locale)) {
 
 const t = useTranslations(locale);
 const pageTitle = `${t('common.home')} | ${t('common.name')}`;
+const status = Promise.race([
+  getHomepageStatus(locale),
+  new Promise<null>((resolve) => setTimeout(() => resolve(null), 500))
+]).catch(() => null);
 Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=60, must-revalidate');
 ---
 
-<MainLayout title={pageTitle} description={t('home.hero-subtitle').replace(/<[^>]*>/g, '')}>
-  <div class:list={['page-shell', 'home-experience', container({ maxW: 'breakpoint-xl' })]}>
-    <div class="home-world" aria-hidden="true"><canvas data-home-hero></canvas></div>
-    <div class:list={['home-content', stack({ py: { base: '8', md: '10' }, gap: '0' })]}>
-      <Grid
-        gridTemplateColumns={{
-          base: 'minmax(0, 1fr)',
-          lg: 'minmax(0, 1fr)'
-        }}
-        gap="12"
-        py={{ base: '8', lg: '24' }}
-        borderBottom="1px solid var(--atelier-line)"
-        className="home-hero-grid"
-      >
-        <Stack gap="8" className="home-hero-copy">
+<MainLayout title={pageTitle} description={t('home.hero-subtitle')}>
+  <div class="home-experience">
+    <RoomHome locale={locale} tour>
+      <section class="home-chapter home-intro" data-tour-stop="entry" aria-labelledby="home-title">
+        <div class="home-panel">
           <Eyebrow label={t('home.operational-status')} />
           <Heading
             as="h1"
-            className="home-hero-heading"
-            fontSize={{ base: '5xl', md: '5xl', lg: '5xl' }}
-            lineHeight={locale === 'th' ? '1.15' : locale === 'ja' ? '1.05' : '0.95'}
-            style={locale === 'ja' ? { wordBreak: 'auto-phrase' } : undefined}
+            id="home-title"
+            className="home-name"
+            fontSize={{ base: '7xl', md: '8xl', lg: '9xl' }}
           >
-            {t('home.hero-heading-prefix')}
-            {
-              /* The two halves render on separate lines but concatenate in textContent,
-                so copy-paste and any title derived from the h1 ran the words together.
-                Japanese needs no separator: its prefix already ends in a full stop. */
-            }
-            {locale === 'ja' ? '' : ' '}
-            <Box as="span" display="block" fontStyle="italic" color="var(--atelier-accent)">
-              {t('home.hero-heading-emphasis')}
-            </Box>
+            {t('common.name')}
           </Heading>
-          <p class="hero-subtitle" set:html={t('home.hero-subtitle')} />
-          <Flex gap="4" wrap="wrap" pt="2">
-            <a
-              href={`/${locale}/projects`}
-              class="home-hero-cta home-hero-cta-primary blocky-shadow blocky-shadow-hover"
-            >
+          <p class="home-role">{t('home.hero-text')}</p>
+          <p class="hero-subtitle">{t('home.hero-subtitle')}</p>
+          <a class="home-chapter-link" href={`/${locale}/contact`}>{t('home.availability')}</a>
+          <div class="home-actions">
+            <button type="button" class="home-hero-cta home-hero-cta-primary" data-room-enter>
+              {t('home.enter-room')}
+            </button>
+            <a href={`/${locale}/projects`} class="home-hero-cta cta-secondary">
               {t('home.view-my-work')}
             </a>
-            <a href={`/${locale}/hobbies`} class="home-hero-cta cta-secondary">
-              {t('home.explore-hobbies')}
-            </a>
-          </Flex>
-        </Stack>
-      </Grid>
-
+          </div>
+          <StatusRow locale={locale} status={await status} />
+        </div>
+      </section>
       <HomeBody locale={locale} />
-    </div>
+    </RoomHome>
   </div>
 </MainLayout>
 
 <script>
-  const mountHomeHero = () => {
-    if (document.querySelector('[data-home-hero]')) {
-      void import('~/components/home/hero-scene').then(({ mountHomeHero }) => mountHomeHero());
-    }
-  };
-
   const mountHomePhotos = () => {
     document.querySelectorAll<HTMLImageElement>('[data-kameko-image]').forEach((image) => {
       if (image.dataset.homePhotoBound) return;
@@ -94,8 +72,46 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=60, must-revali
     });
   };
 
-  mountHomeHero();
+  let refreshRun = 0;
+  const swapDegraded = (html: string) => {
+    const next = new DOMParser().parseFromString(html, 'text/html');
+    document.querySelectorAll<HTMLElement>('[data-home-degraded]').forEach((section) => {
+      if (section.contains(document.activeElement)) return;
+      const key = section.getAttribute('aria-labelledby');
+      const fresh = next.querySelector(`[aria-labelledby="${key}"]`);
+      const panel = fresh?.querySelector('.home-panel');
+      if (!fresh || fresh.hasAttribute('data-home-degraded') || !panel) return;
+      section.querySelector('.home-panel')?.replaceWith(document.importNode(panel, true));
+      section.removeAttribute('data-home-degraded');
+    });
+    mountHomePhotos();
+  };
+
+  const refreshDegraded = (run: number, path: string, attempt = 0): Promise<void> => {
+    if (run !== refreshRun || !document.querySelector('[data-home-degraded]') || attempt > 2)
+      return Promise.resolve();
+    return new Promise((resolve) => setTimeout(resolve, 2500 * (attempt + 1)))
+      .then(() =>
+        run === refreshRun
+          ? fetch(`${path}?refresh=${Date.now()}`, { headers: { accept: 'text/html' } })
+          : undefined
+      )
+      .then((response) =>
+        response?.ok && run === refreshRun ? response.text().then(swapDegraded) : undefined
+      )
+      .then(
+        () => refreshDegraded(run, path, attempt + 1),
+        () => refreshDegraded(run, path, attempt + 1)
+      );
+  };
+
   mountHomePhotos();
-  document.addEventListener('astro:page-load', mountHomeHero);
   document.addEventListener('astro:page-load', mountHomePhotos);
+  document.addEventListener('astro:page-load', () => {
+    refreshRun += 1;
+    void refreshDegraded(refreshRun, location.pathname);
+  });
+  document.addEventListener('astro:before-swap', () => {
+    refreshRun += 1;
+  });
 </script>

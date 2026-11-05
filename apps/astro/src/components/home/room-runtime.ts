@@ -6,6 +6,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
 import { roomCopy } from './room-copy';
 import { roomPhaseForTokyoHour, type RoomPhase } from './room-logic';
@@ -323,6 +324,16 @@ const configureAcrylicCase = (material: THREE.Material) => {
   material.needsUpdate = true;
 };
 
+const flattenTransmission = (material: THREE.Material) => {
+  if (!(material instanceof THREE.MeshPhysicalMaterial) || material.transmission <= 0) return;
+  material.transmission = 0;
+  material.thickness = 0;
+  material.transparent = true;
+  material.opacity = Math.min(material.opacity, material.roughness > 0.3 ? 0.75 : 0.3);
+  material.depthWrite = false;
+  material.needsUpdate = true;
+};
+
 const isOpaqueMaterial = (material: THREE.Material) =>
   !getArchitecturalGlassKind(material) &&
   !(material instanceof THREE.MeshPhysicalMaterial && material.transmission > 0) &&
@@ -338,6 +349,7 @@ const isOpaqueObject = (object: THREE.Object3D) => {
 
 const disposeObject = (object: THREE.Object3D) => {
   if (!(object instanceof THREE.Mesh)) return;
+  object.customDepthMaterial?.dispose();
   object.geometry.dispose();
   const materials = Array.isArray(object.material) ? object.material : [object.material];
   materials.forEach((material) => {
@@ -358,7 +370,214 @@ const createPose = (camera: THREE.PerspectiveCamera, yaw: number, pitch: number)
   pitch
 });
 
-export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
+export type RoomTourStop =
+  | TargetId
+  | 'entry'
+  | { position: [number, number, number]; lookAt: [number, number, number] };
+export type RoomTour = {
+  stops: readonly RoomTourStop[];
+  progress: () => number;
+  reducedMotion: () => boolean;
+  entrySource?: () => HTMLElement | null;
+};
+
+const createDust = (count: number) => {
+  const positions = new Float32Array(count * 3);
+  const seeds = new Float32Array(count);
+  for (let index = 0; index < count; index += 1) {
+    positions[index * 3] = (((index * 73) % 997) / 997) * 5.4 - 2.7;
+    positions[index * 3 + 1] = (((index * 41) % 601) / 601) * 2.3 + 0.25;
+    positions[index * 3 + 2] = (((index * 97) % 887) / 887) * 6.8 - 3.5;
+    seeds[index] = ((index * 59) % 409) / 409;
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('seed', new THREE.BufferAttribute(seeds, 1));
+  const material = new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    uniforms: { time: { value: 0 }, strength: { value: 1 } },
+    vertexShader: `attribute float seed; uniform float time; varying float vAlpha;
+      void main() {
+        vec3 p = position;
+        float t = time * (0.12 + seed * 0.1);
+        p.x += sin(t + seed * 40.0) * 0.24;
+        p.y += sin(t * 0.7 + seed * 17.0) * 0.28;
+        p.z += cos(t * 0.8 + seed * 23.0) * 0.2;
+        vec4 view = modelViewMatrix * vec4(p, 1.0);
+        vAlpha = smoothstep(0.2, 1.2, -view.z) * (1.0 - smoothstep(4.0, 7.0, -view.z)) * (0.35 + seed * 0.4);
+        vAlpha *= 0.65 + 0.35 * sin(time * 0.8 + seed * 60.0);
+        gl_PointSize = clamp((4.0 + seed * 4.0) / sqrt(max(-view.z, 0.2)), 1.0, 4.0);
+        gl_Position = projectionMatrix * view;
+      }`,
+    fragmentShader: `uniform float strength; varying float vAlpha;
+      void main() {
+        float a = 1.0 - smoothstep(0.15, 0.5, length(gl_PointCoord - 0.5));
+        gl_FragColor = vec4(vec3(1.0, 0.9, 0.68), a * vAlpha * strength * 0.4);
+      }`
+  });
+  const points = new THREE.Points(geometry, material);
+  points.frustumCulled = false;
+  points.raycast = () => {};
+  return { points, material, geometry };
+};
+
+const createWindowBeam = () => {
+  const origin = new THREE.Vector3(-0.4, 2.05, -1.55);
+  const end = new THREE.Vector3(0.2, 0.12, 1.25);
+  const direction = origin.clone().sub(end);
+  const geometry = new THREE.CylinderGeometry(0.25, 1.05, direction.length(), 24, 1, true);
+  const material = new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    blending: THREE.AdditiveBlending,
+    uniforms: {
+      time: { value: 0 },
+      strength: { value: 1 },
+      tint: { value: new THREE.Color(1, 0.85, 0.58) }
+    },
+    vertexShader: `varying vec2 vUv; varying vec3 vNormal; varying vec3 vView;
+      void main() {
+        vUv = uv;
+        vec4 view = modelViewMatrix * vec4(position, 1.0);
+        vView = -view.xyz;
+        vNormal = normalMatrix * normal;
+        gl_Position = projectionMatrix * view;
+      }`,
+    fragmentShader: `uniform float time; uniform float strength; uniform vec3 tint;
+      varying vec2 vUv; varying vec3 vNormal; varying vec3 vView;
+      void main() {
+        float edge = pow(abs(dot(normalize(vNormal), normalize(vView))), 2.0);
+        float lengthFade = smoothstep(0.0, 0.25, vUv.y) * (1.0 - smoothstep(0.82, 1.0, vUv.y));
+        float cloud = 0.78 + sin(time * 0.35 + vUv.y * 5.0) * 0.22;
+        gl_FragColor = vec4(tint, edge * lengthFade * cloud * strength * 0.085);
+      }`
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.copy(origin).add(end).multiplyScalar(0.5);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.normalize());
+  mesh.raycast = () => {};
+  return { mesh, geometry, material };
+};
+
+const dynamicKeys = ['roomCurtain', 'roomClosetLeaf', 'roomBackdrop'];
+const isDynamic = (object: THREE.Object3D) => {
+  for (let current: THREE.Object3D | null = object; current; current = current.parent) {
+    if (dynamicKeys.some((key) => current!.userData?.[key] !== undefined)) return true;
+    if (current.name.replace(/[ _]/g, '') === 'Deskfanrotor') return true;
+  }
+  return false;
+};
+
+const floatGeometry = (mesh: THREE.Mesh) => {
+  const source = mesh.geometry;
+  const geometry = new THREE.BufferGeometry();
+  Object.entries(source.attributes).forEach(([name, attribute]) => {
+    const values = new Float32Array(attribute.count * attribute.itemSize);
+    for (let index = 0; index < attribute.count; index += 1) {
+      for (let component = 0; component < attribute.itemSize; component += 1) {
+        values[index * attribute.itemSize + component] = attribute.getComponent(index, component);
+      }
+    }
+    geometry.setAttribute(name, new THREE.BufferAttribute(values, attribute.itemSize));
+  });
+  if (source.index) geometry.setIndex(Array.from(source.index.array as ArrayLike<number>));
+  geometry.applyMatrix4(mesh.matrixWorld);
+  return geometry;
+};
+
+const downscaleTextures = async (loadedRoom: THREE.Group, maxSize: number) => {
+  if (typeof createImageBitmap !== 'function') return;
+  const textures = new Set<THREE.Texture>();
+  loadedRoom.traverse((object) => {
+    if (!(object instanceof THREE.Mesh)) return;
+    (Array.isArray(object.material) ? object.material : [object.material]).forEach((material) =>
+      Object.values(material).forEach((value) => {
+        if (value instanceof THREE.Texture) textures.add(value);
+      })
+    );
+  });
+  const images = new Map<ImageBitmapSource, THREE.Texture[]>();
+  for (const texture of textures) {
+    const image = texture.image as ImageBitmapSource;
+    if (!image) continue;
+    const references = images.get(image) ?? [];
+    references.push(texture);
+    images.set(image, references);
+  }
+  const queue = Array.from(images.entries());
+  const resize = async () => {
+    while (queue.length) {
+      const [source, references] = queue.pop()!;
+      const image = source as { width?: number; height?: number };
+      const width = image?.width ?? 0;
+      const height = image?.height ?? 0;
+      const scale = maxSize / Math.max(width, height);
+      if (!width || !height || scale >= 1) continue;
+      try {
+        const bitmap = await createImageBitmap(source, {
+          resizeWidth: Math.max(1, Math.round(width * scale)),
+          resizeHeight: Math.max(1, Math.round(height * scale)),
+          resizeQuality: 'high',
+          premultiplyAlpha: 'none',
+          colorSpaceConversion: 'none'
+        });
+        for (const texture of references) {
+          texture.image = bitmap;
+          texture.needsUpdate = true;
+        }
+        if (source instanceof ImageBitmap) source.close();
+      } catch {
+        continue;
+      }
+    }
+  };
+  await Promise.all([resize(), resize()]);
+};
+
+const mergeStaticMeshes = async (loadedRoom: THREE.Group, isCancelled: () => boolean) => {
+  loadedRoom.updateMatrixWorld(true);
+  const groups = new Map<string, THREE.Mesh[]>();
+  loadedRoom.traverse((object) => {
+    if (!(object instanceof THREE.Mesh) || object instanceof THREE.InstancedMesh) return;
+    if (object instanceof THREE.SkinnedMesh || Array.isArray(object.material)) return;
+    if (object.geometry.morphAttributes.position) return;
+    let visible = true;
+    for (let current: THREE.Object3D | null = object; current; current = current.parent) {
+      if (!current.visible) visible = false;
+    }
+    if (!visible || isDynamic(object) || !isOpaqueMaterial(object.material)) return;
+    const attributes = Object.keys(object.geometry.attributes).sort().join(',');
+    const key = `${object.material.uuid}|${attributes}|${Boolean(object.geometry.index)}|${object.castShadow}|${object.receiveShadow}`;
+    const list = groups.get(key) ?? [];
+    list.push(object);
+    groups.set(key, list);
+  });
+  const merged = new THREE.Group();
+  const replaced: THREE.Mesh[] = [];
+  let started = performance.now();
+  for (const meshes of groups.values()) {
+    if (isCancelled()) return null;
+    if (meshes.length < 2) continue;
+    const geometry = mergeGeometries(meshes.map(floatGeometry), false);
+    if (!geometry) continue;
+    const mesh = new THREE.Mesh(geometry, meshes[0].material);
+    mesh.castShadow = meshes[0].castShadow;
+    mesh.receiveShadow = meshes[0].receiveShadow;
+    mesh.raycast = () => {};
+    merged.add(mesh);
+    replaced.push(...meshes);
+    if (performance.now() - started > 12) {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      started = performance.now();
+    }
+  }
+  return { merged, replaced };
+};
+
+export const initRoom = (root: HTMLElement, enterWhenReady = false, tour?: RoomTour) => {
   const locale = (root.dataset.locale ?? 'en') as Locale;
   const copy = roomCopy[locale] ?? roomCopy.en;
   const stage = root.querySelector<HTMLElement>('[data-room-stage]');
@@ -501,92 +720,96 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
     targetLabels.set(target.id, label);
   });
 
-  const hobbyRoutesReady = fetch(toUrl('hobbies'), {
-    headers: { accept: 'text/html' },
-    signal: hobbyRoutesController.signal
-  })
-    .then(async (response) => {
-      if (!response.ok) return;
-      const html = await response.text();
-      const document = new DOMParser().parseFromString(html, 'text/html');
-      const routes = Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href]'))
-        .map((anchor) => {
-          try {
-            const url = new URL(anchor.href, window.location.href);
-            const match = url.pathname.match(new RegExp(`^/${locale}/hobbies/([^/?#]+)$`));
-            const heading = anchor.querySelector<HTMLHeadingElement>('h1, h2, h3');
-            if (url.origin !== window.location.origin || !match?.[1] || !heading) return null;
-            return { id: match[1], heading: normalizeHeading(heading.textContent ?? '') };
-          } catch {
-            return null;
-          }
-        })
-        .filter((route): route is { id: string; heading: string } => !!route);
-      const routeFor = (id: HobbyTargetId) =>
-        routes.find((route) =>
-          hobbyHeadingTitles[id].some((title) => normalizeHeading(title) === route.heading)
-        );
-      hobbyTargetIds.forEach((id) => {
-        const route = routeFor(id);
-        if (route) hobbyPaths[id] = `hobbies/${route.id}`;
-      });
-      const piano = routeFor('piano');
-      if (piano) {
-        const musicResponse = await fetch(toUrl(`hobbies/${piano.id}`), {
-          headers: { accept: 'text/html' },
-          signal: hobbyRoutesController.signal
+  const loadHobbyRoutes = () =>
+    fetch(toUrl('hobbies'), {
+      headers: { accept: 'text/html' },
+      signal: hobbyRoutesController.signal
+    })
+      .then(async (response) => {
+        if (!response.ok) return;
+        const html = await response.text();
+        const document = new DOMParser().parseFromString(html, 'text/html');
+        const routes = Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href]'))
+          .map((anchor) => {
+            try {
+              const url = new URL(anchor.href, window.location.href);
+              const match = url.pathname.match(new RegExp(`^/${locale}/hobbies/([^/?#]+)$`));
+              const heading = anchor.querySelector<HTMLHeadingElement>('h1, h2, h3');
+              if (url.origin !== window.location.origin || !match?.[1] || !heading) return null;
+              return { id: match[1], heading: normalizeHeading(heading.textContent ?? '') };
+            } catch {
+              return null;
+            }
+          })
+          .filter((route): route is { id: string; heading: string } => !!route);
+        const routeFor = (id: HobbyTargetId) =>
+          routes.find((route) =>
+            hobbyHeadingTitles[id].some((title) => normalizeHeading(title) === route.heading)
+          );
+        hobbyTargetIds.forEach((id) => {
+          const route = routeFor(id);
+          if (route) hobbyPaths[id] = `hobbies/${route.id}`;
         });
-        if (!musicResponse.ok) return;
-        const musicDocument = new DOMParser().parseFromString(
-          await musicResponse.text(),
-          'text/html'
-        );
-        const child = Array.from(musicDocument.querySelectorAll<HTMLAnchorElement>('a[href]')).find(
-          (anchor) => {
+        const piano = routeFor('piano');
+        if (piano) {
+          const musicResponse = await fetch(toUrl(`hobbies/${piano.id}`), {
+            headers: { accept: 'text/html' },
+            signal: hobbyRoutesController.signal
+          });
+          if (!musicResponse.ok) return;
+          const musicDocument = new DOMParser().parseFromString(
+            await musicResponse.text(),
+            'text/html'
+          );
+          const child = Array.from(
+            musicDocument.querySelectorAll<HTMLAnchorElement>('a[href]')
+          ).find((anchor) => {
             const url = new URL(anchor.getAttribute('href') ?? '', window.location.href);
             return (
               url.origin === window.location.origin &&
               url.pathname.startsWith(`/${locale}/hobbies/${piano.id}/doc/`) &&
               /^(piano|ピアノ|เปียโน)(?:\s|$)/i.test(anchor.textContent?.trim() ?? '')
             );
+          });
+          if (child) {
+            hobbyPaths.piano = new URL(
+              child.getAttribute('href')!,
+              window.location.href
+            ).pathname.slice(locale.length + 2);
           }
-        );
-        if (child) {
-          hobbyPaths.piano = new URL(
-            child.getAttribute('href')!,
-            window.location.href
-          ).pathname.slice(locale.length + 2);
-        }
-        Array.from(musicDocument.querySelectorAll<HTMLAnchorElement>('a[href]')).forEach(
-          (anchor) => {
-            const url = new URL(anchor.getAttribute('href') ?? '', window.location.href);
-            const childId = musicChildIds.find((id) =>
-              musicChildTitles[id].some((title) =>
-                normalizeHeading(anchor.textContent?.trim() ?? '').startsWith(
-                  normalizeHeading(title)
+          Array.from(musicDocument.querySelectorAll<HTMLAnchorElement>('a[href]')).forEach(
+            (anchor) => {
+              const url = new URL(anchor.getAttribute('href') ?? '', window.location.href);
+              const childId = musicChildIds.find((id) =>
+                musicChildTitles[id].some((title) =>
+                  normalizeHeading(anchor.textContent?.trim() ?? '').startsWith(
+                    normalizeHeading(title)
+                  )
                 )
-              )
-            );
-            if (
-              !childId ||
-              url.origin !== window.location.origin ||
-              !url.pathname.startsWith(`/${locale}/hobbies/${piano.id}/doc/`)
-            ) {
-              return;
+              );
+              if (
+                !childId ||
+                url.origin !== window.location.origin ||
+                !url.pathname.startsWith(`/${locale}/hobbies/${piano.id}/doc/`)
+              ) {
+                return;
+              }
+              musicChildPaths[childId] = url.pathname.slice(locale.length + 2);
+              musicChildLabels[childId] = anchor.textContent?.trim() ?? musicChildLabels[childId];
             }
-            musicChildPaths[childId] = url.pathname.slice(locale.length + 2);
-            musicChildLabels[childId] = anchor.textContent?.trim() ?? musicChildLabels[childId];
-          }
-        );
-      }
-    })
-    .catch(() => undefined);
+          );
+        }
+      })
+      .catch(() => undefined);
+  let hobbyRoutesReady: Promise<void> | undefined = tour ? undefined : loadHobbyRoutes();
 
   const showFailure = () => {
     status.textContent = root.dataset.roomError ?? copy.failed;
     status.dataset.roomStatusError = '';
-    enterButton.disabled = true;
-    enterButton.hidden = true;
+    root.querySelectorAll<HTMLButtonElement>('[data-room-enter]').forEach((button) => {
+      button.disabled = true;
+      button.hidden = true;
+    });
     if (stage) stage.hidden = true;
     if (preview) preview.hidden = false;
   };
@@ -605,21 +828,23 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
   }
 
   const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  const reducedMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+  renderer.shadowMap.enabled = !(tour && coarsePointer);
+  renderer.shadowMap.type = tour ? THREE.VSMShadowMap : THREE.PCFShadowMap;
   const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
   renderer.shadowMap.autoUpdate = false;
-  const fullPixelRatio = Math.min(window.devicePixelRatio, 2);
+  const fullPixelRatio = Math.min(window.devicePixelRatio, tour ? (coarsePointer ? 1 : 1.5) : 2);
   let motionPixelRatio = Math.min(fullPixelRatio, 1.5);
   renderer.setPixelRatio(fullPixelRatio);
   renderer.setSize(stage.clientWidth, stage.clientHeight, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.NeutralToneMapping;
-  renderer.toneMappingExposure = 1.0;
-  renderer.domElement.tabIndex = 0;
+  renderer.toneMapping = tour ? THREE.ACESFilmicToneMapping : THREE.NeutralToneMapping;
+  renderer.toneMappingExposure = 1;
+  renderer.domElement.tabIndex = tour ? -1 : 0;
   renderer.domElement.setAttribute('aria-label', copy.scene);
   renderer.domElement.setAttribute('role', 'application');
   renderer.domElement.setAttribute('aria-describedby', 'room-help');
+  if (tour) renderer.domElement.setAttribute('aria-hidden', 'true');
   stage.replaceChildren(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -627,9 +852,12 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
   camera.rotation.order = 'YXZ';
   camera.position.set(...initialPosition);
   let compositionActive = false;
+  const compositionOffset = new THREE.Vector2();
+  const compositionTarget = new THREE.Vector2();
+  let tourViewportBlend = 0;
 
   let composer: EffectComposer | undefined;
-  if (!coarsePointer) {
+  if (!coarsePointer && !tour) {
     composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     const ambientOcclusion = new GTAOPass(scene, camera, stage.clientWidth, stage.clientHeight);
@@ -649,12 +877,49 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
   const updateCameraComposition = () => {
     const width = Math.max(stage.clientWidth, 1);
     const height = Math.max(stage.clientHeight, 1);
-    if (!compositionActive) {
+    const portraitComposition = window.matchMedia(
+      tour && !entered ? '(max-width: 1100px)' : '(max-width: 700px)'
+    ).matches;
+    compositionTarget.set(
+      compositionActive && !portraitComposition ? (tour && !entered ? 0.24 : 0.335) : 0,
+      compositionActive && portraitComposition && !tour ? 0.36 : 0
+    );
+    if (!tour || !tourRevealed) compositionOffset.copy(compositionTarget);
+    if (tour) {
+      const portrait = window.matchMedia('(max-width: 1100px)').matches;
+      const referenceWidth = 1600;
+      const referenceHeight = 1000;
+      const viewport = root.querySelector<HTMLElement>('[data-room-tour-viewport]');
+      const panelHeight = viewport
+        ? viewport.clientHeight - parseFloat(getComputedStyle(viewport).paddingTop)
+        : height;
+      const visibleHeight = portrait
+        ? THREE.MathUtils.lerp(panelHeight, height, tourViewportBlend)
+        : height;
+      camera.fov = portrait ? 72 : 62;
+      const scale = Math.max(width / referenceWidth, visibleHeight / referenceHeight);
+      const cropWidth = width / scale;
+      const cropHeight = height / scale;
+      camera.setViewOffset(
+        referenceWidth,
+        referenceHeight,
+        (referenceWidth - cropWidth) / 2 + referenceWidth * compositionOffset.x,
+        (referenceHeight - (portrait ? visibleHeight / scale : cropHeight)) / 2 +
+          referenceHeight * compositionOffset.y,
+        cropWidth,
+        cropHeight
+      );
+    } else if (compositionOffset.lengthSq() < 0.00000001) {
       camera.clearViewOffset();
-    } else if (window.matchMedia('(max-width: 700px)').matches) {
-      camera.setViewOffset(width, height, 0, height * 0.36, width, height);
     } else {
-      camera.setViewOffset(width, height, width * 0.335, 0, width, height);
+      camera.setViewOffset(
+        width,
+        height,
+        width * compositionOffset.x,
+        height * compositionOffset.y,
+        width,
+        height
+      );
     }
     camera.updateProjectionMatrix();
   };
@@ -670,24 +935,26 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
   daylight.position.copy(topWindowSunPosition);
   daylight.target.position.copy(topWindowLightTarget);
   daylight.castShadow = true;
-  const shadowMapSize = coarsePointer ? 512 : 1024;
+  const shadowMapSize = coarsePointer ? 512 : tour ? 2048 : 1024;
   daylight.shadow.mapSize.set(shadowMapSize, shadowMapSize);
   daylight.shadow.camera.near = 0.1;
   daylight.shadow.camera.far = 12;
-  daylight.shadow.camera.left = -5.5;
-  daylight.shadow.camera.right = 5.5;
-  daylight.shadow.camera.top = 5.5;
-  daylight.shadow.camera.bottom = -5.5;
+  daylight.shadow.camera.left = tour ? -4 : -5.5;
+  daylight.shadow.camera.right = tour ? 4 : 5.5;
+  daylight.shadow.camera.top = tour ? 4 : 5.5;
+  daylight.shadow.camera.bottom = tour ? -4 : -5.5;
+  daylight.shadow.radius = tour ? 3 : 1;
+  daylight.shadow.blurSamples = 8;
   daylight.shadow.bias = -0.0002;
-  daylight.shadow.normalBias = 0.025;
+  daylight.shadow.normalBias = tour ? 0.008 : 0.025;
   daylight.shadow.camera.updateProjectionMatrix();
   const warmLight = new THREE.SpotLight(new THREE.Color(1, 0.78, 0.56), 0, 7, Math.PI * 0.45, 1, 2);
   ambient.position.set(0, 2.8, 0);
-  warmLight.position.set(-2.25, 2.67, -0.25);
-  warmLight.target.position.set(-2.25, 0, -0.25);
+  warmLight.position.set(-0.55, 2.25, -0.55);
+  warmLight.target.position.set(-0.55, 0, -0.55);
   const frontWarmLight = warmLight.clone();
-  frontWarmLight.position.set(2.05, 2.66, 0.75);
-  frontWarmLight.target.position.set(2.05, 0, 0.75);
+  frontWarmLight.position.set(1.95, 2.25, -0.1);
+  frontWarmLight.target.position.set(1.95, 0, -0.1);
   if (!coarsePointer) {
     warmLight.shadow.mapSize.set(1024, 1024);
     warmLight.shadow.camera.near = 0.1;
@@ -704,6 +971,11 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
     frontWarmLight,
     frontWarmLight.target
   );
+  const deskGlow = tour ? new THREE.PointLight(new THREE.Color(0.4, 0.65, 1), 0.25, 1.2, 2) : null;
+  if (deskGlow) {
+    deskGlow.position.set(-2.2, 1.15, -0.5);
+    scene.add(deskGlow);
+  }
 
   const sky = new Sky();
   sky.scale.setScalar(450);
@@ -774,7 +1046,7 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
       const previousTarget = environmentTarget;
       environmentTarget = nextTarget;
       scene.environment = nextTarget.texture;
-      scene.environmentIntensity = night ? 0.3 : 0.55;
+      scene.environmentIntensity = tour ? (night ? 0.2 : 0.35) : night ? 0.3 : 0.55;
       previousTarget?.dispose();
     } catch {
       scene.environment = environmentTarget?.texture ?? null;
@@ -843,6 +1115,7 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
   let fanRotor: THREE.Object3D | null = null;
   let fanOn = false;
   let fanSpeed = 0;
+  let previousReducedMotion = tour?.reducedMotion() ?? reducedMotionMedia.matches;
   let moveTarget: THREE.Vector3 | null = null;
   let yaw = 0;
   let pitch = 0;
@@ -863,6 +1136,41 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
   let pendingHover: PointerEvent | null = null;
   const renderedView = new THREE.Matrix4();
   const renderedProjection = new THREE.Matrix4();
+  let tourReturn: { from: Pose; startedAt: number } | null = null;
+  let tourRevealed = false;
+  let enterRequested = enterWhenReady;
+  let mergedStatic: { merged: THREE.Group; replaced: THREE.Mesh[] } | null = null;
+  const setMergedView = (on: boolean) => {
+    if (!mergedStatic) return;
+    mergedStatic.merged.visible = on;
+    mergedStatic.replaced.forEach((mesh) => {
+      mesh.visible = !on;
+    });
+    renderer.shadowMap.needsUpdate = true;
+    renderRequested = true;
+  };
+  let compilePending: Promise<void> | undefined;
+  let inertElements: HTMLElement[] = [];
+  const setPageInert = (inert: boolean) => {
+    inertElements.forEach((element) => element.removeAttribute('inert'));
+    inertElements = [];
+    if (!inert) return;
+    const content = root.querySelector<HTMLElement>('.room-tour-content');
+    if (content) inertElements.push(content);
+    let current: HTMLElement = root;
+    while (current.parentElement && current !== document.body) {
+      Array.from(current.parentElement.children).forEach((sibling) => {
+        if (sibling !== current && sibling instanceof HTMLElement && !sibling.hasAttribute('inert'))
+          inertElements.push(sibling);
+      });
+      current = current.parentElement;
+    }
+    inertElements.forEach((element) => element.setAttribute('inert', ''));
+  };
+  const dust = tour ? createDust(coarsePointer ? 140 : 320) : null;
+  if (dust) scene.add(dust.points);
+  const windowBeam = tour ? createWindowBeam() : null;
+  if (windowBeam) scene.add(windowBeam.mesh);
 
   const setLookAt = (target: THREE.Vector3) => {
     const direction = target.clone().sub(camera.position);
@@ -977,7 +1285,7 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
       return;
     }
     const canvasRect = renderer.domElement.getBoundingClientRect();
-    const rootRect = root.getBoundingClientRect();
+    const rootRect = targetLabelsRoot.getBoundingClientRect();
     if (!canvasRect.width || !canvasRect.height) return;
     const checkVisibility =
       now - lastLabelVisibilityCheck >= 150 &&
@@ -1350,12 +1658,20 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
     lightAuto.hidden =
       manualPhase === undefined && leftLightManual === undefined && rightLightManual === undefined;
     updateCurtainControl();
-    ambient.intensity = night ? 1 : 1.3;
+    ambient.intensity = tour ? (night ? 0.3 : 0.65) : night ? 1 : 1.3;
     if (night) ambient.groundColor.setRGB(0.45, 0.4, 0.34);
     else ambient.groundColor.setRGB(0.66, 0.56, 0.46);
-    daylight.intensity = night ? 0.025 : 4.2;
-    warmLight.intensity = leftOn ? 11 : 0;
-    frontWarmLight.intensity = rightOn ? 13 : 0;
+    daylight.intensity = tour ? (night ? 0.3 : 3.4) : night ? 0.025 : 4.2;
+    warmLight.intensity = leftOn ? (tour ? 14 : 11) : 0;
+    frontWarmLight.intensity = rightOn ? (tour ? 16 : 13) : 0;
+    if (windowBeam) {
+      windowBeam.material.uniforms.strength.value = night ? 0 : 1;
+      windowBeam.material.uniforms.tint.value.setRGB(
+        night ? 0.4 : 1,
+        night ? 0.58 : 0.85,
+        night ? 1 : 0.58
+      );
+    }
     const daylightShadows = !night;
     const warmShadows = !coarsePointer && night;
     if (daylight.castShadow !== daylightShadows) {
@@ -1573,7 +1889,8 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
 
   const loadContent = async (id: ContentId) => {
     const request = ++contentRequest;
-    if (id === 'hobbies' || isHobbyTarget(id) || isMusicChild(id)) await hobbyRoutesReady;
+    if (id === 'hobbies' || isHobbyTarget(id) || isMusicChild(id))
+      await (hobbyRoutesReady ??= loadHobbyRoutes());
     if (disposed || request !== contentRequest) return;
     panelTitle.textContent = labelFor(id);
     fullPage.href = toUrl(pathFor(id));
@@ -1691,6 +2008,126 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
       yaw: Math.atan2(-direction.x, -direction.z),
       pitch: Math.atan2(direction.y, Math.hypot(direction.x, direction.z))
     };
+  };
+
+  const tourStopPose = (stop: RoomTourStop): Pose => {
+    if (typeof stop === 'object') {
+      return poseLookingAt(new THREE.Vector3(...stop.position), new THREE.Vector3(...stop.lookAt));
+    }
+    return stop === 'entry'
+      ? poseLookingAt(
+          authoredEntryPosition ?? new THREE.Vector3(...initialPosition),
+          authoredEntryLookAt ?? new THREE.Vector3(...initialLookAt)
+        )
+      : focusPose(stop);
+  };
+
+  let cachedTourPoses: Pose[] | undefined;
+  const interpolatedTourPose: Pose = { position: new THREE.Vector3(), yaw: 0, pitch: 0 };
+  const tourPose = (value: number): Pose => {
+    const stops = tour!.stops;
+    cachedTourPoses ??= stops.map(tourStopPose);
+    const last = stops.length - 1;
+    const clamped = clamp(value, 0, last);
+    const index = Math.min(Math.floor(clamped), Math.max(last - 1, 0));
+    const local = easeInOut(clamp(clamped - index, 0, 1));
+    const from = cachedTourPoses[index];
+    const to = cachedTourPoses[Math.min(index + 1, last)];
+    interpolatedTourPose.position.copy(from.position).lerp(to.position, local);
+    interpolatedTourPose.yaw = lerpAngle(from.yaw, to.yaw, local);
+    interpolatedTourPose.pitch = from.pitch + (to.pitch - from.pitch) * local;
+    return interpolatedTourPose;
+  };
+
+  const parallax = new THREE.Vector2();
+  const pointerTarget = new THREE.Vector2();
+  const onTourPointer = (event: PointerEvent) => {
+    if (event.pointerType !== 'mouse') return;
+    pointerTarget.set(
+      (event.clientX / window.innerWidth) * 2 - 1,
+      (event.clientY / window.innerHeight) * 2 - 1
+    );
+  };
+  if (tour && !coarsePointer) window.addEventListener('pointermove', onTourPointer);
+  const penlightCores: { material: THREE.MeshStandardMaterial; base: number }[] = [];
+  const scrollingScreens: THREE.Texture[] = [];
+  const swayUniform = { value: 0 };
+  const configureCurtainSway = (material: THREE.Material) => {
+    material.onBeforeCompile = (shader) => {
+      shader.uniforms.uSway = swayUniform;
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', '#include <common>\nuniform float uSway;')
+        .replace(
+          '#include <begin_vertex>',
+          '#include <begin_vertex>\nfloat hem = clamp((2.25 - position.y) / 2.2, 0.0, 1.0);\ntransformed.z += (sin(uSway * 0.9 + position.x * 2.5) + sin(uSway * 1.7 + position.x * 4.0) * 0.25) * 0.085 * hem * hem;\ntransformed.x += sin(uSway * 0.7 + position.x * 2.0) * 0.018 * hem * hem;'
+        );
+    };
+    material.customProgramCacheKey = () => 'curtain-sway';
+    material.needsUpdate = true;
+  };
+  const setupLife = (loadedRoom: THREE.Group) => {
+    const curtains = new Set<THREE.Material>();
+    loadedRoom.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)) return;
+      (Array.isArray(object.material) ? object.material : [object.material]).forEach((material) => {
+        if (!(material instanceof THREE.MeshStandardMaterial)) return;
+        if (material.name.startsWith('Penlight core')) {
+          if (!penlightCores.some((core) => core.material === material))
+            penlightCores.push({ material, base: material.emissiveIntensity });
+        } else if (material.name === 'Screen laptop') {
+          [material.map, material.emissiveMap].forEach((texture) => {
+            if (!texture || scrollingScreens.includes(texture)) return;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.needsUpdate = true;
+            scrollingScreens.push(texture);
+          });
+        } else if (/^Curtain /.test(material.name) && !curtains.has(material)) {
+          curtains.add(material);
+          configureCurtainSway(material);
+        }
+      });
+      if (typeof object.userData.roomCurtain === 'string') {
+        object.customDepthMaterial = new THREE.MeshDepthMaterial({
+          depthPacking: THREE.RGBADepthPacking,
+          side: THREE.DoubleSide
+        });
+        configureCurtainSway(object.customDepthMaterial);
+      }
+    });
+  };
+  const animateLife = (now: number, reduced: boolean) => {
+    if (reduced) return;
+    const seconds = now / 1000;
+    swayUniform.value = seconds;
+    penlightCores.forEach(({ material, base }, index) => {
+      const wave = 0.5 + 0.5 * Math.sin(seconds * 2.4 - index * 0.55);
+      material.emissiveIntensity = base * (0.55 + wave * 0.75);
+    });
+    scrollingScreens.forEach((texture) => (texture.offset.y = (seconds * 0.025) % 1));
+  };
+
+  const applyTour = (now: number) => {
+    const reduced = tour!.reducedMotion();
+    const progressValue = tour!.progress();
+    const pose = tourPose(reduced ? Math.round(progressValue) : progressValue);
+    let blend = 1;
+    if (tourReturn && reduced) tourReturn = null;
+    if (tourReturn) {
+      blend = easeInOut(clamp((now - tourReturn.startedAt) / returnDuration, 0, 1));
+      if (blend >= 1) tourReturn = null;
+    }
+    const from = tourReturn?.from;
+    if (from) camera.position.copy(from.position).lerp(pose.position, blend);
+    else camera.position.copy(pose.position);
+    yaw = from ? lerpAngle(from.yaw, pose.yaw, blend) : pose.yaw;
+    pitch = from ? from.pitch + (pose.pitch - from.pitch) * blend : pose.pitch;
+    if (!reduced) {
+      parallax.x += (pointerTarget.x - parallax.x) * 0.06;
+      parallax.y += (pointerTarget.y - parallax.y) * 0.06;
+      yaw -= parallax.x * 0.025;
+      pitch -= parallax.y * 0.014;
+    }
+    applyOrientation();
   };
 
   const clearPlay = () => {
@@ -1842,10 +2279,12 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
       return;
     }
     if (id === 'nesoberi') {
+      setMergedView(false);
       patPlush();
       return;
     }
     if (isPlayable(id)) {
+      setMergedView(false);
       startPlaySession(id);
       return;
     }
@@ -1861,9 +2300,18 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
 
   const enterRoom = () => {
     if (!room) return;
-    if (authoredEntryPosition) camera.position.copy(authoredEntryPosition);
-    else camera.position.set(...initialPosition);
-    setLookAt(authoredEntryLookAt ?? new THREE.Vector3(...initialLookAt));
+    if (tour) {
+      tourReturn = null;
+      setComposition(false);
+      hobbyRoutesReady ??= loadHobbyRoutes();
+      renderer.domElement.removeAttribute('aria-hidden');
+      setPageInert(true);
+    }
+    if (!tour) {
+      if (authoredEntryPosition) camera.position.copy(authoredEntryPosition);
+      else camera.position.set(...initialPosition);
+      setLookAt(authoredEntryLookAt ?? new THREE.Vector3(...initialLookAt));
+    }
     camera.updateMatrixWorld();
     moveTarget = null;
     pointerState = null;
@@ -1908,6 +2356,25 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
     delete root.dataset.roomExamine;
     delete root.dataset.roomResting;
     hint.hidden = true;
+    if (tour) {
+      tourReturn = { from: currentPose(), startedAt: performance.now() };
+      setComposition(true);
+      setPageInert(false);
+      renderer.domElement.setAttribute('aria-hidden', 'true');
+      setMergedView(true);
+      renderer.domElement.blur();
+      const restoreTarget = enterSource ?? root.querySelector<HTMLElement>('[data-room-enter]');
+      let attempts = 0;
+      const restoreFocus = () => {
+        if (!restoreTarget || disposed || entered) return;
+        if (getComputedStyle(restoreTarget).visibility !== 'visible' && attempts++ < 10) {
+          requestAnimationFrame(restoreFocus);
+          return;
+        }
+        restoreTarget.focus({ preventScroll: true });
+      };
+      requestAnimationFrame(restoreFocus);
+    }
   };
 
   const handlePointerTap = (event: PointerEvent) => {
@@ -2053,8 +2520,11 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
     lookKeys.delete(event.key.toLowerCase());
   };
 
+  let resizedWidth = 0;
   const onResize = () => {
     const width = stage.clientWidth;
+    if (tour && coarsePointer && !entered && resizedWidth === width) return;
+    resizedWidth = width;
     const height = Math.max(stage.clientHeight, 1);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
@@ -2089,7 +2559,18 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
     if (panel.open) frame.focus();
   };
 
-  const onEnterClick = () => enterRoom();
+  let enterSource: HTMLElement | null = null;
+  const onEnterClick = (event: MouseEvent) => {
+    enterSource = event.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+    if (tour && !tourRevealed) {
+      enterRequested = true;
+      return;
+    }
+    enterRoom();
+  };
+  const extraEnterButtons = Array.from(
+    root.querySelectorAll<HTMLButtonElement>('[data-room-enter]')
+  ).filter((button) => button !== enterButton);
   const onExitClick = () => exitRoom();
   const closeButton = root.querySelector<HTMLButtonElement>('[data-room-close]');
   const onCloseClick = () => closePanel();
@@ -2318,8 +2799,8 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
           object.visible = true;
           object.castShadow = false;
           object.decay = 2;
-          object.intensity = 0.35;
-          object.distance = 1.5;
+          object.intensity = 0.12;
+          object.distance = 0.85;
         }
         if (!(object instanceof THREE.Mesh)) return;
         object.frustumCulled = true;
@@ -2332,6 +2813,7 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
         }
         materials.forEach(configureAcrylicCase);
         materials.forEach(configureArchitecturalGlass);
+        if (tour && coarsePointer) materials.forEach(flattenTransmission);
         materials.forEach((material) => {
           if (!(material instanceof THREE.MeshStandardMaterial)) return;
           [material.map, material.normalMap, material.roughnessMap, material.emissiveMap].forEach(
@@ -2344,17 +2826,96 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
         object.receiveShadow = materials.some(isOpaqueMaterial);
       });
       applyModelMetadata(room);
+      room.updateMatrixWorld(true);
+      for (const [index, light] of [warmLight, frontWarmLight].entries()) {
+        const fixture =
+          room.getObjectByName(`Ceiling_light_${index + 1}_diffuser`) ??
+          room.getObjectByName(`Ceiling light ${index + 1} diffuser`);
+        if (!fixture) continue;
+        new THREE.Box3().setFromObject(fixture).getCenter(light.position);
+        light.position.y -= 0.05;
+        light.target.position.set(light.position.x, worldBounds.minY, light.position.z);
+      }
       captureCurtains(room);
       buildRaycastTrees(room);
       captureCloset(room);
       updatePhase();
       scene.add(room);
-      preview.hidden = true;
-      renderer.shadowMap.needsUpdate = true;
+      if (tour) {
+        const nextFrame = () =>
+          new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        const reveal = async () => {
+          if (disposed) return;
+          renderer.shadowMap.needsUpdate = renderer.shadowMap.enabled;
+          for (let value = 0; !entered && value <= tour.stops.length - 1; value += 0.5) {
+            if (disposed) return;
+            const saved = currentPose();
+            const pose = tourPose(value);
+            camera.position.copy(pose.position);
+            camera.rotation.set(pose.pitch, pose.yaw, 0);
+            camera.updateMatrixWorld();
+            renderer.render(scene, camera);
+            camera.position.copy(saved.position);
+            yaw = saved.yaw;
+            pitch = saved.pitch;
+            applyOrientation();
+            camera.updateMatrixWorld();
+            await nextFrame();
+          }
+          if (disposed) return;
+          if (!entered) {
+            applyTour(performance.now());
+            camera.updateMatrixWorld();
+            renderer.render(scene, camera);
+          }
+          tourRevealed = true;
+          root.dataset.roomRevealed = '';
+          status.textContent = '';
+          window.setTimeout(() => {
+            if (!disposed) {
+              preview.hidden = true;
+              preview.querySelector('video')?.pause();
+            }
+          }, 800);
+          renderRequested = true;
+        };
+        const loadedRoom = room;
+        setupLife(loadedRoom);
+        compilePending = (coarsePointer ? downscaleTextures(loadedRoom, 512) : Promise.resolve())
+          .then(() => (disposed || entered ? null : mergeStaticMeshes(loadedRoom, () => disposed)))
+          .then((result) => {
+            if (!result || disposed || entered) return;
+            mergedStatic = result;
+            scene.add(result.merged);
+            setMergedView(true);
+          })
+          .then(() => (disposed ? undefined : renderer.compileAsync(scene, camera)))
+          .catch(() => undefined)
+          .then(reveal)
+          .then(() => {
+            const requestedSource = tour?.entrySource?.();
+            if ((enterRequested || requestedSource) && !disposed && !entered) {
+              enterSource = requestedSource ?? enterSource;
+              enterRoom();
+            }
+          });
+      } else {
+        preview.hidden = true;
+      }
+      renderer.shadowMap.needsUpdate = renderer.shadowMap.enabled;
       enterButton.disabled = false;
-      enterButton.textContent = copy.enter;
-      status.textContent = '';
-      if (enterWhenReady) enterRoom();
+      if (!tour) enterButton.textContent = copy.enter;
+      if (!tour) status.textContent = '';
+      if (tour) {
+        fanOn = true;
+        setComposition(true);
+        root.dataset.roomTourReady = '';
+        extraEnterButtons.forEach((button) => {
+          button.disabled = false;
+          button.addEventListener('click', onEnterClick);
+        });
+      }
+      if (enterWhenReady && !tour) enterRoom();
     },
     undefined,
     () => {
@@ -2367,6 +2928,34 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
     if (disposed) return;
     const delta = Math.min((now - lastFrame) / 1000, 0.05);
     lastFrame = now;
+    if (document.hidden) {
+      frameRequest = window.requestAnimationFrame(frameLoop);
+      return;
+    }
+    const reduced = tour?.reducedMotion() ?? reducedMotionMedia.matches;
+    if (reduced !== previousReducedMotion) {
+      previousReducedMotion = reduced;
+      renderer.shadowMap.needsUpdate = renderer.shadowMap.enabled;
+      renderRequested = true;
+    }
+    if (tour && Math.abs(tourViewportBlend - Number(entered)) > 0.00001) {
+      tourViewportBlend = reduced
+        ? Number(entered)
+        : THREE.MathUtils.lerp(tourViewportBlend, Number(entered), 1 - Math.exp(-4.5 * delta));
+      updateCameraComposition();
+    }
+    if (tour && compositionOffset.distanceToSquared(compositionTarget) > 0.00000001) {
+      if (reduced) compositionOffset.copy(compositionTarget);
+      else compositionOffset.lerp(compositionTarget, 1 - Math.exp(-4.5 * delta));
+      updateCameraComposition();
+    }
+    const ambientMoving = Boolean(room && !reduced);
+    if (room) animateLife(now, reduced);
+    if (ambientMoving && renderer.shadowMap.enabled) renderer.shadowMap.needsUpdate = true;
+    if (!reduced) {
+      if (dust) dust.material.uniforms.time.value = now / 1000;
+      if (windowBeam) windowBeam.material.uniforms.time.value = now / 1000;
+    }
     if (transition) {
       const progress = clamp((now - transition.startedAt) / transition.duration, 0, 1);
       const eased = easeInOut(progress);
@@ -2410,12 +2999,15 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
       } else if (moveTarget) {
         moveToward(moveTarget, 2.4 * delta);
       }
+    } else if (tour && room && !entered) {
+      applyTour(now);
     }
     if (play?.active) play.session.update(delta);
     updatePats(delta);
-    fanSpeed += ((fanOn ? 1 : 0) - fanSpeed) * Math.min(delta * 1.5, 1);
+    if (reduced) fanSpeed = 0;
+    else fanSpeed += ((fanOn ? 1 : 0) - fanSpeed) * Math.min(delta * 1.5, 1);
     if (fanSpeed < 0.001) fanSpeed = 0;
-    if (fanRotor && fanSpeed > 0) fanRotor.rotateX(fanSpeed * 40 * delta);
+    if (fanRotor && fanSpeed > 0) fanRotor.rotateX(fanSpeed * 12 * delta);
     const curtainsMoving = updateCurtains(delta);
     const closetMoving = updateCloset(delta);
     camera.updateMatrixWorld();
@@ -2431,8 +3023,9 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
       setHint(targetAt(0, 0));
     }
     const moving =
+      ambientMoving ||
       renderRequested ||
-      renderer.shadowMap.needsUpdate ||
+      (renderer.shadowMap.enabled && renderer.shadowMap.needsUpdate) ||
       Boolean(transition || play || moveTarget || keys.size || lookKeys.size) ||
       pats.length > 0 ||
       fanSpeed > 0 ||
@@ -2441,14 +3034,15 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
       closetMoving ||
       !camera.matrixWorld.equals(renderedView) ||
       !camera.projectionMatrix.equals(renderedProjection);
-    if (moving) {
-      if (renderedLastFrame) {
+    const skipAmbientFrame = Boolean(tour) && !tourRevealed && !entered;
+    if (moving && !skipAmbientFrame) {
+      if (renderedLastFrame && !tour) {
         motionFrameAverage += (delta * 1000 - motionFrameAverage) * 0.1;
-        if (now - lastScaleChange > 600) {
+        if (now - lastScaleChange > (tour && !entered ? 2000 : 600)) {
           const nextRatio =
             motionFrameAverage > 21
               ? Math.max(0.75, motionPixelRatio - 0.25)
-              : motionFrameAverage < 14
+              : motionFrameAverage < 14 && !(tour && !entered)
                 ? Math.min(fullPixelRatio, motionPixelRatio + 0.25)
                 : motionPixelRatio;
           if (nextRatio !== motionPixelRatio) {
@@ -2464,13 +3058,13 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
       renderedProjection.copy(camera.projectionMatrix);
       if (renderer.getPixelRatio() !== motionPixelRatio) renderer.setPixelRatio(motionPixelRatio);
       renderer.render(scene, camera);
-    } else if (!settledRendered && now - lastMotionAt > 160) {
+    } else if (!moving && !settledRendered && now - lastMotionAt > 160) {
       settledRendered = true;
       if (renderer.getPixelRatio() !== fullPixelRatio) renderer.setPixelRatio(fullPixelRatio);
       if (composer) composer.render();
       else renderer.render(scene, camera);
     }
-    renderedLastFrame = moving;
+    renderedLastFrame = moving && !skipAmbientFrame;
     frameRequest = window.requestAnimationFrame(frameLoop);
   };
 
@@ -2490,6 +3084,7 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
     if (clockTimer) window.clearInterval(clockTimer);
     if (frameRequest) window.cancelAnimationFrame(frameRequest);
     enterButton.removeEventListener('click', onEnterClick);
+    extraEnterButtons.forEach((button) => button.removeEventListener('click', onEnterClick));
     exitButton.removeEventListener('click', onExitClick);
     lightToggle.removeEventListener('click', onLightToggle);
     lightLeft.removeEventListener('click', onLightLeft);
@@ -2518,16 +3113,27 @@ export const initRoom = (root: HTMLElement, enterWhenReady = false) => {
     window.removeEventListener('resize', onResize);
     pointerMedia.removeEventListener('change', updateHelp);
     releasePointerLock();
+    window.removeEventListener('pointermove', onTourPointer);
+    setPageInert(false);
     if (panel.open) panel.close();
-    room?.traverse(disposeObject);
-    interactionRoot.traverse(disposeObject);
-    scene.background = null;
-    environmentTarget?.dispose();
-    pmremGenerator.dispose();
-    disposeObject(sky);
     targetLabelsRoot.replaceChildren();
-    composer?.dispose();
-    renderer.dispose();
+    const disposeGpu = () => {
+      room?.traverse(disposeObject);
+      mergedStatic?.merged.traverse(disposeObject);
+      interactionRoot.traverse(disposeObject);
+      scene.background = null;
+      environmentTarget?.dispose();
+      pmremGenerator.dispose();
+      disposeObject(sky);
+      dust?.geometry.dispose();
+      dust?.material.dispose();
+      windowBeam?.geometry.dispose();
+      windowBeam?.material.dispose();
+      composer?.dispose();
+      renderer.dispose();
+    };
+    if (compilePending) compilePending.then(disposeGpu, disposeGpu);
+    else disposeGpu();
     if (renderer.domElement.parentElement === stage) stage.replaceChildren();
   };
 };

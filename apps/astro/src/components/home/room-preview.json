@@ -1,0 +1,18 @@
+{
+  "night": {
+    "video": "/models/room-tour-night.mp4",
+    "poster": "/models/room-tour-night.webp"
+  },
+  "day": {
+    "video": "/models/room-tour-day.mp4",
+    "poster": "/models/room-tour-day.webp"
+  },
+  "nightMobile": {
+    "video": "/models/room-tour-night-mobile.mp4",
+    "poster": "/models/room-tour-night-mobile.webp"
+  },
+  "dayMobile": {
+    "video": "/models/room-tour-day-mobile.mp4",
+    "poster": "/models/room-tour-day-mobile.webp"
+  }
+}

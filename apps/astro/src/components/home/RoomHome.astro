@@ -2,10 +2,23 @@
 import { BrandMark } from '~/components/brand/BrandMark';
 import { useTranslations } from '~/i18n/utils';
 import { roomCopy } from './room-copy';
+import { roomPhaseForTokyoHour } from './room-logic';
+import previews from './room-preview.json';
 
-const { locale } = Astro.props as { locale: 'en' | 'ja' | 'th' };
+const { locale, tour = false } = Astro.props as { locale: 'en' | 'ja' | 'th'; tour?: boolean };
+const Root = tour ? 'div' : 'main';
 const t = useTranslations(locale);
 const copy = roomCopy[locale];
+const hour = Number(
+  new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    hourCycle: 'h23',
+    timeZone: 'Asia/Tokyo'
+  }).format(new Date())
+);
+const phase = roomPhaseForTokyoHour(hour);
+const desktopPreview = previews[phase];
+const mobilePreview = previews[`${phase}Mobile`];
 const destinations = [
   { id: 'projects', label: t('common.projects'), path: 'projects' },
   { id: 'notes', label: t('common.note'), path: 'notes' },
@@ -16,17 +29,44 @@ const destinations = [
 ];
 ---
 
-<main
-  class="room-home"
+<Root
+  class:list={['room-home', tour && 'room-tour']}
   data-room-home
+  data-room-tour={tour ? '' : undefined}
   data-locale={locale}
   data-room-error={copy.failed}
   data-room-loading={copy.loading}
   data-room-mobile-controls={copy.mobileControls}
   data-room-blocked={copy.blocked}
+  data-room-motion-on={t('home.motion-on')}
+  data-room-motion-off={t('home.motion-off')}
+  data-room-phase={phase}
 >
   <div class="room-static-preview" data-room-preview aria-hidden="true">
-    <img src="/models/room-preview.webp" alt="" />
+    <picture>
+      {tour && <source media="(max-width: 1100px)" srcset={mobilePreview.poster} />}
+      <img
+        src={tour ? desktopPreview.poster : '/models/room-preview.webp'}
+        alt=""
+        width="1600"
+        height="1000"
+        fetchpriority="high"
+      />
+    </picture>
+    {
+      tour && (
+        <video
+          data-room-preview-video
+          data-desktop-src={desktopPreview.video}
+          data-mobile-src={mobilePreview.video}
+          muted
+          playsinline
+          loop
+          preload="auto"
+          aria-hidden="true"
+        />
+      )
+    }
   </div>
   <div class="room-stage" data-room-stage></div>
   <header class="room-header">
@@ -51,13 +91,51 @@ const destinations = [
       }
     </nav>
   </header>
-  <section class="room-entry" data-room-entry>
-    <h1>{copy.title}</h1>
-    <p>{copy.intro}</p>
-    <button class="room-enter" data-room-enter>{copy.enter}</button>
-    <p class="room-status" data-room-status role="status"></p>
-    <a class="room-text-link" href={`/${locale}`}>{copy.conventional} ↗</a>
-  </section>
+  {
+    tour ? (
+      <div class="room-tour-status" data-room-entry>
+        <p class="room-status" data-room-status role="status" />
+      </div>
+    ) : (
+      <section class="room-entry" data-room-entry>
+        <h1>{copy.title}</h1>
+        <p>{copy.intro}</p>
+        <button class="room-enter" data-room-enter>
+          {copy.enter}
+        </button>
+        <p class="room-status" data-room-status role="status" />
+        <a class="room-text-link" href={`/${locale}`}>
+          {copy.conventional} ↗
+        </a>
+      </section>
+    )
+  }
+  {
+    tour && (
+      <>
+        <div class="room-tour-viewport" data-room-tour-viewport aria-hidden="true" />
+        <div class="room-tour-content">
+          <slot />
+        </div>
+      </>
+    )
+  }
+  {
+    tour && (
+      <div class="room-tour-position">
+        <span data-tour-number aria-hidden="true">
+          01
+        </span>
+        <span class="room-tour-track" aria-hidden="true">
+          <span data-tour-track />
+        </span>
+        <span data-tour-caption aria-hidden="true" />
+        <button type="button" data-room-motion aria-pressed="false">
+          {t('home.motion-off')}
+        </button>
+      </div>
+    )
+  }
   <div class="room-reticle" data-room-reticle hidden aria-hidden="true"></div>
   <div class="room-target-labels" data-room-target-labels hidden></div>
   <div class="room-hint" data-room-hint hidden aria-live="polite"></div>
@@ -120,14 +198,14 @@ const destinations = [
   <dialog class="room-panel" data-room-panel aria-labelledby="room-panel-title">
     <header class="room-panel-header">
       <h2 id="room-panel-title"></h2>
-      <a data-room-full-page>{copy.fullPage} ↗</a>
+      <a data-room-full-page href={`/${locale}`}>{copy.fullPage} ↗</a>
       <button data-room-close aria-label={copy.close}>×</button>
     </header>
     <nav class="room-panel-tabs" data-room-tabs aria-label={copy.related}></nav>
     <p class="room-panel-status" data-room-panel-status role="status">{copy.loadingDescription}</p>
     <iframe data-room-frame title={copy.content} referrerpolicy="same-origin"></iframe>
   </dialog>
-</main>
+</Root>
 
 <script>
   type RoomHomeLifecycle = { root?: HTMLElement; dispose?: () => void };
@@ -173,6 +251,210 @@ const destinations = [
         enterButton.hidden = true;
       }
     };
+    if (root.hasAttribute('data-room-tour')) {
+      const sections = Array.from(root.querySelectorAll<HTMLElement>('[data-tour-stop]'));
+      const stops = sections.map((section) => {
+        try {
+          if (section.dataset.tourPose) return JSON.parse(section.dataset.tourPose);
+        } catch {}
+        return section.dataset.tourStop ?? 'entry';
+      });
+      const reducedMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const previewVideo = root.querySelector<HTMLVideoElement>('[data-room-preview-video]');
+      const previewMedia = window.matchMedia('(max-width: 1100px)');
+      const connection = (
+        navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }
+      ).connection;
+      const previewAllowed =
+        !connection?.saveData && !/(^|-)2g$/.test(connection?.effectiveType ?? '');
+      let motionPreference: string | null = null;
+      try {
+        motionPreference = localStorage.getItem('room-motion');
+      } catch {}
+      let motionEnabled = motionPreference ? motionPreference === 'on' : !reducedMedia.matches;
+      const motionButton = root.querySelector<HTMLButtonElement>('[data-room-motion]');
+      const updateMotion = () => {
+        root.dataset.roomMotion = motionEnabled ? 'on' : 'off';
+        if (previewVideo) {
+          if (motionEnabled && previewAllowed && !root.hasAttribute('data-room-revealed'))
+            void previewVideo.play().catch(() => undefined);
+          else previewVideo.pause();
+        }
+        if (!motionButton) return;
+        motionButton.setAttribute('aria-pressed', String(motionEnabled));
+        motionButton.setAttribute(
+          'aria-label',
+          motionEnabled ? (root.dataset.roomMotionOn ?? '') : (root.dataset.roomMotionOff ?? '')
+        );
+        motionButton.textContent = motionEnabled
+          ? (root.dataset.roomMotionOn ?? '')
+          : (root.dataset.roomMotionOff ?? '');
+      };
+      const configurePreview = () => {
+        if (!previewVideo || !previewAllowed || root.hasAttribute('data-room-revealed')) return;
+        previewVideo.src =
+          (previewMedia.matches
+            ? previewVideo.dataset.mobileSrc
+            : previewVideo.dataset.desktopSrc) ?? '';
+        updateMotion();
+      };
+      const onPreviewData = () => root.setAttribute('data-room-preview-playing', '');
+      previewVideo?.addEventListener('loadeddata', onPreviewData);
+      previewMedia.addEventListener('change', configurePreview);
+      configurePreview();
+      const onMotion = () => {
+        motionEnabled = !motionEnabled;
+        motionPreference = motionEnabled ? 'on' : 'off';
+        try {
+          localStorage.setItem('room-motion', motionPreference);
+        } catch {}
+        updateMotion();
+      };
+      const onMotionPreference = () => {
+        if (motionPreference) return;
+        motionEnabled = !reducedMedia.matches;
+        updateMotion();
+      };
+      motionButton?.addEventListener('click', onMotion);
+      reducedMedia.addEventListener('change', onMotionPreference);
+      updateMotion();
+      let anchors: number[] = [];
+      let exact = 0;
+      let smooth = 0;
+      let last = 0;
+      let active = -1;
+      const number = root.querySelector<HTMLElement>('[data-tour-number]');
+      const caption = root.querySelector<HTMLElement>('[data-tour-caption]');
+      const track = root.querySelector<HTMLElement>('[data-tour-track]');
+      const measure = () => {
+        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const inset = previewMedia.matches
+          ? (root.querySelector<HTMLElement>('[data-room-tour-viewport]')?.offsetHeight ?? 0)
+          : 0;
+        anchors = sections.map((section, index) => {
+          if (index === 0) return 0;
+          const top = section.getBoundingClientRect().top + window.scrollY;
+          return Math.min(
+            max,
+            Math.max(
+              0,
+              inset ? top - inset : top + section.offsetHeight * 0.5 - window.innerHeight * 0.5
+            )
+          );
+        });
+        for (let index = 1; index < anchors.length; index += 1) {
+          anchors[index] = Math.max(anchors[index], anchors[index - 1] + 1);
+        }
+        read();
+      };
+      const read = () => {
+        const y = window.scrollY;
+        let value = anchors.length - 1;
+        for (let index = 0; index < anchors.length - 1; index += 1) {
+          if (y <= anchors[index + 1]) {
+            const span = Math.max(1, anchors[index + 1] - anchors[index]);
+            const portion = Math.min(1, Math.max(0, (y - anchors[index]) / span));
+            value = index + (previewMedia.matches ? Math.max(0, (portion - 0.55) / 0.45) : portion);
+            break;
+          }
+        }
+        exact = value;
+        if (track) track.style.transform = `scaleX(${(exact + 1) / sections.length})`;
+        const index = Math.round(exact);
+        if (index !== active) {
+          active = index;
+          if (number) number.textContent = String(index + 1).padStart(2, '0');
+          if (caption)
+            caption.textContent =
+              sections[index]?.querySelector('h1, h2')?.textContent?.trim() ?? '';
+          sections.forEach((section, sectionIndex) =>
+            section.toggleAttribute('data-tour-active', sectionIndex === index)
+          );
+        }
+      };
+      const progress = () => {
+        const now = performance.now();
+        const dt = last ? Math.min((now - last) / 1000, 1 / 30) : 1 / 60;
+        last = now;
+        smooth = !motionEnabled ? exact : smooth + (exact - smooth) * (1 - Math.exp(-9.2 * dt));
+        if (Math.abs(smooth - exact) < 0.0005) smooth = exact;
+        return smooth;
+      };
+      const observer = new ResizeObserver(measure);
+      sections.forEach((section) => observer.observe(section));
+      window.addEventListener('scroll', read, { passive: true });
+      measure();
+      smooth = exact;
+      root.dataset.tourConductor = '';
+      const enterButtons = Array.from(
+        root.querySelectorAll<HTMLButtonElement>('[data-room-enter]')
+      );
+      const environment = navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+        deviceMemory?: number;
+      };
+      const coarse = window.matchMedia('(pointer: coarse)').matches;
+      const constrained =
+        environment.connection?.saveData === true ||
+        /(^|-)2g$/.test(environment.connection?.effectiveType ?? '');
+      const automatic =
+        !constrained &&
+        (!coarse ||
+          ((environment.connection?.effectiveType ?? '4g') === '4g' &&
+            (environment.deviceMemory ?? 4) >= 4));
+      let starting = false;
+      let entrySource: HTMLElement | null = null;
+      const start = async (enterWhenReady: boolean) => {
+        if (disposed) return;
+        if (!root.hasAttribute('data-room-tour-ready')) {
+          status.textContent = root.dataset.roomLoading ?? '';
+          if (enterWhenReady) enterButtons.forEach((button) => (button.disabled = true));
+        }
+        if (runtimeDispose || starting) return;
+        starting = true;
+        try {
+          const { initRoom } = await import('./room-runtime');
+          if (disposed || !root.isConnected) return;
+          runtimeDispose = initRoom(root, enterWhenReady, {
+            stops: stops as never,
+            progress,
+            reducedMotion: () => !motionEnabled,
+            entrySource: () => entrySource
+          });
+        } catch {
+          status.textContent = root.dataset.roomError ?? '';
+          enterButtons.forEach((button) => {
+            button.hidden = true;
+          });
+        }
+      };
+      const onDemand = (event: Event) => {
+        entrySource = event.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+        void start(true);
+      };
+      enterButtons.forEach((button) => {
+        button.disabled = false;
+        button.addEventListener('click', onDemand);
+      });
+      if (automatic) {
+        void start(false);
+      }
+      lifecycle.dispose = () => {
+        if (disposed) return;
+        disposed = true;
+        window.clearInterval(clockTimer);
+        enterButtons.forEach((button) => button.removeEventListener('click', onDemand));
+        observer.disconnect();
+        motionButton?.removeEventListener('click', onMotion);
+        reducedMedia.removeEventListener('change', onMotionPreference);
+        previewVideo?.pause();
+        previewVideo?.removeEventListener('loadeddata', onPreviewData);
+        previewMedia.removeEventListener('change', configurePreview);
+        window.removeEventListener('scroll', read);
+        runtimeDispose?.();
+      };
+      return;
+    }
     enterButton.addEventListener('click', onEnter);
     lifecycle.dispose = () => {
       if (disposed) return;
@@ -213,6 +495,10 @@ const destinations = [
     object-fit: cover;
     object-position: center;
     filter: var(--atelier-image-preview);
+  }
+  .room-static-preview picture {
+    display: block;
+    height: 100%;
   }
   .room-stage {
     position: absolute;
@@ -743,7 +1029,249 @@ const destinations = [
   [hidden] {
     display: none !important;
   }
+  .room-tour {
+    min-height: 0;
+    overflow: visible;
+    background: transparent;
+  }
+  .room-tour .room-static-preview,
+  .room-tour .room-stage {
+    position: fixed;
+    z-index: 0;
+  }
+  .room-tour .room-stage {
+    pointer-events: none;
+  }
+  .room-tour .room-static-preview {
+    z-index: 1;
+    background: transparent;
+  }
+  .room-tour .room-static-preview img {
+    filter: none;
+    object-position: center;
+  }
+  .room-tour .room-static-preview video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+  }
+  .room-tour[data-room-preview-playing][data-room-motion='on'] .room-static-preview video {
+    opacity: 1;
+  }
+  .room-tour .room-static-preview {
+    transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .room-tour .room-stage {
+    opacity: 0;
+    transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .room-tour[data-room-revealed] .room-stage,
+  .room-tour[data-room-entered] .room-stage {
+    opacity: 1;
+  }
+  .room-tour[data-room-revealed] .room-static-preview {
+    opacity: 0;
+  }
+  .room-tour .room-static-preview,
+  .room-tour .room-stage {
+    inset: 0 0 auto;
+    height: 100lvh;
+  }
+  .room-tour-viewport {
+    display: none;
+  }
+  .room-tour-content {
+    position: relative;
+    z-index: 1;
+    opacity: 1;
+    transition:
+      opacity 400ms ease,
+      visibility 0s;
+  }
+  .room-tour-position {
+    position: fixed;
+    inset: auto auto 1.5rem 2rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: calc(100% - 4rem);
+    padding: 0.5rem 0.75rem;
+    color: var(--atelier-fg);
+    background: color-mix(in srgb, var(--atelier-bg) 90%, transparent);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+  .room-tour-track {
+    width: 4rem;
+    height: 2px;
+    background: var(--atelier-line);
+  }
+  .room-tour-track span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--atelier-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .room-tour-position button {
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--atelier-line);
+    color: var(--atelier-fg);
+    background: transparent;
+    font: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+    pointer-events: auto;
+    flex-shrink: 0;
+  }
+  .room-tour-position [data-tour-caption] {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .room-tour-position button:hover {
+    border-color: var(--atelier-accent);
+  }
+  .room-tour-position button[aria-pressed='true'] {
+    color: var(--atelier-accent);
+  }
+  .room-tour-position button:focus-visible {
+    outline: 2px solid var(--atelier-accent);
+    outline-offset: 3px;
+  }
+  .room-tour[data-room-entered] .room-tour-position {
+    display: none;
+  }
+  .room-tour .room-header,
+  .room-tour .room-controls {
+    display: none;
+  }
+  .room-tour .room-reticle,
+  .room-tour .room-target-labels,
+  .room-tour .room-hint,
+  .room-tour .room-play {
+    position: fixed;
+    z-index: 62;
+  }
+  .room-tour-status {
+    position: fixed;
+    top: calc(4.5rem + env(safe-area-inset-top, 0px));
+    right: var(--room-inset);
+    z-index: 2;
+    max-width: min(22rem, calc(100% - 2 * var(--room-inset)));
+    font-size: 0.8rem;
+    color: var(--atelier-fg);
+  }
+  .room-tour-status:has(.room-status:not(:empty)) {
+    padding: 0.5rem 0.75rem;
+    background: color-mix(in srgb, var(--atelier-bg) 90%, transparent);
+  }
+  .room-tour[data-room-entered] .room-stage {
+    z-index: 60;
+    pointer-events: auto;
+  }
+  .room-tour[data-room-entered] .room-header {
+    display: flex;
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 61;
+  }
+  .room-tour[data-room-entered] .room-controls {
+    display: block;
+    position: fixed;
+    z-index: 61;
+  }
+  .room-tour[data-room-entered] .room-tour-content {
+    z-index: 61;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 400ms ease,
+      visibility 0s 400ms;
+  }
+  .room-tour[data-room-motion='off'] .room-tour-content {
+    transition: none;
+  }
+  :global(html:has(.room-tour[data-room-entered])) {
+    overflow: hidden;
+  }
+  @media (max-width: 1100px) {
+    .room-tour {
+      --room-mobile-scene-height: clamp(16rem, 44svh, 26rem);
+    }
+    .room-tour-viewport {
+      display: block;
+      height: var(--room-mobile-scene-height);
+      padding-top: 0;
+      box-sizing: content-box;
+    }
+    .room-tour .room-stage,
+    .room-tour .room-static-preview {
+      z-index: 3;
+      background: var(--atelier-bg);
+      clip-path: inset(0 0 calc(100% - var(--room-mobile-scene-height)) 0);
+      transform: translateY(4rem);
+      transition:
+        opacity 700ms ease,
+        clip-path 750ms ease,
+        transform 750ms ease;
+    }
+    .room-tour .room-static-preview {
+      z-index: 4;
+    }
+    .room-tour .room-static-preview picture,
+    .room-tour .room-static-preview video {
+      height: var(--room-mobile-scene-height);
+    }
+    .room-tour-content {
+      background: var(--atelier-bg);
+    }
+    .room-tour .room-tour-position {
+      inset: calc(4rem + var(--room-mobile-scene-height) - 3rem) 0 auto;
+      z-index: 5;
+      max-width: none;
+      height: 3rem;
+      padding: 0 1.25rem;
+      background: linear-gradient(transparent, var(--atelier-bg));
+    }
+    .room-tour-position button {
+      margin-left: auto;
+      width: 44px;
+      height: 44px;
+      overflow: hidden;
+      font-size: 0;
+      border: 0;
+    }
+    .room-tour-position button::before {
+      content: '▶';
+      font-size: 1rem;
+    }
+    .room-tour-position button[aria-pressed='true']::before {
+      content: 'Ⅱ';
+    }
+    .room-tour[data-room-entered] .room-stage {
+      clip-path: inset(0);
+      transform: none;
+    }
+    :global(body:has(.room-tour[data-room-entered]) .shell-nav) {
+      visibility: hidden;
+    }
+  }
   @media (max-width: 700px) {
+    .room-tour {
+      --room-mobile-scene-height: clamp(14rem, 34svh, 20rem);
+    }
+    .room-tour-position {
+      gap: 0.75rem;
+    }
     .room-home {
       --room-inset: 1rem;
     }

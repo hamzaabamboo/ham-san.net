@@ -36,6 +36,7 @@ export default defineConfig({
       noExternal: ['@ark-ui/react', /^@zag-js\//]
     }
   },
+  build: { inlineStylesheets: 'always' },
   prefetch: true,
   trailingSlash: 'ignore'
 });

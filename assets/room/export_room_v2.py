@@ -91,17 +91,21 @@ def set_open_preview(value):
 def export():
     bpy.context.view_layer.update()
     bpy.data.objects['Floor']['roomNavigation'] = json.dumps(navigation())
-    night = bpy.data.objects.get('Backdrop night')
-    if night:
-        night.hide_render = False
+    backdrops = [(o, o.hide_render) for o in bpy.data.objects if 'roomBackdrop' in o]
+    for backdrop, _ in backdrops:
+        backdrop.hide_render = False
     set_open_preview(0.0)
     bpy.ops.object.select_all(action='DESELECT')
+    hidden_spills = []
     for o in bpy.context.scene.objects:
         spill = o.type == 'LIGHT' and o.name.startswith('Penlight spill')
         if (o.type not in ('MESH', 'EMPTY') and not spill) or o.hide_render:
             continue
         if any(c.name in EXCLUDED_COLLECTIONS for c in o.users_collection):
             continue
+        if spill and o.hide_get():
+            hidden_spills.append(o)
+            o.hide_set(False)
         o.select_set(True)
     bpy.ops.export_scene.gltf(
         filepath=OUT,
@@ -115,8 +119,10 @@ def export():
         export_lights=True,
     )
     set_open_preview(1.0)
-    if night:
-        night.hide_render = True
+    for spill in hidden_spills:
+        spill.hide_set(True)
+    for backdrop, hidden in backdrops:
+        backdrop.hide_render = hidden
     return OUT
 
 

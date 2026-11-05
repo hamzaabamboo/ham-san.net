@@ -1,20 +1,20 @@
 ---
 import { Glyph } from '~/components/ui/glyph';
-import { Box, Flex, Grid, Stack, styled } from 'styled-system/jsx';
+import SectionHeading from '~/components/common/SectionHeading.astro';
+import { styled } from 'styled-system/jsx';
 import { resolveMedia } from 'utils/media';
-import { Heading } from '~/components/ui/heading';
-import { Text } from '~/components/ui/text';
 import { graphQLSdk } from '~/graphql';
 import type { ProjectPreviewFragment } from '~/graphql/generated/client';
 import type { Languages } from '~/i18n/ui';
 import { useTranslations } from '~/i18n/utils';
-import StatusRow from '~/components/home/StatusRow.astro';
-import SectionHeading from '~/components/common/SectionHeading.astro';
-import { withFreshLastGoodState } from '~/utils/cms-cache';
-import { pickLocale } from '~/utils/fallbackLocale';
+import { roomCopy } from '~/components/home/room-copy';
+import { withFreshLastGoodState, withLastGoodState, withinLastGood } from '~/utils/cms-cache';
+import { mergeLocaleRecords, pickLocale } from '~/utils/fallbackLocale';
 import { projectMonogram } from '~/utils/monogram';
 import { getPhotoCatalog } from '~/utils/photo-catalog';
-import { getHomepageStatus } from '~/utils/homepage-status';
+import { getEventernoteReport } from '~/utils/eventernote-report';
+import { outlineClient } from '~/utils/outline-api';
+import { requireOutlineOk } from '~/utils/outline-response';
 
 interface Props {
   locale: Languages;
@@ -22,32 +22,120 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+const room = roomCopy[locale];
 const cmsLocale = locale === 'ja' ? 'ja' : 'en';
 
-let projects: ProjectPreviewFragment[] = [];
-let homeUnavailable = false;
-const photoCatalog = getPhotoCatalog().catch(() => null);
-const homepageStatus = getHomepageStatus(locale);
-
-try {
-  const { value: data, fromCache } = await withFreshLastGoodState(`home:${cmsLocale}`, () =>
-    graphQLSdk.fetchHomePage({ locale: cmsLocale })
+const within = <T,>(promise: Promise<T>, ms: number) =>
+  Promise.race([
+    promise,
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
+  ]);
+const fresh = <T,>(key: string, fetcher: () => Promise<T>, ms: number) =>
+  withinLastGood(
+    key,
+    withFreshLastGoodState(key, fetcher).then(({ value }) => value),
+    ms
   );
-  homeUnavailable = fromCache;
-  const rawProjects = data?.projects ?? [];
-  projects = rawProjects
+
+const photoCatalog = within(getPhotoCatalog(), 700).catch(() => null);
+const report = withinLastGood(
+  'events:report',
+  withLastGoodState(
+    'events:report',
+    () => getEventernoteReport(),
+    (value) => !value.attendanceIncomplete
+  ).then(({ value }) => value),
+  700
+).catch(() => null);
+const career = fresh(
+  `home:about:${cmsLocale}`,
+  () => graphQLSdk.fetchAboutMe({ locale: cmsLocale, includeFallback: cmsLocale === 'ja' }),
+  700
+)
+  .then((value) =>
+    cmsLocale === 'ja'
+      ? mergeLocaleRecords(value.experiences, value.fallbackExperiences)
+      : (value.experiences ?? [])
+  )
+  .catch(() => null);
+const notes = fresh(
+  'home:notes',
+  async () => {
+    const response = requireOutlineOk(
+      await outlineClient.POST('/shares.list', {
+        body: { sort: 'createdAt', direction: 'DESC', limit: 100, offset: 0 },
+        headers: { Authorization: undefined as unknown as 'Bearer hoge' }
+      }),
+      'shares.list'
+    );
+    return response.data?.data ?? [];
+  },
+  700
+).catch(() => null);
+
+let projects: ProjectPreviewFragment[] = [];
+let projectsUnavailable = false;
+try {
+  const data = await fresh(
+    `home:${cmsLocale}`,
+    () => graphQLSdk.fetchHomePage({ locale: cmsLocale }),
+    900
+  );
+  projects = (data?.projects ?? [])
     .map((p) => pickLocale(p, locale))
     .filter((p): p is ProjectPreviewFragment => !!p);
 } catch {
-  projects = [];
-  homeUnavailable = true;
+  projectsUnavailable = true;
 }
 
-const heroProjects = [
-  ...projects.filter((project) => project.banner ?? project.media?.[0]),
-  ...projects.filter((project) => !(project.banner ?? project.media?.[0]))
-].slice(0, 3);
-const kamekoEntries = (await photoCatalog)?.entries ?? [];
+const yearFormatter = new Intl.DateTimeFormat(locale, {
+  year: 'numeric',
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
+});
+const yearOf = (value?: string | null) =>
+  value
+    ? yearFormatter
+        .formatToParts(new Date(`${value.slice(0, 10)}T00:00:00+09:00`))
+        .find((part) => part.type === 'year')?.value
+    : undefined;
+const numberFormatter = new Intl.NumberFormat(locale);
+const dateFormatter = new Intl.DateTimeFormat(locale, {
+  year: 'numeric',
+  month: 'short',
+  timeZone: 'Asia/Tokyo',
+  calendar: 'gregory'
+});
+
+const eventReport = await report;
+const firstEventDate = (eventReport?.attendedEvents ?? [])
+  .map((event) => event.dateKey)
+  .filter(Boolean)
+  .sort()[0];
+const firstEventYear = yearOf(firstEventDate);
+const mostSeenSuffix = eventReport?.topArtists[0]
+  ? `${t('home.crowd-times').replace('{count}', numberFormatter.format(eventReport.topArtists[0].count))}${
+      eventReport.maxEventsInDay
+        ? ` ${t('home.crowd-busiest').replace('{count}', numberFormatter.format(eventReport.maxEventsInDay.count))}`
+        : ''
+    }`
+  : '';
+const careerRecords = await career;
+const experiences = (careerRecords ?? [])
+  .map((item: any) => pickLocale(item, locale) ?? item)
+  .filter((item: any) => item?.title && item?.start)
+  .sort((a: any, b: any) => String(b.start).localeCompare(String(a.start)))
+  .slice(0, 4);
+const noteDate = (note: any): string | undefined => note.documentCreatedAt ?? note.createdAt;
+const noteRecords = await notes;
+const latestNotes = (noteRecords ?? [])
+  .filter((note: any) => note?.id && note?.documentTitle)
+  .sort(
+    (a: any, b: any) => (Date.parse(noteDate(b) ?? '') || 0) - (Date.parse(noteDate(a) ?? '') || 0)
+  )
+  .slice(0, 3);
+const catalog = await photoCatalog;
+const kamekoEntries = catalog?.entries ?? [];
 const photoLang = locale === 'ja' ? undefined : 'ja';
 const recentPhotos = kamekoEntries
   .filter(
@@ -55,352 +143,210 @@ const recentPhotos = kamekoEntries
       list.findIndex((other) => other.subjects[0]?.name === entry.subjects[0]?.name) === index
   )
   .slice(0, 4);
-const subjectNames = (entry: (typeof kamekoEntries)[number]) =>
-  entry.subjects.map((subject) => subject.name);
 const photoRatio = (entry: (typeof kamekoEntries)[number]) => {
   const { width, height } = entry.media[0];
   return width && height ? `${width} / ${height}` : '4 / 5';
 };
-const yearPartFormatter = new Intl.DateTimeFormat(locale, {
-  year: 'numeric',
-  timeZone: 'Asia/Tokyo',
-  calendar: 'gregory'
-});
-const yearLabel = (year?: string) =>
-  year
-    ? (yearPartFormatter
-        .formatToParts(new Date(`${year}-01-01T00:00:00+09:00`))
-        .find((part) => part.type === 'year')?.value ?? year)
-    : undefined;
+const practice = ['darts', 'rubik', 'typing', 'piano'] as const;
 ---
 
-<Box className="home-chapter">
-  <StatusRow locale={locale} status={await homepageStatus} />
-</Box>
-
-<Box
-  py={{ base: '8', lg: '16' }}
-  borderBottom="1px solid var(--atelier-line)"
-  className="home-chapter"
+<section
+  class="home-chapter home-work"
+  data-tour-stop="projects"
+  data-tour-pose={JSON.stringify({ position: [0.35, 1.6, -0.2], lookAt: [-1.55, 0.95, -0.9] })}
+  data-home-degraded={careerRecords === null ? '' : undefined}
+  aria-labelledby="home-work"
 >
-  <Stack gap="2" mb="12">
-    <SectionHeading label={t('home.bench-heading')} />
-    <Text color="var(--atelier-outline)" fontSize="sm" maxW="lg">
-      {t('home.bench-subtitle')}
-    </Text>
-  </Stack>
-  <Grid gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(12, minmax(0, 1fr))' }} gap="6">
-    <Box
-      gridColumn={{ base: 'span 1', md: 'span 7' }}
-      position="relative"
-      border="1px solid"
-      borderColor="var(--atelier-line)"
-      bg="var(--atelier-surface-low)"
-      p="8"
-      className="blocky-shadow-sm"
-    >
-      <Stack gap="6">
-        <Heading as="h3" fontSize={{ base: 'lg', md: 'xl' }}>
-          {t('home.bench-manifesto-heading')}{locale === 'ja' ? '' : ' '}
-          <Box as="span" color="var(--atelier-accent)" fontStyle="italic"
-            >{t('home.bench-manifesto-emphasis')}</Box
-          >
-        </Heading>
-        <Text color="var(--atelier-fg-muted)" lineHeight="relaxed">
-          {t('home.bench-manifesto-body')}
-        </Text>
-        <Flex gap="2" wrap="wrap">
-          <Box
-            px="3"
-            py="1"
-            bg="var(--atelier-surface-highest)"
-            border="1px solid"
-            borderColor="var(--atelier-line)"
-            fontFamily="var(--font-code)"
-            fontSize="10px"
-            textTransform="uppercase">{t('home.bench-principle-clear')}</Box
-          >
-          <Box
-            px="3"
-            py="1"
-            bg="var(--atelier-surface-highest)"
-            border="1px solid"
-            borderColor="var(--atelier-line)"
-            fontFamily="var(--font-code)"
-            fontSize="10px"
-            textTransform="uppercase">{t('home.bench-principle-useful')}</Box
-          >
-          <Box
-            px="3"
-            py="1"
-            bg="var(--atelier-surface-highest)"
-            border="1px solid"
-            borderColor="var(--atelier-line)"
-            fontFamily="var(--font-code)"
-            fontSize="10px"
-            textTransform="uppercase">{t('home.bench-principle-maintainable')}</Box
-          >
-        </Flex>
-      </Stack>
-    </Box>
-
-    <Box
-      gridColumn={{ base: 'span 1', md: 'span 5' }}
-      position="relative"
-      border="1px solid"
-      borderColor="var(--atelier-line)"
-      bg="var(--atelier-surface-low)"
-      p="8"
-      className="blocky-shadow-sm"
-    >
-      <Grid gridTemplateColumns="minmax(0, 1fr) minmax(0, 1fr)" gap="4">
-        <Stack borderLeft="2px solid" borderLeftColor="var(--atelier-line)" pl="4" gap="1">
-          <Text fontFamily="var(--font-code)" fontSize="10px" color="var(--atelier-outline)"
-            >{t('home.bench-tools-frontend')}</Text
-          >
-          <Text fontFamily="var(--font-body)" fontWeight="bold" fontSize="lg">React / Next.js</Text>
-        </Stack>
-        <Stack borderLeft="2px solid" borderLeftColor="var(--atelier-line)" pl="4" gap="1">
-          <Text fontFamily="var(--font-code)" fontSize="10px" color="var(--atelier-outline)"
-            >{t('home.bench-tools-styling')}</Text
-          >
-          <Text fontFamily="var(--font-body)" fontWeight="bold" fontSize="lg">Tailwind CSS</Text>
-        </Stack>
-        <Stack borderLeft="2px solid" borderLeftColor="var(--atelier-line)" pl="4" gap="1">
-          <Text fontFamily="var(--font-code)" fontSize="10px" color="var(--atelier-outline)"
-            >{t('home.bench-tools-design')}</Text
-          >
-          <Text fontFamily="var(--font-body)" fontWeight="bold" fontSize="lg">Figma / WebGL</Text>
-        </Stack>
-        <Stack borderLeft="2px solid" borderLeftColor="var(--atelier-line)" pl="4" gap="1">
-          <Text fontFamily="var(--font-code)" fontSize="10px" color="var(--atelier-outline)"
-            >{t('home.bench-tools-scripting')}</Text
-          >
-          <Text fontFamily="var(--font-body)" fontWeight="bold" fontSize="lg">Node.js / Python</Text
-          >
-        </Stack>
-      </Grid>
-    </Box>
-  </Grid>
-</Box>
-
-<Box py={{ base: '16', lg: '20' }} className="home-chapter">
-  {
-    (heroProjects.length > 0 || homeUnavailable) && (
-      <Box mb="12">
-        <SectionHeading label={t('home.featured-projects')} />
-      </Box>
-    )
-  }
-  {
-    heroProjects.length > 0 ? (
-      <Grid
-        gridTemplateColumns={{
-          base: 'minmax(0, 1fr)',
-          md: 'repeat(2, minmax(0, 1fr))',
-          lg: 'repeat(3, minmax(0, 1fr))'
-        }}
-        gap="0"
-        borderTop="1px solid var(--atelier-line)"
-        borderLeft="1px solid var(--atelier-line)"
-        mb="20"
-        className="home-project-grid"
-      >
-        {heroProjects.map((project) => {
-          const imgSrc =
-            resolveMedia(project.banner ?? project.media?.[0], 400, import.meta.env.PUBLIC_API_URL)
-              ?.src ?? null;
-          return (
-            <a
-              href={`/${locale}/projects/${project.slug}`}
-              class="project-card"
-              style="display:flex;flex-direction:column;height:100%;border-right:1px solid var(--atelier-line);border-bottom:1px solid var(--atelier-line);overflow:hidden;background:var(--atelier-bg);cursor:pointer;text-decoration:none;color:inherit"
-            >
-              <Box position="relative" aspectRatio="1 / 1" overflow="hidden" className="group">
-                {imgSrc ? (
-                  <>
-                    <img
-                      src={imgSrc}
-                      alt=""
-                      style="width:100%;height:100%;object-fit:cover;filter:var(--atelier-image-rest);transition:filter 500ms, transform 500ms"
-                      class="project-card-img"
-                      width="600"
-                      height="600"
-                      loading="lazy"
-                    />
-                    <Box
-                      position="absolute"
-                      inset="0"
-                      className="project-card-overlay"
-                      style={{ transition: 'opacity 300ms' }}
-                    />
-                  </>
-                ) : (
-                  <Box
-                    position="relative"
-                    w="100%"
-                    h="100%"
-                    bg="var(--atelier-surface-lowest)"
-                    className="fallback-grid-lines"
-                  >
-                    <Box
-                      position="absolute"
-                      bottom="-10px"
-                      right="0"
-                      fontFamily="var(--font-display)"
-                      fontStyle="italic"
-                      fontSize="140px"
-                      lineHeight="1"
-                      color="var(--atelier-fg)"
-                      opacity="0.05"
-                      userSelect="none"
-                      pointerEvents="none"
-                      aria-hidden="true"
-                    >
-                      {projectMonogram(project.title)}
-                    </Box>
-                    <Box
-                      position="absolute"
-                      bottom="0"
-                      left="0"
-                      right="0"
-                      h="2px"
-                      bg="var(--atelier-accent)"
-                      opacity="0.3"
-                    />
-                  </Box>
-                )}
-              </Box>
-              <Box p="6" display="flex" flexDirection="column" flex="1">
-                <Flex justify="space-between" align="start" mb="2">
-                  <Heading
-                    as="h3"
-                    fontFamily="var(--font-body)"
-                    fontWeight="bold"
-                    fontSize={{ base: 'md', md: 'xl' }}
-                    fontStyle="normal"
-                    textTransform="uppercase"
-                    letterSpacing="0"
-                  >
-                    {project.title}
-                  </Heading>
-                </Flex>
-                <Text color="var(--atelier-fg-muted)" fontSize="sm" lineHeight="1.7" mb="6">
-                  {project.description}
-                </Text>
-                <Flex
-                  mt="auto"
-                  pt="4"
-                  borderTop="1px solid var(--atelier-line)"
-                  justify="space-between"
-                  align="center"
-                  color="var(--atelier-fg-muted)"
-                  style={{ marginTop: 'auto', paddingTop: '1rem' }}
-                >
-                  <Text fontFamily="var(--font-code)" fontSize="10px">
-                    {yearLabel(project.date?.slice(0, 4)) ?? t('common.projects')}
-                  </Text>
-                  <Glyph name="north_east" style={{ fontSize: '14px' }} />
-                </Flex>
-              </Box>
-            </a>
-          );
-        })}
-      </Grid>
-    ) : (
-      homeUnavailable && (
-        <Box
-          border="1px solid"
-          borderColor="var(--atelier-line)"
-          bg="var(--atelier-surface-low)"
-          p={{ base: '8', md: '12' }}
-          mb="20"
-          textAlign="center"
-        >
-          <Text
-            fontFamily="var(--font-code)"
-            fontSize="10px"
-            textTransform="uppercase"
-            letterSpacing="0.15em"
-            color="var(--atelier-outline)"
-            mb="4"
-          >
-            {t('project.status-unavailable')}
-          </Text>
-          <Heading as="h3" fontSize={{ base: 'xl', md: '2xl' }} mb="3">
-            {t('home.projects-empty-title')}
-          </Heading>
-          <Text color="var(--atelier-outline)" fontSize="sm">
-            {t('home.projects-empty-description')}
-          </Text>
-          <a
-            href={Astro.url.pathname}
-            class="amber-link"
-            style="display:inline-flex;align-items:center;min-height:44px;margin-top:0.5rem"
-          >
-            {t('project.reload')}
-          </a>
-        </Box>
+  <div class="home-panel">
+    <SectionHeading id="home-work" label={t('home.work-heading')} />
+    {
+      experiences.length > 0 && (
+        <ol class="home-timeline">
+          {experiences.map((item: any) => (
+            <li>
+              <span class="home-timeline-role">{item.position}</span>
+              <span class="home-timeline-place">{item.title}</span>
+              <span class="home-timeline-years">
+                {yearOf(item.start)}–{item.end ? yearOf(item.end) : t('home.work-present')}
+              </span>
+            </li>
+          ))}
+        </ol>
       )
-    )
-  }
-  <Stack gap="8" className="home-chapter">
-    <SectionHeading label={t('home.life-heading')} />
-    <Grid gridTemplateColumns={{ base: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' }} gap="6">
-      {
-        [
-          {
-            href: `/${locale}/hobbies/6c2d00b7-dc75-4f45-b286-bf1cbf9e5284`,
-            icon: 'photo_camera' as const,
-            label: t('home.life-darkroom')
-          },
-          {
-            href: `/${locale}/hobbies`,
-            icon: 'category' as const,
-            label: t('home.life-skill-toys')
-          }
-        ].map((entry) => (
-          <a
-            href={entry.href}
-            class="card-hover-amber group"
-            style="display:block;border:1px solid var(--atelier-line);background-color:var(--atelier-bg);text-decoration:none;color:inherit"
-          >
-            <Box
-              className="fallback-grid-lines"
-              borderBottom="1px solid var(--atelier-line)"
-              bg="var(--atelier-surface-lowest)"
-              display="grid"
-              placeItems="center"
-              h="7rem"
-            >
-              <Glyph name={entry.icon} className="atelier-icon-lg" />
-            </Box>
-            <Stack gap="3" p="5">
-              <Heading as="h3" fontSize="2xl" lineHeight="1.1">
-                {entry.label}
-              </Heading>
-              <Flex
-                gap="2"
-                alignItems="center"
-                color="var(--atelier-accent)"
-                fontFamily="var(--font-code)"
-                fontSize="10px"
-                letterSpacing="0.12em"
-                textTransform="uppercase"
-              >
-                <Text>{t('common.open')}</Text>
-                <Glyph name="north_east" />
-              </Flex>
-            </Stack>
-          </a>
-        ))
-      }
-    </Grid>
-  </Stack>
-  {
-    recentPhotos.length > 0 && (
-      <Stack gap="8" mt="16" className="home-chapter">
-        <SectionHeading label={t('home.photos-heading')} />
+    }
+    {careerRecords === null && <p class="home-chapter-note">{t('home.section-unavailable')}</p>}
+    <a class="home-chapter-link" href={`/${locale}/about`}>
+      {t('home.work-about')}
+      <Glyph name="north_east" />
+    </a>
+  </div>
+</section>
+
+<section
+  class="home-chapter home-builds"
+  data-tour-stop="projects"
+  data-home-degraded={projectsUnavailable && projects.length === 0 ? '' : undefined}
+  aria-labelledby="home-builds"
+>
+  <div class="home-panel home-panel-wide">
+    <SectionHeading id="home-builds" label={t('home.builds-heading')} />
+    {
+      projects.length > 0 ? (
+        <ul class="home-project-grid">
+          {projects.map((project) => {
+            const imgSrc =
+              resolveMedia(
+                project.banner ?? project.media?.[0],
+                400,
+                import.meta.env.PUBLIC_API_URL
+              )?.src ?? null;
+            return (
+              <li>
+                <a href={`/${locale}/projects/${project.slug}`} class="project-card">
+                  <span class="project-card-frame">
+                    {imgSrc ? (
+                      <img
+                        src={imgSrc}
+                        alt=""
+                        class="project-card-img"
+                        width="600"
+                        height="600"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <span class="project-card-monogram" aria-hidden="true">
+                        {projectMonogram(project.title)}
+                      </span>
+                    )}
+                  </span>
+                  <span class="project-card-title">{project.title}</span>
+                  <span class="project-card-description">{project.description}</span>
+                  <span class="project-card-year">{yearOf(project.date)}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        projectsUnavailable && (
+          <p class="home-chapter-note">
+            <strong>{t('home.projects-empty-title')}</strong> {t('home.projects-empty-description')}
+          </p>
+        )
+      )
+    }
+    <a class="home-chapter-link" href={`/${locale}/projects`}>
+      {t('home.view-my-work')}
+      <Glyph name="north_east" />
+    </a>
+  </div>
+</section>
+
+<section
+  class="home-chapter home-crowd"
+  data-tour-stop="penlight"
+  data-home-degraded={eventReport ? undefined : ''}
+  aria-labelledby="home-crowd"
+>
+  <div class="home-panel">
+    <SectionHeading id="home-crowd" label={t('home.crowd-heading')} />
+    {
+      eventReport && eventReport.totalEvents > 0 && (
+        <dl class="home-figures">
+          <div>
+            <dt>{t('home.crowd-total').replace('{year}', firstEventYear ?? '')}</dt>
+            <dd>{numberFormatter.format(eventReport.totalEvents)}</dd>
+          </div>
+          <div>
+            <dt>{t('home.crowd-venues')}</dt>
+            <dd>{numberFormatter.format(eventReport.uniqueVenues)}</dd>
+          </div>
+          <div>
+            <dt>{t('home.crowd-upcoming')}</dt>
+            <dd>{numberFormatter.format(eventReport.nextEvents.length)}</dd>
+          </div>
+        </dl>
+      )
+    }
+    {
+      eventReport?.topArtists[0] &&
+        // prettier-ignore
+        <p class="home-chapter-note">{t('home.crowd-most-seen')} <span lang="ja">{eventReport.topArtists[0].name}</span>{mostSeenSuffix}</p>
+    }
+    {
+      eventReport?.nextEvents[0] && (
+        <p class="home-chapter-note">
+          {t('home.crowd-next')} <span lang="ja">{eventReport.nextEvents[0].title}</span>
+        </p>
+      )
+    }
+    {!eventReport && <p class="home-chapter-note">{t('home.section-unavailable')}</p>}
+    <a class="home-chapter-link" href={`/${locale}/events`}>
+      {t('home.crowd-link')}
+      <Glyph name="north_east" />
+    </a>
+  </div>
+</section>
+
+<section class="home-chapter home-practice" data-tour-stop="darts" aria-labelledby="home-practice">
+  <div class="home-panel">
+    <SectionHeading id="home-practice" label={t('home.practice-heading')} />
+    <ul class="home-word-list">
+      {practice.map((id) => <li>{room[id]}</li>)}
+    </ul>
+    <a class="home-chapter-link" href={`/${locale}/hobbies`}>
+      {t('home.explore-hobbies')}
+      <Glyph name="north_east" />
+    </a>
+  </div>
+</section>
+
+<section
+  class="home-chapter home-notes"
+  data-tour-stop="notes"
+  data-tour-pose={JSON.stringify({ position: [-0.15, 1.45, -1.45], lookAt: [-1.77, 1.25, -1.2] })}
+  data-home-degraded={noteRecords === null ? '' : undefined}
+  aria-labelledby="home-notes"
+>
+  <div class="home-panel">
+    <SectionHeading id="home-notes" label={t('home.notes-heading')} />
+    {
+      latestNotes.length > 0 && (
+        <ul class="home-note-list">
+          {latestNotes.map((note: any) => (
+            <li>
+              <a href={`/${locale}/notes/${note.id}`}>
+                <span class="home-note-title">{note.documentTitle}</span>
+                {noteDate(note) && (
+                  <span class="home-note-date">
+                    {dateFormatter.format(new Date(noteDate(note)!))}
+                  </span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    {noteRecords === null && <p class="home-chapter-note">{t('home.section-unavailable')}</p>}
+    <a class="home-chapter-link" href={`/${locale}/notes`}>
+      {t('home.notes-all')}
+      <Glyph name="north_east" />
+    </a>
+  </div>
+</section>
+
+{
+  (recentPhotos.length > 0 || catalog === null) && (
+    <section
+      class="home-chapter home-gallery"
+      data-tour-stop="photos"
+      data-home-degraded={catalog === null ? '' : undefined}
+      aria-labelledby="home-photos"
+    >
+      <div class="home-panel home-panel-wide">
+        <SectionHeading id="home-photos" label={t('home.photos-heading')} />
+        {catalog === null && <p class="home-chapter-note">{t('home.section-unavailable')}</p>}
         <ul class="home-photos">
           {recentPhotos.map((entry) => (
             <li>
@@ -417,7 +363,7 @@ const yearLabel = (year?: string) =>
                   />
                 </span>
                 <span class="home-photos-name" lang={photoLang}>
-                  {subjectNames(entry).join('、')}
+                  {entry.subjects.map((subject) => subject.name).join('、')}
                 </span>
                 <span class="home-photos-event" lang={photoLang}>
                   {entry.event}
@@ -429,11 +375,24 @@ const yearLabel = (year?: string) =>
             </li>
           ))}
         </ul>
-        <a href={`/${locale}/photos`} class="home-photos-all">
+        <a href={`/${locale}/photos`} class="home-chapter-link">
           {t('home.photos-all')}
           <Glyph name="north_east" />
         </a>
-      </Stack>
-    )
-  }
-</Box>
+      </div>
+    </section>
+  )
+}
+
+<section class="home-chapter home-outro" data-tour-stop="hobbies" aria-labelledby="home-outro">
+  <div class="home-panel">
+    <SectionHeading id="home-outro" label={t('home.outro-heading')} />
+    <p class="home-chapter-note">{t('home.outro-body')}</p>
+    <div class="home-actions">
+      <button type="button" class="home-hero-cta home-hero-cta-primary" data-room-enter>
+        {t('home.enter-room')}
+      </button>
+      <a href={`/${locale}/contact`} class="home-hero-cta cta-secondary">{t('common.contact')}</a>
+    </div>
+  </div>
+</section>

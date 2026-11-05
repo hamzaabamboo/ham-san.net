@@ -69,3 +69,14 @@ export const withFreshLastGoodState = async <T>(
   inFlight.set(key, request);
   return request;
 };
+
+export const withinLastGood = <T>(key: string, promise: Promise<T>, ms: number) =>
+  Promise.race([
+    promise,
+    new Promise<T>((resolve, reject) =>
+      setTimeout(() => {
+        if (lastGood.has(key)) resolve(lastGood.get(key) as T);
+        else reject(new Error('timeout'));
+      }, ms)
+    )
+  ]);

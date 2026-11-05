@@ -22,6 +22,7 @@ When the user requests every word or every code file in supplied references, inv
 
 - Primary gate for the Stitch workstream: `cd apps/astro && bun run build`
 - Route verification must use `agent-browser`
+- Room motion evidence must preserve the existing task tab and record its actual motion state. Keep `AGENT_BROWSER_HEADED=true` on every call. The CLI recorder creates a new context and may drop media preferences and storage; use `tools/room-harness/capture-session.mjs` against the owned session's CDP URL when continuity matters, then inspect the resulting sequence.
 - Verify wheel scroll containment with `agent-browser mouse wheel` and compare `scrollY` before and after. Page-scroll commands do not establish wheel behavior. If native input stalls while page reads work, activate the existing task tab before retrying.
 - Compare implemented pages against `stitch_exports/4878703984446574546`
 - Validate one route at a time
@@ -87,6 +88,8 @@ Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/
 ## 3Dホームの設計方針
 
 - 再開時はconductor/CURRENT_TASK.mdを唯一のライブ索引とし、指定された次作業の原本だけを読む。完全な制作手順・失敗回避・検証境界はconductor/room-full-handoff-2026-09-07.md。旧停止資料の権限・モデルハッシュを現状と取り違えない。
+- 現行の制作元は`assets/room/room-v2.blend`、書出しは`assets/room/export_room_v2.py`。旧`room.blend`と9月のチェックポイントは履歴資料。編集前にネイティブMCPの現在パスを確認する。GLB書出しでは昼夜両方の背景を保持し、制作時の表示状態を復元する。
+- 常時アニメーション・影・照明は、実際に録画するタブの`data-room-motion`を確認して時系列で検証する。初期プレビュー・WebGL表示・入室まで昼夜・構図を揃え、カメラ・アニメーション位相・描画用メッシュを入室時にリセットしない。変形するメッシュと影は同じ変形処理を使う。静止画・ビルド・Lighthouseを動作証拠にしない。照明は発光面のワールド境界を基準に天井下へ置き、動きを減らす設定では静止構図を維持する。
 - デザイン・画像方針・Blender・モデリングは主担当が実施する。Luna/maxへの委任は独立したコード実装・コード読解・要約に限定し、対象ファイルと停止条件を指定する。主担当は委任結果を原本で確認する。モデル・テクスチャ・造形スクリプトの編集は委任しない。
 - 原要求から最新平面図までの統合要件はconductor/room-spec.md。配置はroom-reference-map.md、進行状態はCURRENT_TASK.mdへ分離する。窓外の住宅街、発光ペンライト、適切な完成アクリルアセットも必須要件であり、単なる空背景・無地棒・仮人物で代用しない。
 - 部屋は本人の実際の配置と持ち物が分かる、最小限のディテールで制作する。部屋の資料が揃うまで配置を創作しない。
